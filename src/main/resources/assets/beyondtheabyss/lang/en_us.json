@@ -1,0 +1,23 @@
+{
+	"itemGroup.abyss_mobs": "Deep Abyss Mobs",
+	"itemGroup.abyss_materials": "Deep Abyss Materials",
+	"itemGroup.abyss_armors": "Deep Abyss Armors",
+	"key.categories.beyondtheabyss": "Beyond the Abyss",
+	"key.beyondtheabyss.abyssal_dash": "Abyssal Dash",
+	"entity.beyondtheabyss.ghidruth": "Ghidruth",
+	"item.beyondtheabyss.ghidruth_spawn_egg": "Ghidruth Spawn Egg",
+	"item.beyondtheabyss.ghidruth_scale": "Scale of Ghidruth",
+	"item.beyondtheabyss.oxygen_tank": "Oxygen Tank",
+	"item.beyondtheabyss.diving_helmet": "Diving Helmet",
+	"item.beyondtheabyss.diving_suit": "Diving Suit",
+	"item.beyondtheabyss.diving_leggings": "Diving Leggings",
+	"item.beyondtheabyss.diving_boots": "Diving Boots",
+	"item.beyondtheabyss.advanced_diving_helmet": "Advanced Diving Helmet",
+	"item.beyondtheabyss.advanced_diving_suit": "Advanced Diving Suit",
+	"item.beyondtheabyss.advanced_diving_leggings": "Advanced Diving Leggings",
+	"item.beyondtheabyss.advanced_diving_boots": "Advanced Diving Boots",
+	"item.beyondtheabyss.ghidruth_diving_helmet": "Ghidruth Diving Helmet",
+	"item.beyondtheabyss.ghidruth_diving_suit": "Ghidruth Diving Suit",
+	"item.beyondtheabyss.ghidruth_diving_leggings": "Ghidruth Diving Leggings",
+	"item.beyondtheabyss.ghidruth_diving_boots": "Ghidruth Diving Boots"
+}

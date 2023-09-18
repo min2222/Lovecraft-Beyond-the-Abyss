@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "cic",
+        "iNi",
+        "cic"
+    ],
+    "key": {
+        "c": {
+            "item": "minecraft:copper_ingot"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        },
+        "N": {
+            "item": "beyondtheabyss:diving_leggings"
+        }
+    },
+    "result": {
+        "item": "beyondtheabyss:advanced_diving_leggings",
+        "count": 1
+    }
+}

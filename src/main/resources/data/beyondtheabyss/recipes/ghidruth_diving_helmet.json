@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "beyondtheabyss:diving_helmet"
+    },
+    "addition": {
+        "item": "beyondtheabyss:ghidruth_scale"
+    },
+    "result": {
+        "item": "beyondtheabyss:ghidruth_diving_helmet"
+    }
+}

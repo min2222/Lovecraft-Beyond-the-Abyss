@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "c c",
+        "coc",
+        "ccc"
+    ],
+    "key": {
+        "c": {
+            "item": "minecraft:copper_ingot"
+        },
+        "o": {
+            "item": "beyondtheabyss:oxygen_tank"
+        }
+    },
+    "result": {
+        "item": "beyondtheabyss:diving_suit",
+        "count": 1
+    }
+}
