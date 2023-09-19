@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.network.AbyssNetwork;
 import com.min01.beyondtheabyss.network.KeyInputPacket;
 import com.min01.beyondtheabyss.network.KeyInputPacket.InputType;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
@@ -37,7 +38,7 @@ public class ClientEventHandlerForge
             if(!YkeyPressed) 
             {
             	YkeyPressed = true;
-            	BeyondtheAbyss.CHANNEL.sendToServer(new KeyInputPacket(InputType.ABYSSAL_DASH));
+            	AbyssNetwork.CHANNEL.sendToServer(new KeyInputPacket(InputType.ABYSSAL_DASH));
             }
         } 
         else

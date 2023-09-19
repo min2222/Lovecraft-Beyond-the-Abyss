@@ -1,8 +1,13 @@
 package com.min01.beyondtheabyss.entity.goals.deepabyss;
 
+import java.util.List;
+
 import com.min01.beyondtheabyss.entity.AbstractAbyssEntity.AbyssSkills;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.goals.BasicAbyssSkillGoal;
+
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 
 public class GhidruthTailSlapGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 {
@@ -21,7 +26,15 @@ public class GhidruthTailSlapGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 	@Override
 	protected void performSkill()
 	{
-		
+		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(1.5));
+		for(int i = 0; i < list.size(); i++)
+		{
+			LivingEntity living = list.get(i);
+			if(living != this.mob)
+			{
+				living.hurt(DamageSource.mobAttack(this.mob), 7);
+			}
+		}
 	}
 
 	@Override

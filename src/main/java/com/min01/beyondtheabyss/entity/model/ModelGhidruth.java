@@ -3,8 +3,11 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.network.AbyssNetwork;
+import com.min01.beyondtheabyss.network.ModelPosSyncPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -21,10 +24,13 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "ghidruth"), "main");
 	private final ModelPart MainRootThing;
+	private Matrix4f worldSpaceXform;
 
 	public ModelGhidruth(ModelPart root)
 	{
 		this.MainRootThing = root.getChild("MainRootThing");
+		this.worldSpaceXform = new Matrix4f();
+		this.worldSpaceXform.setIdentity();
 	}
 
 	public static LayerDefinition createBodyLayer() 
@@ -148,6 +154,8 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks);
 		this.animate(entity.biteAnimationState, GhidruthAnimation.GHIDRUTH_BITE, ageInTicks);
 		this.animate(entity.tailSlapAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SLAP, ageInTicks);
+		ModelPart rearBody = this.MainRootThing.getChild("Head").getChild("Body").getChild("RearBody");
+		AbyssNetwork.CHANNEL.sendToServer(new ModelPosSyncPacket(entity, 0, rearBody.yRot, 0));
 	}
 
 	@Override

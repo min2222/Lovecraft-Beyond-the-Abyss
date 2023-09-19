@@ -7,6 +7,8 @@ import com.min01.beyondtheabyss.util.AbyssUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -39,6 +41,9 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	public AnimationState swimAnimationState = new AnimationState();
 	public AnimationState biteAnimationState = new AnimationState();
 	public AnimationState tailSlapAnimationState = new AnimationState();
+	public static final EntityDataAccessor<Float> TAIL_POS_X = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> TAIL_POS_Y = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> TAIL_POS_Z = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
@@ -56,6 +61,45 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         		.add(Attributes.FOLLOW_RANGE, 70)
         		.add(Attributes.ARMOR, 20)
         		.add(Attributes.ARMOR_TOUGHNESS, 20);
+    }
+    
+    @Override
+    protected void defineSynchedData()
+    {
+    	super.defineSynchedData();
+    	this.entityData.define(TAIL_POS_X, 0F);
+    	this.entityData.define(TAIL_POS_Y, 0F);
+    	this.entityData.define(TAIL_POS_Z, 0F);
+    }
+    
+    public void setTailPosZ(float z)
+    {
+    	this.entityData.set(TAIL_POS_Z, z);
+    }
+    
+    public float getTailPosZ()
+    {
+    	return this.entityData.get(TAIL_POS_Z);
+    }
+    
+    public void setTailPosY(float y)
+    {
+    	this.entityData.set(TAIL_POS_X, y);
+    }
+    
+    public float getTailPosY()
+    {
+    	return this.entityData.get(TAIL_POS_Y);
+    }
+    
+    public void setTailPosX(float x)
+    {
+    	this.entityData.set(TAIL_POS_X, x);
+    }
+    
+    public float getTailPosX()
+    {
+    	return this.entityData.get(TAIL_POS_X);
     }
     
     @Override
@@ -121,6 +165,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	public void stopAllAnimationStates() 
 	{
 		this.biteAnimationState.stop();
+		this.tailSlapAnimationState.stop();
 	}
     
     @Override
@@ -139,13 +184,9 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	Vec3 head = AbyssUtil.caculateForwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
     	Vec3 body = AbyssUtil.caculateBackwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
     	Vec3 tail = AbyssUtil.caculateBackwardVector(this, new Vec3(9, this.getEyeHeight(), 9));
-    	float f14 = this.getYRot() * ((float)Math.PI / 180F);
-        float x = Mth.sin(f14);
-        float z = Mth.cos(f14);
-    	Vec3 tailAnim = new Vec3((x * (Mth.cos(this.tickCount * 0.35F) * 0.85)), this.getEyeY(), (z * (Mth.cos(this.tickCount * 0.35F) * 0.85)));
     	this.head.moveTo(head.x, this.getY() - 0.5 + Mth.cos(this.tickCount * 0.155F), head.z);
     	this.body.moveTo(body.x, this.getY(), body.z);
-    	this.tail.moveTo(tail.x + tailAnim.x, this.getY(), tail.z + tailAnim.z);
+    	this.tail.moveTo(tail.x + Mth.cos(this.tickCount * 0.155F), this.getY(), tail.z + Mth.cos(this.tickCount * 0.155F));
     	if(this.level.isClientSide)
     	{
     		if(AbyssUtil.isMoving(this) && this.isAlive())

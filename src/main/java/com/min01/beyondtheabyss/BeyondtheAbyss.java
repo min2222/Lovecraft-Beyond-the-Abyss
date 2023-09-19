@@ -11,7 +11,6 @@ import com.min01.beyondtheabyss.proxy.ClientProxy;
 import com.min01.beyondtheabyss.proxy.CommonProxy;
 import com.min01.beyondtheabyss.sound.AbyssSounds;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -21,23 +20,13 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
 
 @Mod(BeyondtheAbyss.MODID)
 public class BeyondtheAbyss
 {
 	public static final String MODID = "beyondtheabyss";
 	public static IEventBus MOD_EVENT_BUS;
-	public static SimpleChannel wrapper;
-	public static CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
-	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-			new ResourceLocation(BeyondtheAbyss.MODID, "abyssal_channel"),
-			() -> PROTOCOL_VERSION,
-			PROTOCOL_VERSION::equals,
-			PROTOCOL_VERSION::equals
-	);
+	public static final CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public static final CreativeModeTab ABYSS_MOBS = new CreativeModeTab("abyss_mobs") 
 	{
