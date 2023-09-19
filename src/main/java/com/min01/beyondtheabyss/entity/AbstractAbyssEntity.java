@@ -90,8 +90,8 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 	
 	public void setAsBoss()
 	{
-		this.entityData.set(IS_BOSS, true);
-		this.entityData.set(IS_HOSTILE, true);
+		this.setBoss(true);
+		this.setHostile(true);
 	}
 	
 	public void setHostile(boolean value)

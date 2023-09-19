@@ -32,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 {
-	public BasicAbyssEntityPart head = new BasicAbyssEntityPart(this, 4F, 2.5F);
+	public BasicAbyssEntityPart head = new BasicAbyssEntityPart(this, 4F, 3.2F);
 	public BasicAbyssEntityPart body = new BasicAbyssEntityPart(this, 4.5F, 3F);
 	public BasicAbyssEntityPart tail = new BasicAbyssEntityPart(this, 5.5F, 3.5F);
 	public BasicAbyssEntityPart[] parts = { this.head, this.body, this.tail };
@@ -61,7 +61,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     @Override
     public int getMaxHeadYRot() 
     {
-    	return 25;
+    	return 5;
     }
     
     public static boolean checkGhidruthSpawnRules(EntityType<EntityGhidruth> p_218956_, ServerLevelAccessor p_218957_, MobSpawnType p_218958_, BlockPos p_218959_, RandomSource p_218960_) 
@@ -106,6 +106,12 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         			this.biteAnimationState.start(this.tickCount);
         			break;
         		}
+        		case 2:
+        		{
+        			this.stopAllAnimationStates();
+        			this.tailSlapAnimationState.start(this.tickCount);
+        			break;
+        		}
             }
         }
         super.onSyncedDataUpdated(p_219422_);
@@ -133,13 +139,16 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	Vec3 head = AbyssUtil.caculateForwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
     	Vec3 body = AbyssUtil.caculateBackwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
     	Vec3 tail = AbyssUtil.caculateBackwardVector(this, new Vec3(9, this.getEyeHeight(), 9));
-    	//Vec3 tailAnim = AbyssUtil.caculateSideVector(this, new Vec3(2, this.getEyeHeight(), 2));
-    	this.head.moveTo(head.x, this.getY(), head.z);
+    	float f14 = this.getYRot() * ((float)Math.PI / 180F);
+        float x = Mth.sin(f14);
+        float z = Mth.cos(f14);
+    	Vec3 tailAnim = new Vec3((x * (Mth.cos(this.tickCount * 0.35F) * 0.85)), this.getEyeY(), (z * (Mth.cos(this.tickCount * 0.35F) * 0.85)));
+    	this.head.moveTo(head.x, this.getY() - 0.5 + Mth.cos(this.tickCount * 0.155F), head.z);
     	this.body.moveTo(body.x, this.getY(), body.z);
-    	this.tail.moveTo(tail.x, this.getY(), tail.z);
+    	this.tail.moveTo(tail.x + tailAnim.x, this.getY(), tail.z + tailAnim.z);
     	if(this.level.isClientSide)
     	{
-    		if(AbyssUtil.isMoving(this) && this.isAlive() && !this.isUsingSkill())
+    		if(AbyssUtil.isMoving(this) && this.isAlive())
     		{
     			this.swimAnimationState.startIfStopped(this.tickCount);
     		}
@@ -200,7 +209,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 			{
 				if (this.notCarryingMobPassengers()) 
 				{
-					if (Math.abs(this.mob.yHeadRot - this.lastStableYHeadRot) > 45.0F)
+					if (Math.abs(this.mob.yHeadRot - this.lastStableYHeadRot) > 1.0F)
 					{
 						this.headStableTime = 0;
 						this.lastStableYHeadRot = this.mob.yHeadRot;
@@ -209,7 +218,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 					else
 					{
 						++this.headStableTime;
-						if (this.headStableTime > 40) 
+						if (this.headStableTime > 1) 
 						{
 							this.rotateHeadTowardsFront();
 						}
@@ -220,12 +229,12 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 		
 		private void rotateBodyIfNecessary() 
 		{
-			this.mob.yBodyRot = Mth.rotateIfNecessary(this.mob.yBodyRot, this.mob.yHeadRot, (float)this.mob.getMaxHeadYRot()) * 0.8F;
+			this.mob.yBodyRot = Mth.rotateIfNecessary(this.mob.yBodyRot, this.mob.yHeadRot, (float)this.mob.getMaxHeadYRot());
 		}
 
 		private void rotateHeadIfNecessary() 
 		{
-			this.mob.yHeadRot = Mth.rotateIfNecessary(this.mob.yHeadRot, this.mob.yBodyRot, (float)this.mob.getMaxHeadYRot()) * 0.8F;
+			this.mob.yHeadRot = Mth.rotateIfNecessary(this.mob.yHeadRot, this.mob.yBodyRot, (float)this.mob.getMaxHeadYRot());
 		}
 
 		private void rotateHeadTowardsFront()
