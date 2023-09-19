@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.parts;
 
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractDeepAbyssEntity;
+import com.min01.beyondtheabyss.entity.AbstractAbyssEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -10,12 +10,12 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraftforge.entity.PartEntity;
 
-public abstract class AbstractDeepAbyssEntityPart<T extends AbstractDeepAbyssEntity> extends PartEntity<T>
+public abstract class AbstractAbyssEntityPart<T extends AbstractAbyssEntity> extends PartEntity<T>
 {
 	public final T parentMob;
 	private final EntityDimensions size;
 
-	public AbstractDeepAbyssEntityPart(T entity, float width, float height)
+	public AbstractAbyssEntityPart(T entity, float width, float height)
 	{
 		super(entity);
 		this.size = EntityDimensions.scalable(width, height);

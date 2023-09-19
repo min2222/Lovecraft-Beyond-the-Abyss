@@ -1,8 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.parts.AbstractDeepAbyssEntityPart;
-import com.min01.beyondtheabyss.entity.parts.AbyssEntityPart;
+import com.min01.beyondtheabyss.entity.parts.BasicAbyssEntityPart;
 import com.min01.beyondtheabyss.util.AbyssUtil;
 
 import net.minecraft.core.BlockPos;
@@ -33,10 +32,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 {
-	public AbyssEntityPart head = new AbyssEntityPart(this, 4F, 2.5F);
-	public AbyssEntityPart body = new AbyssEntityPart(this, 4.5F, 3F);
-	public AbyssEntityPart tail = new AbyssEntityPart(this, 5.5F, 3.5F);
-	public AbyssEntityPart[] parts = { this.head, this.body, this.tail };
+	public BasicAbyssEntityPart head = new BasicAbyssEntityPart(this, 4F, 2.5F);
+	public BasicAbyssEntityPart body = new BasicAbyssEntityPart(this, 4.5F, 3F);
+	public BasicAbyssEntityPart tail = new BasicAbyssEntityPart(this, 5.5F, 3.5F);
+	public BasicAbyssEntityPart[] parts = { this.head, this.body, this.tail };
 	public AnimationState swimAnimationState = new AnimationState();
 	public AnimationState biteAnimationState = new AnimationState();
 	public AnimationState tailSlapAnimationState = new AnimationState();
@@ -244,7 +243,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     }
 
 	@Override
-	public AbstractDeepAbyssEntityPart<?>[] getDeepAbyssEntityParts() 
+	public BasicAbyssEntityPart[] getDeepAbyssEntityParts() 
 	{
 		return this.parts;
 	}

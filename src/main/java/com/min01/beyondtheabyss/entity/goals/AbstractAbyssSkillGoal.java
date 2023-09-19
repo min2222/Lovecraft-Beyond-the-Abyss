@@ -5,12 +5,12 @@ import com.min01.beyondtheabyss.entity.deepabyss.AbstractDeepAbyssEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public abstract class AbstractDeepAbyssSkillGoal extends Goal
+public abstract class AbstractAbyssSkillGoal extends Goal
 {
 	protected int skillWarmupDelay;
 	protected int nextSkillTickCount;
 	
-	public AbstractDeepAbyssSkillGoal() 
+	public AbstractAbyssSkillGoal() 
 	{
 		
 	}
@@ -96,7 +96,7 @@ public abstract class AbstractDeepAbyssSkillGoal extends Goal
 
     protected abstract void performSkill();
 
-    //TODO wait specific tick before do attacking
+    //wait specific tick before use skill
     protected int getSkillWarmupTime()
     {
     	return 20;

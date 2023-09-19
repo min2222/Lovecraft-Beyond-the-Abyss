@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.parts.AbstractDeepAbyssEntityPart;
+import com.min01.beyondtheabyss.entity.parts.BasicAbyssEntityPart;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
@@ -15,7 +15,7 @@ public class EntityForneus extends AbstractMultipartDeepAbyssEntity
 	}
 
 	@Override
-	public AbstractDeepAbyssEntityPart<?>[] getDeepAbyssEntityParts()
+	public BasicAbyssEntityPart[] getDeepAbyssEntityParts()
 	{
 		return null;
 	}
