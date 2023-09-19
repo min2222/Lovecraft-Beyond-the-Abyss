@@ -4,9 +4,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractAbyssEntity extends PathfinderMob
 {
@@ -16,6 +18,7 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BOOLEAN);
 	public int skillUsingTickCount;
+	private AbstractAbyssEntity.AbyssSkills currentSkill = AbstractAbyssEntity.AbyssSkills.NONE;
 	
 	public AbstractAbyssEntity(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -44,6 +47,31 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 		this.entityData.define(SHOULD_MOVE, true);
 		this.entityData.define(IS_BOSS, false);
 		this.entityData.define(IS_HOSTILE, false);
+	}
+	
+    @Override
+	public void move(MoverType p_19973_, Vec3 p_19974_) 
+	{
+		if(this.shouldMove())
+		{
+			super.move(p_19973_, p_19974_);
+		}
+		else if(!this.shouldMove())
+		{
+			double yvec = this.onGround || this.isNoGravity() ? 0 : this.getDeltaMovement().y;
+			super.move(p_19973_, new Vec3(0, yvec, 0));
+		}
+	}
+    
+	protected AbstractAbyssEntity.AbyssSkills getCurrentSkill() 
+	{
+		return !this.level.isClientSide ? this.currentSkill : AbstractAbyssEntity.AbyssSkills.byId(this.entityData.get(DATA_SKILL_ID));
+	}
+	
+	public void setIsUsingSkill(AbstractAbyssEntity.AbyssSkills p_33728_) 
+	{
+		this.currentSkill = p_33728_;
+		this.entityData.set(DATA_SKILL_ID, (byte)p_33728_.id);
 	}
 	
 	@Override
@@ -137,4 +165,31 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
     {
     	
     }
+    
+	public static enum AbyssSkills
+	{
+		NONE(0),
+		GHIDRUTH_DASH(1),
+		GHIDRUTH_BITE(2),
+		GHIDRUTH_TAIL_SLAP(3);
+		
+		int id;
+
+		private AbyssSkills(int p_33754_) 
+		{
+			this.id = p_33754_;
+		}
+		
+		public static AbstractAbyssEntity.AbyssSkills byId(int p_33759_)
+		{
+			for(AbstractAbyssEntity.AbyssSkills skils : values()) 
+			{
+				if (p_33759_ == skils.id) 
+				{
+					return skils;
+				}
+			}
+			return NONE;
+		}
+	}
 }

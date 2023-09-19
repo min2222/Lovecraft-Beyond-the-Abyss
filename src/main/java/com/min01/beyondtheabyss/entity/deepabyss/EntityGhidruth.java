@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.parts.BasicAbyssEntityPart;
 import com.min01.beyondtheabyss.util.AbyssUtil;
 
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -103,11 +103,18 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         		case 1:
         		{
         			this.stopAllAnimationStates();
+        			this.biteAnimationState.start(this.tickCount);
         			break;
         		}
             }
         }
         super.onSyncedDataUpdated(p_219422_);
+	}
+	
+	@Override
+	public void stopAllAnimationStates() 
+	{
+		this.biteAnimationState.stop();
 	}
     
     @Override
@@ -115,7 +122,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     {
         this.goalSelector.addGoal(4, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1, 10));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.9F, true));
+        this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
     }
     
@@ -132,7 +139,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	this.tail.moveTo(tail.x, this.getY(), tail.z);
     	if(this.level.isClientSide)
     	{
-    		if(AbyssUtil.isMoving(this) && this.isAlive())
+    		if(AbyssUtil.isMoving(this) && this.isAlive() && !this.isUsingSkill())
     		{
     			this.swimAnimationState.startIfStopped(this.tickCount);
     		}

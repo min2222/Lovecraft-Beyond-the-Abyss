@@ -1,11 +1,36 @@
 package com.min01.beyondtheabyss.util;
 
+import com.min01.beyondtheabyss.entity.parts.BasicAbyssEntityPart;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class AbyssUtil 
 {
+    public static double getMeleeAttackRangeSqrOfPart(BasicAbyssEntityPart owner, LivingEntity target, float multiplier)
+    {
+    	return (double)(owner.getBbWidth() * multiplier * owner.getBbWidth() * multiplier + target.getBbWidth());
+    }
+
+    public static boolean isWithinMeleeAttackRangeOfPart(BasicAbyssEntityPart owner, LivingEntity target, float multiplier)
+    {
+    	double d0 = owner.distanceToSqr(target.getX(), target.getY(), target.getZ());
+    	return d0 <= getMeleeAttackRangeSqrOfPart(owner, target, multiplier);
+    }
+    
+    public static double getMeleeAttackRangeSqr(LivingEntity owner, LivingEntity target, float multiplier)
+    {
+    	return (double)(owner.getBbWidth() * multiplier * owner.getBbWidth() * multiplier + target.getBbWidth());
+    }
+
+    public static boolean isWithinMeleeAttackRange(LivingEntity owner, LivingEntity target, float multiplier)
+    {
+    	double d0 = owner.distanceToSqr(target.getX(), target.getY(), target.getZ());
+    	return d0 <= getMeleeAttackRangeSqr(owner, target, multiplier);
+    }
+    
 	public static boolean isMoving(Entity entity) 
 	{
 		double d0 = entity.getX() - entity.xo;
