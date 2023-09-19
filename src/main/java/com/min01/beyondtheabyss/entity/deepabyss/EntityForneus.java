@@ -11,7 +11,7 @@ public class EntityForneus extends AbstractMultipartDeepAbyssEntity
 	public EntityForneus(EntityType<? extends Monster> p_33002_, Level p_33003_)
 	{
 		super(p_33002_, p_33003_);
-		this.isBoss = true;
+		this.setAsBoss();
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
 		super(p_33002_, p_33003_);
-		this.isBoss = true;
+		this.setAsBoss();
 		this.xpReward = 1000;
 	}
 	

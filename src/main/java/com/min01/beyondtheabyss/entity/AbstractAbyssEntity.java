@@ -1,11 +1,11 @@
 package com.min01.beyondtheabyss.entity;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 public abstract class AbstractAbyssEntity extends PathfinderMob
@@ -13,7 +13,8 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Byte> DATA_SKILL_ID = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BYTE);
 	public static final EntityDataAccessor<Boolean> SHOULD_MOVE = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BOOLEAN);
-	public boolean isBoss;
+	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BOOLEAN);
 	public int skillUsingTickCount;
 	
 	public AbstractAbyssEntity(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
@@ -25,27 +26,13 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 	@Override
 	protected boolean shouldDespawnInPeaceful()
 	{
-		return this.isBoss;
+		return this.isBoss();
 	}
 	
 	@Override
 	public boolean removeWhenFarAway(double p_21542_) 
 	{
-		return !this.isBoss;
-	}
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag p_21484_)
-	{
-		super.addAdditionalSaveData(p_21484_);
-		p_21484_.putBoolean("isBoss", this.isBoss);
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag p_21450_) 
-	{
-		super.readAdditionalSaveData(p_21450_);
-		this.isBoss = p_21450_.getBoolean("isBoss");
+		return !this.isBoss();
 	}
 	
 	@Override
@@ -55,6 +42,48 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 		this.entityData.define(DATA_SKILL_ID, (byte)0);
 		this.entityData.define(ANIMATION_STATE, 0);
 		this.entityData.define(SHOULD_MOVE, true);
+		this.entityData.define(IS_BOSS, false);
+		this.entityData.define(IS_HOSTILE, false);
+	}
+	
+	@Override
+	public void aiStep() 
+	{
+		super.aiStep();
+		if(this.isHostile())
+		{
+			if(this.getTarget() != null)
+			{
+				this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+				this.getLookControl().setLookAt(this.getTarget(), 30, 30);
+			}
+		}
+	}
+	
+	public void setAsBoss()
+	{
+		this.entityData.set(IS_BOSS, true);
+		this.entityData.set(IS_HOSTILE, true);
+	}
+	
+	public void setHostile(boolean value)
+	{
+		this.entityData.set(IS_HOSTILE, value);
+	}
+	
+	public boolean isHostile()
+	{
+		return this.entityData.get(IS_HOSTILE);
+	}
+	
+	public void setBoss(boolean value)
+	{
+		this.entityData.set(IS_BOSS, value);
+	}
+	
+	public boolean isBoss()
+	{
+		return this.entityData.get(IS_BOSS);
 	}
 	
     public void setAnimationState(int value)
