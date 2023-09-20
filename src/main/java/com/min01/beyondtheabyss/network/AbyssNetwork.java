@@ -9,8 +9,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 public class AbyssNetwork 
 {
 	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-			new ResourceLocation(BeyondtheAbyss.MODID, "abyssal_channel"),
+	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(BeyondtheAbyss.MODID, "abyssal_channel"),
 			() -> PROTOCOL_VERSION,
 			PROTOCOL_VERSION::equals,
 			PROTOCOL_VERSION::equals

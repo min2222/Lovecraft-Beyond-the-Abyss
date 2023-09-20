@@ -16,13 +16,20 @@ public class ModelPosSyncPacket
 	private final float x;
 	private final float y;
 	private final float z;
+    private ModelType modelType;
 	
-	public ModelPosSyncPacket(Entity entity, float x, float y, float z) 
+    public enum ModelType 
+    {
+        TAIL, HEAD
+    }
+	
+	public ModelPosSyncPacket(Entity entity, float x, float y, float z, ModelType type) 
 	{
 		this.entityId = entity.getId();
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.modelType = type;
 	}
 
 	public ModelPosSyncPacket(FriendlyByteBuf buf)
@@ -31,6 +38,7 @@ public class ModelPosSyncPacket
 		this.x = buf.readFloat();
 		this.y = buf.readFloat();
 		this.z = buf.readFloat();
+        this.modelType = ModelType.values()[buf.readInt()];
 	}
 
 	public void encode(FriendlyByteBuf buf)
@@ -39,6 +47,7 @@ public class ModelPosSyncPacket
 		buf.writeFloat(this.x);
 		buf.writeFloat(this.y);
 		buf.writeFloat(this.z);
+        buf.writeInt(this.modelType.ordinal());
 	}
 	
 	public static class Handler 
@@ -52,9 +61,19 @@ public class ModelPosSyncPacket
 					Entity entity = level.getEntity(message.entityId);
 					if(entity instanceof EntityGhidruth ghidruth)
 					{
-						ghidruth.setTailPosX(message.x);
-						ghidruth.setTailPosY(message.y);
-						ghidruth.setTailPosZ(message.z);
+		                switch (message.modelType)
+		                {
+		                case TAIL:
+							ghidruth.setTailPosX(message.x);
+							ghidruth.setTailPosY(message.y);
+							ghidruth.setTailPosZ(message.z);
+		                	break;
+		                case HEAD:
+							ghidruth.setHeadPosY(message.y);
+		                	break;
+						default:
+							break;
+		                }
 					}
 				}
 			});

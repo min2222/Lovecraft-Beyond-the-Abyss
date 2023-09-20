@@ -95,6 +95,18 @@ public class GhidruthAnimation
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(1.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM)))
+			.addAnimation("tailLocator", new AnimationChannel(AnimationChannel.Targets.POSITION,
+					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
+					new Keyframe(0.375f, KeyframeAnimations.posVec(-34f, 0f, -12f),
+							AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.6766666f, KeyframeAnimations.posVec(-26f, 0f, -12f),
+							AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(1f, KeyframeAnimations.posVec(6f, 0f, -12f),
+							AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(1.5834333f, KeyframeAnimations.posVec(32f, 0f, -12f),
+							AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(2f, KeyframeAnimations.posVec(0f, 0f, 0f),
+							AnimationChannel.Interpolations.CATMULLROM)))
 			.build();
 	public static final AnimationDefinition GHIDRUTH_BITE = AnimationDefinition.Builder.withLength(1.0416767f)
 			.addAnimation("MainRootThing", new AnimationChannel(AnimationChannel.Targets.POSITION,

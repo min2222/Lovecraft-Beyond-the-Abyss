@@ -5,6 +5,7 @@ import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.network.AbyssNetwork;
 import com.min01.beyondtheabyss.network.ModelPosSyncPacket;
+import com.min01.beyondtheabyss.network.ModelPosSyncPacket.ModelType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
@@ -143,6 +144,8 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		Mouth.addOrReplaceChild("cube_r41", CubeListBuilder.create().texOffs(394, 169).addBox(-17.9903F, -6.6175F, -19.1319F, 20.0F, 13.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.0058F, 6.2095F, -23.3535F, 0.0F, -0.3578F, 3.1416F));
 
 		Mouth.addOrReplaceChild("cube_r42", CubeListBuilder.create().texOffs(0, 395).addBox(-2.0097F, -6.6175F, -19.1319F, 20.0F, 13.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.0058F, 6.2095F, -23.3535F, 0.0F, 0.3578F, 3.1416F));
+		
+		Head.addOrReplaceChild("tailLocator", CubeListBuilder.create().texOffs(2, 2).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 0.0F, 88.0F));
 
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}
@@ -154,8 +157,10 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks);
 		this.animate(entity.biteAnimationState, GhidruthAnimation.GHIDRUTH_BITE, ageInTicks);
 		this.animate(entity.tailSlapAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SLAP, ageInTicks);
-		ModelPart rearBody = this.MainRootThing.getChild("Head").getChild("Body").getChild("RearBody");
-		AbyssNetwork.CHANNEL.sendToServer(new ModelPosSyncPacket(entity, 0, rearBody.yRot, 0));
+		ModelPart tail = this.MainRootThing.getChild("Head").getChild("tailLocator");
+		ModelPart head = this.MainRootThing.getChild("Head");
+		AbyssNetwork.CHANNEL.sendToServer(new ModelPosSyncPacket(entity, tail.x / 16, tail.y / 16, tail.z / 16, ModelType.TAIL));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelPosSyncPacket(entity, head.x / 16, -head.y, head.z / 16, ModelType.HEAD));
 	}
 
 	@Override
