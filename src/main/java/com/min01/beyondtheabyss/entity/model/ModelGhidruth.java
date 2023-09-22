@@ -157,7 +157,7 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.tailSwingAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING, ageInTicks);
 		ModelPart rearBody = this.MainRootThing.getChild("Head").getChild("Body").getChild("RearBody");
 		ModelPart head = this.MainRootThing.getChild("Head");
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, rearBody.yRot * 2, 0, ModelType.TAIL));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, rearBody.yRot * 64, 0, ModelType.TAIL));
 		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, -head.y, 0, ModelType.HEAD));
 	}
 
