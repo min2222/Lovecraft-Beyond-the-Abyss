@@ -171,7 +171,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	super.aiStep();
     	Vec3 head = AbyssUtil.caculateForwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
     	Vec3 body = AbyssUtil.caculateBackwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
-    	Vec3 tail = AbyssUtil.caculateBackwardAndSideVector(this, this.getTailYRot(), new Vec3(9, this.getEyeHeight(), 9));
+    	Vec3 tail = AbyssUtil.caculateBackwardVector(this, this.getYRot() + this.getTailYRot(), new Vec3(9, this.getEyeHeight(), 9));
     	this.head.moveTo(head.x, this.getY() - 4.6 + this.getHeadPosY() / 3.5, head.z);
     	this.body.moveTo(body.x, this.getY(), body.z);
     	this.tail.moveTo(tail.x, this.getY(), tail.z);
