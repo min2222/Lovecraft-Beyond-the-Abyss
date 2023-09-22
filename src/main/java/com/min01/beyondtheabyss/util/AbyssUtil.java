@@ -38,6 +38,14 @@ public class AbyssUtil
 		return d0 * d0 + d1 * d1 > (double)2.5000003E-7F;
 	}
 	
+	public static Vec3 caculateBackwardAndSideVector(Entity entity, float yRot, Vec3 multiplier)
+	{
+    	float f14 = yRot * ((float)Math.PI / 180F);
+        float x = Mth.sin(f14);
+        float z = Mth.cos(f14);
+        return new Vec3(entity.getX() + (x * multiplier.x) + (x * multiplier.x), entity.getY() + multiplier.y, entity.getZ() + (z * multiplier.z) + (z * -multiplier.z));
+	}
+	
 	public static Vec3 caculateForwardVector(Entity entity, Vec3 multiplier)
 	{
     	float f14 = entity.getYRot() * ((float)Math.PI / 180F);

@@ -171,7 +171,7 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 		NONE(0),
 		GHIDRUTH_DASH(1),
 		GHIDRUTH_BITE(2),
-		GHIDRUTH_TAIL_SLAP(3);
+		GHIDRUTH_TAIL_SWING(3);
 		
 		int id;
 

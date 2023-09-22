@@ -310,7 +310,7 @@ public class GhidruthAnimation
 							new Keyframe(0.7083434f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
 									AnimationChannel.Interpolations.CATMULLROM)))
 			.build();
-	public static final AnimationDefinition GHIDRUTH_TAIL_SLAP = AnimationDefinition.Builder.withLength(1f)
+	public static final AnimationDefinition GHIDRUTH_TAIL_SWING = AnimationDefinition.Builder.withLength(1f)
 			.addAnimation("MainRootThing", new AnimationChannel(AnimationChannel.Targets.POSITION,
 					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.25f, KeyframeAnimations.posVec(0f, 0f, 32f),

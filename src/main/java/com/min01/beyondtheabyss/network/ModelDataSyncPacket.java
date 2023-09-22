@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class ModelPosSyncPacket
+public class ModelDataSyncPacket
 {
 	private final int entityId;
 	private final float x;
@@ -23,7 +23,7 @@ public class ModelPosSyncPacket
         TAIL, HEAD
     }
 	
-	public ModelPosSyncPacket(Entity entity, float x, float y, float z, ModelType type) 
+	public ModelDataSyncPacket(Entity entity, float x, float y, float z, ModelType type) 
 	{
 		this.entityId = entity.getId();
 		this.x = x;
@@ -32,7 +32,7 @@ public class ModelPosSyncPacket
 		this.modelType = type;
 	}
 
-	public ModelPosSyncPacket(FriendlyByteBuf buf)
+	public ModelDataSyncPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 		this.x = buf.readFloat();
@@ -52,7 +52,7 @@ public class ModelPosSyncPacket
 	
 	public static class Handler 
 	{
-		public static boolean onMessage(ModelPosSyncPacket message, Supplier<NetworkEvent.Context> ctx) 
+		public static boolean onMessage(ModelDataSyncPacket message, Supplier<NetworkEvent.Context> ctx) 
 		{
 			ctx.get().enqueueWork(() ->
 			{
@@ -64,9 +64,7 @@ public class ModelPosSyncPacket
 		                switch (message.modelType)
 		                {
 		                case TAIL:
-							ghidruth.setTailPosX(message.x);
-							ghidruth.setTailPosY(message.y);
-							ghidruth.setTailPosZ(message.z);
+							ghidruth.setTailYRot(message.y);
 		                	break;
 		                case HEAD:
 							ghidruth.setHeadPosY(message.y);

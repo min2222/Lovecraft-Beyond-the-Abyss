@@ -40,10 +40,8 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	public BasicAbyssEntityPart[] parts = { this.head, this.body, this.tail };
 	public AnimationState swimAnimationState = new AnimationState();
 	public AnimationState biteAnimationState = new AnimationState();
-	public AnimationState tailSlapAnimationState = new AnimationState();
-	public static final EntityDataAccessor<Float> TAIL_POS_X = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> TAIL_POS_Y = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> TAIL_POS_Z = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	public AnimationState tailSwingAnimationState = new AnimationState();
+	public static final EntityDataAccessor<Float> TAIL_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> HEAD_POS_Y = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
@@ -68,9 +66,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     protected void defineSynchedData()
     {
     	super.defineSynchedData();
-    	this.entityData.define(TAIL_POS_X, 0F);
-    	this.entityData.define(TAIL_POS_Y, 0F);
-    	this.entityData.define(TAIL_POS_Z, 0F);
+    	this.entityData.define(TAIL_Y_ROT, 0F);
     	this.entityData.define(HEAD_POS_Y, 0F);
     }
     
@@ -84,34 +80,14 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	return this.entityData.get(HEAD_POS_Y);
     }
     
-    public void setTailPosZ(float z)
+    public float getTailYRot()
     {
-    	this.entityData.set(TAIL_POS_Z, z);
+    	return this.entityData.get(TAIL_Y_ROT);
     }
     
-    public float getTailPosZ()
+    public void setTailYRot(float yRot)
     {
-    	return this.entityData.get(TAIL_POS_Z);
-    }
-    
-    public void setTailPosY(float y)
-    {
-    	this.entityData.set(TAIL_POS_Y, y);
-    }
-    
-    public float getTailPosY()
-    {
-    	return this.entityData.get(TAIL_POS_Y);
-    }
-    
-    public void setTailPosX(float x)
-    {
-    	this.entityData.set(TAIL_POS_X, x);
-    }
-    
-    public float getTailPosX()
-    {
-    	return this.entityData.get(TAIL_POS_X);
+    	this.entityData.set(TAIL_Y_ROT, yRot);
     }
     
     @Override
@@ -165,7 +141,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         		case 2:
         		{
         			this.stopAllAnimationStates();
-        			this.tailSlapAnimationState.start(this.tickCount);
+        			this.tailSwingAnimationState.start(this.tickCount);
         			break;
         		}
             }
@@ -177,7 +153,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	public void stopAllAnimationStates() 
 	{
 		this.biteAnimationState.stop();
-		this.tailSlapAnimationState.stop();
+		this.tailSwingAnimationState.stop();
 	}
     
     @Override
@@ -195,11 +171,10 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	super.aiStep();
     	Vec3 head = AbyssUtil.caculateForwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
     	Vec3 body = AbyssUtil.caculateBackwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
-    	//Vec3 tail = AbyssUtil.caculateBackwardVector(this, new Vec3(9, this.getEyeHeight(), 9));
+    	Vec3 tail = AbyssUtil.caculateBackwardAndSideVector(this, this.getTailYRot(), new Vec3(9, this.getEyeHeight(), 9));
     	this.head.moveTo(head.x, this.getY() - 4.6 + this.getHeadPosY() / 3.5, head.z);
     	this.body.moveTo(body.x, this.getY(), body.z);
-    	//FIXME
-    	//this.tail.moveTo(tail.x + this.getTailPosX(), this.getY() + this.getTailPosY(), tail.z + this.getTailPosZ());
+    	this.tail.moveTo(tail.x, this.getY(), tail.z);
     	if(this.level.isClientSide)
     	{
     		if(AbyssUtil.isMoving(this) && this.isAlive())

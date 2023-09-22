@@ -9,9 +9,9 @@ import com.min01.beyondtheabyss.entity.goals.BasicAbyssSkillGoal;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
-public class GhidruthTailSlapGoal extends BasicAbyssSkillGoal<EntityGhidruth>
+public class GhidruthTailSwingGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 {
-	public GhidruthTailSlapGoal(EntityGhidruth mob) 
+	public GhidruthTailSwingGoal(EntityGhidruth mob) 
 	{
 		super(mob);
 	}
@@ -65,6 +65,6 @@ public class GhidruthTailSlapGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 	@Override
 	protected AbyssSkills getSkills() 
 	{
-		return AbyssSkills.GHIDRUTH_TAIL_SLAP;
+		return AbyssSkills.GHIDRUTH_TAIL_SWING;
 	}
 }

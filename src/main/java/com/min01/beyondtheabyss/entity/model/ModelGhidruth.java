@@ -4,8 +4,8 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.network.AbyssNetwork;
-import com.min01.beyondtheabyss.network.ModelPosSyncPacket;
-import com.min01.beyondtheabyss.network.ModelPosSyncPacket.ModelType;
+import com.min01.beyondtheabyss.network.ModelDataSyncPacket;
+import com.min01.beyondtheabyss.network.ModelDataSyncPacket.ModelType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
@@ -156,11 +156,11 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks);
 		this.animate(entity.biteAnimationState, GhidruthAnimation.GHIDRUTH_BITE, ageInTicks);
-		this.animate(entity.tailSlapAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SLAP, ageInTicks);
-		ModelPart tail = this.MainRootThing.getChild("Head").getChild("tailLocator");
+		this.animate(entity.tailSwingAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING, ageInTicks);
+		ModelPart rearBody = this.MainRootThing.getChild("Head").getChild("RearBody");
 		ModelPart head = this.MainRootThing.getChild("Head");
-		AbyssNetwork.CHANNEL.sendToServer(new ModelPosSyncPacket(entity, tail.x / 16, tail.y / 16, tail.z / 16, ModelType.TAIL));
-		AbyssNetwork.CHANNEL.sendToServer(new ModelPosSyncPacket(entity, head.x / 16, -head.y, head.z / 16, ModelType.HEAD));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, rearBody.yRot, 0, ModelType.TAIL));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, -head.y, 0, ModelType.HEAD));
 	}
 
 	@Override
