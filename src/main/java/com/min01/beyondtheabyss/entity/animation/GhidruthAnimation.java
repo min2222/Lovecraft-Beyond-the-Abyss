@@ -5,7 +5,7 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-public class GhidruthAnimation
+public class GhidruthAnimation 
 {
 	public static final AnimationDefinition GHIDRUTH_SWIM = AnimationDefinition.Builder.withLength(2f)
 			.looping()
@@ -94,18 +94,6 @@ public class GhidruthAnimation
 					new Keyframe(1.0416767f, KeyframeAnimations.degreeVec(0f, 0f, -22.5f),
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(1.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM)))
-			.addAnimation("tailLocator", new AnimationChannel(AnimationChannel.Targets.POSITION,
-					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(0.375f, KeyframeAnimations.posVec(-34f, 0f, -12f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(0.6766666f, KeyframeAnimations.posVec(-26f, 0f, -12f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(1f, KeyframeAnimations.posVec(6f, 0f, -12f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(1.5834333f, KeyframeAnimations.posVec(32f, 0f, -12f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(2f, KeyframeAnimations.posVec(0f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM)))
 			.build();
 	public static final AnimationDefinition GHIDRUTH_BITE = AnimationDefinition.Builder.withLength(1.0416767f)

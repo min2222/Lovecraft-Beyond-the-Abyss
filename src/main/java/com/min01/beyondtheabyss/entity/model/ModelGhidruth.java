@@ -144,8 +144,6 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		Mouth.addOrReplaceChild("cube_r41", CubeListBuilder.create().texOffs(394, 169).addBox(-17.9903F, -6.6175F, -19.1319F, 20.0F, 13.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.0058F, 6.2095F, -23.3535F, 0.0F, -0.3578F, 3.1416F));
 
 		Mouth.addOrReplaceChild("cube_r42", CubeListBuilder.create().texOffs(0, 395).addBox(-2.0097F, -6.6175F, -19.1319F, 20.0F, 13.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.0058F, 6.2095F, -23.3535F, 0.0F, 0.3578F, 3.1416F));
-		
-		Head.addOrReplaceChild("tailLocator", CubeListBuilder.create().texOffs(2, 2).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 0.0F, 88.0F));
 
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}
