@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity.render.layers;
+package com.min01.beyondtheabyss.entity.renderer.layers;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.misc.AbyssRenderType;

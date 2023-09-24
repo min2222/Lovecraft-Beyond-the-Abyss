@@ -24,13 +24,13 @@ public class GhidruthBiteGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return AbyssUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 3) && this.mob.head.distanceTo(this.mob.getTarget()) <= 3;
+		return AbyssUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 3.5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 3.5F;
 	}
 
 	@Override
 	protected void performSkill() 
 	{
-		if(AbyssUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 3) && this.mob.head.distanceTo(this.mob.getTarget()) <= 3)
+		if(AbyssUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 3.5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 3.5F)
 		{
 			this.mob.getTarget().hurt(DamageSource.mobAttack(this.mob), 5);
 		}

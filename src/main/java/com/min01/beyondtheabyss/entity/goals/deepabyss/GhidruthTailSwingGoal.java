@@ -5,6 +5,7 @@ import java.util.List;
 import com.min01.beyondtheabyss.entity.AbstractAbyssEntity.AbyssSkills;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.goals.BasicAbyssSkillGoal;
+import com.min01.beyondtheabyss.util.AbyssUtil;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,25 +23,41 @@ public class GhidruthTailSwingGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 		super.start();
 		this.mob.setAnimationState(2);
 	}
-
+	
 	@Override
-	protected void performSkill()
+	public boolean additionalStartCondition()
 	{
-		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(1.5));
-		for(int i = 0; i < list.size(); i++)
+		return AbyssUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 3.5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 3.5F;
+	}
+	
+	@Override
+	public void tick() 
+	{
+		super.tick();
+		if(this.skillWarmupDelay <= 10)
 		{
-			LivingEntity living = list.get(i);
-			if(living != this.mob)
+			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(4));
+			for(int i = 0; i < list.size(); i++)
 			{
-				living.hurt(DamageSource.mobAttack(this.mob), 7);
+				LivingEntity living = list.get(i);
+				if(living != this.mob)
+				{
+					living.hurt(DamageSource.mobAttack(this.mob), 7);
+				}
 			}
 		}
 	}
 
 	@Override
+	protected void performSkill()
+	{
+
+	}
+
+	@Override
 	protected int getSkillUsingTime() 
 	{
-		return 25;
+		return 35;
 	}
 
 	@Override
@@ -52,7 +69,7 @@ public class GhidruthTailSwingGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 	@Override
 	protected int getSkillWarmupTime() 
 	{
-		return 15;
+		return 25;
 	}
 	
 	@Override

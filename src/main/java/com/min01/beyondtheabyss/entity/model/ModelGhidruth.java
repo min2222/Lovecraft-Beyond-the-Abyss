@@ -41,7 +41,9 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 
 		PartDefinition MainRootThing = partdefinition.addOrReplaceChild("MainRootThing", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition Head = MainRootThing.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(73, 307).addBox(1.4481F, -52.7175F, -46.8065F, 0.0F, 35.0F, 38.0F, new CubeDeformation(0.0F))
+		PartDefinition root2 = MainRootThing.addOrReplaceChild("root2", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+		PartDefinition Head = root2.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(73, 307).addBox(1.4481F, -52.7175F, -46.8065F, 0.0F, 35.0F, 38.0F, new CubeDeformation(0.0F))
 		.texOffs(340, 384).addBox(-17.5519F, -17.7175F, -61.8065F, 35.0F, 13.0F, 18.0F, new CubeDeformation(0.0F))
 		.texOffs(283, 98).addBox(-17.5519F, -17.7175F, -43.8065F, 35.0F, 36.0F, 35.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0519F, -8.2825F, 26.8065F));
 
@@ -155,10 +157,12 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks);
 		this.animate(entity.biteAnimationState, GhidruthAnimation.GHIDRUTH_BITE, ageInTicks);
 		this.animate(entity.tailSwingAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING, ageInTicks);
-		ModelPart rearBody = this.MainRootThing.getChild("Head").getChild("Body").getChild("RearBody");
-		ModelPart head = this.MainRootThing.getChild("Head");
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, rearBody.yRot * 64, 0, ModelType.TAIL));
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, -head.y, 0, ModelType.HEAD));
+		ModelPart rearBody = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody");
+		ModelPart tail = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody").getChild("Tail");
+		ModelPart head = this.MainRootThing.getChild("root2").getChild("Head");
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, (rearBody.yRot + tail.yRot) * 64, 0, ModelType.TAIL_ROT));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, head.yRot * 64, 0, ModelType.HEAD_ROT));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.x / 16, -head.y / 4, -head.z / 32, ModelType.HEAD_POS));
 	}
 
 	@Override

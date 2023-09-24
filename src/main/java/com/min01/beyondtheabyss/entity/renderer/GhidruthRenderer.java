@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity.render;
+package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;

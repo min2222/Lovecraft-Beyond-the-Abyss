@@ -7,8 +7,7 @@ import net.minecraft.client.animation.KeyframeAnimations;
 
 public class GhidruthAnimation 
 {
-	public static final AnimationDefinition GHIDRUTH_SWIM = AnimationDefinition.Builder.withLength(2f)
-			.looping()
+	public static final AnimationDefinition GHIDRUTH_SWIM = AnimationDefinition.Builder.withLength(2f).looping()
 			.addAnimation("Head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.6766666f, KeyframeAnimations.posVec(0f, 4f, 0f),
@@ -71,18 +70,6 @@ public class GhidruthAnimation
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(2f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM)))
-			.addAnimation("MainRootThing", new AnimationChannel(AnimationChannel.Targets.POSITION,
-					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(0.4167667f, KeyframeAnimations.posVec(-8f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(1.3433333f, KeyframeAnimations.posVec(8f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(2f, KeyframeAnimations.posVec(0f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM)))
-			.addAnimation("MainRootThing", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-					new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(2f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM)))
 			.addAnimation("RightFin",
 					new AnimationChannel(AnimationChannel.Targets.POSITION,
 							new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f),
@@ -95,9 +82,23 @@ public class GhidruthAnimation
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(1.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM)))
+			.addAnimation("root2", new AnimationChannel(AnimationChannel.Targets.POSITION,
+					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
+					new Keyframe(0.4167667f, KeyframeAnimations.posVec(-8f, 0f, 0f),
+							AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(1.3433333f, KeyframeAnimations.posVec(8f, 0f, 0f),
+							AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(2f, KeyframeAnimations.posVec(0f, 0f, 0f),
+							AnimationChannel.Interpolations.CATMULLROM)))
+			.addAnimation("root2",
+					new AnimationChannel(AnimationChannel.Targets.ROTATION,
+							new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+									AnimationChannel.Interpolations.LINEAR),
+							new Keyframe(2f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+									AnimationChannel.Interpolations.CATMULLROM)))
 			.build();
 	public static final AnimationDefinition GHIDRUTH_BITE = AnimationDefinition.Builder.withLength(1.0416767f)
-			.addAnimation("MainRootThing", new AnimationChannel(AnimationChannel.Targets.POSITION,
+			.addAnimation("Head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.2916767f, KeyframeAnimations.posVec(0f, 0f, 37f),
 							AnimationChannel.Interpolations.CATMULLROM),
@@ -109,23 +110,15 @@ public class GhidruthAnimation
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(1.0416767f, KeyframeAnimations.posVec(0f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM)))
-			.addAnimation("MainRootThing", new AnimationChannel(AnimationChannel.Targets.ROTATION,
+			.addAnimation("Head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 					new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.2916767f, KeyframeAnimations.degreeVec(-22.5f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(0.6766666f, KeyframeAnimations.degreeVec(6.25f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(1.0416767f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM)))
-			.addAnimation("Head", new AnimationChannel(AnimationChannel.Targets.POSITION,
-					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(1.0416767f, KeyframeAnimations.posVec(0f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM)))
-			.addAnimation("Head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-					new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.4583433f, KeyframeAnimations.degreeVec(-5f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.5416766f, KeyframeAnimations.degreeVec(-1.5f, 0f, 0f),
+							AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.6766666f, KeyframeAnimations.degreeVec(6.25f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(1.0416767f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM)))
@@ -299,7 +292,7 @@ public class GhidruthAnimation
 									AnimationChannel.Interpolations.CATMULLROM)))
 			.build();
 	public static final AnimationDefinition GHIDRUTH_TAIL_SWING = AnimationDefinition.Builder.withLength(1f)
-			.addAnimation("MainRootThing", new AnimationChannel(AnimationChannel.Targets.POSITION,
+			.addAnimation("Head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 					new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.25f, KeyframeAnimations.posVec(0f, 0f, 32f),
 							AnimationChannel.Interpolations.CATMULLROM),
@@ -307,27 +300,13 @@ public class GhidruthAnimation
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(1f, KeyframeAnimations.posVec(0f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM)))
-			.addAnimation("MainRootThing", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-					new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(0.25f, KeyframeAnimations.degreeVec(0f, 67.5f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(0.5416766f, KeyframeAnimations.degreeVec(0f, 67.5f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(0.625f, KeyframeAnimations.degreeVec(0f, -56.25f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-							AnimationChannel.Interpolations.CATMULLROM)))
-			.addAnimation("Head",
-					new AnimationChannel(AnimationChannel.Targets.POSITION,
-							new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f),
-									AnimationChannel.Interpolations.LINEAR)))
 			.addAnimation("Head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 					new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(0.25f, KeyframeAnimations.degreeVec(22.5f, 0f, 0f),
+					new Keyframe(0.25f, KeyframeAnimations.degreeVec(22.5f, 67.5f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(0.5416766f, KeyframeAnimations.degreeVec(22.5f, 0f, 0f),
+					new Keyframe(0.5416766f, KeyframeAnimations.degreeVec(22.5f, 67.5f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(0.625f, KeyframeAnimations.degreeVec(12.5f, 0f, 0f),
+					new Keyframe(0.625f, KeyframeAnimations.degreeVec(12.5f, -56.25f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
 							AnimationChannel.Interpolations.CATMULLROM)))

@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthBiteGoal;
+import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthTailSwingGoal;
 import com.min01.beyondtheabyss.entity.parts.BasicAbyssEntityPart;
 import com.min01.beyondtheabyss.util.AbyssUtil;
 
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -36,13 +38,17 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 {
 	public BasicAbyssEntityPart head = new BasicAbyssEntityPart(this, 4.2F, 4.2F);
 	public BasicAbyssEntityPart body = new BasicAbyssEntityPart(this, 4.5F, 3F);
-	public BasicAbyssEntityPart tail = new BasicAbyssEntityPart(this, 5.5F, 3.5F);
+	public BasicAbyssEntityPart tail = new BasicAbyssEntityPart(this, 5.5F, 4.3F);
 	public BasicAbyssEntityPart[] parts = { this.head, this.body, this.tail };
 	public AnimationState swimAnimationState = new AnimationState();
 	public AnimationState biteAnimationState = new AnimationState();
 	public AnimationState tailSwingAnimationState = new AnimationState();
 	public static final EntityDataAccessor<Float> TAIL_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> HEAD_POS_Y = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> HEAD_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+
+	public static final EntityDataAccessor<Float> HEAD_X_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> HEAD_Y_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> HEAD_Z_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
@@ -59,7 +65,8 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         		.add(Attributes.ATTACK_DAMAGE, 5)
         		.add(Attributes.FOLLOW_RANGE, 70)
         		.add(Attributes.ARMOR, 20)
-        		.add(Attributes.ARMOR_TOUGHNESS, 20);
+        		.add(Attributes.ARMOR_TOUGHNESS, 20)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 10);
     }
     
     @Override
@@ -67,17 +74,51 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     {
     	super.defineSynchedData();
     	this.entityData.define(TAIL_Y_ROT, 0F);
-    	this.entityData.define(HEAD_POS_Y, 0F);
+    	this.entityData.define(HEAD_Y_ROT, 0F);
+    	
+    	this.entityData.define(HEAD_X_POS, 0F);
+    	this.entityData.define(HEAD_Y_POS, 0F);
+    	this.entityData.define(HEAD_Z_POS, 0F);
     }
     
-    public void setHeadPosY(float y)
+    public void setHeadXPos(float x)
     {
-    	this.entityData.set(HEAD_POS_Y, y);
+    	this.entityData.set(HEAD_X_POS, x);
     }
     
-    public float getHeadPosY()
+    public float getHeadXPos()
     {
-    	return this.entityData.get(HEAD_POS_Y);
+    	return this.entityData.get(HEAD_X_POS);
+    }
+    
+    public void setHeadYPos(float y)
+    {
+    	this.entityData.set(HEAD_Y_POS, y);
+    }
+    
+    public float getHeadYPos()
+    {
+    	return this.entityData.get(HEAD_Y_POS);
+    }
+    
+    public void setHeadZPos(float z)
+    {
+    	this.entityData.set(HEAD_Z_POS, z);
+    }
+    
+    public float getHeadZPos()
+    {
+    	return this.entityData.get(HEAD_Z_POS);
+    }
+    
+    public void setHeadYRot(float yRot)
+    {
+    	this.entityData.set(HEAD_Y_ROT, yRot);
+    }
+    
+    public float getHeadYRot()
+    {
+    	return this.entityData.get(HEAD_Y_ROT);
     }
     
     public float getTailYRot()
@@ -88,12 +129,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     public void setTailYRot(float yRot)
     {
     	this.entityData.set(TAIL_Y_ROT, yRot);
-    }
-    
-    @Override
-    public int getMaxHeadYRot() 
-    {
-    	return 5;
     }
     
     public static boolean checkGhidruthSpawnRules(EntityType<EntityGhidruth> p_218956_, ServerLevelAccessor p_218957_, MobSpawnType p_218958_, BlockPos p_218959_, RandomSource p_218960_) 
@@ -162,19 +197,21 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         this.goalSelector.addGoal(4, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1, 10));
         this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
+        this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Drowned>(this, Drowned.class, false, false));
     }
     
     @Override
     public void aiStep()
     {
     	super.aiStep();
-    	Vec3 head = AbyssUtil.caculateForwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
-    	Vec3 body = AbyssUtil.caculateBackwardVector(this, new Vec3(4, this.getEyeHeight(), 4));
-    	Vec3 tail = AbyssUtil.caculateBackwardVector(this, this.getYRot() + this.getTailYRot(), new Vec3(9, this.getEyeHeight(), 9));
-    	this.head.moveTo(head.x, this.getY() - 4.6 + this.getHeadPosY() / 3.5, head.z);
+    	Vec3 head = AbyssUtil.caculateForwardVector(this, this.getYHeadRot() + this.getHeadYRot(), new Vec3(4 + this.getHeadZPos(), this.getHeadYPos() - 4, 4 + this.getHeadZPos()));
+    	Vec3 body = AbyssUtil.caculateBackwardVector(this, this.getYHeadRot(), new Vec3(4, 0, 4));
+    	Vec3 tail = AbyssUtil.caculateBackwardVector(this, this.getYHeadRot() + this.getTailYRot() - 2, new Vec3(9, 0, 9));
+    	this.head.moveTo(head.x, head.y, head.z);
     	this.body.moveTo(body.x, this.getY(), body.z);
-    	this.tail.moveTo(tail.x, this.getY(), tail.z);
+    	this.tail.moveTo(tail.x, tail.y - 1.5, tail.z);
     	if(this.level.isClientSide)
     	{
     		if(AbyssUtil.isMoving(this) && this.isAlive())
@@ -207,11 +244,11 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	}
     }
     
-    @Override
+    /*@Override
     protected BodyRotationControl createBodyControl()
     {
     	return new GhidruthBodyRotationControl(this);
-    }
+    }*/
     
     class GhidruthBodyRotationControl extends BodyRotationControl
     {
