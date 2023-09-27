@@ -160,9 +160,9 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		ModelPart rearBody = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody");
 		ModelPart tail = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody").getChild("Tail");
 		ModelPart head = this.MainRootThing.getChild("root2").getChild("Head");
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, (rearBody.yRot + tail.yRot) * 64, 0, ModelType.TAIL_ROT));
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, head.yRot * 64, 0, ModelType.HEAD_ROT));
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.x / 16, -head.y / 4, -head.z / 32, ModelType.HEAD_POS));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, (rearBody.yRot + tail.yRot) * 90, 0, ModelType.TAIL_ROT));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, head.xRot * 90, 0, ModelType.HEAD_ROT));
+		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.x / 16, head.y / 16, head.z / 16, ModelType.HEAD_POS));
 	}
 
 	@Override

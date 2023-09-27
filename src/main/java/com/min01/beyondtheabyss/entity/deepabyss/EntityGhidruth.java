@@ -61,7 +61,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 300)
-    			.add(Attributes.MOVEMENT_SPEED, 0.9D)
+    			.add(Attributes.MOVEMENT_SPEED, 1.5D)
         		.add(Attributes.ATTACK_DAMAGE, 5)
         		.add(Attributes.FOLLOW_RANGE, 70)
         		.add(Attributes.ARMOR, 20)
@@ -195,7 +195,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     protected void registerGoals()
     {
         this.goalSelector.addGoal(4, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1, 10));
+        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.8F, 10));
         this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
         this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
@@ -206,13 +206,23 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     public void aiStep()
     {
     	super.aiStep();
-    	Vec3 head = AbyssUtil.caculateForwardVector(this, this.getYHeadRot() + this.getHeadYRot(), new Vec3(4 + this.getHeadZPos(), this.getHeadYPos() - 4, 4 + this.getHeadZPos()));
-    	Vec3 body = AbyssUtil.caculateBackwardVector(this, this.getYHeadRot(), new Vec3(4, 0, 4));
-    	Vec3 tail = AbyssUtil.caculateBackwardVector(this, this.getYHeadRot() + this.getTailYRot() - 2, new Vec3(9, 0, 9));
-    	this.head.moveTo(head.x, head.y, head.z);
-    	this.body.moveTo(body.x, this.getY(), body.z);
-    	this.tail.moveTo(tail.x, tail.y - 1.5, tail.z);
-    	if(this.level.isClientSide)
+    	Vec3 head = AbyssUtil.caculateForwardVector(this, this.yBodyRot + this.getHeadYRot(), new Vec3(5 - this.getHeadZPos(), this.getHeadYPos(), 5 - this.getHeadZPos()));
+    	Vec3 body = AbyssUtil.caculateBackwardVector(this, this.yBodyRot, new Vec3(4, 0, 4));
+    	Vec3 tail = AbyssUtil.caculateBackwardVector(this, this.yBodyRot + this.getTailYRot() / 2, new Vec3(9, 0, 9));
+    	this.head.setPos(head.x, head.y, head.z);
+    	this.body.setPos(body.x, this.getY(), body.z);
+    	this.tail.setPos(tail.x, tail.y - 1.5, tail.z);
+    	
+        /*float yaw = this.getYRot() * Mth.PI / 180.0F;
+        float pitch = this.getXRot() * Mth.PI / 180.0F;
+        float x = Mth.sin(yaw) * (1.0F - Math.abs(this.getXRot() / 90.0F));
+        float z = Mth.cos(yaw) * (1.0F - Math.abs(this.getXRot() / 90.0F));
+        
+        this.setPartPosition(this.head, (x * -4F), (-pitch * 1F), (-z * -4F));
+        this.setPartPosition(this.body, (x * 4F), (-pitch * -1F), (-z * 4F));
+        this.setPartPosition(this.tail, (x * 9F), (-pitch * -1F), (-z * 9F));*/
+        
+    	if(this.level.isClientSide) 
     	{
     		if(AbyssUtil.isMoving(this) && this.isAlive())
     		{
