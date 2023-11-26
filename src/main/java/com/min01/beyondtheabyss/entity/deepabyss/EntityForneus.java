@@ -13,6 +13,12 @@ public class EntityForneus extends AbstractMultipartDeepAbyssEntity
 		super(p_33002_, p_33003_);
 		this.setAsBoss();
 	}
+	
+	@Override
+	public int getBodyRotationSpeed() 
+	{
+		return 0;
+	}
 
 	@Override
 	public BasicAbyssEntityPart[] getDeepAbyssEntityParts()

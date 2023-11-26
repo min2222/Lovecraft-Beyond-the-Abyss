@@ -1,28 +1,30 @@
 package com.min01.beyondtheabyss.network;
 
-import java.util.function.Supplier;
-
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
-
+import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class ModelDataSyncPacket
+public class ModelDataSyncPacket 
 {
 	private final int entityId;
+
 	private final float x;
+
 	private final float y;
+
 	private final float z;
-    private ModelType modelType;
-	
-    public enum ModelType 
-    {
-        TAIL_ROT, HEAD_ROT, HEAD_POS
-    }
-	
+
+	private ModelType modelType;
+
+	public enum ModelType 
+	{
+		TAIL_ROT, HEAD_ROT, HEAD_POS;
+	}
+
 	public ModelDataSyncPacket(Entity entity, float x, float y, float z, ModelType type) 
 	{
 		this.entityId = entity.getId();
@@ -38,7 +40,7 @@ public class ModelDataSyncPacket
 		this.x = buf.readFloat();
 		this.y = buf.readFloat();
 		this.z = buf.readFloat();
-        this.modelType = ModelType.values()[buf.readInt()];
+		this.modelType = ModelType.values()[buf.readInt()];
 	}
 
 	public void encode(FriendlyByteBuf buf)
@@ -47,40 +49,35 @@ public class ModelDataSyncPacket
 		buf.writeFloat(this.x);
 		buf.writeFloat(this.y);
 		buf.writeFloat(this.z);
-        buf.writeInt(this.modelType.ordinal());
+		buf.writeInt(this.modelType.ordinal());
 	}
-	
+
 	public static class Handler 
 	{
-		public static boolean onMessage(ModelDataSyncPacket message, Supplier<NetworkEvent.Context> ctx) 
+		public static boolean onMessage(ModelDataSyncPacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels())
+				for (ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
 					Entity entity = level.getEntity(message.entityId);
-					if(entity instanceof EntityGhidruth ghidruth)
+					if (entity instanceof EntityGhidruth) 
 					{
-		                switch (message.modelType)
-		                {
-		                case TAIL_ROT:
+						EntityGhidruth ghidruth = (EntityGhidruth) entity;
+						switch (message.modelType) 
+						{
+						case TAIL_ROT:
 							ghidruth.setTailYRot(message.y);
-		                	break;
-		                case HEAD_ROT:
+						case HEAD_ROT:
 							ghidruth.setHeadYRot(message.y);
-		                	break;
-		                case HEAD_POS:
-		                	ghidruth.setHeadXPos(message.x);
-		                	ghidruth.setHeadYPos(message.y);
-		                	ghidruth.setHeadZPos(message.z);
-		                	break;
-						default:
-							break;
-		                }
+						case HEAD_POS:
+							ghidruth.setHeadXPos(message.x);
+							ghidruth.setHeadYPos(message.y);
+							ghidruth.setHeadZPos(message.z);
+						}
 					}
 				}
 			});
-
 			ctx.get().setPacketHandled(true);
 			return true;
 		}

@@ -5,10 +5,8 @@ import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.network.AbyssNetwork;
 import com.min01.beyondtheabyss.network.ModelDataSyncPacket;
-import com.min01.beyondtheabyss.network.ModelDataSyncPacket.ModelType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -25,13 +23,10 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "ghidruth"), "main");
 	private final ModelPart MainRootThing;
-	private Matrix4f worldSpaceXform;
 
 	public ModelGhidruth(ModelPart root)
 	{
 		this.MainRootThing = root.getChild("MainRootThing");
-		this.worldSpaceXform = new Matrix4f();
-		this.worldSpaceXform.setIdentity();
 	}
 
 	public static LayerDefinition createBodyLayer() 
@@ -157,12 +152,13 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks);
 		this.animate(entity.biteAnimationState, GhidruthAnimation.GHIDRUTH_BITE, ageInTicks);
 		this.animate(entity.tailSwingAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING, ageInTicks);
-		ModelPart rearBody = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody");
-		ModelPart tail = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody").getChild("Tail");
-		ModelPart head = this.MainRootThing.getChild("root2").getChild("Head");
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, (rearBody.yRot + tail.yRot) * 90, 0, ModelType.TAIL_ROT));
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0, head.xRot * 90, 0, ModelType.HEAD_ROT));
-		AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.x / 16, head.y / 16, head.z / 16, ModelType.HEAD_POS));
+		float pi = ((float)Math.PI / 180F);
+	    ModelPart rearBody = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody");
+	    ModelPart tail = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody").getChild("Tail");
+	    ModelPart head = this.MainRootThing.getChild("root2").getChild("Head");
+	    AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, (rearBody.yRot / pi) + (tail.yRot / pi) + entity.yBodyRot, 0.0F, ModelDataSyncPacket.ModelType.TAIL_ROT));
+	    AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, head.xRot / pi, 0.0F, ModelDataSyncPacket.ModelType.HEAD_ROT));
+	    AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.x, -head.y, head.z, ModelDataSyncPacket.ModelType.HEAD_POS));
 	}
 
 	@Override

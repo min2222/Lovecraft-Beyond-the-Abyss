@@ -23,7 +23,6 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -36,17 +35,17 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 {
-	public BasicAbyssEntityPart head = new BasicAbyssEntityPart(this, 4.2F, 4.2F);
-	public BasicAbyssEntityPart body = new BasicAbyssEntityPart(this, 4.5F, 3F);
+	public BasicAbyssEntityPart head = new BasicAbyssEntityPart(this, 4.5F, 4.5F);
+	public BasicAbyssEntityPart body = new BasicAbyssEntityPart(this, 5.5F, 4.5F);
 	public BasicAbyssEntityPart tail = new BasicAbyssEntityPart(this, 5.5F, 4.3F);
 	public BasicAbyssEntityPart[] parts = { this.head, this.body, this.tail };
 	public AnimationState swimAnimationState = new AnimationState();
 	public AnimationState biteAnimationState = new AnimationState();
 	public AnimationState tailSwingAnimationState = new AnimationState();
-	public static final EntityDataAccessor<Float> TAIL_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> HEAD_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
-
-	public static final EntityDataAccessor<Float> HEAD_X_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	
+	public static final EntityDataAccessor<Float> TAIL_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);	  
+	public static final EntityDataAccessor<Float> HEAD_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);	  
+	public static final EntityDataAccessor<Float> HEAD_X_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);  
 	public static final EntityDataAccessor<Float> HEAD_Y_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> HEAD_Z_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	
@@ -70,62 +69,61 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     }
     
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData() 
     {
-    	super.defineSynchedData();
-    	this.entityData.define(TAIL_Y_ROT, 0F);
-    	this.entityData.define(HEAD_Y_ROT, 0F);
-    	
-    	this.entityData.define(HEAD_X_POS, 0F);
-    	this.entityData.define(HEAD_Y_POS, 0F);
-    	this.entityData.define(HEAD_Z_POS, 0F);
+        super.defineSynchedData();
+        this.entityData.define(TAIL_Y_ROT, 0.0F);
+        this.entityData.define(HEAD_Y_ROT, 0.0F);
+        this.entityData.define(HEAD_X_POS, 0.0F);
+        this.entityData.define(HEAD_Y_POS, 0.0F);
+        this.entityData.define(HEAD_Z_POS, 0.0F);
     }
     
-    public void setHeadXPos(float x)
+    public void setHeadXPos(float x) 
     {
     	this.entityData.set(HEAD_X_POS, x);
     }
-    
-    public float getHeadXPos()
+      
+    public float getHeadXPos() 
     {
     	return this.entityData.get(HEAD_X_POS);
     }
-    
-    public void setHeadYPos(float y)
+      
+    public void setHeadYPos(float y) 
     {
     	this.entityData.set(HEAD_Y_POS, y);
     }
-    
+      
     public float getHeadYPos()
     {
     	return this.entityData.get(HEAD_Y_POS);
     }
     
-    public void setHeadZPos(float z)
+    public void setHeadZPos(float z) 
     {
     	this.entityData.set(HEAD_Z_POS, z);
     }
-    
-    public float getHeadZPos()
+      
+    public float getHeadZPos() 
     {
     	return this.entityData.get(HEAD_Z_POS);
     }
-    
+      
     public void setHeadYRot(float yRot)
     {
     	this.entityData.set(HEAD_Y_ROT, yRot);
     }
-    
-    public float getHeadYRot()
+      
+    public float getHeadYRot() 
     {
     	return this.entityData.get(HEAD_Y_ROT);
     }
-    
-    public float getTailYRot()
+      
+    public float getTailYRot() 
     {
     	return this.entityData.get(TAIL_Y_ROT);
     }
-    
+      
     public void setTailYRot(float yRot)
     {
     	this.entityData.set(TAIL_Y_ROT, yRot);
@@ -142,6 +140,12 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     		boolean flag = p_218957_.getDifficulty() != Difficulty.PEACEFUL && (p_218958_ == MobSpawnType.SPAWNER || p_218957_.getFluidState(p_218959_).is(FluidTags.WATER));
 			return isDeepEnoughToSpawn(p_218957_, p_218959_) && flag;
     	}
+    }
+    
+    @Override
+    public boolean canBeCollidedWith() 
+    {
+    	return true;
     }
 
 	private static boolean isDeepEnoughToSpawn(LevelAccessor p_32367_, BlockPos p_32368_) 
@@ -206,21 +210,23 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     public void aiStep()
     {
     	super.aiStep();
-    	Vec3 head = AbyssUtil.caculateForwardVector(this, this.yBodyRot + this.getHeadYRot(), new Vec3(5 - this.getHeadZPos(), this.getHeadYPos(), 5 - this.getHeadZPos()));
-    	Vec3 body = AbyssUtil.caculateBackwardVector(this, this.yBodyRot, new Vec3(4, 0, 4));
-    	Vec3 tail = AbyssUtil.caculateBackwardVector(this, this.yBodyRot + this.getTailYRot() / 2, new Vec3(9, 0, 9));
-    	this.head.setPos(head.x, head.y, head.z);
-    	this.body.setPos(body.x, this.getY(), body.z);
-    	this.tail.setPos(tail.x, tail.y - 1.5, tail.z);
     	
-        /*float yaw = this.getYRot() * Mth.PI / 180.0F;
-        float pitch = this.getXRot() * Mth.PI / 180.0F;
-        float x = Mth.sin(yaw) * (1.0F - Math.abs(this.getXRot() / 90.0F));
-        float z = Mth.cos(yaw) * (1.0F - Math.abs(this.getXRot() / 90.0F));
+    	float piDividedBy180 = (float) Math.PI / 180.0F;
+    	
+        float f17 = this.getYRot() * piDividedBy180;
+        float pitch = this.getXRot() * piDividedBy180;
+        float headPitch = this.getHeadYRot() * 6 * piDividedBy180;
         
-        this.setPartPosition(this.head, (x * -4F), (-pitch * 1F), (-z * -4F));
-        this.setPartPosition(this.body, (x * 4F), (-pitch * -1F), (-z * 4F));
-        this.setPartPosition(this.tail, (x * 9F), (-pitch * -1F), (-z * 9F));*/
+        float f3 = Mth.sin(f17) * (1 - Math.abs(this.getXRot() / 90F));
+        float f18 = Mth.cos(f17) * (1 - Math.abs(this.getXRot() / 90F));
+
+        float tailYRot = this.getTailYRot() * piDividedBy180;
+        float tailX = Mth.sin(tailYRot) * (1 - Math.abs(this.getXRot() / 90F));
+        float tailZ = Mth.cos(tailYRot) * (1 - Math.abs(this.getXRot() / 90F));
+
+        this.setPartPosition(this.tail, tailX * 11F, -pitch * 0.5F, -tailZ * 11F);
+        this.setPartPosition(this.body, (f3) * 5.5F, -pitch * 3F, (f18) * -5.5F);
+        this.setPartPosition(this.head, f3 * -4.5F, -headPitch * 1F - 1F, -f18 * -4.5F);
         
     	if(this.level.isClientSide) 
     	{
@@ -253,85 +259,11 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     		super.travel(p_27490_);
     	}
     }
-    
-    /*@Override
-    protected BodyRotationControl createBodyControl()
+
+    @Override
+    public int getBodyRotationSpeed() 
     {
-    	return new GhidruthBodyRotationControl(this);
-    }*/
-    
-    class GhidruthBodyRotationControl extends BodyRotationControl
-    {
-    	private final Mob mob;
-    	private int headStableTime;
-    	private float lastStableYHeadRot;
-		public GhidruthBodyRotationControl(Mob p_24879_) 
-		{
-			super(p_24879_);
-			this.mob = p_24879_;
-		}
-    	
-		@Override
-		public void clientTick()
-		{
-			if (this.isMoving())
-			{
-				this.mob.yBodyRot = this.mob.getYRot();
-				this.rotateHeadIfNecessary();
-				this.lastStableYHeadRot = this.mob.yHeadRot;
-				this.headStableTime = 0;
-			} 
-			else 
-			{
-				if (this.notCarryingMobPassengers()) 
-				{
-					if (Math.abs(this.mob.yHeadRot - this.lastStableYHeadRot) > 1.0F)
-					{
-						this.headStableTime = 0;
-						this.lastStableYHeadRot = this.mob.yHeadRot;
-						this.rotateBodyIfNecessary();
-					} 
-					else
-					{
-						++this.headStableTime;
-						if (this.headStableTime > 1) 
-						{
-							this.rotateHeadTowardsFront();
-						}
-					}
-				}
-			}
-		}
-		
-		private void rotateBodyIfNecessary() 
-		{
-			this.mob.yBodyRot = Mth.rotateIfNecessary(this.mob.yBodyRot, this.mob.yHeadRot, (float)this.mob.getMaxHeadYRot());
-		}
-
-		private void rotateHeadIfNecessary() 
-		{
-			this.mob.yHeadRot = Mth.rotateIfNecessary(this.mob.yHeadRot, this.mob.yBodyRot, (float)this.mob.getMaxHeadYRot());
-		}
-
-		private void rotateHeadTowardsFront()
-		{
-			int i = this.headStableTime - 10;
-			float f = Mth.clamp((float)i / 10.0F, 0.0F, 1.0F);
-			float f1 = (float)this.mob.getMaxHeadYRot() * (1.0F - f);
-			this.mob.yBodyRot = Mth.rotateIfNecessary(this.mob.yBodyRot, this.mob.yHeadRot, f1);
-		}
-
-		private boolean notCarryingMobPassengers()
-		{
-			return !(this.mob.getFirstPassenger() instanceof Mob);
-		}
-
-		private boolean isMoving()
-		{
-			double d0 = this.mob.getX() - this.mob.xo;
-			double d1 = this.mob.getZ() - this.mob.zo;
-			return d0 * d0 + d1 * d1 > (double)2.5000003E-7F;
-		}
+    	return 2;
     }
 
 	@Override

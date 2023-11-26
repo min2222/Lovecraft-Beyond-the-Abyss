@@ -18,7 +18,7 @@ public abstract class AbstractDeepAbyssEntity extends AbstractAbyssEntity
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
 		//this.moveControl = new DeepAbyssEntityMoveControl(this);
-		this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), 0.02F, 0.1F, true);
 		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 	}
     
@@ -39,4 +39,6 @@ public abstract class AbstractDeepAbyssEntity extends AbstractAbyssEntity
 	{
 		return false;
 	}
+	
+	public abstract int getBodyRotationSpeed();
 }

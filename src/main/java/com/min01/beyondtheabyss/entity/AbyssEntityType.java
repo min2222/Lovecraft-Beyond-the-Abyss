@@ -15,7 +15,7 @@ public class AbyssEntityType
 {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, BeyondtheAbyss.MODID);
 	
-	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerWithSize(EntityGhidruth::new, "ghidruth", MobCategory.MONSTER, 4.5F, 3F);
+	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerWithSize(EntityGhidruth::new, "ghidruth", MobCategory.MONSTER, 5.2F, 4.5F);
 	
     public static <T extends Entity> RegistryObject<EntityType<T>> registerWithSize(EntityType.EntityFactory<T> factory, String name, MobCategory category, float width, float height) 
     {

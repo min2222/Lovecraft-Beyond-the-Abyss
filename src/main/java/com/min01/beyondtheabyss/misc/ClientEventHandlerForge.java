@@ -11,6 +11,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -45,6 +46,28 @@ public class ClientEventHandlerForge
         {
         	YkeyPressed = false;
         }
+
+        ClientLevel world = MC.level;
+        if(world != null)
+        {
+        	if(world.dimension().location().getPath().equals("deep_abyss"))
+        	{
+                if(!MC.isPaused() && MC.player != null)
+                {
+                	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
+                }
+        	}
+            else
+            {
+            	if(MC.gameRenderer.currentEffect() != null)
+            	{
+                	if(MC.gameRenderer.currentEffect().getName().equals("beyondtheabyss:shaders/post/abyss.json"))
+                	{
+                		MC.gameRenderer.shutdownEffect();
+                	}
+            	}
+            }
+        }
     }
     
     @SubscribeEvent
@@ -77,7 +100,8 @@ public class ClientEventHandlerForge
         }
     }
     
-    @SubscribeEvent
+    //useless (already handled in onWorldLoad) + cause lag in dimension
+    //@SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent event) 
     {
         ClientLevel world = MC.level;

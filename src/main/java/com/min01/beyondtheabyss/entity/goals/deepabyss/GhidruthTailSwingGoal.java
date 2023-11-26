@@ -42,7 +42,7 @@ public class GhidruthTailSwingGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 				LivingEntity living = list.get(i);
 				if(living != this.mob)
 				{
-					living.hurt(DamageSource.mobAttack(this.mob), 7);
+					living.hurt(DamageSource.mobAttack(this.mob), 14);
 				}
 			}
 		}

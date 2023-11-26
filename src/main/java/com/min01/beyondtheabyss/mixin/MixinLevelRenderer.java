@@ -38,8 +38,6 @@ public class MixinLevelRenderer
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/PostChain;process(F)V", ordinal = 1), method = "renderLevel")
 	private void renderLevelPreTransparency(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
 	{
-		// This stuff is required because apparently the transparency (fabulous) shader decides it's a wonderful idea to nuke the depth buffer!!
-		// FIXME because of this stuff like particles are not recorded in the depth buffer so the fog eats them up
 		Minecraft mc = Minecraft.getInstance();
 		RenderTarget main = mc.getMainRenderTarget();
 		
@@ -86,8 +84,6 @@ public class MixinLevelRenderer
 
 			shader.safeGetUniform("ProjInverseMat").set(PROJECTION_INVERSE);
 			shader.safeGetUniform("ViewInverseMat").set(VIEW_INVERSE);
-
-			//shader.safeGetUniform("Darkness").set(SpookyUtil.getDarkness(mc.player.level));
 
 			if(this.transparencyChain != null)
 			{

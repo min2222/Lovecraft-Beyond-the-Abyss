@@ -5,14 +5,12 @@ import javax.annotation.Nullable;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -20,7 +18,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
@@ -28,7 +25,6 @@ import net.minecraftforge.client.extensions.IForgeDimensionSpecialEffects;
 
 public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
 {
-	private static final ResourceLocation MOON_LOCATION = new ResourceLocation("textures/environment/moon_phases.png");
 	private final Minecraft minecraft = Minecraft.getInstance();
 	private final ClientLevel level = this.minecraft.level;
 	
@@ -171,7 +167,6 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
 			float f1 = (float)vec3.y;
 			float f2 = (float)vec3.z;
             FogRenderer.levelFogColor();
-            BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
             RenderSystem.depthMask(false);
             RenderSystem.setShaderColor(f, f1, f2, 1.0F);
             ShaderInstance shaderinstance = RenderSystem.getShader();
@@ -180,32 +175,10 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
             VertexBuffer.unbind();
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-
-            RenderSystem.enableTexture();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             p_202424_.pushPose();
             float f11 = 1.0F - this.level.getRainLevel(p_202426_);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, f11);
-            p_202424_.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
-            p_202424_.mulPose(Vector3f.XP.rotationDegrees(this.level.getTimeOfDay(p_202426_) * 360.0F));
-            Matrix4f matrix4f1 = p_202424_.last().pose();
-            float f12 = 20.0F;
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, MOON_LOCATION);
-            int k = this.level.getMoonPhase();
-            int l = k % 4;
-            int i1 = k / 4 % 2;
-            float f13 = (float)(l + 0) / 4.0F;
-            float f14 = (float)(i1 + 0) / 2.0F;
-            float f15 = (float)(l + 1) / 4.0F;
-            float f16 = (float)(i1 + 1) / 2.0F;
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f1, -f12, -100.0F, f12).uv(f15, f16).endVertex();
-            bufferbuilder.vertex(matrix4f1, f12, -100.0F, f12).uv(f13, f16).endVertex();
-            bufferbuilder.vertex(matrix4f1, f12, -100.0F, -f12).uv(f13, f14).endVertex();
-            bufferbuilder.vertex(matrix4f1, -f12, -100.0F, -f12).uv(f15, f14).endVertex();
-            BufferUploader.drawWithShader(bufferbuilder.end());
-            RenderSystem.disableTexture();
             float f10 = this.level.getStarBrightness(p_202426_) * f11;
             if (f10 > 0.0F) 
             {

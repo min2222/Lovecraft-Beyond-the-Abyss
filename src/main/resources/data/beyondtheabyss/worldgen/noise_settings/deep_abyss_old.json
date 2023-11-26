@@ -38,7 +38,7 @@
       "xz_scale": 1,
       "y_scale": 0.7142857142857143
     },
-    "lava": 0,
+    "lava": 0.0,
     "temperature": {
       "type": "minecraft:shifted_noise",
       "noise": "minecraft:temperature",
@@ -68,8 +68,8 @@
         "type": "minecraft:mul",
         "argument1": {
           "type": "minecraft:y_clamped_gradient",
-          "from_y": -640,
-          "to_y": -540,
+          "from_y": -64,
+          "to_y": -40,
           "from_value": 0,
           "to_value": 1
         },
@@ -83,8 +83,8 @@
               "type": "minecraft:mul",
               "argument1": {
                 "type": "minecraft:y_clamped_gradient",
-                "from_y": -640,
-                "to_y": -540,
+                "from_y": 240,
+                "to_y": 256,
                 "from_value": 1,
                 "to_value": 0
               },
@@ -134,13 +134,13 @@
               "type": "minecraft:blend_density",
               "argument": {
                 "type": "minecraft:add",
-                "argument1": 0.1171875,
+                "argument1": 0.0071875,
                 "argument2": {
                   "type": "minecraft:mul",
                   "argument1": {
                     "type": "minecraft:y_clamped_gradient",
                     "from_y": -640,
-                    "to_y": -540,
+                    "to_y": -400,
                     "from_value": 0,
                     "to_value": 1
                   },
@@ -154,8 +154,8 @@
                         "type": "minecraft:mul",
                         "argument1": {
                           "type": "minecraft:y_clamped_gradient",
-                          "from_y": -640,
-                          "to_y": -540,
+                          "from_y": 240,
+                          "to_y": 256,
                           "from_value": 1,
                           "to_value": 0
                         },
@@ -2516,10 +2516,10 @@
           "type": "minecraft:vertical_gradient",
           "random_name": "minecraft:deepslate",
           "true_at_and_below": {
-            "absolute": -590
+            "absolute": -640
           },
           "false_at_and_above": {
-            "absolute": -589
+            "absolute": -300
           }
         },
         "then_run": {
