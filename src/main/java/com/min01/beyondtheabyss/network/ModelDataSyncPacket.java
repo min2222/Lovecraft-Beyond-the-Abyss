@@ -1,7 +1,9 @@
 package com.min01.beyondtheabyss.network;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import java.util.function.Supplier;
+
+import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

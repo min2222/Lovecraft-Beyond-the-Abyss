@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.min01.beyondtheabyss.shaders.AbyssShaders;
+import com.min01.beyondtheabyss.shaders.BTAShaders;
 import com.min01.beyondtheabyss.shaders.ExtendedPostChain;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
@@ -71,7 +71,7 @@ public class MixinLevelRenderer
 			return;
 		}*/
 
-		ExtendedPostChain shaderChain = AbyssShaders.getFog();
+		ExtendedPostChain shaderChain = BTAShaders.getFog();
 		EffectInstance shader = shaderChain.getMainShader();
 
 		if(shader != null)

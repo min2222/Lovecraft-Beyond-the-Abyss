@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.util;
 
-import com.min01.beyondtheabyss.capabilities.AbyssCapabilities;
+import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.ArmorAbilityCapabilityHandler;
 import com.min01.beyondtheabyss.capabilities.ArmorAbilityCapabilityHandler.AbyssArmorAbilities;
 import com.min01.beyondtheabyss.capabilities.IArmorAbilityCapability;
-import com.min01.beyondtheabyss.item.AbyssItems;
+import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,10 +23,10 @@ public class DeepAbyssUtil
 				&& !player.getCooldowns().isOnCooldown(entity.getItemBySlot(EquipmentSlot.CHEST).getItem())
 				&& !player.getCooldowns().isOnCooldown(entity.getItemBySlot(EquipmentSlot.LEGS).getItem())
 				&& !player.getCooldowns().isOnCooldown(entity.getItemBySlot(EquipmentSlot.FEET).getItem()) : true;
-		boolean flag = entity.getItemBySlot(EquipmentSlot.HEAD).getItem() == AbyssItems.GHIDRUTH_DIVING_HELMET.get() 
-				&& entity.getItemBySlot(EquipmentSlot.CHEST).getItem() == AbyssItems.GHIDRUTH_DIVING_SUIT.get()
-				&& entity.getItemBySlot(EquipmentSlot.LEGS).getItem() == AbyssItems.GHIDRUTH_DIVING_LEGGINGS.get()
-				&& entity.getItemBySlot(EquipmentSlot.FEET).getItem() == AbyssItems.GHIDRUTH_DIVING_BOOTS.get() 
+		boolean flag = entity.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get() 
+				&& entity.getItemBySlot(EquipmentSlot.CHEST).getItem() == BTAItems.GHIDRUTH_DIVING_SUIT.get()
+				&& entity.getItemBySlot(EquipmentSlot.LEGS).getItem() == BTAItems.GHIDRUTH_DIVING_LEGGINGS.get()
+				&& entity.getItemBySlot(EquipmentSlot.FEET).getItem() == BTAItems.GHIDRUTH_DIVING_BOOTS.get() 
 				&& entity.isEyeInFluidType(Fluids.WATER.getFluidType())
 				&& isPlayer;
 		
@@ -35,7 +35,7 @@ public class DeepAbyssUtil
 	
 	public static boolean shouldRenderAbyssalDashLayer(LivingEntity entity)
 	{
-		IArmorAbilityCapability handler = entity.getCapability(AbyssCapabilities.ARMOR_ABILITY).orElse(new ArmorAbilityCapabilityHandler());
+		IArmorAbilityCapability handler = entity.getCapability(BTACapabilities.ARMOR_ABILITY).orElse(new ArmorAbilityCapabilityHandler());
 		return handler.getAbility() == AbyssArmorAbilities.ABYSSAL_DASH;
 	}
 	
@@ -65,7 +65,7 @@ public class DeepAbyssUtil
             player.getCooldowns().addCooldown(entity.getItemBySlot(EquipmentSlot.FEET).getItem(), cooldown);
         }
         
-		entity.getCapability(AbyssCapabilities.ARMOR_ABILITY).ifPresent((cap) -> 
+		entity.getCapability(BTACapabilities.ARMOR_ABILITY).ifPresent((cap) -> 
 		{
 			cap.setAbility(AbyssArmorAbilities.ABYSSAL_DASH);
 		});

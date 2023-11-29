@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.network;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
-import com.min01.beyondtheabyss.capabilities.AbyssCapabilities;
+import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.misc.ClientEventHandler;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -52,7 +52,7 @@ public class ItemAnimationSyncPacket
 					for(InteractionHand hands : InteractionHand.values())
 					{
 						ItemStack stack = player.getItemInHand(hands);
-						stack.getCapability(AbyssCapabilities.ITEM_ANIMATION).ifPresent(cap -> 
+						stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(cap -> 
 						{
 							cap.setAnimationId(message.animationId);
 						});	

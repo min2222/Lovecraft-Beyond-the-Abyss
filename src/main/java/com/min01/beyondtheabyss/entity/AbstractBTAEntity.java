@@ -10,17 +10,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractAbyssEntity extends PathfinderMob
+public abstract class AbstractBTAEntity extends PathfinderMob
 {
-	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Byte> DATA_SKILL_ID = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BYTE);
-	public static final EntityDataAccessor<Boolean> SHOULD_MOVE = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractAbyssEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Byte> DATA_SKILL_ID = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BYTE);
+	public static final EntityDataAccessor<Boolean> SHOULD_MOVE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
 	public int skillUsingTickCount;
-	private AbstractAbyssEntity.AbyssSkills currentSkill = AbstractAbyssEntity.AbyssSkills.NONE;
+	private AbstractBTAEntity.AbyssSkills currentSkill = AbstractBTAEntity.AbyssSkills.NONE;
 	
-	public AbstractAbyssEntity(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public AbstractBTAEntity(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.noCulling = true;
@@ -63,12 +63,12 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 		}
 	}
     
-	protected AbstractAbyssEntity.AbyssSkills getCurrentSkill() 
+	protected AbstractBTAEntity.AbyssSkills getCurrentSkill() 
 	{
-		return !this.level.isClientSide ? this.currentSkill : AbstractAbyssEntity.AbyssSkills.byId(this.entityData.get(DATA_SKILL_ID));
+		return !this.level.isClientSide ? this.currentSkill : AbstractBTAEntity.AbyssSkills.byId(this.entityData.get(DATA_SKILL_ID));
 	}
 	
-	public void setIsUsingSkill(AbstractAbyssEntity.AbyssSkills p_33728_) 
+	public void setIsUsingSkill(AbstractBTAEntity.AbyssSkills p_33728_) 
 	{
 		this.currentSkill = p_33728_;
 		this.entityData.set(DATA_SKILL_ID, (byte)p_33728_.id);
@@ -180,9 +180,9 @@ public abstract class AbstractAbyssEntity extends PathfinderMob
 			this.id = p_33754_;
 		}
 		
-		public static AbstractAbyssEntity.AbyssSkills byId(int p_33759_)
+		public static AbstractBTAEntity.AbyssSkills byId(int p_33759_)
 		{
-			for(AbstractAbyssEntity.AbyssSkills skils : values()) 
+			for(AbstractBTAEntity.AbyssSkills skils : values()) 
 			{
 				if (p_33759_ == skils.id) 
 				{

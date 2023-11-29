@@ -1,16 +1,16 @@
 package com.min01.beyondtheabyss.entity.goals;
 
-import com.min01.beyondtheabyss.entity.AbstractAbyssEntity;
+import com.min01.beyondtheabyss.entity.AbstractBTAEntity;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public abstract class AbstractAbyssSkillGoal extends Goal
+public abstract class AbstractBTASkillGoal extends Goal
 {
 	protected int skillWarmupDelay;
 	protected int nextSkillTickCount;
 	
-	public AbstractAbyssSkillGoal() 
+	public AbstractBTASkillGoal() 
 	{
 		
 	}
@@ -106,7 +106,7 @@ public abstract class AbstractAbyssSkillGoal extends Goal
 
     protected abstract int getSkillUsingInterval();
     
-    public abstract AbstractAbyssEntity getMob();
+    public abstract AbstractBTAEntity getMob();
     
-    protected abstract AbstractAbyssEntity.AbyssSkills getSkills();
+    protected abstract AbstractBTAEntity.AbyssSkills getSkills();
 }

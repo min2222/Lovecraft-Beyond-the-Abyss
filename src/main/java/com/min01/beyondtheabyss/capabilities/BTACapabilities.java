@@ -14,7 +14,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
-public class AbyssCapabilities
+public class BTACapabilities
 {
 	public static final Capability<IItemAnimationCapability> ITEM_ANIMATION = CapabilityManager.get(new CapabilityToken<>() {});
 	public static final Capability<IArmorAbilityCapability> ARMOR_ABILITY = CapabilityManager.get(new CapabilityToken<>() {});

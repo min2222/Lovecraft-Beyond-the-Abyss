@@ -2,8 +2,8 @@ package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
-import com.min01.beyondtheabyss.network.AbyssNetwork;
+import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
+import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.ModelDataSyncPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -156,9 +156,9 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	    ModelPart rearBody = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody");
 	    ModelPart tail = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody").getChild("Tail");
 	    ModelPart head = this.MainRootThing.getChild("root2").getChild("Head");
-	    AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, (rearBody.yRot / pi) + (tail.yRot / pi) + entity.yBodyRot, 0.0F, ModelDataSyncPacket.ModelType.TAIL_ROT));
-	    AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, head.xRot / pi, 0.0F, ModelDataSyncPacket.ModelType.HEAD_ROT));
-	    AbyssNetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.x, -head.y, head.z, ModelDataSyncPacket.ModelType.HEAD_POS));
+	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, (rearBody.yRot / pi) + (tail.yRot / pi) + entity.yBodyRot, 0.0F, ModelDataSyncPacket.ModelType.TAIL_ROT));
+	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, head.xRot / pi, 0.0F, ModelDataSyncPacket.ModelType.HEAD_ROT));
+	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.x, -head.y, head.z, ModelDataSyncPacket.ModelType.HEAD_POS));
 	}
 
 	@Override

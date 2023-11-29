@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.network.AbyssNetwork;
+import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.KeyInputPacket;
 import com.min01.beyondtheabyss.network.KeyInputPacket.InputType;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,7 +40,7 @@ public class ClientEventHandlerForge
             if(!YkeyPressed) 
             {
             	YkeyPressed = true;
-            	AbyssNetwork.CHANNEL.sendToServer(new KeyInputPacket(InputType.ABYSSAL_DASH));
+            	BTANetwork.CHANNEL.sendToServer(new KeyInputPacket(InputType.ABYSSAL_DASH));
             }
         } 
         else
@@ -54,7 +55,20 @@ public class ClientEventHandlerForge
         	{
                 if(!MC.isPaused() && MC.player != null)
                 {
-                	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
+                	if(MC.player.isEyeInFluidType(Fluids.WATER.getFluidType()))
+                	{
+                    	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
+                	}
+                	else
+                	{
+                    	if(MC.gameRenderer.currentEffect() != null)
+                    	{
+                        	if(MC.gameRenderer.currentEffect().getName().equals("beyondtheabyss:shaders/post/abyss.json"))
+                        	{
+                        		MC.gameRenderer.shutdownEffect();
+                        	}
+                    	}
+                	}
                 }
         	}
             else

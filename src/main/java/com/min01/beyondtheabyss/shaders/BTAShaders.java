@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.PostChain;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
-public class AbyssShaders implements ResourceManagerReloadListener 
+public class BTAShaders implements ResourceManagerReloadListener 
 {
 	protected static final List<ExtendedPostChain> SHADERS = new ArrayList<>(2);
 

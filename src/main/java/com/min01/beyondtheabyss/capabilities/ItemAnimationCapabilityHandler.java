@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.capabilities;
 
-import com.min01.beyondtheabyss.network.AbyssNetwork;
+import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.ItemAnimationSyncPacket;
 
 import net.minecraft.nbt.CompoundTag;
@@ -84,7 +84,7 @@ public class ItemAnimationCapabilityHandler implements IItemAnimationCapability
 	{
 		if(this.host instanceof ServerPlayer)
 		{
-			AbyssNetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new ItemAnimationSyncPacket(this.host, this.stack, this));
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new ItemAnimationSyncPacket(this.host, this.stack, this));
 		}
 	}
 }

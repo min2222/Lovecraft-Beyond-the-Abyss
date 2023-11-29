@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.min01.beyondtheabyss.entity.parts.BasicAbyssEntityPart;
+import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -23,7 +23,7 @@ public abstract class AbstractMultipartDeepAbyssEntity extends AbstractDeepAbyss
 		return true;
 	}
 	
-	public abstract BasicAbyssEntityPart[] getDeepAbyssEntityParts();
+	public abstract BasicBTAEntityPart[] getDeepAbyssEntityParts();
 	
 	@Override
 	public @Nullable PartEntity<?>[] getParts() 
@@ -36,7 +36,7 @@ public abstract class AbstractMultipartDeepAbyssEntity extends AbstractDeepAbyss
     {
     	super.aiStep();
     	this.refreshDimensions();
-    	for(BasicAbyssEntityPart parts : this.getDeepAbyssEntityParts())
+    	for(BasicBTAEntityPart parts : this.getDeepAbyssEntityParts())
     	{
     		parts.tick();
     	}
@@ -59,7 +59,7 @@ public abstract class AbstractMultipartDeepAbyssEntity extends AbstractDeepAbyss
         }
     }
     
-    public void setPartPosition(BasicAbyssEntityPart part, double offsetX, double offsetY, double offsetZ) 
+    public void setPartPosition(BasicBTAEntityPart part, double offsetX, double offsetY, double offsetZ) 
     {
     	part.setPos(this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ);
     }

@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.renderer.layers;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.misc.AbyssRenderType;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.misc.ClientEventHandler;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -50,7 +50,7 @@ public class LayerAbyssalDash<T extends LivingEntity, M extends EntityModel<T>> 
 	{
 		if(DeepAbyssUtil.shouldRenderAbyssalDashLayer(p_117352_)) 
 		{
-			VertexConsumer vertexconsumer = p_117350_.getBuffer(AbyssRenderType.getGlowingEffect(TEXTURE));
+			VertexConsumer vertexconsumer = p_117350_.getBuffer(BTARenderType.getGlowingEffect(TEXTURE));
 
 			for(int i = 0; i < 3; ++i)
 			{

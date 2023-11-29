@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.item.AbyssItems;
+import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 
 import net.minecraft.client.Minecraft;
@@ -55,7 +55,7 @@ public class ItemDiverSet extends ArmorItem
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) 
 	{
-		return slot == EquipmentSlot.FEET && stack.getItem() == AbyssItems.DIVING_BOOTS.get() ? this.modifers : super.getAttributeModifiers(slot, stack);
+		return slot == EquipmentSlot.FEET && stack.getItem() == BTAItems.DIVING_BOOTS.get() ? this.modifers : super.getAttributeModifiers(slot, stack);
 	}
 	
 	@Override
@@ -89,7 +89,7 @@ public class ItemDiverSet extends ArmorItem
 	@Override
 	public void onArmorTick(ItemStack stack, Level level, Player player)
 	{
-		if(player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AbyssItems.DIVING_HELMET.get() && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == AbyssItems.DIVING_SUIT.get())
+		if(player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get() && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == BTAItems.DIVING_SUIT.get())
 		{
 			if(player.isEyeInFluidType(Fluids.WATER.getFluidType()))
 			{

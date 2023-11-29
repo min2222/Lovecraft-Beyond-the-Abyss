@@ -4,14 +4,17 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.AbyssEntityType;
+import com.min01.beyondtheabyss.entity.BTAEntityType;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
-import com.min01.beyondtheabyss.entity.renderer.GhidruthRenderer;
+import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
+import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.layers.LayerAbyssalDash;
+import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
-import com.min01.beyondtheabyss.shaders.AbyssShaders;
+import com.min01.beyondtheabyss.shaders.BTAShaders;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;
@@ -41,13 +44,18 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void registerReloadListeners(RegisterClientReloadListenersEvent e)
 	{
-		e.registerReloadListener(new AbyssShaders());
+		e.registerReloadListener(new BTAShaders());
 	}
 	
     @SubscribeEvent
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
-    	event.registerEntityRenderer(AbyssEntityType.GHIDRUTH.get(), GhidruthRenderer::new);
+    	//misc
+    	event.registerEntityRenderer(BTAEntityType.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
+    	event.registerEntityRenderer(BTAEntityType.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
+    	
+    	//living
+    	event.registerEntityRenderer(BTAEntityType.GHIDRUTH.get(), GhidruthRenderer::new);
     }
     
     @SubscribeEvent

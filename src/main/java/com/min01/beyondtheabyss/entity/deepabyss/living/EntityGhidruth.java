@@ -1,10 +1,11 @@
-package com.min01.beyondtheabyss.entity.deepabyss;
+package com.min01.beyondtheabyss.entity.deepabyss.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssEntity;
 import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthTailSwingGoal;
-import com.min01.beyondtheabyss.entity.parts.BasicAbyssEntityPart;
-import com.min01.beyondtheabyss.util.AbyssUtil;
+import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,10 +36,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 {
-	public BasicAbyssEntityPart head = new BasicAbyssEntityPart(this, 4.5F, 4.5F);
-	public BasicAbyssEntityPart body = new BasicAbyssEntityPart(this, 5.5F, 4.5F);
-	public BasicAbyssEntityPart tail = new BasicAbyssEntityPart(this, 5.5F, 4.3F);
-	public BasicAbyssEntityPart[] parts = { this.head, this.body, this.tail };
+	public BasicBTAEntityPart head = new BasicBTAEntityPart(this, 4.5F, 4.5F);
+	public BasicBTAEntityPart body = new BasicBTAEntityPart(this, 5.5F, 4.5F);
+	public BasicBTAEntityPart tail = new BasicBTAEntityPart(this, 5.5F, 4.3F);
+	public BasicBTAEntityPart[] parts = { this.head, this.body, this.tail };
 	public AnimationState swimAnimationState = new AnimationState();
 	public AnimationState biteAnimationState = new AnimationState();
 	public AnimationState tailSwingAnimationState = new AnimationState();
@@ -230,7 +231,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         
     	if(this.level.isClientSide) 
     	{
-    		if(AbyssUtil.isMoving(this) && this.isAlive())
+    		if(BTAUtil.isMoving(this) && this.isAlive())
     		{
     			this.swimAnimationState.startIfStopped(this.tickCount);
     		}
@@ -267,7 +268,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     }
 
 	@Override
-	public BasicAbyssEntityPart[] getDeepAbyssEntityParts() 
+	public BasicBTAEntityPart[] getDeepAbyssEntityParts() 
 	{
 		return this.parts;
 	}

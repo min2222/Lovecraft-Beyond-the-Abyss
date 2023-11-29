@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.capabilities.AbyssCapabilities;
+import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.ArmorAbilityCapabilityHandler.AbyssArmorAbilities;
 import com.min01.beyondtheabyss.misc.ClientEventHandler;
 
@@ -43,7 +43,7 @@ public class ArmorAbilitySyncPacket
 				Entity entity = ClientEventHandler.MC.level.getEntity(message.entityId);
 				if(entity instanceof Player player)
 				{
-					entity.getCapability(AbyssCapabilities.ARMOR_ABILITY).ifPresent(cap -> 
+					entity.getCapability(BTACapabilities.ARMOR_ABILITY).ifPresent(cap -> 
 					{
 						cap.setAbility(AbyssArmorAbilities.byId(message.abilityId));
 					});

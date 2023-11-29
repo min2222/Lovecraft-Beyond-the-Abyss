@@ -1,7 +1,7 @@
-package com.min01.beyondtheabyss.entity.renderer;
+package com.min01.beyondtheabyss.entity.renderer.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.mojang.blaze3d.vertex.PoseStack;
 

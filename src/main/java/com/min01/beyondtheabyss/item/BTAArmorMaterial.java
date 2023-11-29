@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class AbyssArmorMaterial implements ArmorMaterial
+public class BTAArmorMaterial implements ArmorMaterial
 {
 	private final String name;
 	private final int[] durability;
@@ -18,7 +18,7 @@ public class AbyssArmorMaterial implements ArmorMaterial
 	private final float knockbackResistance;
 	private final Supplier<Ingredient> repairIngredient;
 
-	public AbyssArmorMaterial(String name, int[] durability, int[] slotProtections, int enchantmentValue, SoundEvent sound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) 
+	public BTAArmorMaterial(String name, int[] durability, int[] slotProtections, int enchantmentValue, SoundEvent sound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) 
 	{
 		this.name = name;
 		this.durability = durability;

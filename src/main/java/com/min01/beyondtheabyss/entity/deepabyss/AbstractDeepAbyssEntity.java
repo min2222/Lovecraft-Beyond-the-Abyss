@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractAbyssEntity;
+import com.min01.beyondtheabyss.entity.AbstractBTAEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
-public abstract class AbstractDeepAbyssEntity extends AbstractAbyssEntity
+public abstract class AbstractDeepAbyssEntity extends AbstractBTAEntity
 {
 	public AbstractDeepAbyssEntity(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
 	{

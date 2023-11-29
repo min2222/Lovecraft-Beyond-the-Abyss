@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.capabilities;
 
-import com.min01.beyondtheabyss.network.AbyssNetwork;
+import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.ArmorAbilitySyncPacket;
 
 import net.minecraft.nbt.CompoundTag;
@@ -107,7 +107,7 @@ public class ArmorAbilityCapabilityHandler implements IArmorAbilityCapability
 	{
 		if(this.entity instanceof ServerPlayer)
 		{
-			AbyssNetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new ArmorAbilitySyncPacket(this.entity, this.ability));
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new ArmorAbilitySyncPacket(this.entity, this.ability));
 		}
 	}
 }

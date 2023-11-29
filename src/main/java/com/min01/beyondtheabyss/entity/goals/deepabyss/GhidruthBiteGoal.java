@@ -2,15 +2,15 @@ package com.min01.beyondtheabyss.entity.goals.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.AbstractAbyssEntity.AbyssSkills;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
-import com.min01.beyondtheabyss.entity.goals.BasicAbyssSkillGoal;
-import com.min01.beyondtheabyss.util.AbyssUtil;
+import com.min01.beyondtheabyss.entity.AbstractBTAEntity.AbyssSkills;
+import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.goals.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
-public class GhidruthBiteGoal extends BasicAbyssSkillGoal<EntityGhidruth>
+public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 {
 	public GhidruthBiteGoal(EntityGhidruth mob) 
 	{
@@ -27,13 +27,13 @@ public class GhidruthBiteGoal extends BasicAbyssSkillGoal<EntityGhidruth>
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return AbyssUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4.5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F;
+		return BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4.5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F;
 	}
 
 	@Override
 	protected void performSkill() 
 	{
-		if(AbyssUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4.5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
+		if(BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4.5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
 		{
 			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().inflate(1.5F));
 			for(int i = 0; i < list.size(); i++)

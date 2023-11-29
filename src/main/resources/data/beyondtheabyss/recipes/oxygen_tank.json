@@ -2,11 +2,14 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "ggg",
-        "g g",
+        "gcg",
         "ggg"
     ],
     "key": {
         "g": {
+            "item": "minecraft:copper_ingot"
+        },
+        "c": {
             "item": "minecraft:glass"
         }
     },
