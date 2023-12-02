@@ -31,11 +31,11 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
 		p_114488_.pushPose();
 		RenderSystem.disableDepthTest();
 		p_114488_.mulPose(Vector3f.XP.rotationDegrees(90F));
-		if(p_114485_.tickCount < 26)
+		if(p_114485_.tickCount < 25)
 		{
 			p_114488_.scale(p_114485_.tickCount * 0.2F, p_114485_.tickCount * 0.2F, p_114485_.tickCount * 0.2F);
 		}
-		else if(p_114485_.tickCount >= 26)
+		else if(p_114485_.tickCount >= 25)
 		{
 			p_114488_.scale(5, 5, 5);
 		}

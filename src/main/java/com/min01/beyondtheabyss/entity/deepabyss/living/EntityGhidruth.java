@@ -24,6 +24,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -61,7 +62,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 300)
-    			.add(Attributes.MOVEMENT_SPEED, 1.5D)
+    			.add(Attributes.MOVEMENT_SPEED, 2D)
         		.add(Attributes.ATTACK_DAMAGE, 5)
         		.add(Attributes.FOLLOW_RANGE, 70)
         		.add(Attributes.ARMOR, 20)
@@ -208,9 +209,12 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     }
     
     @Override
-    public void aiStep()
+    public void tick()
     {
-    	super.aiStep();
+    	super.tick();
+    	
+    	//for dynamically update body rotation speed
+		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), 0.02F, 0.1F, true);
     	
     	float piDividedBy180 = (float) Math.PI / 180.0F;
     	
@@ -227,7 +231,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 
         this.setPartPosition(this.tail, tailX * 11F, -pitch * 0.5F, -tailZ * 11F);
         this.setPartPosition(this.body, (f3) * 5.5F, -pitch * 3F, (f18) * -5.5F);
-        this.setPartPosition(this.head, f3 * -4.5F, -headPitch * 1F - 1F, -f18 * -4.5F);
+        this.setPartPosition(this.head, f3 * -5F, -headPitch * 1F - 1F, -f18 * -5F);
         
     	if(this.level.isClientSide) 
     	{
@@ -264,7 +268,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     @Override
     public int getBodyRotationSpeed() 
     {
-    	return 2;
+    	return this.getTarget() == null ? 2 : 6;
     }
 
 	@Override

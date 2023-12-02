@@ -82,6 +82,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     @Override
     public void tick() 
     {
+    	//looks like not working properly
     	if(this.getMob().getTarget() != null)
     	{
         	this.getMob().getLookControl().setLookAt(this.getMob().getTarget(), 30.0F, 30.0F);

@@ -6,11 +6,14 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -29,6 +32,23 @@ public class EntityDeepAbyssPortal extends Entity
 	public void tick() 
 	{
 		super.tick();
+		
+		if(this.isEyeInFluidType(Fluids.WATER.getFluidType()) && this.tickCount > 35)
+		{
+			if (this.random.nextInt(200) == 0) 
+			{
+				this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, SoundSource.MASTER, 0.2F + this.random.nextFloat() * 0.2F, 0.9F + this.random.nextFloat() * 0.15F, false);
+			}
+			
+			for(int i = 0; i < 5; i++)
+			{
+	    		double spawnRange = this.getBbWidth();
+	            double x = (double) this.getX() + (this.level.random.nextDouble() - this.level.random.nextDouble()) * (double)spawnRange;
+	            double z = (double) this.getZ() + (this.level.random.nextDouble() - this.level.random.nextDouble()) * (double)spawnRange;
+				this.level.addAlwaysVisibleParticle(ParticleTypes.BUBBLE_COLUMN_UP, x, this.getY(), z, 0, 0.05F, 0);
+			}
+		}
+		
 		List<Entity> list = this.level.getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(6));
 		for(int i = 0; i < list.size(); i++)
 		{

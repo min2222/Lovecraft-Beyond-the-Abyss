@@ -89,11 +89,12 @@ public class ItemGhidruthDiverSet extends ArmorItem
 	@Override
 	public void onArmorTick(ItemStack stack, Level level, Player player)
 	{
-		if(player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get() && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == BTAItems.GHIDRUTH_DIVING_SUIT.get())
+		if(player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get())
 		{
 			if(player.isEyeInFluidType(Fluids.WATER.getFluidType()))
 			{
 				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 20, 0, false, false));
+				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 20, 0, false, false));
 			}
 		}
 	}

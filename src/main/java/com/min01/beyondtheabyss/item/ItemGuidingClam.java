@@ -20,6 +20,12 @@ public class ItemGuidingClam extends Item
 	}
 	
 	@Override
+	public boolean isFoil(ItemStack p_41453_)
+	{
+		return true;
+	}
+	
+	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) 
 	{
         boolean overworld = entity.getLevel().dimension().location().getPath().equals("overworld");
@@ -31,7 +37,7 @@ public class ItemGuidingClam extends Item
         	entity.setGlowingTag(true);
         	if(entity.isOnGround() && entity.tickCount % 20 == 0)
         	{
-            	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 15, 0.5F, 0, 20);
+            	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 30, 0.5F, 25, 25);
             	entity.discard();
             	if(!entity.level.isClientSide)
             	{

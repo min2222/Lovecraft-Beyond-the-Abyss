@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
@@ -32,10 +33,18 @@ public abstract class AbstractMultipartDeepAbyssEntity extends AbstractDeepAbyss
 	}
 	
     @Override
-    public void aiStep() 
+    public void tick() 
     {
-    	super.aiStep();
+    	super.tick();
+    	
+    	if(this.getTarget() != null)
+    	{
+    		this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+    		this.getLookControl().setLookAt(this.getTarget());
+    	}
+    	
     	this.refreshDimensions();
+    	
     	for(BasicBTAEntityPart parts : this.getDeepAbyssEntityParts())
     	{
     		parts.tick();

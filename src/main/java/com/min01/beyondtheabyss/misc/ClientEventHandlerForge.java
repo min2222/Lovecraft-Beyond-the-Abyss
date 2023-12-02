@@ -1,6 +1,9 @@
 package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.config.BTAConfig;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
+import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.KeyInputPacket;
 import com.min01.beyondtheabyss.network.KeyInputPacket.InputType;
@@ -12,6 +15,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
@@ -29,6 +34,32 @@ public class ClientEventHandlerForge
 {
 	private static final Minecraft MC = Minecraft.getInstance();
     private static boolean YkeyPressed = false;
+    
+    @SubscribeEvent
+    public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) 
+    {
+        Player player = MC.player;
+        float delta = Minecraft.getInstance().getFrameTime();
+        float ticksExistedDelta = player.tickCount + delta;
+        if (player != null && BTAConfig.cameraShakesAllowed.get())
+        {
+            float shakeAmplitude = 0.0f;
+            for (EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0))) 
+            {
+                if (cameraShake.distanceTo(player) < cameraShake.getRadius())
+                {
+                    shakeAmplitude += cameraShake.getShakeAmount(player, delta);
+                }
+            }
+            if (shakeAmplitude > 1.0f)
+            {
+                shakeAmplitude = 1.0f;
+            }
+            event.setPitch((float)(event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3.0f + 2.0f) * 25.0));
+            event.setYaw((float)(event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5.0f + 1.0f) * 25.0));
+            event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0f) * 25.0));
+        }
+    }
 	
     @SubscribeEvent
     public static void onTickEvent(TickEvent.ClientTickEvent event) 
@@ -106,10 +137,13 @@ public class ClientEventHandlerForge
         	FogType fogtype = event.getCamera().getFluidInCamera();
             if(fogtype == FogType.WATER)
             {
-            	Vec3 color = Vec3.fromRGB24(65811);
-                event.setRed((float) color.x);
-                event.setGreen((float) color.y);
-                event.setBlue((float) color.z);
+        		if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
+        		{
+                	Vec3 color = Vec3.fromRGB24(65811);
+                    event.setRed((float) color.x);
+                    event.setGreen((float) color.y);
+                    event.setBlue((float) color.z);
+        		}
             }
         }
     }

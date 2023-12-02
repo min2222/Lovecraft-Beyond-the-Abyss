@@ -29,7 +29,7 @@ public class MixinFluidStatus
 		for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
 		{
 			Level level = player.level;
-			if(level != null)
+			if(level != null && player != null)
 			{
 				BlockState original = p_188406_ < this.fluidLevel ? this.fluidType : Blocks.AIR.defaultBlockState();
 				BlockState water = p_188406_ < this.fluidLevel ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
