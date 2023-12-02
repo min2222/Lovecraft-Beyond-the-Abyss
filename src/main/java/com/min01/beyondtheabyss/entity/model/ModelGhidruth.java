@@ -152,13 +152,15 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks);
 		this.animate(entity.biteAnimationState, GhidruthAnimation.GHIDRUTH_BITE, ageInTicks);
 		this.animate(entity.tailSwingAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING, ageInTicks);
+		this.MainRootThing.getChild("root2").xRot += (headPitch * ((float)Math.PI / 180F)) * 0.7F;
 		float pi = ((float)Math.PI / 180F);
 	    ModelPart rearBody = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody");
 	    ModelPart tail = this.MainRootThing.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody").getChild("Tail");
 	    ModelPart head = this.MainRootThing.getChild("root2").getChild("Head");
-	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, (rearBody.yRot / pi) + (tail.yRot / pi) + entity.yBodyRot, 0.0F, ModelDataSyncPacket.ModelType.TAIL_ROT));
+	    ModelPart root2 = this.MainRootThing.getChild("root2");
+	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, (rearBody.yRot / pi) + (tail.yRot / pi), 0.0F, ModelDataSyncPacket.ModelType.TAIL_ROT));
 	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, head.xRot / pi, 0.0F, ModelDataSyncPacket.ModelType.HEAD_ROT));
-	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.x, -head.y, head.z, ModelDataSyncPacket.ModelType.HEAD_POS));
+	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, 0.0F, root2.xRot / pi, 0.0F, ModelDataSyncPacket.ModelType.RENDER_ROT));
 	}
 
 	@Override

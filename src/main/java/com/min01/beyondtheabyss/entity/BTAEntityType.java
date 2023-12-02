@@ -21,7 +21,7 @@ public class BTAEntityType
 	public static final RegistryObject<EntityType<EntityBTACameraShake>> BTA_CAMERA_SHAKE = registerWithoutSize(EntityBTACameraShake::new, "abyss_camera_shake", MobCategory.MISC);
 	
 	//living
-	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerWithSize(EntityGhidruth::new, "ghidruth", MobCategory.MONSTER, 5.2F, 4.5F);
+	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerWithSize(EntityGhidruth::new, "ghidruth", MobCategory.WATER_CREATURE, 5.2F, 4.5F);
 	
     public static <T extends Entity> RegistryObject<EntityType<T>> registerWithoutSize(EntityType.EntityFactory<T> factory, String name, MobCategory category)
     {

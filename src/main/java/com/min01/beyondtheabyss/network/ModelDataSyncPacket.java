@@ -24,7 +24,7 @@ public class ModelDataSyncPacket
 
 	public enum ModelType 
 	{
-		TAIL_ROT, HEAD_ROT, HEAD_POS;
+		TAIL_ROT, HEAD_ROT, RENDER_ROT;
 	}
 
 	public ModelDataSyncPacket(Entity entity, float x, float y, float z, ModelType type) 
@@ -72,10 +72,8 @@ public class ModelDataSyncPacket
 							ghidruth.setTailYRot(message.y);
 						case HEAD_ROT:
 							ghidruth.setHeadYRot(message.y);
-						case HEAD_POS:
-							ghidruth.setHeadXPos(message.x);
-							ghidruth.setHeadYPos(message.y);
-							ghidruth.setHeadZPos(message.z);
+						case RENDER_ROT:
+							ghidruth.setRenderXRot(message.y);
 						}
 					}
 				}

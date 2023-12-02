@@ -35,7 +35,7 @@ public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 	{
 		if(BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 5F)
 		{
-			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().inflate(2.5F));
+			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().inflate(3.5F));
 			for(int i = 0; i < list.size(); i++)
 			{
 				LivingEntity living = list.get(i);

@@ -45,11 +45,10 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	public AnimationState biteAnimationState = new AnimationState();
 	public AnimationState tailSwingAnimationState = new AnimationState();
 	
-	public static final EntityDataAccessor<Float> TAIL_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);	  
-	public static final EntityDataAccessor<Float> HEAD_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);	  
-	public static final EntityDataAccessor<Float> HEAD_X_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);  
-	public static final EntityDataAccessor<Float> HEAD_Y_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> HEAD_Z_POS = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> TAIL_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> HEAD_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
+	
+	public static final EntityDataAccessor<Float> RENDER_X_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);	
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
@@ -76,39 +75,17 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         super.defineSynchedData();
         this.entityData.define(TAIL_Y_ROT, 0.0F);
         this.entityData.define(HEAD_Y_ROT, 0.0F);
-        this.entityData.define(HEAD_X_POS, 0.0F);
-        this.entityData.define(HEAD_Y_POS, 0.0F);
-        this.entityData.define(HEAD_Z_POS, 0.0F);
+        this.entityData.define(RENDER_X_ROT, 0.0F);
     }
     
-    public void setHeadXPos(float x) 
+    public void setRenderXRot(float xRot)
     {
-    	this.entityData.set(HEAD_X_POS, x);
+    	this.entityData.set(RENDER_X_ROT, xRot);
     }
       
-    public float getHeadXPos() 
+    public float getRenderXRot() 
     {
-    	return this.entityData.get(HEAD_X_POS);
-    }
-      
-    public void setHeadYPos(float y) 
-    {
-    	this.entityData.set(HEAD_Y_POS, y);
-    }
-      
-    public float getHeadYPos()
-    {
-    	return this.entityData.get(HEAD_Y_POS);
-    }
-    
-    public void setHeadZPos(float z) 
-    {
-    	this.entityData.set(HEAD_Z_POS, z);
-    }
-      
-    public float getHeadZPos() 
-    {
-    	return this.entityData.get(HEAD_Z_POS);
+    	return this.entityData.get(RENDER_X_ROT);
     }
       
     public void setHeadYRot(float yRot)
@@ -219,18 +196,18 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	float piDividedBy180 = (float) Math.PI / 180.0F;
     	
         float f17 = this.getYRot() * piDividedBy180;
-        float pitch = this.getXRot() * piDividedBy180;
+        float pitch = this.getRenderXRot() * piDividedBy180;
         float headPitch = this.getHeadYRot() * 6 * piDividedBy180;
         
-        float f3 = Mth.sin(f17) * (1 - Math.abs(this.getXRot() / 90F));
-        float f18 = Mth.cos(f17) * (1 - Math.abs(this.getXRot() / 90F));
+        float f3 = Mth.sin(f17) * (1 - Math.abs(this.getRenderXRot() / 90F));
+        float f18 = Mth.cos(f17) * (1 - Math.abs(this.getRenderXRot() / 90F));
 
-        float tailYRot = this.getTailYRot() * piDividedBy180;
-        float tailX = Mth.sin(tailYRot) * (1 - Math.abs(this.getXRot() / 90F));
-        float tailZ = Mth.cos(tailYRot) * (1 - Math.abs(this.getXRot() / 90F));
+        float tailYRot = (this.getTailYRot() + this.yBodyRot) * piDividedBy180;
+        float tailX = Mth.sin(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
+        float tailZ = Mth.cos(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
 
-        this.setPartPosition(this.tail, tailX * 11F, -pitch * 0.5F, -tailZ * 11F);
-        this.setPartPosition(this.body, (f3) * 5.5F, -pitch * 3F, (f18) * -5.5F);
+        this.setPartPosition(this.tail, tailX * 11F, -pitch * -6F, -tailZ * 11F);
+        this.setPartPosition(this.body, (f3) * 5.5F, -pitch * -4F, (f18) * -5.5F);
         this.setPartPosition(this.head, f3 * -5F, -headPitch * 1F - 1F, -f18 * -5F);
         
     	if(this.level.isClientSide) 
