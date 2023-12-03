@@ -2,8 +2,8 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "c c",
-        "coc",
-        "ccc"
+        "ioi",
+        "cic"
     ],
     "key": {
         "c": {
@@ -11,6 +11,9 @@
         },
         "o": {
             "item": "beyondtheabyss:oxygen_tank"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
         }
     },
     "result": {

@@ -37,7 +37,7 @@ public class ItemGuidingClam extends Item
         	entity.setGlowingTag(true);
         	if(entity.isOnGround() && entity.tickCount % 20 == 0)
         	{
-            	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 30, 0.5F, 25, 25);
+            	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 30, 0.1F, 15, 25);
             	entity.discard();
             	if(!entity.level.isClientSide)
             	{

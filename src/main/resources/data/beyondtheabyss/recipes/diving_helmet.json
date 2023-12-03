@@ -1,9 +1,9 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "ccc",
-        "cGc",
-        "ccc"
+        "cic",
+        "iGi",
+        "cic"
     ],
     "key": {
         "c": {
@@ -11,6 +11,9 @@
         },
         "G": {
             "item": "minecraft:glass_pane"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
         }
     },
     "result": {

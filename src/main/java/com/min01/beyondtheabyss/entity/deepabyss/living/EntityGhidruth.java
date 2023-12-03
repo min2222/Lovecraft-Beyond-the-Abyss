@@ -195,20 +195,20 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	
     	float piDividedBy180 = (float) Math.PI / 180.0F;
     	
-        float f17 = this.getYRot() * piDividedBy180;
+        float yRot = this.getYRot() * piDividedBy180;
         float pitch = this.getRenderXRot() * piDividedBy180;
         float headPitch = this.getHeadYRot() * 6 * piDividedBy180;
         
-        float f3 = Mth.sin(f17) * (1 - Math.abs(this.getRenderXRot() / 90F));
-        float f18 = Mth.cos(f17) * (1 - Math.abs(this.getRenderXRot() / 90F));
+        float xRot = Mth.sin(yRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
+        float zRot = Mth.cos(yRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
 
         float tailYRot = (this.getTailYRot() + this.yBodyRot) * piDividedBy180;
-        float tailX = Mth.sin(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
-        float tailZ = Mth.cos(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
+        float tailXRot = Mth.sin(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
+        float tailZRot = Mth.cos(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
 
-        this.setPartPosition(this.tail, tailX * 11F, -pitch * -6F, -tailZ * 11F);
-        this.setPartPosition(this.body, (f3) * 5.5F, -pitch * -4F, (f18) * -5.5F);
-        this.setPartPosition(this.head, f3 * -5F, -headPitch * 1F - 1F, -f18 * -5F);
+        this.setPartPosition(this.tail, tailXRot * 11F, -pitch * -6F, -tailZRot * 11F);
+        this.setPartPosition(this.body, (xRot) * 5.5F, -pitch * -4F, (zRot) * -5.5F);
+        this.setPartPosition(this.head, xRot * -5F, -headPitch * 1F - 1F, -zRot * -5F);
         
     	if(this.level.isClientSide) 
     	{

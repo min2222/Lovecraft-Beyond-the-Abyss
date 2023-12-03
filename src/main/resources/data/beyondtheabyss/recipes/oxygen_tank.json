@@ -1,9 +1,9 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "ggg",
-        "gcg",
-        "ggg"
+        "gig",
+        "ici",
+        "gig"
     ],
     "key": {
         "g": {
@@ -11,6 +11,9 @@
         },
         "c": {
             "item": "minecraft:glass"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
         }
     },
     "result": {

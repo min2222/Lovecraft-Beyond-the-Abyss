@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
@@ -67,7 +68,7 @@ public class EntityDeepAbyssPortal extends Entity
 			        {
 			            MinecraftServer server = entity.level.getServer();
 			            ServerLevel dimWorld = server.getLevel(BTAWorlds.DEEP_ABYSS);
-			            if (!abyss && dimWorld != null)
+			            if (!abyss && dimWorld != null && !(entity instanceof EntityBTACameraShake))
 			            {
 			            	if(entity instanceof ServerPlayer)
 			            	{
