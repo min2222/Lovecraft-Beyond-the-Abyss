@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.item;
+package com.min01.beyondtheabyss.item.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.BTAEntityType;

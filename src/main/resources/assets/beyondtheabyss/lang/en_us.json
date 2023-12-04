@@ -3,6 +3,7 @@
 	"itemGroup.abyss_materials": "Deep Abyss Materials",
 	"itemGroup.abyss_armors": "Deep Abyss Armors",
 	"itemGroup.abyss_misc": "Deep Abyss Miscellaneous",
+	"itemGroup.abyss_foods": "Deep Abyss Foods",
 	"key.categories.beyondtheabyss": "Beyond the Abyss",
 	"key.beyondtheabyss.abyssal_dash": "Abyssal Dash",
 	"entity.beyondtheabyss.ghidruth": "Ghidruth",
@@ -10,6 +11,8 @@
 	"item.beyondtheabyss.ghidruth_scale": "Scale of Ghidruth",
 	"item.beyondtheabyss.oxygen_tank": "Oxygen Tank",
 	"item.beyondtheabyss.guiding_clam": "Clam of Guiding",
+	"item.beyondtheabyss.raw_ghidruth_flesh": "Raw Ghidruth Flesh",
+	"item.beyondtheabyss.cooked_ghidruth_flesh": "Cooked Ghidruth Flesh",
 	"item.beyondtheabyss.diving_helmet": "Diving Helmet",
 	"item.beyondtheabyss.diving_suit": "Diving Suit",
 	"item.beyondtheabyss.diving_leggings": "Diving Leggings",
@@ -21,5 +24,6 @@
 	"item.beyondtheabyss.ghidruth_diving_helmet": "Ghidruth Diving Helmet",
 	"item.beyondtheabyss.ghidruth_diving_suit": "Ghidruth Diving Suit",
 	"item.beyondtheabyss.ghidruth_diving_leggings": "Ghidruth Diving Leggings",
-	"item.beyondtheabyss.ghidruth_diving_boots": "Ghidruth Diving Boots"
+	"item.beyondtheabyss.ghidruth_diving_boots": "Ghidruth Diving Boots",
+	"death.attack.ghidruth_flesh": "%1$s attempted to chew on Ghidruth's flesh, which was too hard, and his teeth broke and he bled to death."
 }

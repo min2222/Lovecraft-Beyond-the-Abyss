@@ -64,6 +64,15 @@ public class BeyondtheAbyss
 		}
 	};
 	
+	public static final CreativeModeTab ABYSS_FOODS = new CreativeModeTab("abyss_foods") 
+	{
+		@Override
+		public ItemStack makeIcon()
+		{
+			return new ItemStack(BTAItems.RAW_GHIDRUTH_FLESH.get());
+		}
+	};
+	
 	public BeyondtheAbyss() 
 	{
 		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();

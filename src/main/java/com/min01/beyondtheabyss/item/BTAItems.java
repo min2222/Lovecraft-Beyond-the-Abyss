@@ -5,9 +5,12 @@ import com.min01.beyondtheabyss.entity.BTAEntityType;
 import com.min01.beyondtheabyss.item.armor.ItemAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemGhidruthDiverSet;
+import com.min01.beyondtheabyss.item.deepabyss.ItemGhidruthFlesh;
+import com.min01.beyondtheabyss.item.deepabyss.ItemGuidingClam;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -35,6 +38,10 @@ public class BTAItems
 	
 	//misc
 	public static final RegistryObject<Item> GUIDING_CLAM = ITEMS.register("guiding_clam", () -> new ItemGuidingClam());
+	
+	//foods
+	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new ItemGhidruthFlesh(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build(), true));
+	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = ITEMS.register("cooked_ghidruth_flesh", () -> new ItemGhidruthFlesh(new FoodProperties.Builder().nutrition(9).saturationMod(1F).build(), false));
 	
 	//armors
 	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new ItemDiverSet(DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));
