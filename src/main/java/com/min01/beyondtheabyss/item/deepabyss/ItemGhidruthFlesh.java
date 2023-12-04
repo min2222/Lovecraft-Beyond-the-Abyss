@@ -37,6 +37,6 @@ public class ItemGhidruthFlesh extends Item
 		{
 			p_41409_.shrink(1);
 		}
-		return p_41409_;
+		return super.finishUsingItem(p_41409_, p_41410_, p_41411_);
 	}
 }

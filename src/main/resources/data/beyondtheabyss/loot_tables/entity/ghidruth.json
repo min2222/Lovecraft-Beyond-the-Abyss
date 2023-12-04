@@ -7,6 +7,21 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "beyondtheabyss:raw_ghidruth_flesh",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 10,
+                "max": 20
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
           "name": "beyondtheabyss:ghidruth_scale",
           "functions": [
             {
