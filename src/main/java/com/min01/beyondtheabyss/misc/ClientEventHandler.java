@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.block.model.ModelAbyssalAltar;
+import com.min01.beyondtheabyss.blockentity.renderer.AbyssalAltarRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntityType;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
@@ -20,6 +23,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.EntityType;
@@ -33,6 +37,7 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.MOD)
@@ -41,6 +46,12 @@ public class ClientEventHandler
 	public static final Minecraft MC = Minecraft.getInstance();
 	public static final KeyMapping ABYSSAL_DASH = new KeyMapping("key." + BeyondtheAbyss.MODID + ".abyssal_dash", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_Y, "key.categories." + BeyondtheAbyss.MODID);
 	
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event)
+    {
+        BlockEntityRenderers.register(BTABlocks.ABYSSAL_ALTAR_BLOCK_ENTITY.get(), AbyssalAltarRenderer::new);
+    }
+    
 	@SubscribeEvent
 	public static void registerReloadListeners(RegisterClientReloadListenersEvent e)
 	{
@@ -66,6 +77,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthDiverSet.LAYER_LOCATION, ModelGhidruthDiverSet::createBodyLayer);
     	event.registerLayerDefinition(LayerAbyssalDash.LAYER_LOCATION, LayerAbyssalDash::createLayer);
+    	event.registerLayerDefinition(ModelAbyssalAltar.LAYER_LOCATION, ModelAbyssalAltar::createBodyLayer);
     }
     
     @SubscribeEvent

@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.BTAEntityType;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
+import com.min01.beyondtheabyss.misc.BTACreativeTabs;
 
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -16,7 +16,7 @@ public class ItemGuidingClam extends Item
 {
 	public ItemGuidingClam()
 	{
-		super(new Item.Properties().tab(BeyondtheAbyss.ABYSS_MISC).stacksTo(1).rarity(Rarity.EPIC));
+		super(new Item.Properties().tab(BTACreativeTabs.ABYSS_MISC).stacksTo(1).rarity(Rarity.EPIC));
 	}
 	
 	@Override

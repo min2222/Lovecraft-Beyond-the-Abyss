@@ -12,7 +12,6 @@ import com.min01.beyondtheabyss.proxy.CommonProxy;
 import com.min01.beyondtheabyss.sound.BTASounds;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -28,57 +27,13 @@ public class BeyondtheAbyss
 	public static IEventBus MOD_EVENT_BUS;
 	public static final CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
-	public static final CreativeModeTab ABYSS_MOBS = new CreativeModeTab("abyss_mobs") 
-	{
-		@Override
-		public ItemStack makeIcon()
-		{
-			return new ItemStack(BTAItems.GHIDRUTH_SPAWN_EGG.get());
-		}
-	};
-	
-	public static final CreativeModeTab ABYSS_MATERIALS = new CreativeModeTab("abyss_materials") 
-	{
-		@Override
-		public ItemStack makeIcon()
-		{
-			return new ItemStack(BTAItems.GHIDRUTH_SCALE.get());
-		}
-	};
-	
-	public static final CreativeModeTab ABYSS_ARMORS = new CreativeModeTab("abyss_armors") 
-	{
-		@Override
-		public ItemStack makeIcon()
-		{
-			return new ItemStack(BTAItems.DIVING_HELMET.get());
-		}
-	};
-	
-	public static final CreativeModeTab ABYSS_MISC = new CreativeModeTab("abyss_misc") 
-	{
-		@Override
-		public ItemStack makeIcon()
-		{
-			return new ItemStack(BTAItems.GUIDING_CLAM.get());
-		}
-	};
-	
-	public static final CreativeModeTab ABYSS_FOODS = new CreativeModeTab("abyss_foods") 
-	{
-		@Override
-		public ItemStack makeIcon()
-		{
-			return new ItemStack(BTAItems.RAW_GHIDRUTH_FLESH.get());
-		}
-	};
-	
 	public BeyondtheAbyss() 
 	{
 		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
 		BTAEntityType.ENTITY_TYPES.register(MOD_EVENT_BUS);
 		BTAItems.ITEMS.register(MOD_EVENT_BUS);
 		BTABlocks.BLOCKS.register(MOD_EVENT_BUS);
+		BTABlocks.BLOCK_ENTITIES.register(MOD_EVENT_BUS);
 		BTASounds.SOUNDS.register(MOD_EVENT_BUS);
 		BTAEffects.EFFECTS.register(MOD_EVENT_BUS);
 		BTANetwork.registerMessages();

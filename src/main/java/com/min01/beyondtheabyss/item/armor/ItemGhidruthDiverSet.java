@@ -8,9 +8,9 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
+import com.min01.beyondtheabyss.misc.BTACreativeTabs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -39,7 +39,7 @@ public class ItemGhidruthDiverSet extends ArmorItem
 	
 	public ItemGhidruthDiverSet(ArmorMaterial p_40386_, EquipmentSlot p_40387_)
 	{
-		super(p_40386_, p_40387_, new Item.Properties().tab(BeyondtheAbyss.ABYSS_ARMORS));
+		super(p_40386_, p_40387_, new Item.Properties().tab(BTACreativeTabs.ABYSS_ARMORS));
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		UUID uuid = ARMOR_MODIFIER_UUID_PER_SLOT[p_40387_.getIndex()];
 		builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", (double)p_40386_.getDefenseForSlot(p_40387_), AttributeModifier.Operation.ADDITION));

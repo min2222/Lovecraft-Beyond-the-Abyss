@@ -1,19 +1,29 @@
 package com.min01.beyondtheabyss.item;
 
+import java.util.function.Consumer;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.BTAEntityType;
 import com.min01.beyondtheabyss.item.armor.ItemAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.deepabyss.ItemGhidruthFlesh;
 import com.min01.beyondtheabyss.item.deepabyss.ItemGuidingClam;
+import com.min01.beyondtheabyss.item.renderer.AbyssalAltarItemRenderer;
+import com.min01.beyondtheabyss.misc.BTACreativeTabs;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,11 +40,11 @@ public class BTAItems
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
 	
 	//spawn eggs
-	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = ITEMS.register("ghidruth_spawn_egg", () -> new ForgeSpawnEggItem(() -> BTAEntityType.GHIDRUTH.get(), 862018, 10239048, new Item.Properties().tab(BeyondtheAbyss.ABYSS_MOBS)));
+	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = ITEMS.register("ghidruth_spawn_egg", () -> new ForgeSpawnEggItem(() -> BTAEntityType.GHIDRUTH.get(), 862018, 10239048, new Item.Properties().tab(BTACreativeTabs.ABYSS_MOBS)));
 	
 	//materials
-	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(BeyondtheAbyss.ABYSS_MATERIALS)));
-	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new Item(new Item.Properties().stacksTo(1).tab(BeyondtheAbyss.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(BTACreativeTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new Item(new Item.Properties().stacksTo(1).tab(BTACreativeTabs.ABYSS_MATERIALS)));
 	
 	//misc
 	public static final RegistryObject<Item> GUIDING_CLAM = ITEMS.register("guiding_clam", () -> new ItemGuidingClam());
@@ -58,4 +68,21 @@ public class BTAItems
 	public static final RegistryObject<Item> GHIDRUTH_DIVING_SUIT = ITEMS.register("ghidruth_diving_suit", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.CHEST));
 	public static final RegistryObject<Item> GHIDRUTH_DIVING_LEGGINGS = ITEMS.register("ghidruth_diving_leggings", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.LEGS));
 	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
+	
+	//blocks
+	public static final RegistryObject<Item> ABYSSAL_ALTAR = ITEMS.register("abyssal_altar", () -> new BlockItem(BTABlocks.ABYSSAL_ALTAR.get(), new Item.Properties().tab(BTACreativeTabs.ABYSS_BLOCKS).rarity(Rarity.EPIC))
+	{
+		@Override
+		public void initializeClient(Consumer<IClientItemExtensions> consumer) 
+		{
+			consumer.accept(new IClientItemExtensions()
+			{
+				@Override
+				public BlockEntityWithoutLevelRenderer getCustomRenderer() 
+				{
+					return new AbyssalAltarItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				};
+			});
+		};
+	});
 }

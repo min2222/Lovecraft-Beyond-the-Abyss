@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.misc.BTACreativeTabs;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +16,7 @@ public class ItemGhidruthFlesh extends Item
 	
 	public ItemGhidruthFlesh(FoodProperties properties, boolean isRaw) 
 	{
-		super(new Item.Properties().tab(BeyondtheAbyss.ABYSS_FOODS).food(properties));
+		super(new Item.Properties().tab(BTACreativeTabs.ABYSS_FOODS).food(properties));
 		this.isRaw = isRaw;
 	}
 	
