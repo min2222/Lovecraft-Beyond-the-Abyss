@@ -1,9 +1,11 @@
 package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAbyssalAltar;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.KeyInputPacket;
 import com.min01.beyondtheabyss.network.KeyInputPacket.InputType;
@@ -15,8 +17,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
@@ -34,6 +38,16 @@ public class ClientEventHandlerForge
 {
 	private static final Minecraft MC = Minecraft.getInstance();
     private static boolean YkeyPressed = false;
+    
+    public static void handleAltarItemSyncPacket(AltarItemSyncPacket packet)
+    {
+		Level level = MC.level;
+		Entity entity = level.getEntity(packet.entityId);
+		if(entity.level.getBlockEntity(packet.pos) instanceof BlockEntityAbyssalAltar altar)
+		{
+			altar.setItem(packet.stack);
+		}
+    }
     
     @SubscribeEvent
     public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) 
