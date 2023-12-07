@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAbyssalAltar;
+import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
+import com.min01.beyondtheabyss.network.BTANetwork;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.PacketDistributor;
 
 public class BlockAbyssalAltar extends BaseEntityBlock
 {
@@ -58,13 +61,17 @@ public class BlockAbyssalAltar extends BaseEntityBlock
 			ItemStack stack = toInsert.copy();
 			stack.setCount(1);
 			
-			((BlockEntityAbyssalAltar)blockEntity).setItem(stack);
+			((BlockEntityAbyssalAltar) blockEntity).setItem(stack);
+			
+			if(!world.isClientSide)
+			{
+				BTANetwork.CHANNEL.send(PacketDistributor.ALL.noArg(), new AltarItemSyncPacket(player, stack, pos));
+			}
 			
 			if(!player.getAbilities().instabuild)
 			{
 				toInsert.shrink(1);
 			}
-
 		}
 		else
 		{
