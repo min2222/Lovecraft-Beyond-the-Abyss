@@ -27,7 +27,7 @@ public class EventHandlerForge
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event)
     {
-        if(event.getName().toString().matches("minecraft:chests/shipwreck_treasure")) 
+        if(event.getName().toString().matches("minecraft:chests/shipwreck_supply")) 
         {
         	event.getTable().addPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootTableReference.lootTableReference(BTALootTables.GUIDING_CLAM)).build());
         }
