@@ -16,7 +16,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -102,7 +101,7 @@ public class ClientEventHandlerForge
                 {
                 	if(MC.player.isEyeInFluidType(Fluids.WATER.getFluidType()))
                 	{
-                    	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
+                    	//MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
                 	}
                 	else
                 	{
@@ -151,13 +150,10 @@ public class ClientEventHandlerForge
         	FogType fogtype = event.getCamera().getFluidInCamera();
             if(fogtype == FogType.WATER)
             {
-        		if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
-        		{
-                	Vec3 color = Vec3.fromRGB24(65811);
-                    event.setRed((float) color.x);
-                    event.setGreen((float) color.y);
-                    event.setBlue((float) color.z);
-        		}
+            	Vec3 color = MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get() ? Vec3.fromRGB24(65811) : Vec3.fromRGB24(657950);
+                event.setRed((float) color.x);
+                event.setGreen((float) color.y);
+                event.setBlue((float) color.z);
             }
         }
     }

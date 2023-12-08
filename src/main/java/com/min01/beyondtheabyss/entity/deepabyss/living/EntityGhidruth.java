@@ -197,7 +197,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	
         float yRot = this.getYRot() * piDividedBy180;
         float pitch = this.getRenderXRot() * piDividedBy180;
-        float headPitch = this.getHeadYRot() * 6 * piDividedBy180;
+        float headPitch = (this.getHeadYRot() + this.getRenderXRot()) * 4 * piDividedBy180;
         
         float xRot = Mth.sin(yRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
         float zRot = Mth.cos(yRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
@@ -206,9 +206,9 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         float tailXRot = Mth.sin(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
         float tailZRot = Mth.cos(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
 
-        this.setPartPosition(this.tail, tailXRot * 11F, -pitch * -6F, -tailZRot * 11F);
+        this.setPartPosition(this.tail, tailXRot * 11F, -pitch * -7F, -tailZRot * 11F);
         this.setPartPosition(this.body, (xRot) * 5.5F, -pitch * -4F, (zRot) * -5.5F);
-        this.setPartPosition(this.head, xRot * -5F, -headPitch * 1F - 1F, -zRot * -5F);
+        this.setPartPosition(this.head, xRot * -5F, -headPitch * 1F, -zRot * -5F);
         
     	if(this.level.isClientSide) 
     	{
