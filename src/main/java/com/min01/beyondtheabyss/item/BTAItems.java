@@ -10,7 +10,7 @@ import com.min01.beyondtheabyss.item.armor.ItemDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.deepabyss.ItemGhidruthFlesh;
 import com.min01.beyondtheabyss.item.deepabyss.ItemGuidingClam;
-import com.min01.beyondtheabyss.item.renderer.AbyssalAltarItemRenderer;
+import com.min01.beyondtheabyss.item.renderer.AltarOfDeepItemRenderer;
 import com.min01.beyondtheabyss.misc.BTACreativeTabs;
 
 import net.minecraft.client.Minecraft;
@@ -70,7 +70,7 @@ public class BTAItems
 	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
 	
 	//blocks
-	public static final RegistryObject<Item> ABYSSAL_ALTAR = ITEMS.register("abyssal_altar", () -> new BlockItem(BTABlocks.ABYSSAL_ALTAR.get(), new Item.Properties().tab(BTACreativeTabs.ABYSS_BLOCKS).rarity(Rarity.EPIC))
+	public static final RegistryObject<Item> ALTAR_OF_DEEP = ITEMS.register("altar_of_deep", () -> new BlockItem(BTABlocks.ALTAR_OF_DEEP.get(), new Item.Properties().tab(BTACreativeTabs.ABYSS_BLOCKS).rarity(Rarity.EPIC))
 	{
 		@Override
 		public void initializeClient(Consumer<IClientItemExtensions> consumer) 
@@ -80,7 +80,7 @@ public class BTAItems
 				@Override
 				public BlockEntityWithoutLevelRenderer getCustomRenderer() 
 				{
-					return new AbyssalAltarItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+					return new AltarOfDeepItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
 				};
 			});
 		};

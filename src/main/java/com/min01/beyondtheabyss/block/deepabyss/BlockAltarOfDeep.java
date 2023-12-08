@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.block.deepabyss;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAbyssalAltar;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
 import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
 
@@ -24,9 +24,9 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.PacketDistributor;
 
-public class BlockAbyssalAltar extends BaseEntityBlock
+public class BlockAltarOfDeep extends BaseEntityBlock
 {
-	public BlockAbyssalAltar() 
+	public BlockAltarOfDeep() 
 	{
 		super(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn(BTABlocks::never).noOcclusion());
 	}
@@ -40,7 +40,7 @@ public class BlockAbyssalAltar extends BaseEntityBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_)
 	{
-		return new BlockEntityAbyssalAltar(p_153215_, p_153216_);
+		return new BlockEntityAltarOfDeep(p_153215_, p_153216_);
 	}
 	
 	@Override
@@ -48,12 +48,12 @@ public class BlockAbyssalAltar extends BaseEntityBlock
 	{
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
-		if(!(blockEntity instanceof BlockEntityAbyssalAltar) || player.isShiftKeyDown())
+		if(!(blockEntity instanceof BlockEntityAltarOfDeep) || player.isShiftKeyDown())
 		{
 			return InteractionResult.FAIL;
 		}
 
-		ItemStack currentStack = ((BlockEntityAbyssalAltar) blockEntity).getItem();
+		ItemStack currentStack = ((BlockEntityAltarOfDeep) blockEntity).getItem();
 		ItemStack toInsert = player.getItemInHand(hand);
 
 		if(currentStack.isEmpty())
@@ -61,7 +61,7 @@ public class BlockAbyssalAltar extends BaseEntityBlock
 			ItemStack stack = toInsert.copy();
 			stack.setCount(1);
 			
-			((BlockEntityAbyssalAltar) blockEntity).setItem(stack);
+			((BlockEntityAltarOfDeep) blockEntity).setItem(stack);
 			
 			if(!world.isClientSide)
 			{
@@ -87,7 +87,7 @@ public class BlockAbyssalAltar extends BaseEntityBlock
 				}
 			}
 
-			((BlockEntityAbyssalAltar)blockEntity).setItem(ItemStack.EMPTY);
+			((BlockEntityAltarOfDeep)blockEntity).setItem(ItemStack.EMPTY);
 		}
 		return InteractionResult.SUCCESS;
 	}
@@ -96,12 +96,12 @@ public class BlockAbyssalAltar extends BaseEntityBlock
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153273_, BlockState p_153274_, BlockEntityType<T> p_153275_)
     {
-        return createTicker(p_153273_, p_153275_, BTABlocks.ABYSSAL_ALTAR_BLOCK_ENTITY.get());
+        return createTicker(p_153273_, p_153275_, BTABlocks.ALTAR_OF_DEEP_BLOCK_ENTITY.get());
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<BlockEntityAbyssalAltar> p_151990_)
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<BlockEntityAltarOfDeep> p_151990_)
     {
-        return createTickerHelper(p_151989_, p_151990_, BlockEntityAbyssalAltar::update);
+        return createTickerHelper(p_151989_, p_151990_, BlockEntityAltarOfDeep::update);
     }
 }

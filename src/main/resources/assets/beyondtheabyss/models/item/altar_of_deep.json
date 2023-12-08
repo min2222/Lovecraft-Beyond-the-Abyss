@@ -2,7 +2,7 @@
     "parent": "builtin/entity",
     "gui_light": "front",
     "textures": {
-        "particle": "beyondtheabyss:block/abyssal_altar"
+        "particle": "beyondtheabyss:block/altar_of_deep"
     },
     "display": {
         "gui": {

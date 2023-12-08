@@ -10,8 +10,11 @@
 	"key.categories.beyondtheabyss": "Beyond the Abyss",
 	"key.beyondtheabyss.abyssal_dash": "Abyssal Dash",
 	"entity.beyondtheabyss.ghidruth": "Ghidruth",
+	"entity.beyondtheabyss.forneus": "Forneus, The King of Deep Abyss",
 	"item.beyondtheabyss.ghidruth_spawn_egg": "Ghidruth Spawn Egg",
+	"item.beyondtheabyss.forneus_spawn_egg": "Forneus, The King of Deep Abyss Spawn Egg",
 	"item.beyondtheabyss.ghidruth_scale": "Scale of Ghidruth",
+	"item.beyondtheabyss.heart_of_forneus": "Heart of Forneus",
 	"item.beyondtheabyss.oxygen_tank": "Oxygen Tank",
 	"item.beyondtheabyss.guiding_clam": "Clam of Guiding",
 	"item.beyondtheabyss.raw_ghidruth_flesh": "Raw Ghidruth Flesh",
@@ -28,6 +31,7 @@
 	"item.beyondtheabyss.ghidruth_diving_suit": "Ghidruth Diving Suit",
 	"item.beyondtheabyss.ghidruth_diving_leggings": "Ghidruth Diving Leggings",
 	"item.beyondtheabyss.ghidruth_diving_boots": "Ghidruth Diving Boots",
-	"block.beyondtheabyss.abyssal_altar": "Abyssal Altar",
-	"death.attack.ghidruth_flesh": "%1$s attempted to chew on Ghidruth's flesh, which was too hard, and his teeth broke and he bled to death."
+	"block.beyondtheabyss.altar_of_deep": "Altar of Deep",
+	"death.attack.ghidruth_flesh": "%1$s attempted to chew on Ghidruth's flesh, which was too hard, and his teeth broke and he bled to death.",
+	"effect.beyondtheabyss.ghidruths_grace": "Ghidruth's Grace"
 }

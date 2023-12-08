@@ -16,12 +16,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class ModelAbyssalAltar extends Model 
+public class ModelAltarOfDeep extends Model 
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "abyssal_altar"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "altar_of_deep"), "main");
 	private final ModelPart bone;
 
-	public ModelAbyssalAltar(ModelPart root)
+	public ModelAltarOfDeep(ModelPart root)
 	{
 		super(RenderType::entityCutoutNoCull);
 		this.bone = root.getChild("bone");

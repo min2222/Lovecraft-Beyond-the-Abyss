@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.block;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.block.deepabyss.BlockAbyssalAltar;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAbyssalAltar;
+import com.min01.beyondtheabyss.block.deepabyss.BlockAltarOfDeep;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
@@ -19,9 +19,9 @@ public class BTABlocks
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BeyondtheAbyss.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BeyondtheAbyss.MODID);
     
-    public static final RegistryObject<Block> ABYSSAL_ALTAR = BLOCKS.register("abyssal_altar", () -> new BlockAbyssalAltar());
+    public static final RegistryObject<Block> ALTAR_OF_DEEP = BLOCKS.register("altar_of_deep", () -> new BlockAltarOfDeep());
     
-    public static final RegistryObject<BlockEntityType<BlockEntityAbyssalAltar>> ABYSSAL_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("abyssal_altar", () -> BlockEntityType.Builder.of(BlockEntityAbyssalAltar::new, BTABlocks.ABYSSAL_ALTAR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockEntityAltarOfDeep>> ALTAR_OF_DEEP_BLOCK_ENTITY = BLOCK_ENTITIES.register("altar_of_deep", () -> BlockEntityType.Builder.of(BlockEntityAltarOfDeep::new, BTABlocks.ALTAR_OF_DEEP.get()).build(null));
     
     public static boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_)
     {

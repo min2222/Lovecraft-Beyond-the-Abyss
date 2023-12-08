@@ -57,7 +57,7 @@ public class BTACreativeTabs
 		@Override
 		public ItemStack makeIcon()
 		{
-			return new ItemStack(BTAItems.ABYSSAL_ALTAR.get());
+			return new ItemStack(BTAItems.ALTAR_OF_DEEP.get());
 		}
 	};
 }

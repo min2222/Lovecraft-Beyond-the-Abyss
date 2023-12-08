@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.blockentity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.block.model.ModelAbyssalAltar;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAbyssalAltar;
+import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
 import com.min01.beyondtheabyss.misc.ClientEventHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -19,20 +19,20 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class AbyssalAltarRenderer implements BlockEntityRenderer<BlockEntityAbyssalAltar>
+public class AltarOfDeepRenderer implements BlockEntityRenderer<BlockEntityAltarOfDeep>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/abyssal_altar.png");
-    private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/abyssal_altar_layer.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/altar_of_deep.png");
+    private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/altar_of_deep_layer.png");
     
-	private final ModelAbyssalAltar model;
+	private final ModelAltarOfDeep model;
 	
-	public AbyssalAltarRenderer(BlockEntityRendererProvider.Context p_172550_)
+	public AltarOfDeepRenderer(BlockEntityRendererProvider.Context p_172550_)
 	{
-		this.model = new ModelAbyssalAltar(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalAltar.LAYER_LOCATION));
+		this.model = new ModelAltarOfDeep(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAltarOfDeep.LAYER_LOCATION));
 	}
 
 	@Override
-	public void render(BlockEntityAbyssalAltar p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
+	public void render(BlockEntityAltarOfDeep p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
 	{
 		p_112309_.pushPose();
 		p_112309_.translate(0.5D, 0.5D, 0.5D);

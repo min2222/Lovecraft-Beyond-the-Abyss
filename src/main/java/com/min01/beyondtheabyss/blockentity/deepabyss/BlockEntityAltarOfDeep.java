@@ -9,17 +9,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockEntityAbyssalAltar extends BlockEntity
+public class BlockEntityAltarOfDeep extends BlockEntity
 {
 	private ItemStack item;
 	
-	public BlockEntityAbyssalAltar(BlockPos p_155229_, BlockState p_155230_) 
+	public BlockEntityAltarOfDeep(BlockPos p_155229_, BlockState p_155230_) 
 	{
-		super(BTABlocks.ABYSSAL_ALTAR_BLOCK_ENTITY.get(), p_155229_, p_155230_);
+		super(BTABlocks.ALTAR_OF_DEEP_BLOCK_ENTITY.get(), p_155229_, p_155230_);
 		this.item = ItemStack.EMPTY;
 	}
 	
-	public static void update(Level level, BlockPos pos, BlockState state, BlockEntityAbyssalAltar altar)
+	public static void update(Level level, BlockPos pos, BlockState state, BlockEntityAltarOfDeep altar)
 	{
 		
 	}
@@ -39,8 +39,7 @@ public class BlockEntityAbyssalAltar extends BlockEntity
 	{
 		super.saveAdditional(nbt);
 		CompoundTag itemTag = new CompoundTag();
-		this.item.save(itemTag);
-		nbt.put("item", itemTag);
+		nbt.put("item", this.item.save(itemTag));
 	}
 	
 	@Override

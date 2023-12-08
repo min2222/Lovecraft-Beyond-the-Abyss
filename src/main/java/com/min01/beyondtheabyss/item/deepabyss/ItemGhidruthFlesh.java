@@ -1,8 +1,10 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
+import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.misc.BTACreativeTabs;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
 
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
@@ -29,8 +31,8 @@ public class ItemGhidruthFlesh extends Item
 		}
 		else
 		{
-			//TODO
-			//increase defense of player
+			//6000 = 5 minutes
+			p_41411_.addEffect(new MobEffectInstance(BTAEffects.GHIDRUTHS_GRACE.get(), 6000, 0, false, false));
 		}
 		
 		if(p_41411_ instanceof Player && !((Player)p_41411_).getAbilities().instabuild) 

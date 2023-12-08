@@ -6,7 +6,9 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector4f;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -36,4 +38,17 @@ public class BTAClientUtil
         vec.transform(matrix4f);
         return new Vec3(vec.x(), vec.y(), vec.z());
     }
+    
+	public static int getCurrentFrame(Level worldIn, int frameNumber, float speed) 
+	{
+		if (worldIn == null)
+		{
+            return Math.round((System.currentTimeMillis() >> 6) % frameNumber);
+		}
+		else
+		{
+        	float time = Mth.ceil((((worldIn.getGameTime() >> 1) % frameNumber) * speed) * 1000F) / 10000F;
+            return Math.round(time * 5);
+        }
+	}
 }
