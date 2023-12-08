@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.effect;
 import java.util.UUID;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.effect.deepabyss.EffectGhidruthsGrace;
+import com.min01.beyondtheabyss.effect.deepabyss.EffectGhidruthsScales;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
@@ -16,9 +16,9 @@ public class BTAEffects
 {
 	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, BeyondtheAbyss.MODID);
 	
-	public static final RegistryObject<MobEffect> GHIDRUTHS_GRACE = EFFECTS.register("ghidruths_grace", () -> 
+	public static final RegistryObject<MobEffect> GHIDRUTHS_SCALES = EFFECTS.register("ghidruths_scales", () -> 
 	{
-		EffectGhidruthsGrace ghidruth = new EffectGhidruthsGrace(4);
+		EffectGhidruthsScales ghidruth = new EffectGhidruthsScales(4);
 		ghidruth.addAttributeModifier(Attributes.ARMOR, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		ghidruth.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		return ghidruth;

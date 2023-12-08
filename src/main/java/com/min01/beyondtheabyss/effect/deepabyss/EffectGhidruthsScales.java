@@ -4,11 +4,11 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-public class EffectGhidruthsGrace extends MobEffect
+public class EffectGhidruthsScales extends MobEffect
 {
 	protected final double multiplier;
 	   
-	public EffectGhidruthsGrace(double multiplier)
+	public EffectGhidruthsScales(double multiplier)
 	{
 		super(MobEffectCategory.NEUTRAL, 657950);
 	      this.multiplier = multiplier;

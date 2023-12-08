@@ -32,7 +32,7 @@ public class ItemGhidruthFlesh extends Item
 		else
 		{
 			//6000 = 5 minutes
-			p_41411_.addEffect(new MobEffectInstance(BTAEffects.GHIDRUTHS_GRACE.get(), 6000, 0, false, false));
+			p_41411_.addEffect(new MobEffectInstance(BTAEffects.GHIDRUTHS_SCALES.get(), 6000, 0, false, false));
 		}
 		
 		if(p_41411_ instanceof Player && !((Player)p_41411_).getAbilities().instabuild) 

@@ -27,13 +27,13 @@ public class LayerGhidruthScaleArmor<T extends LivingEntity, M extends EntityMod
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) 
     {
     	ResourceLocation location = this.getTexture(entitylivingbaseIn);
-    	if(location != null && entitylivingbaseIn.hasEffect(BTAEffects.GHIDRUTHS_GRACE.get()))
+    	if(location != null && entitylivingbaseIn.hasEffect(BTAEffects.GHIDRUTHS_SCALES.get()))
     	{
             VertexConsumer VertexConsumer = bufferIn.getBuffer(RenderType.entityCutout(location));
             this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     	}
     	
-    	if(!entitylivingbaseIn.hasEffect(BTAEffects.GHIDRUTHS_GRACE.get()))
+    	if(!entitylivingbaseIn.hasEffect(BTAEffects.GHIDRUTHS_SCALES.get()))
     	{
     		this.curFrame = 0;
     	}
