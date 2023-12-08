@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.util;
 
+import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
+import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.ArmorAbilityCapabilityHandler;
-import com.min01.beyondtheabyss.capabilities.ArmorAbilityCapabilityHandler.AbyssArmorAbilities;
-import com.min01.beyondtheabyss.capabilities.IArmorAbilityCapability;
+import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
@@ -33,10 +33,16 @@ public class DeepAbyssUtil
 		return flag;
 	}
 	
-	public static boolean shouldRenderAbyssalDashLayer(LivingEntity entity)
+	public static boolean isDoingAbyssalDash(LivingEntity entity)
 	{
-		IArmorAbilityCapability handler = entity.getCapability(BTACapabilities.ARMOR_ABILITY).orElse(new ArmorAbilityCapabilityHandler());
-		return handler.getAbility() == AbyssArmorAbilities.ABYSSAL_DASH;
+		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
+		return handler.getAbility() == BTAAbilities.ABYSSAL_DASH;
+	}
+	
+	public static boolean hasGhidruthsScales(LivingEntity entity)
+	{
+		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
+		return handler.getAbility() == BTAAbilities.GHIDRUTHS_SCALES;
 	}
 	
 	public static void startAbyssalDash(LivingEntity entity)
@@ -65,9 +71,9 @@ public class DeepAbyssUtil
             player.getCooldowns().addCooldown(entity.getItemBySlot(EquipmentSlot.FEET).getItem(), cooldown);
         }
         
-		entity.getCapability(BTACapabilities.ARMOR_ABILITY).ifPresent((cap) -> 
+		entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent((cap) -> 
 		{
-			cap.setAbility(AbyssArmorAbilities.ABYSSAL_DASH);
+			cap.setAbility(BTAAbilities.ABYSSAL_DASH);
 		});
 	}
 }

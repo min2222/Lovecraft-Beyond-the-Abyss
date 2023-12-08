@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.IArmorAbilityCapability;
+import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.entity.BTAEntityType;
 import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
@@ -34,6 +34,6 @@ public class EventHandler
     public static void registerCaps(RegisterCapabilitiesEvent event) 
     {
     	event.register(IItemAnimationCapability.class);
-    	event.register(IArmorAbilityCapability.class);
+    	event.register(IBTAAbilitiesCapability.class);
     }
 }

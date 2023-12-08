@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.IArmorAbilityCapability;
+import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.world.InteractionHand;
@@ -38,7 +38,7 @@ public class EventHandlerForge
 	{ 	
 		LivingEntity entity = event.getEntity();
         
-    	entity.getCapability(BTACapabilities.ARMOR_ABILITY).ifPresent(IArmorAbilityCapability::update);
+    	entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(IBTAAbilitiesCapability::update);
     	
     	if(entity instanceof Player player)
     	{

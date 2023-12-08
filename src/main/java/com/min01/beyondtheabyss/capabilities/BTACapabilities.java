@@ -17,7 +17,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 public class BTACapabilities
 {
 	public static final Capability<IItemAnimationCapability> ITEM_ANIMATION = CapabilityManager.get(new CapabilityToken<>() {});
-	public static final Capability<IArmorAbilityCapability> ARMOR_ABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+	public static final Capability<IBTAAbilitiesCapability> BTA_ABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	public static void attachItemStackCapability(AttachCapabilitiesEvent<ItemStack> e)
 	{
@@ -55,11 +55,11 @@ public class BTACapabilities
 	{
 		if (e.getObject() instanceof LivingEntity living) 
 		{
-			e.addCapability(IArmorAbilityCapability.ID, new ICapabilitySerializable<CompoundTag>() 
+			e.addCapability(IBTAAbilitiesCapability.ID, new ICapabilitySerializable<CompoundTag>() 
 			{
-				LazyOptional<IArmorAbilityCapability> inst = LazyOptional.of(() -> 
+				LazyOptional<IBTAAbilitiesCapability> inst = LazyOptional.of(() -> 
 				{
-					ArmorAbilityCapabilityHandler i = new ArmorAbilityCapabilityHandler();
+					BTAAbilitiesCapabilityHandler i = new BTAAbilitiesCapabilityHandler();
 					i.setEntity(living);
 					return i;
 				});
@@ -68,7 +68,7 @@ public class BTACapabilities
 				@Override
 				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
 				{
-					return ARMOR_ABILITY.orEmpty(capability, inst.cast());
+					return BTA_ABILITY.orEmpty(capability, inst.cast());
 				}
 
 				@Override

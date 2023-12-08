@@ -48,7 +48,7 @@ public class LayerAbyssalDash<T extends LivingEntity, M extends EntityModel<T>> 
 	@Override
 	public void render(PoseStack p_117349_, MultiBufferSource p_117350_, int p_117351_, T p_117352_, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) 
 	{
-		if(DeepAbyssUtil.shouldRenderAbyssalDashLayer(p_117352_)) 
+		if(DeepAbyssUtil.isDoingAbyssalDash(p_117352_)) 
 		{
 			VertexConsumer vertexconsumer = p_117350_.getBuffer(BTARenderType.getGlowingEffect(TEXTURE));
 

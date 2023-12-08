@@ -1,18 +1,19 @@
 package com.min01.beyondtheabyss.capabilities;
 
+import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.network.BTAAbilitySyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.ArmorAbilitySyncPacket;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.PacketDistributor;
 
-public class ArmorAbilityCapabilityHandler implements IArmorAbilityCapability
+public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 {
 	private LivingEntity entity;
 	private int tickCount;
-	private AbyssArmorAbilities ability = AbyssArmorAbilities.NONE;
+	private BTAAbilities ability = BTAAbilities.NONE;
 	
 	@Override
 	public CompoundTag serializeNBT() 
@@ -26,7 +27,7 @@ public class ArmorAbilityCapabilityHandler implements IArmorAbilityCapability
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		this.ability = AbyssArmorAbilities.byId(nbt.getInt("ability"));
+		this.ability = BTAAbilities.byId(nbt.getInt("ability"));
 		this.tickCount = nbt.getInt("tickCount");
 	}
 
@@ -39,7 +40,7 @@ public class ArmorAbilityCapabilityHandler implements IArmorAbilityCapability
 	@Override
 	public void update() 
 	{
-		if(this.getAbility() != AbyssArmorAbilities.NONE)
+		if(this.getAbility() != BTAAbilities.NONE)
 		{
 			this.tickCount++;
 		}
@@ -52,8 +53,19 @@ public class ArmorAbilityCapabilityHandler implements IArmorAbilityCapability
 		case ABYSSAL_DASH:
 			this.updateAbyssalDash(this.entity);
 			break;
+		case GHIDRUTHS_SCALES:
+			this.updateGhidruthsScales(this.entity);
+			break;
 		default:
 			break;
+		}
+	}
+	
+	public void updateGhidruthsScales(LivingEntity entity)
+	{
+		if(!entity.hasEffect(BTAEffects.GHIDRUTHS_SCALES.get()))
+		{
+			this.setAbility(BTAAbilities.NONE);
 		}
 	}
 	
@@ -61,38 +73,39 @@ public class ArmorAbilityCapabilityHandler implements IArmorAbilityCapability
 	{
 		if(this.tickCount >= 20)
 		{
-			this.setAbility(AbyssArmorAbilities.NONE);
+			this.setAbility(BTAAbilities.NONE);
 		}
 	}
 
 	@Override
-	public void setAbility(AbyssArmorAbilities ability)
+	public void setAbility(BTAAbilities ability)
 	{
 		this.ability = ability;
 		this.sendUpdatePacket();
 	}
 
 	@Override
-	public AbyssArmorAbilities getAbility() 
+	public BTAAbilities getAbility() 
 	{
 		return this.ability;
 	}
 	
-	public enum AbyssArmorAbilities
+	public enum BTAAbilities
 	{
 		NONE(0),
-		ABYSSAL_DASH(1);
+		ABYSSAL_DASH(1),
+		GHIDRUTHS_SCALES(2);
 		
 		public int id;
 
-		private AbyssArmorAbilities(int id) 
+		private BTAAbilities(int id) 
 		{
 			this.id = id;
 		}
 		
-		public static AbyssArmorAbilities byId(int id)
+		public static BTAAbilities byId(int id)
 		{
-			for(AbyssArmorAbilities abilities : values()) 
+			for(BTAAbilities abilities : values()) 
 			{
 				if (id == abilities.id) 
 				{
@@ -107,7 +120,7 @@ public class ArmorAbilityCapabilityHandler implements IArmorAbilityCapability
 	{
 		if(this.entity instanceof ServerPlayer)
 		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new ArmorAbilitySyncPacket(this.entity, this.ability));
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new BTAAbilitySyncPacket(this.entity, this.ability));
 		}
 	}
 }

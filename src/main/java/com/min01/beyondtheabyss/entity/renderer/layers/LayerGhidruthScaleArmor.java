@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.renderer.layers;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -26,14 +26,13 @@ public class LayerGhidruthScaleArmor<T extends LivingEntity, M extends EntityMod
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) 
     {
-    	ResourceLocation location = this.getTexture(entitylivingbaseIn);
-    	if(location != null && entitylivingbaseIn.hasEffect(BTAEffects.GHIDRUTHS_SCALES.get()))
+    	if(DeepAbyssUtil.hasGhidruthsScales(entitylivingbaseIn))
     	{
-            VertexConsumer VertexConsumer = bufferIn.getBuffer(RenderType.entityCutout(location));
+            VertexConsumer VertexConsumer = bufferIn.getBuffer(RenderType.entityCutout(this.getTexture(entitylivingbaseIn)));
             this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     	}
     	
-    	if(!entitylivingbaseIn.hasEffect(BTAEffects.GHIDRUTHS_SCALES.get()))
+    	if(!DeepAbyssUtil.hasGhidruthsScales(entitylivingbaseIn))
     	{
     		this.curFrame = 0;
     	}

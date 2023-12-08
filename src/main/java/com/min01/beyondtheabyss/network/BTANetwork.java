@@ -20,7 +20,7 @@ public class BTANetwork
 	{
 		CHANNEL.registerMessage(ID++, ItemAnimationSyncPacket.class, ItemAnimationSyncPacket::encode, ItemAnimationSyncPacket::new, ItemAnimationSyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, KeyInputPacket.class, KeyInputPacket::encode, KeyInputPacket::new, KeyInputPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, ArmorAbilitySyncPacket.class, ArmorAbilitySyncPacket::encode, ArmorAbilitySyncPacket::new, ArmorAbilitySyncPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, BTAAbilitySyncPacket.class, BTAAbilitySyncPacket::encode, BTAAbilitySyncPacket::new, BTAAbilitySyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, ModelDataSyncPacket.class, ModelDataSyncPacket::encode, ModelDataSyncPacket::new, ModelDataSyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, AltarItemSyncPacket.class, AltarItemSyncPacket::encode, AltarItemSyncPacket::new, AltarItemSyncPacket.Handler::onMessage);
 	}

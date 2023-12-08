@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
+import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.misc.BTACreativeTabs;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
@@ -33,6 +35,10 @@ public class ItemGhidruthFlesh extends Item
 		{
 			//6000 = 5 minutes
 			p_41411_.addEffect(new MobEffectInstance(BTAEffects.GHIDRUTHS_SCALES.get(), 6000, 0, false, false));
+			p_41411_.getCapability(BTACapabilities.BTA_ABILITY).ifPresent((cap) -> 
+			{
+				cap.setAbility(BTAAbilities.GHIDRUTHS_SCALES);
+			});
 		}
 		
 		if(p_41411_ instanceof Player && !((Player)p_41411_).getAbilities().instabuild) 
