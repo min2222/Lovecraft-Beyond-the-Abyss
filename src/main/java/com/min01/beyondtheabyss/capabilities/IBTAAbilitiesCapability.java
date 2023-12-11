@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.capabilities;
 
+import java.util.Map;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 
@@ -16,7 +18,13 @@ public interface IBTAAbilitiesCapability extends INBTSerializable<CompoundTag>
 
 	void update();
 	
-	void setAbility(BTAAbilities ability);
+	void addAbility(BTAAbilities ability);
 	
-	BTAAbilities getAbility();
+	void removeAbility(BTAAbilities ability);
+	
+	void setTickcount(BTAAbilities ability, int tickCount);
+	
+	int getTickcount(BTAAbilities ability);
+	
+	Map<BTAAbilities, Integer> getAbilities();
 }

@@ -1,6 +1,8 @@
 package com.min01.beyondtheabyss.entity.renderer.layers;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,8 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class LayerGhidruthScaleArmor<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
-	private int curFrame;
-	
     public LayerGhidruthScaleArmor(RenderLayerParent<T, M> renderer) 
     {
         super(renderer);
@@ -31,20 +31,11 @@ public class LayerGhidruthScaleArmor<T extends LivingEntity, M extends EntityMod
             VertexConsumer VertexConsumer = bufferIn.getBuffer(RenderType.entityCutout(this.getTexture(entitylivingbaseIn)));
             this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     	}
-    	
-    	if(!DeepAbyssUtil.hasGhidruthsScales(entitylivingbaseIn))
-    	{
-    		this.curFrame = 0;
-    	}
     }
     
 	public ResourceLocation getTexture(LivingEntity living)
 	{
-		if(this.curFrame < 5 && living.tickCount % 7F == 0)
-		{
-			this.curFrame++;
-		}
-		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/ghidruth_scale_armor_%d.png", BeyondtheAbyss.MODID, this.curFrame));
+		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/ghidruth_scale_armor_%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickcount(BTAAbilities.GHIDRUTHS_SCALES, living)));
 		return location;
 	}
 }

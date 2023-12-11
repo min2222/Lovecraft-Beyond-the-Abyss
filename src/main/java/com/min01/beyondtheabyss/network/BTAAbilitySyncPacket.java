@@ -15,23 +15,27 @@ public class BTAAbilitySyncPacket
 {
 	private final int entityId;
 	private final int abilityId;
+	private final int tickCount;
 	
-	public BTAAbilitySyncPacket(Entity entity, BTAAbilities ability) 
+	public BTAAbilitySyncPacket(Entity entity, BTAAbilities ability, int tickCount) 
 	{
 		this.entityId = entity.getId();
 		this.abilityId = ability.id;
+		this.tickCount = tickCount;
 	}
 
 	public BTAAbilitySyncPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 		this.abilityId = buf.readInt();	
+		this.tickCount = buf.readInt();
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
 		buf.writeInt(this.entityId);
 		buf.writeInt(this.abilityId);
+		buf.writeInt(this.tickCount);
 	}
 	
 	public static class Handler 
@@ -45,7 +49,12 @@ public class BTAAbilitySyncPacket
 				{
 					entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(cap -> 
 					{
-						cap.setAbility(BTAAbilities.byId(message.abilityId));
+						BTAAbilities ability = BTAAbilities.byId(message.abilityId);
+						if(ability != BTAAbilities.NONE)
+						{
+							cap.addAbility(ability);
+							cap.setTickcount(ability, message.tickCount);
+						}
 					});
 				}
 			});

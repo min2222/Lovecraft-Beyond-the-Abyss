@@ -37,7 +37,7 @@ public class ItemGhidruthFlesh extends Item
 			p_41411_.addEffect(new MobEffectInstance(BTAEffects.GHIDRUTHS_SCALES.get(), 6000, 0, false, false));
 			p_41411_.getCapability(BTACapabilities.BTA_ABILITY).ifPresent((cap) -> 
 			{
-				cap.setAbility(BTAAbilities.GHIDRUTHS_SCALES);
+				cap.addAbility(BTAAbilities.GHIDRUTHS_SCALES);
 			});
 		}
 		

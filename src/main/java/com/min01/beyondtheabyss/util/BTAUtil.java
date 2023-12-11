@@ -1,5 +1,9 @@
 package com.min01.beyondtheabyss.util;
 
+import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
+import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTACapabilities;
+import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
 
 import net.minecraft.core.BlockPos;
@@ -14,6 +18,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class BTAUtil 
 {
+	public static int getAbilityTickcount(BTAAbilities ability, LivingEntity entity)
+	{
+		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
+		return handler.getTickcount(ability);
+	}
+	
 	public static Vec3 moveToEntity(Vec3 from, Vec3 to, Entity mover, Entity target, float multiplier)
 	{
 		double d0 = from.x - to.x;

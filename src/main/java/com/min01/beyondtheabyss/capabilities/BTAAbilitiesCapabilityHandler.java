@@ -1,5 +1,10 @@
 package com.min01.beyondtheabyss.capabilities;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.network.BTAAbilitySyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
@@ -12,23 +17,25 @@ import net.minecraftforge.network.PacketDistributor;
 public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 {
 	private LivingEntity entity;
-	private int tickCount;
-	private BTAAbilities ability = BTAAbilities.NONE;
+	private Map<BTAAbilities, Integer> abilities = new HashMap<>();
 	
 	@Override
 	public CompoundTag serializeNBT() 
 	{
 		CompoundTag tag = new CompoundTag();
-		tag.putInt("ability", this.ability.id);
-		tag.putInt("tickCount", this.tickCount);
+		for(Map.Entry<BTAAbilities, Integer> entry : this.abilities.entrySet())
+		{
+			tag.putInt("ability", entry.getKey().id);
+			tag.putInt("tickCount", entry.getValue());
+		}
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		this.ability = BTAAbilities.byId(nbt.getInt("ability"));
-		this.tickCount = nbt.getInt("tickCount");
+		Map<BTAAbilities, Integer> abilities = new HashMap<>();
+		abilities.put(BTAAbilities.byId(nbt.getInt("ability")), nbt.getInt("tickCount"));
 	}
 
 	@Override
@@ -40,54 +47,88 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	@Override
 	public void update() 
 	{
-		if(this.getAbility() != BTAAbilities.NONE)
+		if(this.getAbilities().isEmpty() || this.getAbilities().containsKey(BTAAbilities.NONE))
 		{
-			this.tickCount++;
+			this.abilities.clear();
 		}
-		else
+		
+		for(Map.Entry<BTAAbilities, Integer> entry : this.abilities.entrySet())
 		{
-			this.tickCount = 0;
-		}
-		switch(this.ability)
-		{
-		case ABYSSAL_DASH:
-			this.updateAbyssalDash(this.entity);
-			break;
-		case GHIDRUTHS_SCALES:
-			this.updateGhidruthsScales(this.entity);
-			break;
-		default:
-			break;
+			BTAAbilities ability = entry.getKey();
+			switch(ability)
+			{
+			case ABYSSAL_DASH:
+				this.updateAbyssalDash(this.entity);
+				break;
+			case GHIDRUTHS_SCALES:
+				this.updateGhidruthsScales(this.entity);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	
 	public void updateGhidruthsScales(LivingEntity entity)
 	{
+		if(this.getTickcount(BTAAbilities.GHIDRUTHS_SCALES) < 5 && entity.tickCount % 7F == 0)
+		{
+			this.setTickcount(BTAAbilities.GHIDRUTHS_SCALES, this.getTickcount(BTAAbilities.GHIDRUTHS_SCALES) + 1);
+		}
+		
 		if(!entity.hasEffect(BTAEffects.GHIDRUTHS_SCALES.get()))
 		{
-			this.setAbility(BTAAbilities.NONE);
+			this.removeAbility(BTAAbilities.GHIDRUTHS_SCALES);
 		}
 	}
 	
 	public void updateAbyssalDash(LivingEntity entity)
 	{
-		if(this.tickCount >= 20)
+		this.setTickcount(BTAAbilities.ABYSSAL_DASH, this.getTickcount(BTAAbilities.ABYSSAL_DASH) + 1);
+		
+		if(this.getTickcount(BTAAbilities.ABYSSAL_DASH) >= 20)
 		{
-			this.setAbility(BTAAbilities.NONE);
+			this.removeAbility(BTAAbilities.ABYSSAL_DASH);
 		}
 	}
 
 	@Override
-	public void setAbility(BTAAbilities ability)
+	public void addAbility(BTAAbilities ability)
 	{
-		this.ability = ability;
+		this.abilities.put(ability, 0);
+		this.sendUpdatePacket();
+	}
+	
+	@Override
+	public void removeAbility(BTAAbilities toRemove) 
+	{
+		Iterator<Entry<BTAAbilities, Integer>> iterator = this.abilities.entrySet().iterator();
+		while (iterator.hasNext())
+		{
+		    if (iterator.next().getKey().equals(toRemove))
+		    {
+		        iterator.remove();
+		    }
+		}
+	}
+
+	@Override
+	public Map<BTAAbilities, Integer> getAbilities() 
+	{
+		return this.abilities;
+	}
+
+	@Override
+	public void setTickcount(BTAAbilities ability, int tickCount) 
+	{
+		this.abilities.replace(ability, tickCount);
 		this.sendUpdatePacket();
 	}
 
 	@Override
-	public BTAAbilities getAbility() 
+	public int getTickcount(BTAAbilities ability)
 	{
-		return this.ability;
+		return this.abilities.get(ability);
 	}
 	
 	public enum BTAAbilities
@@ -120,7 +161,11 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	{
 		if(this.entity instanceof ServerPlayer)
 		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new BTAAbilitySyncPacket(this.entity, this.ability));
+			for(Map.Entry<BTAAbilities, Integer> entry : this.abilities.entrySet())
+			{
+				BTAAbilities ability = entry.getKey();
+				BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new BTAAbilitySyncPacket(this.entity, ability, entry.getValue()));
+			}
 		}
 	}
 }
