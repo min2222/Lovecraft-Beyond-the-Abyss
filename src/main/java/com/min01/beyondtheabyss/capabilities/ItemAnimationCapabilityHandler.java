@@ -6,14 +6,14 @@ import com.min01.beyondtheabyss.network.ItemAnimationSyncPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
 public class ItemAnimationCapabilityHandler implements IItemAnimationCapability
 {
 	private int animationId;
-	private Player host;
+	private LivingEntity entity;
 	private ItemStack stack;
 	private AnimationState animationState = new AnimationState();
 	
@@ -32,11 +32,9 @@ public class ItemAnimationCapabilityHandler implements IItemAnimationCapability
 	}
 
 	@Override
-	public void setPlayer(Player entity)
+	public void setEntity(LivingEntity entity)
 	{
-		this.host = entity;
-		//FIXME
-		//this.sendUpdatePacket();
+		this.entity = entity;
 	}
 	
 	@Override
@@ -48,7 +46,7 @@ public class ItemAnimationCapabilityHandler implements IItemAnimationCapability
 	@Override
 	public void update()
 	{
-		if(this.host.level.isClientSide)
+		if(this.entity.level.isClientSide)
 		{
 			if(this.animationId == 0)
 			{
@@ -56,7 +54,7 @@ public class ItemAnimationCapabilityHandler implements IItemAnimationCapability
 			}
 			else
 			{
-				this.animationState.startIfStopped(this.host.tickCount);
+				this.animationState.startIfStopped(this.entity.tickCount);
 			}
 		}
 	}
@@ -82,9 +80,9 @@ public class ItemAnimationCapabilityHandler implements IItemAnimationCapability
 	
 	private void sendUpdatePacket() 
 	{
-		if(this.host instanceof ServerPlayer)
+		if(this.entity instanceof ServerPlayer)
 		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new ItemAnimationSyncPacket(this.host, this.stack, this));
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new ItemAnimationSyncPacket(this.entity, this.stack, this));
 		}
 	}
 }

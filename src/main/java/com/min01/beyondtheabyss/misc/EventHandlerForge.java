@@ -40,18 +40,15 @@ public class EventHandlerForge
         
     	entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(IBTAAbilitiesCapability::update);
     	
-    	if(entity instanceof Player player)
-    	{
-    		for(InteractionHand hands : InteractionHand.values())
-    		{
-    			ItemStack stack = player.getItemInHand(hands);
-    			stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(cap ->
-    			{
-    				cap.setPlayer(player);
-    				cap.update();
-    			});
-    		}
-    	}
+		for(InteractionHand hands : InteractionHand.values())
+		{
+			ItemStack stack = entity.getItemInHand(hands);
+			stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(cap ->
+			{
+				cap.setEntity(entity);
+				cap.update();
+			});
+		}
 	}
     
     @SubscribeEvent
