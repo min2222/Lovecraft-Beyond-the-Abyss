@@ -53,7 +53,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     {
     	if(this.shouldStopMovingWhenStart())
     	{
-        	this.getMob().setShouldMove(false);
+        	this.getMob().setCanMove(false);
     	}
     	
     	this.getMob().setAggressive(true);
@@ -74,7 +74,7 @@ public abstract class AbstractBTASkillGoal extends Goal
 	{
 		if(this.shouldStopMovingWhenStart())
 		{
-			this.getMob().setShouldMove(true);
+			this.getMob().setCanMove(true);
 		}
 		this.getMob().setAggressive(false);
 	}

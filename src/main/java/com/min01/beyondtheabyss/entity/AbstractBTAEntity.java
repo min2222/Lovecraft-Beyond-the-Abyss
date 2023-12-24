@@ -14,7 +14,7 @@ public abstract class AbstractBTAEntity extends PathfinderMob
 {
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Byte> DATA_SKILL_ID = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BYTE);
-	public static final EntityDataAccessor<Boolean> SHOULD_MOVE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
 	public int skillUsingTickCount;
@@ -44,7 +44,7 @@ public abstract class AbstractBTAEntity extends PathfinderMob
 		super.defineSynchedData();
 		this.entityData.define(DATA_SKILL_ID, (byte)0);
 		this.entityData.define(ANIMATION_STATE, 0);
-		this.entityData.define(SHOULD_MOVE, true);
+		this.entityData.define(CAN_MOVE, true);
 		this.entityData.define(IS_BOSS, false);
 		this.entityData.define(IS_HOSTILE, false);
 	}
@@ -52,11 +52,11 @@ public abstract class AbstractBTAEntity extends PathfinderMob
     @Override
 	public void move(MoverType p_19973_, Vec3 p_19974_) 
 	{
-		if(this.shouldMove())
+		if(this.canMove())
 		{
 			super.move(p_19973_, p_19974_);
 		}
-		else if(!this.shouldMove())
+		else if(!this.canMove())
 		{
 			double yvec = this.onGround || this.isNoGravity() ? 0 : this.getDeltaMovement().y;
 			super.move(p_19973_, new Vec3(0, yvec, 0));
@@ -124,14 +124,14 @@ public abstract class AbstractBTAEntity extends PathfinderMob
         return this.entityData.get(ANIMATION_STATE);
     }
     
-    public void setShouldMove(boolean value)
+    public void setCanMove(boolean value)
     {
-    	this.entityData.set(SHOULD_MOVE, value);
+    	this.entityData.set(CAN_MOVE, value);
     }
     
-    public boolean shouldMove()
+    public boolean canMove()
     {
-    	return this.entityData.get(SHOULD_MOVE);
+    	return this.entityData.get(CAN_MOVE);
     }
     
 	protected int getSkillUsingTime()
