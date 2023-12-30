@@ -4,7 +4,11 @@
 	"package": "com.min01.beyondtheabyss.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"MixinFluidStatus"
+		"MixinFluidStatus",
+		"MixinEntity",
+		"MixinBehaviorUtils",
+		"MixinLivingEntity",
+		"MixinSwimNodeEvaluator"
 	],
 	"client": [
 		"MixinLevelRenderer",

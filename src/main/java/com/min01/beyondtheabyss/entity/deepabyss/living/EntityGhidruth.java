@@ -199,15 +199,15 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         float pitch = this.getRenderXRot() * piDividedBy180;
         float headPitch = (this.getHeadYRot() + this.getRenderXRot()) * 4 * piDividedBy180;
         
-        float xRot = Mth.sin(yRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
-        float zRot = Mth.cos(yRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
+        float xRot = Mth.sin(yRot) * (1F - Math.abs(this.getRenderXRot() / 90F));
+        float zRot = Mth.cos(yRot) * (1F - Math.abs(this.getRenderXRot() / 90F));
 
         float tailYRot = (this.getTailYRot() + this.yBodyRot) * piDividedBy180;
-        float tailXRot = Mth.sin(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
-        float tailZRot = Mth.cos(tailYRot) * (1 - Math.abs(this.getRenderXRot() / 90F));
+        float tailXRot = Mth.sin(tailYRot) * (1F - Math.abs(this.getRenderXRot() / 90F));
+        float tailZRot = Mth.cos(tailYRot) * (1F - Math.abs(this.getRenderXRot() / 90F));
 
         this.setPartPosition(this.tail, tailXRot * 11F, -pitch * -7F, -tailZRot * 11F);
-        this.setPartPosition(this.body, (xRot) * 5.5F, -pitch * -4F, (zRot) * -5.5F);
+        this.setPartPosition(this.body, (tailXRot) * 5.5F, -pitch * -4F, (tailZRot) * -5.5F);
         this.setPartPosition(this.head, xRot * -5F, -headPitch * 1F, -zRot * -5F);
         
     	if(this.level.isClientSide) 
@@ -226,17 +226,17 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     @Override
     public void travel(Vec3 p_27490_) 
     {
-    	if (this.isEffectiveAi() && this.isInWater()) 
+    	if (this.isEffectiveAi() && this.isInWater())
     	{
     		this.moveRelative(this.getSpeed(), p_27490_);
-            this.move(MoverType.SELF, this.getDeltaMovement());
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-            if (this.getTarget() == null) 
-            {
-            	this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
-            }
-    	} 
-    	else 
+    		this.move(MoverType.SELF, this.getDeltaMovement());
+    		this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+    		if (this.getTarget() == null) 
+    		{
+    			this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
+    		}
+    	}
+    	else
     	{
     		super.travel(p_27490_);
     	}

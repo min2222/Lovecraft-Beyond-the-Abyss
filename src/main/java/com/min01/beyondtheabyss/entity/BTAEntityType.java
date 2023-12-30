@@ -18,7 +18,7 @@ public class BTAEntityType
 	
 	//misc
 	public static final RegistryObject<EntityType<EntityDeepAbyssPortal>> DEEP_ABYSS_PORTAL = registerWithSize(EntityDeepAbyssPortal::new, "deep_abyss_portal", MobCategory.MISC, 3F, 0.25F);
-	public static final RegistryObject<EntityType<EntityBTACameraShake>> BTA_CAMERA_SHAKE = registerWithoutSize(EntityBTACameraShake::new, "abyss_camera_shake", MobCategory.MISC);
+	public static final RegistryObject<EntityType<EntityBTACameraShake>> BTA_CAMERA_SHAKE = registerWithoutSize(EntityBTACameraShake::new, "bta_camera_shake", MobCategory.MISC);
 	
 	//living
 	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerWithSize(EntityGhidruth::new, "ghidruth", MobCategory.WATER_CREATURE, 5.2F, 4.5F);

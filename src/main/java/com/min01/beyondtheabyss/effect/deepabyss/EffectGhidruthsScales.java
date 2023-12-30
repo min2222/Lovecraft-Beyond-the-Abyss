@@ -11,7 +11,7 @@ public class EffectGhidruthsScales extends MobEffect
 	public EffectGhidruthsScales(double multiplier)
 	{
 		super(MobEffectCategory.NEUTRAL, 657950);
-	      this.multiplier = multiplier;
+		this.multiplier = multiplier;
 	}
 	
 	@Override

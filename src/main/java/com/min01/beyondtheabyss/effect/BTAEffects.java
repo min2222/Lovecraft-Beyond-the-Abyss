@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.effect;
 import java.util.UUID;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.effect.deepabyss.EffectAirSwim;
 import com.min01.beyondtheabyss.effect.deepabyss.EffectGhidruthsScales;
 
 import net.minecraft.world.effect.MobEffect;
@@ -23,4 +24,6 @@ public class BTAEffects
 		ghidruth.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		return ghidruth;
 	});
+	
+	public static final RegistryObject<MobEffect> AIR_SWIM = EFFECTS.register("air_swim", () -> new EffectAirSwim());
 }

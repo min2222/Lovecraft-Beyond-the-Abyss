@@ -25,7 +25,7 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 	protected void scale(EntityGhidruth p_115314_, PoseStack p_115315_, float p_115316_)
 	{
 		p_115315_.scale(1.5F, 1.5F, 1.5F);
-		p_115315_.translate(0, 0.6F, 0);
+		p_115315_.translate(0, -0.1F, 0);
 	}
 
 	@Override

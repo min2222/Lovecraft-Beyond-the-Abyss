@@ -33,5 +33,6 @@
 	"item.beyondtheabyss.ghidruth_diving_boots": "Ghidruth Diving Boots",
 	"block.beyondtheabyss.altar_of_deep": "Altar of Deep",
 	"death.attack.ghidruth_flesh": "%1$s teeth shattered while trying to chew on Ghidruth's flesh.",
-	"effect.beyondtheabyss.ghidruths_scales": "Ghidruth's Scales"
+	"effect.beyondtheabyss.ghidruths_scales": "Ghidruth's Scales",
+	"effect.beyondtheabyss.air_swim": "Air Swim"
 }
