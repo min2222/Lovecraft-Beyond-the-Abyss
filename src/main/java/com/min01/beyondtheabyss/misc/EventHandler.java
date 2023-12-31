@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.misc;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
-import com.min01.beyondtheabyss.entity.BTAEntityType;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
 
 import net.minecraft.world.entity.SpawnPlacements;
@@ -21,13 +21,13 @@ public class EventHandler
     @SubscribeEvent
     public static void entityAttributes(EntityAttributeCreationEvent event) 
     {
-    	event.put(BTAEntityType.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
+    	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
     }
     
 	@SubscribeEvent
 	public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event)
 	{
-		event.register(BTAEntityType.GHIDRUTH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGhidruth::checkGhidruthSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+		event.register(BTAEntities.GHIDRUTH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGhidruth::checkGhidruthSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
 	}
 	
     @SubscribeEvent

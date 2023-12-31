@@ -4,7 +4,7 @@ import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.BTAEntityType;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.proxy.ClientProxy;
@@ -30,7 +30,7 @@ public class BeyondtheAbyss
 	public BeyondtheAbyss() 
 	{
 		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
-		BTAEntityType.ENTITY_TYPES.register(MOD_EVENT_BUS);
+		BTAEntities.ENTITY_TYPES.register(MOD_EVENT_BUS);
 		BTAItems.ITEMS.register(MOD_EVENT_BUS);
 		BTABlocks.BLOCKS.register(MOD_EVENT_BUS);
 		BTABlocks.BLOCK_ENTITIES.register(MOD_EVENT_BUS);

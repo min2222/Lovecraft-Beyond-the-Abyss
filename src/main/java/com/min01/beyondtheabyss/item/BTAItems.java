@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.entity.BTAEntityType;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.armor.ItemAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemGhidruthDiverSet;
@@ -40,7 +40,7 @@ public class BTAItems
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
 	
 	//spawn eggs
-	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = ITEMS.register("ghidruth_spawn_egg", () -> new ForgeSpawnEggItem(() -> BTAEntityType.GHIDRUTH.get(), 862018, 10239048, new Item.Properties().tab(BTACreativeTabs.ABYSS_MOBS)));
+	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = ITEMS.register("ghidruth_spawn_egg", () -> new ForgeSpawnEggItem(() -> BTAEntities.GHIDRUTH.get(), 862018, 10239048, new Item.Properties().tab(BTACreativeTabs.ABYSS_MOBS)));
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(BTACreativeTabs.ABYSS_MATERIALS)));

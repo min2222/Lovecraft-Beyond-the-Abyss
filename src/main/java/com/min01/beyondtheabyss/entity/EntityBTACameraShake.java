@@ -31,7 +31,7 @@ public class EntityBTACameraShake extends Entity
 
     public EntityBTACameraShake(Level world, Vec3 position, float radius, float magnitude, int duration, int fadeDuration) 
     {
-        super(BTAEntityType.BTA_CAMERA_SHAKE.get(), world);
+        super(BTAEntities.BTA_CAMERA_SHAKE.get(), world);
         setRadius(radius);
         setMagnitude(magnitude);
         setDuration(duration);

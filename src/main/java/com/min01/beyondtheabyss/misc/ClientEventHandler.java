@@ -7,7 +7,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
 import com.min01.beyondtheabyss.blockentity.renderer.AltarOfDeepRenderer;
-import com.min01.beyondtheabyss.entity.BTAEntityType;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
@@ -63,11 +63,11 @@ public class ClientEventHandler
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
     	//misc
-    	event.registerEntityRenderer(BTAEntityType.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
-    	event.registerEntityRenderer(BTAEntityType.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
+    	event.registerEntityRenderer(BTAEntities.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
     	
     	//living
-    	event.registerEntityRenderer(BTAEntityType.GHIDRUTH.get(), GhidruthRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);
     }
     
     @SubscribeEvent

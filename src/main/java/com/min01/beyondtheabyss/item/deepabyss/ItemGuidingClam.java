@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
-import com.min01.beyondtheabyss.entity.BTAEntityType;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.misc.BTACreativeTabs;
@@ -41,7 +41,7 @@ public class ItemGuidingClam extends Item
             	entity.discard();
             	if(!entity.level.isClientSide)
             	{
-            		EntityDeepAbyssPortal portal = new EntityDeepAbyssPortal(BTAEntityType.DEEP_ABYSS_PORTAL.get(), entity.level);
+            		EntityDeepAbyssPortal portal = new EntityDeepAbyssPortal(BTAEntities.DEEP_ABYSS_PORTAL.get(), entity.level);
             		portal.setPos(entity.position());
             		entity.level.addFreshEntity(portal);
             	}
