@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -40,7 +41,7 @@ public abstract class AbstractMultipartDeepAbyssEntity extends AbstractDeepAbyss
     	if(this.getTarget() != null)
     	{
     		this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-    		this.getLookControl().setLookAt(this.getTarget());
+    		this.lookAt(Anchor.EYES, this.getTarget().position().add(0, this.getTarget().getEyeHeight(), 0));
     	}
     	
     	this.refreshDimensions();
