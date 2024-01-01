@@ -9,8 +9,8 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class BTAConfig 
 {
-    private static ForgeConfigSpec.Builder builder;
-    public static ForgeConfigSpec config;
+    private static ForgeConfigSpec.Builder BUILDER;
+    public static ForgeConfigSpec CONFIG;
 
 	public static ForgeConfigSpec.BooleanValue cameraShakesAllowed;
     
@@ -23,9 +23,9 @@ public class BTAConfig
     
     static 
     {
-    	builder = new ForgeConfigSpec.Builder();
-    	BTAConfig.init(BTAConfig.builder);
-        config = BTAConfig.builder.build();
+    	BUILDER = new ForgeConfigSpec.Builder();
+    	BTAConfig.init(BTAConfig.BUILDER);
+    	CONFIG = BTAConfig.BUILDER.build();
     }
 	
     public static void init(ForgeConfigSpec.Builder config) 

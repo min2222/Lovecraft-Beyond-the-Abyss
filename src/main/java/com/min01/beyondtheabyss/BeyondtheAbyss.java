@@ -40,6 +40,6 @@ public class BeyondtheAbyss
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::attachEntityCapability);
 		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::attachItemStackCapability);
 		
-        BTAConfig.loadConfig(BTAConfig.config, FMLPaths.CONFIGDIR.get().resolve("beyond-the-abyss.toml").toString());
+        BTAConfig.loadConfig(BTAConfig.CONFIG, FMLPaths.CONFIGDIR.get().resolve("beyond-the-abyss.toml").toString());
 	}
 }
