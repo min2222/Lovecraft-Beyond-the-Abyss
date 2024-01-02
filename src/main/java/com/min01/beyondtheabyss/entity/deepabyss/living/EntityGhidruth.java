@@ -47,7 +47,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	
 	public static final EntityDataAccessor<Float> TAIL_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> HEAD_Y_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
-	
 	public static final EntityDataAccessor<Float> RENDER_X_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);	
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
