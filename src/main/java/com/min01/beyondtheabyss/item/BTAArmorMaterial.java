@@ -33,7 +33,7 @@ public class BTAArmorMaterial implements ArmorMaterial
 	@Override
 	public int getDurabilityForSlot(EquipmentSlot p_40484_) 
 	{
-		return durability[p_40484_.getIndex()];
+		return this.durability[p_40484_.getIndex()];
 	}
 
 	@Override
