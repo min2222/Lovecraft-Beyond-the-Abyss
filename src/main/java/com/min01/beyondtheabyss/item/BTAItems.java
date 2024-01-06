@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.item;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
@@ -16,7 +17,9 @@ import com.min01.beyondtheabyss.misc.BTACreativeTabs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.BlockItem;
@@ -40,14 +43,17 @@ public class BTAItems
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
 	
 	//spawn eggs
-	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = ITEMS.register("ghidruth_spawn_egg", () -> new ForgeSpawnEggItem(() -> BTAEntities.GHIDRUTH.get(), 862018, 10239048, new Item.Properties().tab(BTACreativeTabs.ABYSS_MOBS)));
+	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = registerSpawnEgg("ghidruth_spawn_egg", () -> BTAEntities.GHIDRUTH.get(), 862018, 10239048);
+	//public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerCustomSpawnEgg("forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get());
 	
 	//materials
-	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(BTACreativeTabs.ABYSS_MATERIALS)));
-	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new Item(new Item.Properties().stacksTo(1).tab(BTACreativeTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> GHIDRUTH_SCALE = registerMaterialItem("ghidruth_scale");
+	public static final RegistryObject<Item> OXYGEN_TANK = registerUniqueMaterialItem("oxygen_tank");
+	public static final RegistryObject<Item> JUGGERNAUT_SUCTION_ORGAN = registerUniqueMaterialItem("juggernaut_suction_organ");
 	
 	//misc
 	public static final RegistryObject<Item> GUIDING_CLAM = ITEMS.register("guiding_clam", () -> new ItemGuidingClam());
+	public static final RegistryObject<Item> HEART_OF_FORNEUS = registerImportantItem("heart_of_forneus");
 	
 	//foods
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new ItemGhidruthFlesh(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build(), true));
@@ -85,4 +91,34 @@ public class BTAItems
 			});
 		};
 	});
+	
+	public static RegistryObject<Item> registerCustomSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type)
+	{
+		return registerSpawnEgg(name, type, 16777215, 16777215);
+	}
+	
+	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
+	{
+		return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties().tab(BTACreativeTabs.ABYSS_MOBS)));
+	}
+	
+	public static RegistryObject<Item> registerImportantItem(String name)
+	{
+		return ITEMS.register(name, () -> new Item(new Item.Properties().tab(BTACreativeTabs.ABYSS_MISC).stacksTo(1).rarity(Rarity.EPIC)));
+	}
+	
+	public static RegistryObject<Item> registerUniqueMaterialItem(String name)
+	{
+		return registerMaterialItem(name, 1);
+	}
+	
+	public static RegistryObject<Item> registerMaterialItem(String name)
+	{
+		return registerMaterialItem(name, 64);
+	}
+	
+	public static RegistryObject<Item> registerMaterialItem(String name, int maxStack)
+	{
+		return ITEMS.register(name, () -> new Item(new Item.Properties().stacksTo(maxStack).tab(BTACreativeTabs.ABYSS_MATERIALS)));
+	}
 }
