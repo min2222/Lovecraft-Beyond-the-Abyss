@@ -156,7 +156,7 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		//TODO
-		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks * (limbSwingAmount / 100));
+		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks * (limbSwingAmount / 50));
 		this.animate(entity.biteAnimationState, GhidruthAnimation.GHIDRUTH_BITE, ageInTicks);
 		this.animate(entity.tailSwingAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING, ageInTicks);
 		this.root.getChild("root2").xRot += (headPitch * ((float)Math.PI / 180F)) * 0.7F;

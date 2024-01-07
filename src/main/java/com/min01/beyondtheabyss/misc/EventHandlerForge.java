@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.misc;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
+import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.world.InteractionHand;
@@ -48,6 +49,11 @@ public class EventHandlerForge
 				cap.setEntity(entity);
 				cap.update();
 			});
+		}
+		
+		if(entity.hasEffect(BTAEffects.AIR_SWIM.get()))
+		{
+			entity.resetFallDistance();
 		}
 	}
     

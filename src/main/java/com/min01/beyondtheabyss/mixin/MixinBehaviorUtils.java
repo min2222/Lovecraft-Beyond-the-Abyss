@@ -23,8 +23,8 @@ public class MixinBehaviorUtils
 		ci.cancel();
 		
 		Vec3 vec3 = DefaultRandomPos.getPos(p_147445_, p_147446_, p_147447_);
-
-		for(int i = 0; vec3 != null && p_147445_.hasEffect(BTAEffects.AIR_SWIM.get()) ? !p_147445_.level.getBlockState(new BlockPos(vec3)).isPathfindable(p_147445_.level, new BlockPos(vec3), PathComputationType.AIR) : !p_147445_.level.getBlockState(new BlockPos(vec3)).isPathfindable(p_147445_.level, new BlockPos(vec3), PathComputationType.WATER) && i++ < 10; vec3 = DefaultRandomPos.getPos(p_147445_, p_147446_, p_147447_))
+		PathComputationType type = p_147445_.hasEffect(BTAEffects.AIR_SWIM.get()) ? PathComputationType.AIR : PathComputationType.WATER;
+		for(int i = 0; vec3 != null && !p_147445_.level.getBlockState(new BlockPos(vec3)).isPathfindable(p_147445_.level, new BlockPos(vec3), type) && i++ < 10; vec3 = DefaultRandomPos.getPos(p_147445_, p_147446_, p_147447_))
 		{
 			
 		}
