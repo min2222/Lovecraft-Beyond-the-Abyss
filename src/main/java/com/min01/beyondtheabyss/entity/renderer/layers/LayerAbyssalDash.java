@@ -50,7 +50,7 @@ public class LayerAbyssalDash<T extends LivingEntity, M extends EntityModel<T>> 
 	{
 		if(DeepAbyssUtil.isDoingAbyssalDash(p_117352_)) 
 		{
-			VertexConsumer vertexconsumer = p_117350_.getBuffer(BTARenderType.getGlowingEffect(TEXTURE));
+			VertexConsumer vertexconsumer = p_117350_.getBuffer(BTARenderType.entityCutoutNoCull(TEXTURE));
 
 			for(int i = 0; i < 3; ++i)
 			{
