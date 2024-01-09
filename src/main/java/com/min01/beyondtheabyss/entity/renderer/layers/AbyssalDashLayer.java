@@ -23,14 +23,14 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-public class LayerAbyssalDash<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
+public class AbyssalDashLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/abyssal_dash.png");
 	public static final String BOX = "box";
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "abyssal_dash"), "main");
 	private final ModelPart box;
 	   
-	public LayerAbyssalDash(RenderLayerParent<T, M> p_117346_) 
+	public AbyssalDashLayer(RenderLayerParent<T, M> p_117346_) 
 	{
 		super(p_117346_);
 		ModelPart modelpart = ClientEventHandler.MC.getEntityModels().bakeLayer(LAYER_LOCATION);

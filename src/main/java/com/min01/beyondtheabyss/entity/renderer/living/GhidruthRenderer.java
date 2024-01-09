@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.entity.renderer.living;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
-import com.min01.beyondtheabyss.entity.renderer.layers.LayerGlowingModel;
+import com.min01.beyondtheabyss.entity.renderer.layers.GlowingLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -19,8 +19,8 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 	public GhidruthRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelGhidruth(p_174304_.bakeLayer(ModelGhidruth.LAYER_LOCATION)), 0);
-		this.addLayer(new LayerGlowingModel<>(this, LAYER));
-		this.addLayer(new LayerGlowingModel<>(this, DASH_LAYER));
+		this.addLayer(new GlowingLayer<>(this, LAYER));
+		this.addLayer(new GlowingLayer<>(this, DASH_LAYER));
 	}
 	
 	@Override

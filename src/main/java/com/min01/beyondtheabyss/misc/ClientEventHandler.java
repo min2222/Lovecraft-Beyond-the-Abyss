@@ -12,8 +12,8 @@ import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
-import com.min01.beyondtheabyss.entity.renderer.layers.LayerAbyssalDash;
-import com.min01.beyondtheabyss.entity.renderer.layers.LayerGhidruthScaleArmor;
+import com.min01.beyondtheabyss.entity.renderer.layers.AbyssalDashLayer;
+import com.min01.beyondtheabyss.entity.renderer.layers.GhidruthScaleArmorLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
@@ -77,7 +77,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthDiverSet.LAYER_LOCATION, ModelGhidruthDiverSet::createBodyLayer);
-    	event.registerLayerDefinition(LayerAbyssalDash.LAYER_LOCATION, LayerAbyssalDash::createLayer);
+    	event.registerLayerDefinition(AbyssalDashLayer.LAYER_LOCATION, AbyssalDashLayer::createLayer);
     	event.registerLayerDefinition(ModelAltarOfDeep.LAYER_LOCATION, ModelAltarOfDeep::createBodyLayer);
     }
     
@@ -105,7 +105,7 @@ public class ClientEventHandler
 	
 	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer)
 	{
-		renderer.addLayer(new LayerAbyssalDash<>(renderer));
-		renderer.addLayer(new LayerGhidruthScaleArmor<>(renderer));
+		renderer.addLayer(new AbyssalDashLayer<>(renderer));
+		renderer.addLayer(new GhidruthScaleArmorLayer<>(renderer));
 	}
 }

@@ -16,9 +16,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-public class LayerGhidruthScaleArmor<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
+public class GhidruthScaleArmorLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
-    public LayerGhidruthScaleArmor(RenderLayerParent<T, M> renderer) 
+    public GhidruthScaleArmorLayer(RenderLayerParent<T, M> renderer) 
     {
         super(renderer);
     }

@@ -12,11 +12,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-public class LayerGlowingModel<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
+public class GlowingLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
     private final ResourceLocation texture;
 
-    public LayerGlowingModel(RenderLayerParent<T, M> renderer, ResourceLocation texture) 
+    public GlowingLayer(RenderLayerParent<T, M> renderer, ResourceLocation texture) 
     {
         super(renderer);
         this.texture = texture;
