@@ -14,11 +14,13 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth.png");
 	public static final ResourceLocation LAYER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_layer.png");
+	public static final ResourceLocation DASH_LAYER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_dash_eye_layer.png");
 	
 	public GhidruthRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelGhidruth(p_174304_.bakeLayer(ModelGhidruth.LAYER_LOCATION)), 0);
 		this.addLayer(new LayerGlowingModel<>(this, LAYER));
+		this.addLayer(new LayerGlowingModel<>(this, DASH_LAYER));
 	}
 	
 	@Override

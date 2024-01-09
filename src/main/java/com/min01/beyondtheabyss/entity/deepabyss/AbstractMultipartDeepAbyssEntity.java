@@ -41,7 +41,7 @@ public abstract class AbstractMultipartDeepAbyssEntity extends AbstractDeepAbyss
     	if(this.getTarget() != null)
     	{
     		this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-    		this.lookAt(Anchor.EYES, this.getTarget().position().add(0, this.getTarget().getEyeHeight(), 0));
+    		this.lookAt(Anchor.FEET, this.getTarget().position().add(0, this.getTarget().getEyeHeight(), 0));
     	}
     	
     	this.refreshDimensions();

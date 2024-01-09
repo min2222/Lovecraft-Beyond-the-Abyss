@@ -82,12 +82,6 @@ public abstract class AbstractBTASkillGoal extends Goal
     @Override
     public void tick() 
     {
-    	//looks like not working properly
-    	if(this.getMob().getTarget() != null)
-    	{
-        	this.getMob().getLookControl().setLookAt(this.getMob().getTarget(), 30.0F, 30.0F);
-    	}
-    	
     	--this.skillWarmupDelay;
     	if (this.skillWarmupDelay == 0) 
     	{
@@ -109,5 +103,5 @@ public abstract class AbstractBTASkillGoal extends Goal
     
     public abstract AbstractBTAEntity getMob();
     
-    protected abstract AbstractBTAEntity.AbyssSkills getSkills();
+    protected abstract AbstractBTAEntity.BTASkills getSkills();
 }

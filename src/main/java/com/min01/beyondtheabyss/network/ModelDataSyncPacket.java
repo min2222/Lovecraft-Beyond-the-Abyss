@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +25,7 @@ public class ModelDataSyncPacket
 
 	public enum ModelType 
 	{
-		TAIL_ROT, HEAD_ROT, RENDER_ROT;
+		TAIL_ROT, HEAD_ROT
 	}
 
 	public ModelDataSyncPacket(Entity entity, float x, float y, float z, ModelType type) 
@@ -69,11 +70,9 @@ public class ModelDataSyncPacket
 						switch (message.modelType) 
 						{
 						case TAIL_ROT:
-							ghidruth.setTailYRot(message.y);
+							ghidruth.setTailRotation(new BlockPos(message.x, message.y, message.z));
 						case HEAD_ROT:
-							ghidruth.setHeadYRot(message.y);
-						case RENDER_ROT:
-							ghidruth.setRenderXRot(message.y);
+							ghidruth.setHeadRotation(new BlockPos(message.x, message.y, message.z));
 						}
 					}
 				}

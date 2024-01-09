@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,8 +18,10 @@ public abstract class AbstractBTAEntity extends PathfinderMob
 	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> CAN_LOOK_OR_MOVE = SynchedEntityData.defineId(AbstractBTAEntity.class, EntityDataSerializers.BOOLEAN);
+	
 	public int skillUsingTickCount;
-	private AbstractBTAEntity.AbyssSkills currentSkill = AbstractBTAEntity.AbyssSkills.NONE;
+	private AbstractBTAEntity.BTASkills currentSkill = AbstractBTAEntity.BTASkills.NONE;
 	
 	public AbstractBTAEntity(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -29,7 +32,7 @@ public abstract class AbstractBTAEntity extends PathfinderMob
 	@Override
 	protected boolean shouldDespawnInPeaceful()
 	{
-		return this.isBoss();
+		return this.isBoss() || this.isHostile();
 	}
 	
 	@Override
@@ -47,6 +50,7 @@ public abstract class AbstractBTAEntity extends PathfinderMob
 		this.entityData.define(CAN_MOVE, true);
 		this.entityData.define(IS_BOSS, false);
 		this.entityData.define(IS_HOSTILE, false);
+		this.entityData.define(CAN_LOOK_OR_MOVE, true);
 	}
 	
     @Override
@@ -63,12 +67,12 @@ public abstract class AbstractBTAEntity extends PathfinderMob
 		}
 	}
     
-	protected AbstractBTAEntity.AbyssSkills getCurrentSkill() 
+	protected AbstractBTAEntity.BTASkills getCurrentSkill() 
 	{
-		return !this.level.isClientSide ? this.currentSkill : AbstractBTAEntity.AbyssSkills.byId(this.entityData.get(DATA_SKILL_ID));
+		return !this.level.isClientSide ? this.currentSkill : AbstractBTAEntity.BTASkills.byId(this.entityData.get(DATA_SKILL_ID));
 	}
 	
-	public void setIsUsingSkill(AbstractBTAEntity.AbyssSkills p_33728_) 
+	public void setIsUsingSkill(AbstractBTAEntity.BTASkills p_33728_) 
 	{
 		this.currentSkill = p_33728_;
 		this.entityData.set(DATA_SKILL_ID, (byte)p_33728_.id);
@@ -80,10 +84,10 @@ public abstract class AbstractBTAEntity extends PathfinderMob
 		super.aiStep();
 		if(this.isHostile())
 		{
-			if(this.getTarget() != null)
+			if(this.getTarget() != null && this.canLookOrMove())
 			{
 				this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-				this.getLookControl().setLookAt(this.getTarget(), 30, 30);
+				this.lookAt(Anchor.FEET, this.getTarget().position());
 			}
 		}
 	}
@@ -92,6 +96,16 @@ public abstract class AbstractBTAEntity extends PathfinderMob
 	{
 		this.setBoss(true);
 		this.setHostile(true);
+	}
+	
+	public void setCanLookOrMove(boolean value)
+	{
+		this.entityData.set(CAN_LOOK_OR_MOVE, value);
+	}
+	
+	public boolean canLookOrMove()
+	{
+		return this.entityData.get(CAN_LOOK_OR_MOVE);
 	}
 	
 	public void setHostile(boolean value)
@@ -166,23 +180,23 @@ public abstract class AbstractBTAEntity extends PathfinderMob
     	
     }
     
-	public static enum AbyssSkills
+	public static enum BTASkills
 	{
 		NONE(0),
-		GHIDRUTH_DASH(1),
-		GHIDRUTH_BITE(2),
-		GHIDRUTH_TAIL_SWING(3);
+		GHIDRUTH_BITE(1),
+		GHIDRUTH_TAIL_SWING(2),
+		GHIDRUTH_DASH_PREPARE(3);
 		
 		int id;
 
-		private AbyssSkills(int p_33754_) 
+		private BTASkills(int p_33754_) 
 		{
 			this.id = p_33754_;
 		}
 		
-		public static AbstractBTAEntity.AbyssSkills byId(int p_33759_)
+		public static AbstractBTAEntity.BTASkills byId(int p_33759_)
 		{
-			for(AbstractBTAEntity.AbyssSkills skils : values()) 
+			for(AbstractBTAEntity.BTASkills skils : values()) 
 			{
 				if (p_33759_ == skils.id) 
 				{

@@ -18,6 +18,32 @@ import net.minecraft.world.phys.Vec3;
 
 public class BTAUtil 
 {
+	public static float rotlerp(float p_24992_, float p_24993_, float p_24994_)
+	{
+		float f = Mth.wrapDegrees(p_24993_ - p_24992_);
+		if (f > p_24994_) 
+		{
+			f = p_24994_;
+		}
+
+		if (f < -p_24994_) 
+		{
+			f = -p_24994_;
+		}
+
+		float f1 = p_24992_ + f;
+		if (f1 < 0.0F)
+		{
+			f1 += 360.0F;
+		}
+		else if (f1 > 360.0F)
+		{
+			f1 -= 360.0F;
+		}
+
+		return f1;
+	}
+	   
 	public static int getAbilityTickcount(BTAAbilities ability, LivingEntity entity)
 	{
 		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
@@ -106,46 +132,12 @@ public class BTAUtil
 		double d1 = entity.getZ() - entity.zo;
 		return d0 * d0 + d1 * d1 > (double)2.5000003E-7F;
 	}
-	
-	public static Vec3 caculateBackwardVector(Entity entity, float yRot, Vec3 multiplier)
+
+	public static Vec3 getLookPos(float xRot, float yRot, float yPos, double distance)
 	{
-    	float f14 = yRot * ((float)Math.PI / 180F);
-        float x = Mth.sin(f14);
-        float y = Mth.sin(f14);
-        float z = Mth.cos(f14);
-        return new Vec3(entity.getX() + (x * multiplier.x), entity.getY() + (-y * multiplier.y), entity.getZ() + (z * -multiplier.z));
-	}
-	
-	public static Vec3 caculateForwardVector(Entity entity, float yRot, Vec3 multiplier)
-	{
-    	float f14 = yRot * ((float)Math.PI / 180F);
-        float x = Mth.sin(f14);
-        float y = Mth.sin(f14);
-        float z = Mth.cos(f14);
-        return new Vec3(entity.getX() + (x * -multiplier.x), entity.getY() + (-y * multiplier.y), entity.getZ() + (z * multiplier.z));
-	}
-	
-	public static Vec3 caculateForwardVector(Entity entity, Vec3 multiplier)
-	{
-    	float f14 = entity.getYRot() * ((float)Math.PI / 180F);
-        float x = Mth.sin(f14);
-        float z = Mth.cos(f14);
-        return new Vec3(entity.getX() + (x * -multiplier.x), entity.getY() + multiplier.y, entity.getZ() + (z * multiplier.z));
-	}
-	
-	public static Vec3 caculateBackwardVector(Entity entity, Vec3 multiplier)
-	{
-    	float f14 = entity.getYRot() * ((float)Math.PI / 180F);
-        float x = Mth.sin(f14);
-        float z = Mth.cos(f14);
-        return new Vec3(entity.getX() + (x * multiplier.x), entity.getY() + multiplier.y, entity.getZ() + (z * -multiplier.z));
-	}
-	
-	public static Vec3 caculateSideVector(Entity entity, Vec3 multiplier)
-	{
-    	float f14 = entity.getYRot() * ((float)Math.PI / 180F);
-        float x = Mth.sin(f14);
-        float z = Mth.cos(f14);
-        return new Vec3(entity.getX() + (x * multiplier.x), entity.getY() + multiplier.y, entity.getZ() + (z * multiplier.z));
+		float f = -Mth.sin(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
+		float f1 = -Mth.sin((xRot + yPos) * ((float)Math.PI / 180F));
+		float f2 = Mth.cos(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
+		return new Vec3(f, f1, f2).scale(distance);
 	}
 }

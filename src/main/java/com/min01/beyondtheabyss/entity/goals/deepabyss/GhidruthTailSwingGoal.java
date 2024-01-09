@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.goals.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAEntity.AbyssSkills;
+import com.min01.beyondtheabyss.entity.AbstractBTAEntity.BTASkills;
 import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.goals.BasicBTASkillGoal;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -22,42 +22,27 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 	{
 		super.start();
 		this.mob.setAnimationState(2);
+		this.mob.setAttackCount(this.mob.getAttackCount() + 1);
 	}
 	
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 3.5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 3.5F;
-	}
-	
-	@Override
-	public void tick() 
-	{
-		super.tick();
-		if(this.skillWarmupDelay <= 10)
-		{
-			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(4));
-			for(int i = 0; i < list.size(); i++)
-			{
-				LivingEntity living = list.get(i);
-				if(living != this.mob)
-				{
-					living.hurt(DamageSource.mobAttack(this.mob), 14);
-				}
-			}
-		}
+		return BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash();
 	}
 
 	@Override
 	protected void performSkill()
 	{
-
+		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.body.getBoundingBox().inflate(6));
+		list.removeIf((living) -> living == this.mob);
+		list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 14));
 	}
 
 	@Override
 	protected int getSkillUsingTime() 
 	{
-		return 35;
+		return 30;
 	}
 
 	@Override
@@ -69,7 +54,7 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	protected int getSkillWarmupTime() 
 	{
-		return 25;
+		return 20;
 	}
 	
 	@Override
@@ -80,8 +65,8 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 	}
 
 	@Override
-	protected AbyssSkills getSkills() 
+	protected BTASkills getSkills() 
 	{
-		return AbyssSkills.GHIDRUTH_TAIL_SWING;
+		return BTASkills.GHIDRUTH_TAIL_SWING;
 	}
 }
