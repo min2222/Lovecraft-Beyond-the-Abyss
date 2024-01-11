@@ -35,7 +35,7 @@ public class GhidruthDashPrepareGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	protected void performSkill() 
 	{
-		if(this.mob.head.distanceTo(this.mob.getTarget()) <= 6)
+		if(this.mob.head.distanceTo(this.mob.getTarget()) <= 10)
 		{
 			BlockPos headRot = this.mob.getHeadRotation();
 			Vec3 headLookPos = BTAUtil.getLookPos(headRot.getX() + this.mob.getXRot(), headRot.getY() + this.mob.yHeadRot, 0, 25);
