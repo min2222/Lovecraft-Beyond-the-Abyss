@@ -27,7 +27,6 @@ import net.minecraft.world.entity.LivingEntity;
 public class AbyssalDashLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/abyssal_dash.png");
-	public static final String BOX = "box";
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "abyssal_dash"), "main");
 	private final ModelPart box;
 	   
