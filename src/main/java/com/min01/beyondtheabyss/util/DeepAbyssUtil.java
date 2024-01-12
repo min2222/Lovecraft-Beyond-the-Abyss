@@ -33,16 +33,10 @@ public class DeepAbyssUtil
 		return flag;
 	}
 	
-	public static boolean isDoingAbyssalDash(LivingEntity entity)
+	public static boolean hasAbility(LivingEntity entity, BTAAbilities ability)
 	{
 		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
-		return handler.getAbilities().containsKey(BTAAbilities.ABYSSAL_DASH);
-	}
-	
-	public static boolean hasGhidruthsScales(LivingEntity entity)
-	{
-		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
-		return handler.getAbilities().containsKey(BTAAbilities.GHIDRUTHS_SCALES);
+		return handler.getAbilities().containsKey(ability);
 	}
 	
 	public static void startAbyssalDash(LivingEntity entity)

@@ -61,6 +61,12 @@ public class BTAUtil
 		return new Vec3(d3, d4, d5);
 	}
 	
+	public static Vec3 fromToVector(Vec3 from, Vec3 to)
+	{
+		Vec3 motion = new Vec3(to.x - from.x, to.y - from.y, to.z - from.z).normalize();
+		return motion;
+	}
+	
     public static Entity teleportEntity(Entity entity, ServerLevel endpointWorld, BlockPos endpoint)
     {
         if (entity.getLevel().dimension().location().getPath().equals("deep_abyss"))

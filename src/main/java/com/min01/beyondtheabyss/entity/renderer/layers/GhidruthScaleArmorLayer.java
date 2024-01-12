@@ -26,7 +26,7 @@ public class GhidruthScaleArmorLayer<T extends LivingEntity, M extends EntityMod
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) 
     {
-    	if(DeepAbyssUtil.hasGhidruthsScales(entitylivingbaseIn))
+    	if(DeepAbyssUtil.hasAbility(entitylivingbaseIn, BTAAbilities.GHIDRUTHS_SCALES))
     	{
             VertexConsumer VertexConsumer = bufferIn.getBuffer(RenderType.entityCutout(this.getTexture(entitylivingbaseIn)));
             this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
