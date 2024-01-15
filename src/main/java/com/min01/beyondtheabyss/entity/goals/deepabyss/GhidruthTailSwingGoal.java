@@ -34,7 +34,8 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	protected void performSkill()
 	{
-		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.body.getBoundingBox().inflate(6));
+		//FIXME probably radius is too small or incorrect position
+		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(3.5F));
 		list.removeIf((living) -> living == this.mob);
 		list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 14));
 	}

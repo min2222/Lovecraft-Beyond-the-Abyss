@@ -28,15 +28,15 @@ public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 5F && !this.mob.isDash();
+		return BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash();
 	}
 
 	@Override
 	protected void performSkill() 
 	{
-		if(BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 5F)
+		if(BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
 		{
-			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().inflate(3.5F));
+			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().inflate(1.5F));
 			list.removeIf((living) -> living == this.mob);
 			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 10));
 		}

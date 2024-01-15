@@ -1,0 +1,22 @@
+{
+  "ghidruth_hurt": {
+    "category": "entity",
+    "subtitle": "ghidruth_hurt",
+    "sounds": [
+      {
+        "name": "beyondtheabyss:entity/ghidruth_hurt",
+        "stream": true
+      }
+    ]
+  },
+  "ghidruth_ambient": {
+    "category": "entity",
+    "subtitle": "ghidruth_ambient",
+    "sounds": [
+      {
+        "name": "beyondtheabyss:entity/ghidruth_ambient",
+        "stream": true
+      }
+    ]
+  }
+}

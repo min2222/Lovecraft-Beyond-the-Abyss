@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthDashPrepareGoal;
 import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthTailSwingGoal;
 import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -16,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
@@ -225,6 +227,18 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     }
     
     @Override
+    protected SoundEvent getHurtSound(DamageSource p_21239_) 
+    {
+    	return BTASounds.GHIDRUTH_HURT.get();
+    }
+    
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+    	return BTASounds.GHIDRUTH_AMBIENT.get();
+    }
+    
+    @Override
     public void tick()
     {
     	super.tick();
@@ -254,7 +268,19 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	        {
 	        	this.stopDash();
 	        }
+	        
+	        if(this.horizontalCollision || this.verticalCollisionBelow)
+	        {
+	        	//TODO
+	        	//this.stopDashAndStun();
+	        	this.stopDash();
+	        }
         }
+    }
+    
+    public void stopDashAndStun()
+    {
+    	
     }
     
     public void stopDash()

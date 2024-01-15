@@ -148,9 +148,9 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 
 		Mouth.addOrReplaceChild("cube_r44", CubeListBuilder.create().texOffs(148, 153).addBox(-12.5F, -8.0F, 0.0F, 25.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -7.0658F, -33.01F, 0.3491F, 0.0F, 0.0F));
 
-		Head.addOrReplaceChild("right_eye_light", CubeListBuilder.create().texOffs(148, 115).addBox(0.2F, -8.5F, -9.6F, 0.0F, 19.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offset(-19.0F, -12.0F, -56.0F));
+		Head.addOrReplaceChild("right_eye_light", CubeListBuilder.create().texOffs(148, 115).addBox(0.2F, -8.5F, -9.6F, 0.001F, 19.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offset(-19.0F, -12.0F, -56.0F));
 
-		Head.addOrReplaceChild("left_eye_light", CubeListBuilder.create().texOffs(148, 115).mirror().addBox(-0.2F, -8.5F, -9.6F, 0.0F, 19.0F, 19.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(19.0F, -12.0F, -56.0F));
+		Head.addOrReplaceChild("left_eye_light", CubeListBuilder.create().texOffs(148, 115).mirror().addBox(-0.2F, -8.5F, -9.6F, 0.001F, 19.0F, 19.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(19.0F, -12.0F, -56.0F));
 
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}
