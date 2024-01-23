@@ -6,7 +6,6 @@
 	"mixins": [
 		"MixinFluidStatus",
 		"MixinEntity",
-		"MixinBehaviorUtils",
 		"MixinLivingEntity",
 		"MixinSwimNodeEvaluator"
 	],
