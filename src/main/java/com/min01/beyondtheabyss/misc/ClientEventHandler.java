@@ -6,19 +6,19 @@ import java.util.Objects;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
-import com.min01.beyondtheabyss.blockentity.renderer.AltarOfDeepRenderer;
+import com.min01.beyondtheabyss.blockentity.renderer.BTABlockEntityRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
-import com.min01.beyondtheabyss.entity.renderer.layers.AbyssalDashLayer;
-import com.min01.beyondtheabyss.entity.renderer.layers.GhidruthScaleArmorLayer;
+import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalDashLayer;
+import com.min01.beyondtheabyss.entity.renderer.layer.GhidruthScaleArmorLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
-import com.min01.beyondtheabyss.shaders.BTAShaders;
+import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;
@@ -50,7 +50,7 @@ public class ClientEventHandler
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        BlockEntityRenderers.register(BTABlocks.ALTAR_OF_DEEP_BLOCK_ENTITY.get(), AltarOfDeepRenderer::new);
+        BlockEntityRenderers.register(BTABlocks.ALTAR_OF_DEEP_BLOCK_ENTITY.get(), BTABlockEntityRenderer::new);
     }
     
 	@SubscribeEvent

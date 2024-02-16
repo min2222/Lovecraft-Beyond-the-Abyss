@@ -4,12 +4,8 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.deepabyss.BlockAltarOfDeep;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -22,9 +18,4 @@ public class BTABlocks
     public static final RegistryObject<Block> ALTAR_OF_DEEP = BLOCKS.register("altar_of_deep", () -> new BlockAltarOfDeep());
     
     public static final RegistryObject<BlockEntityType<BlockEntityAltarOfDeep>> ALTAR_OF_DEEP_BLOCK_ENTITY = BLOCK_ENTITIES.register("altar_of_deep", () -> BlockEntityType.Builder.of(BlockEntityAltarOfDeep::new, BTABlocks.ALTAR_OF_DEEP.get()).build(null));
-    
-    public static boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_)
-    {
-    	return false;
-    }
 }

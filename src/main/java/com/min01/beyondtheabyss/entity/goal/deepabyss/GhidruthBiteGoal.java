@@ -1,10 +1,11 @@
-package com.min01.beyondtheabyss.entity.goals.deepabyss;
+package com.min01.beyondtheabyss.entity.goal.deepabyss;
 
 import java.util.List;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAEntity.BTASkills;
 import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
-import com.min01.beyondtheabyss.entity.goals.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,17 +29,18 @@ public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash();
+		return BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash() && !this.mob.isStun();
 	}
 
 	@Override
 	protected void performSkill() 
 	{
-		if(BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 5F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
+		this.mob.playSound(BTASounds.GHIDRUTH_BITE.get());
+		if(BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
 		{
 			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().inflate(1.5F));
 			list.removeIf((living) -> living == this.mob);
-			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 10));
+			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 17));
 		}
 	}
 

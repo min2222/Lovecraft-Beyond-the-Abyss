@@ -44,6 +44,14 @@ public abstract class AbstractDeepAbyssEntity extends AbstractBTAEntity
 	}
 	
 	@Override
+	public void tick()
+	{
+		super.tick();
+		//for keep update body rotation speed
+		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), 0.02F, 0.1F, true);
+	}
+	
+	@Override
 	public void lookAt(Anchor p_20033_, Vec3 p_20034_)
 	{
 		Vec3 vec3 = p_20033_.apply(this);

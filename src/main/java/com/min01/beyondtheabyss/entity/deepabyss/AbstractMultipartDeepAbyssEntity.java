@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.EntityType;

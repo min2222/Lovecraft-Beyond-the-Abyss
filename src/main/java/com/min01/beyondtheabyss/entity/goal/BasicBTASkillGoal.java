@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity.goals;
+package com.min01.beyondtheabyss.entity.goal;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAEntity;
 

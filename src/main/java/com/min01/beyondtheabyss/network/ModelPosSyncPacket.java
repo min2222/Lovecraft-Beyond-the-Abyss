@@ -4,14 +4,14 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class ModelDataSyncPacket 
+public class ModelPosSyncPacket 
 {
 	private final int entityId;
 
@@ -21,29 +21,29 @@ public class ModelDataSyncPacket
 
 	private final float z;
 
-	private ModelType modelType;
+	private PosType posType;
 
-	public enum ModelType 
+	public enum PosType 
 	{
-		TAIL_ROT, HEAD_ROT
+		TAIL, BODY, HEAD
 	}
 
-	public ModelDataSyncPacket(Entity entity, float x, float y, float z, ModelType type) 
+	public ModelPosSyncPacket(Entity entity, float x, float y, float z, PosType type) 
 	{
 		this.entityId = entity.getId();
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.modelType = type;
+		this.posType = type;
 	}
 
-	public ModelDataSyncPacket(FriendlyByteBuf buf)
+	public ModelPosSyncPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 		this.x = buf.readFloat();
 		this.y = buf.readFloat();
 		this.z = buf.readFloat();
-		this.modelType = ModelType.values()[buf.readInt()];
+		this.posType = PosType.values()[buf.readInt()];
 	}
 
 	public void encode(FriendlyByteBuf buf)
@@ -52,12 +52,12 @@ public class ModelDataSyncPacket
 		buf.writeFloat(this.x);
 		buf.writeFloat(this.y);
 		buf.writeFloat(this.z);
-		buf.writeInt(this.modelType.ordinal());
+		buf.writeInt(this.posType.ordinal());
 	}
 
 	public static class Handler 
 	{
-		public static boolean onMessage(ModelDataSyncPacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(ModelPosSyncPacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{
@@ -67,12 +67,14 @@ public class ModelDataSyncPacket
 					if (entity instanceof EntityGhidruth) 
 					{
 						EntityGhidruth ghidruth = (EntityGhidruth) entity;
-						switch (message.modelType) 
+						switch (message.posType) 
 						{
-						case TAIL_ROT:
-							ghidruth.setTailRotation(new BlockPos(message.x, message.y, message.z));
-						case HEAD_ROT:
-							ghidruth.setHeadRotation(new BlockPos(message.x, message.y, message.z));
+						case TAIL:
+							ghidruth.setTailPos(new Vec3(message.x, message.y, message.z));
+						case BODY:
+							ghidruth.setBodyPos(new Vec3(message.x, message.y, message.z));
+						case HEAD:
+							ghidruth.setHeadPos(new Vec3(message.x, message.y, message.z));
 						}
 					}
 				}

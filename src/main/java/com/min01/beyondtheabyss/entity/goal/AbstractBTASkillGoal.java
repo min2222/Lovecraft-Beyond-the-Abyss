@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity.goals;
+package com.min01.beyondtheabyss.entity.goal;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAEntity;
 
@@ -51,7 +51,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     @Override
     public void start()
     {
-    	if(this.shouldStopMovingWhenStart())
+    	if(this.stopMovingWhenStart())
     	{
         	this.getMob().setCanMove(false);
     	}
@@ -64,7 +64,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     	this.getMob().setIsUsingSkill(this.getSkills());
     }
     
-    public boolean shouldStopMovingWhenStart()
+    public boolean stopMovingWhenStart()
     {
     	return true;
     }
@@ -72,7 +72,7 @@ public abstract class AbstractBTASkillGoal extends Goal
 	@Override
 	public void stop()
 	{
-		if(this.shouldStopMovingWhenStart())
+		if(this.stopMovingWhenStart())
 		{
 			this.getMob().setCanMove(true);
 		}

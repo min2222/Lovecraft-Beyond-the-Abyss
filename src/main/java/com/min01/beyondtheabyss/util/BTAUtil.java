@@ -4,7 +4,7 @@ import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
-import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -64,6 +64,12 @@ public class BTAUtil
 	public static Vec3 fromToVector(Vec3 from, Vec3 to)
 	{
 		Vec3 motion = new Vec3(to.x - from.x, to.y - from.y, to.z - from.z).normalize();
+		return motion;
+	}
+	
+	public static Vec3 fromToPos(Vec3 from, Vec3 to)
+	{
+		Vec3 motion = new Vec3(to.x - from.x, to.y - from.y, to.z - from.z);
 		return motion;
 	}
 	
@@ -134,9 +140,7 @@ public class BTAUtil
     
 	public static boolean isMoving(Entity entity) 
 	{
-		double d0 = entity.getX() - entity.xo;
-		double d1 = entity.getZ() - entity.zo;
-		return d0 * d0 + d1 * d1 > (double)2.5000003E-7F;
+		return entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
 	}
 
 	public static Vec3 getLookPos(float xRot, float yRot, float yPos, double distance)

@@ -4,15 +4,15 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssEntity;
-import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthBiteGoal;
-import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthDashPrepareGoal;
-import com.min01.beyondtheabyss.entity.goals.deepabyss.GhidruthTailSwingGoal;
-import com.min01.beyondtheabyss.entity.parts.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthBiteGoal;
+import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthDashPrepareGoal;
+import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthTailSwingGoal;
+import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -48,12 +48,19 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	public AnimationState tailSwingLeftAnimationState = new AnimationState();
 	public AnimationState dashAnimationState = new AnimationState();
 	public AnimationState dashPrepareAnimationState = new AnimationState();
+	public AnimationState stunAnimationState = new AnimationState();
+	public AnimationState stunLoopAnimationState = new AnimationState();
+	public AnimationState stunEndAnimationState = new AnimationState();
 	
-	public static final EntityDataAccessor<BlockPos> TAIL_ROTATION = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BLOCK_POS);
-	public static final EntityDataAccessor<BlockPos> HEAD_ROTATION = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BLOCK_POS);
-	public static final EntityDataAccessor<BlockPos> DASH_POSITION = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BLOCK_POS);
+	public static final EntityDataAccessor<Vec3> TAIL_POS = SynchedEntityData.defineId(EntityGhidruth.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Vec3> BODY_POS = SynchedEntityData.defineId(EntityGhidruth.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Vec3> HEAD_POS = SynchedEntityData.defineId(EntityGhidruth.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Vec3> DASH_POS = SynchedEntityData.defineId(EntityGhidruth.class, BTAEntityDataSerializers.VEC3.get());
 	public static final EntityDataAccessor<Boolean> IS_DASH = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_STUN = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> STUN_TICK = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Float> ROTATION = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
@@ -69,8 +76,8 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     			.add(Attributes.MOVEMENT_SPEED, 1.8D)
         		.add(Attributes.ATTACK_DAMAGE, 5)
         		.add(Attributes.FOLLOW_RANGE, 70)
-        		.add(Attributes.ARMOR, 20)
-        		.add(Attributes.ARMOR_TOUGHNESS, 20)
+        		.add(Attributes.ARMOR, 150)
+        		.add(Attributes.ARMOR_TOUGHNESS, 150)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10);
     }
     
@@ -78,21 +85,55 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     protected void defineSynchedData() 
     {
         super.defineSynchedData();
-        this.entityData.define(TAIL_ROTATION, BlockPos.ZERO);
-        this.entityData.define(HEAD_ROTATION, BlockPos.ZERO);
-        this.entityData.define(ATTACK_COUNT, 0);
-        this.entityData.define(DASH_POSITION, BlockPos.ZERO);
+        this.entityData.define(TAIL_POS, Vec3.ZERO);
+        this.entityData.define(BODY_POS, Vec3.ZERO);
+        this.entityData.define(HEAD_POS, Vec3.ZERO);
+        this.entityData.define(DASH_POS, Vec3.ZERO);
         this.entityData.define(IS_DASH, false);
+        this.entityData.define(IS_STUN, false);
+        this.entityData.define(ATTACK_COUNT, 0);
+        this.entityData.define(STUN_TICK, 0);
+        this.entityData.define(ROTATION, -this.getYHeadRot() + 180);
     }
     
-    public void setDashPos(BlockPos value)
+    public void setRotation(float count)
     {
-    	this.entityData.set(DASH_POSITION, value);
+    	this.entityData.set(ROTATION, count);
     }
       
-    public BlockPos getDashPos() 
+    public float getRotation() 
     {
-    	return this.entityData.get(DASH_POSITION);
+    	return this.entityData.get(ROTATION);
+    }
+    
+    public void setStunTick(int count)
+    {
+    	this.entityData.set(STUN_TICK, count);
+    }
+      
+    public int getStunTick() 
+    {
+    	return this.entityData.get(STUN_TICK);
+    }
+    
+    public void setStun(boolean value)
+    {
+    	this.entityData.set(IS_STUN, value);
+    }
+      
+    public boolean isStun() 
+    {
+    	return this.entityData.get(IS_STUN);
+    }
+    
+    public void setDashPos(Vec3 value)
+    {
+    	this.entityData.set(DASH_POS, value);
+    }
+      
+    public Vec3 getDashPos() 
+    {
+    	return this.entityData.get(DASH_POS);
     }
     
     public void setDash(boolean value)
@@ -115,24 +156,34 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     	return this.entityData.get(ATTACK_COUNT);
     }
       
-    public void setHeadRotation(BlockPos rotation)
+    public void setHeadPos(Vec3 rotation)
     {
-    	this.entityData.set(HEAD_ROTATION, rotation);
+    	this.entityData.set(HEAD_POS, rotation);
     }
       
-    public BlockPos getHeadRotation() 
+    public Vec3 getHeadPos() 
     {
-    	return this.entityData.get(HEAD_ROTATION);
+    	return this.entityData.get(HEAD_POS);
+    }
+    
+    public Vec3 getBodyPos() 
+    {
+    	return this.entityData.get(BODY_POS);
     }
       
-    public BlockPos getTailRotation() 
+    public void setBodyPos(Vec3 rotation)
     {
-    	return this.entityData.get(TAIL_ROTATION);
+    	this.entityData.set(BODY_POS, rotation);
+    }	
+      
+    public Vec3 getTailPos() 
+    {
+    	return this.entityData.get(TAIL_POS);
     }
       
-    public void setTailRotation(BlockPos rotation)
+    public void setTailPos(Vec3 rotation)
     {
-    	this.entityData.set(TAIL_ROTATION, rotation);
+    	this.entityData.set(TAIL_POS, rotation);
     }
     
     @Override
@@ -157,7 +208,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         		case 0: 
         		{
         			this.stopAllAnimationStates();
-        			this.swimAnimationState.start(this.tickCount);
         			break;
         		}
         		case 1:
@@ -198,6 +248,24 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
         			this.dashAnimationState.start(this.tickCount);
         			break;
         		}
+        		case 5:
+        		{
+        			this.stopAllAnimationStates();
+        			this.stunAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 6:
+        		{
+        			this.stopAllAnimationStates();
+        			this.stunLoopAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 7:
+        		{
+        			this.stopAllAnimationStates();
+        			this.stunEndAnimationState.start(this.tickCount);
+        			break;
+        		}
             }
         }
         super.onSyncedDataUpdated(p_219422_);
@@ -212,6 +280,9 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 		this.tailSwingLeftAnimationState.stop();
 		this.dashPrepareAnimationState.stop();
 		this.dashAnimationState.stop();
+		this.stunAnimationState.stop();
+		this.stunLoopAnimationState.stop();
+		this.stunEndAnimationState.stop();
 	}
     
     @Override
@@ -243,53 +314,116 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
     {
     	super.tick();
     	
-		BlockPos tailRot = this.getTailRotation();
-		BlockPos headRot = this.getHeadRotation();
-		
-		Vec3 headLookPos = BTAUtil.getLookPos(headRot.getX() + this.getXRot(), headRot.getY() + this.yHeadRot, 0, 4);
-		Vec3 bodyLookPos = BTAUtil.getLookPos(tailRot.getX() + this.getXRot(), tailRot.getY() + this.yBodyRot, 0, -5);
-		Vec3 tailLookPos = BTAUtil.getLookPos(tailRot.getX() + this.getXRot(), tailRot.getY() + this.yBodyRot, 0, -10);
-		
-        this.setPartPosition(this.tail, tailLookPos.x, tailLookPos.y + 1, tailLookPos.z);
-        this.setPartPosition(this.body, bodyLookPos.x, bodyLookPos.y + 0.5, bodyLookPos.z);
-        this.setPartPosition(this.head, headLookPos.x, headLookPos.y, headLookPos.z);
+    	if(this.level.isClientSide)
+    	{
+    		if(BTAUtil.isMoving(this))
+    		{
+                this.swimAnimationState.startIfStopped(this.tickCount);
+    		} 
+    		else
+    		{
+               this.swimAnimationState.stop();
+    		}
+    	}
+    	
+    	if(!this.level.isClientSide)
+    	{
+    		this.setRotation(-this.getYHeadRot() + 180);
+    	}
+    	
+    	Vec3 tailPos = this.getTailPos();
+    	Vec3 bodyPos = this.getBodyPos();
+    	Vec3 headPos = this.getHeadPos();
+    	
+        this.setPartPosition(this.tail, tailPos.x, tailPos.y, tailPos.z);
+        this.setPartPosition(this.body, bodyPos.x, bodyPos.y, bodyPos.z);
+        this.setPartPosition(this.head, headPos.x, headPos.y, headPos.z);
 
         if(this.isDash())
         {
-        	Vec3 vec = new Vec3(this.getDashPos().getX(), this.getDashPos().getY(), this.getDashPos().getZ());
-			this.getNavigation().moveTo(this.getDashPos().getX(), this.getDashPos().getY(), this.getDashPos().getZ(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+        	if(this.tickCount % 10 == 0)
+        	{
+            	this.playSound(BTASounds.GHIDRUTH_CHARGE_LOOP.get());
+        	}
+        	Vec3 vec = this.getDashPos();
+			this.getNavigation().moveTo(vec.x, vec.y, vec.z, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
 			this.lookAt(Anchor.FEET, vec);
 			
 			List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.head.getBoundingBox().inflate(3));
 			list.removeIf((living) -> living == this);
 			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this), 4));
 	        
-	        if(this.distanceToSqr(vec) <= 3)
+	        if(BTAUtil.fromToPos(this.position(), vec).length() <= 3 || this.getTarget() == null)
 	        {
 	        	this.stopDash();
 	        }
 	        
-	        if(this.horizontalCollision || this.verticalCollisionBelow)
+	        if(this.horizontalCollision)
 	        {
-	        	//TODO
-	        	//this.stopDashAndStun();
-	        	this.stopDash();
+	        	this.stopDashAndStun();
 	        }
+        }
+        
+        if(this.isStun())
+        {
+        	this.setXRot(this.xRotO);
+        	this.setYBodyRot(this.yBodyRotO);
+        	this.setYHeadRot(this.yHeadRotO);
+        	if(this.getStunTick() == 2)
+        	{
+            	this.playSound(BTASounds.GHIDRUTH_STUN.get());
+        	}
+        	
+        	if(this.getStunTick() == 35)
+        	{
+        		this.setAnimationState(6);
+        	}
+        	
+        	if(this.getStunTick() == 100)
+        	{
+        		this.setAnimationState(7);
+        		this.playSound(BTASounds.GHIDRUTH_AWAKEN.get());
+        	}
+        	
+        	if(this.getStunTick() == 125)
+        	{
+        		this.setAnimationState(0);
+        		this.setStunTick(0);
+        		this.setStun(false);
+        		this.setNoAi(false);
+        		this.setCanLookOrMove(true);
+        		this.getAttribute(Attributes.ARMOR).setBaseValue(150);
+        		this.getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(150);
+        	}
+        	
+        	if(this.getStunTick() < 125)
+        	{
+            	this.setStunTick(this.getStunTick() + 1);
+        	}
         }
     }
     
     public void stopDashAndStun()
     {
-    	
+    	this.setAnimationState(5);
+		this.setDash(false);
+		this.setStun(true);
+    	this.setNoAi(true);
+		this.setCanLookOrMove(false);
+		this.setAttackCount(0);
+		this.setDashPos(Vec3.ZERO);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1.8);
+		this.getAttribute(Attributes.ARMOR).setBaseValue(10);
+		this.getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(10);
     }
     
     public void stopDash()
     {
 		this.setAnimationState(0);
 		this.setDash(false);
-		this.setAttackCount(0);
-		this.setDashPos(BlockPos.ZERO);
 		this.setCanLookOrMove(true);
+		this.setAttackCount(0);
+		this.setDashPos(Vec3.ZERO);
 		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1.8);
     }
     
@@ -322,5 +456,11 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	public BasicBTAEntityPart[] getDeepAbyssEntityParts() 
 	{
 		return this.parts;
+	}
+	
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	{
+		return super.hurt(p_21016_, p_21016_.isBypassInvul() ? p_21017_ : p_21017_ >= 10 ? 10 : p_21017_);
 	}
 }

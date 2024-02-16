@@ -18,5 +18,65 @@
         "stream": true
       }
     ]
+  },
+  "ghidruth_stun": {
+    "category": "entity",
+    "subtitle": "ghidruth_stun",
+    "sounds": [
+      {
+        "name": "beyondtheabyss:entity/ghidruth_stun",
+        "stream": true
+      }
+    ]
+  },
+  "ghidruth_eyeflash": {
+    "category": "entity",
+    "subtitle": "ghidruth_eyeflash",
+    "sounds": [
+      {
+        "name": "beyondtheabyss:entity/ghidruth_eyeflash",
+        "stream": true
+      }
+    ]
+  },
+  "ghidruth_charge_start": {
+    "category": "entity",
+    "subtitle": "ghidruth_charge_start",
+    "sounds": [
+      {
+        "name": "beyondtheabyss:entity/ghidruth_charge_start",
+        "stream": true
+      }
+    ]
+  },
+  "ghidruth_charge_loop": {
+    "category": "entity",
+    "subtitle": "ghidruth_charge_loop",
+    "sounds": [
+      {
+        "name": "beyondtheabyss:entity/ghidruth_charge_loop",
+        "stream": true
+      }
+    ]
+  },
+  "ghidruth_bite": {
+    "category": "entity",
+    "subtitle": "ghidruth_bite",
+    "sounds": [
+      {
+        "name": "beyondtheabyss:entity/ghidruth_bite",
+        "stream": true
+      }
+    ]
+  },
+  "ghidruth_awaken": {
+    "category": "entity",
+    "subtitle": "ghidruth_awaken",
+    "sounds": [
+      {
+        "name": "beyondtheabyss:entity/ghidruth_awaken",
+        "stream": true
+      }
+    ]
   }
 }

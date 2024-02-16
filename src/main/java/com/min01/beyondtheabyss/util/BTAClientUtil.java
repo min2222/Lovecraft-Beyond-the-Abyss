@@ -18,18 +18,18 @@ public class BTAClientUtil
 {
     public static void matrixStackFromModel(PoseStack matrixStack, ModelPart modelPart)
     {
-        /*ModelPart parent = modelPart;
-        if(parent != null) matrixStackFromModel(matrixStack, parent);*/
-        modelPart.translateAndRotate(matrixStack);
+        modelPart.getAllParts().forEach(t -> t.translateAndRotate(matrixStack));
     }
 
-    public static Vec3 getWorldPosFromModel(Entity entity, float entityYaw, ModelPart modelPart) 
+    public static Vec3 getWorldPosFromModel(Entity entity, ModelPart modelPart, Vec3 rotation, float yRot) 
     {
         PoseStack matrixStack = new PoseStack();
-        matrixStack.translate(entity.getX(), entity.getY(), entity.getZ());
-        matrixStack.mulPose(new Quaternion(0, -entityYaw + 180, 0, true));
+        matrixStack.translate(0, 0, 0);
+        float pi = (float) (Math.PI / 180);
+        matrixStack.mulPose(new Quaternion(0, yRot, 0, true));
+        matrixStack.mulPose(new Quaternion((float)rotation.x / pi, (float)rotation.y / pi, (float)rotation.z / pi, true));
         matrixStack.scale(-1, -1, 1);
-        matrixStack.translate(0, -1.5f, 0);
+        matrixStack.translate(0, -1.5F, 0);
         matrixStackFromModel(matrixStack, modelPart);
         PoseStack.Pose matrixEntry = matrixStack.last();
         Matrix4f matrix4f = matrixEntry.pose();

@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.proxy.ClientProxy;
 import com.min01.beyondtheabyss.proxy.CommonProxy;
@@ -24,18 +25,18 @@ import net.minecraftforge.fml.loading.FMLPaths;
 public class BeyondtheAbyss
 {
 	public static final String MODID = "beyondtheabyss";
-	public static IEventBus MOD_EVENT_BUS;
 	public static final CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public BeyondtheAbyss() 
 	{
-		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
-		BTAEntities.ENTITY_TYPES.register(MOD_EVENT_BUS);
-		BTAItems.ITEMS.register(MOD_EVENT_BUS);
-		BTABlocks.BLOCKS.register(MOD_EVENT_BUS);
-		BTABlocks.BLOCK_ENTITIES.register(MOD_EVENT_BUS);
-		BTASounds.SOUNDS.register(MOD_EVENT_BUS);
-		BTAEffects.EFFECTS.register(MOD_EVENT_BUS);
+		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		BTAEntities.ENTITY_TYPES.register(bus);
+		BTAItems.ITEMS.register(bus);
+		BTABlocks.BLOCKS.register(bus);
+		BTABlocks.BLOCK_ENTITIES.register(bus);
+		BTASounds.SOUNDS.register(bus);
+		BTAEffects.EFFECTS.register(bus);
+		BTAEntityDataSerializers.SERIALIZERS.register(bus);
 		BTANetwork.registerMessages();
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::attachEntityCapability);
 		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::attachItemStackCapability);

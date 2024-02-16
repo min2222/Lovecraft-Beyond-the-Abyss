@@ -28,7 +28,7 @@ public class BlockAltarOfDeep extends BaseEntityBlock
 {
 	public BlockAltarOfDeep() 
 	{
-		super(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn(BTABlocks::never).noOcclusion());
+		super(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn((p_61031_, p_61032_, p_61033_, p_61034_) -> false).noOcclusion());
 	}
 	
 	@Override

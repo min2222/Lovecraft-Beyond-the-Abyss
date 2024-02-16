@@ -3,8 +3,6 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.ModelDataSyncPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -18,6 +16,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 {
@@ -48,7 +47,9 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		Head.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 191).addBox(-13.5F, 0.0F, 0.0F, 27.0F, 7.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -8.6071F, -76.65F, -0.384F, 0.0F, 0.0F));
 
 		Head.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(337, 280).addBox(-13.0F, -9.009F, -13.0F, 26.0F, 18.0F, 26.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -17.6081F, -85.65F, 0.0F, 0.7854F, 0.0F));
-
+		
+		Head.addOrReplaceChild("HeadPos", CubeListBuilder.create().texOffs(2, 2).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 10.0F, -80.0F));
+		
 		PartDefinition Body = Head.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-23.5F, -27.8851F, -0.2541F, 47.0F, 51.0F, 83.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.722F, -41.5759F));
 
 		Body.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(181, 357).addBox(-22.5F, -2.5F, -7.0F, 26.0F, 6.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-17.3055F, -4.3857F, 2.4712F, 0.2618F, 0.5585F, 0.4682F));
@@ -125,11 +126,15 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 
 		RearBody.addOrReplaceChild("cube_r38", CubeListBuilder.create().texOffs(274, 154).addBox(5.9111F, -3.5421F, -23.4224F, 50.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 12.1923F, 57.7432F, 0.2943F, -0.6534F, -0.3822F));
 
+		RearBody.addOrReplaceChild("BodyPos", CubeListBuilder.create().texOffs(2, 2).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 5.0F, 90.0F));
+		
 		PartDefinition Tail = RearBody.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(171, 199).addBox(-11.8133F, -13.2595F, -10.299F, 23.0F, 28.0F, 47.0F, new CubeDeformation(0.0F)), PartPose.offset(0.3133F, -0.8746F, 67.1947F));
 
 		Tail.addOrReplaceChild("cube_r39", CubeListBuilder.create().texOffs(0, 245).addBox(-3.5F, -16.8201F, -11.2447F, 7.0F, 114.0F, 25.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.3133F, 0.1052F, 24.69F, 1.4399F, 0.0F, 0.0F));
 
 		Tail.addOrReplaceChild("cube_r40", CubeListBuilder.create().texOffs(64, 245).addBox(-4.5F, -21.2245F, -14.98F, 9.0F, 72.0F, 32.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.3133F, -36.035F, 40.2033F, -0.7854F, 0.0F, 0.0F));
+
+		Tail.addOrReplaceChild("TailPos", CubeListBuilder.create().texOffs(2, 2).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 5.0F, 180.0F));
 
 		Body.addOrReplaceChild("LeftFin", CubeListBuilder.create().texOffs(64, 357).addBox(39.5F, -4.0F, -9.0F, 25.0F, 8.0F, 15.0F, new CubeDeformation(0.0F))
 		.texOffs(336, 50).addBox(-7.5F, -4.0F, -9.0F, 47.0F, 8.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(21.5947F, 16.5084F, 16.5359F, 0.0F, 0.0F, 0.6981F));
@@ -159,24 +164,22 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	public void setupAnim(EntityGhidruth entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		//TODO
-		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks);
+	    float f = Math.min((float)entity.getDeltaMovement().lengthSqr() * 4, 8.0F);
+		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks, f);
 		this.animate(entity.biteRightAnimationState, GhidruthAnimation.GHIDRUTH_BITE_RIGHT, ageInTicks);
 		this.animate(entity.biteLeftAnimationState, GhidruthAnimation.GHIDRUTH_BITE_LEFT, ageInTicks);
 		this.animate(entity.tailSwingRightAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);
 		this.animate(entity.tailSwingLeftAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_LEFT, ageInTicks);
 		this.animate(entity.dashAnimationState, GhidruthAnimation.GHIDRUTH_CHARGE, ageInTicks);
 		this.animate(entity.dashPrepareAnimationState, GhidruthAnimation.GHIDRUTH_CHARGE_PREPARE, ageInTicks);
-	    this.root.xRot += headPitch * 0.017453292F * 1;
-	    this.root.yRot += netHeadYaw * 0.017453292F * 1;
-		float pi = ((float)Math.PI / 180F);
-	    ModelPart tail = this.root.getChild("root2").getChild("Head").getChild("Body").getChild("RearBody").getChild("Tail");
+		this.animate(entity.stunAnimationState, GhidruthAnimation.GHIDRUTH_STUNNED, ageInTicks);
+		this.animate(entity.stunLoopAnimationState, GhidruthAnimation.GHIDRUTH_STUN_LOOP, ageInTicks);
+		this.animate(entity.stunEndAnimationState, GhidruthAnimation.GHIDRUTH_STUN_END, ageInTicks);
+		this.root.getChild("root2").xRot += headPitch * (Mth.PI / 180);
+		this.root.getChild("root2").yRot += netHeadYaw * (Mth.PI / 180);
 	    ModelPart head = this.root.getChild("root2").getChild("Head");
-	    ModelPart root2 = this.root.getChild("root2");
 	    head.getChild("right_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
 	    head.getChild("left_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
-	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, (root2.xRot / pi) + (tail.xRot / pi), (root2.yRot / pi) + (tail.yRot / pi), (root2.zRot / pi) + (tail.zRot / pi), ModelDataSyncPacket.ModelType.TAIL_ROT));
-	    BTANetwork.CHANNEL.sendToServer(new ModelDataSyncPacket(entity, head.xRot / pi, head.yRot / pi, head.zRot / pi, ModelDataSyncPacket.ModelType.HEAD_ROT));
 	}
 
 	@Override

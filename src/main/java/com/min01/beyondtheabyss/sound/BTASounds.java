@@ -14,6 +14,12 @@ public class BTASounds
 	
 	public static final RegistryObject<SoundEvent> GHIDRUTH_HURT = registerSound("ghidruth_hurt");
 	public static final RegistryObject<SoundEvent> GHIDRUTH_AMBIENT = registerSound("ghidruth_ambient");
+	public static final RegistryObject<SoundEvent> GHIDRUTH_STUN = registerSound("ghidruth_stun");
+	public static final RegistryObject<SoundEvent> GHIDRUTH_EYEFLASH = registerSound("ghidruth_eyeflash");
+	public static final RegistryObject<SoundEvent> GHIDRUTH_CHARGE_START = registerSound("ghidruth_charge_start");
+	public static final RegistryObject<SoundEvent> GHIDRUTH_CHARGE_LOOP = registerSound("ghidruth_charge_loop");
+	public static final RegistryObject<SoundEvent> GHIDRUTH_BITE = registerSound("ghidruth_bite");
+	public static final RegistryObject<SoundEvent> GHIDRUTH_AWAKEN = registerSound("ghidruth_awaken");
 	
 	private static RegistryObject<SoundEvent> registerSound(String name) 
 	{

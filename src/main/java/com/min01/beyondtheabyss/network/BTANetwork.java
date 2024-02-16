@@ -3,8 +3,11 @@ package com.min01.beyondtheabyss.network;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class BTANetwork 
 {
@@ -21,7 +24,15 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, ItemAnimationSyncPacket.class, ItemAnimationSyncPacket::encode, ItemAnimationSyncPacket::new, ItemAnimationSyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, KeyInputPacket.class, KeyInputPacket::encode, KeyInputPacket::new, KeyInputPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, BTAAbilitySyncPacket.class, BTAAbilitySyncPacket::encode, BTAAbilitySyncPacket::new, BTAAbilitySyncPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, ModelDataSyncPacket.class, ModelDataSyncPacket::encode, ModelDataSyncPacket::new, ModelDataSyncPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, ModelPosSyncPacket.class, ModelPosSyncPacket::encode, ModelPosSyncPacket::new, ModelPosSyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, AltarItemSyncPacket.class, AltarItemSyncPacket::encode, AltarItemSyncPacket::new, AltarItemSyncPacket.Handler::onMessage);
 	}
+	
+    public static <MSG> void sendToAll(MSG message) 
+    {
+    	for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) 
+    	{
+    		CHANNEL.sendTo(message, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+    	}
+    }
 }

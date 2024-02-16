@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.shaders;
+package com.min01.beyondtheabyss.shader;
 
 import java.io.IOException;
 import java.util.ArrayList;
