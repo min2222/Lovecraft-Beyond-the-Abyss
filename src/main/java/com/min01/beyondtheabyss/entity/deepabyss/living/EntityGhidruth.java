@@ -461,6 +461,12 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
 	@Override
 	public boolean hurt(DamageSource p_21016_, float p_21017_) 
 	{
-		return super.hurt(p_21016_, p_21016_.isBypassInvul() ? p_21017_ : p_21017_ >= 10 ? 10 : p_21017_);
+		return super.hurt(p_21016_, this.isStun() ? p_21017_ * 2 : p_21017_ * 0.3F);
+	}
+	
+	@Override
+	protected float getSoundVolume() 
+	{
+		return 0.45F;
 	}
 }

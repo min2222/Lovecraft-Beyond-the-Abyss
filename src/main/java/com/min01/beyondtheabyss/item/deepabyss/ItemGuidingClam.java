@@ -31,7 +31,7 @@ public class ItemGuidingClam extends Item
         boolean overworld = entity.getLevel().dimension().location().getPath().equals("overworld");
         boolean isDeepOcean = entity.level.getBiome(entity.blockPosition()).containsTag(BiomeTags.IS_DEEP_OCEAN);
         boolean isInWater = entity.isEyeInFluidType(Fluids.WATER.getFluidType());
-        if(overworld && isDeepOcean && isInWater)
+        if(overworld && isDeepOcean && isInWater && entity.getOwner() != null)
         {
         	entity.setDeltaMovement(entity.getDeltaMovement().subtract(0, 0.01F, 0));
         	entity.setGlowingTag(true);
