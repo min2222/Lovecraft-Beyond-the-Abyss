@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.part;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAEntity;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -10,7 +10,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraftforge.entity.PartEntity;
 
-public abstract class AbstractBTAEntityPart<T extends AbstractBTAEntity> extends PartEntity<T>
+public abstract class AbstractBTAEntityPart<T extends AbstractBTAMob> extends PartEntity<T>
 {
 	public final T parentMob;
 	private final EntityDimensions size;

@@ -73,13 +73,9 @@ public class BTAUtil
 		return motion;
 	}
 	
-    public static Entity teleportEntity(Entity entity, ServerLevel endpointWorld, BlockPos endpoint)
+    public static Entity teleportEntityToDim(Entity entity, ServerLevel endpointWorld, BlockPos endpoint)
     {
-        if (entity.getLevel().dimension().location().getPath().equals("deep_abyss"))
-        {
-        	
-        } 
-        else
+        if (!entity.getLevel().dimension().location().getPath().equals(endpointWorld.dimension().location().getPath()))
         {
             if (entity instanceof Player && ((Player) entity).getSleepingPos().isPresent()) 
             {

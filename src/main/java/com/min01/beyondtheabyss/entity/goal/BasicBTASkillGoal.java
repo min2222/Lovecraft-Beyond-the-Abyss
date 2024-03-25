@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.entity.goal;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAEntity;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 
-public abstract class BasicBTASkillGoal<T extends AbstractBTAEntity> extends AbstractBTASkillGoal
+public abstract class BasicBTASkillGoal<T extends AbstractBTAMob> extends AbstractBTASkillGoal
 {
 	public T mob;
 	
@@ -12,7 +12,7 @@ public abstract class BasicBTASkillGoal<T extends AbstractBTAEntity> extends Abs
 	}
 
 	@Override
-	public AbstractBTAEntity getMob() 
+	public AbstractBTAMob getMob() 
 	{
 		return this.mob;
 	}

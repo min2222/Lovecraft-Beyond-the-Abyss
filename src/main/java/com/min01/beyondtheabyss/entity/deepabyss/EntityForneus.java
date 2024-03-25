@@ -1,13 +1,12 @@
-package com.min01.beyondtheabyss.entity.deepabyss.living;
+package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssEntity;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public class EntityForneus extends AbstractMultipartDeepAbyssEntity
+public class EntityForneus extends AbstractMultipartDeepAbyssMob
 {
 	public EntityForneus(EntityType<? extends Monster> p_33002_, Level p_33003_)
 	{

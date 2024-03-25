@@ -1,9 +1,8 @@
-package com.min01.beyondtheabyss.entity.deepabyss.living;
+package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssEntity;
 import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthDashPrepareGoal;
 import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthTailSwingGoal;
@@ -35,7 +34,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGhidruth extends AbstractMultipartDeepAbyssEntity
+public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 {
 	public BasicBTAEntityPart head = new BasicBTAEntityPart(this, 4.5F, 4.5F);
 	public BasicBTAEntityPart body = new BasicBTAEntityPart(this, 5.5F, 4.5F);

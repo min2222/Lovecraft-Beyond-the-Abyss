@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.goal;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAEntity;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -101,7 +101,7 @@ public abstract class AbstractBTASkillGoal extends Goal
 
     protected abstract int getSkillUsingInterval();
     
-    public abstract AbstractBTAEntity getMob();
+    public abstract AbstractBTAMob getMob();
     
-    protected abstract AbstractBTAEntity.BTASkills getSkills();
+    protected abstract AbstractBTAMob.BTASkills getSkills();
 }

@@ -1,11 +1,11 @@
-package com.min01.beyondtheabyss.misc;
+package com.min01.beyondtheabyss.tabs;
 
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-public class BTACreativeTabs
+public class DeepAbyssTabs
 {
 	public static final CreativeModeTab ABYSS_MOBS = new CreativeModeTab("abyss_mobs") 
 	{
@@ -57,7 +57,16 @@ public class BTACreativeTabs
 		@Override
 		public ItemStack makeIcon()
 		{
-			return new ItemStack(BTAItems.ALTAR_OF_DEEP.get());
+			return new ItemStack(BTAItems.DEPTHSTONE.get());
+		}
+	};
+	
+	public static final CreativeModeTab ABYSS_WEAPONS = new CreativeModeTab("abyss_weapons") 
+	{
+		@Override
+		public ItemStack makeIcon()
+		{
+			return new ItemStack(BTAItems.RUSTY_HARPOON.get());
 		}
 	};
 }

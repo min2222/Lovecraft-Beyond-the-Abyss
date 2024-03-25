@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
-import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 

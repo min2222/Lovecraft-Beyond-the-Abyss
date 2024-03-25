@@ -13,8 +13,10 @@ import com.min01.beyondtheabyss.item.armor.ItemGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.deepabyss.ItemGhidruthFlesh;
 import com.min01.beyondtheabyss.item.deepabyss.ItemGuidingClam;
 import com.min01.beyondtheabyss.item.renderer.BTABlockEntityItemRenderer;
-import com.min01.beyondtheabyss.misc.BTACreativeTabs;
+import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
+import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -38,11 +40,11 @@ import net.minecraftforge.registries.RegistryObject;
 public class BTAItems 
 {
 	public static final ArmorMaterial DIVING_ARMOR_MATERIAL = new BTAArmorMaterial("diver", new int[]{450, 550, 500, 250}, new int[]{3, 5, 4, 2}, 10, SoundEvents.ARMOR_EQUIP_ELYTRA, 0, 0, () -> Ingredient.EMPTY);
-	
 	public static final ArmorMaterial ADVANCED_DIVING_ARMOR_MATERIAL = new BTAArmorMaterial("advanced_diver", new int[]{650, 750, 700, 450}, new int[]{4, 6, 5, 3}, 15, SoundEvents.ARMOR_EQUIP_ELYTRA, 1, 0, () -> Ingredient.EMPTY);
-
 	public static final ArmorMaterial GHIDRUTH_DIVING_ARMOR_MATERIAL = new BTAArmorMaterial("ghidruth_diver", new int[]{1650, 1750, 1700, 1450}, new int[]{14, 16, 15, 13}, 25, SoundEvents.ARMOR_EQUIP_NETHERITE, 15, 0.5F, () -> Ingredient.of(BTAItems.GHIDRUTH_SCALE.get()));
 	
+    public static final Rarity RARITY_ABYSS = Rarity.create("beyondtheabyss:abyss", ChatFormatting.DARK_AQUA);
+    
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
 	
 	//spawn eggs
@@ -50,13 +52,17 @@ public class BTAItems
 	//public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg("forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
 	
 	//materials
-	public static final RegistryObject<Item> GHIDRUTH_SCALE = registerMaterialItem("ghidruth_scale");
-	public static final RegistryObject<Item> OXYGEN_TANK = registerMaterialItem("oxygen_tank");
-	public static final RegistryObject<Item> JUGGERNAUT_SUCTION_ORGAN = registerMaterialItem("juggernaut_suction_organ");
+	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS).rarity(RARITY_ABYSS)));
+	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> JUGGERNAUT_SUCTION_ORGAN = ITEMS.register("juggernaut_suction_organ", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	
+	//weapons
+	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750), false));
+	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(3550).rarity(RARITY_ABYSS), true));
 	
 	//misc
 	public static final RegistryObject<Item> GUIDING_CLAM = ITEMS.register("guiding_clam", () -> new ItemGuidingClam());
-	public static final RegistryObject<Item> HEART_OF_FORNEUS = registerUniqueItem("heart_of_forneus");
+	public static final RegistryObject<Item> HEART_OF_FORNEUS = ITEMS.register("heart_of_forneus", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MISC).rarity(RARITY_ABYSS)));
 	
 	//foods
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new ItemGhidruthFlesh(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build(), true));
@@ -79,7 +85,7 @@ public class BTAItems
 	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
 	
 	//blocks
-	public static final RegistryObject<Item> ALTAR_OF_DEEP = ITEMS.register("altar_of_deep", () -> new BlockItem(BTABlocks.ALTAR_OF_DEEP.get(), new Item.Properties().tab(BTACreativeTabs.ABYSS_BLOCKS).rarity(Rarity.EPIC))
+	public static final RegistryObject<Item> ALTAR_OF_DEEP = ITEMS.register("altar_of_deep", () -> new BlockItem(BTABlocks.ALTAR_OF_DEEP.get(), new Item.Properties().tab(DeepAbyssTabs.ABYSS_BLOCKS).rarity(RARITY_ABYSS))
 	{
 		@Override
 		public void initializeClient(Consumer<IClientItemExtensions> consumer) 
@@ -95,28 +101,15 @@ public class BTAItems
 		};
 	});
 	
+	public static final RegistryObject<Item> DEPTHSTONE = registerBlockItem("depthstone", () -> BTABlocks.DEPTHSTONE.get(), new Item.Properties());
+	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{
-		return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties().tab(BTACreativeTabs.ABYSS_MOBS)));
+		return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties().tab(DeepAbyssTabs.ABYSS_MOBS)));
 	}
 	
-	public static RegistryObject<Item> registerBlockItem(String name, Block block, Item.Properties propertie)
+	public static RegistryObject<Item> registerBlockItem(String name, Supplier<Block> block, Item.Properties propertie)
 	{
-		return ITEMS.register(name, () -> new BlockItem(block, propertie.tab(BTACreativeTabs.ABYSS_BLOCKS)));
-	}
-	
-	public static RegistryObject<Item> registerUniqueItem(String name)
-	{
-		return registerMaterialItem(name, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
-	}
-	
-	public static RegistryObject<Item> registerMaterialItem(String name)
-	{
-		return registerMaterialItem(name, new Item.Properties());
-	}
-	
-	public static RegistryObject<Item> registerMaterialItem(String name, Item.Properties propertie)
-	{
-		return ITEMS.register(name, () -> new Item(propertie.tab(BTACreativeTabs.ABYSS_MATERIALS)));
+		return ITEMS.register(name, () -> new BlockItem(block.get(), propertie.tab(DeepAbyssTabs.ABYSS_BLOCKS)));
 	}
 }

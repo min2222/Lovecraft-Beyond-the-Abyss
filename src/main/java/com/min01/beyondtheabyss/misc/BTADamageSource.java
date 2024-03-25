@@ -20,4 +20,14 @@ public class BTADamageSource extends EntityDamageSource
 	{
 		return causeHardFleshDamage("ghidruth_flesh", source);
 	}
+	
+	public static DamageSource causeHarpoonDamage(Entity source)
+	{
+		return new BTADamageSource("harpoon", source);
+	}
+	
+	public static DamageSource causeGhidruthHarpoonDamage(Entity source)
+	{
+		return new BTADamageSource("ghidruth_harpoon", source);
+	}
 }

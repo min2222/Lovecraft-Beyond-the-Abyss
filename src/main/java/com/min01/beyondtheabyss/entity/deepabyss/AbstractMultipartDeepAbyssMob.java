@@ -12,9 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 
-public abstract class AbstractMultipartDeepAbyssEntity extends AbstractDeepAbyssEntity
+public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
 {
-	public AbstractMultipartDeepAbyssEntity(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_)
+	public AbstractMultipartDeepAbyssMob(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_)
 	{
 		super(p_33002_, p_33003_);
 	}

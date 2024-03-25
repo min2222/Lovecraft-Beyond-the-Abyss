@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.misc;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
 import com.min01.beyondtheabyss.config.BTAConfig;
-import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;

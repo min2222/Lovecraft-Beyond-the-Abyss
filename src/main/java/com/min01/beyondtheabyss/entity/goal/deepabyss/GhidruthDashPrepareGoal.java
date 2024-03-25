@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAEntity.BTASkills;
-import com.min01.beyondtheabyss.entity.deepabyss.living.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob.BTASkills;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.goal.BasicBTASkillGoal;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;

@@ -8,16 +8,21 @@ import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
 import com.min01.beyondtheabyss.blockentity.renderer.BTABlockEntityRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
+import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalDashLayer;
 import com.min01.beyondtheabyss.entity.renderer.layer.GhidruthScaleArmorLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
+import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
+import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
+import com.min01.beyondtheabyss.item.model.ModelHarpoon;
+import com.min01.beyondtheabyss.item.model.SimpleBakedModelWrapper;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.mojang.blaze3d.platform.InputConstants;
 
@@ -27,11 +32,18 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.BlockModelRotation;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
@@ -51,6 +63,34 @@ public class ClientEventHandler
     public static void onClientSetup(FMLClientSetupEvent event)
     {
         BlockEntityRenderers.register(BTABlocks.ALTAR_OF_DEEP_BLOCK_ENTITY.get(), BTABlockEntityRenderer::new);
+        ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation(BeyondtheAbyss.MODID, "throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        {
+        	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
+        });
+        ItemProperties.register(BTAItems.GHIDRUTH_SCALE_HARPOON.get(), new ResourceLocation(BeyondtheAbyss.MODID, "throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        {
+        	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
+        });
+    }
+    
+	@SubscribeEvent
+	public static void onModelRegistry(ModelEvent.RegisterAdditional event)
+	{
+		event.register(new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, "ghidruth_scale_harpoon_in_hand"), "inventory"));
+	}
+    
+    @SubscribeEvent
+    public static void modelBake(ModelEvent.BakingCompleted event)
+    {
+    	registerItemModel(event, "ghidruth_scale_harpoon");
+    }
+    
+    public static void registerItemModel(ModelEvent.BakingCompleted event, String model)
+    {
+    	ModelResourceLocation loc = new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, model), "inventory");
+    	ModelResourceLocation modelLoc = new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, model + "_in_hand"), "inventory");
+    	BakedModel bakedModel = event.getModelBakery().getModel(modelLoc).bake(event.getModelBakery(), Material::sprite, BlockModelRotation.X0_Y0, new ResourceLocation(BeyondtheAbyss.MODID, model));
+    	event.getModels().replace(loc, new SimpleBakedModelWrapper(event.getModels().get(loc), bakedModel));
     }
     
 	@SubscribeEvent
@@ -66,6 +106,9 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
     	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
     	
+    	//projectile
+    	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);
+    	
     	//living
     	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);
     }
@@ -77,8 +120,11 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthDiverSet.LAYER_LOCATION, ModelGhidruthDiverSet::createBodyLayer);
-    	event.registerLayerDefinition(AbyssalDashLayer.LAYER_LOCATION, AbyssalDashLayer::createLayer);
     	event.registerLayerDefinition(ModelAltarOfDeep.LAYER_LOCATION, ModelAltarOfDeep::createBodyLayer);
+    	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
+    	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);
+    	
+    	event.registerLayerDefinition(AbyssalDashLayer.LAYER_LOCATION, AbyssalDashLayer::createLayer);
     }
     
     @SubscribeEvent

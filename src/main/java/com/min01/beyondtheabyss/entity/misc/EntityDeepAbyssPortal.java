@@ -1,8 +1,7 @@
-package com.min01.beyondtheabyss.entity.deepabyss;
+package com.min01.beyondtheabyss.entity.misc;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
@@ -73,11 +72,11 @@ public class EntityDeepAbyssPortal extends Entity
 			            	if(entity instanceof ServerPlayer)
 			            	{
 			                    ServerPlayer thePlayer = (ServerPlayer) entity;
-			                    BTAUtil.teleportEntity(thePlayer, dimWorld, new BlockPos(entity.getX(), 500, entity.getZ()));
+			                    BTAUtil.teleportEntityToDim(thePlayer, dimWorld, new BlockPos(entity.getX(), 500, entity.getZ()));
 			            	}
 			            	else
 			            	{
-			                    BTAUtil.teleportEntity(entity, dimWorld, new BlockPos(entity.getX(), 500, entity.getZ()));
+			                    BTAUtil.teleportEntityToDim(entity, dimWorld, new BlockPos(entity.getX(), 500, entity.getZ()));
 			            	}
 			            }
 			        }

@@ -1,22 +1,22 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
-import com.min01.beyondtheabyss.misc.BTACreativeTabs;
+import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
+import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Fluids;
 
 public class ItemGuidingClam extends Item
 {
 	public ItemGuidingClam()
 	{
-		super(new Item.Properties().tab(BTACreativeTabs.ABYSS_MISC).stacksTo(1).rarity(Rarity.EPIC));
+		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MISC).stacksTo(1).rarity(BTAItems.RARITY_ABYSS));
 	}
 	
 	@Override

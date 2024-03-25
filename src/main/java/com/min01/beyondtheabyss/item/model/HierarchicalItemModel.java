@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.item.model;
 
 import java.util.Optional;
 
+import com.min01.beyondtheabyss.item.animation.KeyframeItemAnimations;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;

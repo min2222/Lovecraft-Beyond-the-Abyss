@@ -1,9 +1,10 @@
-package com.min01.beyondtheabyss.item.model;
+package com.min01.beyondtheabyss.item.animation;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.min01.beyondtheabyss.item.model.HierarchicalItemModel;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.client.animation.AnimationChannel;
