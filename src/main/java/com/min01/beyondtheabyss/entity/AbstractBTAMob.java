@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 public abstract class AbstractBTAMob extends PathfinderMob
 {
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Byte> DATA_SKILL_ID = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BYTE);
+	public static final EntityDataAccessor<Byte> SKILL_ID = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BYTE);
 	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
@@ -45,7 +45,7 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	protected void defineSynchedData()
 	{
 		super.defineSynchedData();
-		this.entityData.define(DATA_SKILL_ID, (byte)0);
+		this.entityData.define(SKILL_ID, (byte)0);
 		this.entityData.define(ANIMATION_STATE, 0);
 		this.entityData.define(CAN_MOVE, true);
 		this.entityData.define(IS_BOSS, false);
@@ -69,13 +69,13 @@ public abstract class AbstractBTAMob extends PathfinderMob
     
 	protected AbstractBTAMob.BTASkills getCurrentSkill() 
 	{
-		return !this.level.isClientSide ? this.currentSkill : AbstractBTAMob.BTASkills.byId(this.entityData.get(DATA_SKILL_ID));
+		return !this.level.isClientSide ? this.currentSkill : AbstractBTAMob.BTASkills.byId(this.entityData.get(SKILL_ID));
 	}
 	
 	public void setIsUsingSkill(AbstractBTAMob.BTASkills p_33728_) 
 	{
 		this.currentSkill = p_33728_;
-		this.entityData.set(DATA_SKILL_ID, (byte)p_33728_.id);
+		this.entityData.set(SKILL_ID, (byte)p_33728_.id);
 	}
 	
 	@Override
@@ -157,7 +157,7 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	{
 		if (this.level.isClientSide) 
 		{
-			return this.entityData.get(DATA_SKILL_ID) > 0;
+			return this.entityData.get(SKILL_ID) > 0;
 		} 
 		else
 		{

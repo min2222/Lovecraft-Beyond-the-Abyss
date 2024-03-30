@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "beyondtheabyss:rusty_harpoon"
+    },
+    "addition": {
+        "item": "beyondtheabyss:ghidruth_scale"
+    },
+    "result": {
+        "item": "beyondtheabyss:ghidruth_scale_harpoon"
+    }
+}

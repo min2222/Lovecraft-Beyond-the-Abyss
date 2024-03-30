@@ -39,8 +39,8 @@ public class HarpoonItem extends Item
 	{
 		super(properties.tab(DeepAbyssTabs.ABYSS_WEAPONS));
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", !isReinforced ? 8.0D : 15.0D, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", !isReinforced ? -2.9D : -3.1D, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", !isReinforced ? 7.0D : 14.0D, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", !isReinforced ? -3.0D : -3.0D, AttributeModifier.Operation.ADDITION));
 		this.defaultModifiers = builder.build();
 	}
 	

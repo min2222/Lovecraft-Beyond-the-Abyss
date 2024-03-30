@@ -2525,7 +2525,7 @@
         "then_run": {
           "type": "minecraft:block",
           "result_state": {
-            "Name": "minecraft:deepslate",
+            "Name": "beyondtheabyss:depthstone",
             "Properties": {
               "axis": "y"
             }

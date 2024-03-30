@@ -321,7 +321,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     		} 
     		else
     		{
-               this.swimAnimationState.stop();
+    			this.swimAnimationState.stop();
     		}
     	}
     	
