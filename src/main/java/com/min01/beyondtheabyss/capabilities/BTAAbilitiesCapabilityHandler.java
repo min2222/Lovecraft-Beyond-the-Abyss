@@ -34,8 +34,7 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		Map<BTAAbilities, Integer> abilities = new HashMap<>();
-		abilities.put(BTAAbilities.byId(nbt.getInt("ability")), nbt.getInt("tickCount"));
+		this.abilities.put(BTAAbilities.byId(nbt.getInt("ability")), nbt.getInt("tickCount"));
 	}
 
 	@Override

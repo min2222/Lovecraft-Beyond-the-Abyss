@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.misc.ClientEventHandlerForge;
+import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

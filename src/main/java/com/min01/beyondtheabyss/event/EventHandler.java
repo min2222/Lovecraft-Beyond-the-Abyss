@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.misc;
+package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;

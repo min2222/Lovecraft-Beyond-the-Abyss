@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.blockentity.renderer;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
-import com.min01.beyondtheabyss.misc.ClientEventHandler;
+import com.min01.beyondtheabyss.event.ClientEventHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;

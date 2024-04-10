@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.misc;
+package com.min01.beyondtheabyss.event;
 
 import java.util.Map;
 import java.util.Objects;
