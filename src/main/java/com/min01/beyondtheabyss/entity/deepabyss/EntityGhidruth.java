@@ -40,7 +40,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 	public BasicBTAEntityPart body = new BasicBTAEntityPart(this, 5.5F, 4.5F);
 	public BasicBTAEntityPart tail = new BasicBTAEntityPart(this, 5.5F, 4.3F);
 	public BasicBTAEntityPart[] parts = { this.head, this.body, this.tail };
-	public AnimationState swimAnimationState = new AnimationState();
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
 	public AnimationState tailSwingRightAnimationState = new AnimationState();
@@ -313,18 +312,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     {
     	super.tick();
     	
-    	if(this.level.isClientSide)
-    	{
-    		if(BTAUtil.isMoving(this))
-    		{
-                this.swimAnimationState.startIfStopped(this.tickCount);
-    		} 
-    		else
-    		{
-    			this.swimAnimationState.stop();
-    		}
-    	}
-    	
     	if(!this.level.isClientSide)
     	{
     		this.setRotation(-this.getYHeadRot() + 180);
@@ -352,7 +339,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 			list.removeIf((living) -> living == this);
 			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this), 4));
 	        
-	        if(BTAUtil.fromToPos(this.position(), vec).length() <= 3 || this.getTarget() == null)
+	        if(BTAUtil.fromToPos(this.position(), vec).length() <= 3 || (!this.level.isClientSide && this.getTarget() == null))
 	        {
 	        	this.stopDash();
 	        }

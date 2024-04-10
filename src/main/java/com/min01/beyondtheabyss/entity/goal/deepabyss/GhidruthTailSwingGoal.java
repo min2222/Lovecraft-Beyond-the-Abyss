@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 
 public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 {
@@ -34,7 +35,7 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	protected void performSkill()
 	{
-		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(3.5F));
+		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.mob.position(), this.mob.position().add(this.mob.getTailPos())).inflate(3.5F));
 		list.removeIf((living) -> living == this.mob);
 		list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 35));
 		

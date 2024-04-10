@@ -3,6 +3,8 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -164,8 +166,13 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	public void setupAnim(EntityGhidruth entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-	    float f = Math.min((float)entity.getDeltaMovement().lengthSqr() * 4, 8.0F);
-		this.animate(entity.swimAnimationState, GhidruthAnimation.GHIDRUTH_SWIM, ageInTicks, f);
+		if(entity.getAnimationState() == 0)
+		{
+			if(BTAUtil.isMoving(entity))
+			{
+				BTAClientUtil.animateWalk(this, GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
+			}
+		}
 		this.animate(entity.biteRightAnimationState, GhidruthAnimation.GHIDRUTH_BITE_RIGHT, ageInTicks);
 		this.animate(entity.biteLeftAnimationState, GhidruthAnimation.GHIDRUTH_BITE_LEFT, ageInTicks);
 		this.animate(entity.tailSwingRightAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);
