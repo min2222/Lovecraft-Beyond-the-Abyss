@@ -4,10 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
@@ -37,13 +35,6 @@ public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
     public void tick() 
     {
     	super.tick();
-    	
-    	if(this.getTarget() != null)
-    	{
-    		this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-    		this.lookAt(Anchor.FEET, this.getTarget().position().add(0, 0.5, 0));
-    	}
-    	
     	this.refreshDimensions();
     	
     	for(BasicBTAEntityPart parts : this.getDeepAbyssEntityParts())

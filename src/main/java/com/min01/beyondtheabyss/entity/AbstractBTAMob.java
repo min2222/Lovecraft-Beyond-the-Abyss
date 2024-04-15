@@ -79,18 +79,21 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	}
 	
 	@Override
-	public void aiStep() 
+	public void tick() 
 	{
-		super.aiStep();
+		super.tick();
 		if(this.isHostile())
 		{
 			if(this.getTarget() != null && this.canLookOrMove())
 			{
 				this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-				this.lookAt(Anchor.FEET, this.getTarget().position());
+				this.lookAt(this.getLookAnchor(), this.getLookPos());
 			}
 		}
 	}
+	
+	public abstract Anchor getLookAnchor();
+	public abstract Vec3 getLookPos();
 	
 	public void setAsBoss()
 	{

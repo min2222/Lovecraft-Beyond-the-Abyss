@@ -2,9 +2,9 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
+import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.event.ClientEventHandler;
-import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;

@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity.renderer.layer;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -16,9 +15,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-public class GhidruthScaleArmorLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
+public class AbyssalScaleLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
-    public GhidruthScaleArmorLayer(RenderLayerParent<T, M> renderer) 
+    public AbyssalScaleLayer(RenderLayerParent<T, M> renderer) 
     {
         super(renderer);
     }
@@ -26,7 +25,7 @@ public class GhidruthScaleArmorLayer<T extends LivingEntity, M extends EntityMod
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) 
     {
-    	if(DeepAbyssUtil.hasAbility(entitylivingbaseIn, BTAAbilities.GHIDRUTHS_SCALES))
+    	if(BTAUtil.hasAbility(entitylivingbaseIn, BTAAbilities.ABYSSAL_SCALE))
     	{
             VertexConsumer VertexConsumer = bufferIn.getBuffer(RenderType.entityCutout(this.getTexture(entitylivingbaseIn)));
             this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -35,7 +34,7 @@ public class GhidruthScaleArmorLayer<T extends LivingEntity, M extends EntityMod
     
 	public ResourceLocation getTexture(LivingEntity living)
 	{
-		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/ghidruth_scale_armor_%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickcount(BTAAbilities.GHIDRUTHS_SCALES, living)));
+		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/abyssal_scale%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickcount(BTAAbilities.ABYSSAL_SCALE, living)));
 		return location;
 	}
 }

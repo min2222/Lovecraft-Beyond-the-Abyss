@@ -4,7 +4,6 @@ import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
-import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -43,6 +42,12 @@ public class BTAUtil
 
 		return f1;
 	}
+	
+	public static boolean hasAbility(LivingEntity entity, BTAAbilities ability)
+	{
+		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
+		return handler.getAbilities().containsKey(ability);
+	}
 	   
 	public static int getAbilityTickcount(BTAAbilities ability, LivingEntity entity)
 	{
@@ -61,16 +66,22 @@ public class BTAUtil
 		return new Vec3(d3, d4, d5);
 	}
 	
+	public static Vec3 fromToVector(Vec3 from, Vec3 to, float scale)
+	{
+		Vec3 motion = to.subtract(from).normalize();
+		return motion.scale(scale);
+	}
+	
 	public static Vec3 fromToVector(Vec3 from, Vec3 to)
 	{
-		Vec3 motion = new Vec3(to.x - from.x, to.y - from.y, to.z - from.z).normalize();
+		Vec3 motion = to.subtract(from).normalize();
 		return motion;
 	}
 	
 	public static Vec3 fromToPos(Vec3 from, Vec3 to)
 	{
-		Vec3 motion = new Vec3(to.x - from.x, to.y - from.y, to.z - from.z);
-		return motion;
+		Vec3 pos = to.subtract(from);
+		return pos;
 	}
 	
     public static Entity teleportEntityToDim(Entity entity, ServerLevel endpointWorld, BlockPos endpoint)
@@ -111,24 +122,13 @@ public class BTAUtil
         endpointWorld.addDuringTeleport(teleportedEntity);
         return teleportedEntity;
     }
-	
-    public static double getMeleeAttackRangeSqrOfPart(BasicBTAEntityPart owner, LivingEntity target, float multiplier)
-    {
-    	return (double)(owner.getBbWidth() * multiplier * owner.getBbWidth() * multiplier + target.getBbWidth());
-    }
-
-    public static boolean isWithinMeleeAttackRangeOfPart(BasicBTAEntityPart owner, LivingEntity target, float multiplier)
-    {
-    	double d0 = owner.distanceToSqr(target.getX(), target.getY(), target.getZ());
-    	return d0 <= getMeleeAttackRangeSqrOfPart(owner, target, multiplier);
-    }
     
-    public static double getMeleeAttackRangeSqr(LivingEntity owner, LivingEntity target, float multiplier)
+    public static double getMeleeAttackRangeSqr(Entity owner, LivingEntity target, float multiplier)
     {
     	return (double)(owner.getBbWidth() * multiplier * owner.getBbWidth() * multiplier + target.getBbWidth());
     }
 
-    public static boolean isWithinMeleeAttackRange(LivingEntity owner, LivingEntity target, float multiplier)
+    public static boolean isWithinMeleeAttackRange(Entity owner, LivingEntity target, float multiplier)
     {
     	double d0 = owner.distanceToSqr(target.getX(), target.getY(), target.getZ());
     	return d0 <= getMeleeAttackRangeSqr(owner, target, multiplier);

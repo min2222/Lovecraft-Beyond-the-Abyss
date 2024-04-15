@@ -59,8 +59,8 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 			case ABYSSAL_DASH:
 				this.updateAbyssalDash(this.entity);
 				break;
-			case GHIDRUTHS_SCALES:
-				this.updateGhidruthsScales(this.entity);
+			case ABYSSAL_SCALE:
+				this.updateAbyssalScale(this.entity);
 				break;
 			default:
 				break;
@@ -68,16 +68,16 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 		}
 	}
 	
-	public void updateGhidruthsScales(LivingEntity entity)
+	public void updateAbyssalScale(LivingEntity entity)
 	{
-		if(this.getTickcount(BTAAbilities.GHIDRUTHS_SCALES) < 5 && entity.tickCount % 7F == 0)
+		if(this.getTickcount(BTAAbilities.ABYSSAL_SCALE) < 5 && entity.tickCount % 7F == 0)
 		{
-			this.setTickcount(BTAAbilities.GHIDRUTHS_SCALES, this.getTickcount(BTAAbilities.GHIDRUTHS_SCALES) + 1);
+			this.setTickcount(BTAAbilities.ABYSSAL_SCALE, this.getTickcount(BTAAbilities.ABYSSAL_SCALE) + 1);
 		}
 		
-		if(!entity.hasEffect(BTAEffects.GHIDRUTHS_SCALES.get()))
+		if(!entity.hasEffect(BTAEffects.ABYSSAL_SCALE.get()))
 		{
-			this.removeAbility(BTAAbilities.GHIDRUTHS_SCALES);
+			this.removeAbility(BTAAbilities.ABYSSAL_SCALE);
 		}
 	}
 	
@@ -134,7 +134,7 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	{
 		NONE(0),
 		ABYSSAL_DASH(1),
-		GHIDRUTHS_SCALES(2);
+		ABYSSAL_SCALE(2);
 		
 		public int id;
 

@@ -8,15 +8,13 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.proxy.ClientProxy;
-import com.min01.beyondtheabyss.proxy.CommonProxy;
+import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -25,7 +23,6 @@ import net.minecraftforge.fml.loading.FMLPaths;
 public class BeyondtheAbyss
 {
 	public static final String MODID = "beyondtheabyss";
-	public static final CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public BeyondtheAbyss() 
 	{
@@ -37,10 +34,11 @@ public class BeyondtheAbyss
 		BTASounds.SOUNDS.register(bus);
 		BTAEffects.EFFECTS.register(bus);
 		BTAEntityDataSerializers.SERIALIZERS.register(bus);
+		BTAParticles.PARTICLES.register(bus);
+		
 		BTANetwork.registerMessages();
+        BTAConfig.loadConfig(BTAConfig.CONFIG, FMLPaths.CONFIGDIR.get().resolve("beyond-the-abyss.toml").toString());
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::attachEntityCapability);
 		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::attachItemStackCapability);
-		
-        BTAConfig.loadConfig(BTAConfig.CONFIG, FMLPaths.CONFIGDIR.get().resolve("beyond-the-abyss.toml").toString());
 	}
 }

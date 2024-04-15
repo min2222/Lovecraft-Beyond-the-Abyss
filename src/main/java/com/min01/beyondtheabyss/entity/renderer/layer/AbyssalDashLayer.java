@@ -4,7 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.event.ClientEventHandler;
 import com.min01.beyondtheabyss.misc.BTARenderType;
-import com.min01.beyondtheabyss.util.DeepAbyssUtil;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -48,7 +48,7 @@ public class AbyssalDashLayer<T extends LivingEntity, M extends EntityModel<T>> 
 	@Override
 	public void render(PoseStack p_117349_, MultiBufferSource p_117350_, int p_117351_, T p_117352_, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) 
 	{
-		if(DeepAbyssUtil.hasAbility(p_117352_, BTAAbilities.ABYSSAL_DASH)) 
+		if(BTAUtil.hasAbility(p_117352_, BTAAbilities.ABYSSAL_DASH)) 
 		{
 			VertexConsumer vertexconsumer = p_117350_.getBuffer(BTARenderType.entityCutoutNoCull(TEXTURE));
 

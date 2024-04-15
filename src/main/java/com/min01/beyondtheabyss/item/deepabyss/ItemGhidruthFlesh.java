@@ -34,10 +34,10 @@ public class ItemGhidruthFlesh extends Item
 		else
 		{
 			//6000 = 5 minutes
-			p_41411_.addEffect(new MobEffectInstance(BTAEffects.GHIDRUTHS_SCALES.get(), 6000, 0, false, false));
+			p_41411_.addEffect(new MobEffectInstance(BTAEffects.ABYSSAL_SCALE.get(), 6000, 0, false, false));
 			p_41411_.getCapability(BTACapabilities.BTA_ABILITY).ifPresent((cap) -> 
 			{
-				cap.addAbility(BTAAbilities.GHIDRUTHS_SCALES);
+				cap.addAbility(BTAAbilities.ABYSSAL_SCALE);
 			});
 		}
 		

@@ -3,6 +3,9 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.PartRotationUpdatePacket;
+import com.min01.beyondtheabyss.network.PartRotationUpdatePacket.PartType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -128,16 +131,12 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 
 		RearBody.addOrReplaceChild("cube_r38", CubeListBuilder.create().texOffs(274, 154).addBox(5.9111F, -3.5421F, -23.4224F, 50.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 12.1923F, 57.7432F, 0.2943F, -0.6534F, -0.3822F));
 
-		RearBody.addOrReplaceChild("BodyPos", CubeListBuilder.create().texOffs(2, 2).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 5.0F, 90.0F));
-		
 		PartDefinition Tail = RearBody.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(171, 199).addBox(-11.8133F, -13.2595F, -10.299F, 23.0F, 28.0F, 47.0F, new CubeDeformation(0.0F)), PartPose.offset(0.3133F, -0.8746F, 67.1947F));
 
 		Tail.addOrReplaceChild("cube_r39", CubeListBuilder.create().texOffs(0, 245).addBox(-3.5F, -16.8201F, -11.2447F, 7.0F, 114.0F, 25.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.3133F, 0.1052F, 24.69F, 1.4399F, 0.0F, 0.0F));
 
 		Tail.addOrReplaceChild("cube_r40", CubeListBuilder.create().texOffs(64, 245).addBox(-4.5F, -21.2245F, -14.98F, 9.0F, 72.0F, 32.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.3133F, -36.035F, 40.2033F, -0.7854F, 0.0F, 0.0F));
-
-		Tail.addOrReplaceChild("TailPos", CubeListBuilder.create().texOffs(2, 2).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 5.0F, 180.0F));
-
+		
 		Body.addOrReplaceChild("LeftFin", CubeListBuilder.create().texOffs(64, 357).addBox(39.5F, -4.0F, -9.0F, 25.0F, 8.0F, 15.0F, new CubeDeformation(0.0F))
 		.texOffs(336, 50).addBox(-7.5F, -4.0F, -9.0F, 47.0F, 8.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(21.5947F, 16.5084F, 16.5359F, 0.0F, 0.0F, 0.6981F));
 
@@ -184,9 +183,19 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.stunEndAnimationState, GhidruthAnimation.GHIDRUTH_STUN_END, ageInTicks);
 		this.root.getChild("root2").xRot += headPitch * (Mth.PI / 180);
 		this.root.getChild("root2").yRot += netHeadYaw * (Mth.PI / 180);
-	    ModelPart head = this.root.getChild("root2").getChild("Head");
+		float pi = Mth.PI / 180;
+		ModelPart root2 = this.root.getChild("root2");
+	    ModelPart head = root2.getChild("Head");
+	    ModelPart body = head.getChild("Body");
+	    ModelPart rearBody = body.getChild("RearBody");
+	    ModelPart tail = rearBody.getChild("Tail");
+	    float root2YRot = root2.yRot / pi;
+	    float rearBodyYRot = rearBody.yRot / pi;
+	    float tailYRot = tail.yRot / pi;
 	    head.getChild("right_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
 	    head.getChild("left_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
+	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, root2YRot + rearBodyYRot, PartType.BODY));
+	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, root2YRot + tailYRot, PartType.TAIL));
 	}
 
 	@Override

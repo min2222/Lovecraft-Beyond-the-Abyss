@@ -10,5 +10,5 @@ import net.minecraft.world.level.Level;
 public class BTAWorlds
 {
 	public static final ResourceKey<Level> DEEP_ABYSS = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, "deep_abyss"));
-	//public static final ResourceKey<Biome> FOGGY_PLAIN = ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, "foggy_plain"));
+	//public static final ResourceKey<Level> EVERGREEN = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, "evergreen"));
 }

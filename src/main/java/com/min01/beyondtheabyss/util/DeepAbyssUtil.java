@@ -1,9 +1,7 @@
 package com.min01.beyondtheabyss.util;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
@@ -31,12 +29,6 @@ public class DeepAbyssUtil
 				&& isPlayer;
 		
 		return flag;
-	}
-	
-	public static boolean hasAbility(LivingEntity entity, BTAAbilities ability)
-	{
-		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
-		return handler.getAbilities().containsKey(ability);
 	}
 	
 	public static void startAbyssalDash(LivingEntity entity)

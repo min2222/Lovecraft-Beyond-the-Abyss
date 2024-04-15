@@ -14,7 +14,7 @@ import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalDashLayer;
-import com.min01.beyondtheabyss.entity.renderer.layer.GhidruthScaleArmorLayer;
+import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalScaleLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
@@ -23,6 +23,8 @@ import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
 import com.min01.beyondtheabyss.item.model.SimpleBakedModelWrapper;
+import com.min01.beyondtheabyss.particle.BTAParticles;
+import com.min01.beyondtheabyss.particle.ShockwaveParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.mojang.blaze3d.platform.InputConstants;
 
@@ -46,6 +48,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -72,6 +75,12 @@ public class ClientEventHandler
         	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
         });
     }
+    
+	@SubscribeEvent
+	public static void registerParticleProviders(RegisterParticleProvidersEvent event)
+	{
+		event.register(BTAParticles.SHOCKWAVE.get(), ShockwaveParticle.Provider::new);
+	}
     
 	@SubscribeEvent
 	public static void onModelRegistry(ModelEvent.RegisterAdditional event)
@@ -152,6 +161,6 @@ public class ClientEventHandler
 	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer)
 	{
 		renderer.addLayer(new AbyssalDashLayer<>(renderer));
-		renderer.addLayer(new GhidruthScaleArmorLayer<>(renderer));
+		renderer.addLayer(new AbyssalScaleLayer<>(renderer));
 	}
 }

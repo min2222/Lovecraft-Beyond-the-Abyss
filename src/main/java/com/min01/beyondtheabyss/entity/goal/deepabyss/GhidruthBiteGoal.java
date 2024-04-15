@@ -29,18 +29,28 @@ public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash() && !this.mob.isStun();
+		return BTAUtil.isWithinMeleeAttackRange(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash() && !this.mob.isStun();
 	}
 
 	@Override
 	protected void performSkill() 
 	{
 		this.mob.playSound(BTASounds.GHIDRUTH_BITE.get());
-		if(BTAUtil.isWithinMeleeAttackRangeOfPart(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
+		if(BTAUtil.isWithinMeleeAttackRange(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
 		{
 			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().inflate(1.5F));
 			list.removeIf((living) -> living == this.mob);
-			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 17));
+			list.forEach((living) -> 
+			{
+				if(living.hurt(DamageSource.mobAttack(this.mob), 17))
+				{
+                    double d0 = living.getX() - this.mob.head.getX();
+                    double d1 = living.getZ() - this.mob.head.getZ();
+                    double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+                    float f = 1.5F;
+                    living.push(d0 / d2 * f, 0.15F, d1 / d2 * f);
+				}
+			});
 		}
 	}
 

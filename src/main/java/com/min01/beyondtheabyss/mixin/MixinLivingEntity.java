@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.mixin;
 
-import net.minecraftforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -8,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.fluids.FluidType;
 
 @Mixin(LivingEntity.class)
 public class MixinLivingEntity 

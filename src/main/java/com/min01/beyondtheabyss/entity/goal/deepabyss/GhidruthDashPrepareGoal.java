@@ -30,13 +30,13 @@ public class GhidruthDashPrepareGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return this.mob.getAttackCount() >= 5 && this.mob.distanceTo(this.mob.getTarget()) >= 10 && !this.mob.isDash() && !this.mob.isStun();
+		return this.mob.getAttackCount() >= 5 && this.mob.distanceTo(this.mob.getTarget()) >= 20 && !this.mob.isDash() && !this.mob.isStun();
 	}
 
 	@Override
 	protected void performSkill() 
 	{
-		Vec3 lookPos = BTAUtil.getLookPos(this.mob.getXRot(), this.mob.yHeadRot, 0.5F, 15);
+		Vec3 lookPos = BTAUtil.getLookPos(this.mob.getXRot(), this.mob.getYHeadRot(), 0, 15);
 		Vec3 pos = this.mob.getTarget().position().add(lookPos);
 		this.mob.setDashPos(pos);
 		this.mob.setDash(true);
