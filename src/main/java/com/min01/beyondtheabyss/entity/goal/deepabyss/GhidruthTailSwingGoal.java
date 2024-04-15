@@ -30,17 +30,27 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 	{
 		return BTAUtil.isWithinMeleeAttackRange(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash() && !this.mob.isStun();
 	}
+	
+	@Override
+	public void tick() 
+	{
+		super.tick();
+		if(this.mob.skillUsingTickCount <= 20 && this.mob.skillUsingTickCount >= 10)
+		{
+			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(3.5F));
+			list.removeIf((living) -> living == this.mob);
+			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 35));
+			
+			List<LivingEntity> list1 = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.body.getBoundingBox().inflate(3.5F));
+			list1.removeIf((living) -> living == this.mob);
+			list1.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 24));
+		}
+	}
 
 	@Override
 	protected void performSkill()
 	{
-		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(3.5F));
-		list.removeIf((living) -> living == this.mob);
-		list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 35));
-		
-		List<LivingEntity> list1 = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.body.getBoundingBox().inflate(3.5F));
-		list1.removeIf((living) -> living == this.mob);
-		list1.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 24));
+
 	}
 
 	@Override
