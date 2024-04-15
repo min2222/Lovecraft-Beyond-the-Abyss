@@ -81,7 +81,7 @@ public class HarpoonItem extends Item
 						p_43388_.broadcastBreakEvent(p_41414_.getUsedItemHand());
 					});
 					EntityThrownHarpoon harpoon = new EntityThrownHarpoon(p_41413_, player, p_41412_, this == BTAItems.GHIDRUTH_SCALE_HARPOON.get());
-					harpoon.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.0F, 1.0F);
+					harpoon.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, this == BTAItems.GHIDRUTH_SCALE_HARPOON.get() ? 2.0F : 1.2F, 1.0F);
 					if (player.getAbilities().instabuild) 
 					{
 						harpoon.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;

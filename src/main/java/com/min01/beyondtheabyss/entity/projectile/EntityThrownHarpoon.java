@@ -85,7 +85,7 @@ public class EntityThrownHarpoon extends AbstractArrow
 		Entity entity = this.getOwner();
 		if(entity != null && (this.dealtDamage || this.isNoPhysics()))
 		{
-			int i = !this.isReinforced() ? 1 : 3;
+			int i = !this.isReinforced() ? 2 : 5;
 			this.setNoPhysics(true);
             Vec3 vec3 = entity.getEyePosition().subtract(this.position());
             this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D * (double)i, this.getZ());

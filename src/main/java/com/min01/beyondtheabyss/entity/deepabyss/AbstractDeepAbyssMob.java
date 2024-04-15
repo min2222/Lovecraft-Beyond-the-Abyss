@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
@@ -23,6 +24,12 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
 		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), 0.02F, 0.1F, true);
 		this.lookControl = new SmoothSwimmingLookControl(this, 10);
+	}
+	
+	@Override
+	public MobType getMobType() 
+	{
+		return MobType.WATER;
 	}
     
     @Override

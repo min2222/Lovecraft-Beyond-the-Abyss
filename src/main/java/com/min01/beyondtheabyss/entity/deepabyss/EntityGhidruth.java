@@ -12,11 +12,13 @@ import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
@@ -31,7 +33,11 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
@@ -310,15 +316,42 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 			list.removeIf((living) -> living == this);
 			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this), 4));
 	        
-	        if(this.distanceToSqr(vec3) <= 2 || (!this.level.isClientSide && this.getTarget() == null))
+	        HitResult hitResult = this.level.clip(new ClipContext(this.head.position(), this.head.position().add(BTAUtil.getLookPos(this.getXRot(), this.getYHeadRot(), 0, 6)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+	        if(hitResult instanceof BlockHitResult blockHit)
 	        {
-	        	this.stopDash();
-	        }
-	        
-	        if(this.horizontalCollision)
-	        {
-	        	//FIXME
-	        	//this.stopDashAndStun();
+	        	BlockPos blockPos = blockHit.getBlockPos();
+				int i2 = Mth.floor(blockPos.getX());
+				int j1 = Mth.floor(blockPos.getY());
+                int j2 = Mth.floor(blockPos.getZ());
+                boolean flag = false;
+
+                for(int j = -6; j <= 6; ++j)
+                {
+                	for(int k2 = -6; k2 <= 6; ++k2)
+                	{
+                		for(int k = 0; k <= 6; ++k) 
+                		{
+                			int l2 = i2 + j;
+                			int l = j1 + k;
+                			int i1 = j2 + k2;
+                			BlockPos blockpos = new BlockPos(l2, l, i1);
+                			BlockState blockstate = this.level.getBlockState(blockpos);
+            				flag = blockstate.isAir() || flag;
+                		}
+                	}
+                }
+                
+	        	if(!flag)
+	        	{
+		        	this.stopDashAndStun();
+	        	}
+	        	else
+	        	{
+	    	        if(this.distanceToSqr(vec3) <= 2 || (!this.level.isClientSide && this.getTarget() == null))
+	    	        {
+	    	        	this.stopDash();
+	    	        }
+	        	}
 	        }
         }
         

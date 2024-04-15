@@ -39,11 +39,11 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 		{
 			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(3.5F));
 			list.removeIf((living) -> living == this.mob);
-			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 35));
+			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 20));
 			
 			List<LivingEntity> list1 = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.body.getBoundingBox().inflate(3.5F));
 			list1.removeIf((living) -> living == this.mob);
-			list1.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 24));
+			list1.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 20));
 		}
 	}
 

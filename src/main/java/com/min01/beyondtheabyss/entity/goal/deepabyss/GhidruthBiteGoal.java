@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
 public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 {
@@ -38,7 +39,8 @@ public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 		this.mob.playSound(BTASounds.GHIDRUTH_BITE.get());
 		if(BTAUtil.isWithinMeleeAttackRange(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
 		{
-			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().inflate(1.5F));
+			Vec3 vec3 = BTAUtil.getLookPos(this.mob.getXRot(), this.mob.getYRot(), 0, 0.5F);
+			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().move(vec3).inflate(2F));
 			list.removeIf((living) -> living == this.mob);
 			list.forEach((living) -> 
 			{
