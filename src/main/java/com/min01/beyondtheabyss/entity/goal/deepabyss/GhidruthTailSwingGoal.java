@@ -35,7 +35,7 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 	public void tick() 
 	{
 		super.tick();
-		if(this.mob.skillUsingTickCount <= 20 && this.mob.skillUsingTickCount >= 10)
+		if(this.mob.skillUsingTickCount <= 25 && this.mob.skillUsingTickCount >= 5)
 		{
 			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(3.5F));
 			list.removeIf((living) -> living == this.mob);

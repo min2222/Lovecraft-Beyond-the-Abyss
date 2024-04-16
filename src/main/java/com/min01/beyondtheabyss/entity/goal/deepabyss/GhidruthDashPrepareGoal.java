@@ -8,6 +8,8 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class GhidruthDashPrepareGoal extends BasicBTASkillGoal<EntityGhidruth>
@@ -38,7 +40,8 @@ public class GhidruthDashPrepareGoal extends BasicBTASkillGoal<EntityGhidruth>
 	{
 		Vec3 lookPos = BTAUtil.getLookPos(this.mob.getXRot(), this.mob.getYHeadRot(), 0, 15);
 		Vec3 pos = this.mob.getTarget().position().add(lookPos);
-		this.mob.setDashPos(pos);
+		HitResult hitResult = this.mob.level.clip(new ClipContext(this.mob.getTarget().position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob));
+		this.mob.setDashPos(hitResult.getLocation());
 		this.mob.setDash(true);
 		this.mob.setCanMove(true);
 		this.mob.setAnimationState(4);

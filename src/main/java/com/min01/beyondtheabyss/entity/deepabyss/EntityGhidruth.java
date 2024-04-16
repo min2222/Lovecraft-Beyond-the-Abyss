@@ -77,7 +77,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     			.add(Attributes.MAX_HEALTH, 300)
     			.add(Attributes.MOVEMENT_SPEED, 1.8D)
         		.add(Attributes.ATTACK_DAMAGE, 5)
-        		.add(Attributes.FOLLOW_RANGE, 70)
+        		.add(Attributes.FOLLOW_RANGE, 170)
         		.add(Attributes.ARMOR, 150)
         		.add(Attributes.ARMOR_TOUGHNESS, 150)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10);
@@ -403,6 +403,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 		this.setCanLookOrMove(false);
 		this.setAttackCount(0);
 		this.setDashPos(Vec3.ZERO);
+		this.setDeltaMovement(Vec3.ZERO);
 		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1.8);
 		this.getAttribute(Attributes.ARMOR).setBaseValue(10);
 		this.getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(10);
