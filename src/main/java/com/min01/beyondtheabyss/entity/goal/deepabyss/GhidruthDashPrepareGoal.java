@@ -6,7 +6,6 @@ import com.min01.beyondtheabyss.entity.goal.BasicBTASkillGoal;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -23,10 +22,10 @@ public class GhidruthDashPrepareGoal extends BasicBTASkillGoal<EntityGhidruth>
 	public void start() 
 	{
 		super.start();
-		this.mob.lookAt(Anchor.FEET, this.mob.getTarget().position());
+		this.mob.lookAt(this.mob.getLookAnchor(), this.mob.getLookPos());
 		this.mob.setCanLookOrMove(false);
 		this.mob.setAnimationState(3);
-		this.mob.playSound(BTASounds.GHIDRUTH_EYEFLASH.get());
+		this.mob.playSound(BTASounds.GHIDRUTH_EYE_FLASH.get());
 	}
 	
 	@Override
@@ -38,9 +37,9 @@ public class GhidruthDashPrepareGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	protected void performSkill() 
 	{
-		Vec3 lookPos = BTAUtil.getLookPos(this.mob.getXRot(), this.mob.getYHeadRot(), 0, 15);
-		Vec3 pos = this.mob.getTarget().position().add(lookPos);
-		HitResult hitResult = this.mob.level.clip(new ClipContext(this.mob.getTarget().position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob));
+		Vec3 lookPos = BTAUtil.getLookPos(this.mob.getXRot(), this.mob.getYHeadRot(), 0, this.mob.head.distanceTo(this.mob.getTarget()));
+		Vec3 pos = this.mob.head.position().add(lookPos);
+		HitResult hitResult = this.mob.level.clip(new ClipContext(this.mob.head.position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob));
 		this.mob.setDashPos(hitResult.getLocation());
 		this.mob.setDash(true);
 		this.mob.setCanMove(true);

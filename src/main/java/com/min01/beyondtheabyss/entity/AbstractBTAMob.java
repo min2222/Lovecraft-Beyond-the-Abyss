@@ -19,6 +19,7 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> CAN_LOOK_OR_MOVE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	
 	public int skillUsingTickCount;
 	private AbstractBTAMob.BTASkills currentSkill = AbstractBTAMob.BTASkills.NONE;
@@ -51,6 +52,7 @@ public abstract class AbstractBTAMob extends PathfinderMob
 		this.entityData.define(IS_BOSS, false);
 		this.entityData.define(IS_HOSTILE, false);
 		this.entityData.define(CAN_LOOK_OR_MOVE, true);
+		this.entityData.define(HAS_TARGET, false);
 	}
 	
     @Override
@@ -84,21 +86,36 @@ public abstract class AbstractBTAMob extends PathfinderMob
 		super.tick();
 		if(this.isHostile())
 		{
-			if(this.getTarget() != null && this.canLookOrMove())
+			if(this.getTarget() != null)
 			{
-				this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-				this.lookAt(this.getLookAnchor(), this.getLookPos());
+				this.setHasTarget(this.getTarget() != null);
+				if(this.canLookOrMove())
+				{
+					this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+					this.lookAt(this.getLookAnchor(), this.getLookPos());
+				}
 			}
 		}
 	}
 	
 	public abstract Anchor getLookAnchor();
+	
 	public abstract Vec3 getLookPos();
 	
 	public void setAsBoss()
 	{
 		this.setBoss(true);
 		this.setHostile(true);
+	}
+	
+	public void setHasTarget(boolean value)
+	{
+		this.entityData.set(HAS_TARGET, value);
+	}
+	
+	public boolean hasTarget()
+	{
+		return this.entityData.get(HAS_TARGET);
 	}
 	
 	public void setCanLookOrMove(boolean value)

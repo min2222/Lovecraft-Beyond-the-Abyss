@@ -29,12 +29,12 @@
       }
     ]
   },
-  "ghidruth_eyeflash": {
+  "ghidruth_eye_flash": {
     "category": "entity",
-    "subtitle": "ghidruth_eyeflash",
+    "subtitle": "ghidruth_eye_flash",
     "sounds": [
       {
-        "name": "beyondtheabyss:entity/ghidruth_eyeflash",
+        "name": "beyondtheabyss:entity/ghidruth_eye_flash",
         "stream": true
       }
     ]

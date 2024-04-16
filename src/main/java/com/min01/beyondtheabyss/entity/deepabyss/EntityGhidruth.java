@@ -64,6 +64,8 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 	public static final EntityDataAccessor<Float> BODY_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> TAIL_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	
+	public static final double DEFAULT_MOVEMENT_SPEED = 1.5D;
+	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
 		super(p_33002_, p_33003_);
@@ -75,9 +77,9 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 300)
-    			.add(Attributes.MOVEMENT_SPEED, 1.8D)
+    			.add(Attributes.MOVEMENT_SPEED, DEFAULT_MOVEMENT_SPEED)
         		.add(Attributes.ATTACK_DAMAGE, 5)
-        		.add(Attributes.FOLLOW_RANGE, 170)
+        		.add(Attributes.FOLLOW_RANGE, 100)
         		.add(Attributes.ARMOR, 150)
         		.add(Attributes.ARMOR_TOUGHNESS, 150)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10);
@@ -268,7 +270,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     @Override
     protected void registerGoals()
     {
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 10));
+        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20));
         this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
         this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
         this.goalSelector.addGoal(4, new GhidruthDashPrepareGoal(this));
@@ -310,12 +312,13 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
         	}
         	Vec3 vec3 = this.getDashPos();
 			this.setDeltaMovement(BTAUtil.fromToVector(this.position(), vec3, (float) this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED)));
-			this.lookAt(Anchor.FEET, vec3);
+			this.lookAt(this.getLookAnchor(), vec3);
 			
 			List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.head.getBoundingBox().inflate(3));
 			list.removeIf((living) -> living == this);
 			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this), 4));
 	        
+			boolean flag = false;
 	        HitResult hitResult = this.level.clip(new ClipContext(this.head.position(), this.head.position().add(BTAUtil.getLookPos(this.getXRot(), this.getYHeadRot(), 0, 6)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 	        if(hitResult instanceof BlockHitResult blockHit)
 	        {
@@ -323,8 +326,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 				int i2 = Mth.floor(blockPos.getX());
 				int j1 = Mth.floor(blockPos.getY());
                 int j2 = Mth.floor(blockPos.getZ());
-                boolean flag = false;
-
                 for(int j = -6; j <= 6; ++j)
                 {
                 	for(int k2 = -6; k2 <= 6; ++k2)
@@ -336,22 +337,20 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
                 			int i1 = j2 + k2;
                 			BlockPos blockpos = new BlockPos(l2, l, i1);
                 			BlockState blockstate = this.level.getBlockState(blockpos);
-            				flag = blockstate.isAir() || flag;
+                			flag = !blockstate.isAir() && !blockstate.getMaterial().isLiquid();
                 		}
                 	}
                 }
-                
-	        	if(!flag)
-	        	{
-		        	this.stopDashAndStun();
-	        	}
-	        	else
-	        	{
-	    	        if(this.distanceToSqr(vec3) <= 2 || (!this.level.isClientSide && this.getTarget() == null))
-	    	        {
-	    	        	this.stopDash();
-	    	        }
-	        	}
+	        }
+	        
+	        if(flag)
+	        {
+	        	this.stopDashAndStun();
+	        }
+	        
+	        if(this.distanceToSqr(vec3) <= 2 || !this.hasTarget())
+	        {
+	        	this.stopDash();
 	        }
         }
         
@@ -404,7 +403,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 		this.setAttackCount(0);
 		this.setDashPos(Vec3.ZERO);
 		this.setDeltaMovement(Vec3.ZERO);
-		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1.8);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(DEFAULT_MOVEMENT_SPEED);
 		this.getAttribute(Attributes.ARMOR).setBaseValue(10);
 		this.getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(10);
     }
@@ -416,7 +415,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 		this.setCanLookOrMove(true);
 		this.setAttackCount(0);
 		this.setDashPos(Vec3.ZERO);
-		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1.8);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(DEFAULT_MOVEMENT_SPEED);
     }
     
     @Override
@@ -438,22 +437,34 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     	}
     }
     
+	@Override
+	public float getInsideWaterSpeed() 
+	{
+		return 0.02F;
+	}
+
+	@Override
+	public float getOutsideWaterSpeed() 
+	{
+		return 0.02F;
+	}
+    
     @Override
     public Anchor getLookAnchor()
     {
-    	return Anchor.FEET;
+    	return Anchor.EYES;
     }
     
     @Override
     public Vec3 getLookPos() 
     {
-    	return this.getTarget().position();
+    	return this.getTarget().getEyePosition();
     }
 
     @Override
     public int getBodyRotationSpeed() 
     {
-    	return this.getTarget() == null ? 2 : 6;
+    	return !this.hasTarget() ? 2 : 6;
     }
 
 	@Override

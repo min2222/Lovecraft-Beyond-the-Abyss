@@ -22,7 +22,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	{
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), 0.02F, 0.1F, true);
+		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), this.getInsideWaterSpeed(), this.getOutsideWaterSpeed(), true);
 		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 	}
 	
@@ -55,7 +55,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	{
 		super.tick();
 		//for keep update body rotation speed
-		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), 0.02F, 0.1F, true);
+		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), this.getInsideWaterSpeed(), this.getOutsideWaterSpeed(), true);
 	}
 	
 	@Override
@@ -78,4 +78,8 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	}
 	
 	public abstract int getBodyRotationSpeed();
+	
+	public abstract float getInsideWaterSpeed();
+	
+	public abstract float getOutsideWaterSpeed();
 }
