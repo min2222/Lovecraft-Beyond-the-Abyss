@@ -61,7 +61,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     	this.getMob().skillUsingTickCount = this.getSkillUsingTime();
     	this.nextSkillTickCount = this.getMob().tickCount + this.getSkillUsingInterval();
     	
-    	this.getMob().setIsUsingSkill(this.getSkills());
+    	this.getMob().setIsUsingSkill(true);
     }
     
     public boolean stopMovingWhenStart()
@@ -77,6 +77,7 @@ public abstract class AbstractBTASkillGoal extends Goal
 			this.getMob().setCanMove(true);
 		}
 		this.getMob().setAggressive(false);
+    	this.getMob().setIsUsingSkill(false);
 	}
 	
     @Override
@@ -102,6 +103,4 @@ public abstract class AbstractBTASkillGoal extends Goal
     protected abstract int getSkillUsingInterval();
     
     public abstract AbstractBTAMob getMob();
-    
-    protected abstract AbstractBTAMob.BTASkills getSkills();
 }

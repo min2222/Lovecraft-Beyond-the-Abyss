@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob.BTASkills;
 import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.sound.BTASounds;
@@ -79,11 +78,5 @@ public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 	{
 		super.stop();
 		this.mob.setAnimationState(0);
-	}
-
-	@Override
-	protected BTASkills getSkills() 
-	{
-		return BTASkills.GHIDRUTH_BITE;
 	}
 }

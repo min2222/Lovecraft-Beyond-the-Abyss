@@ -14,15 +14,14 @@ import net.minecraft.world.phys.Vec3;
 public abstract class AbstractBTAMob extends PathfinderMob
 {
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Byte> SKILL_ID = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BYTE);
 	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> CAN_LOOK_OR_MOVE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> CAN_LOOK_OR_MOVE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_USING_SKILL = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	
 	public int skillUsingTickCount;
-	private AbstractBTAMob.BTASkills currentSkill = AbstractBTAMob.BTASkills.NONE;
 	
 	public AbstractBTAMob(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -46,12 +45,12 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	protected void defineSynchedData()
 	{
 		super.defineSynchedData();
-		this.entityData.define(SKILL_ID, (byte)0);
 		this.entityData.define(ANIMATION_STATE, 0);
 		this.entityData.define(CAN_MOVE, true);
+		this.entityData.define(CAN_LOOK_OR_MOVE, true);
 		this.entityData.define(IS_BOSS, false);
 		this.entityData.define(IS_HOSTILE, false);
-		this.entityData.define(CAN_LOOK_OR_MOVE, true);
+		this.entityData.define(IS_USING_SKILL, false);
 		this.entityData.define(HAS_TARGET, false);
 	}
 	
@@ -68,16 +67,10 @@ public abstract class AbstractBTAMob extends PathfinderMob
 			super.move(p_19973_, new Vec3(0, yvec, 0));
 		}
 	}
-    
-	protected AbstractBTAMob.BTASkills getCurrentSkill() 
-	{
-		return !this.level.isClientSide ? this.currentSkill : AbstractBTAMob.BTASkills.byId(this.entityData.get(SKILL_ID));
-	}
 	
-	public void setIsUsingSkill(AbstractBTAMob.BTASkills p_33728_) 
+	public void setIsUsingSkill(boolean value) 
 	{
-		this.currentSkill = p_33728_;
-		this.entityData.set(SKILL_ID, (byte)p_33728_.id);
+		this.entityData.set(IS_USING_SKILL, value);
 	}
 	
 	@Override
@@ -175,14 +168,7 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	
 	public boolean isUsingSkill() 
 	{
-		if (this.level.isClientSide) 
-		{
-			return this.entityData.get(SKILL_ID) > 0;
-		} 
-		else
-		{
-			return this.skillUsingTickCount > 0;
-		}
+		return this.skillUsingTickCount > 0 || this.entityData.get(IS_USING_SKILL);
 	}
 	
 	@Override
@@ -199,31 +185,4 @@ public abstract class AbstractBTAMob extends PathfinderMob
     {
     	
     }
-    
-	public static enum BTASkills
-	{
-		NONE(0),
-		GHIDRUTH_BITE(1),
-		GHIDRUTH_TAIL_SWING(2),
-		GHIDRUTH_DASH_PREPARE(3);
-		
-		int id;
-
-		private BTASkills(int p_33754_) 
-		{
-			this.id = p_33754_;
-		}
-		
-		public static AbstractBTAMob.BTASkills byId(int p_33759_)
-		{
-			for(AbstractBTAMob.BTASkills skils : values()) 
-			{
-				if (p_33759_ == skils.id) 
-				{
-					return skils;
-				}
-			}
-			return NONE;
-		}
-	}
 }
