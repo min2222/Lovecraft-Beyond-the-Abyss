@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity.goal;
+package com.min01.beyondtheabyss.entity.ai.goal;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 

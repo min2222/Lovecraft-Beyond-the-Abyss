@@ -3,9 +3,9 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.List;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthBiteGoal;
-import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthDashPrepareGoal;
-import com.min01.beyondtheabyss.entity.goal.deepabyss.GhidruthTailSwingGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthDashPrepareGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.sound.BTASounds;
