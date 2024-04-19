@@ -7,7 +7,6 @@ import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.PartRotationUpdatePacket;
 import com.min01.beyondtheabyss.network.PartRotationUpdatePacket.PartType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -165,13 +164,8 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	public void setupAnim(EntityGhidruth entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		if(entity.getAnimationState() == 0)
-		{
-			if(BTAUtil.isMoving(entity))
-			{
-				BTAClientUtil.animateWalk(this, GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
-			}
-		}
+		BTAClientUtil.animateHead(this.root, netHeadYaw, headPitch);
+		BTAClientUtil.animateWalk(entity, this, GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 		this.animate(entity.biteRightAnimationState, GhidruthAnimation.GHIDRUTH_BITE_RIGHT, ageInTicks);
 		this.animate(entity.biteLeftAnimationState, GhidruthAnimation.GHIDRUTH_BITE_LEFT, ageInTicks);
 		this.animate(entity.tailSwingRightAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);
@@ -181,8 +175,6 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.stunAnimationState, GhidruthAnimation.GHIDRUTH_STUNNED, ageInTicks);
 		this.animate(entity.stunLoopAnimationState, GhidruthAnimation.GHIDRUTH_STUN_LOOP, ageInTicks);
 		this.animate(entity.stunEndAnimationState, GhidruthAnimation.GHIDRUTH_STUN_END, ageInTicks);
-		this.root.getChild("root2").xRot += headPitch * (Mth.PI / 180);
-		this.root.getChild("root2").yRot += netHeadYaw * (Mth.PI / 180);
 		float pi = Mth.PI / 180;
 		ModelPart root2 = this.root.getChild("root2");
 	    ModelPart head = root2.getChild("Head");
@@ -194,8 +186,8 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	    float tailYRot = tail.yRot / pi;
 	    head.getChild("right_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
 	    head.getChild("left_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, root2YRot + rearBodyYRot, PartType.BODY));
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, root2YRot + tailYRot, PartType.TAIL));
+	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, 0, root2YRot + rearBodyYRot, 0, PartType.BODY));
+	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, 0, 0, root2YRot + tailYRot, PartType.TAIL));
 	}
 
 	@Override

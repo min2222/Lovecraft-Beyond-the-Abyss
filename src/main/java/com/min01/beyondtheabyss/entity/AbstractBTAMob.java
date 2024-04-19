@@ -8,6 +8,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -16,8 +19,6 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> CAN_LOOK_OR_MOVE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_HOSTILE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_USING_SKILL = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
 	
@@ -48,8 +49,6 @@ public abstract class AbstractBTAMob extends PathfinderMob
 		this.entityData.define(ANIMATION_STATE, 0);
 		this.entityData.define(CAN_MOVE, true);
 		this.entityData.define(CAN_LOOK_OR_MOVE, true);
-		this.entityData.define(IS_BOSS, false);
-		this.entityData.define(IS_HOSTILE, false);
 		this.entityData.define(IS_USING_SKILL, false);
 		this.entityData.define(HAS_TARGET, false);
 	}
@@ -74,6 +73,16 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	}
 	
 	@Override
+	protected void registerGoals() 
+	{
+        if(this.isHostile())
+        {
+            this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
+        }
+	}
+	
+	@Override
 	public void tick() 
 	{
 		super.tick();
@@ -91,14 +100,14 @@ public abstract class AbstractBTAMob extends PathfinderMob
 		}
 	}
 	
-	public abstract Anchor getLookAnchor();
-	
-	public abstract Vec3 getLookPos();
-	
-	public void setAsBoss()
+	public Anchor getLookAnchor()
 	{
-		this.setBoss(true);
-		this.setHostile(true);
+		return Anchor.EYES;
+	}
+	
+	public Vec3 getLookPos()
+	{
+		return this.getTarget().getEyePosition();
 	}
 	
 	public void setHasTarget(boolean value)
@@ -121,24 +130,14 @@ public abstract class AbstractBTAMob extends PathfinderMob
 		return this.entityData.get(CAN_LOOK_OR_MOVE);
 	}
 	
-	public void setHostile(boolean value)
-	{
-		this.entityData.set(IS_HOSTILE, value);
-	}
-	
 	public boolean isHostile()
 	{
-		return this.entityData.get(IS_HOSTILE);
-	}
-	
-	public void setBoss(boolean value)
-	{
-		this.entityData.set(IS_BOSS, value);
+		return true;
 	}
 	
 	public boolean isBoss()
 	{
-		return this.entityData.get(IS_BOSS);
+		return false;
 	}
 	
     public void setAnimationState(int value)

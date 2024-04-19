@@ -5,17 +5,20 @@ import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.KeyInputPacket;
 import com.min01.beyondtheabyss.network.KeyInputPacket.InputType;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssSkyRenderer;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -99,9 +102,9 @@ public class ClientEventHandlerForge
         	{
                 if(!MC.isPaused() && MC.player != null)
                 {
-                	if(MC.player.isEyeInFluidType(Fluids.WATER.getFluidType()))
+                	if(MC.player.isEyeInFluidType(Fluids.WATER.getFluidType()) && MC.player.getItemBySlot(EquipmentSlot.HEAD).is(BTATags.BTAItems.DIVING_SET))
                 	{
-                    	//MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
+                    	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
                 	}
                 	else
                 	{
@@ -142,6 +145,25 @@ public class ClientEventHandlerForge
     }
     
     @SubscribeEvent
+    public static void onRenderFog(ViewportEvent.RenderFog event)
+    {
+    	ClientLevel world = MC.level;
+        if(world.dimension().location().getPath().equals("deep_abyss"))
+        {
+        	FogType fogtype = event.getCamera().getFluidInCamera();
+            if(fogtype == FogType.WATER)
+            {
+            	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
+            	{
+            		int amount = MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get() ? 25 : 10;
+                    RenderSystem.setShaderFogStart(-8.0F + amount);
+                    RenderSystem.setShaderFogEnd(50.0F - amount);
+            	}
+            }
+        }
+    }
+    
+    @SubscribeEvent
     public static void onFogColors(ViewportEvent.ComputeFogColor event)
     {
     	ClientLevel world = MC.level;
@@ -150,7 +172,7 @@ public class ClientEventHandlerForge
         	FogType fogtype = event.getCamera().getFluidInCamera();
             if(fogtype == FogType.WATER)
             {
-            	Vec3 color = MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get() ? Vec3.fromRGB24(65811) : Vec3.fromRGB24(657950);
+            	Vec3 color = Vec3.fromRGB24(65811);
                 event.setRed((float) color.x);
                 event.setGreen((float) color.y);
                 event.setBlue((float) color.z);

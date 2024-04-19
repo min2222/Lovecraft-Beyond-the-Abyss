@@ -1,5 +1,7 @@
 {
-  "textures": {
-    "particle": "beyondtheabyss:block/altar_of_deep"
+  "variants": {
+    "": {
+      "model": "beyondtheabyss:block/altar_of_deep"
+    }
   }
 }

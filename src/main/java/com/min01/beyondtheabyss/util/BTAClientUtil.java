@@ -1,10 +1,12 @@
 package com.min01.beyondtheabyss.util;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -14,11 +16,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class BTAClientUtil
 {
-	public static void animateWalk(HierarchicalModel<? extends Entity> model, AnimationDefinition p_268159_, float p_268057_, float p_268347_, float p_268138_, float p_268165_) 
+	public static void animateHead(ModelPart head, float netHeadYaw, float headPitch)
 	{
-		long i = (long)(p_268057_ * 50.0F * p_268138_);
-		float f = Math.min(p_268347_ * p_268165_, 1.0F);
-		KeyframeAnimations.animate(model, p_268159_, i, f, new Vector3f());
+		head.yRot += netHeadYaw * ((float)Math.PI / 180F);
+		head.xRot += headPitch * ((float)Math.PI / 180F);
+	}
+	
+	public static void animateWalk(AbstractBTAMob entity, HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 
+	{
+		if(entity.getAnimationState() == 0)
+		{
+			if(BTAUtil.isMoving(entity))
+			{
+				long i = (long)(limbSwing * 50.0F * p_268138_);
+				float f = Math.min(limbSwingAmount * p_268165_, 1.0F);
+				KeyframeAnimations.animate(model, animation, i, f, new Vector3f());
+			}
+		}
 	}
     
 	public static int getCurrentFrame(Level worldIn, int frameNumber, float speed) 

@@ -11,7 +11,6 @@ import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,15 +23,12 @@ import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Drowned;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -61,15 +57,12 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 	public static final EntityDataAccessor<Boolean> IS_STUN = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> STUN_TICK = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Float> BODY_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> TAIL_ROT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.FLOAT);
 	
 	public static final double DEFAULT_MOVEMENT_SPEED = 1.5D;
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
 		super(p_33002_, p_33003_);
-		this.setAsBoss();
 		this.xpReward = 1000;
 	}
 	
@@ -94,78 +87,17 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
         this.entityData.define(IS_STUN, false);
         this.entityData.define(ATTACK_COUNT, 0);
         this.entityData.define(STUN_TICK, 0);
-        this.entityData.define(BODY_ROT, 0.0F);
-        this.entityData.define(TAIL_ROT, 0.0F);
     }
     
-    public void setBodyRot(float rot)
+    @Override
+    protected void registerGoals()
     {
-    	this.entityData.set(BODY_ROT, rot);
-    }
-      
-    public float getBodyRot() 
-    {
-    	return this.entityData.get(BODY_ROT);
-    }
-    
-    public void setTailRot(float rot)
-    {
-    	this.entityData.set(TAIL_ROT, rot);
-    }
-      
-    public float getTailRot() 
-    {
-    	return this.entityData.get(TAIL_ROT);
-    }
-    
-    public void setStunTick(int count)
-    {
-    	this.entityData.set(STUN_TICK, count);
-    }
-      
-    public int getStunTick() 
-    {
-    	return this.entityData.get(STUN_TICK);
-    }
-    
-    public void setStun(boolean value)
-    {
-    	this.entityData.set(IS_STUN, value);
-    }
-      
-    public boolean isStun() 
-    {
-    	return this.entityData.get(IS_STUN);
-    }
-    
-    public void setDashPos(Vec3 value)
-    {
-    	this.entityData.set(DASH_POS, value);
-    }
-      
-    public Vec3 getDashPos() 
-    {
-    	return this.entityData.get(DASH_POS);
-    }
-    
-    public void setDash(boolean value)
-    {
-    	this.entityData.set(IS_DASH, value);
-    }
-      
-    public boolean isDash() 
-    {
-    	return this.entityData.get(IS_DASH);
-    }
-    
-    public void setAttackCount(int count)
-    {
-    	this.entityData.set(ATTACK_COUNT, count);
-    }
-      
-    public int getAttackCount() 
-    {
-    	return this.entityData.get(ATTACK_COUNT);
+    	super.registerGoals();
+        this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
+        this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
+        this.goalSelector.addGoal(4, new GhidruthDashPrepareGoal(this));
+        this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Drowned>(this, Drowned.class, false, false));
     }
     
     @Override
@@ -266,18 +198,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 		this.stunLoopAnimationState.stop();
 		this.stunEndAnimationState.stop();
 	}
-    
-    @Override
-    protected void registerGoals()
-    {
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20));
-        this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
-        this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
-        this.goalSelector.addGoal(4, new GhidruthDashPrepareGoal(this));
-        this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Drowned>(this, Drowned.class, false, false));
-    }
     
     @Override
     protected SoundEvent getHurtSound(DamageSource p_21239_) 
@@ -393,6 +313,18 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
         }
     }
     
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	{
+		return super.hurt(p_21016_, this.isStun() ? p_21017_ * 2 : p_21017_ * 0.3F);
+	}
+	
+	@Override
+	protected float getSoundVolume() 
+	{
+		return 0.45F;
+	}
+    
     public void stopDashAndStun()
     {
     	this.setAnimationState(5);
@@ -417,54 +349,17 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 		this.setDashPos(Vec3.ZERO);
 		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(DEFAULT_MOVEMENT_SPEED);
     }
-    
-    @Override
-    public void travel(Vec3 p_27490_) 
-    {
-    	if (this.isEffectiveAi() && this.isInWater())
-    	{
-    		this.moveRelative(this.getSpeed(), p_27490_);
-    		this.move(MoverType.SELF, this.getDeltaMovement());
-    		this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-    		if (this.getTarget() == null) 
-    		{
-    			this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
-    		}
-    	}
-    	else
-    	{
-    		super.travel(p_27490_);
-    	}
-    }
-    
-	@Override
-	public float getInsideWaterSpeed() 
-	{
-		return 0.02F;
-	}
-
-	@Override
-	public float getOutsideWaterSpeed() 
-	{
-		return 0.02F;
-	}
-    
-    @Override
-    public Anchor getLookAnchor()
-    {
-    	return Anchor.EYES;
-    }
-    
-    @Override
-    public Vec3 getLookPos() 
-    {
-    	return this.getTarget().getEyePosition();
-    }
 
     @Override
     public int getBodyRotationSpeed() 
     {
     	return !this.hasTarget() ? 2 : 6;
+    }
+    
+    @Override
+    public boolean isBoss() 
+    {
+    	return true;
     }
 
 	@Override
@@ -472,16 +367,54 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 	{
 		return this.parts;
 	}
-	
-	@Override
-	public boolean hurt(DamageSource p_21016_, float p_21017_) 
-	{
-		return super.hurt(p_21016_, this.isStun() ? p_21017_ * 2 : p_21017_ * 0.3F);
-	}
-	
-	@Override
-	protected float getSoundVolume() 
-	{
-		return 0.45F;
-	}
+    
+    public void setStunTick(int count)
+    {
+    	this.entityData.set(STUN_TICK, count);
+    }
+      
+    public int getStunTick() 
+    {
+    	return this.entityData.get(STUN_TICK);
+    }
+    
+    public void setStun(boolean value)
+    {
+    	this.entityData.set(IS_STUN, value);
+    }
+      
+    public boolean isStun() 
+    {
+    	return this.entityData.get(IS_STUN);
+    }
+    
+    public void setDashPos(Vec3 value)
+    {
+    	this.entityData.set(DASH_POS, value);
+    }
+      
+    public Vec3 getDashPos() 
+    {
+    	return this.entityData.get(DASH_POS);
+    }
+    
+    public void setDash(boolean value)
+    {
+    	this.entityData.set(IS_DASH, value);
+    }
+      
+    public boolean isDash() 
+    {
+    	return this.entityData.get(IS_DASH);
+    }
+    
+    public void setAttackCount(int count)
+    {
+    	this.entityData.set(ATTACK_COUNT, count);
+    }
+      
+    public int getAttackCount() 
+    {
+    	return this.entityData.get(ATTACK_COUNT);
+    }
 }

@@ -10,7 +10,7 @@
             "uniforms": [
                 {
                     "name": "RedMatrix",
-                    "values": [ 0.0, 0.0, 0.0 ]
+                    "values": [ 0, 0, 0 ]
                 },
                 {
                     "name": "GreenMatrix",

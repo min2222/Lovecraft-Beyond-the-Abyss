@@ -21,7 +21,7 @@ public class DeepAbyssTabs
 		@Override
 		public ItemStack makeIcon()
 		{
-			return new ItemStack(BTAItems.GHIDRUTH_SCALE.get());
+			return new ItemStack(BTAItems.OXYGEN_TANK.get());
 		}
 	};
 	
@@ -48,7 +48,7 @@ public class DeepAbyssTabs
 		@Override
 		public ItemStack makeIcon()
 		{
-			return new ItemStack(BTAItems.RAW_GHIDRUTH_FLESH.get());
+			return new ItemStack(BTAItems.RUNIC_FISH.get());
 		}
 	};
 	

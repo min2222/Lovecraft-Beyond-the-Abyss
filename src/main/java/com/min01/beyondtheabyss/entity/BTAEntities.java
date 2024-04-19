@@ -1,7 +1,9 @@
 package com.min01.beyondtheabyss.entity;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
@@ -27,6 +29,8 @@ public class BTAEntities
 	
 	//living
 	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerEntity("ghidruth", createBuilder(EntityGhidruth::new, MobCategory.WATER_CREATURE).sized(5.2F, 4.5F));
+	public static final RegistryObject<EntityType<EntityDeepVampire>> DEEP_VAMPIRE = registerEntity("deep_vampire", createBuilder(EntityDeepVampire::new, MobCategory.WATER_CREATURE).sized(0.5F, 0.7F));
+	public static final RegistryObject<EntityType<EntityRunicFish>> RUNIC_FISH = registerEntity("runic_fish", createBuilder(EntityRunicFish::new, MobCategory.WATER_CREATURE).sized(0.5F, 0.7F));
 	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{

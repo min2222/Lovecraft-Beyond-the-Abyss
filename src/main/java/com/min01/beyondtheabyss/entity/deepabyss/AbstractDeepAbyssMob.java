@@ -5,11 +5,16 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.level.Level;
@@ -50,6 +55,31 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		return false;
 	}
 	
+	public void handleAirSupply(int p_30344_) 
+	{
+		if (this.isAlive() && !this.isInWaterOrBubble() && !this.canBreatheOutsideWater())
+		{
+			this.setAirSupply(p_30344_ - 1);
+			if (this.getAirSupply() == -20) 
+			{
+				this.setAirSupply(0);
+				this.hurt(DamageSource.DROWN, 2.0F);
+			}
+		} 
+		else 
+		{
+			this.setAirSupply(300);
+		}
+	}
+	
+	@Override
+	public void baseTick() 
+	{
+		super.baseTick();
+		int i = this.getAirSupply();
+		this.handleAirSupply(i);
+	}
+	
 	@Override
 	public void tick()
 	{
@@ -57,6 +87,37 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		//for keep update body rotation speed
 		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), this.getInsideWaterSpeed(), this.getOutsideWaterSpeed(), true);
 	}
+    
+    @Override
+    public void travel(Vec3 p_27490_) 
+    {
+    	if (this.isEffectiveAi() && this.isInWater())
+    	{
+    		this.moveRelative(this.getSpeed(), p_27490_);
+    		this.move(MoverType.SELF, this.getDeltaMovement());
+    		this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+    		boolean flag = this.isHostile() ? this.getTarget() == null : true;
+    		if (flag) 
+    		{
+    			this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
+    		}
+    	}
+    	else
+    	{
+    		super.travel(p_27490_);
+    	}
+    }
+    
+    @Override
+    protected void registerGoals() 
+    {
+    	super.registerGoals();
+        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20));
+        if(this.isHostile())
+        {
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<EntityRunicFish>(this, EntityRunicFish.class, false, false));
+        }
+    }
 	
 	@Override
 	public void lookAt(Anchor p_20033_, Vec3 p_20034_)
@@ -77,9 +138,23 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		this.yBodyRotO = this.yBodyRot;
 	}
 	
-	public abstract int getBodyRotationSpeed();
+	public int getBodyRotationSpeed()
+	{
+		return 10;
+	}
 	
-	public abstract float getInsideWaterSpeed();
+	public float getInsideWaterSpeed()
+	{
+		return 0.02F;
+	}
 	
-	public abstract float getOutsideWaterSpeed();
+	public float getOutsideWaterSpeed()
+	{
+		return 0.02F;
+	}
+	
+	public boolean canBreatheOutsideWater()
+	{
+		return false;
+	}
 }

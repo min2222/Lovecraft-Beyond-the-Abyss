@@ -12,6 +12,7 @@ import com.min01.beyondtheabyss.item.armor.ItemDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.deepabyss.ItemGhidruthFlesh;
 import com.min01.beyondtheabyss.item.deepabyss.ItemGuidingClam;
+import com.min01.beyondtheabyss.item.deepabyss.ItemRunicFish;
 import com.min01.beyondtheabyss.item.renderer.BTABlockEntityItemRenderer;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
@@ -50,6 +51,8 @@ public class BTAItems
 	//spawn eggs
 	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = registerSpawnEgg("ghidruth_spawn_egg", () -> BTAEntities.GHIDRUTH.get(), 862018, 10239048);
 	//public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg("forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
+	public static final RegistryObject<Item> DEEP_VAMPIRE_SPAWN_EGG = registerSpawnEgg("deep_vampire_spawn_egg", () -> BTAEntities.DEEP_VAMPIRE.get(), 1510154, 5058091);
+	public static final RegistryObject<Item> RUNIC_FISH_SPAWN_EGG = registerSpawnEgg("runic_fish_spawn_egg", () -> BTAEntities.RUNIC_FISH.get(), 2438966, 2263443);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS).rarity(RARITY_ABYSS)));
@@ -67,6 +70,7 @@ public class BTAItems
 	//foods
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new ItemGhidruthFlesh(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build(), true));
 	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = ITEMS.register("cooked_ghidruth_flesh", () -> new ItemGhidruthFlesh(new FoodProperties.Builder().nutrition(9).saturationMod(1F).build(), false));
+	public static final RegistryObject<Item> RUNIC_FISH = ITEMS.register("runic_fish", () -> new ItemRunicFish(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).alwaysEat().fast().build()));
 	
 	//armors
 	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new ItemDiverSet(DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));

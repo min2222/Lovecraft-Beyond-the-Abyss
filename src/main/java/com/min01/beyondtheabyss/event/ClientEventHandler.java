@@ -9,13 +9,17 @@ import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
 import com.min01.beyondtheabyss.blockentity.renderer.BTABlockEntityRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
+import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalDashLayer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalScaleLayer;
+import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
@@ -120,16 +124,23 @@ public class ClientEventHandler
     	
     	//living
     	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.DEEP_VAMPIRE.get(), DeepVampireRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.RUNIC_FISH.get(), RunicFishRenderer::new);
     }
     
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
     	event.registerLayerDefinition(ModelGhidruth.LAYER_LOCATION, ModelGhidruth::createBodyLayer);
+    	event.registerLayerDefinition(ModelDeepVampire.LAYER_LOCATION, ModelDeepVampire::createBodyLayer);
+    	event.registerLayerDefinition(ModelRunicFish.LAYER_LOCATION, ModelRunicFish::createBodyLayer);
+    	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthDiverSet.LAYER_LOCATION, ModelGhidruthDiverSet::createBodyLayer);
+    	
     	event.registerLayerDefinition(ModelAltarOfDeep.LAYER_LOCATION, ModelAltarOfDeep::createBodyLayer);
+    	
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);
     	

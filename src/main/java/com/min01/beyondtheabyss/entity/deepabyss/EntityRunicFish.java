@@ -1,0 +1,128 @@
+package com.min01.beyondtheabyss.entity.deepabyss;
+
+import com.min01.beyondtheabyss.BeyondtheAbyss;
+
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
+
+public class EntityRunicFish extends AbstractDeepAbyssMob
+{
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityRunicFish.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> PANIC_TICK = SynchedEntityData.defineId(EntityRunicFish.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> IS_PANIC = SynchedEntityData.defineId(EntityRunicFish.class, EntityDataSerializers.BOOLEAN);
+	
+	public EntityRunicFish(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	{
+		super(p_21683_, p_21684_);
+		this.xpReward = 1 + this.random.nextInt(3);
+	}
+	
+    public static AttributeSupplier.Builder createAttributes()
+    {
+        return Mob.createMobAttributes()
+    			.add(Attributes.MAX_HEALTH, 5)
+    			.add(Attributes.MOVEMENT_SPEED, 1.5F);
+    }
+    
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(VARIANT, this.random.nextInt(5) + 1);
+		this.entityData.define(IS_PANIC, false);
+		this.entityData.define(PANIC_TICK, 0);
+	}
+    
+    @Override
+    public int getMaxSpawnClusterSize()
+    {
+    	return 8;
+    }
+    
+    @Override
+    public void aiStep() 
+    {
+        super.aiStep();
+        
+        if (!this.isInWater() && this.onGround && this.verticalCollision) 
+        {
+        	this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.5F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
+        	this.onGround = false;
+        	this.hasImpulse = true;
+        	this.playSound(SoundEvents.COD_FLOP, this.getSoundVolume(), this.getVoicePitch());
+        }
+        
+        if(this.isPanic())
+        {
+        	this.setPanicTick(this.getPanicTick() + 1);
+        	if(this.getPanicTick() >= 60)
+        	{
+        		this.setPanic(false);
+        		this.setPanicTick(0);
+        	}
+        }
+    }
+	
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	{
+		if(!this.isPanic() && p_21016_.getDirectEntity() != null)
+		{
+			this.setPanic(true);
+		}
+		return super.hurt(p_21016_, p_21017_);
+	}
+	
+    @Override
+    protected ResourceLocation getDefaultLootTable() 
+    {
+    	return new ResourceLocation(BeyondtheAbyss.MODID, "entity/runic_fish");
+    }
+	
+	public void setPanicTick(int value)
+	{
+		this.entityData.set(PANIC_TICK, value);
+	}
+	
+	public int getPanicTick() 
+	{
+		return this.entityData.get(PANIC_TICK);
+	}
+	
+	public void setPanic(boolean value)
+	{
+		this.entityData.set(IS_PANIC, value);
+	}
+	
+	public boolean isPanic() 
+	{
+		return this.entityData.get(IS_PANIC);
+	}
+	
+	public int getVariant() 
+	{
+		return this.entityData.get(VARIANT);
+	}
+	
+	@Override
+	public float getInsideWaterSpeed() 
+	{
+		return this.isPanic() ? 0.06F : super.getInsideWaterSpeed();
+	}
+    
+    @Override
+    public boolean isHostile()
+    {
+    	return false;
+    }
+}

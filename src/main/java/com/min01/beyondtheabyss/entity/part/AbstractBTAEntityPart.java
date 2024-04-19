@@ -50,7 +50,7 @@ public abstract class AbstractBTAEntityPart<T extends AbstractBTAMob> extends Pa
 	@Override
 	public boolean canBeCollidedWith()
 	{
-		return true;
+		return this.parentMob.canBeCollidedWith();
 	}
 
 	@Override

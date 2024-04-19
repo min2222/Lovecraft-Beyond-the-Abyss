@@ -10,11 +10,6 @@ public abstract class AbstractBTASkillGoal extends Goal
 	protected int skillWarmupDelay;
 	protected int nextSkillTickCount;
 	
-	public AbstractBTASkillGoal() 
-	{
-		
-	}
-	
     @Override
     public boolean canUse() 
     {
