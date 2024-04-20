@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidType;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends MixinEntity
 {
-	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fluids/FluidType;isAir()Z"), method = "aiStep", remap = false)
+	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fluids/FluidType;isAir()Z"), method = "aiStep")
 	private boolean aiStep(FluidType instance)
 	{
 		if(LivingEntity.class.cast(this).hasEffect(BTAEffects.AIR_SWIM.get()))
