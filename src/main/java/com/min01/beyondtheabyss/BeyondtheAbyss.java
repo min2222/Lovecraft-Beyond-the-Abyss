@@ -7,6 +7,7 @@ import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
+import com.min01.beyondtheabyss.misc.BTAWorldCarvers;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
@@ -35,6 +36,7 @@ public class BeyondtheAbyss
 		BTAEffects.EFFECTS.register(bus);
 		BTAEntityDataSerializers.SERIALIZERS.register(bus);
 		BTAParticles.PARTICLES.register(bus);
+		BTAWorldCarvers.CARVERS.register(bus);
 		
 		BTANetwork.registerMessages();
         BTAConfig.loadConfig(BTAConfig.CONFIG, FMLPaths.CONFIGDIR.get().resolve("beyond-the-abyss.toml").toString());

@@ -27,8 +27,6 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	{
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), this.getInsideWaterSpeed(), this.getOutsideWaterSpeed(), true);
-		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 	}
 	
 	@Override
@@ -40,7 +38,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
     @Override
     protected PathNavigation createNavigation(Level p_27480_) 
     {
-    	return new WaterBoundPathNavigation(this, p_27480_);
+    	return this.isSwimable() ? new WaterBoundPathNavigation(this, p_27480_) : super.createNavigation(p_27480_);
     }
 	
 	@Override
@@ -85,13 +83,17 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	{
 		super.tick();
 		//for keep update body rotation speed
-		this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), this.getInsideWaterSpeed(), this.getOutsideWaterSpeed(), true);
+		if(this.isSwimable())
+		{
+			this.moveControl = new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), this.getInsideWaterSpeed(), this.getOutsideWaterSpeed(), true);
+			this.lookControl = new SmoothSwimmingLookControl(this, 10);
+		}
 	}
     
     @Override
     public void travel(Vec3 p_27490_) 
     {
-    	if (this.isEffectiveAi() && this.isInWater())
+    	if (this.isEffectiveAi() && this.isInWater() && this.isSwimable())
     	{
     		this.moveRelative(this.getSpeed(), p_27490_);
     		this.move(MoverType.SELF, this.getDeltaMovement());
@@ -156,5 +158,10 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	public boolean canBreatheOutsideWater()
 	{
 		return false;
+	}
+	
+	public boolean isSwimable()
+	{
+		return true;
 	}
 }

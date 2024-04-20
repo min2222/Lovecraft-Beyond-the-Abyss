@@ -7,7 +7,8 @@
 		"MixinFluidStatus",
 		"MixinEntity",
 		"MixinLivingEntity",
-		"MixinSwimNodeEvaluator"
+		"MixinSwimNodeEvaluator",
+		"MixinNoiseBasedAquifer"
 	],
 	"client": [
 		"MixinLevelRenderer",

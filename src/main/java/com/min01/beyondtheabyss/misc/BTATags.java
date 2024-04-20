@@ -7,13 +7,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public class BTATags 
 {
 	public static class BTAEntity
 	{
-		public static final TagKey<EntityType<?>> ABYSS_CREATURE = create("abyss_creature");
-		public static final TagKey<EntityType<?>> EVERGREEN_CREATURE = create("evergreen_creature");
+		public static final TagKey<EntityType<?>> ABYSS_CREATURES = create("abyss_creatures");
+		public static final TagKey<EntityType<?>> EVERGREEN_CREATURES = create("evergreen_creatures");
 		
 		private static TagKey<EntityType<?>> create(String p_203849_) 
 		{
@@ -28,6 +29,16 @@ public class BTATags
 		private static TagKey<Item> create(String p_203849_) 
 		{
 			return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
+		}
+	}
+	
+	public static class BTABlocks
+	{
+		public static final TagKey<Block> ABYSS_CARVER_REPLACEABLES = create("abyss_carver_replaceables");
+		
+		private static TagKey<Block> create(String p_203849_) 
+		{
+			return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
 		}
 	}
 }
