@@ -61,13 +61,13 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     @Override
     public int getMaxSpawnClusterSize()
     {
-    	return 3;
+    	return 1;
     }
     
     @Override
     public float getInsideWaterSpeed() 
     {
-    	return !this.level.isClientSide && this.getTarget() != null ? 0.4F : super.getInsideWaterSpeed();
+    	return !this.level.isClientSide && this.getTarget() != null ? 0.38F : super.getInsideWaterSpeed();
     }
     
 	public static boolean checkDeepVampireSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
@@ -78,7 +78,8 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
         }
         else
         {
-            return pRandom.nextInt(50) == 0 && pPos.getY() >= -360 && pServerLevel.getFluidState(pPos).is(FluidTags.WATER) && pServerLevel.getDifficulty() != Difficulty.PEACEFUL;
+        	boolean flag = pServerLevel.getDifficulty() != Difficulty.PEACEFUL && (pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER));
+            return pRandom.nextInt(350) == 0 && pPos.getY() >= -360 && flag;
         }
     }
     

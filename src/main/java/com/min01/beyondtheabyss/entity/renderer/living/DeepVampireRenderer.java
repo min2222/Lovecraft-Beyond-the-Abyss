@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.renderer.living;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
+import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
@@ -15,6 +16,7 @@ public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDee
 	public DeepVampireRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelDeepVampire(p_174304_.bakeLayer(ModelDeepVampire.LAYER_LOCATION)), 0.5F);
+		this.addLayer(new GlowingLayer<>(this, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/deep_vampire_layer.png")));
 	}
 	
 	@Override

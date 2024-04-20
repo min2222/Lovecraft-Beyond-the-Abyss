@@ -51,7 +51,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     @Override
     public int getMaxSpawnClusterSize()
     {
-    	return 5;
+    	return 3;
     }
     
 	public static boolean checkRunicFishSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
@@ -62,7 +62,8 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
         }
         else
         {
-            return pRandom.nextInt(80) == 0 && pPos.getY() >= -360 && pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
+        	boolean flag = pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
+            return pRandom.nextInt(100) == 0 && pPos.getY() >= -360 && flag;
         }
     }
     
