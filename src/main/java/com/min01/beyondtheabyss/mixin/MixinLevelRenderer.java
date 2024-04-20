@@ -66,10 +66,10 @@ public class MixinLevelRenderer
 	{
 		Minecraft mc = Minecraft.getInstance();
 
-		/*if(!mc.player.level.getBiome(mc.player.blockPosition()).is(AbyssWorlds.FOGGY_PLAINS))
+		if(!mc.player.level.dimension().location().getPath().equals(""))
 		{
 			return;
-		}*/
+		}
 
 		ExtendedPostChain shaderChain = BTAShaders.getFog();
 		EffectInstance shader = shaderChain.getMainShader();

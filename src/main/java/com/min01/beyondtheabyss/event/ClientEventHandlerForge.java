@@ -98,7 +98,7 @@ public class ClientEventHandlerForge
         {
         	if(world.dimension().location().getPath().equals("deep_abyss"))
         	{
-                if(MC.player != null)
+                if(!MC.isPaused() && MC.player != null && BTAConfig.enableAbyssShader.get())
                 {
                 	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
                 }
