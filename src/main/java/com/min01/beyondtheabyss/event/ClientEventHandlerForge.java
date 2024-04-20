@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.KeyInputPacket;
@@ -18,11 +17,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -99,22 +98,9 @@ public class ClientEventHandlerForge
         {
         	if(world.dimension().location().getPath().equals("deep_abyss"))
         	{
-                if(!MC.isPaused() && MC.player != null)
+                if(MC.player != null)
                 {
-                	if(MC.player.isEyeInFluidType(Fluids.WATER.getFluidType()) && MC.player.getItemBySlot(EquipmentSlot.HEAD).is(BTATags.BTAItems.DIVING_SET))
-                	{
-                    	//MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
-                	}
-                	else
-                	{
-                    	if(MC.gameRenderer.currentEffect() != null)
-                    	{
-                        	if(MC.gameRenderer.currentEffect().getName().equals("beyondtheabyss:shaders/post/abyss.json"))
-                        	{
-                        		MC.gameRenderer.shutdownEffect();
-                        	}
-                    	}
-                	}
+                	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
                 }
         	}
             else
@@ -154,7 +140,15 @@ public class ClientEventHandlerForge
             {
             	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
             	{
-            		int amount = MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get() ? 25 : 10;
+            		int amount = 40;
+                	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
+                	{
+                		amount = 25;
+                	}
+                	else if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
+                	{
+                		amount = 10;
+                	}
                     RenderSystem.setShaderFogStart(-8.0F + amount);
                     RenderSystem.setShaderFogEnd(50.0F - amount);
             	}

@@ -2,18 +2,23 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 public class EntityRunicFish extends AbstractDeepAbyssMob
 {
@@ -31,7 +36,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 5)
-    			.add(Attributes.MOVEMENT_SPEED, 1.5F);
+    			.add(Attributes.MOVEMENT_SPEED, 0.8F);
     }
     
 	@Override
@@ -46,7 +51,19 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     @Override
     public int getMaxSpawnClusterSize()
     {
-    	return 8;
+    	return 5;
+    }
+    
+	public static boolean checkRunicFishSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+        if (!pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER))
+        {
+            return false;
+        }
+        else
+        {
+            return pRandom.nextInt(80) == 0 && pPos.getY() >= -360 && pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
+        }
     }
     
     @Override
@@ -117,7 +134,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
 	@Override
 	public float getInsideWaterSpeed() 
 	{
-		return this.isPanic() ? 0.06F : super.getInsideWaterSpeed();
+		return this.isPanic() ? 0.5F : super.getInsideWaterSpeed();
 	}
     
     @Override

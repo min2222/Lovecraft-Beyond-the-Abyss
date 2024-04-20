@@ -28,7 +28,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,7 +57,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 	public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> STUN_TICK = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
 	
-	public static final double DEFAULT_MOVEMENT_SPEED = 1.5D;
+	public static final double DEFAULT_MOVEMENT_SPEED = 1.0D;
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
@@ -97,13 +96,8 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
         this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
         this.goalSelector.addGoal(4, new GhidruthDashPrepareGoal(this));
         this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Drowned>(this, Drowned.class, false, false));
-    }
-    
-    @Override
-    public boolean canBeCollidedWith() 
-    {
-    	return true;
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<EntityRunicFish>(this, EntityRunicFish.class, false, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<EntityDeepVampire>(this, EntityDeepVampire.class, false, false));
     }
     
     @Override

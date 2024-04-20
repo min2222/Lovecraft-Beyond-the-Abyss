@@ -44,7 +44,7 @@ public class GhidruthDashPrepareGoal extends BasicBTASkillGoal<EntityGhidruth>
 		this.mob.setCanMove(true);
 		this.mob.setAnimationState(4);
 		this.mob.playSound(BTASounds.GHIDRUTH_CHARGE_START.get());
-		this.mob.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(2.5);
+		this.mob.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(2.0F);
 	}
 
 	@Override

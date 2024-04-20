@@ -4,16 +4,23 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
@@ -38,9 +45,9 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 40)
-    			.add(Attributes.MOVEMENT_SPEED, 1.2F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.8F)
         		.add(Attributes.ATTACK_DAMAGE, 5)
-        		.add(Attributes.FOLLOW_RANGE, 20);
+        		.add(Attributes.FOLLOW_RANGE, 40);
     }
     
     @Override
@@ -48,6 +55,31 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     {
     	super.registerGoals();
     	this.goalSelector.addGoal(4, new DeepVampireBiteGoal(this));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<EntityRunicFish>(this, EntityRunicFish.class, false, false));
+    }
+    
+    @Override
+    public int getMaxSpawnClusterSize()
+    {
+    	return 3;
+    }
+    
+    @Override
+    public float getInsideWaterSpeed() 
+    {
+    	return !this.level.isClientSide && this.getTarget() != null ? 0.4F : super.getInsideWaterSpeed();
+    }
+    
+	public static boolean checkDeepVampireSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+        if (!pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER))
+        {
+            return false;
+        }
+        else
+        {
+            return pRandom.nextInt(50) == 0 && pPos.getY() >= -360 && pServerLevel.getFluidState(pPos).is(FluidTags.WATER) && pServerLevel.getDifficulty() != Difficulty.PEACEFUL;
+        }
     }
     
     @Override

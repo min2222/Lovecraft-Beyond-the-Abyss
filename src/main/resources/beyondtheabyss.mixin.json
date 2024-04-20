@@ -12,7 +12,8 @@
 	],
 	"client": [
 		"MixinLevelRenderer",
-		"MixinEffectInstance"
+		"MixinEffectInstance",
+		"MixinGameRenderer"
 	],
 	"server": [],
 	"injectors": {

@@ -4,31 +4,19 @@ import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractDeepAbyssMob;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
 public class BTAUtil 
 {
-	public static boolean checkAbyssCreatureSpawnRules(EntityType<? extends AbstractDeepAbyssMob> p_218283_, LevelAccessor p_218284_, MobSpawnType p_218285_, BlockPos p_218286_, RandomSource p_218287_)
-	{
-		return p_218286_.getY() <= 100 && p_218284_.getFluidState(p_218286_.below()).is(FluidTags.WATER) && p_218284_.getBlockState(p_218286_.above()).is(Blocks.WATER);
-	}
-	   
 	public static float rotlerp(float p_24992_, float p_24993_, float p_24994_)
 	{
 		float f = Mth.wrapDegrees(p_24993_ - p_24992_);
