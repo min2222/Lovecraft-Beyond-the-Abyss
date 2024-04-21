@@ -6,7 +6,6 @@ import com.min01.beyondtheabyss.entity.part.CrabShellPart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -42,10 +41,15 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
     			.add(Attributes.MOVEMENT_SPEED, 0.58F);
     }
     
+    @Override
+    public int getMaxSpawnClusterSize()
+    {
+    	return 1;
+    }
+    
 	public static boolean checkHermitCrabSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-    	boolean flag = pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
-        return pRandom.nextInt(450) == 0 && pPos.getY() >= -400 && flag && pServerLevel.getBlockState(pPos.below()).is(Blocks.STONE);
+		return pRandom.nextInt(40) == 0 && pPos.getY() >= -400 && pServerLevel.getBlockState(pPos.below()).is(Blocks.STONE) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
     
     @Override

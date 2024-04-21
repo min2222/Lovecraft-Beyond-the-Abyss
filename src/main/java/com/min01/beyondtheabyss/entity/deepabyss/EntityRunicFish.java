@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 
 public class EntityRunicFish extends AbstractDeepAbyssMob
 {
@@ -51,21 +52,13 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     @Override
     public int getMaxSpawnClusterSize()
     {
-    	return 3;
+    	return 4;
     }
     
     //TODO probably only spawn in poi type of structure for temple guardian
 	public static boolean checkRunicFishSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-        if (!pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER))
-        {
-            return false;
-        }
-        else
-        {
-        	boolean flag = pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
-            return pRandom.nextInt(200) == 0 && pPos.getY() >= -400 && flag;
-        }
+		return pRandom.nextInt(20) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
     
     @Override

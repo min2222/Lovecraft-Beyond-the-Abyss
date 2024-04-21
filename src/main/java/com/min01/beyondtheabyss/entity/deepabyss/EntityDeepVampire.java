@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
@@ -62,20 +62,12 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     @Override
     public int getMaxSpawnClusterSize()
     {
-    	return 1;
+    	return 2;
     }
     
 	public static boolean checkDeepVampireSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-        if (!pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER))
-        {
-            return false;
-        }
-        else
-        {
-        	boolean flag = pServerLevel.getDifficulty() != Difficulty.PEACEFUL && (pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER));
-            return pRandom.nextInt(350) == 0 && pPos.getY() >= -400 && flag;
-        }
+		return pRandom.nextInt(30) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
     
     @Override
