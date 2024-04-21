@@ -2,10 +2,11 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
+import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -15,9 +16,13 @@ import net.minecraftforge.entity.PartEntity;
 
 public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
 {
-	public static final EntityDataAccessor<Float> HEAD_ROT = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> BODY_ROT = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> TAIL_ROT = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Vec3> HEAD_ROT = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Vec3> BODY_ROT = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Vec3> TAIL_ROT = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, BTAEntityDataSerializers.VEC3.get());
+	
+	public static final EntityDataAccessor<Vec3> HEAD_POS = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Vec3> BODY_POS = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Vec3> TAIL_POS = SynchedEntityData.defineId(AbstractMultipartDeepAbyssMob.class, BTAEntityDataSerializers.VEC3.get());
 	
 	public AbstractMultipartDeepAbyssMob(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_)
 	{
@@ -34,9 +39,12 @@ public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
 	protected void defineSynchedData()
 	{
 		super.defineSynchedData();
-        this.entityData.define(HEAD_ROT, 0.0F);
-        this.entityData.define(BODY_ROT, 0.0F);
-        this.entityData.define(TAIL_ROT, 0.0F);
+        this.entityData.define(HEAD_ROT, Vec3.ZERO);
+        this.entityData.define(BODY_ROT, Vec3.ZERO);
+        this.entityData.define(TAIL_ROT, Vec3.ZERO);
+        this.entityData.define(HEAD_POS, Vec3.ZERO);
+        this.entityData.define(BODY_POS, Vec3.ZERO);
+        this.entityData.define(TAIL_POS, Vec3.ZERO);
 	}
 	
 	@Override 
@@ -52,7 +60,7 @@ public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
     	super.tick();
     	this.refreshDimensions();
     	
-    	for(BasicBTAEntityPart parts : this.getDeepAbyssEntityParts())
+    	for(AbstractBTAEntityPart<AbstractBTAMob> parts : this.getDeepAbyssEntityParts())
     	{
     		parts.tick();
     	}
@@ -75,7 +83,7 @@ public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
         }
     }
     
-    public void setPartPosition(BasicBTAEntityPart part, double offsetX, double offsetY, double offsetZ) 
+    public void setPartPosition(AbstractBTAEntityPart<AbstractBTAMob> part, double offsetX, double offsetY, double offsetZ) 
     {
     	part.setPos(this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ);
     }
@@ -90,35 +98,65 @@ public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
 		}
 	}
 	
-    public void setHeadRot(float rot)
+    public void setHeadPos(Vec3 pos)
+    {
+    	this.entityData.set(HEAD_POS, pos);
+    }
+      
+    public Vec3 getHeadPos() 
+    {
+    	return this.entityData.get(HEAD_POS);
+    }
+    
+    public void setBodyPos(Vec3 pos)
+    {
+    	this.entityData.set(HEAD_POS, pos);
+    }
+      
+    public Vec3 getBodyPos() 
+    {
+    	return this.entityData.get(HEAD_POS);
+    }
+    
+    public void setTailPos(Vec3 pos)
+    {
+    	this.entityData.set(HEAD_POS, pos);
+    }
+      
+    public Vec3 getTailPos() 
+    {
+    	return this.entityData.get(HEAD_POS);
+    }
+	
+    public void setHeadRot(Vec3 rot)
     {
     	this.entityData.set(HEAD_ROT, rot);
     }
       
-    public float getHeadRot() 
+    public Vec3 getHeadRot() 
     {
     	return this.entityData.get(HEAD_ROT);
     }
     
-    public void setBodyRot(float rot)
+    public void setBodyRot(Vec3 rot)
     {
     	this.entityData.set(BODY_ROT, rot);
     }
       
-    public float getBodyRot() 
+    public Vec3 getBodyRot() 
     {
     	return this.entityData.get(BODY_ROT);
     }
     
-    public void setTailRot(float rot)
+    public void setTailRot(Vec3 rot)
     {
     	this.entityData.set(TAIL_ROT, rot);
     }
       
-    public float getTailRot() 
+    public Vec3 getTailRot() 
     {
     	return this.entityData.get(TAIL_ROT);
     }
 	
-	public abstract BasicBTAEntityPart[] getDeepAbyssEntityParts();
+	public abstract AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts();
 }

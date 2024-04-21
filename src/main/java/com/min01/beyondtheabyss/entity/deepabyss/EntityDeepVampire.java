@@ -1,12 +1,13 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
+import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -47,7 +48,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     			.add(Attributes.MAX_HEALTH, 40)
     			.add(Attributes.MOVEMENT_SPEED, 0.8F)
         		.add(Attributes.ATTACK_DAMAGE, 5)
-        		.add(Attributes.FOLLOW_RANGE, 40);
+        		.add(Attributes.FOLLOW_RANGE, 25);
     }
     
     @Override
@@ -87,33 +88,26 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     public void tick() 
     {
     	super.tick();
-    	Vec3 tailEdge2Pos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + this.getTailRot(), 0, -3.9F);
-    	Vec3 tailEdgePos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + this.getTailRot(), 0, -3.3F);
-    	Vec3 tail2Pos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + this.getBodyRot(), 0, -2.6F);
-    	Vec3 tailPos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + this.getBodyRot(), 0, -2F);
-    	Vec3 body2Pos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + this.getHeadRot(), 0, -1.3F);
-    	Vec3 bodyPos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + this.getHeadRot(), 0, -0.7F);
+    	Vec3 tailEdge2Pos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getTailRot().y), 0, -3.9F);
+    	Vec3 tailEdgePos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getTailRot().y), 0, -3.3F);
+    	Vec3 tail2Pos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getBodyRot().y), 0, -2.6F);
+    	Vec3 tailPos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getBodyRot().y), 0, -2F);
+    	Vec3 body2Pos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getHeadRot().y), 0, -1.3F);
+    	Vec3 bodyPos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getHeadRot().y), 0, -0.7F);
 
-        this.setPartPosition(this.tailEdge2, tailEdge2Pos.x, tailEdge2Pos.y + 0.2F, tailEdge2Pos.z);
-        this.setPartPosition(this.tailEdge, tailEdgePos.x, tailEdgePos.y + 0.2F, tailEdgePos.z);
-        this.setPartPosition(this.tail2, tail2Pos.x, tail2Pos.y + 0.2F, tail2Pos.z);
-        this.setPartPosition(this.tail, tailPos.x, tailPos.y + 0.2F, tailPos.z);
-        this.setPartPosition(this.body2, body2Pos.x, body2Pos.y + 0.2F, body2Pos.z);
-        this.setPartPosition(this.body, bodyPos.x, bodyPos.y + 0.2F, bodyPos.z);
+        this.setPartPosition(this.tailEdge2, tailEdge2Pos.x + this.getBodyPos().x, tailEdge2Pos.y + 0.2F, tailEdge2Pos.z);
+        this.setPartPosition(this.tailEdge, tailEdgePos.x + this.getBodyPos().x, tailEdgePos.y + 0.2F, tailEdgePos.z);
+        this.setPartPosition(this.tail2, tail2Pos.x + this.getBodyPos().x, tail2Pos.y + 0.2F, tail2Pos.z);
+        this.setPartPosition(this.tail, tailPos.x + this.getBodyPos().x, tailPos.y + 0.2F, tailPos.z);
+        this.setPartPosition(this.body2, body2Pos.x + this.getBodyPos().x, body2Pos.y + 0.2F, body2Pos.z);
+        this.setPartPosition(this.body, bodyPos.x + this.getBodyPos().x, bodyPos.y + 0.2F, bodyPos.z);
     }
     
     @Override
     public void aiStep() 
     {
-        if (!this.isInWater() && this.onGround && this.verticalCollision) 
-        {
-        	this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.5F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
-        	this.onGround = false;
-        	this.hasImpulse = true;
-        	this.playSound(SoundEvents.COD_FLOP, this.getSoundVolume(), this.getVoicePitch());
-        }
-
         super.aiStep();
+        BTAUtil.fishFlopping(this);
     }
     
 	@Override
@@ -170,7 +164,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 	}
 	
 	@Override
-	public BasicBTAEntityPart[] getDeepAbyssEntityParts()
+	public AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts()
 	{
 		return this.parts;
 	}

@@ -23,13 +23,31 @@
 		"underground_water_creature": [],
 		"water_ambient": [
 			{
+				"type": "beyondtheabyss:deep_vampire",
+				"weight": 1,
+				"minCount": 1,
+				"maxCount": 2
+			},
+			{
 				"type": "beyondtheabyss:runic_fish",
 				"weight": 3,
 				"minCount": 1,
 				"maxCount": 1
 			},
 			{
-				"type": "beyondtheabyss:deep_vampire",
+				"type": "beyondtheabyss:latcher",
+				"weight": 1,
+				"minCount": 1,
+				"maxCount": 2
+			},
+			{
+				"type": "beyondtheabyss:abyssal_hermit_crab",
+				"weight": 1,
+				"minCount": 1,
+				"maxCount": 2
+			},
+			{
+				"type": "beyondtheabyss:abyssal_bulbray",
 				"weight": 1,
 				"minCount": 1,
 				"maxCount": 2

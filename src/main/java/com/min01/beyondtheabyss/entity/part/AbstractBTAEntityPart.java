@@ -12,15 +12,17 @@ import net.minecraftforge.entity.PartEntity;
 
 public abstract class AbstractBTAEntityPart<T extends AbstractBTAMob> extends PartEntity<T>
 {
-	public final T parentMob;
+	protected final T parentMob;
 	private final EntityDimensions size;
+	private final boolean canBeCollideWith;
 
-	public AbstractBTAEntityPart(T entity, float width, float height)
+	public AbstractBTAEntityPart(T entity, float width, float height, boolean canBeCollideWith)
 	{
 		super(entity);
+		this.parentMob = entity;
+		this.canBeCollideWith = canBeCollideWith;
 		this.size = EntityDimensions.scalable(width, height);
 		this.refreshDimensions();
-		this.parentMob = entity;
 	}
 
 	@Override
@@ -50,13 +52,13 @@ public abstract class AbstractBTAEntityPart<T extends AbstractBTAMob> extends Pa
 	@Override
 	public boolean canBeCollidedWith()
 	{
-		return this.parentMob.canBeCollidedWith();
+		return this.canBeCollideWith;
 	}
 
 	@Override
 	public boolean hurt(DamageSource p_31020_, float p_31021_) 
 	{
-		return this.isInvulnerableTo(p_31020_) ? false : this.parentMob.hurt(p_31020_, p_31021_);
+		return this.parentMob.hurt(p_31020_, p_31021_);
 	}
 
 	@Override	

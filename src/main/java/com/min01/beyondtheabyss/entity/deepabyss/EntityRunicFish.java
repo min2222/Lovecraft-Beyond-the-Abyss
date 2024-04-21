@@ -1,13 +1,13 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -54,6 +54,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     	return 3;
     }
     
+    //TODO probably only spawn in poi type of structure for temple guardian
 	public static boolean checkRunicFishSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
         if (!pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER))
@@ -63,7 +64,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
         else
         {
         	boolean flag = pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
-            return pRandom.nextInt(100) == 0 && pPos.getY() >= -360 && flag;
+            return pRandom.nextInt(200) == 0 && pPos.getY() >= -360 && flag;
         }
     }
     
@@ -71,14 +72,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     public void aiStep() 
     {
         super.aiStep();
-        
-        if (!this.isInWater() && this.onGround && this.verticalCollision) 
-        {
-        	this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.5F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
-        	this.onGround = false;
-        	this.hasImpulse = true;
-        	this.playSound(SoundEvents.COD_FLOP, this.getSoundVolume(), this.getVoicePitch());
-        }
+        BTAUtil.fishFlopping(this);
         
         if(this.isPanic())
         {

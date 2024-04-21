@@ -3,9 +3,11 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.List;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthDashPrepareGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
+import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.sound.BTASounds;
@@ -210,8 +212,8 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     {
     	super.tick();
     	
-    	Vec3 tailPos = BTAUtil.getLookPos(this.getXRot(), this.getYHeadRot() + this.getTailRot(), 0.5F, -11);
-    	Vec3 bodyPos = BTAUtil.getLookPos(this.getXRot(), this.getYHeadRot() + this.getBodyRot(), 0.5F, -6);
+    	Vec3 tailPos = BTAUtil.getLookPos(this.getXRot(), (float) (this.getYHeadRot() + this.getTailRot().y), 0.5F, -11);
+    	Vec3 bodyPos = BTAUtil.getLookPos(this.getXRot(), (float) (this.getYHeadRot() + this.getBodyRot().y), 0.5F, -6);
     	Vec3 headPos = BTAUtil.getLookPos(this.getXRot(), this.getYHeadRot(), 0, 5);
     	
         this.setPartPosition(this.tail, tailPos.x, tailPos.y, tailPos.z);
@@ -357,7 +359,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     }
 
 	@Override
-	public BasicBTAEntityPart[] getDeepAbyssEntityParts() 
+	public AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts() 
 	{
 		return this.parts;
 	}

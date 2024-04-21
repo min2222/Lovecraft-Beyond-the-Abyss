@@ -12,51 +12,51 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class PartRotationUpdatePacket 
+public class PartPositionUpdatePacket 
 {
 	private final int entityId;
 
-	private final Vec3 headRot;
-	private final Vec3 bodyRot;
-	private final Vec3 tailRot;
+	private final Vec3 headPos;
+	private final Vec3 bodyPos;
+	private final Vec3 tailPos;
 
-	private PartRotationType partType;
+	private PartPosType partType;
 
-	public enum PartRotationType 
+	public enum PartPosType 
 	{
 		TAIL, BODY, HEAD
 	}
 
-	public PartRotationUpdatePacket(Entity entity, Vec3 headRot, Vec3 bodyRot, Vec3 tailRot, PartRotationType type) 
+	public PartPositionUpdatePacket(Entity entity, Vec3 headPos, Vec3 bodyPos, Vec3 tailPos, PartPosType type) 
 	{
 		this.entityId = entity.getId();
-		this.headRot = headRot;
-		this.bodyRot = bodyRot;
-		this.tailRot = tailRot;
+		this.headPos = headPos;
+		this.bodyPos = bodyPos;
+		this.tailPos = tailPos;
 		this.partType = type;
 	}
 
-	public PartRotationUpdatePacket(FriendlyByteBuf buf)
+	public PartPositionUpdatePacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
-		this.headRot = BTAEntityDataSerializers.readVec3(buf);
-		this.bodyRot = BTAEntityDataSerializers.readVec3(buf);
-		this.tailRot = BTAEntityDataSerializers.readVec3(buf);
-		this.partType = PartRotationType.values()[buf.readInt()];
+		this.headPos = BTAEntityDataSerializers.readVec3(buf);
+		this.bodyPos = BTAEntityDataSerializers.readVec3(buf);
+		this.tailPos = BTAEntityDataSerializers.readVec3(buf);
+		this.partType = PartPosType.values()[buf.readInt()];
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
 		buf.writeInt(this.entityId);
-		BTAEntityDataSerializers.writeVec3(buf, this.headRot);
-		BTAEntityDataSerializers.writeVec3(buf, this.bodyRot);
-		BTAEntityDataSerializers.writeVec3(buf, this.tailRot);
+		BTAEntityDataSerializers.writeVec3(buf, this.headPos);
+		BTAEntityDataSerializers.writeVec3(buf, this.bodyPos);
+		BTAEntityDataSerializers.writeVec3(buf, this.tailPos);
 		buf.writeInt(this.partType.ordinal());
 	}
 
 	public static class Handler 
 	{
-		public static boolean onMessage(PartRotationUpdatePacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(PartPositionUpdatePacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{
@@ -68,11 +68,11 @@ public class PartRotationUpdatePacket
 						switch (message.partType) 
 						{
 						case TAIL:
-							mob.setTailRot(message.tailRot);
+							mob.setTailPos(message.tailPos);
 						case BODY:
-							mob.setBodyRot(message.bodyRot);
+							mob.setBodyPos(message.bodyPos);
 						case HEAD:
-							mob.setHeadRot(message.headRot);
+							mob.setHeadPos(message.headPos);
 						}
 					}
 				}

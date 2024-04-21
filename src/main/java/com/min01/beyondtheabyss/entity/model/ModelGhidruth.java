@@ -5,7 +5,7 @@ import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.PartRotationUpdatePacket;
-import com.min01.beyondtheabyss.network.PartRotationUpdatePacket.PartType;
+import com.min01.beyondtheabyss.network.PartRotationUpdatePacket.PartRotationType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,6 +21,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 {
@@ -186,8 +187,8 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	    float tailYRot = tail.yRot / pi;
 	    head.getChild("right_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
 	    head.getChild("left_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, 0, root2YRot + rearBodyYRot, 0, PartType.BODY));
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, 0, 0, root2YRot + tailYRot, PartType.TAIL));
+	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, Vec3.ZERO, new Vec3(0, root2YRot + rearBodyYRot, 0), Vec3.ZERO, PartRotationType.BODY));
+	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, Vec3.ZERO, Vec3.ZERO, new Vec3(0, root2YRot + tailYRot, 0), PartRotationType.TAIL));
 	}
 
 	@Override

@@ -9,16 +9,22 @@ import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
 import com.min01.beyondtheabyss.blockentity.renderer.BTABlockEntityRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
+import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
+import com.min01.beyondtheabyss.entity.model.ModelLatcher;
 import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalDashLayer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalScaleLayer;
+import com.min01.beyondtheabyss.entity.renderer.living.AbyssalBulbrayRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.AbyssalHermitCrabRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
@@ -126,6 +132,9 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);
     	event.registerEntityRenderer(BTAEntities.DEEP_VAMPIRE.get(), DeepVampireRenderer::new);
     	event.registerEntityRenderer(BTAEntities.RUNIC_FISH.get(), RunicFishRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.LATCHER.get(), LatcherRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), AbyssalHermitCrabRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.ABYSSAL_BULBRAY.get(), AbyssalBulbrayRenderer::new);
     }
     
     @SubscribeEvent
@@ -134,6 +143,9 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelGhidruth.LAYER_LOCATION, ModelGhidruth::createBodyLayer);
     	event.registerLayerDefinition(ModelDeepVampire.LAYER_LOCATION, ModelDeepVampire::createBodyLayer);
     	event.registerLayerDefinition(ModelRunicFish.LAYER_LOCATION, ModelRunicFish::createBodyLayer);
+    	event.registerLayerDefinition(ModelLatcher.LAYER_LOCATION, ModelLatcher::createBodyLayer);
+    	event.registerLayerDefinition(ModelAbyssalHermitCrab.LAYER_LOCATION, ModelAbyssalHermitCrab::createBodyLayer);
+    	event.registerLayerDefinition(ModelAbyssalBulbray.LAYER_LOCATION, ModelAbyssalBulbray::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);

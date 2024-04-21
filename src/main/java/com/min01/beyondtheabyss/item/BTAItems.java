@@ -53,6 +53,9 @@ public class BTAItems
 	//public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg("forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
 	public static final RegistryObject<Item> DEEP_VAMPIRE_SPAWN_EGG = registerSpawnEgg("deep_vampire_spawn_egg", () -> BTAEntities.DEEP_VAMPIRE.get(), 1510154, 5058091);
 	public static final RegistryObject<Item> RUNIC_FISH_SPAWN_EGG = registerSpawnEgg("runic_fish_spawn_egg", () -> BTAEntities.RUNIC_FISH.get(), 2438966, 2263443);
+	public static final RegistryObject<Item> LATCHER_SPAWN_EGG = registerSpawnEgg("latcher_spawn_egg", () -> BTAEntities.LATCHER.get(), 3617604, 1841189);
+	public static final RegistryObject<Item> ABYSSAL_HERMIT_CRAB_SPAWN_EGG = registerSpawnEgg("abyssal_hermit_crab_spawn_egg", () -> BTAEntities.ABYSSAL_HERMIT_CRAB.get(), 4999486, 2698020);
+	public static final RegistryObject<Item> ABYSSAL_BULBRAY_SPAWN_EGG = registerSpawnEgg("abyssal_bulbray_spawn_egg", () -> BTAEntities.ABYSSAL_BULBRAY.get(), 2432294, 2499894);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS).rarity(RARITY_ABYSS)));

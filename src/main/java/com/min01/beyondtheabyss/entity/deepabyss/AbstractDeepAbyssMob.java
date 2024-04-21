@@ -120,7 +120,10 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20));
+    	if(this.isSwimable())
+    	{
+            this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20));
+    	}
     }
 	
 	@Override

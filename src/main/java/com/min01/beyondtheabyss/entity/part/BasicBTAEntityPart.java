@@ -6,6 +6,11 @@ public class BasicBTAEntityPart extends AbstractBTAEntityPart<AbstractBTAMob>
 {
 	public BasicBTAEntityPart(AbstractBTAMob entity, float width, float height)
 	{
-		super(entity, width, height);
+		this(entity, width, height, false);
+	}
+	
+	public BasicBTAEntityPart(AbstractBTAMob entity, float width, float height, boolean canBeCollideWith)
+	{
+		super(entity, width, height, canBeCollideWith);
 	}
 }

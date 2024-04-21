@@ -4,8 +4,11 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
 
 import net.minecraft.world.entity.SpawnPlacements;
@@ -27,6 +30,9 @@ public class EventHandler
     	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
     	event.put(BTAEntities.DEEP_VAMPIRE.get(), EntityDeepVampire.createAttributes().build());
     	event.put(BTAEntities.RUNIC_FISH.get(), EntityRunicFish.createAttributes().build());
+    	event.put(BTAEntities.LATCHER.get(), EntityLatcher.createAttributes().build());
+    	event.put(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), EntityAbyssalHermitCrab.createAttributes().build());
+    	event.put(BTAEntities.ABYSSAL_BULBRAY.get(), EntityAbyssalBulbray.createAttributes().build());
     }
 	
     @SubscribeEvent
@@ -41,5 +47,8 @@ public class EventHandler
     {
     	event.register(BTAEntities.DEEP_VAMPIRE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDeepVampire::checkDeepVampireSpawnRules, Operation.AND);
     	event.register(BTAEntities.RUNIC_FISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityRunicFish::checkRunicFishSpawnRules, Operation.AND);
+    	event.register(BTAEntities.LATCHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityLatcher::checkLatcherSpawnRules, Operation.AND);
+    	event.register(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalHermitCrab::checkHermitCrabSpawnRules, Operation.AND);
+    	event.register(BTAEntities.ABYSSAL_BULBRAY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalBulbray::checkBulbraySpawnRules, Operation.AND);
     }
 }
