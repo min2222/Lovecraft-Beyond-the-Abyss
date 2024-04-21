@@ -64,7 +64,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
         else
         {
         	boolean flag = pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
-            return pRandom.nextInt(200) == 0 && pPos.getY() >= -360 && flag;
+            return pRandom.nextInt(200) == 0 && pPos.getY() >= -400 && flag;
         }
     }
     

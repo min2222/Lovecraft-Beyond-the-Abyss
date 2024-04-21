@@ -80,7 +80,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
         else
         {
         	boolean flag = pServerLevel.getDifficulty() != Difficulty.PEACEFUL && (pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER));
-            return pRandom.nextInt(350) == 0 && pPos.getY() >= -360 && flag;
+            return pRandom.nextInt(350) == 0 && pPos.getY() >= -400 && flag;
         }
     }
     

@@ -53,7 +53,7 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob
         else
         {
         	boolean flag = pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
-            return pRandom.nextInt(530) == 0 && pPos.getY() >= -360 && flag;
+            return pRandom.nextInt(530) == 0 && pPos.getY() >= -400 && flag;
         }
     }
     

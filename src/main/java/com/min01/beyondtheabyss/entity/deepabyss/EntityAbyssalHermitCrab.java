@@ -51,7 +51,7 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
         else
         {
         	boolean flag = pMobSpawnType == MobSpawnType.SPAWNER || pServerLevel.getFluidState(pPos).is(FluidTags.WATER);
-            return pRandom.nextInt(450) == 0 && pPos.getY() >= -345 && flag && !pServerLevel.getBlockState(pPos.below()).getMaterial().isLiquid();
+            return pRandom.nextInt(450) == 0 && pPos.getY() >= -400 && flag && !pServerLevel.getBlockState(pPos.below()).getMaterial().isLiquid();
         }
     }
     
