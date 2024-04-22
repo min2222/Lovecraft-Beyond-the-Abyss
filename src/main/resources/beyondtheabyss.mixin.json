@@ -9,12 +9,17 @@
 		"MixinLivingEntity",
 		"MixinSwimNodeEvaluator",
 		"MixinNoiseBasedAquifer",
-		"MixinItemEntity"
+		"MixinItemEntity",
+		"multipart.MixinArrayVoxelShape",
+		"multipart.MixinAABB",
+		"multipart.MixinVoxelShape",
+		"multipart.MixinShapes"
 	],
 	"client": [
 		"MixinLevelRenderer",
 		"MixinEffectInstance",
-		"MixinGameRenderer"
+		"MixinGameRenderer",
+		"multipart.MixinEntityRenderDispatcher"
 	],
 	"server": [],
 	"injectors": {

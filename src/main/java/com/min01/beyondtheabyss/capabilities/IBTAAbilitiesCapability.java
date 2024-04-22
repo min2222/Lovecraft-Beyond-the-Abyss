@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public interface IBTAAbilitiesCapability extends INBTSerializable<CompoundTag>
 {
-	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "cap_bta_ability");
+	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "bta_ability");
 
 	void setEntity(LivingEntity entity);
 

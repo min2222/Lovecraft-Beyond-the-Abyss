@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public interface IItemAnimationCapability extends INBTSerializable<CompoundTag>
 {
-	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "cap_item_animation");
+	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "item_animation");
 
 	void setEntity(LivingEntity entity);
 

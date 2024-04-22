@@ -11,6 +11,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -33,6 +34,7 @@ public class EventHandler
     	event.put(BTAEntities.LATCHER.get(), EntityLatcher.createAttributes().build());
     	event.put(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), EntityAbyssalHermitCrab.createAttributes().build());
     	event.put(BTAEntities.ABYSSAL_BULBRAY.get(), EntityAbyssalBulbray.createAttributes().build());
+    	event.put(BTAEntities.SUBMARINE.get(), LivingEntity.createLivingAttributes().build());
     }
 	
     @SubscribeEvent

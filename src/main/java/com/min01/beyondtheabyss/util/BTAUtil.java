@@ -1,10 +1,13 @@
 package com.min01.beyondtheabyss.util;
 
+import java.util.UUID;
+
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,11 +17,34 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.TransientEntitySectionManager;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
 {
+	public static boolean isModLoaded(String modid)
+	{
+		return ModList.get().isLoaded(modid);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends Entity> T getEntityByUUID(Level level, UUID uuid)
+	{
+		if(level instanceof ServerLevel serverLevel)
+		{
+			return (T) serverLevel.getEntity(uuid);
+		}
+		else if(level instanceof ClientLevel clientLevel)
+		{
+			TransientEntitySectionManager<Entity> entityStorage = ObfuscationReflectionHelper.getPrivateValue(ClientLevel.class, clientLevel, "f_171631_");
+			return (T) entityStorage.getEntityGetter().get(uuid);
+		}
+		return null;
+	}
 	public static void fishFlopping(LivingEntity entity)
 	{
 		fishFlopping(entity, SoundEvents.COD_FLOP, 1.0F, 0.5F);
