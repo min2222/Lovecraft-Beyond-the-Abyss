@@ -18,7 +18,7 @@ public class MixinGameRenderer
 	@Inject(at = @At(value = "TAIL"), method = "getNightVisionScale", cancellable = true)
 	private static void getNightVisionScale(LivingEntity p_109109_, float p_109110_, CallbackInfoReturnable<Float> cir)
 	{
-		if(p_109109_.level.dimension().location().getPath().equals("deep_abyss"))
+		if(p_109109_.level.dimension().location().getPath().equals("deep_abyss") && p_109109_.isInWater())
 		{
         	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
         	{

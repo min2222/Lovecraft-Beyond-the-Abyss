@@ -138,19 +138,22 @@ public class ClientEventHandlerForge
         	FogType fogtype = event.getCamera().getFluidInCamera();
             if(fogtype == FogType.WATER)
             {
-            	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
+            	if(!MC.player.isSpectator() && !MC.player.getAbilities().instabuild && MC.player.isInWater())
             	{
-            		int amount = 40;
-                	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
+                	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
                 	{
-                		amount = 25;
+                		int amount = 40;
+                    	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
+                    	{
+                    		amount = 25;
+                    	}
+                    	else if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
+                    	{
+                    		amount = 10;
+                    	}
+                        RenderSystem.setShaderFogStart(-8.0F + amount);
+                        RenderSystem.setShaderFogEnd(50.0F - amount);
                 	}
-                	else if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
-                	{
-                		amount = 10;
-                	}
-                    RenderSystem.setShaderFogStart(-8.0F + amount);
-                    RenderSystem.setShaderFogEnd(50.0F - amount);
             	}
             }
         }

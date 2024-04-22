@@ -126,7 +126,7 @@ public class EventHandlerForge
 			});
 		}
 		
-		if(!(entity instanceof Player))
+		if(!(entity instanceof Player) && !(entity instanceof EntitySubmarine))
 		{
 			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox());
 			if(list.size() > 0)

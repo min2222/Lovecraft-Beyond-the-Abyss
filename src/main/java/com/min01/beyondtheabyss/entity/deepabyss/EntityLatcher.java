@@ -37,6 +37,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 10)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F)
+        		.add(Attributes.ATTACK_DAMAGE, 1)
         		.add(Attributes.FOLLOW_RANGE, 30)
         		.add(Attributes.ARMOR, 1);
     }
@@ -69,11 +70,5 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
 	public AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts()
 	{
 		return this.parts;
-	}
-	
-	@Override
-	public boolean isHostile() 
-	{
-		return false;
 	}
 }

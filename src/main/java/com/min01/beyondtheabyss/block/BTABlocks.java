@@ -16,7 +16,7 @@ public class BTABlocks
 {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BeyondtheAbyss.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BeyondtheAbyss.MODID);
-    
+
     public static final RegistryObject<Block> ALTAR_OF_DEEP = BLOCKS.register("altar_of_deep", () -> new BlockAltarOfDeep());
     public static final RegistryObject<Block> DEPTHSTONE = BLOCKS.register("depthstone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)));
     

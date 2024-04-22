@@ -13,6 +13,7 @@ import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,8 +27,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
@@ -43,6 +49,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	public static final EntityDataAccessor<Optional<UUID>> SEAT3_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT4_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<BlockPos> PREV_POS = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BLOCK_POS);
 	
     public float brightness;
     public float brightnessOld;
@@ -75,6 +82,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		this.entityData.define(SEAT3_PLAYER, Optional.empty());
 		this.entityData.define(SEAT4_PLAYER, Optional.empty());
 		this.entityData.define(HATCH_OPENED, false);
+		this.entityData.define(PREV_POS, BlockPos.ZERO);
 	}
 	
 	@Override
@@ -164,10 +172,27 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
             this.brightness += (0.0F - this.brightness) * 0.8F;
         }
         
-    	Vec3 hatchPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, -0.25F);
-    	Vec3 pos = new Vec3(this.getX(), this.getY() + 4.2F, this.getZ()).add(hatchPos);
-    	this.hatch.setPos(pos);
-        
+    	Vec3 lookPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, -0.25F);
+    	Vec3 hatchPos = new Vec3(this.getX(), this.getY() + 4.2F, this.getZ()).add(lookPos);
+    	this.hatch.setPos(hatchPos);
+    	
+    	if(this.isInWater())
+    	{
+    		BlockPos prevPos = this.getPrevPos();
+        	Vec3 lightPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, 8F);
+        	HitResult result = this.level.clip(new ClipContext(this.position().add(0, 1.5F, 0), this.position().add(0, 1.5F, 0).add(lightPos), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+            if(result instanceof BlockHitResult blockHit)
+            {
+                BlockPos blockPos = blockHit.getBlockPos().relative(blockHit.getDirection());
+                if(blockPos != prevPos)
+                {
+                	this.level.setBlockAndUpdate(prevPos, Blocks.WATER.defaultBlockState());
+                	this.setPrevPos(blockPos);
+                	this.level.setBlockAndUpdate(blockPos, Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, LightBlock.MAX_LEVEL).setValue(LightBlock.WATERLOGGED, true));
+                }
+            }
+    	}
+    	
     	for(PartEntity<?> parts : this.getParts())
     	{
     		parts.tick();
@@ -188,11 +213,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
         	this.getParts()[l].xOld = avector3d[l].x;
         	this.getParts()[l].yOld = avector3d[l].y;
         	this.getParts()[l].zOld = avector3d[l].z;
-        }
-        
-        if(this.isInWater())
-        {
-			this.setDeltaMovement(this.getDeltaMovement().add(0, 0.05F, 0));
         }
         
 		if(this.getControllingPlayer() != null && !this.hasPassenger(this.getControllingPlayer()))
@@ -238,7 +258,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 				Vec3 travelVector = new Vec3(this.getControllingPlayer().xxa, this.getControllingPlayer().yya, this.getControllingPlayer().zza);
 	            if(this.isEffectiveAi())
 	            {
-	    			this.moveRelative(0.3F, travelVector);
+	    			this.moveRelative(0.1F, travelVector);
 	    			this.move(MoverType.SELF, this.getDeltaMovement());
 	    			this.setDeltaMovement(this.getDeltaMovement().scale(0.01D));
 	            }
@@ -321,6 +341,16 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
     {
     	part.setPos(this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ);
     }
+    
+	public void setPrevPos(BlockPos value)
+	{
+		this.entityData.set(PREV_POS, value);
+	}
+	
+	public BlockPos getPrevPos()
+	{
+		return this.entityData.get(PREV_POS);
+	}
 	
 	public void setHatchOpened(boolean value)
 	{
