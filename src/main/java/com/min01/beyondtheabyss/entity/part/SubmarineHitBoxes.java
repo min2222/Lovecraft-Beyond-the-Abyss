@@ -12,6 +12,7 @@ public class SubmarineHitBoxes
 {
     private final EntitySubmarine entity;
     private final AABB collisionHitbox = new AABB(Vec3.ZERO, new Vec3(5.5F, 1.0F, 5.5F));
+    private final String root = "root";
     private final String submarine = "submarine";
     private final String controllerSeat = "controllerSeat";
     private final String seat1 = "seat1";
@@ -29,7 +30,8 @@ public class SubmarineHitBoxes
     private final String left = "left";
     private final String right = "right";
     private final EntityBounds hitboxes = EntityBounds.builder()
-            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setPivot(0, -2.5F, 0).build()
+            .add(this.root).setBounds(0.0, 0.0, 0.0).build()
+            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setPivot(0, -2.5F, 0).setParent(this.root).build()
             .add(this.controllerSeat).setBounds(0.8F, 0.15F, 0.8F).setParent(this.submarine).build()
             .add(this.seat1).setBounds(0.8F, 0.15F, 0.8F).setParent(this.submarine).build()
             .add(this.seat2).setBounds(0.8F, 0.15F, 0.8F).setParent(this.submarine).build()
@@ -62,6 +64,7 @@ public class SubmarineHitBoxes
 
     public void updatePosition()
     {
+        EntityPart root = this.hitboxes.getPart(this.root);
         EntityPart submarine = this.hitboxes.getPart(this.submarine);
         EntityPart controllerSeat = this.hitboxes.getPart(this.controllerSeat);
         EntityPart seat1 = this.hitboxes.getPart(this.seat1);
@@ -79,12 +82,12 @@ public class SubmarineHitBoxes
         EntityPart left = this.hitboxes.getPart(this.left);
         EntityPart right = this.hitboxes.getPart(this.right);
         
-        submarine.setRotation(0.0, -this.entity.getYRot(), 0.0, true);
-        submarine.setRotation(this.entity.getXRot(), 0.0, 0.0, true);
+        root.setRotation(0, -this.entity.getYRot(), 0, true);
+        submarine.setRotation(this.entity.getXRot(), 0, 0, true);
         
-        submarine.setX(this.entity.getX());
-        submarine.setY(this.entity.getY());
-        submarine.setZ(this.entity.getZ());
+        root.setX(this.entity.getX());
+        root.setY(this.entity.getY());
+        root.setZ(this.entity.getZ());
 
     	this.setPartPosition(right, 1.55F, 2.55F, 0);
         this.setPartPosition(left, -1.55F, 2.55F, 0);

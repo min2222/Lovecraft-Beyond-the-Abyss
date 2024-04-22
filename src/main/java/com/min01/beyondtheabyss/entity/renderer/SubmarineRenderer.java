@@ -30,7 +30,8 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 	public void render(EntitySubmarine p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_)
 	{
 		p_114488_.pushPose();
-		p_114488_.mulPose(Vector3f.XP.rotationDegrees(180));
+		p_114488_.mulPose(Vector3f.ZP.rotationDegrees(180));
+		p_114488_.mulPose(Vector3f.YP.rotationDegrees(180));
 		p_114488_.translate(0, -1.5F, 0);
 		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
         float f1 = Mth.rotLerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot());
