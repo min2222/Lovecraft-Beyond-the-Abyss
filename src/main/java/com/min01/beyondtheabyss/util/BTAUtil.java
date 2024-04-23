@@ -1,11 +1,14 @@
 package com.min01.beyondtheabyss.util;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
 import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.submarine.SubmarineDetector;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -26,6 +29,19 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
 {
+	public static boolean isInsideSubmarine(Entity entity)
+	{
+		if(!(entity instanceof EntitySubmarine))
+		{
+			List<SubmarineDetector> list = entity.level.getEntitiesOfClass(SubmarineDetector.class, entity.getBoundingBox());
+			if(list.size() > 0)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static boolean isModLoaded(String modid)
 	{
 		return ModList.get().isLoaded(modid);

@@ -28,6 +28,8 @@ import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
+import com.min01.beyondtheabyss.entity.submarine.SubmarineDetector;
+import com.min01.beyondtheabyss.entity.submarine.SubmarineHatch;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
@@ -127,6 +129,8 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
     	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
     	event.registerEntityRenderer(BTAEntities.SUBMARINE.get(), SubmarineRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.SUBMARINE_HATCH.get(), NoneRenderer<SubmarineHatch>::new);
+    	event.registerEntityRenderer(BTAEntities.SUBMARINE_DETECTOR.get(), NoneRenderer<SubmarineDetector>::new);
     	
     	//projectile
     	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);

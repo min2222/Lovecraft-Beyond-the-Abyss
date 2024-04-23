@@ -22,6 +22,12 @@ public abstract class MixinEntity
 	@Shadow
 	private EntityDimensions dimensions;
 	
+	@Inject(at = @At("HEAD"), method = "updateSwimming", cancellable = true)
+	protected void updateSwimming(CallbackInfo ci)
+	{
+		
+	}
+	
 	@Inject(at = @At("HEAD"), method = "isInWater", cancellable = true)
 	protected void isInWater(CallbackInfoReturnable<Boolean> ci)
 	{

@@ -1,6 +1,5 @@
-package com.min01.beyondtheabyss.entity.part;
+package com.min01.beyondtheabyss.entity.submarine;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
 import com.min01.beyondtheabyss.multipart.entity.EntityPart;
 import com.min01.beyondtheabyss.multipart.entity.MutableBox;
@@ -44,13 +43,11 @@ public class SubmarineHitBoxes
             .add(this.topBack).setBounds(1.0F, 0.55F, 1.4F).setParent(this.submarine).build()
             .add(this.hatch).setBounds(1.0F, 0.45F, 1.4F).setParent(this.submarine).build()
             .add(this.front).setBounds(3.0F, 3.25F, 1.05F).setParent(this.submarine).build()
-            .add(this.back).setBounds(2.7F, 2.7F, 1.05F).setParent(this.submarine).build()
+            .add(this.back).setBounds(2.7F, 2.9F, 1.05F).setParent(this.submarine).build()
             .add(this.left).setBounds(0.1F, 3.0F, 4.2F).setParent(this.submarine).build()
             .add(this.right).setBounds(0.1F, 3.0F, 4.2F).setParent(this.submarine).build()
             .overrideCollisionBox(this.collisionHitbox)
             .getFactory().create();
-    
-    private EntityBounds currentHitbox = this.hitboxes;
     
     public SubmarineHitBoxes(EntitySubmarine entity)
     {
@@ -59,7 +56,7 @@ public class SubmarineHitBoxes
 
     public EntityBounds getHitbox()
     {
-    	return this.currentHitbox;
+    	return this.hitboxes;
     }
 
     public void updatePosition()
@@ -97,7 +94,7 @@ public class SubmarineHitBoxes
         this.setPartPosition(topRight, -1.0F, 4.5F, 0);
         this.setPartPosition(topFront, 0, 4.5F, 1.5F);
         this.setPartPosition(topBack, 0, 4.5F, -1.45F);
-        this.setPartPosition(bottom, 0, 1.5F, 0);
+        this.setPartPosition(bottom, 0, 1.25F, 0);
         
         this.setPartPosition(hatch, 0, this.entity.hatchOpened() ? 1.1F : 4.7F, 0);
         

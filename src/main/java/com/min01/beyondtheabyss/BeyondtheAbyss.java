@@ -7,10 +7,10 @@ import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
-import com.min01.beyondtheabyss.misc.BTAWorldCarvers;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
+import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;

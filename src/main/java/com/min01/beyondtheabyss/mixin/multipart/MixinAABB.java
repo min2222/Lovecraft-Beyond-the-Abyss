@@ -15,7 +15,7 @@ public class MixinAABB
     @Inject(method = "intersects(Lnet/minecraft/world/phys/AABB;)Z", at = @At("HEAD"), cancellable = true)
     private void hook(final AABB box, final CallbackInfoReturnable<Boolean> cir)
     {
-        if (box instanceof CompoundOrientedBox ob)
+        if (AABB.class.cast(this) instanceof CompoundOrientedBox ob)
         {
             cir.setReturnValue(ob.intersects(box));
         }

@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

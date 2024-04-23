@@ -6,7 +6,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
@@ -50,7 +50,7 @@ public class EventHandlerForge
 					{
 			            if(t.getDeltaMovement().y < 0) 
 			            {
-			            	t.setDeltaMovement(t.getDeltaMovement().x, -0.05F, t.getDeltaMovement().z);
+			            	t.setDeltaMovement(t.getDeltaMovement().x, -0.08F, t.getDeltaMovement().z);
 			            	t.setPos(t.position().add(t.getDeltaMovement().reverse()));
 			            	t.hasImpulse = true;
 			            }
@@ -67,15 +67,14 @@ public class EventHandlerForge
 	{
 		Player player = event.player;
 		List<EntitySubmarine> list = player.level.getEntitiesOfClass(EntitySubmarine.class, player.getBoundingBox());
-		if(list.size() > 0)
+		if(list.size() > 0 && !player.isSpectator())
 		{
-			if(!player.getAbilities().flying && !player.isOnGround())
+			if(!player.isOnGround())
 			{
 	            if(player.getDeltaMovement().y < 0) 
 	            {
-	            	player.setDeltaMovement(player.getDeltaMovement().x, -0.05F, player.getDeltaMovement().z);
+	            	player.setDeltaMovement(player.getDeltaMovement().x, -0.08F, player.getDeltaMovement().z);
 	            	player.setPos(player.position().add(player.getDeltaMovement().reverse()));
-	            	player.hasImpulse = true;
 	            }
 	            player.fallDistance = 0.0F;
 	            player.setOnGround(true);
@@ -126,7 +125,12 @@ public class EventHandlerForge
 			});
 		}
 		
-		if(!(entity instanceof Player) && !(entity instanceof EntitySubmarine))
+		if(entity.hasEffect(BTAEffects.AIR_SWIM.get()))
+		{
+			entity.resetFallDistance();
+		}
+		
+		if(!(entity instanceof Player))
 		{
 			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox());
 			if(list.size() > 0)
@@ -135,7 +139,7 @@ public class EventHandlerForge
 				{
 		            if(entity.getDeltaMovement().y < 0) 
 		            {
-		            	entity.setDeltaMovement(entity.getDeltaMovement().x, -0.2F, entity.getDeltaMovement().z);
+		            	entity.setDeltaMovement(entity.getDeltaMovement().x, -0.08F, entity.getDeltaMovement().z);
 		            	entity.setPos(entity.position().add(entity.getDeltaMovement().reverse()));
 		            	entity.hasImpulse = true;
 		            }
@@ -143,11 +147,6 @@ public class EventHandlerForge
 		            entity.setOnGround(true);
 				}
 			}
-		}
-		
-		if(entity.hasEffect(BTAEffects.AIR_SWIM.get()))
-		{
-			entity.resetFallDistance();
 		}
 	}
     

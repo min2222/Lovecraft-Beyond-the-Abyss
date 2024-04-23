@@ -1,14 +1,13 @@
 package com.min01.beyondtheabyss.mixin;
 
-import java.util.List;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -19,6 +18,15 @@ import net.minecraftforge.fluids.FluidType;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends MixinEntity
 {
+	@Override
+	protected void updateSwimming(CallbackInfo ci) 
+	{
+		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
+		{
+			ci.cancel();
+		}
+	}
+	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fluids/FluidType;isAir()Z"), method = "aiStep")
 	private boolean aiStep(FluidType instance)
 	{
@@ -26,22 +34,19 @@ public abstract class MixinLivingEntity extends MixinEntity
 		{
 			return false;
 		}
-		else
+		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
 		{
-			return instance.isAir();
+			return true;
 		}
+		return instance.isAir();
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fluids/FluidType;isAir()Z"), method = "baseTick")
 	private boolean baseTick(FluidType instance)
 	{
-		if(!(LivingEntity.class.cast(this) instanceof EntitySubmarine))
+		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
 		{
-			List<EntitySubmarine> list = LivingEntity.class.cast(this).level.getEntitiesOfClass(EntitySubmarine.class, LivingEntity.class.cast(this).getBoundingBox());
-			if(list.size() > 0)
-			{
-				return true;
-			}
+			return true;
 		}
 		return instance.isAir();
 	}
@@ -54,13 +59,9 @@ public abstract class MixinLivingEntity extends MixinEntity
 			ci.setReturnValue(true);
 		}
 		
-		if(!(LivingEntity.class.cast(this) instanceof EntitySubmarine))
+		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
 		{
-			List<EntitySubmarine> list = LivingEntity.class.cast(this).level.getEntitiesOfClass(EntitySubmarine.class, LivingEntity.class.cast(this).getBoundingBox());
-			if(list.size() > 0)
-			{
-				ci.setReturnValue(false);
-			}
+			ci.setReturnValue(false);
 		}
 	}
 	
@@ -81,13 +82,9 @@ public abstract class MixinLivingEntity extends MixinEntity
 			ci.setReturnValue(true);
 		}
 		
-		if(!(LivingEntity.class.cast(this) instanceof EntitySubmarine))
+		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
 		{
-			List<EntitySubmarine> list = LivingEntity.class.cast(this).level.getEntitiesOfClass(EntitySubmarine.class, LivingEntity.class.cast(this).getBoundingBox());
-			if(list.size() > 0)
-			{
-				ci.setReturnValue(false);
-			}
+			ci.setReturnValue(false);
 		}
 	}
 }

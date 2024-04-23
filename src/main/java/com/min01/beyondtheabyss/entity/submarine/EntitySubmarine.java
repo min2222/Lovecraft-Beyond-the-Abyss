@@ -1,13 +1,11 @@
-package com.min01.beyondtheabyss.entity.deepabyss;
+package com.min01.beyondtheabyss.entity.submarine;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.jetbrains.annotations.Nullable;
-
-import com.min01.beyondtheabyss.entity.part.SubmarineHitBoxes;
-import com.min01.beyondtheabyss.entity.part.SubmarinePart;
+import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
@@ -30,12 +28,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LightBlock;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
@@ -48,6 +45,8 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	public static final EntityDataAccessor<Optional<UUID>> SEAT2_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT3_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT4_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Optional<UUID>> HATCH = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Optional<UUID>> DETECTOR = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<BlockPos> PREV_POS = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BLOCK_POS);
 	
@@ -55,18 +54,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
     public float brightnessOld;
     public int glowingTicks;
     
-    public SubmarinePart hatch = new SubmarinePart(this, 1.0F, 0.75F)
-    {
-    	@Override
-    	public InteractionResult interact(Player p_19978_, InteractionHand p_19979_) 
-    	{
-			this.parentMob.setHatchOpened(!this.parentMob.hatchOpened());
-    		return InteractionResult.SUCCESS;
-    	}
-    };
-    
-	public SubmarinePart[] parts = { this.hatch };
-	
 	public EntitySubmarine(EntityType<? extends LivingEntity> p_19870_, Level p_19871_)
 	{
 		super(p_19870_, p_19871_);
@@ -81,20 +68,48 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		this.entityData.define(SEAT2_PLAYER, Optional.empty());
 		this.entityData.define(SEAT3_PLAYER, Optional.empty());
 		this.entityData.define(SEAT4_PLAYER, Optional.empty());
+		this.entityData.define(HATCH, Optional.empty());
+		this.entityData.define(DETECTOR, Optional.empty());
 		this.entityData.define(HATCH_OPENED, false);
 		this.entityData.define(PREV_POS, BlockPos.ZERO);
 	}
 	
 	@Override
-	public boolean isMultipartEntity() 
+	public void remove(RemovalReason p_146834_)
 	{
-		return true;
+		super.remove(p_146834_);
+		
+		if(this.getHatch() != null)
+		{
+			this.getHatch().discard();
+		}
+		
+		if(this.getDetector() != null)
+		{
+			this.getDetector().discard();
+		}
 	}
 	
 	@Override
-	public @Nullable PartEntity<?>[] getParts() 
+	public void onAddedToWorld()
 	{
-		return this.parts;
+		super.onAddedToWorld();
+		if(this.getHatch() == null)
+		{
+			SubmarineHatch hatch = new SubmarineHatch(BTAEntities.SUBMARINE_HATCH.get(), this.level);
+			hatch.setPos(this.position());
+			hatch.setOwner(this);
+			this.level.addFreshEntity(hatch);
+			this.setHatch(hatch);
+		}
+		if(this.getDetector() == null)
+		{
+			SubmarineDetector detector = new SubmarineDetector(BTAEntities.SUBMARINE_DETECTOR.get(), this.level);
+			detector.setPos(this.position());
+			detector.setOwner(this);
+			this.level.addFreshEntity(detector);
+			this.setDetector(detector);
+		}
 	}
 	
 	@Override
@@ -172,10 +187,20 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
             this.brightness += (0.0F - this.brightness) * 0.8F;
         }
         
-    	Vec3 lookPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, -0.25F);
-    	Vec3 hatchPos = new Vec3(this.getX(), this.getY() + 4.2F, this.getZ()).add(lookPos);
-    	this.hatch.setPos(hatchPos);
-    	
+        if(this.getHatch() != null)
+        {
+        	this.getHatch().setPos(this.position());
+        	this.getHatch().setXRot(this.getXRot());
+        	this.getHatch().setYRot(this.getYRot());
+        }
+        
+        if(this.getDetector() != null)
+        {
+        	this.getDetector().setPos(this.position());
+        	this.getDetector().setXRot(this.getXRot());
+        	this.getDetector().setYRot(this.getYRot());
+        }
+        
     	if(this.isInWater())
     	{
     		BlockPos prevPos = this.getPrevPos();
@@ -184,36 +209,14 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
             if(result instanceof BlockHitResult blockHit)
             {
                 BlockPos blockPos = blockHit.getBlockPos().relative(blockHit.getDirection());
-                if(blockPos != prevPos)
+                if(blockPos != prevPos && this.level.getFluidState(blockPos).is(Fluids.WATER))
                 {
                 	this.level.setBlockAndUpdate(prevPos, Blocks.WATER.defaultBlockState());
                 	this.setPrevPos(blockPos);
-                	this.level.setBlockAndUpdate(blockPos, Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, LightBlock.MAX_LEVEL).setValue(LightBlock.WATERLOGGED, true));
+                	this.level.setBlockAndUpdate(blockPos, BTABlocks.BTA_LIGHT.get().defaultBlockState());
                 }
             }
     	}
-    	
-    	for(PartEntity<?> parts : this.getParts())
-    	{
-    		parts.tick();
-    	}
-    	
-        Vec3[] avector3d = new Vec3[this.getParts().length];
-        
-        for(int j = 0; j < this.getParts().length; j++)
-        {
-        	avector3d[j] = new Vec3(this.getParts()[j].getX(), this.getParts()[j].getY(), this.getParts()[j].getZ());
-        }
-        
-        for(int l = 0; l < this.getParts().length; l++) 
-        {
-        	this.getParts()[l].xo = avector3d[l].x;
-        	this.getParts()[l].yo = avector3d[l].y;
-        	this.getParts()[l].zo = avector3d[l].z;
-        	this.getParts()[l].xOld = avector3d[l].x;
-        	this.getParts()[l].yOld = avector3d[l].y;
-        	this.getParts()[l].zOld = avector3d[l].z;
-        }
         
 		if(this.getControllingPlayer() != null && !this.hasPassenger(this.getControllingPlayer()))
 		{
@@ -337,11 +340,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
         return type.supportsBoating(null);
     }
     
-    public void setPartPosition(SubmarinePart part, double offsetX, double offsetY, double offsetZ) 
-    {
-    	part.setPos(this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ);
-    }
-    
 	public void setPrevPos(BlockPos value)
 	{
 		this.entityData.set(PREV_POS, value);
@@ -360,6 +358,34 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	public boolean hatchOpened()
 	{
 		return this.entityData.get(HATCH_OPENED);
+	}
+	
+	public void setDetector(SubmarineDetector part)
+	{
+		this.entityData.set(DETECTOR, Optional.of(part.getUUID()));
+	}
+	
+	public SubmarineDetector getDetector()
+	{
+		if(this.entityData.get(DETECTOR).isPresent()) 
+		{
+			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(DETECTOR).get());
+		}
+		return null;
+	}
+	
+	public void setHatch(SubmarineHatch part)
+	{
+		this.entityData.set(HATCH, Optional.of(part.getUUID()));
+	}
+	
+	public SubmarineHatch getHatch()
+	{
+		if(this.entityData.get(HATCH).isPresent()) 
+		{
+			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(HATCH).get());
+		}
+		return null;
 	}
 	
 	public Player getControllingPlayer()

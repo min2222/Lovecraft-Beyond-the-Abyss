@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTATags;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,24 +19,32 @@ public class MixinGameRenderer
 	@Inject(at = @At(value = "TAIL"), method = "getNightVisionScale", cancellable = true)
 	private static void getNightVisionScale(LivingEntity p_109109_, float p_109110_, CallbackInfoReturnable<Float> cir)
 	{
-		if(p_109109_.level.dimension().location().getPath().equals("deep_abyss") && p_109109_.isInWater())
+		if(p_109109_.level.dimension().location().getPath().equals("deep_abyss"))
 		{
-        	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
-        	{
-    			cir.setReturnValue(0.07F);
-        	}
-        	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
-        	{
-    			cir.setReturnValue(0.1F);
-        	}
-        	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get())
-        	{
-    			cir.setReturnValue(0.3F);
-        	}
+			if(p_109109_.isInWater())
+			{
+	        	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
+	        	{
+	    			cir.setReturnValue(0.07F);
+	        	}
+	        	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
+	        	{
+	    			cir.setReturnValue(0.1F);
+	        	}
+	        	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get())
+	        	{
+	    			cir.setReturnValue(0.3F);
+	        	}
+	        	
+	        	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).isEmpty() || !p_109109_.getItemBySlot(EquipmentSlot.HEAD).is(BTATags.BTAItems.DIVING_SET))
+	        	{
+	    			cir.setReturnValue(0.05F);
+	        	}
+			}
         	
-        	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).isEmpty() || !p_109109_.getItemBySlot(EquipmentSlot.HEAD).is(BTATags.BTAItems.DIVING_SET))
+        	if(BTAUtil.isInsideSubmarine(p_109109_))
         	{
-    			cir.setReturnValue(0.05F);
+    			cir.setReturnValue(1.5F);
         	}
 		}
 	}
