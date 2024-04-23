@@ -11,8 +11,7 @@ import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
-import com.min01.beyondtheabyss.entity.submarine.SubmarineDetector;
-import com.min01.beyondtheabyss.entity.submarine.SubmarineHatch;
+import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -30,9 +29,8 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityDeepAbyssPortal>> DEEP_ABYSS_PORTAL = registerEntity("deep_abyss_portal", createBuilder(EntityDeepAbyssPortal::new, MobCategory.MISC).sized(3F, 0.25F));
 	public static final RegistryObject<EntityType<EntityBTACameraShake>> BTA_CAMERA_SHAKE = registerEntity("bta_camera_shake", createBuilder(EntityBTACameraShake::new, MobCategory.MISC));
 	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = registerEntity("submarine", createBuilder(EntitySubmarine::new, MobCategory.MISC).sized(8.0F, 8.0F));
-	public static final RegistryObject<EntityType<SubmarineHatch>> SUBMARINE_HATCH = registerEntity("submarine_hatch", createBuilder(SubmarineHatch::new, MobCategory.MISC).sized(8.0F, 8.0F));
-	public static final RegistryObject<EntityType<SubmarineDetector>> SUBMARINE_DETECTOR = registerEntity("submarine_detector", createBuilder(SubmarineDetector::new, MobCategory.MISC).sized(8.0F, 8.0F));
-	
+	public static final RegistryObject<EntityType<SubmarinePart>> SUBMARINE_PART = registerEntity("submarine_part", EntityType.Builder.<SubmarinePart>of(SubmarinePart::new, MobCategory.MISC).sized(8.0F, 8.0F));
+
 	//projectile
 	public static final RegistryObject<EntityType<EntityThrownHarpoon>> THROWN_HARPOON = registerEntity("thrown_harpoon", EntityType.Builder.<EntityThrownHarpoon>of(EntityThrownHarpoon::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	

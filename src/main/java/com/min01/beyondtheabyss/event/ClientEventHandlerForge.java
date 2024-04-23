@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
@@ -13,11 +14,13 @@ import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssSkyRenderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +29,7 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.LevelEvent;
@@ -38,6 +42,21 @@ public class ClientEventHandlerForge
 {
 	private static final Minecraft MC = Minecraft.getInstance();
     private static boolean YkeyPressed = false;
+    
+    //FIXME
+    //@SubscribeEvent
+    public static void onRenderPlayer(RenderPlayerEvent.Pre event)
+    {
+    	Player player = event.getEntity();
+    	if(player.getVehicle() != null && player.getVehicle() instanceof EntitySubmarine submarine)
+    	{
+    		PoseStack poseStack = event.getPoseStack();
+            float f1 = Mth.rotLerp(event.getPartialTick(), submarine.yRotO, submarine.getYRot());
+            float f6 = Mth.lerp(event.getPartialTick(), submarine.xRotO, submarine.getXRot());
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(180 - f1));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(-f6));
+    	}
+    }
     
     public static void handleAltarItemSyncPacket(AltarItemSyncPacket packet)
     {

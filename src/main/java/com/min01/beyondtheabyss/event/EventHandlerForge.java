@@ -1,15 +1,13 @@
 package com.min01.beyondtheabyss.event;
 
-import java.util.List;
-
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -43,20 +41,9 @@ public class EventHandlerForge
 		{
 			serverLevel.getAllEntities().forEach(t -> 
 			{
-				List<EntitySubmarine> list = t.level.getEntitiesOfClass(EntitySubmarine.class, t.getBoundingBox());
-				if(list.size() > 0)
+				if(!(t instanceof LivingEntity))
 				{
-					if(!t.isOnGround())
-					{
-			            if(t.getDeltaMovement().y < 0) 
-			            {
-			            	t.setDeltaMovement(t.getDeltaMovement().x, -0.08F, t.getDeltaMovement().z);
-			            	t.setPos(t.position().add(t.getDeltaMovement().reverse()));
-			            	t.hasImpulse = true;
-			            }
-			            t.fallDistance = 0.0F;
-			            t.setOnGround(true);
-					}
+					BTAUtil.handleSubmarineCollision(t);
 				}
 			});
 		}
@@ -66,19 +53,10 @@ public class EventHandlerForge
 	public static void onPlayerTick(PlayerTickEvent event)
 	{
 		Player player = event.player;
-		List<EntitySubmarine> list = player.level.getEntitiesOfClass(EntitySubmarine.class, player.getBoundingBox());
-		if(list.size() > 0 && !player.isSpectator())
+
+		if(!player.isSpectator())
 		{
-			if(!player.isOnGround())
-			{
-	            if(player.getDeltaMovement().y < 0) 
-	            {
-	            	player.setDeltaMovement(player.getDeltaMovement().x, -0.08F, player.getDeltaMovement().z);
-	            	player.setPos(player.position().add(player.getDeltaMovement().reverse()));
-	            }
-	            player.fallDistance = 0.0F;
-	            player.setOnGround(true);
-			}
+			BTAUtil.handleSubmarineCollision(player);
 		}
 	}
 	
@@ -132,21 +110,7 @@ public class EventHandlerForge
 		
 		if(!(entity instanceof Player))
 		{
-			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox());
-			if(list.size() > 0)
-			{
-				if(!entity.isOnGround())
-				{
-		            if(entity.getDeltaMovement().y < 0) 
-		            {
-		            	entity.setDeltaMovement(entity.getDeltaMovement().x, -0.08F, entity.getDeltaMovement().z);
-		            	entity.setPos(entity.position().add(entity.getDeltaMovement().reverse()));
-		            	entity.hasImpulse = true;
-		            }
-		            entity.fallDistance = 0.0F;
-		            entity.setOnGround(true);
-				}
-			}
+			BTAUtil.handleSubmarineCollision(entity);
 		}
 	}
     

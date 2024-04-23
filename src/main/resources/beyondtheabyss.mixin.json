@@ -19,6 +19,7 @@
 		"MixinLevelRenderer",
 		"MixinEffectInstance",
 		"MixinGameRenderer",
+		"MixinLocalPlayer",
 		"multipart.MixinEntityRenderDispatcher"
 	],
 	"server": [],

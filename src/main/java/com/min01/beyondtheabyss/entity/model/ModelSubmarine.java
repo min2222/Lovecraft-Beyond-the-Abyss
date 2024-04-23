@@ -112,7 +112,7 @@ public class ModelSubmarine extends HierarchicalModel<EntitySubmarine>
 		.texOffs(48, 370).addBox(21.5F, -38.5F, -7.5F, 7.0F, 18.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(34.0F, -15.5F, 22.0F, 0.0F, 0.0F, -0.829F));
 
 		main.addOrReplaceChild("bone", CubeListBuilder.create(), PartPose.offset(0.8F, 40.0F, 1.0F));
-
+		
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}
 

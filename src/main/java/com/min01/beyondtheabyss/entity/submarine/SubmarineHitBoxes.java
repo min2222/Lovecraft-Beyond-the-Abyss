@@ -85,15 +85,15 @@ public class SubmarineHitBoxes
         root.setX(this.entity.getX());
         root.setY(this.entity.getY());
         root.setZ(this.entity.getZ());
-
+    	
     	this.setPartPosition(right, 1.55F, 2.55F, 0);
         this.setPartPosition(left, -1.55F, 2.55F, 0);
         this.setPartPosition(back, 0, 2.8F, -2.7F);
         this.setPartPosition(front, 0, 2.9F, 2.8F);
-        this.setPartPosition(topLeft, 1.0F, 4.5F, 0);
-        this.setPartPosition(topRight, -1.0F, 4.5F, 0);
-        this.setPartPosition(topFront, 0, 4.5F, 1.5F);
-        this.setPartPosition(topBack, 0, 4.5F, -1.45F);
+        this.setPartPosition(topLeft, 1.0F, 4.35F, 0);
+        this.setPartPosition(topRight, -1.0F, 4.35F, 0);
+        this.setPartPosition(topFront, 0, 4.35F, 1.5F);
+        this.setPartPosition(topBack, 0, 4.35F, -1.45F);
         this.setPartPosition(bottom, 0, 1.25F, 0);
         
         this.setPartPosition(hatch, 0, this.entity.hatchOpened() ? 1.1F : 4.7F, 0);

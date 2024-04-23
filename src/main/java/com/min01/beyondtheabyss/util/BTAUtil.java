@@ -8,7 +8,8 @@ import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAb
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
-import com.min01.beyondtheabyss.entity.submarine.SubmarineDetector;
+import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
+import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -29,15 +30,46 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
 {
+	public static void handleSubmarineCollision(Entity entity)
+	{
+		if(!(entity instanceof EntitySubmarine) && !(entity instanceof SubmarinePart))
+		{
+			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox());
+			List<SubmarinePart> partList = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F));
+			partList.removeIf(t -> t.type != SubmarinePartType.COLLIDER);
+			
+			if(!list.isEmpty())
+			{
+				if(!entity.isOnGround())
+				{
+		            if(entity.getDeltaMovement().y < 0) 
+		            {
+		            	entity.setDeltaMovement(entity.getDeltaMovement().x, -0.08F, entity.getDeltaMovement().z);
+		            	entity.setPos(entity.position().add(entity.getDeltaMovement().reverse()));
+		            	entity.hasImpulse = true;
+		            }
+		            entity.fallDistance = 0.0F;
+		            entity.setOnGround(true);
+				}
+			}
+			
+			partList.forEach(t -> 
+			{
+				if(!BTAUtil.isInsideSubmarine(entity))
+				{
+					t.push(entity);
+				}
+			});
+		}
+	}
+	
 	public static boolean isInsideSubmarine(Entity entity)
 	{
-		if(!(entity instanceof EntitySubmarine))
+		if(!(entity instanceof EntitySubmarine) && !(entity instanceof SubmarinePart))
 		{
-			List<SubmarineDetector> list = entity.level.getEntitiesOfClass(SubmarineDetector.class, entity.getBoundingBox());
-			if(list.size() > 0)
-			{
-				return true;
-			}
+			List<SubmarinePart> list = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F));
+			list.removeIf(t -> t.type != SubmarinePartType.DETECTOR);
+			return !list.isEmpty();
 		}
 		return false;
 	}
@@ -61,6 +93,7 @@ public class BTAUtil
 		}
 		return null;
 	}
+	
 	public static void fishFlopping(LivingEntity entity)
 	{
 		fishFlopping(entity, SoundEvents.COD_FLOP, 1.0F, 0.5F);
