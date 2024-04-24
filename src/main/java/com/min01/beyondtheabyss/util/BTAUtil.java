@@ -36,7 +36,9 @@ public class BTAUtil
 		{
 			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox());
 			List<SubmarinePart> partList = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F));
+			List<SubmarinePart> hatchList = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F));
 			partList.removeIf(t -> t.type != SubmarinePartType.COLLIDER);
+			hatchList.removeIf(t -> t.type != SubmarinePartType.HATCH);
 			
 			if(!list.isEmpty())
 			{
@@ -55,7 +57,7 @@ public class BTAUtil
 			
 			partList.forEach(t -> 
 			{
-				if(!BTAUtil.isInsideSubmarine(entity))
+				if(!BTAUtil.isInsideSubmarine(entity) && hatchList.isEmpty())
 				{
 					t.push(entity);
 				}

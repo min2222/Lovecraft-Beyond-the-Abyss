@@ -35,8 +35,8 @@ public class SubmarinePartHitBoxes
     private final EntityBounds colliderHitboxes = EntityBounds.builder()
             .add(this.root).setBounds(0.0, 0.0, 0.0).build()
             .add(this.submarine).setBounds(0.0, 0.0, 0.0).setPivot(0, -2.5F, 0).setParent(this.root).build()
-            .add(this.collider).setBounds(3.25F, 3.45F, 4.4F).setParent(this.submarine).build()
-            .add(this.frontCollider).setBounds(3.05F, 3.3F, 1.1F).setParent(this.submarine).build()
+            .add(this.collider).setBounds(3.35F, 3.65F, 4.5F).setParent(this.submarine).build()
+            .add(this.frontCollider).setBounds(3.15F, 3.3F, 1.2F).setParent(this.submarine).build()
             .overrideCollisionBox(this.collisionHitbox)
             .getFactory().create();
     
@@ -84,7 +84,7 @@ public class SubmarinePartHitBoxes
     	        root.setZ(this.entity.getZ());
 
     	    	this.setPartPosition(frontCollider, 0, 2.9F, 2.8F);
-    	    	this.setPartPosition(collider, 0, 2.85F, 0);
+    	    	this.setPartPosition(collider, 0, 2.75F, 0);
     	    	
     	        MutableBox overrideBox = this.colliderHitboxes.getOverrideBox();
     	        if (overrideBox != null)
