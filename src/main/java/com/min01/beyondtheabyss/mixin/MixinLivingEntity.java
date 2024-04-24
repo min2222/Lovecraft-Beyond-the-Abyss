@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -13,11 +14,30 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.fluids.FluidType;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends MixinEntity
 {
+	@Inject(at = @At("HEAD"), method = "canStandOnFluid", cancellable = true)
+	private void canStandOnFluid(FluidState state, CallbackInfoReturnable<Boolean> cir)
+	{
+		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
+		{
+			cir.setReturnValue(true);
+		}
+	}
+	
+	@Inject(at = @At("HEAD"), method = "isAffectedByFluids", cancellable = true)
+	protected void isAffectedByFluids(CallbackInfoReturnable<Boolean> cir)
+	{
+		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
+		{
+			cir.setReturnValue(false);
+		}
+	}
+	
 	@Override
 	protected void updateSwimming(CallbackInfo ci) 
 	{
