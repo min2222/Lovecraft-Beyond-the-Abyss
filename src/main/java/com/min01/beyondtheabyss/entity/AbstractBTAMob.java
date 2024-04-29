@@ -78,7 +78,10 @@ public abstract class AbstractBTAMob extends PathfinderMob
         if(this.isHostile())
         {
             this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
-            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
+            if(!this.isNetural())
+            {
+                this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
+            }
         }
 	}
 	
@@ -128,6 +131,11 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	public boolean canLookOrMove()
 	{
 		return this.entityData.get(CAN_LOOK_OR_MOVE);
+	}
+	
+	public boolean isNetural()
+	{
+		return false;
 	}
 	
 	public boolean isHostile()

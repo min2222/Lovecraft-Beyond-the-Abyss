@@ -59,6 +59,12 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		return false;
 	}
 	
+	@Override
+	protected boolean isAffectedByFluids()
+	{
+		return false;
+	}
+	
 	public void handleAirSupply(int p_30344_) 
 	{
 		if (this.isAlive() && !this.isInWaterOrBubble() && !this.canBreatheOutsideWater())
@@ -88,7 +94,6 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	public void tick()
 	{
 		super.tick();
-		//for keep update body rotation speed
 		if(this.isSwimable())
 		{
 			this.moveControl = new AbyssFishMoveControl(this, this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
@@ -104,7 +109,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
     		this.moveRelative(this.getSpeed(), p_27490_);
     		this.move(MoverType.SELF, this.getDeltaMovement());
     		this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-    		boolean flag = this.isHostile() ? this.getTarget() == null : true;
+    		boolean flag = this.isHostile() ? !this.hasTarget() : true;
     		if (flag) 
     		{
     			this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));

@@ -14,7 +14,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -38,7 +37,7 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
     			.add(Attributes.MAX_HEALTH, 30)
     			.add(Attributes.ATTACK_DAMAGE, 5)
     			.add(Attributes.KNOCKBACK_RESISTANCE, 1)
-    			.add(Attributes.MOVEMENT_SPEED, 0.58F);
+    			.add(Attributes.MOVEMENT_SPEED, 0.35F);
     }
     
     @Override
@@ -51,14 +50,13 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
     {
 		return pRandom.nextInt(40) == 0 && pPos.getY() >= -400 && pServerLevel.getBlockState(pPos.below()).is(Blocks.STONE) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
-    
+
+    //TODO add custom crab attack goal
     @Override
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.58D));
-        //TODO add custom crab attack goal
-        this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
+        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.15D));
     }
     
     @Override
@@ -70,18 +68,24 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
     	
         this.setPartPosition(this.shell2, shell2Pos.x, 0.1F, shell2Pos.z);
         this.setPartPosition(this.shell, shellPos.x, 0.5F, shellPos.z);
-        
-        if(this.getTarget() != null)
-        {
-			this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-			this.lookAt(this.getLookAnchor(), this.getLookPos());
-        }
     }
 
 	@Override
 	public AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts() 
 	{
 		return this.parts;
+	}
+	
+	@Override
+	public float getInsideWaterSpeed() 
+	{
+		return 0.25F;
+	}
+	
+	@Override
+	public boolean isNetural()
+	{
+		return true;
 	}
 	
 	@Override
@@ -94,11 +98,5 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	public boolean canBreatheOutsideWater()
 	{
 		return true;
-	}
-	
-	@Override
-	public boolean isHostile() 
-	{
-		return false;
 	}
 }

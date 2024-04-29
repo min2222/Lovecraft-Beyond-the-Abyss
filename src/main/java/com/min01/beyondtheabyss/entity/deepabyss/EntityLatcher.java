@@ -1,19 +1,31 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
+import com.min01.beyondtheabyss.entity.ai.navigation.LatcherPropelPathNavigation;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.MountUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -38,7 +50,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     			.add(Attributes.MAX_HEALTH, 10)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F)
         		.add(Attributes.ATTACK_DAMAGE, 1)
-        		.add(Attributes.FOLLOW_RANGE, 30)
+        		.add(Attributes.FOLLOW_RANGE, 5)
         		.add(Attributes.ARMOR, 1);
     }
     
@@ -46,6 +58,15 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     public int getMaxSpawnClusterSize()
     {
     	return 1;
+    }
+    
+    @Override
+    protected void registerGoals() 
+    {
+        this.goalSelector.addGoal(4, new LatcherPropelGoal(this));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+        this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
     }
     
 	public static boolean checkLatcherSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
@@ -64,6 +85,62 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     	
         this.setPartPosition(this.tail2, tail2Pos.x, tail2Pos.y + this.getTailPos().y, tail2Pos.z);
         this.setPartPosition(this.tail, tailPos.x, tailPos.y + this.getTailPos().y, tailPos.z);
+        
+        if(this.getVehicle() != null)
+        {
+        	if(this.tickCount % 20 == 0)
+        	{
+        		this.getVehicle().hurt(DamageSource.mobAttack(this), (float) this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
+        	}
+        }
+    }
+    
+    @Override
+    protected PathNavigation createNavigation(Level p_27480_)
+    {
+    	return new LatcherPropelPathNavigation(this, p_27480_);
+    }
+    
+    @Override
+    public void stopRiding()
+    {
+    	if(!this.isInWater() || this.getVehicle() == null || !this.isAlive())
+    	{
+        	super.stopRiding();
+    	}
+    }
+    
+    @Override
+    public void setPos(double p_20210_, double p_20211_, double p_20212_) 
+    {
+    	if(this.getVehicle() != null)
+    	{
+    		Vec3 original = new Vec3(p_20210_, p_20211_, p_20212_);
+    		Vec3 vec3 = BTAUtil.getLookPos(this.getVehicle().getXRot(), ((LivingEntity) this.getVehicle()).yHeadRot, 0, 0.5);
+    		Vec3 pos = original.add(vec3);
+        	super.setPos(pos.x, pos.y, pos.z);
+    	}
+    	else
+    	{
+        	super.setPos(p_20210_, p_20211_, p_20212_);
+    	}
+    }
+    
+    @Override
+    public boolean startRiding(Entity p_20330_) 
+    {
+    	BTANetwork.sendToAll(new MountUpdatePacket(this, p_20330_));
+    	return super.startRiding(p_20330_);
+    }
+    
+    @Override
+    public boolean doHurtTarget(Entity p_21372_) 
+    {
+    	if(this.getVehicle() == null)
+    	{
+    		this.startRiding(p_21372_);
+    	}
+    	return super.doHurtTarget(p_21372_);
     }
 
 	@Override

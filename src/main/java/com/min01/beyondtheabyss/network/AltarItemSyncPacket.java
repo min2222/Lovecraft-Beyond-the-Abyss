@@ -2,13 +2,15 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
+import com.min01.beyondtheabyss.event.ClientEventHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 public class AltarItemSyncPacket 
@@ -46,11 +48,21 @@ public class AltarItemSyncPacket
 			{
 				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					Minecraft.getInstance().doRunTask(() -> ClientEventHandlerForge.handleAltarItemSyncPacket(message));
+					Minecraft.getInstance().doRunTask(() -> handleAltarItemSyncPacket(message));
 				}
 			});
 			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}
+	
+    public static void handleAltarItemSyncPacket(AltarItemSyncPacket packet)
+    {
+		Level level = ClientEventHandler.MC.level;
+		Entity entity = level.getEntity(packet.entityId);
+		if(entity.level.getBlockEntity(packet.pos) instanceof BlockEntityAltarOfDeep altar)
+		{
+			altar.setItem(packet.stack);
+		}
+    }
 }

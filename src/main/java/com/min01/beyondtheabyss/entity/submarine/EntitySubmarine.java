@@ -74,6 +74,12 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	}
 	
 	@Override
+	public boolean showVehicleHealth() 
+	{
+		return false;
+	}
+	
+	@Override
 	public void remove(RemovalReason p_146834_)
 	{
 		super.remove(p_146834_);

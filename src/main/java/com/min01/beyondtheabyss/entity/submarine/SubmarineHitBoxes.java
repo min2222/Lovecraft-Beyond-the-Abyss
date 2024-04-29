@@ -98,11 +98,11 @@ public class SubmarineHitBoxes
         
         this.setPartPosition(hatch, 0, this.entity.hatchOpened() ? 1.1F : 4.7F, 0);
         
-        this.setPartPosition(seat4, -0.8F, 1.65F, -0.6F);
-        this.setPartPosition(seat3, 0.8F, 1.65F, -0.6F);
-        this.setPartPosition(seat2, -0.8F, 1.65F, 1.2F);
-        this.setPartPosition(seat1, 0.8F, 1.65F, 1.2F);
-        this.setPartPosition(controllerSeat, 0, 1.65F, 2.2F);
+        this.setPartPosition(seat4, -0.8F, 1.45F, -0.6F);
+        this.setPartPosition(seat3, 0.8F, 1.45F, -0.6F);
+        this.setPartPosition(seat2, -0.8F, 1.45F, 1.2F);
+        this.setPartPosition(seat1, 0.8F, 1.45F, 1.2F);
+        this.setPartPosition(controllerSeat, 0, 1.45F, 2.2F);
 
         MutableBox overrideBox = this.hitboxes.getOverrideBox();
         if (overrideBox != null)
