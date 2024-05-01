@@ -15,6 +15,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 public class ExtendedPostChain extends PostChain
 {
+	public boolean isEnabled;
 	public ExtendedPostChain(TextureManager p_110018_, ResourceManager p_110019_, RenderTarget p_110020_, ResourceLocation p_110021_) throws IOException, JsonSyntaxException
 	{
 		super(p_110018_, p_110019_, p_110020_, p_110021_);

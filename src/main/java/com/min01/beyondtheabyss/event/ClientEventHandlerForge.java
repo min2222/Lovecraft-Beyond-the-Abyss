@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.KeyInputPacket;
 import com.min01.beyondtheabyss.network.KeyInputPacket.InputType;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssSkyRenderer;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -25,9 +26,11 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -39,9 +42,22 @@ public class ClientEventHandlerForge
 	private static final Minecraft MC = Minecraft.getInstance();
     private static boolean YkeyPressed = false;
     
-    //FIXME
+    //TEST
     //@SubscribeEvent
-    public static void onRenderPlayer(RenderPlayerEvent.Pre event)
+    public static void onRenderTick(RenderLevelStageEvent event)
+    {
+    	if(event.getStage() != Stage.AFTER_PARTICLES)
+    		return;
+    	
+    	if(MC.player != null)
+    	{
+    		BTAClientUtil.testShader(event.getPartialTick());
+    	}
+    }
+    
+	//FIXME
+    @SubscribeEvent
+    public static void onRenderPlayer(RenderPlayerEvent event)
     {
     	Player player = event.getEntity();
     	if(player.getVehicle() != null && player.getVehicle() instanceof EntitySubmarine submarine)
@@ -81,7 +97,7 @@ public class ClientEventHandlerForge
     }
 	
     @SubscribeEvent
-    public static void onTickEvent(TickEvent.ClientTickEvent event) 
+    public static void onClientTickEvent(ClientTickEvent event) 
     {
         if (event.phase == TickEvent.Phase.END) 
         	return;
@@ -122,7 +138,7 @@ public class ClientEventHandlerForge
     }
     
     @SubscribeEvent
-    public static void onWorldLoad(LevelEvent.Load event) 
+    public static void onLevelLoad(LevelEvent.Load event) 
     {
         if(event.getLevel() instanceof ClientLevel)
         {

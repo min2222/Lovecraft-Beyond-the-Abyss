@@ -1,16 +1,13 @@
 {
-	"targets":
-	[
+	"targets": [
 		"swap"
 	],
-	"passes":
-	[
+	"passes": [
 		{
 			"name": "beyondtheabyss:fog",
 			"intarget": "minecraft:main",
 			"outtarget": "swap",
-			"auxtargets":
-			[
+			"auxtargets": [
 				{
 					"name": "DiffuseDepthSampler",
 					"id": "minecraft:main:depth"
@@ -18,7 +15,7 @@
 			]
 		},
 		{
-			"name": "blit",
+			"name": "beyondtheabyss:copy",
 			"intarget": "swap",
 			"outtarget": "minecraft:main"
 		}

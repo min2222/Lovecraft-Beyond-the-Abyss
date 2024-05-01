@@ -1,0 +1,30 @@
+{
+	"targets": [
+		"final"
+	],
+	"passes": [
+		{
+			"name": "beyondtheabyss:test",
+			"intarget": "minecraft:main",
+			"outtarget": "final",
+			"auxtargets": [
+				{
+					"name": "DepthSampler",
+					"id": "minecraft:main:depth"
+				},
+				{
+					"name": "Sampler0",
+                    "id": "beyondtheabyss:noise_small",
+                    "width": 96,
+                    "height": 96,
+                    "bilinear": false
+				}
+			]
+		},
+		{
+			"name": "beyondtheabyss:copy",
+			"intarget": "final",
+			"outtarget": "minecraft:main"
+		}
+	]
+}

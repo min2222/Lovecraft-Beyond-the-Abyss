@@ -15,6 +15,7 @@ public class BTAShaders implements ResourceManagerReloadListener
 	protected static final List<ExtendedPostChain> SHADERS = new ArrayList<>(2);
 
 	protected static ExtendedPostChain FOG;
+	protected static ExtendedPostChain TEST;
 
 	@Override
 	public void onResourceManagerReload(ResourceManager mgr)
@@ -33,6 +34,7 @@ public class BTAShaders implements ResourceManagerReloadListener
 	public static void init(ResourceManager mgr) throws IOException
 	{
 		FOG = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "fog"));
+		TEST = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "test"));
 	}
 
 	public void clear()
@@ -50,5 +52,10 @@ public class BTAShaders implements ResourceManagerReloadListener
 	public static ExtendedPostChain getFog()
 	{
 		return FOG;
+	}
+	
+	public static ExtendedPostChain getTest()
+	{
+		return TEST;
 	}
 }
