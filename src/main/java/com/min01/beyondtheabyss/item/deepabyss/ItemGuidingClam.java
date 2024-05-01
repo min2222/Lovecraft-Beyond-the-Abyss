@@ -6,10 +6,13 @@ import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 
 public class ItemGuidingClam extends Item
@@ -25,11 +28,31 @@ public class ItemGuidingClam extends Item
 		return true;
 	}
 	
+	//FIXME capability ig?
+	@Override
+	public void inventoryTick(ItemStack p_41404_, Level level, Entity entity, int p_41407_, boolean p_41408_) 
+	{
+        boolean isDeepOcean = entity.level.getBiome(entity.blockPosition()).is(BiomeTags.IS_DEEP_OCEAN);
+    	setOpen(p_41404_, isDeepOcean);
+	}
+	
+	public static boolean isOpen(ItemStack p_40933_) 
+	{
+		CompoundTag compoundtag = p_40933_.getTag();
+		return compoundtag != null && compoundtag.getBoolean("Open");
+	}
+	
+	public static void setOpen(ItemStack p_40885_, boolean p_40886_) 
+	{
+		CompoundTag compoundtag = p_40885_.getOrCreateTag();
+		compoundtag.putBoolean("Open", p_40886_);
+	}
+	
 	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) 
 	{
         boolean overworld = entity.getLevel().dimension().location().getPath().equals("overworld");
-        boolean isDeepOcean = entity.level.getBiome(entity.blockPosition()).containsTag(BiomeTags.IS_DEEP_OCEAN);
+        boolean isDeepOcean = entity.level.getBiome(entity.blockPosition()).is(BiomeTags.IS_DEEP_OCEAN);
         boolean isInWater = entity.isEyeInFluidType(Fluids.WATER.getFluidType());
         if(overworld && isDeepOcean && isInWater && entity.getThrowingEntity() != null)
         {

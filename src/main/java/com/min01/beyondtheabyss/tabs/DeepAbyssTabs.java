@@ -39,7 +39,7 @@ public class DeepAbyssTabs
 		@Override
 		public ItemStack makeIcon()
 		{
-			return new ItemStack(BTAItems.GUIDING_CLAM.get());
+			return new ItemStack(BTAItems.HEART_OF_FORNEUS.get());
 		}
 	};
 	

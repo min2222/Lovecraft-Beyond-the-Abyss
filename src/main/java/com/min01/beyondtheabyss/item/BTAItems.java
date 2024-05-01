@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.item.deepabyss.ItemGuidingClam;
 import com.min01.beyondtheabyss.item.deepabyss.ItemRunicFish;
 import com.min01.beyondtheabyss.item.renderer.BTABlockEntityItemRenderer;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
+import com.min01.beyondtheabyss.item.weapon.VampireDaggerItem;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.ChatFormatting;
@@ -61,10 +62,13 @@ public class BTAItems
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS).rarity(RARITY_ABYSS)));
 	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	public static final RegistryObject<Item> JUGGERNAUT_SUCTION_ORGAN = ITEMS.register("juggernaut_suction_organ", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> VAMPIRE_MEMBRANE = ITEMS.register("vampire_membrane", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> VAMPIRE_TOOTH = ITEMS.register("vampire_tooth", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	
 	//weapons
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750), false));
 	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(3550).rarity(RARITY_ABYSS), true));
+	public static final RegistryObject<Item> VAMPIRE_DAGGER = ITEMS.register("vampire_dagger", () -> new VampireDaggerItem(new Item.Properties().durability(150)));
 	
 	//misc
 	public static final RegistryObject<Item> GUIDING_CLAM = ITEMS.register("guiding_clam", () -> new ItemGuidingClam());
@@ -74,6 +78,8 @@ public class BTAItems
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new ItemGhidruthFlesh(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build(), true));
 	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = ITEMS.register("cooked_ghidruth_flesh", () -> new ItemGhidruthFlesh(new FoodProperties.Builder().nutrition(9).saturationMod(1F).build(), false));
 	public static final RegistryObject<Item> RUNIC_FISH = ITEMS.register("runic_fish", () -> new ItemRunicFish(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).alwaysEat().fast().build()));
+	public static final RegistryObject<Item> RAW_LATCHER_TAIL = ITEMS.register("raw_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).fast().build()));
+	public static final RegistryObject<Item> COOKED_LATCHER_TAIL = ITEMS.register("cooked_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).fast().build()));
 	
 	//armors
 	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new ItemDiverSet(DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));

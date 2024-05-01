@@ -31,6 +31,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.deepabyss.ItemGuidingClam;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
@@ -91,6 +92,10 @@ public class ClientEventHandler
         ItemProperties.register(BTAItems.GHIDRUTH_SCALE_HARPOON.get(), new ResourceLocation(BeyondtheAbyss.MODID, "throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
+        });
+        ItemProperties.register(BTAItems.GUIDING_CLAM.get(), new ResourceLocation(BeyondtheAbyss.MODID, "open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        {
+        	return ItemGuidingClam.isOpen(p_174585_) ? 1.0F : 0.0F;
         });
     }
     

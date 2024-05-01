@@ -1,8 +1,12 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.ai.control.LatcherMoveControl;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherFindTargetGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
-import com.min01.beyondtheabyss.entity.ai.navigation.LatcherPropelPathNavigation;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherUnlatchingGoal;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 import com.min01.beyondtheabyss.network.BTANetwork;
@@ -10,9 +14,12 @@ import com.min01.beyondtheabyss.network.MountUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,10 +28,9 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -33,6 +39,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityLatcher extends AbstractMultipartDeepAbyssMob 
 {
+	public AnimationState propelAnimationState = new AnimationState();
+	public AnimationState startLatchAnimationState = new AnimationState();
+	public AnimationState latchAnimationState = new AnimationState();
+	public AnimationState unlatchAnimationState = new AnimationState();
 	public BasicBTAEntityPart tail = new BasicBTAEntityPart(this, 0.5F, 0.5F);
 	public BasicBTAEntityPart tail2 = new BasicBTAEntityPart(this, 0.5F, 0.5F);
 	
@@ -41,7 +51,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
 	public EntityLatcher(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 10;
+		this.xpReward = 5;
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -50,7 +60,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     			.add(Attributes.MAX_HEALTH, 10)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F)
         		.add(Attributes.ATTACK_DAMAGE, 1)
-        		.add(Attributes.FOLLOW_RANGE, 5)
+        		.add(Attributes.FOLLOW_RANGE, 1.5)
         		.add(Attributes.ARMOR, 1);
     }
     
@@ -64,15 +74,65 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     protected void registerGoals() 
     {
         this.goalSelector.addGoal(4, new LatcherPropelGoal(this));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(4, new LatcherLatchingGoal(this));
+        this.goalSelector.addGoal(4, new LatcherUnlatchingGoal(this));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0, false));
         this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
+        this.targetSelector.addGoal(4, new LatcherFindTargetGoal<Player>(this, Player.class, false, false));
     }
     
 	public static boolean checkLatcherSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(40) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
+	
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
+	{
+        if (ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
+        {
+            switch (this.getAnimationState()) 
+            {
+            	case -1:
+            	{
+        			this.stopAllAnimationStates();
+            		this.propelAnimationState.start(this.tickCount);
+            	}
+        		case 0: 
+        		{
+        			this.stopAllAnimationStates();
+        			break;
+        		}
+        		case 1:
+        		{
+        			this.stopAllAnimationStates();
+        			this.startLatchAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 2:
+        		{
+        			this.stopAllAnimationStates();
+        			this.latchAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 3:
+        		{
+        			this.stopAllAnimationStates();
+        			this.unlatchAnimationState.start(this.tickCount);
+        			break;
+        		}
+            }
+        }
+	}
+	
+	@Override
+	public void stopAllAnimationStates()
+	{
+		this.propelAnimationState.stop();
+		this.startLatchAnimationState.stop();
+		this.latchAnimationState.stop();
+		this.unlatchAnimationState.stop();
+	}
     
     @Override
     public void aiStep() 
@@ -96,16 +156,23 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     }
     
     @Override
-    protected PathNavigation createNavigation(Level p_27480_)
+    public MoveControl getMoveControl() 
     {
-    	return new LatcherPropelPathNavigation(this, p_27480_);
+    	return new LatcherMoveControl(this,  this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
+    }
+    
+    @Override
+    protected ResourceLocation getDefaultLootTable() 
+    {
+    	return new ResourceLocation(BeyondtheAbyss.MODID, "entity/latcher");
     }
     
     @Override
     public void stopRiding()
     {
-    	if(!this.isInWater() || this.getVehicle() == null || !this.isAlive())
+    	if(!this.isInWater() || this.getVehicle() == null || !this.isAlive() || (this.getVehicle() instanceof Player player && player.isSpectator()))
     	{
+    		this.setAnimationState(3);
         	super.stopRiding();
     	}
     }
@@ -137,7 +204,8 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     public boolean doHurtTarget(Entity p_21372_) 
     {
     	if(this.getVehicle() == null)
-    	{
+    	{	
+    		this.setAnimationState(1);
     		this.startRiding(p_21372_);
     	}
     	return super.doHurtTarget(p_21372_);

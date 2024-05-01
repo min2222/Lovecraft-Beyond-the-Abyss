@@ -126,7 +126,10 @@ public class ModelLatcher extends HierarchicalModel<EntityLatcher>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.LatchingIsopod, netHeadYaw, headPitch);
-		BTAClientUtil.animateWalk(entity, this, LatcherAnimation.LATCHER_PROPEL, limbSwing * 1.5F, limbSwingAmount, 1.0F, 1.2F);
+		this.animate(entity.propelAnimationState, LatcherAnimation.LATCHER_PROPEL, ageInTicks);
+		this.animate(entity.startLatchAnimationState, LatcherAnimation.LATCHER_START_LATCH, ageInTicks);
+		this.animate(entity.latchAnimationState, LatcherAnimation.LATCHER_LATCH, ageInTicks);
+		this.animate(entity.unlatchAnimationState, LatcherAnimation.LATCHER_UNLATCH, ageInTicks);
 		float pi = Mth.PI / 180;
 	    ModelPart body = this.LatchingIsopod.getChild("Body");
 	    ModelPart tail = body.getChild("Tails");

@@ -12,6 +12,7 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -96,9 +97,15 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		super.tick();
 		if(this.isSwimable())
 		{
-			this.moveControl = new AbyssFishMoveControl(this, this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
+			this.moveControl = this.getMoveControl();
 			this.lookControl = new SmoothSwimmingLookControl(this, 10);
 		}
+	}
+	
+	@Override
+	public MoveControl getMoveControl() 
+	{
+		return new AbyssFishMoveControl(this, this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
 	}
     
     @Override

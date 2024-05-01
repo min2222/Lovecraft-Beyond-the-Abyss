@@ -7,23 +7,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraftforge.common.ForgeMod;
 
-public class AbyssFishMoveControl extends MoveControl
+public class LatcherMoveControl extends AbyssFishMoveControl
 {
-    protected final AbstractDeepAbyssMob fish;
-    protected final int maxTurnY;
-    protected final float inWaterSpeedModifier;
-
-    public AbyssFishMoveControl(AbstractDeepAbyssMob p_27501_, int p_148072_, float p_148073_) 
-    {
-    	super(p_27501_);
-    	this.fish = p_27501_;
-        this.maxTurnY = p_148072_;
-        this.inWaterSpeedModifier = p_148073_;
-    }
-
-    @Override
-    public void tick() 
-    {
+	public LatcherMoveControl(AbstractDeepAbyssMob p_27501_, int p_148072_, float p_148073_)
+	{
+		super(p_27501_, p_148072_, p_148073_);
+	}
+	
+	//FIXME
+	@Override
+	public void tick()
+	{
     	if (this.fish.isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
     	{
     		this.fish.setDeltaMovement(this.fish.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
@@ -38,8 +32,9 @@ public class AbyssFishMoveControl extends MoveControl
     		double d2 = this.wantedZ - this.fish.getZ();
     		if (d1 != 0.0D)
     		{
-    			double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-    			this.fish.setDeltaMovement(this.fish.getDeltaMovement().add(0.0D, (double)this.fish.getSpeed() * (d1 / d3) * 0.1D, 0.0D));
+    			float f2 = -0.1F + this.fish.getRandom().nextFloat() * 0.4F;
+    			this.fish.setAnimationState(-1);
+    			this.fish.setDeltaMovement(this.fish.getDeltaMovement().add(0.0D, f2, 0.0D));
     		}
 
     		if (d0 != 0.0D || d2 != 0.0D)
@@ -54,5 +49,5 @@ public class AbyssFishMoveControl extends MoveControl
     	{
     		this.fish.setSpeed(0.0F);
     	}
-    }
+	}
 }

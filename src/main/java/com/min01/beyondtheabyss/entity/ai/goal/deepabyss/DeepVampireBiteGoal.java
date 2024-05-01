@@ -4,9 +4,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-
 public class DeepVampireBiteGoal extends BasicBTASkillGoal<EntityDeepVampire>
 {
 	public DeepVampireBiteGoal(EntityDeepVampire mob) 
@@ -32,7 +29,7 @@ public class DeepVampireBiteGoal extends BasicBTASkillGoal<EntityDeepVampire>
 	{
 		if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 3))
 		{
-			this.mob.getTarget().hurt(DamageSource.mobAttack(this.mob), (float) this.mob.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
+			this.mob.doHurtTarget(this.mob.getTarget());
 		}
 	}
 	

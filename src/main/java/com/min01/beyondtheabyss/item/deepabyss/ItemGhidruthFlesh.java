@@ -29,7 +29,7 @@ public class ItemGhidruthFlesh extends Item
 	{
 		if(this.isRaw)
 		{
-			p_41411_.hurt(BTADamageSource.causeGhidruthFleshDamage(p_41411_), 0.5F);
+			p_41411_.hurt(BTADamageSource.GHIDRUTH_FLESH, 0.5F);
 		}
 		else
 		{

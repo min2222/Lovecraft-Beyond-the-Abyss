@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
@@ -8,11 +10,14 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -39,7 +44,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 	public EntityDeepVampire(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 20;
+		this.xpReward = 10;
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -68,6 +73,12 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 	public static boolean checkDeepVampireSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(30) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+    }
+	
+    @Override
+    protected ResourceLocation getDefaultLootTable() 
+    {
+    	return new ResourceLocation(BeyondtheAbyss.MODID, "entity/deep_vampire");
     }
     
     @Override
@@ -138,6 +149,13 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     	boolean flag = super.doHurtTarget(p_21372_);
     	if(flag)
     	{
+    		if(p_21372_ instanceof LivingEntity living)
+    		{
+    			if(Math.random() <= 0.1)
+    			{
+        			living.addEffect(new MobEffectInstance(BTAEffects.BLEEDING.get(), 40));
+    			}
+    		}
         	this.heal(this.random.nextInt(1, 3));
     	}
     	return flag;

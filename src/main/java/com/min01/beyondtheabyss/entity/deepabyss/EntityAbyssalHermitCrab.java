@@ -28,7 +28,7 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	public EntityAbyssalHermitCrab(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 25;
+		this.xpReward = 15;
 	}
 	
     public static AttributeSupplier.Builder createAttributes()

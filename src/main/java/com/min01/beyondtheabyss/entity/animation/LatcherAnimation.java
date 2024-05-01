@@ -67,6 +67,12 @@ public class LatcherAnimation
 			new Keyframe(1.0833F, KeyframeAnimations.degreeVec(19.3707F, -7.0629F, -2.6018F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5417F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
+		.addAnimation("Up", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+				new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.CATMULLROM)
+		))
+		.addAnimation("Down", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+				new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 1.0F, -1.0F), AnimationChannel.Interpolations.CATMULLROM)
+		))
 		.build();
 
 	public static final AnimationDefinition LATCHER_LATCH = AnimationDefinition.Builder.withLength(1.6667F).looping()
@@ -180,7 +186,7 @@ public class LatcherAnimation
 		))
 		.build();
 
-	public static final AnimationDefinition LATCHER_TRY_LATCH = AnimationDefinition.Builder.withLength(0.5F)
+	public static final AnimationDefinition LATCHER_START_LATCH = AnimationDefinition.Builder.withLength(0.5F)
 		.addAnimation("Body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(7.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)

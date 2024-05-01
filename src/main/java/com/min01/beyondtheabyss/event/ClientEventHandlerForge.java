@@ -56,7 +56,7 @@ public class ClientEventHandlerForge
     }
     
 	//FIXME
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void onRenderPlayer(RenderPlayerEvent event)
     {
     	Player player = event.getEntity();
