@@ -85,15 +85,15 @@ public class ClientEventHandler
     public static void onClientSetup(FMLClientSetupEvent event)
     {
         BlockEntityRenderers.register(BTABlocks.ALTAR_OF_DEEP_BLOCK_ENTITY.get(), BTABlockEntityRenderer::new);
-        ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation(BeyondtheAbyss.MODID, "throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
         });
-        ItemProperties.register(BTAItems.GHIDRUTH_SCALE_HARPOON.get(), new ResourceLocation(BeyondtheAbyss.MODID, "throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        ItemProperties.register(BTAItems.GHIDRUTH_SCALE_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
         });
-        ItemProperties.register(BTAItems.GUIDING_CLAM.get(), new ResourceLocation(BeyondtheAbyss.MODID, "open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        ItemProperties.register(BTAItems.GUIDING_CLAM.get(), new ResourceLocation("open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return ItemGuidingClam.isOpen(p_174585_) ? 1.0F : 0.0F;
         });

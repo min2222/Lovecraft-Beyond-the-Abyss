@@ -14,7 +14,7 @@ public class LatcherMoveControl extends AbyssFishMoveControl
 		super(p_27501_, p_148072_, p_148073_);
 	}
 	
-	//FIXME
+	//FIXME animation not working
 	@Override
 	public void tick()
 	{

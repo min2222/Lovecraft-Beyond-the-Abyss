@@ -31,11 +31,8 @@ public class ItemGuidingClam extends Item
 	@Override
 	public void inventoryTick(ItemStack p_41404_, Level level, Entity entity, int p_41407_, boolean p_41408_) 
 	{
-		if(level.isClientSide)
-		{
-	        boolean isDeepOcean = entity.level.getBiome(entity.blockPosition()).is(BiomeTags.IS_DEEP_OCEAN);
-	    	setOpen(p_41404_, isDeepOcean);
-		}
+        boolean isDeepOcean = entity.level.getBiome(entity.blockPosition()).is(BiomeTags.IS_DEEP_OCEAN);
+    	setOpen(p_41404_, isDeepOcean);
 	}
 	
 	public static boolean isOpen(ItemStack p_40933_) 
