@@ -54,7 +54,7 @@ public abstract class MixinLivingEntity extends MixinEntity
 		{
 			return false;
 		}
-		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
+		else if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
 		{
 			return true;
 		}
@@ -64,7 +64,11 @@ public abstract class MixinLivingEntity extends MixinEntity
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fluids/FluidType;isAir()Z"), method = "baseTick")
 	private boolean baseTick(FluidType instance)
 	{
-		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
+		if(LivingEntity.class.cast(this).hasEffect(BTAEffects.AIR_SWIM.get()))
+		{
+			return false;
+		}
+		else if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
 		{
 			return true;
 		}
@@ -78,8 +82,7 @@ public abstract class MixinLivingEntity extends MixinEntity
 		{
 			ci.setReturnValue(true);
 		}
-		
-		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
+		else if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
 		{
 			ci.setReturnValue(false);
 		}
@@ -92,6 +95,10 @@ public abstract class MixinLivingEntity extends MixinEntity
 		{
 			ci.setReturnValue(false);
 		}
+		else if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
+		{
+			ci.setReturnValue(true);
+		}
 	}
 	
 	@Override
@@ -101,8 +108,7 @@ public abstract class MixinLivingEntity extends MixinEntity
 		{
 			ci.setReturnValue(true);
 		}
-		
-		if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
+		else if(BTAUtil.isInsideSubmarine(LivingEntity.class.cast(this)))
 		{
 			ci.setReturnValue(false);
 		}

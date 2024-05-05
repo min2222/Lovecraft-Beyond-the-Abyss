@@ -97,13 +97,12 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		super.tick();
 		if(this.isSwimable())
 		{
-			this.moveControl = this.getMoveControl();
+			this.moveControl = this.getFishMoveControl();
 			this.lookControl = new SmoothSwimmingLookControl(this, 10);
 		}
 	}
 	
-	@Override
-	public MoveControl getMoveControl() 
+	public MoveControl getFishMoveControl()
 	{
 		return new AbyssFishMoveControl(this, this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
 	}

@@ -1,7 +1,6 @@
 package com.min01.beyondtheabyss.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,16 +11,12 @@ import com.min01.beyondtheabyss.multipart.entity.MultipartEntity;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity 
 {
-	@Shadow
-	private EntityDimensions dimensions;
-	
 	@Inject(at = @At("HEAD"), method = "updateSwimming", cancellable = true)
 	protected void updateSwimming(CallbackInfo ci)
 	{

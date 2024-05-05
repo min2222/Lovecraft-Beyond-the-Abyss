@@ -156,9 +156,9 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     }
     
     @Override
-    public MoveControl getMoveControl() 
+    public MoveControl getFishMoveControl() 
     {
-    	return new LatcherMoveControl(this,  this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
+    	return new LatcherMoveControl(this, this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
     }
     
     @Override

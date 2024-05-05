@@ -60,7 +60,7 @@ public abstract class AbstractBTAMob extends PathfinderMob
 		{
 			super.move(p_19973_, p_19974_);
 		}
-		else if(!this.canMove())
+		else
 		{
 			double yvec = this.onGround || this.isNoGravity() ? 0 : this.getDeltaMovement().y;
 			super.move(p_19973_, new Vec3(0, yvec, 0));
