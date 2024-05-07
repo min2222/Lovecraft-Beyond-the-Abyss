@@ -16,7 +16,7 @@ public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDee
 	public DeepVampireRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelDeepVampire(p_174304_.bakeLayer(ModelDeepVampire.LAYER_LOCATION)), 0.5F);
-		this.addLayer(new GlowingLayer<>(this, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/deep_vampire_layer.png")));
+		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/deep_vampire_layer.png")));
 	}
 	
 	@Override

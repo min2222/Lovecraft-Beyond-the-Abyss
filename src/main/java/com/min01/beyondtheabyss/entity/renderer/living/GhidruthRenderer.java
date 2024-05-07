@@ -19,8 +19,8 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 	public GhidruthRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelGhidruth(p_174304_.bakeLayer(ModelGhidruth.LAYER_LOCATION)), 0);
-		this.addLayer(new GlowingLayer<>(this, LAYER));
-		this.addLayer(new GlowingLayer<>(this, DASH_LAYER));
+		this.addLayer(new GlowingLayer<>(this, this.model, LAYER));
+		this.addLayer(new GlowingLayer<>(this, this.model, DASH_LAYER));
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ public class AbyssalBulbrayRenderer extends MobRenderer<EntityAbyssalBulbray, Mo
 	public AbyssalBulbrayRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelAbyssalBulbray(p_174304_.bakeLayer(ModelAbyssalBulbray.LAYER_LOCATION)), 0.5F);
-		this.addLayer(new GlowingLayer<>(this, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/abyssal_bulbray_layer.png")));
+		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/abyssal_bulbray_layer.png")));
 	}
 
 	@Override
