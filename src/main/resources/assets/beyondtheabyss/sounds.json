@@ -1,82 +1,82 @@
 {
-  "ghidruth_hurt": {
-    "category": "entity",
-    "subtitle": "ghidruth_hurt",
-    "sounds": [
-      {
-        "name": "beyondtheabyss:entity/ghidruth_hurt",
-        "stream": true
-      }
-    ]
-  },
-  "ghidruth_ambient": {
-    "category": "entity",
-    "subtitle": "ghidruth_ambient",
-    "sounds": [
-      {
-        "name": "beyondtheabyss:entity/ghidruth_ambient",
-        "stream": true
-      }
-    ]
-  },
-  "ghidruth_stun": {
-    "category": "entity",
-    "subtitle": "ghidruth_stun",
-    "sounds": [
-      {
-        "name": "beyondtheabyss:entity/ghidruth_stun",
-        "stream": true
-      }
-    ]
-  },
-  "ghidruth_eye_flash": {
-    "category": "entity",
-    "subtitle": "ghidruth_eye_flash",
-    "sounds": [
-      {
-        "name": "beyondtheabyss:entity/ghidruth_eye_flash",
-        "stream": true
-      }
-    ]
-  },
-  "ghidruth_charge_start": {
-    "category": "entity",
-    "subtitle": "ghidruth_charge_start",
-    "sounds": [
-      {
-        "name": "beyondtheabyss:entity/ghidruth_charge_start",
-        "stream": true
-      }
-    ]
-  },
-  "ghidruth_charge_loop": {
-    "category": "entity",
-    "subtitle": "ghidruth_charge_loop",
-    "sounds": [
-      {
-        "name": "beyondtheabyss:entity/ghidruth_charge_loop",
-        "stream": true
-      }
-    ]
-  },
-  "ghidruth_bite": {
-    "category": "entity",
-    "subtitle": "ghidruth_bite",
-    "sounds": [
-      {
-        "name": "beyondtheabyss:entity/ghidruth_bite",
-        "stream": true
-      }
-    ]
-  },
-  "ghidruth_awaken": {
-    "category": "entity",
-    "subtitle": "ghidruth_awaken",
-    "sounds": [
-      {
-        "name": "beyondtheabyss:entity/ghidruth_awaken",
-        "stream": true
-      }
-    ]
-  }
+	"ghidruth_hurt": {
+		"category": "entity",
+		"subtitle": "ghidruth_hurt",
+		"sounds": [
+			{
+				"name": "beyondtheabyss:entity/ghidruth_hurt",
+				"stream": true
+			}
+		]
+	},
+	"ghidruth_ambient": {
+		"category": "entity",
+		"subtitle": "ghidruth_ambient",
+		"sounds": [
+			{
+				"name": "beyondtheabyss:entity/ghidruth_ambient",
+				"stream": true
+			}
+		]
+	},
+	"ghidruth_stun": {
+		"category": "entity",
+		"subtitle": "ghidruth_stun",
+		"sounds": [
+			{
+				"name": "beyondtheabyss:entity/ghidruth_stun",
+				"stream": true
+			}
+		]
+	},
+	"ghidruth_eye_flash": {
+		"category": "entity",
+		"subtitle": "ghidruth_eye_flash",
+		"sounds": [
+			{
+				"name": "beyondtheabyss:entity/ghidruth_eye_flash",
+				"stream": true
+			}
+		]
+	},
+	"ghidruth_charge_start": {
+		"category": "entity",
+		"subtitle": "ghidruth_charge_start",
+		"sounds": [
+			{
+				"name": "beyondtheabyss:entity/ghidruth_charge_start",
+				"stream": true
+			}
+		]
+	},
+	"ghidruth_charge_loop": {
+		"category": "entity",
+		"subtitle": "ghidruth_charge_loop",
+		"sounds": [
+			{
+				"name": "beyondtheabyss:entity/ghidruth_charge_loop",
+				"stream": true
+			}
+		]
+	},
+	"ghidruth_bite": {
+		"category": "entity",
+		"subtitle": "ghidruth_bite",
+		"sounds": [
+			{
+				"name": "beyondtheabyss:entity/ghidruth_bite",
+				"stream": true
+			}
+		]
+	},
+	"ghidruth_awaken": {
+		"category": "entity",
+		"subtitle": "ghidruth_awaken",
+		"sounds": [
+			{
+				"name": "beyondtheabyss:entity/ghidruth_awaken",
+				"stream": true
+			}
+		]
+	}
 }

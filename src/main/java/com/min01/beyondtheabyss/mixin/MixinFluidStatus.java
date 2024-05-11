@@ -18,10 +18,8 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 public class MixinFluidStatus
 {
 	@Shadow
-    @Final int fluidLevel;
-
-	@Shadow
-    @Final BlockState fluidType;
+    @Final 
+    private int fluidLevel;
     
 	@Inject(at = @At("HEAD"), method = "at", cancellable = true)
 	private void at(int p_188406_, CallbackInfoReturnable<BlockState> ci)
@@ -29,12 +27,10 @@ public class MixinFluidStatus
 		for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
 		{
 			Level level = player.level;
-			if(level != null && player != null)
+			if(level != null && player != null && level.dimension().location().getPath().equals("deep_abyss"))
 			{
-				BlockState original = p_188406_ < this.fluidLevel ? this.fluidType : Blocks.AIR.defaultBlockState();
 				BlockState water = p_188406_ < this.fluidLevel ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
-				BlockState blockstate = level.dimension().location().getPath().equals("deep_abyss") ? water : original;
-				ci.setReturnValue(blockstate);
+				ci.setReturnValue(water);
 			}
 		}
 	}
