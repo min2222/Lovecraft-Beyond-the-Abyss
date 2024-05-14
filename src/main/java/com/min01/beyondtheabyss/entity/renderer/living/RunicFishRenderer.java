@@ -16,7 +16,7 @@ public class RunicFishRenderer extends MobRenderer<EntityRunicFish, ModelRunicFi
 	public RunicFishRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelRunicFish(p_174304_.bakeLayer(ModelRunicFish.LAYER_LOCATION)), 0.5F);
-		this.addLayer(new RunicFishLayer(this));
+		this.addLayer(new RunicFishLayer(this, this.model));
 	}
 	
 	@Override

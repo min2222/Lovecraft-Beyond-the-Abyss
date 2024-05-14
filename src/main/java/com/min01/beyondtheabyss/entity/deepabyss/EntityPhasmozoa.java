@@ -1,0 +1,166 @@
+package com.min01.beyondtheabyss.entity.deepabyss;
+
+import com.min01.beyondtheabyss.misc.BTAMobType;
+
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
+
+public class EntityPhasmozoa extends AbstractDeepAbyssMob
+{
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> SPECTRE_TIME = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> SPECTRE_COOLDOWN = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Float> SPECTRE_ALPHA = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Boolean> IS_SPECTRE = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.BOOLEAN);
+	
+	public EntityPhasmozoa(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	{
+		super(p_21683_, p_21684_);
+		this.xpReward = 3 + this.random.nextInt(8);
+	}
+	
+    public static AttributeSupplier.Builder createAttributes()
+    {
+        return Mob.createMobAttributes()
+    			.add(Attributes.MAX_HEALTH, 15)
+    			.add(Attributes.MOVEMENT_SPEED, 0.4F)
+        		.add(Attributes.FOLLOW_RANGE, 15);
+    }
+	
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(VARIANT, this.random.nextInt(2) + 1);
+		this.entityData.define(SPECTRE_TIME, 100);
+		this.entityData.define(SPECTRE_COOLDOWN, 0);
+		this.entityData.define(SPECTRE_ALPHA, 1.0F);
+		this.entityData.define(IS_SPECTRE, false);
+	}
+	
+	@Override
+	public void tick() 
+	{
+		super.tick();
+		if(this.isSpectre())
+		{
+			if(this.getSpectreTime() > 0)
+			{
+				this.setSpectreTime(this.getSpectreTime() - 1);
+				if(this.getSpectreAlpha() > 0.1F)
+				{
+					this.setSpectreAlpha(this.getSpectreAlpha() - 0.05F);
+				}
+			}
+			else
+			{
+				if(this.getSpectreAlpha() < 1.0F)
+				{
+					this.setSpectreAlpha(this.getSpectreAlpha() + 0.05F);
+				}
+				else
+				{
+					this.noPhysics = false;
+					this.setNoGravity(false);
+					this.setSpectre(false);
+					this.setSpectreCooldown(300);
+				}
+			}
+		}
+		else
+		{
+			if(this.getSpectreCooldown() > 0)
+			{
+				this.setSpectreCooldown(this.getSpectreCooldown() - 1);
+			}
+		}
+	}
+	
+	@Override
+	public boolean isPickable() 
+	{
+		return super.isPickable() && !this.isSpectre();
+	}
+	
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	{
+		if(p_21016_.getEntity() != null && !this.isSpectre() && this.getSpectreCooldown() <= 0)
+		{
+			this.noPhysics = true;
+			this.setNoGravity(true);
+			this.setSpectre(true);
+			this.setSpectreTime(100);
+		}
+		if(!p_21016_.isBypassInvul() && this.isSpectre())
+		{
+			return false;
+		}
+		return super.hurt(p_21016_, p_21017_);
+	}
+	
+	public void setSpectreCooldown(int value)
+	{
+		this.entityData.set(SPECTRE_COOLDOWN, value);
+	}
+	
+	public int getSpectreCooldown()
+	{
+		return this.entityData.get(SPECTRE_COOLDOWN);
+	}
+	
+	public void setSpectreTime(int value)
+	{
+		this.entityData.set(SPECTRE_TIME, value);
+	}
+	
+	public int getSpectreTime()
+	{
+		return this.entityData.get(SPECTRE_TIME);
+	}
+	
+	public void setSpectreAlpha(float value)
+	{
+		this.entityData.set(SPECTRE_ALPHA, value);
+	}
+	
+	public float getSpectreAlpha()
+	{
+		return this.entityData.get(SPECTRE_ALPHA);
+	}
+	
+	public void setSpectre(boolean value)
+	{
+		this.entityData.set(IS_SPECTRE, value);
+	}
+	
+	public boolean isSpectre()
+	{
+		return this.entityData.get(IS_SPECTRE);
+	}
+    
+	public int getVariant()
+	{
+		return this.entityData.get(VARIANT);
+	}
+    
+    @Override
+    public int getMaxSpawnClusterSize()
+    {
+    	return this.random.nextInt(2, 3);
+    }
+    
+    @Override
+    public BTAMobType getBTAMobType()
+    {
+    	return BTAMobType.HOSTILE;
+    }
+}

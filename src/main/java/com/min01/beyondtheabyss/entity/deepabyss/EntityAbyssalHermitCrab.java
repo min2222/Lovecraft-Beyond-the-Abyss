@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.CrabShellPart;
+import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	public EntityAbyssalHermitCrab(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 15;
+		this.xpReward = 2 + this.random.nextInt(6);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -83,9 +84,9 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	}
 	
 	@Override
-	public boolean isNetural()
+	public BTAMobType getBTAMobType() 
 	{
-		return true;
+		return BTAMobType.NETURAL;
 	}
 	
 	@Override

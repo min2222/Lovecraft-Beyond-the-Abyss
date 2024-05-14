@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -126,8 +127,8 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
 	}
     
     @Override
-    public boolean isHostile()
+    public BTAMobType getBTAMobType()
     {
-    	return false;
+    	return BTAMobType.PASSIVE;
     }
 }

@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity;
 
+import com.min01.beyondtheabyss.misc.BTAMobType;
+
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -33,13 +35,13 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	@Override
 	protected boolean shouldDespawnInPeaceful()
 	{
-		return this.isBoss() || this.isHostile();
+		return this.getBTAMobType().despawnInPeaceful;
 	}
 	
 	@Override
 	public boolean removeWhenFarAway(double p_21542_) 
 	{
-		return !this.isBoss();
+		return this.getBTAMobType().removeWhenFarAway;
 	}
 	
 	@Override
@@ -75,13 +77,14 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	@Override
 	protected void registerGoals() 
 	{
-        if(this.isHostile())
+        if(this.getBTAMobType().alwaysHostile)
+        {
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
+        }
+        
+        if(this.getBTAMobType() == BTAMobType.NETURAL)
         {
             this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
-            if(!this.isNetural())
-            {
-                this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
-            }
         }
 	}
 	
@@ -89,19 +92,24 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	public void tick() 
 	{
 		super.tick();
-		if(this.isHostile())
+		if(this.getTarget() != null)
 		{
-			if(this.getTarget() != null)
+			this.setHasTarget(this.getTarget() != null);
+			if(this.canLookOrMove())
 			{
-				this.setHasTarget(this.getTarget() != null);
-				if(this.canLookOrMove())
+				if(this.getBTAMobType().moveToTarget)
 				{
 					this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+				}
+				if(this.getBTAMobType().lookTarget)
+				{
 					this.lookAt(this.getLookAnchor(), this.getLookPos());
 				}
 			}
 		}
 	}
+	
+	public abstract BTAMobType getBTAMobType();
 	
 	public Anchor getLookAnchor()
 	{
@@ -131,21 +139,6 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	public boolean canLookOrMove()
 	{
 		return this.entityData.get(CAN_LOOK_OR_MOVE);
-	}
-	
-	public boolean isNetural()
-	{
-		return false;
-	}
-	
-	public boolean isHostile()
-	{
-		return true;
-	}
-	
-	public boolean isBoss()
-	{
-		return false;
 	}
 	
     public void setAnimationState(int value)

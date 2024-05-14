@@ -229,10 +229,10 @@ public class BTAUtil
     	return d0 <= getMeleeAttackRangeSqr(owner, target, multiplier);
     }
     
-	public static boolean isMoving(Entity entity) 
-	{
-		return entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
-	}
+    public static boolean isMoving(Entity entity) 
+    {
+    	return entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
+    }
 
 	public static Vec3 getLookPos(float xRot, float yRot, float yPos, double distance)
 	{

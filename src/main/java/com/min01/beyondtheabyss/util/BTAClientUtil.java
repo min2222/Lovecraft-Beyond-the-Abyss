@@ -12,6 +12,7 @@ import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,6 +30,18 @@ public class BTAClientUtil
     		shaderChain.process(partialTick);
             ClientEventHandler.MC.getMainRenderTarget().bindWrite(false);
     	}
+	}
+	
+	public static void animateWhen(AnimationState state, boolean flag, int tick) 
+	{
+		if(flag) 
+		{
+			state.startIfStopped(tick);
+		}
+		else
+		{
+			state.stop();
+        }
 	}
 	
 	public static void animateHead(ModelPart head, float netHeadYaw, float headPitch)

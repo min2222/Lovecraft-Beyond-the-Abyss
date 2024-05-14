@@ -14,8 +14,8 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class GlowingLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
-	private M model;
-	private ResourceLocation texture;
+	protected M model;
+	protected ResourceLocation texture;
 	
 	public GlowingLayer(RenderLayerParent<T, M> p_117346_, M model, ResourceLocation texture)
 	{

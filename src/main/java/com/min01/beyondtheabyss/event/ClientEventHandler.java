@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
+import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
 import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
@@ -28,6 +29,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.AbyssalHermitCrabRenderer
 import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.PhasmozoaRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -159,6 +161,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.LATCHER.get(), LatcherRenderer::new);
     	event.registerEntityRenderer(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), AbyssalHermitCrabRenderer::new);
     	event.registerEntityRenderer(BTAEntities.ABYSSAL_BULBRAY.get(), AbyssalBulbrayRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.PHASMOZOA.get(), PhasmozoaRenderer::new);
     }
     
     @SubscribeEvent
@@ -171,6 +174,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelAbyssalHermitCrab.LAYER_LOCATION, ModelAbyssalHermitCrab::createBodyLayer);
     	event.registerLayerDefinition(ModelAbyssalBulbray.LAYER_LOCATION, ModelAbyssalBulbray::createBodyLayer);
     	event.registerLayerDefinition(ModelSubmarine.LAYER_LOCATION, ModelSubmarine::createBodyLayer);
+    	event.registerLayerDefinition(ModelPhasmozoa.LAYER_LOCATION, ModelPhasmozoa::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);

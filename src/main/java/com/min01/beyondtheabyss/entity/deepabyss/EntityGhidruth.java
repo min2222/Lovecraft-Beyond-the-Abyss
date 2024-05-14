@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
+import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -64,7 +65,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
 		super(p_33002_, p_33003_);
-		this.xpReward = 1000;
+		this.xpReward = 1000 + this.random.nextInt(100);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -353,9 +354,9 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     }
     
     @Override
-    public boolean isBoss() 
+    public BTAMobType getBTAMobType()
     {
-    	return true;
+    	return BTAMobType.BOSS;
     }
 
 	@Override

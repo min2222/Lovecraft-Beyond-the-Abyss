@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -44,7 +45,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 	public EntityDeepVampire(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 10;
+		this.xpReward = 2 + this.random.nextInt(8);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -161,11 +162,11 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     	return flag;
     }
 	
-	@Override
-	public boolean isHostile()
-	{
-		return true;
-	}
+    @Override
+    public BTAMobType getBTAMobType()
+    {
+    	return BTAMobType.HOSTILE;
+    }
 	
 	@Override
 	public AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts()

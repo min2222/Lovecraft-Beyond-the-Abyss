@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -34,7 +35,7 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob
 	public EntityAbyssalBulbray(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 25;
+		this.xpReward = 1 + this.random.nextInt(4);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -93,8 +94,8 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob
 	}
 	
 	@Override
-	public boolean isHostile() 
+	public BTAMobType getBTAMobType()
 	{
-		return false;
+		return BTAMobType.PASSIVE;
 	}
 }
