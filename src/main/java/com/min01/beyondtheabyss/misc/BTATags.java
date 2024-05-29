@@ -35,6 +35,7 @@ public class BTATags
 	public static class BTABlocks
 	{
 		public static final TagKey<Block> ABYSS_CARVER_REPLACEABLES = create("abyss_carver_replaceables");
+		public static final TagKey<Block> DEATH_VALLEY_REPLACEABLES = create("death_valley_replaceables");
 		
 		private static TagKey<Block> create(String p_203849_) 
 		{

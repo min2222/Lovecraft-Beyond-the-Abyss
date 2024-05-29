@@ -32,6 +32,33 @@
 						"depth": 0,
 						"offset": 0
 					}
+				},
+				{
+					"biome": "beyondtheabyss:death_valley",
+					"parameters": {
+						"temperature": [
+							-0.45,
+							0.2
+						],
+						"humidity": [
+							-1,
+							1
+						],
+						"continentalness": [
+							-0.11,
+							1
+						],
+						"erosion": [
+							0.55,
+							1
+						],
+						"weirdness": [
+							-1,
+							-0.9333
+						],
+						"depth": 0,
+						"offset": 0
+					}
 				}
 			]
 		}

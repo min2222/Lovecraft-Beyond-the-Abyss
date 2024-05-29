@@ -57,7 +57,7 @@
 	},
 	"spawn_costs": {},
 	"carvers": {
-		"air": "beyondtheabyss:abyss_cave"
+		"air": "beyondtheabyss:death_valley"
 	},
 	"features": [
 		[],

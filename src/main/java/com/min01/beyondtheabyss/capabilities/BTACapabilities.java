@@ -34,26 +34,26 @@ public class BTACapabilities
 			@Override
 			public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
 			{
-				return ITEM_ANIMATION.orEmpty(capability, inst.cast());
+				return ITEM_ANIMATION.orEmpty(capability, this.inst.cast());
 			}
 
 			@Override
 			public CompoundTag serializeNBT() 
 			{
-				return inst.orElseThrow(NullPointerException::new).serializeNBT();
+				return this.inst.orElseThrow(NullPointerException::new).serializeNBT();
 			}
 
 			@Override
 			public void deserializeNBT(CompoundTag nbt)
 			{
-				inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
+				this.inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
 			}
 		});
 	}
 	
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e)
 	{
-		if (e.getObject() instanceof LivingEntity living) 
+		if(e.getObject() instanceof LivingEntity living) 
 		{
 			e.addCapability(IBTAAbilitiesCapability.ID, new ICapabilitySerializable<CompoundTag>() 
 			{
@@ -68,19 +68,19 @@ public class BTACapabilities
 				@Override
 				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
 				{
-					return BTA_ABILITY.orEmpty(capability, inst.cast());
+					return BTA_ABILITY.orEmpty(capability, this.inst.cast());
 				}
 
 				@Override
 				public CompoundTag serializeNBT() 
 				{
-					return inst.orElseThrow(NullPointerException::new).serializeNBT();
+					return this.inst.orElseThrow(NullPointerException::new).serializeNBT();
 				}
 
 				@Override
 				public void deserializeNBT(CompoundTag nbt)
 				{
-					inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
+					this.inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
 				}
 			});
 		}

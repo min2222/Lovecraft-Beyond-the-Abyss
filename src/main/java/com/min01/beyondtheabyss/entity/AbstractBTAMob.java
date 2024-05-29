@@ -69,11 +69,6 @@ public abstract class AbstractBTAMob extends PathfinderMob
 		}
 	}
 	
-	public void setIsUsingSkill(boolean value) 
-	{
-		this.entityData.set(IS_USING_SKILL, value);
-	}
-	
 	@Override
 	protected void registerGoals() 
 	{
@@ -164,6 +159,11 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	protected int getSkillUsingTime()
 	{
 		return this.skillUsingTickCount;
+	}
+	
+	public void setIsUsingSkill(boolean value) 
+	{
+		this.entityData.set(IS_USING_SKILL, value);
 	}
 	
 	public boolean isUsingSkill() 

@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
+import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
 import net.minecraft.world.entity.Entity;
@@ -37,6 +38,8 @@ public class BeyondtheAbyss
 		BTAEntityDataSerializers.SERIALIZERS.register(bus);
 		BTAParticles.PARTICLES.register(bus);
 		BTAWorldCarvers.CARVERS.register(bus);
+		BTAStructures.STRUCTURE_TYPES.register(bus);
+		BTAStructures.STRUCTURE_PIECE_TYPES.register(bus);
 		
 		BTANetwork.registerMessages();
         BTAConfig.loadConfig(BTAConfig.CONFIG, FMLPaths.CONFIGDIR.get().resolve("beyond-the-abyss.toml").toString());

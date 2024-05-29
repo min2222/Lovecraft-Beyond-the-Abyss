@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.misc.BTAMobType;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
@@ -68,10 +67,15 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 				}
 				else
 				{
-					this.noPhysics = false;
-					this.setNoGravity(false);
-					this.setSpectre(false);
-					this.setSpectreCooldown(300);
+					this.disableSpectre();
+				}
+			}
+			
+			if(this.getTarget() != null)
+			{
+				if(this.distanceTo(this.getTarget()) <= 5)
+				{
+					this.disableSpectre();
 				}
 			}
 		}
@@ -84,27 +88,26 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 		}
 	}
 	
+	public void enableSpectre()
+	{
+		this.noPhysics = true;
+		this.setNoGravity(true);
+		this.setSpectre(true);
+		this.setSpectreTime(100);
+	}
+	
+	public void disableSpectre()
+	{
+		this.noPhysics = false;
+		this.setNoGravity(false);
+		this.setSpectre(false);
+		this.setSpectreCooldown(300);
+	}
+	
 	@Override
 	public boolean isPickable() 
 	{
 		return super.isPickable() && !this.isSpectre();
-	}
-	
-	@Override
-	public boolean hurt(DamageSource p_21016_, float p_21017_) 
-	{
-		if(p_21016_.getEntity() != null && !this.isSpectre() && this.getSpectreCooldown() <= 0)
-		{
-			this.noPhysics = true;
-			this.setNoGravity(true);
-			this.setSpectre(true);
-			this.setSpectreTime(100);
-		}
-		if(!p_21016_.isBypassInvul() && this.isSpectre())
-		{
-			return false;
-		}
-		return super.hurt(p_21016_, p_21017_);
 	}
 	
 	public void setSpectreCooldown(int value)
@@ -155,7 +158,7 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
     @Override
     public int getMaxSpawnClusterSize()
     {
-    	return this.random.nextInt(2, 3);
+    	return 1;
     }
     
     @Override

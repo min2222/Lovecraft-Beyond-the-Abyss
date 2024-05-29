@@ -62,7 +62,7 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob
     {
     	super.tick();
 
-    	Vec3 tail4Pos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -4.0F);
+    	Vec3 tail4Pos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -4.5F);
     	Vec3 tail3Pos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -3.5F);
     	Vec3 tail2Pos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -2.5F);
     	Vec3 tailPos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -1.5F);
