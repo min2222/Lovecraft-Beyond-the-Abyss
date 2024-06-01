@@ -51,6 +51,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
 	public EntityLatcher(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.posArray = new Vec3[2];
 		this.xpReward = 3 + this.random.nextInt(5);
 	}
 	
@@ -142,11 +143,8 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     	super.aiStep();
     	BTAUtil.fishFlopping(this);
     	
-    	Vec3 tail2Pos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -1.3F);
-    	Vec3 tailPos = BTAUtil.getLookPos((float) (this.getXRot() + this.getBodyRot().x), this.yHeadRot, 0, -0.8F);
-    	
-        this.setPartPosition(this.tail2, tail2Pos.x, tail2Pos.y + this.getTailPos().y, tail2Pos.z);
-        this.setPartPosition(this.tail, tailPos.x, tailPos.y + this.getTailPos().y, tailPos.z);
+    	this.setPartPosition(this.tail2, this.posArray[1]);
+        this.setPartPosition(this.tail, this.posArray[0]);
         
         if(this.getVehicle() != null)
         {

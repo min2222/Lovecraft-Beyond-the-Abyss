@@ -3,11 +3,6 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.LatcherAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.PartPositionUpdatePacket;
-import com.min01.beyondtheabyss.network.PartPositionUpdatePacket.PartPosType;
-import com.min01.beyondtheabyss.network.PartRotationUpdatePacket;
-import com.min01.beyondtheabyss.network.PartRotationUpdatePacket.PartRotationType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -22,8 +17,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 
 public class ModelLatcher extends HierarchicalModel<EntityLatcher> 
 {
@@ -130,16 +123,6 @@ public class ModelLatcher extends HierarchicalModel<EntityLatcher>
 		this.animate(entity.startLatchAnimationState, LatcherAnimation.LATCHER_START_LATCH, ageInTicks);
 		this.animate(entity.latchAnimationState, LatcherAnimation.LATCHER_LATCH, ageInTicks);
 		this.animate(entity.unlatchAnimationState, LatcherAnimation.LATCHER_UNLATCH, ageInTicks);
-		float pi = Mth.PI / 180;
-	    ModelPart body = this.LatchingIsopod.getChild("Body");
-	    ModelPart tail = body.getChild("Tails");
-	    ModelPart tail2 = tail.getChild("Tails2");
-	    float bodyXRot = body.xRot / pi;
-	    float tailXRot = tail.xRot / pi;
-	    float tail2XRot = tail2.xRot / pi;
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(entity, Vec3.ZERO, Vec3.ZERO, new Vec3(0, tail.y, 0), PartPosType.TAIL));
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, Vec3.ZERO, new Vec3(bodyXRot + tailXRot, 0, 0), Vec3.ZERO, PartRotationType.BODY));
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, Vec3.ZERO, Vec3.ZERO, new Vec3(bodyXRot + tail2XRot, 0, 0), PartRotationType.TAIL));
 	}
 
 	@Override

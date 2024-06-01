@@ -67,8 +67,8 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
     	Vec3 shell2Pos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, -1.0F);
     	Vec3 shellPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, -0.2F);
     	
-        this.setPartPosition(this.shell2, shell2Pos.x, 0.1F, shell2Pos.z);
-        this.setPartPosition(this.shell, shellPos.x, 0.5F, shellPos.z);
+        this.setPartPosition(this.shell2, this.getX() + shell2Pos.x, this.getY() + 0.1F, this.getZ() + shell2Pos.z);
+        this.setPartPosition(this.shell, this.getX() + shellPos.x, this.getY() + 0.5F, this.getZ() + shellPos.z);
     }
 
 	@Override

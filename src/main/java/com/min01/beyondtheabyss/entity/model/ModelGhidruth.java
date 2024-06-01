@@ -3,9 +3,6 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.GhidruthAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.PartRotationUpdatePacket;
-import com.min01.beyondtheabyss.network.PartRotationUpdatePacket.PartRotationType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -20,8 +17,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 
 public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 {
@@ -53,7 +48,7 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 
 		Head.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(337, 280).addBox(-13.0F, -9.009F, -13.0F, 26.0F, 18.0F, 26.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -17.6081F, -85.65F, 0.0F, 0.7854F, 0.0F));
 		
-		Head.addOrReplaceChild("HeadPos", CubeListBuilder.create().texOffs(2, 2).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 10.0F, -80.0F));
+		Head.addOrReplaceChild("HeadPos", CubeListBuilder.create(), PartPose.offset(1.0F, -3.722F, -95.0F));
 		
 		PartDefinition Body = Head.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-23.5F, -27.8851F, -0.2541F, 47.0F, 51.0F, 83.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.722F, -41.5759F));
 
@@ -127,12 +122,16 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		PartDefinition RearBody = Body.addOrReplaceChild("RearBody", CubeListBuilder.create().texOffs(0, 134).addBox(-19.5F, -17.1341F, -3.0242F, 39.0F, 41.0F, 70.0F, new CubeDeformation(0.0F))
 		.texOffs(177, 4).addBox(0.0F, -28.1341F, -0.0242F, 0.0F, 11.0F, 67.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -5.751F, 82.9001F));
 
+		RearBody.addOrReplaceChild("RearBodyPos", CubeListBuilder.create(), PartPose.offset(0.0F, -2.722F, -41.5759F + 82.9001F));
+		
 		RearBody.addOrReplaceChild("cube_r37", CubeListBuilder.create().texOffs(274, 154).mirror().addBox(-55.9111F, -3.5421F, -23.4224F, 50.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, 12.1923F, 57.7432F, 0.2943F, 0.6534F, 0.3822F));
 
 		RearBody.addOrReplaceChild("cube_r38", CubeListBuilder.create().texOffs(274, 154).addBox(5.9111F, -3.5421F, -23.4224F, 50.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 12.1923F, 57.7432F, 0.2943F, -0.6534F, -0.3822F));
 
 		PartDefinition Tail = RearBody.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(171, 199).addBox(-11.8133F, -13.2595F, -10.299F, 23.0F, 28.0F, 47.0F, new CubeDeformation(0.0F)), PartPose.offset(0.3133F, -0.8746F, 67.1947F));
 
+		Tail.addOrReplaceChild("TailPos", CubeListBuilder.create(), PartPose.offset(1.0F, -0.8746F, 57.1947F));
+		
 		Tail.addOrReplaceChild("cube_r39", CubeListBuilder.create().texOffs(0, 245).addBox(-3.5F, -16.8201F, -11.2447F, 7.0F, 114.0F, 25.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.3133F, 0.1052F, 24.69F, 1.4399F, 0.0F, 0.0F));
 
 		Tail.addOrReplaceChild("cube_r40", CubeListBuilder.create().texOffs(64, 245).addBox(-4.5F, -21.2245F, -14.98F, 9.0F, 72.0F, 32.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.3133F, -36.035F, 40.2033F, -0.7854F, 0.0F, 0.0F));
@@ -176,19 +175,10 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.animate(entity.stunAnimationState, GhidruthAnimation.GHIDRUTH_STUNNED, ageInTicks);
 		this.animate(entity.stunLoopAnimationState, GhidruthAnimation.GHIDRUTH_STUN_LOOP, ageInTicks);
 		this.animate(entity.stunEndAnimationState, GhidruthAnimation.GHIDRUTH_STUN_END, ageInTicks);
-		float pi = Mth.PI / 180;
 		ModelPart root2 = this.root.getChild("root2");
 	    ModelPart head = root2.getChild("Head");
-	    ModelPart body = head.getChild("Body");
-	    ModelPart rearBody = body.getChild("RearBody");
-	    ModelPart tail = rearBody.getChild("Tail");
-	    float root2YRot = root2.yRot / pi;
-	    float rearBodyYRot = rearBody.yRot / pi;
-	    float tailYRot = tail.yRot / pi;
 	    head.getChild("right_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
 	    head.getChild("left_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, Vec3.ZERO, new Vec3(0, root2YRot + rearBodyYRot, 0), Vec3.ZERO, PartRotationType.BODY));
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, Vec3.ZERO, Vec3.ZERO, new Vec3(0, root2YRot + tailYRot, 0), PartRotationType.TAIL));
 	}
 
 	@Override

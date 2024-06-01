@@ -3,11 +3,6 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.DeepVampireAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.PartPositionUpdatePacket;
-import com.min01.beyondtheabyss.network.PartPositionUpdatePacket.PartPosType;
-import com.min01.beyondtheabyss.network.PartRotationUpdatePacket;
-import com.min01.beyondtheabyss.network.PartRotationUpdatePacket.PartRotationType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -22,8 +17,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 
 public class ModelDeepVampire extends HierarchicalModel<EntityDeepVampire> 
 {
@@ -70,13 +63,19 @@ public class ModelDeepVampire extends HierarchicalModel<EntityDeepVampire>
 
 		PartDefinition Body = DeepVamp.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 30).addBox(-2.5F, -3.0F, 0.25F, 5.0F, 5.0F, 19.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, 0.0F, -32.25F));
 
+		Body.addOrReplaceChild("BodyPos", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 12.0F));
+
 		PartDefinition Body2 = Body.addOrReplaceChild("Body2", CubeListBuilder.create().texOffs(32, 0).addBox(-2.5F, -3.0F, 0.0F, 5.0F, 5.0F, 18.0F, new CubeDeformation(0.0F))
 		.texOffs(52, 53).addBox(0.0F, -5.0F, 0.0F, 0.0F, 2.0F, 17.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 30).addBox(0.0F, 0.0F, 14.0F, 0.0F, 9.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 19.15F, 0.0F, 0.0F, 0.0F));
 
+		Body2.addOrReplaceChild("TailPos", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 9.0F));
+
 		PartDefinition Tails2 = Body2.addOrReplaceChild("Tails2", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, -2.5F, -1.0F, 3.0F, 4.0F, 25.0F, new CubeDeformation(0.0F))
 		.texOffs(30, 36).addBox(0.0F, -4.5F, 0.0F, 0.0F, 2.0F, 19.0F, new CubeDeformation(0.0F))
 		.texOffs(29, 58).addBox(0.0F, -6.5F, 19.0F, 0.0F, 13.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -0.4F, 18.0F));
+
+		Tails2.addOrReplaceChild("TailEdgePos", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 13.0F));
 
 		Tails2.addOrReplaceChild("TailEdge", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -6.5F, 0.0F, 0.0F, 13.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 28.0F));
 
@@ -107,19 +106,6 @@ public class ModelDeepVampire extends HierarchicalModel<EntityDeepVampire>
 		BTAClientUtil.animateWalk(entity, this, DeepVampireAnimation.DEEP_VAMPIRE_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 		this.animate(entity.biteRightAnimationState, DeepVampireAnimation.DEEP_VAMPIRE_BITE_RIGHT, ageInTicks);
 		this.animate(entity.biteLeftAnimationState, DeepVampireAnimation.DEEP_VAMPIRE_BITE_LEFT, ageInTicks);
-		float pi = Mth.PI / 180;
-		ModelPart root2 = this.root.getChild("DeepVamp");
-	    ModelPart body = root2.getChild("Body");
-	    ModelPart body2 = body.getChild("Body2");
-	    ModelPart tail = body2.getChild("Tails2");
-	    float root2YRot = root2.yRot / pi;
-	    float bodyYRot = body.yRot / pi;
-	    float body2YRot = body2.yRot / pi;
-	    float tailYRot = tail.yRot / pi;
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(entity, Vec3.ZERO, new Vec3(root2.x, 0, 0), Vec3.ZERO, PartPosType.BODY));
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, new Vec3(0, root2YRot + bodyYRot, 0), Vec3.ZERO, Vec3.ZERO, PartRotationType.HEAD));
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, Vec3.ZERO, new Vec3(0, root2YRot + body2YRot, 0), Vec3.ZERO, PartRotationType.BODY));
-	    BTANetwork.sendToAll(new PartRotationUpdatePacket(entity, Vec3.ZERO, Vec3.ZERO, new Vec3(0, root2YRot + tailYRot, 0), PartRotationType.TAIL));
 	}
 	
 	@Override

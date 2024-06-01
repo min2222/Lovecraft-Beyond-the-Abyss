@@ -24,7 +24,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -45,6 +44,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 	public EntityDeepVampire(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.posArray = new Vec3[6];
 		this.xpReward = 2 + this.random.nextInt(8);
 	}
 	
@@ -62,7 +62,6 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     {
     	super.registerGoals();
     	this.goalSelector.addGoal(4, new DeepVampireBiteGoal(this));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<EntityRunicFish>(this, EntityRunicFish.class, false, false));
     }
     
     @Override
@@ -83,29 +82,17 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     }
     
     @Override
-    public void tick() 
-    {
-    	super.tick();
-    	Vec3 tailEdge2Pos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getTailRot().y), 0, -3.9F);
-    	Vec3 tailEdgePos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getTailRot().y), 0, -3.3F);
-    	Vec3 tail2Pos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getBodyRot().y), 0, -2.6F);
-    	Vec3 tailPos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getBodyRot().y), 0, -2F);
-    	Vec3 body2Pos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getHeadRot().y), 0, -1.3F);
-    	Vec3 bodyPos = BTAUtil.getLookPos(this.getXRot(), (float) (this.yHeadRot + this.getHeadRot().y), 0, -0.7F);
-
-        this.setPartPosition(this.tailEdge2, tailEdge2Pos.x + this.getBodyPos().x, tailEdge2Pos.y + 0.2F, tailEdge2Pos.z);
-        this.setPartPosition(this.tailEdge, tailEdgePos.x + this.getBodyPos().x, tailEdgePos.y + 0.2F, tailEdgePos.z);
-        this.setPartPosition(this.tail2, tail2Pos.x + this.getBodyPos().x, tail2Pos.y + 0.2F, tail2Pos.z);
-        this.setPartPosition(this.tail, tailPos.x + this.getBodyPos().x, tailPos.y + 0.2F, tailPos.z);
-        this.setPartPosition(this.body2, body2Pos.x + this.getBodyPos().x, body2Pos.y + 0.2F, body2Pos.z);
-        this.setPartPosition(this.body, bodyPos.x + this.getBodyPos().x, bodyPos.y + 0.2F, bodyPos.z);
-    }
-    
-    @Override
     public void aiStep() 
     {
         super.aiStep();
         BTAUtil.fishFlopping(this);
+
+        this.setPartPosition(this.tailEdge2, this.posArray[5]);
+        this.setPartPosition(this.tailEdge, this.posArray[4]);
+        this.setPartPosition(this.tail2, this.posArray[3]);
+        this.setPartPosition(this.tail, this.posArray[2]);
+        this.setPartPosition(this.body2, this.posArray[1]);
+        this.setPartPosition(this.body, this.posArray[0]);
     }
     
 	@Override

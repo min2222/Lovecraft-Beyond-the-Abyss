@@ -4,15 +4,26 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.PartPositionUpdatePacket;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDeepVampire>
 {
+	public static final String[] BODY = new String[] {"DeepVamp", "Body", "BodyPos"};
+	public static final String[] BODY2 = new String[] {"DeepVamp", "Body", "Body2"};
+	public static final String[] TAIL = new String[] {"DeepVamp", "Body", "Body2", "TailPos"};
+	public static final String[] TAIL2 = new String[] {"DeepVamp", "Body", "Body2", "Tails2"};
+	public static final String[] TAIL_EDGE = new String[] {"DeepVamp", "Body", "Body2", "Tails2", "TailEdgePos"};
+	public static final String[] TAIL_EDGE2 = new String[] {"DeepVamp", "Body", "Body2", "Tails2", "TailEdge"};
 	public DeepVampireRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelDeepVampire(p_174304_.bakeLayer(ModelDeepVampire.LAYER_LOCATION)), 0.5F);
@@ -28,6 +39,24 @@ public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDee
 			p_116227_.translate(0.5F, 0, 0);
 			p_116227_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
 		}
+	}
+	
+	@Override
+	public void render(EntityDeepVampire p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
+	{
+		super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+		Vec3 tailEdge2Pos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, TAIL_EDGE2);
+		Vec3 tailEdgePos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, TAIL_EDGE);
+		Vec3 tail2Pos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, TAIL2);
+		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, TAIL);
+		Vec3 body2Pos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, BODY2);
+		Vec3 bodyPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, BODY);
+	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailEdge2Pos, 5));
+	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailEdgePos, 4));
+	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tail2Pos, 3));
+	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailPos, 2));
+	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, body2Pos, 1));
+	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, bodyPos, 0));
 	}
 
 	@Override

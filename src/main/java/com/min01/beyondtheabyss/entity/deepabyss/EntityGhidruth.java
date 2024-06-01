@@ -30,7 +30,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -65,6 +64,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
 		super(p_33002_, p_33003_);
+		this.posArray = new Vec3[3];
 		this.xpReward = 1000 + this.random.nextInt(100);
 	}
 	
@@ -99,8 +99,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
         this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
         this.goalSelector.addGoal(4, new GhidruthDashPrepareGoal(this));
         this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<EntityRunicFish>(this, EntityRunicFish.class, false, false));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<EntityDeepVampire>(this, EntityDeepVampire.class, false, false));
     }
     
     @Override
@@ -213,13 +211,9 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     {
     	super.tick();
     	
-    	Vec3 tailPos = BTAUtil.getLookPos(this.getXRot(), (float) (this.getYHeadRot() + this.getTailRot().y), 0.5F, -11);
-    	Vec3 bodyPos = BTAUtil.getLookPos(this.getXRot(), (float) (this.getYHeadRot() + this.getBodyRot().y), 0.5F, -6);
-    	Vec3 headPos = BTAUtil.getLookPos(this.getXRot(), this.getYHeadRot(), 0, 5);
-    	
-        this.setPartPosition(this.tail, tailPos.x, tailPos.y, tailPos.z);
-        this.setPartPosition(this.body, bodyPos.x, bodyPos.y, bodyPos.z);
-        this.setPartPosition(this.head, headPos.x, headPos.y, headPos.z);
+        this.setPartPosition(this.tail, this.posArray[2]);
+        this.setPartPosition(this.body, this.posArray[1]);
+        this.setPartPosition(this.head, this.posArray[0]);
 
         if(this.isDash())
         {

@@ -62,29 +62,29 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob
     {
     	super.tick();
 
-    	Vec3 tail4Pos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -4.5F);
-    	Vec3 tail3Pos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -3.5F);
-    	Vec3 tail2Pos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -2.5F);
-    	Vec3 tailPos = BTAUtil.getLookPos((float) (this.getXRot() + this.getTailRot().x), this.yHeadRot, 0, -1.5F);
+    	Vec3 tail4Pos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot, 0, -4.5F);
+    	Vec3 tail3Pos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot, 0, -3.5F);
+    	Vec3 tail2Pos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot, 0, -2.5F);
+    	Vec3 tailPos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot, 0, -1.5F);
     	
-    	Vec3 finRightPos = BTAUtil.getLookPos((float) (this.getXRot() + this.getBodyRot().x), this.yHeadRot - 90, 0, 1.8F);
-    	Vec3 finRight2Pos1 = BTAUtil.getLookPos((float) (this.getXRot() + this.getBodyRot().x), this.yHeadRot - 90, 0, 1.0F);
-    	Vec3 finRight2Pos2 = BTAUtil.getLookPos((float) (this.getXRot() + this.getBodyRot().x), this.yHeadRot - 180, 0, 1.2F);
+    	Vec3 finRightPos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot - 90, 0, 1.8F);
+    	Vec3 finRight2Pos1 = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot - 90, 0, 1.0F);
+    	Vec3 finRight2Pos2 = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot - 180, 0, 1.2F);
     	Vec3 finRight2Pos = finRight2Pos1.add(finRight2Pos2);
-    	Vec3 finLeftPos = BTAUtil.getLookPos((float) (this.getXRot() + this.getBodyRot().x), this.yHeadRot + 90, 0, 1.8F);
-    	Vec3 finLeft2Pos1 = BTAUtil.getLookPos((float) (this.getXRot() + this.getBodyRot().x), this.yHeadRot + 90, 0, 1.0F);
-    	Vec3 finLeft2Pos2 = BTAUtil.getLookPos((float) (this.getXRot() + this.getBodyRot().x), this.yHeadRot + 180, 0, 1.2F);
+    	Vec3 finLeftPos = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + 90, 0, 1.8F);
+    	Vec3 finLeft2Pos1 = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + 90, 0, 1.0F);
+    	Vec3 finLeft2Pos2 = BTAUtil.getLookPos(this.getXRot(), this.yHeadRot + 180, 0, 1.2F);
     	Vec3 finLeft2Pos = finLeft2Pos1.add(finLeft2Pos2);
 
-        this.setPartPosition(this.tail4, tail4Pos.x, tail4Pos.y + this.getTailPos().y, tail4Pos.z);
-        this.setPartPosition(this.tail3, tail3Pos.x, tail3Pos.y + this.getTailPos().y, tail3Pos.z);
-        this.setPartPosition(this.tail2, tail2Pos.x, tail2Pos.y + this.getTailPos().y, tail2Pos.z);
-        this.setPartPosition(this.tail1, tailPos.x, tailPos.y + this.getTailPos().y, tailPos.z);
+        this.setPartPosition(this.tail4, this.getX() + tail4Pos.x, this.getY() + tail4Pos.y, this.getZ() + tail4Pos.z);
+        this.setPartPosition(this.tail3, this.getX() + tail3Pos.x, this.getY() + tail3Pos.y, this.getZ() + tail3Pos.z);
+        this.setPartPosition(this.tail2, this.getX() + tail2Pos.x, this.getY() + tail2Pos.y, this.getZ() + tail2Pos.z);
+        this.setPartPosition(this.tail1, this.getX() + tailPos.x, this.getY() + tailPos.y, this.getZ() + tailPos.z);
 
-        this.setPartPosition(this.finLeft2, finLeft2Pos.x, finLeft2Pos.y + 0.4F + this.getBodyPos().y, finLeft2Pos.z);
-        this.setPartPosition(this.finLeft, finLeftPos.x, finLeftPos.y + 0.4F + this.getBodyPos().y, finLeftPos.z);
-        this.setPartPosition(this.finRight2, finRight2Pos.x, finRight2Pos.y + 0.4F + this.getBodyPos().y, finRight2Pos.z);
-        this.setPartPosition(this.finRight, finRightPos.x, finRightPos.y + 0.4F + this.getBodyPos().y, finRightPos.z);
+        this.setPartPosition(this.finLeft2, this.getX() + finLeft2Pos.x, this.getY() + finLeft2Pos.y + 0.4F, this.getZ() + finLeft2Pos.z);
+        this.setPartPosition(this.finLeft, this.getX() + finLeftPos.x, this.getY() + finLeftPos.y + 0.4F, this.getZ() + finLeftPos.z);
+        this.setPartPosition(this.finRight2, this.getX() + finRight2Pos.x, this.getY() + finRight2Pos.y + 0.4F, this.getZ() + finRight2Pos.z);
+        this.setPartPosition(this.finRight, this.getX() + finRightPos.x, this.getY() + finRightPos.y + 0.4F, this.getZ() + finRightPos.z);
     }
 
 	@Override
