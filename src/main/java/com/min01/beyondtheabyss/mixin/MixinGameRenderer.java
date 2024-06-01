@@ -21,26 +21,23 @@ public class MixinGameRenderer
 	{
 		if(p_109109_.level.dimension().location().getPath().equals("deep_abyss"))
 		{
-			if(p_109109_.isInWater())
-			{
-	        	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
-	        	{
-	    			cir.setReturnValue(0.07F);
-	        	}
-	        	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
-	        	{
-	    			cir.setReturnValue(0.1F);
-	        	}
-	        	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get())
-	        	{
-	    			cir.setReturnValue(0.3F);
-	        	}
-	        	
-	        	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).isEmpty() || !p_109109_.getItemBySlot(EquipmentSlot.HEAD).is(BTATags.BTAItems.DIVING_SET))
-	        	{
-	    			cir.setReturnValue(0.05F);
-	        	}
-			}
+        	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
+        	{
+    			cir.setReturnValue(0.1F);
+        	}
+        	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
+        	{
+    			cir.setReturnValue(0.5F);
+        	}
+        	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get())
+        	{
+    			cir.setReturnValue(1.0F);
+        	}
+        	
+        	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).isEmpty() || !p_109109_.getItemBySlot(EquipmentSlot.HEAD).is(BTATags.BTAItems.DIVING_SET))
+        	{
+    			cir.setReturnValue(0.05F);
+        	}
         	
         	if(BTAUtil.isInsideSubmarine(p_109109_))
         	{

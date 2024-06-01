@@ -425,37 +425,6 @@
 		"type": "minecraft:sequence",
 		"sequence": [
 			{
-				"type": "minecraft:sequence",
-				"sequence": [
-					{
-						"type": "minecraft:condition",
-						"if_true": {
-							"type": "minecraft:biome",
-							"biome_is": [
-								"beyondtheabyss:death_valley"
-							]
-						},
-						"then_run": {
-							"type": "minecraft:condition",
-							"if_true": {
-								"type": "minecraft:y_above",
-								"anchor": {
-									"absolute": -335
-								},
-								"surface_depth_multiplier": 2,
-								"add_stone_depth": false
-							},
-							"then_run": {
-								"type": "minecraft:block",
-								"result_state": {
-									"Name": "minecraft:bone_block"
-								}
-							}
-						}
-					}
-				]
-			},
-			{
 				"type": "minecraft:condition",
 				"if_true": {
 					"type": "minecraft:vertical_gradient",
@@ -489,10 +458,7 @@
 				"then_run": {
 					"type": "minecraft:block",
 					"result_state": {
-						"Name": "beyondtheabyss:deep_abyssalith",
-						"Properties": {
-							"axis": "y"
-						}
+						"Name": "beyondtheabyss:deep_abyssalith"
 					}
 				}
 			}

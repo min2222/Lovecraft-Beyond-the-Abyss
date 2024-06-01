@@ -9,10 +9,7 @@
 				{
 					"biome": "beyondtheabyss:deep_abyss",
 					"parameters": {
-						"temperature": [
-							-0.15,
-							0.2
-						],
+						"temperature": 0,
 						"humidity": [
 							-1,
 							1
@@ -36,25 +33,22 @@
 				{
 					"biome": "beyondtheabyss:death_valley",
 					"parameters": {
-						"temperature": [
-							-0.45,
-							0.2
-						],
+						"temperature": 0,
 						"humidity": [
 							-1,
 							1
 						],
 						"continentalness": [
-							-0.11,
-							1
+							-1.05,
+							0.455
 						],
 						"erosion": [
-							0.55,
-							1
+							-1,
+							-0.78
 						],
 						"weirdness": [
 							-1,
-							-0.9333
+							-0.85
 						],
 						"depth": 0,
 						"offset": 0
