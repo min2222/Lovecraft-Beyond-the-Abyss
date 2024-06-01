@@ -8,10 +8,11 @@ import net.minecraft.world.phys.shapes.ArrayVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 
 @Mixin(ArrayVoxelShape.class)
-public interface MixinArrayVoxelShape {
-
+public interface MixinArrayVoxelShape
+{
     @Invoker(value = "<init>")
-    static ArrayVoxelShape init(final DiscreteVoxelShape shape, final DoubleList xPoints, final DoubleList yPoints, final DoubleList zPoints) {
+    static ArrayVoxelShape init(DiscreteVoxelShape shape, DoubleList xPoints, DoubleList yPoints, DoubleList zPoints)
+    {
         throw new AssertionError();
     }
 }

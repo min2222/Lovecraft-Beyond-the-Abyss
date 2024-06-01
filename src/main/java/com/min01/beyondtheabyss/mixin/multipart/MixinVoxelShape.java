@@ -15,9 +15,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class MixinVoxelShape
 {
     @Inject(method = "collide", at = @At("HEAD"), cancellable = true)
-    private void hook(final Direction.Axis axis, final AABB box, final double maxDist, final CallbackInfoReturnable<Double> cir)
+    private void collide(Direction.Axis axis, AABB box, double maxDist, CallbackInfoReturnable<Double> cir)
     {
-        if (box instanceof CompoundOrientedBox ob)
+        if(box instanceof CompoundOrientedBox ob)
         {
             cir.setReturnValue(ob.calculateMaxDistance(axis, VoxelShape.class.cast(this), maxDist));
         }

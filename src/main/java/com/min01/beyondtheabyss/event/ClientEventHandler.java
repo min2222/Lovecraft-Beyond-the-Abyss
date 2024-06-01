@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
+import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
 import com.min01.beyondtheabyss.blockentity.renderer.BTABlockEntityRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
@@ -86,7 +86,7 @@ public class ClientEventHandler
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        BlockEntityRenderers.register(BTABlocks.ALTAR_OF_DEEP_BLOCK_ENTITY.get(), BTABlockEntityRenderer::new);
+        BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), BTABlockEntityRenderer::new);
         ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
@@ -180,7 +180,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthDiverSet.LAYER_LOCATION, ModelGhidruthDiverSet::createBodyLayer);
     	
-    	event.registerLayerDefinition(ModelAltarOfDeep.LAYER_LOCATION, ModelAltarOfDeep::createBodyLayer);
+    	event.registerLayerDefinition(ModelRiftwellingAltar.LAYER_LOCATION, ModelRiftwellingAltar::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);

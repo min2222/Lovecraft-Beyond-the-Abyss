@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
 import com.min01.beyondtheabyss.event.ClientEventHandler;
 
 import net.minecraft.client.Minecraft;
@@ -60,7 +60,7 @@ public class AltarItemSyncPacket
     {
 		Level level = ClientEventHandler.MC.level;
 		Entity entity = level.getEntity(packet.entityId);
-		if(entity.level.getBlockEntity(packet.pos) instanceof BlockEntityAltarOfDeep altar)
+		if(entity.level.getBlockEntity(packet.pos) instanceof BlockEntityRiftwellingAltar altar)
 		{
 			altar.setItem(packet.stack);
 		}

@@ -57,7 +57,7 @@ public class DeepAbyssTabs
 		@Override
 		public ItemStack makeIcon()
 		{
-			return new ItemStack(BTAItems.DEPTHSTONE.get());
+			return new ItemStack(BTAItems.ABYSSALITH.get());
 		}
 	};
 	

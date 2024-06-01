@@ -17,16 +17,19 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(EntityRenderDispatcher.class)
-public class MixinEntityRenderDispatcher {
-
+public class MixinEntityRenderDispatcher
+{
     @Inject(method = "renderHitbox", at = @At("RETURN"))
-    private static void drawOrientedBoxes(PoseStack matrix, VertexConsumer vertices, Entity entity, float tickDelta, CallbackInfo ci) {
-        final AABB box = entity.getBoundingBox();
-        if (box instanceof final CompoundOrientedBox compoundOrientedBox) {
+    private static void drawOrientedBoxes(PoseStack matrix, VertexConsumer vertices, Entity entity, float tickDelta, CallbackInfo ci) 
+    {
+        AABB box = entity.getBoundingBox();
+        if(box instanceof final CompoundOrientedBox compoundOrientedBox)
+        {
             matrix.pushPose();
             matrix.translate(-entity.getX(), -entity.getY(), -entity.getZ());
 
-            for (final OrientedBox orientedBox : compoundOrientedBox) {
+            for(final OrientedBox orientedBox : compoundOrientedBox) 
+            {
                 matrix.pushPose();
                 final Vec3 center = orientedBox.getCenter();
                 matrix.translate(center.x, center.y, center.z);

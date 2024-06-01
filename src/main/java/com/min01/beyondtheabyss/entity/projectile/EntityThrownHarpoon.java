@@ -34,8 +34,10 @@ public class EntityThrownHarpoon extends AbstractArrow
 	   
 	private ItemStack item = new ItemStack(BTAItems.RUSTY_HARPOON.get());
 	private boolean dealtDamage;
+	
 	@Nullable
 	private IntOpenHashSet piercingIgnoreEntityIds;
+	
 	@Nullable
 	private List<Entity> piercedAndKilledEntities;
 	
@@ -62,12 +64,12 @@ public class EntityThrownHarpoon extends AbstractArrow
 	
 	private void resetPiercedEntities() 
 	{
-		if (this.piercedAndKilledEntities != null) 
+		if(this.piercedAndKilledEntities != null) 
 		{
 			this.piercedAndKilledEntities.clear();
 		}
 
-		if (this.piercingIgnoreEntityIds != null) 
+		if(this.piercingIgnoreEntityIds != null) 
 		{
 			this.piercingIgnoreEntityIds.clear();
 		}
@@ -85,11 +87,11 @@ public class EntityThrownHarpoon extends AbstractArrow
 		Entity entity = this.getOwner();
 		if(entity != null && (this.dealtDamage || this.isNoPhysics()))
 		{
-			int i = !this.isReinforced() ? 2 : 5;
+			float i = !this.isReinforced() ? 1.5F : 2.5F;
 			this.setNoPhysics(true);
             Vec3 vec3 = entity.getEyePosition().subtract(this.position());
             this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D * (double)i, this.getZ());
-            if (this.level.isClientSide)
+            if(this.level.isClientSide)
             {
             	this.yOld = this.getY();
             }
@@ -119,8 +121,8 @@ public class EntityThrownHarpoon extends AbstractArrow
 	{
 		Entity entity = p_36757_.getEntity();
 		
-		float f = !this.isReinforced() ? 8.0F : 15.0F;
-		if (entity instanceof LivingEntity livingentity) 
+		float f = !this.isReinforced() ? 6.0F : 8.0F;
+		if(entity instanceof LivingEntity livingentity) 
 		{
 			f += EnchantmentHelper.getDamageBonus(this.item, livingentity.getMobType());
 		}
@@ -135,17 +137,17 @@ public class EntityThrownHarpoon extends AbstractArrow
 		else
 		{
 			int maxPierceCount = 15;
-			if (this.piercingIgnoreEntityIds == null) 
+			if(this.piercingIgnoreEntityIds == null) 
 			{
 				this.piercingIgnoreEntityIds = new IntOpenHashSet(maxPierceCount);
 			}
 
-			if (this.piercedAndKilledEntities == null) 
+			if(this.piercedAndKilledEntities == null) 
 			{
 				this.piercedAndKilledEntities = Lists.newArrayListWithCapacity(maxPierceCount);
 			}
 
-			if (this.piercingIgnoreEntityIds.size() >= maxPierceCount + 1) 
+			if(this.piercingIgnoreEntityIds.size() >= maxPierceCount + 1) 
 			{
 				this.dealtDamage = true;
 				return;
@@ -153,18 +155,18 @@ public class EntityThrownHarpoon extends AbstractArrow
 
 			this.piercingIgnoreEntityIds.add(entity.getId());
 		}
-		if (entity.hurt(damagesource, f))
+		if(entity.hurt(damagesource, f))
 		{
 			this.playSound(SoundEvents.TRIDENT_HIT);
-			if (entity.getType() == EntityType.ENDERMAN)
+			if(entity.getType() == EntityType.ENDERMAN)
 			{
 				return;
 			}
 
-			if (entity instanceof LivingEntity)
+			if(entity instanceof LivingEntity)
 			{
 				LivingEntity livingentity1 = (LivingEntity)entity;
-				if (entity1 instanceof LivingEntity)
+				if(entity1 instanceof LivingEntity)
 				{
 					EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
 					EnchantmentHelper.doPostDamageEffects((LivingEntity)entity1, livingentity1);
@@ -172,7 +174,7 @@ public class EntityThrownHarpoon extends AbstractArrow
 
 				this.doPostHurtEffects(livingentity1);
 				
-				if (!entity.isAlive() && this.piercedAndKilledEntities != null) 
+				if(!entity.isAlive() && this.piercedAndKilledEntities != null) 
 	            {
 					this.piercedAndKilledEntities.add(livingentity1);
 	            }
@@ -215,7 +217,7 @@ public class EntityThrownHarpoon extends AbstractArrow
 	public void readAdditionalSaveData(CompoundTag p_37578_) 
 	{
 		super.readAdditionalSaveData(p_37578_);
-		if (p_37578_.contains("Harpoon", 10))
+		if(p_37578_.contains("Harpoon", 10))
 		{
 			this.item = ItemStack.of(p_37578_.getCompound("Harpoon"));
 		}

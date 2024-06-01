@@ -1,6 +1,7 @@
 {
-  "replace": false,
-  "values": [
-    "beyondtheabyss:depthstone"
-  ]
+	"replace": false,
+	"values": [
+		"beyondtheabyss:deep_abyssalith",
+		"beyondtheabyss:abyssalith"
+	]
 }

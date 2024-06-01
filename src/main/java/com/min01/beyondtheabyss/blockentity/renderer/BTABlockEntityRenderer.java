@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.blockentity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.block.model.ModelAltarOfDeep;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
+import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
 import com.min01.beyondtheabyss.event.ClientEventHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -22,20 +22,20 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BTABlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T>
 {
-    private static final ResourceLocation ALTAR_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/altar_of_deep.png");
-    private static final ResourceLocation ALTAR_LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/altar_of_deep_layer.png");
+    private static final ResourceLocation ALTAR_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar.png");
+    private static final ResourceLocation ALTAR_LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar_layer.png");
     
-	private final ModelAltarOfDeep altarModel;
+	private final ModelRiftwellingAltar altarModel;
 	
 	public BTABlockEntityRenderer(BlockEntityRendererProvider.Context p_172550_)
 	{
-		this.altarModel = new ModelAltarOfDeep(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAltarOfDeep.LAYER_LOCATION));
+		this.altarModel = new ModelRiftwellingAltar(Minecraft.getInstance().getEntityModels().bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
 	}
 
 	@Override
 	public void render(T p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
 	{
-		if(p_112307_ instanceof BlockEntityAltarOfDeep altar)
+		if(p_112307_ instanceof BlockEntityRiftwellingAltar altar)
 		{
 			p_112309_.pushPose();
 			p_112309_.translate(0.5D, 0.5D, 0.5D);

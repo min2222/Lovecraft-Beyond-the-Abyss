@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.block;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.block.deepabyss.BlockAltarOfDeep;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
+import com.min01.beyondtheabyss.block.deepabyss.BlockRiftwellingAltar;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -20,8 +20,9 @@ public class BTABlocks
 
     public static final RegistryObject<Block> BTA_LIGHT = BLOCKS.register("bta_light", () -> new BTALightBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0F, 3600000.8F).noLootTable().noOcclusion().lightLevel(BTALightBlock.LIGHT_EMISSION)));
     
-    public static final RegistryObject<Block> ALTAR_OF_DEEP = BLOCKS.register("altar_of_deep", () -> new BlockAltarOfDeep());
-    public static final RegistryObject<Block> DEPTHSTONE = BLOCKS.register("depthstone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)));
+    public static final RegistryObject<Block> RIFTWELLING_ALTAR = BLOCKS.register("riftwelling_altar", () -> new BlockRiftwellingAltar());
+    public static final RegistryObject<Block> ABYSSALITH = BLOCKS.register("abyssalith", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+    public static final RegistryObject<Block> DEEP_ABYSSALITH = BLOCKS.register("deep_abyssalith", () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)));
     
-    public static final RegistryObject<BlockEntityType<BlockEntityAltarOfDeep>> ALTAR_OF_DEEP_BLOCK_ENTITY = BLOCK_ENTITIES.register("altar_of_deep", () -> BlockEntityType.Builder.of(BlockEntityAltarOfDeep::new, BTABlocks.ALTAR_OF_DEEP.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockEntityRiftwellingAltar>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(BlockEntityRiftwellingAltar::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
 }

@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.armor.ItemAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.armor.ItemDiverSet;
@@ -99,7 +99,7 @@ public class BTAItems
 	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
 	
 	//blocks
-	public static final RegistryObject<Item> ALTAR_OF_DEEP = ITEMS.register("altar_of_deep", () -> new BlockItem(BTABlocks.ALTAR_OF_DEEP.get(), new Item.Properties().tab(DeepAbyssTabs.ABYSS_BLOCKS).rarity(RARITY_ABYSS))
+	public static final RegistryObject<Item> RIFTWELLING_ALTAR = ITEMS.register("riftwelling_altar", () -> new BlockItem(BTABlocks.RIFTWELLING_ALTAR.get(), new Item.Properties().tab(DeepAbyssTabs.ABYSS_BLOCKS).rarity(RARITY_ABYSS))
 	{
 		@Override
 		public void initializeClient(Consumer<IClientItemExtensions> consumer) 
@@ -109,13 +109,14 @@ public class BTAItems
 				@Override
 				public BlockEntityWithoutLevelRenderer getCustomRenderer() 
 				{
-					return new BTABlockEntityItemRenderer(new BlockEntityAltarOfDeep(BlockPos.ZERO, BTABlocks.ALTAR_OF_DEEP.get().defaultBlockState()), Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+					return new BTABlockEntityItemRenderer(new BlockEntityRiftwellingAltar(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
 				};
 			});
 		};
 	});
 	
-	public static final RegistryObject<Item> DEPTHSTONE = registerBlockItem("depthstone", () -> BTABlocks.DEPTHSTONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> DEEP_ABYSSALITH = registerBlockItem("deep_abyssalith", () -> BTABlocks.DEEP_ABYSSALITH.get(), new Item.Properties());
+	public static final RegistryObject<Item> ABYSSALITH = registerBlockItem("abyssalith", () -> BTABlocks.ABYSSALITH.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{

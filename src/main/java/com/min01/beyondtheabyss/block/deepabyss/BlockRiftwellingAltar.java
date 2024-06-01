@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.block.deepabyss;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityAltarOfDeep;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
 import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
 
@@ -33,10 +33,10 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.PacketDistributor;
 
-public class BlockAltarOfDeep extends BaseEntityBlock implements SimpleWaterloggedBlock
+public class BlockRiftwellingAltar extends BaseEntityBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public BlockAltarOfDeep() 
+	public BlockRiftwellingAltar() 
 	{
 		super(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn((p_61031_, p_61032_, p_61033_, p_61034_) -> false).noOcclusion());
 	}
@@ -50,7 +50,7 @@ public class BlockAltarOfDeep extends BaseEntityBlock implements SimpleWaterlogg
 	@Override
 	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_)
 	{
-		return new BlockEntityAltarOfDeep(p_153215_, p_153216_);
+		return new BlockEntityRiftwellingAltar(p_153215_, p_153216_);
 	}
 	
 	@Override
@@ -58,12 +58,12 @@ public class BlockAltarOfDeep extends BaseEntityBlock implements SimpleWaterlogg
 	{
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
-		if(!(blockEntity instanceof BlockEntityAltarOfDeep) || player.isShiftKeyDown())
+		if(!(blockEntity instanceof BlockEntityRiftwellingAltar) || player.isShiftKeyDown())
 		{
 			return InteractionResult.FAIL;
 		}
 
-		ItemStack currentStack = ((BlockEntityAltarOfDeep) blockEntity).getItem();
+		ItemStack currentStack = ((BlockEntityRiftwellingAltar) blockEntity).getItem();
 		ItemStack toInsert = player.getItemInHand(hand);
 
 		if(currentStack.isEmpty())
@@ -71,7 +71,7 @@ public class BlockAltarOfDeep extends BaseEntityBlock implements SimpleWaterlogg
 			ItemStack stack = toInsert.copy();
 			stack.setCount(1);
 			
-			((BlockEntityAltarOfDeep) blockEntity).setItem(stack);
+			((BlockEntityRiftwellingAltar) blockEntity).setItem(stack);
 			
 			if(!world.isClientSide)
 			{
@@ -97,7 +97,7 @@ public class BlockAltarOfDeep extends BaseEntityBlock implements SimpleWaterlogg
 				}
 			}
 
-			((BlockEntityAltarOfDeep)blockEntity).setItem(ItemStack.EMPTY);
+			((BlockEntityRiftwellingAltar)blockEntity).setItem(ItemStack.EMPTY);
 		}
 		return InteractionResult.SUCCESS;
 	}
@@ -106,13 +106,13 @@ public class BlockAltarOfDeep extends BaseEntityBlock implements SimpleWaterlogg
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153273_, BlockState p_153274_, BlockEntityType<T> p_153275_)
     {
-        return createTicker(p_153273_, p_153275_, BTABlocks.ALTAR_OF_DEEP_BLOCK_ENTITY.get());
+        return createTicker(p_153273_, p_153275_, BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get());
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<BlockEntityAltarOfDeep> p_151990_)
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<BlockEntityRiftwellingAltar> p_151990_)
     {
-        return createTickerHelper(p_151989_, p_151990_, BlockEntityAltarOfDeep::update);
+        return createTickerHelper(p_151989_, p_151990_, BlockEntityRiftwellingAltar::update);
     }
     
     @Override

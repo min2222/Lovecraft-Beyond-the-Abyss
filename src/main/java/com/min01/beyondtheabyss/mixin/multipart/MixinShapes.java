@@ -15,9 +15,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class MixinShapes
 {
     @Inject(method = "create(Lnet/minecraft/world/phys/AABB;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("HEAD"), cancellable = true)
-    private static void hook(final AABB box, final CallbackInfoReturnable<VoxelShape> cir) 
+    private static void create(AABB box, CallbackInfoReturnable<VoxelShape> cir) 
     {
-        if (box instanceof CompoundOrientedBox ob)
+        if(box instanceof CompoundOrientedBox ob)
         {
             cir.setReturnValue(ob.toVoxelShape());
         }
