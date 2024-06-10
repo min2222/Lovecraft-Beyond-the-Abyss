@@ -30,41 +30,6 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
 {
-	public static void handleSubmarineCollision(Entity entity)
-	{
-		if(!(entity instanceof EntitySubmarine) && !(entity instanceof SubmarinePart))
-		{
-			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox());
-			List<SubmarinePart> partList = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F));
-			List<SubmarinePart> hatchList = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F));
-			partList.removeIf(t -> t.type != SubmarinePartType.COLLIDER);
-			hatchList.removeIf(t -> t.type != SubmarinePartType.HATCH);
-			
-			if(!list.isEmpty())
-			{
-				if(!entity.isOnGround())
-				{
-		            if(entity.getDeltaMovement().y < 0) 
-		            {
-		            	entity.setDeltaMovement(entity.getDeltaMovement().x, -0.08F, entity.getDeltaMovement().z);
-		            	entity.setPos(entity.position().add(entity.getDeltaMovement().reverse()));
-		            	entity.hasImpulse = true;
-		            }
-		            entity.fallDistance = 0.0F;
-		            entity.setOnGround(true);
-				}
-			}
-			
-			partList.forEach(t -> 
-			{
-				if(!BTAUtil.isInsideSubmarine(entity) && hatchList.isEmpty())
-				{
-					t.push(entity);
-				}
-			});
-		}
-	}
-	
 	public static boolean isInsideSubmarine(Entity entity)
 	{
 		if(!(entity instanceof EntitySubmarine) && !(entity instanceof SubmarinePart))

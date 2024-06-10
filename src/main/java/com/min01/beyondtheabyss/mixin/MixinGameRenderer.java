@@ -27,11 +27,11 @@ public class MixinGameRenderer
         	}
         	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
         	{
-    			cir.setReturnValue(0.5F);
+    			cir.setReturnValue(0.3F);
         	}
         	else if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get())
         	{
-    			cir.setReturnValue(1.0F);
+    			cir.setReturnValue(0.5F);
         	}
         	
         	if(p_109109_.getItemBySlot(EquipmentSlot.HEAD).isEmpty() || !p_109109_.getItemBySlot(EquipmentSlot.HEAD).is(BTATags.BTAItems.DIVING_SET))

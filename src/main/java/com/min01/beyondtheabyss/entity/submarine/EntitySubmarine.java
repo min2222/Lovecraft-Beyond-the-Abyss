@@ -52,6 +52,8 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
     public float brightnessOld;
     public int glowingTicks;
     
+    public Vec3[] posArray = new Vec3[12];
+    
 	public EntitySubmarine(EntityType<? extends LivingEntity> p_19870_, Level p_19871_)
 	{
 		super(p_19870_, p_19871_);
@@ -136,61 +138,73 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	@Override
 	public void positionRider(Entity p_20312_) 
 	{
-    	Vec3 seatForwardPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, 1.2F);
-    	Vec3 seatBackwardPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, -0.6F);
-        
 		if(this.getControllingPlayer() != null)
 		{
-	    	Vec3 controllerPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, 2.2F);
-	    	this.getControllingPlayer().setPos(this.position().add(0, 1.4F, 0).add(controllerPos));
+			if(this.posArray[0] != null)
+			{
+		    	this.getControllingPlayer().setPos(this.posArray[0]);
+			}
 	    	
 	    	if(this.getControllingPlayer().isShiftKeyDown())
 	    	{
 	    		this.getControllingPlayer().stopRiding();
+	    		this.removeSeatPlayer(0);
 	    	}
 		}
 		
 		if(this.getSeat1Player() != null)
 		{
-	    	Vec3 seat1Pos = seatForwardPos.add(BTAUtil.getLookPos(this.getXRot(), this.getYRot() - 90, 0, 0.8F));
-	    	this.getSeat1Player().setPos(this.position().add(0, 1.4F, 0).add(seat1Pos));
+			if(this.posArray[1] != null)
+			{
+		    	this.getSeat1Player().setPos(this.posArray[1]);
+			}
 	    	
 	    	if(this.getSeat1Player().isShiftKeyDown())
 	    	{
 	    		this.getSeat1Player().stopRiding();
+	    		this.removeSeatPlayer(1);
 	    	}
 		}
 		
 		if(this.getSeat2Player() != null)
 		{
-	    	Vec3 seat2Pos = seatForwardPos.add(BTAUtil.getLookPos(this.getXRot(), this.getYRot() + 90, 0, 0.8F));
-	    	this.getSeat2Player().setPos(this.position().add(0, 1.4F, 0).add(seat2Pos));
+			if(this.posArray[2] != null)
+			{
+		    	this.getSeat2Player().setPos(this.posArray[2]);
+			}
 	    	
 	    	if(this.getSeat2Player().isShiftKeyDown())
 	    	{
 	    		this.getSeat2Player().stopRiding();
+	    		this.removeSeatPlayer(2);
 	    	}
 		}
 		
 		if(this.getSeat3Player() != null)
 		{
-	    	Vec3 seat3Pos = seatBackwardPos.add(BTAUtil.getLookPos(this.getXRot(), this.getYRot() - 90, 0, 0.8F));
-	    	this.getSeat3Player().setPos(this.position().add(0, 1.4F, 0).add(seat3Pos));
+			if(this.posArray[3] != null)
+			{
+		    	this.getSeat3Player().setPos(this.posArray[3]);
+			}
 	    	
 	    	if(this.getSeat3Player().isShiftKeyDown())
 	    	{
 	    		this.getSeat3Player().stopRiding();
+	    		this.removeSeatPlayer(3);
 	    	}
 		}
 		
 		if(this.getSeat4Player() != null)
 		{
-	    	Vec3 seat4Pos = seatBackwardPos.add(BTAUtil.getLookPos(this.getXRot(), this.getYRot() + 90, 0, 0.8F));
-	    	this.getSeat4Player().setPos(this.position().add(0, 1.4F, 0).add(seat4Pos));
+			if(this.posArray[4] != null)
+			{
+		    	this.getSeat4Player().setPos(this.posArray[4]);
+			}
 	    	
 	    	if(this.getSeat4Player().isShiftKeyDown())
 	    	{
 	    		this.getSeat4Player().stopRiding();
+	    		this.removeSeatPlayer(4);
 	    	}
 		}
 	}
@@ -338,31 +352,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
                 }
             }*/
     	}
-        
-		if(this.getControllingPlayer() != null && !this.hasPassenger(this.getControllingPlayer()))
-		{
-			this.removeSeatPlayer(0);
-		}
-		
-		if(this.getSeat1Player() != null && !this.hasPassenger(this.getSeat1Player()))
-		{
-			this.removeSeatPlayer(1);
-		}
-		
-		if(this.getSeat2Player() != null && !this.hasPassenger(this.getSeat2Player()))
-		{
-			this.removeSeatPlayer(2);
-		}
-		
-		if(this.getSeat3Player() != null && !this.hasPassenger(this.getSeat3Player()))
-		{
-			this.removeSeatPlayer(3);
-		}
-		
-		if(this.getSeat4Player() != null && !this.hasPassenger(this.getSeat4Player()))
-		{
-			this.removeSeatPlayer(4);
-		}
     }
     
     @Override
@@ -398,12 +387,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
     protected void pushEntities()
     {
     	
-    }
-    
-    @Override
-    public boolean canBeCollidedWith() 
-    {
-    	return true;
     }
     
     @Override

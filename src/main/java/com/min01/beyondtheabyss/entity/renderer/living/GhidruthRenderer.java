@@ -45,6 +45,9 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), TAIL);
 		Vec3 bodyPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), BODY);
 		Vec3 headPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), HEAD);
+		p_115455_.posArray[2] = tailPos;
+		p_115455_.posArray[1] = bodyPos;
+		p_115455_.posArray[0] = headPos;
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailPos, 2));
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, bodyPos, 1));
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, headPos, 0));

@@ -87,4 +87,10 @@ public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implem
 		}
 		return MultipartAwareEntity.super.interact(entity, hand, part);
 	}
+	
+	@Override
+	public boolean canBeCollidedWith() 
+	{
+		return this.type == SubmarinePartType.COLLIDER;
+	}
 }

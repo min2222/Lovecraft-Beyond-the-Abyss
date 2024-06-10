@@ -7,9 +7,7 @@ import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,8 +20,6 @@ import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.event.TickEvent.LevelTickEvent;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -34,32 +30,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, bus = Bus.FORGE)
 public class EventHandlerForge 
 {
-	@SubscribeEvent
-	public static void onLevelTick(LevelTickEvent event)
-	{
-		if(event.level instanceof ServerLevel serverLevel)
-		{
-			serverLevel.getAllEntities().forEach(t -> 
-			{
-				if(!(t instanceof LivingEntity))
-				{
-					BTAUtil.handleSubmarineCollision(t);
-				}
-			});
-		}
-	}
-	
-	@SubscribeEvent
-	public static void onPlayerTick(PlayerTickEvent event)
-	{
-		Player player = event.player;
-
-		if(!player.isSpectator())
-		{
-			BTAUtil.handleSubmarineCollision(player);
-		}
-	}
-	
 	@SubscribeEvent
 	public static void onEntityInteract(PlayerInteractEvent.EntityInteractSpecific event)
 	{
@@ -72,7 +42,8 @@ public class EventHandlerForge
             Vec3 dir = player.getViewVector(0);
             double reach = player.getReachDistance();
             String part = multipart.getBounds().raycast(pos, pos.add(dir.scale(reach)));
-            if (part == null) return;
+            if(part == null) 
+            	return;
 			event.setCancellationResult(multipart.interact(player, event.getHand(), part));
 		}
 	}
@@ -106,11 +77,6 @@ public class EventHandlerForge
 		if(entity.hasEffect(BTAEffects.AIR_SWIM.get()))
 		{
 			entity.resetFallDistance();
-		}
-		
-		if(!(entity instanceof Player))
-		{
-			BTAUtil.handleSubmarineCollision(entity);
 		}
 	}
     

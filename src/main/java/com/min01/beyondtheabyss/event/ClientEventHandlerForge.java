@@ -56,17 +56,17 @@ public class ClientEventHandlerForge
     }
     
 	//FIXME
-    //@SubscribeEvent
+    @SubscribeEvent
     public static void onRenderPlayer(RenderPlayerEvent event)
     {
     	Player player = event.getEntity();
     	if(player.getVehicle() != null && player.getVehicle() instanceof EntitySubmarine submarine)
     	{
     		PoseStack poseStack = event.getPoseStack();
-            float f1 = Mth.rotLerp(event.getPartialTick(), submarine.yRotO, submarine.getYRot());
-            float f6 = Mth.lerp(event.getPartialTick(), submarine.xRotO, submarine.getXRot());
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(180 - f1));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(-f6));
+            float yRot = Mth.rotLerp(event.getPartialTick(), submarine.yRotO, submarine.getYRot());
+            float xRot = Mth.lerp(event.getPartialTick(), submarine.xRotO, submarine.getXRot());
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(yRot));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
     	}
     }
     

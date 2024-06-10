@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssMob;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,20 +12,20 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class PartPositionUpdatePacket 
+public class SubmarinePartUpdatePacket 
 {
 	private final int entityId;
 	private final int array;
 	private final Vec3 pos;
 
-	public PartPositionUpdatePacket(Entity entity, Vec3 pos, int array) 
+	public SubmarinePartUpdatePacket(Entity entity, Vec3 pos, int array) 
 	{
 		this.entityId = entity.getId();
 		this.pos = pos;
 		this.array = array;
 	}
 
-	public PartPositionUpdatePacket(FriendlyByteBuf buf)
+	public SubmarinePartUpdatePacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 		this.pos = BTAEntityDataSerializers.readVec3(buf);
@@ -41,16 +41,16 @@ public class PartPositionUpdatePacket
 
 	public static class Handler 
 	{
-		public static boolean onMessage(PartPositionUpdatePacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(SubmarinePartUpdatePacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{
 				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
 					Entity entity = level.getEntity(message.entityId);
-					if(entity instanceof AbstractMultipartDeepAbyssMob mob) 
+					if(entity instanceof EntitySubmarine submarine) 
 					{
-						mob.posArray[message.array] = message.pos;
+						submarine.posArray[message.array] = message.pos;
 					}
 				}
 			});

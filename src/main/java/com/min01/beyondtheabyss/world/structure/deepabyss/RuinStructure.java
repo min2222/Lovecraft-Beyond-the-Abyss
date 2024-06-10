@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class RuinStructure extends Structure
 {
 	public static final Codec<RuinStructure> CODEC = simpleCodec(RuinStructure::new);
-	private static final ResourceLocation[] RESOURCE_LOCATIONS = new ResourceLocation[]{new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/ruin_1")};
+	public static final ResourceLocation[] RESOURCE_LOCATIONS = new ResourceLocation[]{new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/ruin_1")};
 	
 	public RuinStructure(StructureSettings p_226558_)
 	{
@@ -45,9 +45,9 @@ public class RuinStructure extends Structure
 	
 	public static void addPieces(StructureTemplateManager p_228995_, BlockPos p_228996_, Rotation p_228997_, StructurePieceAccessor p_228998_, RandomSource p_228999_)
 	{
-        int i = p_228999_.nextInt(RESOURCE_LOCATIONS.length);
+        /*int i = p_228999_.nextInt(RESOURCE_LOCATIONS.length);
         p_228998_.addPiece(new RuinPiece(p_228995_, new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/ruin_base"), p_228996_, p_228997_, false));
-        p_228998_.addPiece(new RuinPiece(p_228995_, RESOURCE_LOCATIONS[i], p_228996_, p_228997_, true));
+        p_228998_.addPiece(new RuinPiece(p_228995_, RESOURCE_LOCATIONS[i], p_228996_, p_228997_, true));*/
         //p_228998_.addPiece(new RuinPiece(p_228995_, aresourcelocation[i], p_228996_, p_228997_));
         //p_228998_.addPiece(new RuinPiece(p_228995_, aresourcelocation[i], p_228996_, p_228997_));
 	}

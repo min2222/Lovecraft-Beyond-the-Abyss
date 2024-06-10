@@ -51,6 +51,12 @@ public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDee
 		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, TAIL);
 		Vec3 body2Pos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, BODY2);
 		Vec3 bodyPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), true, BODY);
+		p_115455_.posArray[5] = tailEdge2Pos;
+		p_115455_.posArray[4] = tailEdgePos;
+		p_115455_.posArray[3] = tail2Pos;
+		p_115455_.posArray[2] = tailPos;
+		p_115455_.posArray[1] = body2Pos;
+		p_115455_.posArray[0] = bodyPos;
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailEdge2Pos, 5));
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailEdgePos, 4));
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tail2Pos, 3));
