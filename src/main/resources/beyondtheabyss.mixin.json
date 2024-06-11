@@ -6,10 +6,8 @@
 	"mixins": [
 		"MixinFluidStatus",
 		"MixinEntity",
-		"MixinLivingEntity",
 		"MixinSwimNodeEvaluator",
 		"MixinNoiseBasedAquifer",
-		"MixinItemEntity",
 		"multipart.MixinArrayVoxelShape",
 		"multipart.MixinAABB",
 		"multipart.MixinVoxelShape",
@@ -17,7 +15,6 @@
 	],
 	"client": [
 		"MixinLevelRenderer",
-		"MixinEffectInstance",
 		"MixinGameRenderer",
 		"MixinLocalPlayer",
 		"multipart.MixinEntityRenderDispatcher"

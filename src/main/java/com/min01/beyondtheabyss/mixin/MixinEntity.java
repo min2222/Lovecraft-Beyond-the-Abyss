@@ -1,46 +1,31 @@
 package com.min01.beyondtheabyss.mixin;
 
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.multipart.entity.MultipartEntity;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fluids.FluidType;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity 
 {
-	@Inject(at = @At("HEAD"), method = "updateSwimming", cancellable = true)
-	protected void updateSwimming(CallbackInfo ci)
-	{
-		
-	}
-	
-	@Inject(at = @At("HEAD"), method = "isInWater", cancellable = true)
-	protected void isInWater(CallbackInfoReturnable<Boolean> ci)
-	{
-		
-	}
-
-	@Inject(at = @At("HEAD"), method = "isOnGround", cancellable = true)
-	protected void isOnGround(CallbackInfoReturnable<Boolean> ci)
-	{
-		
-	}
-	
-	@Inject(at = @At("HEAD"), method = "isEyeInFluid", cancellable = true)
-	protected void isEyeInFluid(TagKey<Fluid> p_204030_, CallbackInfoReturnable<Boolean> ci)
-	{
-		
-	}
-	
     @Inject(method = "getBoundingBox", at = @At("RETURN"), cancellable = true)
     private void getBoundingBox(CallbackInfoReturnable<AABB> cir)
     {
@@ -48,6 +33,21 @@ public abstract class MixinEntity
         {
             cir.setReturnValue(multipart.getCompoundBoundingBox(cir.getReturnValue()));
         }
+    }
+    
+    //TODO
+    @ModifyVariable(method = "move", ordinal = 0, name = "vec3", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/entity/Entity;collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;"))
+    public Vec3 move(Vec3 value)
+    {
+        List<Entity> list = Entity.class.cast(this).level.getEntities(Entity.class.cast(this), Entity.class.cast(this).getBoundingBox().expandTowards(Entity.class.cast(this).getDeltaMovement()).inflate(1.0E-7D), EntitySelector.NO_SPECTATORS);
+        for(Entity entity : list)
+        {
+        	if(entity instanceof EntitySubmarine)
+        	{
+        		return value.scale(1.15F);
+        	}
+        }
+    	return value;
     }
 
     @Inject(method = "setPosRaw", at = @At("TAIL"))
@@ -57,5 +57,37 @@ public abstract class MixinEntity
         {
         	multipart.onSetPos(x, y, z);
         }
+    }
+
+    @Inject(method = "isInWater", at = @At("TAIL"), cancellable = true)
+    private void isInWater(CallbackInfoReturnable<Boolean> cir)
+    {
+    	if(Entity.class.cast(this) instanceof LivingEntity living)
+    	{
+    		if(living.hasEffect(BTAEffects.AIR_SWIM.get()))
+    		{
+    			cir.setReturnValue(true);
+    		}
+    		else if(BTAUtil.isInsideSubmarine(living))
+    		{
+    			cir.setReturnValue(false);
+    		}
+    	}
+    }
+    
+    @Inject(method = "getEyeInFluidType", at = @At("TAIL"), cancellable = true)
+    private void getEyeInFluidType(CallbackInfoReturnable<FluidType> cir)
+    {
+    	if(Entity.class.cast(this) instanceof LivingEntity living)
+    	{
+    		if(living.hasEffect(BTAEffects.AIR_SWIM.get()))
+    		{
+    			cir.setReturnValue(ForgeMod.WATER_TYPE.get());
+    		}
+    		else if(BTAUtil.isInsideSubmarine(living))
+    		{
+    			cir.setReturnValue(ForgeMod.EMPTY_TYPE.get());
+    		}
+    	}
     }
 }

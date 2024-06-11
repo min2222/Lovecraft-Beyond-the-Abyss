@@ -77,7 +77,7 @@ public abstract class AbstractBTAMob extends PathfinderMob
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
         }
         
-        if(this.getBTAMobType() == BTAMobType.NETURAL)
+        if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
         {
             this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
         }

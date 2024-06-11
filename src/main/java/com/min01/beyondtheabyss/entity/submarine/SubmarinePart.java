@@ -21,8 +21,7 @@ public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implem
     public static enum SubmarinePartType
     {
     	HATCH,
-    	DETECTOR,
-    	COLLIDER;
+    	DETECTOR;
     }
 	
 	public SubmarinePart(EntityType<? extends SubmarinePart> p_19870_, Level p_19871_) 
@@ -86,11 +85,5 @@ public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implem
 			return InteractionResult.SUCCESS;
 		}
 		return MultipartAwareEntity.super.interact(entity, hand, part);
-	}
-	
-	@Override
-	public boolean canBeCollidedWith() 
-	{
-		return this.type == SubmarinePartType.COLLIDER;
 	}
 }

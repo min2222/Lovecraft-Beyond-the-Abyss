@@ -68,7 +68,7 @@ public class BTAUtil
 	
 	public static void fishFlopping(LivingEntity entity, SoundEvent flopSound, float volume, float yMotion)
 	{
-        if (!entity.isInWater() && entity.isOnGround() && entity.verticalCollision) 
+        if(!entity.isInWater() && entity.isOnGround() && entity.verticalCollision) 
         {
         	entity.setDeltaMovement(entity.getDeltaMovement().add((double)((entity.getRandom().nextFloat() * 2.0F - 1.0F) * 0.05F), yMotion, (double)((entity.getRandom().nextFloat() * 2.0F - 1.0F) * 0.05F)));
         	entity.setOnGround(false);
@@ -80,22 +80,22 @@ public class BTAUtil
 	public static float rotlerp(float p_24992_, float p_24993_, float p_24994_)
 	{
 		float f = Mth.wrapDegrees(p_24993_ - p_24992_);
-		if (f > p_24994_) 
+		if(f > p_24994_) 
 		{
 			f = p_24994_;
 		}
 
-		if (f < -p_24994_) 
+		if(f < -p_24994_) 
 		{
 			f = -p_24994_;
 		}
 
 		float f1 = p_24992_ + f;
-		if (f1 < 0.0F)
+		if(f1 < 0.0F)
 		{
 			f1 += 360.0F;
 		}
-		else if (f1 > 360.0F)
+		else if(f1 > 360.0F)
 		{
 			f1 -= 360.0F;
 		}
@@ -146,9 +146,9 @@ public class BTAUtil
 	
     public static Entity teleportEntityToDim(Entity entity, ServerLevel endpointWorld, BlockPos endpoint)
     {
-        if (!entity.getLevel().dimension().location().getPath().equals(endpointWorld.dimension().location().getPath()))
+        if(!entity.getLevel().dimension().location().getPath().equals(endpointWorld.dimension().location().getPath()))
         {
-            if (entity instanceof Player && ((Player) entity).getSleepingPos().isPresent()) 
+            if(entity instanceof Player && ((Player) entity).getSleepingPos().isPresent()) 
             {
                 BlockPos bedPos = ((Player) entity).getSleepingPos().get();
                 endpoint = bedPos;
@@ -162,7 +162,7 @@ public class BTAUtil
             }
         }
         
-        if (entity instanceof ServerPlayer) 
+        if(entity instanceof ServerPlayer) 
         {
         	ServerPlayer player = (ServerPlayer) entity;
             player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, entity.getYRot(), entity.getXRot());
@@ -172,7 +172,7 @@ public class BTAUtil
         entity.unRide();
         entity.changeDimension(endpointWorld);
         Entity teleportedEntity = entity.getType().create(endpointWorld);
-        if (teleportedEntity == null) 
+        if(teleportedEntity == null) 
         {
             return entity;
         }

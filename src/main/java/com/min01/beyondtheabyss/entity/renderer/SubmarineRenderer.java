@@ -76,6 +76,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 	    BTANetwork.sendToAll(new SubmarinePartUpdatePacket(p_114485_, seat2Pos, 2));
 	    BTANetwork.sendToAll(new SubmarinePartUpdatePacket(p_114485_, seat1Pos, 1));
 	    BTANetwork.sendToAll(new SubmarinePartUpdatePacket(p_114485_, controllerPos, 0));
+
 		if(p_114485_.getControllingPlayer() != null)
 		{
 	        float strength = 0.5F + Mth.clamp(((float) Math.cos((p_114485_.glowingTicks + p_114487_) * 0.1F)) - 0.5F, -0.5F, 0.5F);
@@ -84,7 +85,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 	        strength = Mth.clamp(strength, 0.1F, 1);
 	        
 			VertexConsumer eyeConsumer = p_114489_.getBuffer(RenderType.eyes(LAYER_TEXTURE));
-			this.model.setupAnim(p_114485_, 0, 0, 0, f1, f6);
+			this.model.setupAnim(p_114485_, 0, 0, 0, f1 + 180, f6);
 			this.model.renderToBuffer(p_114488_, eyeConsumer, p_114490_, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
 		}
 		p_114488_.popPose();

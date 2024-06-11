@@ -44,7 +44,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	public static final EntityDataAccessor<Optional<UUID>> SEAT4_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> HATCH = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> DETECTOR = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Optional<UUID>> COLLIDER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<BlockPos> PREV_POS = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BLOCK_POS);
 	
@@ -70,7 +69,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		this.entityData.define(SEAT4_PLAYER, Optional.empty());
 		this.entityData.define(HATCH, Optional.empty());
 		this.entityData.define(DETECTOR, Optional.empty());
-		this.entityData.define(COLLIDER, Optional.empty());
 		this.entityData.define(HATCH_OPENED, false);
 		this.entityData.define(PREV_POS, BlockPos.ZERO);
 	}
@@ -95,11 +93,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		{
 			this.getDetector().discard();
 		}
-		
-		if(this.getCollider() != null)
-		{
-			this.getCollider().discard();
-		}
 	}
 	
 	@Override
@@ -123,15 +116,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 			detector.setOwner(this);
 			this.level.addFreshEntity(detector);
 			this.setDetector(detector);
-		}
-		if(this.getCollider() == null)
-		{
-			SubmarinePart collider = new SubmarinePart(BTAEntities.SUBMARINE_PART.get(), this.level);
-			collider.type = SubmarinePartType.COLLIDER;
-			collider.setPos(this.position());
-			collider.setOwner(this);
-			this.level.addFreshEntity(collider);
-			this.setCollider(collider);
 		}
 	}
 	
@@ -247,11 +231,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		{
 			p_21145_.putUUID("DetectorUUID", this.getDetector().getUUID());
 		}
-		
-		if(this.getCollider() != null)
-		{
-			p_21145_.putUUID("ColliderUUID", this.getCollider().getUUID());
-		}
 	}
 	
 	@Override
@@ -292,11 +271,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		{
 			this.entityData.set(DETECTOR, Optional.of(p_21096_.getUUID("DetectorUUID")));
 		}
-		
-		if(p_21096_.hasUUID("ColliderUUID")) 
-		{
-			this.entityData.set(COLLIDER, Optional.of(p_21096_.getUUID("ColliderUUID")));
-		}
 	}
 	
     @Override
@@ -314,26 +288,14 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
         
         if(this.getHatch() != null)
         {
-        	this.getHatch().setPos(this.position());
-        	this.getHatch().setXRot(this.getXRot());
-        	this.getHatch().setYRot(this.getYRot());
+        	this.getHatch().copyPosition(this);
         	this.getHatch().type = SubmarinePartType.HATCH;
         }
         
         if(this.getDetector() != null)
         {
-        	this.getDetector().setPos(this.position());
-        	this.getDetector().setXRot(this.getXRot());
-        	this.getDetector().setYRot(this.getYRot());
+        	this.getDetector().copyPosition(this);
         	this.getDetector().type = SubmarinePartType.DETECTOR;
-        }
-        
-        if(this.getCollider() != null)
-        {
-        	this.getCollider().setPos(this.position());
-        	this.getCollider().setXRot(this.getXRot());
-        	this.getCollider().setYRot(this.getYRot());
-        	this.getCollider().type = SubmarinePartType.COLLIDER;
         }
         
     	if(this.isInWater())
@@ -352,6 +314,12 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
                 }
             }*/
     	}
+    }
+    
+    @Override
+    public boolean canBeCollidedWith()
+    {
+    	return true;
     }
     
     @Override
@@ -466,20 +434,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	public boolean hatchOpened()
 	{
 		return this.entityData.get(HATCH_OPENED);
-	}
-	
-	public void setCollider(SubmarinePart part)
-	{
-		this.entityData.set(COLLIDER, Optional.of(part.getUUID()));
-	}
-	
-	public SubmarinePart getCollider()
-	{
-		if(this.entityData.get(COLLIDER).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(COLLIDER).get());
-		}
-		return null;
 	}
 	
 	public void setDetector(SubmarinePart part)
