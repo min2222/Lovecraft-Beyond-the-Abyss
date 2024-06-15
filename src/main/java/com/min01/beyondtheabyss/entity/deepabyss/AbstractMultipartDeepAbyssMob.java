@@ -44,21 +44,18 @@ public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
     		parts.tick();
     	}
     	
-        Vec3[] avector3d = new Vec3[this.getDeepAbyssEntityParts().length];
+        Vec3[] vec3 = new Vec3[this.getDeepAbyssEntityParts().length];
         
-        for(int j = 0; j < this.getDeepAbyssEntityParts().length; j++)
+        for(int i = 0; i < this.getDeepAbyssEntityParts().length; i++)
         {
-        	avector3d[j] = new Vec3(this.getDeepAbyssEntityParts()[j].getX(), this.getDeepAbyssEntityParts()[j].getY(), this.getDeepAbyssEntityParts()[j].getZ());
-        }
-        
-        for(int l = 0; l < this.getDeepAbyssEntityParts().length; l++) 
-        {
-        	this.getDeepAbyssEntityParts()[l].xo = avector3d[l].x;
-        	this.getDeepAbyssEntityParts()[l].yo = avector3d[l].y;
-        	this.getDeepAbyssEntityParts()[l].zo = avector3d[l].z;
-        	this.getDeepAbyssEntityParts()[l].xOld = avector3d[l].x;
-        	this.getDeepAbyssEntityParts()[l].yOld = avector3d[l].y;
-        	this.getDeepAbyssEntityParts()[l].zOld = avector3d[l].z;
+        	vec3[i] = new Vec3(this.getDeepAbyssEntityParts()[i].getX(), this.getDeepAbyssEntityParts()[i].getY(), this.getDeepAbyssEntityParts()[i].getZ());
+        	
+        	this.getDeepAbyssEntityParts()[i].xo = vec3[i].x;
+        	this.getDeepAbyssEntityParts()[i].yo = vec3[i].y;
+        	this.getDeepAbyssEntityParts()[i].zo = vec3[i].z;
+        	this.getDeepAbyssEntityParts()[i].xOld = vec3[i].x;
+        	this.getDeepAbyssEntityParts()[i].yOld = vec3[i].y;
+        	this.getDeepAbyssEntityParts()[i].zOld = vec3[i].z;
         }
     }
     

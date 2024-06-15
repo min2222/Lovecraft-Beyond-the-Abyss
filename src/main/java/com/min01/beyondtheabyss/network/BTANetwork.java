@@ -32,7 +32,7 @@ public class BTANetwork
 	
     public static <MSG> void sendToAll(MSG message) 
     {
-    	for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) 
+    	for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) 
     	{
     		CHANNEL.sendTo(message, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     	}
