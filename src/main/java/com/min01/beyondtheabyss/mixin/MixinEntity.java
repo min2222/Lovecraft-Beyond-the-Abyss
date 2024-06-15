@@ -75,7 +75,7 @@ public abstract class MixinEntity
     	}
     }
     
-    @Inject(method = "getEyeInFluidType", at = @At("TAIL"), cancellable = true)
+    @Inject(method = "getEyeInFluidType", at = @At("TAIL"), cancellable = true, remap = false)
     private void getEyeInFluidType(CallbackInfoReturnable<FluidType> cir)
     {
     	if(Entity.class.cast(this) instanceof LivingEntity living)
