@@ -81,7 +81,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		{
 	        float strength = 0.5F + Mth.clamp(((float) Math.cos((p_114485_.glowingTicks + p_114487_) * 0.1F)) - 0.5F, -0.5F, 0.5F);
 
-	        strength += Mth.lerp(p_114487_, p_114485_.brightnessOld, p_114485_.brightness) * 1 * Mth.PI;
+	        strength += Mth.lerp(p_114487_, p_114485_.brightnessOld, p_114485_.brightness) * Mth.PI;
 	        strength = Mth.clamp(strength, 0.1F, 1);
 	        
 			VertexConsumer eyeConsumer = p_114489_.getBuffer(RenderType.eyes(LAYER_TEXTURE));

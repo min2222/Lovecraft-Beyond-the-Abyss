@@ -1,25 +1,19 @@
 package com.min01.beyondtheabyss.mixin;
 
-import java.util.List;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.multipart.entity.MultipartEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
@@ -35,19 +29,10 @@ public abstract class MixinEntity
         }
     }
     
-    //TODO
-    @ModifyVariable(method = "move", ordinal = 0, name = "vec3", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/entity/Entity;collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;"))
-    public Vec3 move(Vec3 value)
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tick(CallbackInfo ci)
     {
-        List<Entity> list = Entity.class.cast(this).level.getEntities(Entity.class.cast(this), Entity.class.cast(this).getBoundingBox().expandTowards(Entity.class.cast(this).getDeltaMovement()).inflate(1.0E-7D), EntitySelector.NO_SPECTATORS);
-        for(Entity entity : list)
-        {
-        	if(entity instanceof EntitySubmarine)
-        	{
-        		return value.scale(1.15F);
-        	}
-        }
-    	return value;
+    	BTAUtil.handleSubmarineCollision(Entity.class.cast(this));
     }
 
     @Inject(method = "setPosRaw", at = @At("TAIL"))
