@@ -14,9 +14,9 @@ public abstract class AbstractBTASkillGoal extends Goal
     public boolean canUse() 
     {
     	LivingEntity livingentity = this.getMob().getTarget();
-    	if (livingentity != null && livingentity.isAlive()) 
+    	if(livingentity != null && livingentity.isAlive()) 
     	{
-    		if (this.getMob().isUsingSkill())
+    		if(this.getMob().isUsingSkill())
     		{
     			return false;
     		} 
@@ -79,7 +79,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     public void tick() 
     {
     	--this.skillWarmupDelay;
-    	if (this.skillWarmupDelay == 0) 
+    	if(this.skillWarmupDelay == 0) 
     	{
     		this.performSkill();
     	}

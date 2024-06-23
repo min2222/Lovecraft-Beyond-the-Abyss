@@ -52,9 +52,9 @@ public final class EntityBounds {
     public @Nullable String raycast(final Vec3 start, final Vec3 end) {
         double t = 1.00001;
         String result = null;
-        for (final Map.Entry<String, EntityPart> entry : partMap.entrySet()) {
+        for(final Map.Entry<String, EntityPart> entry : partMap.entrySet()) {
             final double tmp = entry.getValue().getBox().raycast(start, end);
-            if (tmp != -1 && tmp < t) {
+            if(tmp != -1 && tmp < t) {
                 t = tmp;
                 result = entry.getKey();
             }
@@ -68,15 +68,15 @@ public final class EntityBounds {
      */
     public CompoundOrientedBox getBox(final AABB bounds) {
         boolean changed = cache == null;
-        for (final EntityPart value : partMap.values()) {
-            if (value.isChanged()) {
+        for(final EntityPart value : partMap.values()) {
+            if(value.isChanged()) {
                 changed = true;
                 value.setChanged(false);
             }
         }
-        if (changed) {
+        if(changed) {
             final List<OrientedBox> parts = new ObjectArrayList<>(partMap.size());
-            for (final EntityPart value : partMap.values())
+            for(final EntityPart value : partMap.values())
                 parts.add(value.getBox());
 
             cache = new CompoundOrientedBox(bounds, parts, overrideBox);
@@ -105,7 +105,7 @@ public final class EntityBounds {
         EntityBoundsBuilder() {}
 
         EntityBoundsBuilder addInfo(final EntityPartInfo info) {
-            if (info.parent != null && !partInfos.containsKey(info.parent))
+            if(info.parent != null && !partInfos.containsKey(info.parent))
                 throw new RuntimeException("Unknown part: " + info.parent + ", did you register a child before a parent");
 
             partInfos.put(info.name, info);
@@ -124,7 +124,7 @@ public final class EntityBounds {
          * @return The hit box builder
          */
         public EntityPartInfoBuilder add(final String name) {
-            if (partInfos.containsKey(name))
+            if(partInfos.containsKey(name))
                 throw new RuntimeException("Duplicate part: " + name);
 
             return new EntityPartInfoBuilder(this, name);
@@ -135,7 +135,7 @@ public final class EntityBounds {
             final Map<String, EntityPartInfo> copy = new Object2ObjectLinkedOpenHashMap<>(partInfos);
             return () -> {
                 final Map<String, EntityPart> partMap = new Object2ObjectOpenHashMap<>();
-                for (final Map.Entry<String, EntityPartInfo> entry : copy.entrySet()) {
+                for(final Map.Entry<String, EntityPartInfo> entry : copy.entrySet()) {
                     final EntityPartInfo info = entry.getValue();
                     final EntityPart entityPart = new EntityPart(info.parent != null ? partMap.get(info.parent) : null, info.bounds, false, info.x, info.y, info.z);
                     entityPart.setPivotX(info.px);

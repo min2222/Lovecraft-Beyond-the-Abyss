@@ -35,7 +35,7 @@ public abstract class AbstractOwnableEntity<T extends Entity> extends Entity
 	@Override
 	public void addAdditionalSaveData(CompoundTag p_37265_) 
 	{
-		if (this.entityData.get(OWNER_UUID).isPresent())
+		if(this.entityData.get(OWNER_UUID).isPresent())
 		{
 			p_37265_.putUUID("Owner", this.entityData.get(OWNER_UUID).get());
 		}
@@ -44,7 +44,7 @@ public abstract class AbstractOwnableEntity<T extends Entity> extends Entity
 	@Override
 	public void readAdditionalSaveData(CompoundTag p_37262_) 
 	{
-		if (p_37262_.hasUUID("Owner")) 
+		if(p_37262_.hasUUID("Owner")) 
 		{
 			this.entityData.set(OWNER_UUID, Optional.of(p_37262_.getUUID("Owner")));
 		}
@@ -52,7 +52,7 @@ public abstract class AbstractOwnableEntity<T extends Entity> extends Entity
 	
 	public void setOwner(@Nullable T p_37263_)
 	{
-		if (p_37263_ != null)
+		if(p_37263_ != null)
 		{
 			this.entityData.set(OWNER_UUID, Optional.of(p_37263_.getUUID()));
 		}

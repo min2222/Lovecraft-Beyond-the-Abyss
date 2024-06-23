@@ -34,7 +34,7 @@ public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDee
 	protected void setupRotations(EntityDeepVampire p_116226_, PoseStack p_116227_, float p_116228_, float p_116229_, float p_116230_) 
 	{
 		super.setupRotations(p_116226_, p_116227_, p_116228_, p_116229_, p_116230_);
-		if (!p_116226_.isInWater()) 
+		if(!p_116226_.isInWater()) 
 		{
 			p_116227_.translate(0.5F, 0, 0);
 			p_116227_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));

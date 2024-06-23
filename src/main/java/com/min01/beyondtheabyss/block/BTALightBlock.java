@@ -69,7 +69,7 @@ public class BTALightBlock extends Block implements SimpleWaterloggedBlock
 	@Override
 	public BlockState updateShape(BlockState p_153680_, Direction p_153681_, BlockState p_153682_, LevelAccessor p_153683_, BlockPos p_153684_, BlockPos p_153685_)
 	{
-		if (p_153680_.getValue(WATERLOGGED))
+		if(p_153680_.getValue(WATERLOGGED))
 		{
 			p_153683_.scheduleTick(p_153684_, Fluids.WATER, Fluids.WATER.getTickDelay(p_153683_));
 		}

@@ -44,7 +44,7 @@ public class ItemAdvancedDiverSet extends ArmorItem
 		UUID uuid = ARMOR_MODIFIER_UUID_PER_SLOT[p_40387_.getIndex()];
 		builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", (double)p_40386_.getDefenseForSlot(p_40387_), AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", (double)p_40386_.getToughness(), AttributeModifier.Operation.ADDITION));
-		if (p_40386_.getKnockbackResistance() > 0)
+		if(p_40386_.getKnockbackResistance() > 0)
 		{
 			builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", (double)p_40386_.getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
 		}

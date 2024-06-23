@@ -76,17 +76,17 @@ public class ClientEventHandlerForge
         Player player = MC.player;
         float delta = Minecraft.getInstance().getFrameTime();
         float ticksExistedDelta = player.tickCount + delta;
-        if (player != null && BTAConfig.cameraShakesAllowed.get())
+        if(player != null && BTAConfig.cameraShakesAllowed.get())
         {
             float shakeAmplitude = 0.0f;
-            for (EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0))) 
+            for(EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0))) 
             {
-                if (cameraShake.distanceTo(player) < cameraShake.getRadius())
+                if(cameraShake.distanceTo(player) < cameraShake.getRadius())
                 {
                     shakeAmplitude += cameraShake.getShakeAmount(player, delta);
                 }
             }
-            if (shakeAmplitude > 1.0f)
+            if(shakeAmplitude > 1.0f)
             {
                 shakeAmplitude = 1.0f;
             }
@@ -99,7 +99,7 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onClientTickEvent(ClientTickEvent event) 
     {
-        if (event.phase == TickEvent.Phase.END) 
+        if(event.phase == TickEvent.Phase.END) 
         	return;
         if(ClientEventHandler.ABYSSAL_DASH.isDown())
         {

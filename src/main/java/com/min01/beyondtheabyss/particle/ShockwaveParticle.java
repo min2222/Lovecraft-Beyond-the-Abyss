@@ -39,7 +39,7 @@ public class ShockwaveParticle extends SimpleAnimatedParticle
 		this.xo = this.x;
 		this.yo = this.y;
 		this.zo = this.z;
-		if (this.age++ >= this.lifetime) 
+		if(this.age++ >= this.lifetime) 
 		{
 			this.remove();
 		}
@@ -47,7 +47,7 @@ public class ShockwaveParticle extends SimpleAnimatedParticle
 		{
 			this.yd -= 0.04D * (double)this.gravity;
 			this.move(this.xd, this.yd, this.zd);
-			if (this.speedUpWhenYMotionIsBlocked && this.y == this.yo)
+			if(this.speedUpWhenYMotionIsBlocked && this.y == this.yo)
 			{
 				this.xd *= 1.1D;
 				this.zd *= 1.1D;
@@ -56,7 +56,7 @@ public class ShockwaveParticle extends SimpleAnimatedParticle
 			this.xd *= (double)this.friction;
 			this.yd *= (double)this.friction;
 			this.zd *= (double)this.friction;
-			if (this.onGround) 
+			if(this.onGround) 
 			{
 				this.xd *= (double)0.7F;
 				this.zd *= (double)0.7F;

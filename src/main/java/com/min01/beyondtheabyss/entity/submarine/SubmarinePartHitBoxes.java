@@ -73,7 +73,7 @@ public class SubmarinePartHitBoxes
 	                this.setPartPosition(detector, 0, 3.0F, 0.05F);
 	                
 	                MutableBox overrideBox = this.detectorHitBoxes.getOverrideBox();
-	                if (overrideBox != null)
+	                if(overrideBox != null)
 	                {
 	                    overrideBox.setBox(this.collisionHitbox.move(this.entity.position()).move(-2.75F, 0.05F, -2.75F));
 	                }
@@ -99,7 +99,7 @@ public class SubmarinePartHitBoxes
 	                }
 	                
 	                MutableBox overrideBox = this.hatchHitBoxes.getOverrideBox();
-	                if (overrideBox != null)
+	                if(overrideBox != null)
 	                {
 	                    overrideBox.setBox(this.collisionHitbox.move(this.entity.position()).move(-2.75F, 0.05F, -2.75F));
 	                }

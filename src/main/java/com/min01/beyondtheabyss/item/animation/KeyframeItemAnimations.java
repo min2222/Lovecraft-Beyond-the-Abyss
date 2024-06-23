@@ -22,7 +22,7 @@ public class KeyframeItemAnimations
 	{
 		float f = getElapsedSeconds(p_232321_, p_232322_);
 
-		for (Map.Entry<String, List<AnimationChannel>> entry : p_232321_.boneAnimations().entrySet())
+		for(Map.Entry<String, List<AnimationChannel>> entry : p_232321_.boneAnimations().entrySet())
 		{
 			Optional<ModelPart> optional = p_232320_.getAnyDescendantWithName(entry.getKey());
 			List<AnimationChannel> list = entry.getValue();

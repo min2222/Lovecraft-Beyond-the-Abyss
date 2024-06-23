@@ -48,7 +48,7 @@ public class VampireDaggerItem extends Item
 	@Override
 	public boolean mineBlock(ItemStack p_43399_, Level p_43400_, BlockState p_43401_, BlockPos p_43402_, LivingEntity p_43403_) 
 	{
-		if ((double)p_43401_.getDestroySpeed(p_43400_, p_43402_) != 0.0D) 
+		if((double)p_43401_.getDestroySpeed(p_43400_, p_43402_) != 0.0D) 
 		{
 			p_43399_.hurtAndBreak(2, p_43403_, (p_43385_) ->
 			{

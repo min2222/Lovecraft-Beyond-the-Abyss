@@ -54,7 +54,7 @@ public class HarpoonItem extends Item
 	public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_)
 	{
 		ItemStack itemstack = p_41433_.getItemInHand(p_41434_);
-		if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1)
+		if(itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1)
 		{
 			return InteractionResultHolder.fail(itemstack);
 		}
@@ -74,7 +74,7 @@ public class HarpoonItem extends Item
 			
 			if(i >= 10)
 			{
-				if (!p_41413_.isClientSide)
+				if(!p_41413_.isClientSide)
 				{
 					p_41412_.hurtAndBreak(1, player, (p_43388_) ->
 					{
@@ -82,14 +82,14 @@ public class HarpoonItem extends Item
 					});
 					EntityThrownHarpoon harpoon = new EntityThrownHarpoon(p_41413_, player, p_41412_, this == BTAItems.GHIDRUTH_SCALE_HARPOON.get());
 					harpoon.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, this == BTAItems.GHIDRUTH_SCALE_HARPOON.get() ? 2.0F : 1.2F, 1.0F);
-					if (player.getAbilities().instabuild) 
+					if(player.getAbilities().instabuild) 
 					{
 						harpoon.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 					}
 
 					p_41413_.addFreshEntity(harpoon);
 					p_41413_.playSound((Player)null, harpoon, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
-					if (!player.getAbilities().instabuild)
+					if(!player.getAbilities().instabuild)
 					{
 						player.getInventory().removeItem(p_41412_);
 					}
@@ -126,7 +126,7 @@ public class HarpoonItem extends Item
 	@Override
 	public boolean mineBlock(ItemStack p_43399_, Level p_43400_, BlockState p_43401_, BlockPos p_43402_, LivingEntity p_43403_) 
 	{
-		if ((double)p_43401_.getDestroySpeed(p_43400_, p_43402_) != 0.0D) 
+		if((double)p_43401_.getDestroySpeed(p_43400_, p_43402_) != 0.0D) 
 		{
 			p_43399_.hurtAndBreak(2, p_43403_, (p_43385_) ->
 			{

@@ -98,7 +98,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
 	{
-        if (ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
+        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
         {
             switch (this.getAnimationState()) 
             {

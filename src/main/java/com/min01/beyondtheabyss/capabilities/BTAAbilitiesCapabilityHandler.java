@@ -104,7 +104,7 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 		Iterator<Entry<BTAAbilities, Integer>> iterator = this.abilities.entrySet().iterator();
 		while (iterator.hasNext())
 		{
-		    if (iterator.next().getKey().equals(toRemove))
+		    if(iterator.next().getKey().equals(toRemove))
 		    {
 		        iterator.remove();
 		    }
@@ -147,7 +147,7 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 		{
 			for(BTAAbilities abilities : values()) 
 			{
-				if (id == abilities.id) 
+				if(id == abilities.id) 
 				{
 					return abilities;
 				}

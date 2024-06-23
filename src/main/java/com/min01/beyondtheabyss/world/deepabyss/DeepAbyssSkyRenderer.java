@@ -48,7 +48,7 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
 	{
 		Tesselator tesselator = Tesselator.getInstance();
 		BufferBuilder bufferbuilder = tesselator.getBuilder();
-		if (this.skyBuffer != null) 
+		if(this.skyBuffer != null) 
 		{
 			this.skyBuffer.close();
 		}
@@ -65,7 +65,7 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
 		Tesselator tesselator = Tesselator.getInstance();
 		BufferBuilder bufferbuilder = tesselator.getBuilder();
 		RenderSystem.setShader(GameRenderer::getPositionShader);
-		if (this.starBuffer != null) 
+		if(this.starBuffer != null) 
 		{
 			this.starBuffer.close();
 		}
@@ -81,7 +81,7 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
 	{
 		Tesselator tesselator = Tesselator.getInstance();
 		BufferBuilder bufferbuilder = tesselator.getBuilder();
-		if (this.darkBuffer != null) 
+		if(this.darkBuffer != null) 
 		{
 			this.darkBuffer.close();
 		}
@@ -105,7 +105,7 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
 			double d2 = (double)(randomsource.nextFloat() * 2.0F - 1.0F);
 			double d3 = (double)(0.15F + randomsource.nextFloat() * 0.1F);
 			double d4 = d0 * d0 + d1 * d1 + d2 * d2;
-			if (d4 < 1.0D && d4 > 0.01D)
+			if(d4 < 1.0D && d4 > 0.01D)
 			{
 				d4 = 1.0D / Math.sqrt(d4);
 				d0 *= d4;
@@ -159,7 +159,7 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
 	
 	public void renderSky(PoseStack p_202424_, Matrix4f p_202425_, float p_202426_, Camera p_202427_, boolean p_202428_, Runnable p_202429_) 
 	{
-		if (!p_202428_) 
+		if(!p_202428_) 
 		{
 			RenderSystem.disableTexture();
 			Vec3 vec3 = this.level.getSkyColor(this.minecraft.gameRenderer.getMainCamera().getPosition(), p_202426_);
@@ -180,7 +180,7 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
             float f11 = 1.0F - this.level.getRainLevel(p_202426_);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, f11);
             float f10 = this.level.getStarBrightness(p_202426_) * f11;
-            if (f10 > 0.0F) 
+            if(f10 > 0.0F) 
             {
             	RenderSystem.setShaderColor(f10, f10, f10, f10);
             	FogRenderer.setupNoFog();
@@ -195,7 +195,7 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
             RenderSystem.disableTexture();
             RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
             double d0 = this.minecraft.player.getEyePosition(p_202426_).y - this.level.getLevelData().getHorizonHeight(this.level);
-            if (d0 < 0.0D) 
+            if(d0 < 0.0D) 
             {
             	p_202424_.pushPose();
                 p_202424_.translate(0.0D, 12.0D, 0.0D);
@@ -205,7 +205,7 @@ public class DeepAbyssSkyRenderer implements IForgeDimensionSpecialEffects
                 p_202424_.popPose();
             }
 
-            if (this.level.effects().hasGround()) 
+            if(this.level.effects().hasGround()) 
             {
             	RenderSystem.setShaderColor(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F, 1.0F);
             } 

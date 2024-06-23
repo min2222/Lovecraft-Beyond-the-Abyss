@@ -106,7 +106,7 @@ public class BTAClientUtil
     
 	public static int getCurrentFrame(Level worldIn, int frameNumber, float speed) 
 	{
-		if (worldIn == null)
+		if(worldIn == null)
 		{
             return Math.round((System.currentTimeMillis() >> 6) % frameNumber);
 		}

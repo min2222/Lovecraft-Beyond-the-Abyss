@@ -68,10 +68,10 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	
 	public void handleAirSupply(int p_30344_) 
 	{
-		if (this.isAlive() && !this.isInWaterOrBubble() && !this.canBreatheOutsideWater())
+		if(this.isAlive() && !this.isInWaterOrBubble() && !this.canBreatheOutsideWater())
 		{
 			this.setAirSupply(p_30344_ - 1);
-			if (this.getAirSupply() == -20) 
+			if(this.getAirSupply() == -20) 
 			{
 				this.setAirSupply(0);
 				this.hurt(DamageSource.DROWN, 2.0F);
@@ -110,12 +110,12 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
     @Override
     public void travel(Vec3 p_27490_) 
     {
-    	if (this.isEffectiveAi() && this.isInWater() && this.isSwimable())
+    	if(this.isEffectiveAi() && this.isInWater() && this.isSwimable())
     	{
     		this.moveRelative(this.getSpeed(), p_27490_);
     		this.move(MoverType.SELF, this.getDeltaMovement());
     		this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-    		if (this.getTarget() == null) 
+    		if(this.getTarget() == null) 
     		{
     			this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
     		}

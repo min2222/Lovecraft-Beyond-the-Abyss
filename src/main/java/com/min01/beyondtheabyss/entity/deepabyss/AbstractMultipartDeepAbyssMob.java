@@ -76,7 +76,7 @@ public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
 	public void setId(int p_20235_) 
 	{
 		super.setId(p_20235_);
-		for (int i = 0; i < this.getDeepAbyssEntityParts().length; i++) 
+		for(int i = 0; i < this.getDeepAbyssEntityParts().length; i++) 
 		{
 			this.getDeepAbyssEntityParts()[i].setId(p_20235_ + i + 1);
 		}

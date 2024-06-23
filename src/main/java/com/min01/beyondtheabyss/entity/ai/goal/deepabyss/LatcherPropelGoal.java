@@ -23,7 +23,7 @@ public class LatcherPropelGoal extends BasicBTASkillGoal<EntityLatcher>
 	@Override
 	public boolean canUse() 
 	{
-		if (this.mob.isUsingSkill())
+		if(this.mob.isUsingSkill())
 		{
 			return false;
 		} 

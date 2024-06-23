@@ -35,7 +35,7 @@ public class EntityDeepAbyssPortal extends Entity
 		
 		if(this.isEyeInFluidType(Fluids.WATER.getFluidType()) && this.tickCount > 35)
 		{
-			if (this.random.nextInt(200) == 0) 
+			if(this.random.nextInt(200) == 0) 
 			{
 				this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, SoundSource.MASTER, 0.2F + this.random.nextFloat() * 0.2F, 0.9F + this.random.nextFloat() * 0.15F, false);
 			}
@@ -63,11 +63,11 @@ public class EntityDeepAbyssPortal extends Entity
 				if(entity.distanceTo(this) <= 2F)
 				{
 			        boolean abyss = entity.getLevel().dimension().location().getPath().equals("deep_abyss");
-			        if (!entity.level.isClientSide) 
+			        if(!entity.level.isClientSide) 
 			        {
 			            MinecraftServer server = entity.level.getServer();
 			            ServerLevel dimWorld = server.getLevel(BTAWorlds.DEEP_ABYSS);
-			            if (!abyss && dimWorld != null && !(entity instanceof EntityBTACameraShake))
+			            if(!abyss && dimWorld != null && !(entity instanceof EntityBTACameraShake))
 			            {
 			            	if(entity instanceof ServerPlayer)
 			            	{

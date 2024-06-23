@@ -55,7 +55,7 @@ public class EntityBTACameraShake extends Entity
     public void tick() 
     {
         super.tick();
-        if (tickCount > getDuration() + getFadeDuration()) discard() ;
+        if(tickCount > getDuration() + getFadeDuration()) discard() ;
     }
 
     @Override
@@ -137,7 +137,7 @@ public class EntityBTACameraShake extends Entity
     {
     	if(BTAConfig.cameraShakesAllowed.get())
     	{
-            if (!world.isClientSide) 
+            if(!world.isClientSide) 
             {
                 EntityBTACameraShake cameraShake = new EntityBTACameraShake(world, position, radius, magnitude, duration, fadeDuration);
                 world.addFreshEntity(cameraShake);

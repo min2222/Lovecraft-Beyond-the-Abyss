@@ -44,42 +44,42 @@ public final class OrientedBox {
     }
 
     public Matrix3d getMatrix() {
-        if (matrix == null) {
+        if(matrix == null) {
             matrix = new Matrix3d(rotation);
         }
         return matrix;
     }
 
     public Matrix3d getInverse() {
-        if (inverse == null) {
+        if(inverse == null) {
             inverse = getMatrix().invert();
         }
         return inverse;
     }
 
     public AABB getExtents() {
-        if (extents == null) {
+        if(extents == null) {
             extents = new AABB(halfExtents.multiply(-1, -1, -1), halfExtents);
         }
         return extents;
     }
 
     public Vec3[] getBasis() {
-        if (basis == null) {
+        if(basis == null) {
             basis = matrix.getBasis();
         }
         return basis;
     }
 
     public OrientedBox rotate(final QuaternionD quaternion) {
-        if (QuaternionD.IDENTITY.equals(quaternion)) {
+        if(QuaternionD.IDENTITY.equals(quaternion)) {
             return this;
         }
         return new OrientedBox(center, halfExtents, rotation.hamiltonProduct(quaternion));
     }
 
     public OrientedBox translate(final double x, final double y, final double z) {
-        if (x == 0 && y == 0 && z == 0) {
+        if(x == 0 && y == 0 && z == 0) {
             return this;
         }
         final Matrix3d matrix = getMatrix();
@@ -116,7 +116,7 @@ public final class OrientedBox {
         final Vec3[] vertices = getVertices(box);
         this.vertices = new Vec3[8];
         final Matrix3d matrix = getMatrix();
-        for (int i = 0; i < vertices.length; i++) {
+        for(int i = 0; i < vertices.length; i++) {
             this.vertices[i] = matrix.transform(vertices[i]).add(center);
         }
     }
@@ -125,9 +125,9 @@ public final class OrientedBox {
         final Vec3[] vertices = new Vec3[8];
         int index = 0;
         final Direction.AxisDirection[] axisDirections = Direction.AxisDirection.values();
-        for (final Direction.AxisDirection x : axisDirections) {
-            for (final Direction.AxisDirection y : axisDirections) {
-                for (final Direction.AxisDirection z : axisDirections) {
+        for(final Direction.AxisDirection x : axisDirections) {
+            for(final Direction.AxisDirection y : axisDirections) {
+                for(final Direction.AxisDirection z : axisDirections) {
                     vertices[index++] = new Vec3(getPoint(box, x, Direction.Axis.X), getPoint(box, y, Direction.Axis.Y), getPoint(box, z, Direction.Axis.Z));
                 }
             }
@@ -144,24 +144,24 @@ public final class OrientedBox {
     }
 
     public boolean intersects(final Vec3[] otherVertices) {
-        if (vertices == null)
+        if(vertices == null)
             computeVertices();
 
         final Vec3[] vertices1 = vertices;
         final Vec3[] normals1 = getBasis();
-        for (final Vec3 normal : normals1) {
-            if (!sat(normal, vertices1, otherVertices))
+        for(final Vec3 normal : normals1) {
+            if(!sat(normal, vertices1, otherVertices))
                 return false;
         }
         final Vec3[] normals2 = Matrix3d.IDENTITY_BASIS;
-        for (final Vec3 normal : normals2) {
-            if (!sat(normal, vertices1, otherVertices))
+        for(final Vec3 normal : normals2) {
+            if(!sat(normal, vertices1, otherVertices))
                 return false;
         }
-        for (int i = 0; i < normals1.length; i++) {
-            for (int j = i; j < normals2.length; j++) {
+        for(int i = 0; i < normals1.length; i++) {
+            for(int j = i; j < normals2.length; j++) {
                 final Vec3 normal = cross(normals1[i], normals2[j]);
-                if (!sat(normal, vertices1, otherVertices))
+                if(!sat(normal, vertices1, otherVertices))
                     return false;
             }
         }
@@ -176,14 +176,14 @@ public final class OrientedBox {
     private static boolean sat(final Vec3 normal, final Vec3[] vertices1, final Vec3[] vertices2) {
         double min1 = Double.MAX_VALUE;
         double max1 = -Double.MAX_VALUE;
-        for (final Vec3 d : vertices1) {
+        for(final Vec3 d : vertices1) {
             final double v = d.dot(normal);
             min1 = Math.min(min1, v);
             max1 = Math.max(max1, v);
         }
         double min2 = Double.MAX_VALUE;
         double max2 = -Double.MAX_VALUE;
-        for (final Vec3 vec3d : vertices2) {
+        for(final Vec3 vec3d : vertices2) {
             final double v = vec3d.dot(normal);
             min2 = Math.min(min2, v);
             max2 = Math.max(max2, v);
@@ -204,7 +204,7 @@ public final class OrientedBox {
         final double f = end.z - start.z;
         final double[] t = new double[]{1};
         final Direction direction = traceCollisionSide(getExtents(), start, t, d, e, f);
-        if (direction != null) {
+        if(direction != null) {
             return t[0];
         }
         return -1;
@@ -213,19 +213,19 @@ public final class OrientedBox {
     @Nullable
     private static Direction traceCollisionSide(final AABB box, final Vec3 intersectingVector, final double[] traceDistanceResult, final double xDelta, final double yDelta, final double zDelta) {
         Direction approachDirection = null;
-        if (xDelta > 1.0E-7D)
+        if(xDelta > 1.0E-7D)
             approachDirection = traceCollisionSide(traceDistanceResult, approachDirection, xDelta, yDelta, zDelta, box.minX, box.minY, box.maxY, box.minZ, box.maxZ, Direction.WEST, intersectingVector.x, intersectingVector.y, intersectingVector.z);
-        else if (xDelta < -1.0E-7D)
+        else if(xDelta < -1.0E-7D)
             approachDirection = traceCollisionSide(traceDistanceResult, approachDirection, xDelta, yDelta, zDelta, box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, Direction.EAST, intersectingVector.x, intersectingVector.y, intersectingVector.z);
 
-        if (yDelta > 1.0E-7D)
+        if(yDelta > 1.0E-7D)
             approachDirection = traceCollisionSide(traceDistanceResult, approachDirection, yDelta, zDelta, xDelta, box.minY, box.minZ, box.maxZ, box.minX, box.maxX, Direction.DOWN, intersectingVector.y, intersectingVector.z, intersectingVector.x);
-        else if (yDelta < -1.0E-7D)
+        else if(yDelta < -1.0E-7D)
             approachDirection = traceCollisionSide(traceDistanceResult, approachDirection, yDelta, zDelta, xDelta, box.maxY, box.minZ, box.maxZ, box.minX, box.maxX, Direction.UP, intersectingVector.y, intersectingVector.z, intersectingVector.x);
 
-        if (zDelta > 1.0E-7D)
+        if(zDelta > 1.0E-7D)
             approachDirection = traceCollisionSide(traceDistanceResult, approachDirection, zDelta, xDelta, yDelta, box.minZ, box.minX, box.maxX, box.minY, box.maxY, Direction.NORTH, intersectingVector.z, intersectingVector.x, intersectingVector.y);
-        else if (zDelta < -1.0E-7D)
+        else if(zDelta < -1.0E-7D)
             approachDirection = traceCollisionSide(traceDistanceResult, approachDirection, zDelta, xDelta, yDelta, box.maxZ, box.minX, box.maxX, box.minY, box.maxY, Direction.SOUTH, intersectingVector.z, intersectingVector.x, intersectingVector.y);
 
         return approachDirection;
@@ -236,7 +236,7 @@ public final class OrientedBox {
         final double d = (begin - startX) / xDelta;
         final double e = startY + d * yDelta;
         final double f = startZ + d * zDelta;
-        if (0.0D < d && d < traceDistanceResult[0] && minX - 1.0E-7D < e && e < maxX + 1.0E-7D && minZ - 1.0E-7D < f && f < maxZ + 1.0E-7D) {
+        if(0.0D < d && d < traceDistanceResult[0] && minX - 1.0E-7D < e && e < maxX + 1.0E-7D && minZ - 1.0E-7D < f && f < maxZ + 1.0E-7D) {
             traceDistanceResult[0] = d;
             return resultDirection;
         } else
