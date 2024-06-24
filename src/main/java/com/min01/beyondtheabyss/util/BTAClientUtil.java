@@ -49,12 +49,12 @@ public class BTAClientUtil
         PoseStack poseStack = new PoseStack();
         poseStack.translate(entity.getX(), entity.getY(), entity.getZ());
         float zRot = isInWater ? !entity.isInWater() ? 90.0F : 0.0F : 0.0F;
-        poseStack.mulPose(new Quaternion(0, -yaw + 180F, zRot, true));
-        poseStack.scale(-1F, -1F, 1F);
+        poseStack.mulPose(new Quaternion(0, -yaw + 180.0F, zRot, true));
+        poseStack.scale(-1.0F, -1.0F, 1.0F);
         ModelPart nextPart = null;
         for(int i = 0; i < modelPartName.length; i++)
         {
-            if(i == 0) 
+            if(i == 0)
             {
                 nextPart = root.getChild(modelPartName[0]);
                 nextPart.translateAndRotate(poseStack);

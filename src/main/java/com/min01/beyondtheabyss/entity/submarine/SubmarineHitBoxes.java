@@ -30,7 +30,7 @@ public class SubmarineHitBoxes
     private final String right = "right";
     private final EntityBounds hitboxes = EntityBounds.builder()
             .add(this.root).setBounds(0.0, 0.0, 0.0).build()
-            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setPivot(0, -2.5F, 0).setParent(this.root).build()
+            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setParent(this.root).build()
             .add(this.controllerSeat).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
             .add(this.seat1).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
             .add(this.seat2).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
@@ -79,7 +79,7 @@ public class SubmarineHitBoxes
         EntityPart left = this.hitboxes.getPart(this.left);
         EntityPart right = this.hitboxes.getPart(this.right);
         
-        root.setRotation(0, -this.entity.getYRot(), 0, true);
+        root.setRotation(0, this.entity.yHeadRot - this.entity.yBodyRot, 0, true);
         submarine.setRotation(this.entity.getXRot(), 0, 0, true);
         
         root.setX(this.entity.getX());

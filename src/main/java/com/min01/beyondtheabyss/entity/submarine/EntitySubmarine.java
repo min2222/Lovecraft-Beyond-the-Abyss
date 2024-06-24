@@ -9,6 +9,8 @@ import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType
 import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -24,14 +26,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class EntitySubmarine extends LivingEntity implements MultipartAwareEntity
 {
@@ -51,7 +51,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
     public float brightnessOld;
     public int glowingTicks;
     
-    public Vec3[] posArray = new Vec3[12];
+    public Vec3[] posArray = new Vec3[13];
     
 	public EntitySubmarine(EntityType<? extends LivingEntity> p_19870_, Level p_19871_)
 	{
@@ -317,33 +317,22 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
     }
     
     @Override
+    protected Entity.MovementEmission getMovementEmission() 
+    {
+    	return MovementEmission.EVENTS;
+    }
+    
+    @Override
+    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider)
+    {
+        return type.supportsBoating(null);
+    }
+    
+    @Override
     public boolean canBeCollidedWith()
     {
     	return true;
     }
-    
-    @Override
-	public void travel(Vec3 vec)
-	{
-		if(this.getControllingPlayer() != null)
-		{
-			if(this.isInWater())
-			{
-				boolean jumping = ObfuscationReflectionHelper.getPrivateValue(LivingEntity.class, this.getControllingPlayer(), "f_20899_");
-				Vec3 travelVector = new Vec3(this.getControllingPlayer().xxa, this.getControllingPlayer().yya, this.getControllingPlayer().zza);
-	            if(this.isEffectiveAi())
-	            {
-	    			this.moveRelative(0.1F, travelVector);
-	    			this.move(MoverType.SELF, this.getDeltaMovement());
-	    			this.setDeltaMovement(this.getDeltaMovement().scale(0.01D));
-	            }
-				if(jumping)
-				{
-					this.setDeltaMovement(this.getDeltaMovement().add(0, 0.1F, 0));
-				}
-			}
-		}
-	}
     
     @Override
     public void push(double p_20286_, double p_20287_, double p_20288_) 
@@ -392,18 +381,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
     {
     	Vec3 dismountPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, 0);
     	return this.position().add(0, dismountPos.y + 1.8F, 0);
-    }
-    
-    @Override
-    protected Entity.MovementEmission getMovementEmission() 
-    {
-    	return MovementEmission.EVENTS;
-    }
-	
-    @Override
-    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider)
-    {
-        return type.supportsBoating(null);
     }
     
     @Override
@@ -534,6 +511,10 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	public void setSeatPlayer(int seatId, Player player)
 	{
 		player.startRiding(this);
+        if(!this.level.isClientSide)
+        {
+            BTANetwork.sendToAll(new VehicleUpdatePacket(player, this));
+        }
 		switch(seatId)
 		{
 		case 0:

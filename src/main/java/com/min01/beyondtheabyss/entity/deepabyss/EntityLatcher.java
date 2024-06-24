@@ -10,7 +10,7 @@ import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.MountUpdatePacket;
+import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -196,7 +196,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     @Override
     public boolean startRiding(Entity p_20330_) 
     {
-    	BTANetwork.sendToAll(new MountUpdatePacket(this, p_20330_));
+    	BTANetwork.sendToAll(new VehicleUpdatePacket(this, p_20330_));
     	return super.startRiding(p_20330_);
     }
     

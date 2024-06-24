@@ -18,14 +18,14 @@ public class SubmarinePartHitBoxes
     
     private final EntityBounds hatchHitBoxes = EntityBounds.builder()
             .add(this.root).setBounds(0.0, 0.0, 0.0).build()
-            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setPivot(0, -2.5F, 0).setParent(this.root).build()
+            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setParent(this.root).build()
             .add(this.hatch).setBounds(1.4125F, 0.6F, 1.4125F).setParent(this.submarine).build()
             .overrideCollisionBox(this.collisionHitbox)
             .getFactory().create();
     
     private final EntityBounds detectorHitBoxes = EntityBounds.builder()
             .add(this.root).setBounds(0.0, 0.0, 0.0).build()
-            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setPivot(0, -2.5F, 0).setParent(this.root).build()
+            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setParent(this.root).build()
             .add(this.detector).setBounds(2.5625F, 2.4375F, 4.375F).setParent(this.submarine).build()
             .overrideCollisionBox(this.collisionHitbox)
             .getFactory().create();
@@ -53,8 +53,9 @@ public class SubmarinePartHitBoxes
 
     public void updatePosition(SubmarinePart entity)
     {
-    	if(entity.type != null)
+    	if(entity.type != null && this.entity.getOwner() != null)
     	{
+        	EntitySubmarine owner = this.entity.getOwner();
         	switch(entity.type)
         	{
 	    		case DETECTOR:
@@ -63,14 +64,14 @@ public class SubmarinePartHitBoxes
 	                EntityPart submarine = this.detectorHitBoxes.getPart(this.submarine);
 	                EntityPart detector = this.detectorHitBoxes.getPart(this.detector);
 	                
-	                root.setRotation(0, -this.entity.getYRot(), 0, true);
-	                submarine.setRotation(this.entity.getXRot(), 0, 0, true);
+	                root.setRotation(0, owner.yHeadRot - owner.yBodyRot, 0, true);
+	                submarine.setRotation(owner.getXRot(), 0, 0, true);
 	                
 	                root.setX(this.entity.getX());
 	                root.setY(this.entity.getY());
 	                root.setZ(this.entity.getZ());
 	                
-	                this.setPartPosition(detector, 0, 3.0F, 0.05F);
+	                this.setPartPosition(detector, owner.posArray[12]);
 	                
 	                MutableBox overrideBox = this.detectorHitBoxes.getOverrideBox();
 	                if(overrideBox != null)
@@ -85,18 +86,14 @@ public class SubmarinePartHitBoxes
 	                EntityPart submarine = this.hatchHitBoxes.getPart(this.submarine);
 	                EntityPart hatch = this.hatchHitBoxes.getPart(this.hatch);
 	                
-	                root.setRotation(0, -this.entity.getYRot(), 0, true);
-	                submarine.setRotation(this.entity.getXRot(), 0, 0, true);
+	                root.setRotation(0, owner.yHeadRot - owner.yBodyRot, 0, true);
+	                submarine.setRotation(owner.getXRot(), 0, 0, true);
 	                
 	                root.setX(this.entity.getX());
 	                root.setY(this.entity.getY());
 	                root.setZ(this.entity.getZ());
-	                
-	                if(this.entity.getOwner() != null)
-	                {
-	                	EntitySubmarine owner = this.entity.getOwner();
-		                this.setPartPosition(hatch, owner.posArray[8]);
-	                }
+
+	                this.setPartPosition(hatch, owner.posArray[8]);
 	                
 	                MutableBox overrideBox = this.hatchHitBoxes.getOverrideBox();
 	                if(overrideBox != null)

@@ -9,18 +9,18 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
-public class MountUpdatePacket 
+public class VehicleUpdatePacket 
 {
 	public final int rider;
 	public final int vehicle;
 
-	public MountUpdatePacket(Entity rider, Entity vehicle) 
+	public VehicleUpdatePacket(Entity rider, Entity vehicle) 
 	{
 		this.rider = rider.getId();
 		this.vehicle = vehicle.getId();
 	}
 
-	public MountUpdatePacket(FriendlyByteBuf buf)
+	public VehicleUpdatePacket(FriendlyByteBuf buf)
 	{
 		this.rider = buf.readInt();
 		this.vehicle = buf.readInt();
@@ -34,7 +34,7 @@ public class MountUpdatePacket
 
 	public static class Handler 
 	{
-		public static boolean onMessage(MountUpdatePacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(VehicleUpdatePacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{

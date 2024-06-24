@@ -12,7 +12,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 public class BTANetwork 
 {
 	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(BeyondtheAbyss.MODID, "bta_channel"),
+	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(BeyondtheAbyss.MODID, "beyondtheabyss"),
 			() -> PROTOCOL_VERSION,
 			PROTOCOL_VERSION::equals,
 			PROTOCOL_VERSION::equals
@@ -25,9 +25,9 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, KeyInputPacket.class, KeyInputPacket::encode, KeyInputPacket::new, KeyInputPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, BTAAbilitySyncPacket.class, BTAAbilitySyncPacket::encode, BTAAbilitySyncPacket::new, BTAAbilitySyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, PartPositionUpdatePacket.class, PartPositionUpdatePacket::encode, PartPositionUpdatePacket::new, PartPositionUpdatePacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, AltarItemSyncPacket.class, AltarItemSyncPacket::encode, AltarItemSyncPacket::new, AltarItemSyncPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, MountUpdatePacket.class, MountUpdatePacket::encode, MountUpdatePacket::new, MountUpdatePacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, SubmarinePartUpdatePacket.class, SubmarinePartUpdatePacket::encode, SubmarinePartUpdatePacket::new, SubmarinePartUpdatePacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, AltarItemSyncPacket.class, AltarItemSyncPacket::encode, AltarItemSyncPacket::new, AltarItemSyncPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, VehicleUpdatePacket.class, VehicleUpdatePacket::encode, VehicleUpdatePacket::new, VehicleUpdatePacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToAll(MSG message) 

@@ -36,22 +36,27 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0, -1.5F, 0);
 		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
-        float f1 = Mth.rotLerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot());
+		float f = Mth.rotLerp(p_114487_, p_114485_.yBodyRotO, p_114485_.yBodyRot);
+		float f1 = Mth.rotLerp(p_114487_, p_114485_.yHeadRotO, p_114485_.yHeadRot);
+		float f2 = f1 - f;
         float f6 = Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot());
-		this.model.setupAnim(p_114485_, 0, 0, 0, f1 + 180, f6);
+		this.model.setupAnim(p_114485_, 0, 0, 0, f2 + 180, f6);
 		this.model.renderToBuffer(p_114488_, consumer, p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		Vec3 topPos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "top"});
-		Vec3 leftWallPos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "l_wall"});
-		Vec3 rightWallPos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "r_wall"});
-		Vec3 hatchPos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "hatch"});
-		Vec3 frontPos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "front"});
-		Vec3 backPos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "back"});
-		Vec3 bottomPos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "bottom"});
-		Vec3 seat4Pos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "seat4"});
-		Vec3 seat3Pos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "seat3"});
-		Vec3 seat2Pos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "seat2"});
-		Vec3 seat1Pos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "seat1"});
-		Vec3 controllerPos = BTAClientUtil.getWorldPosition(p_114485_, p_114485_.getYRot(), this.model.root(), new String[] {"submarine", "controller"});
+		float yRot = f2;
+		Vec3 detectorPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine"});
+		Vec3 topPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "top"});
+		Vec3 leftWallPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "l_wall"});
+		Vec3 rightWallPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "r_wall"});
+		Vec3 hatchPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "hatch"});
+		Vec3 frontPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "front"});
+		Vec3 backPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "back"});
+		Vec3 bottomPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "bottom"});
+		Vec3 seat4Pos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "seat4"});
+		Vec3 seat3Pos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "seat3"});
+		Vec3 seat2Pos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "seat2"});
+		Vec3 seat1Pos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "seat1"});
+		Vec3 controllerPos = BTAClientUtil.getWorldPosition(p_114485_, yRot, this.model.root(), new String[] {"submarine", "controller"});
+		p_114485_.posArray[12] = detectorPos;
 		p_114485_.posArray[11] = topPos;
 		p_114485_.posArray[10] = leftWallPos;
 		p_114485_.posArray[9] = rightWallPos;
@@ -64,6 +69,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		p_114485_.posArray[2] = seat2Pos;
 		p_114485_.posArray[1] = seat1Pos;
 		p_114485_.posArray[0] = controllerPos;
+	    BTANetwork.sendToAll(new SubmarinePartUpdatePacket(p_114485_, detectorPos, 12));
 	    BTANetwork.sendToAll(new SubmarinePartUpdatePacket(p_114485_, topPos, 11));
 	    BTANetwork.sendToAll(new SubmarinePartUpdatePacket(p_114485_, leftWallPos, 10));
 	    BTANetwork.sendToAll(new SubmarinePartUpdatePacket(p_114485_, rightWallPos, 9));
@@ -85,7 +91,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 	        strength = Mth.clamp(strength, 0.1F, 1);
 	        
 			VertexConsumer eyeConsumer = p_114489_.getBuffer(RenderType.eyes(LAYER_TEXTURE));
-			this.model.setupAnim(p_114485_, 0, 0, 0, f1 + 180, f6);
+			this.model.setupAnim(p_114485_, 0, 0, 0, f2 + 180, f6);
 			this.model.renderToBuffer(p_114488_, eyeConsumer, p_114490_, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
 		}
 		p_114488_.popPose();

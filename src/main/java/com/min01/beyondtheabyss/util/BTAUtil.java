@@ -20,6 +20,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -35,8 +36,8 @@ public class BTAUtil
 	{
 		if(!(entity instanceof EntitySubmarine) && !(entity instanceof SubmarinePart))
 		{
-			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox().inflate(0.15F));
-			List<SubmarinePart> hatches = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox());
+			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox().inflate(0.15F), EntitySelector.NO_SPECTATORS);
+			List<SubmarinePart> hatches = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox(), EntitySelector.NO_SPECTATORS);
 			hatches.removeIf(t -> t.type != SubmarinePartType.HATCH);
 
 			if(!list.isEmpty())

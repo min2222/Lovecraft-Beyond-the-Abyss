@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
@@ -24,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -47,6 +49,18 @@ public class EventHandlerForge
 						item.setDeltaMovement(item.getDeltaMovement().subtract(0, 0.01F, 0));
 					}
 				}
+			});
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onMobEffectAdded(MobEffectEvent.Added event)
+	{
+		if(event.getEffectInstance().getEffect() == BTAEffects.ABYSSAL_SCALE.get())
+		{
+			event.getEntity().getCapability(BTACapabilities.BTA_ABILITY).ifPresent((cap) -> 
+			{
+				cap.addAbility(BTAAbilities.ABYSSAL_SCALE);
 			});
 		}
 	}
