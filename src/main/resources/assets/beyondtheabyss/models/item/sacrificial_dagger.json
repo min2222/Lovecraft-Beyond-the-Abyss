@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "beyondtheabyss:item/vampire_dagger"
+    "layer0": "beyondtheabyss:item/sacrificial_dagger"
   }
 }

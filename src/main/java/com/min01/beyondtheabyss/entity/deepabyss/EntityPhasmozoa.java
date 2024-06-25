@@ -15,7 +15,6 @@ import net.minecraft.world.level.Level;
 public class EntityPhasmozoa extends AbstractDeepAbyssMob
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> SPECTRE_TIME = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> SPECTRE_COOLDOWN = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Float> SPECTRE_ALPHA = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> IS_SPECTRE = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.BOOLEAN);
@@ -39,7 +38,6 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 	{
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, this.random.nextInt(2) + 1);
-		this.entityData.define(SPECTRE_TIME, 100);
 		this.entityData.define(SPECTRE_COOLDOWN, 0);
 		this.entityData.define(SPECTRE_ALPHA, 1.0F);
 		this.entityData.define(IS_SPECTRE, false);
@@ -51,29 +49,11 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 		super.tick();
 		if(this.isSpectre())
 		{
-			if(this.getSpectreTime() > 0)
-			{
-				this.setSpectreTime(this.getSpectreTime() - 1);
-				if(this.getSpectreAlpha() > 0.1F)
-				{
-					this.setSpectreAlpha(this.getSpectreAlpha() - 0.05F);
-				}
-			}
-			else
-			{
-				if(this.getSpectreAlpha() < 1.0F)
-				{
-					this.setSpectreAlpha(this.getSpectreAlpha() + 0.05F);
-				}
-				else
-				{
-					this.disableSpectre();
-				}
-			}
+			this.setSpectreAlpha(Math.max(this.getSpectreAlpha() - 0.05F, 0.1F));
 			
 			if(this.getTarget() != null)
 			{
-				if(this.distanceTo(this.getTarget()) <= 5)
+				if(this.distanceTo(this.getTarget()) <= 3)
 				{
 					this.disableSpectre();
 				}
@@ -85,6 +65,8 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 			{
 				this.setSpectreCooldown(this.getSpectreCooldown() - 1);
 			}
+
+			this.setSpectreAlpha(Math.min(this.getSpectreAlpha() + 0.05F, 1.0F));
 		}
 	}
 	
@@ -93,7 +75,6 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 		this.noPhysics = true;
 		this.setNoGravity(true);
 		this.setSpectre(true);
-		this.setSpectreTime(100);
 	}
 	
 	public void disableSpectre()
@@ -118,16 +99,6 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 	public int getSpectreCooldown()
 	{
 		return this.entityData.get(SPECTRE_COOLDOWN);
-	}
-	
-	public void setSpectreTime(int value)
-	{
-		this.entityData.set(SPECTRE_TIME, value);
-	}
-	
-	public int getSpectreTime()
-	{
-		return this.entityData.get(SPECTRE_TIME);
 	}
 	
 	public void setSpectreAlpha(float value)

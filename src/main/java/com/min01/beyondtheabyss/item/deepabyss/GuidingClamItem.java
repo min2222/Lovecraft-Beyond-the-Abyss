@@ -15,9 +15,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 
-public class ItemGuidingClam extends Item
+public class GuidingClamItem extends Item
 {
-	public ItemGuidingClam()
+	public GuidingClamItem()
 	{
 		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MISC).stacksTo(1).rarity(BTAItems.RARITY_ABYSS));
 	}

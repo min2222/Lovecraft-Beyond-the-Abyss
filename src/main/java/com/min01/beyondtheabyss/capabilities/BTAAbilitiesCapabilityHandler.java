@@ -59,7 +59,7 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 			case ABYSSAL_DASH:
 				this.updateAbyssalDash(this.entity);
 				break;
-			case ABYSSAL_SCALE:
+			case ABYSSAL_SCALES:
 				this.updateAbyssalScale(this.entity);
 				break;
 			default:
@@ -70,14 +70,14 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	
 	public void updateAbyssalScale(LivingEntity entity)
 	{
-		if(this.getTickcount(BTAAbilities.ABYSSAL_SCALE) < 5 && entity.tickCount % 7F == 0)
+		if(this.getTickcount(BTAAbilities.ABYSSAL_SCALES) < 5 && entity.tickCount % 7F == 0)
 		{
-			this.setTickcount(BTAAbilities.ABYSSAL_SCALE, this.getTickcount(BTAAbilities.ABYSSAL_SCALE) + 1);
+			this.setTickcount(BTAAbilities.ABYSSAL_SCALES, this.getTickcount(BTAAbilities.ABYSSAL_SCALES) + 1);
 		}
 		
-		if(!entity.hasEffect(BTAEffects.ABYSSAL_SCALE.get()))
+		if(!entity.hasEffect(BTAEffects.ABYSSAL_SCALES.get()))
 		{
-			this.removeAbility(BTAAbilities.ABYSSAL_SCALE);
+			this.removeAbility(BTAAbilities.ABYSSAL_SCALES);
 		}
 	}
 	
@@ -134,7 +134,7 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	{
 		NONE(0),
 		ABYSSAL_DASH(1),
-		ABYSSAL_SCALE(2);
+		ABYSSAL_SCALES(2);
 		
 		public int id;
 

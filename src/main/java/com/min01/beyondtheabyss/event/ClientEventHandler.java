@@ -23,7 +23,7 @@ import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalDashLayer;
-import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalScaleLayer;
+import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalScalesLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.AbyssalBulbrayRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.AbyssalHermitCrabRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
@@ -33,7 +33,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.PhasmozoaRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.deepabyss.ItemGuidingClam;
+import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
@@ -97,7 +97,7 @@ public class ClientEventHandler
         });
         ItemProperties.register(BTAItems.GUIDING_CLAM.get(), new ResourceLocation("open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
-        	return ItemGuidingClam.isOpen(p_174585_) ? 1.0F : 0.0F;
+        	return GuidingClamItem.isOpen(p_174585_) ? 1.0F : 0.0F;
         });
     }
     
@@ -213,6 +213,6 @@ public class ClientEventHandler
 	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer)
 	{
 		renderer.addLayer(new AbyssalDashLayer<>(renderer));
-		renderer.addLayer(new AbyssalScaleLayer<>(renderer));
+		renderer.addLayer(new AbyssalScalesLayer<>(renderer));
 	}
 }

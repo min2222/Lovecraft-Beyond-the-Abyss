@@ -58,14 +58,15 @@
 	"item.beyondtheabyss.ghidruth_diving_boots": "Ghidruth Diving Boots",
 	"item.beyondtheabyss.rusty_harpoon": "Rusty Harpoon",
 	"item.beyondtheabyss.ghidruth_scale_harpoon": "Ghidruth Scale Harpoon",
-	"item.beyondtheabyss.vampire_dagger": "Vampire Dagger",
+	"item.beyondtheabyss.sacrificial_dagger": "Sacrificial Dagger",
 	"block.beyondtheabyss.riftwelling_altar": "Riftwelling Altar",
 	"block.beyondtheabyss.abyssalith": "Abyssalith",
 	"block.beyondtheabyss.deep_abyssalith": "Deep Abyssalith",
 	"block.beyondtheabyss.bta_light": "BTA Light",
 	"death.attack.ghidruth_flesh": "%1$s teeth shattered while trying to chew on Ghidruth's flesh.",
 	"death.attack.bleeding": "%1$s died from excessive bleeding.",
-	"effect.beyondtheabyss.abyssal_scale": "Abyssal Scale",
+	"effect.beyondtheabyss.abyssal_scales": "Abyssal Scales",
 	"effect.beyondtheabyss.air_swim": "Air Swim",
-	"effect.beyondtheabyss.bleeding": "Bleeding"
+	"effect.beyondtheabyss.bleeding": "Bleeding",
+	"effect.beyondtheabyss.hallucination": "Hallucination"
 }

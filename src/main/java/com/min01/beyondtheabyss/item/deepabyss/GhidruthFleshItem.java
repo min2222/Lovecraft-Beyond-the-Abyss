@@ -12,11 +12,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ItemGhidruthFlesh extends Item
+public class GhidruthFleshItem extends Item
 {
 	private boolean isRaw;
 	
-	public ItemGhidruthFlesh(FoodProperties properties, boolean isRaw) 
+	public GhidruthFleshItem(FoodProperties properties, boolean isRaw) 
 	{
 		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_FOODS).food(properties));
 		this.isRaw = isRaw;
@@ -32,7 +32,7 @@ public class ItemGhidruthFlesh extends Item
 		else
 		{
 			//6000 = 5 minutes
-			p_41411_.addEffect(new MobEffectInstance(BTAEffects.ABYSSAL_SCALE.get(), 6000, 0, false, false));
+			p_41411_.addEffect(new MobEffectInstance(BTAEffects.ABYSSAL_SCALES.get(), 6000, 0, false, false));
 		}
 		
 		if(p_41411_ instanceof Player && !((Player)p_41411_).getAbilities().instabuild) 

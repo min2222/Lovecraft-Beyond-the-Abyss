@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-public class AbyssalScaleLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
+public class AbyssalScalesLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
-    public AbyssalScaleLayer(RenderLayerParent<T, M> renderer) 
+    public AbyssalScalesLayer(RenderLayerParent<T, M> renderer) 
     {
         super(renderer);
     }
@@ -25,16 +25,16 @@ public class AbyssalScaleLayer<T extends LivingEntity, M extends EntityModel<T>>
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) 
     {
-    	if(BTAUtil.hasAbility(entitylivingbaseIn, BTAAbilities.ABYSSAL_SCALE))
+    	if(BTAUtil.hasAbility(entitylivingbaseIn, BTAAbilities.ABYSSAL_SCALES))
     	{
             VertexConsumer VertexConsumer = bufferIn.getBuffer(RenderType.entityCutout(this.getTexture(entitylivingbaseIn)));
-            this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     	}
     }
     
 	public ResourceLocation getTexture(LivingEntity living)
 	{
-		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/abyssal_scale%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickcount(BTAAbilities.ABYSSAL_SCALE, living)));
+		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/abyssal_scale%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickcount(BTAAbilities.ABYSSAL_SCALES, living)));
 		return location;
 	}
 }

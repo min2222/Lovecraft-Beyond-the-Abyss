@@ -56,11 +56,11 @@ public class EventHandlerForge
 	@SubscribeEvent
 	public static void onMobEffectAdded(MobEffectEvent.Added event)
 	{
-		if(event.getEffectInstance().getEffect() == BTAEffects.ABYSSAL_SCALE.get())
+		if(event.getEffectInstance().getEffect() == BTAEffects.ABYSSAL_SCALES.get())
 		{
 			event.getEntity().getCapability(BTACapabilities.BTA_ABILITY).ifPresent((cap) -> 
 			{
-				cap.addAbility(BTAAbilities.ABYSSAL_SCALE);
+				cap.addAbility(BTAAbilities.ABYSSAL_SCALES);
 			});
 		}
 	}

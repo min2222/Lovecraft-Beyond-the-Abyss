@@ -1,13 +1,13 @@
-package com.min01.beyondtheabyss.effect.deepabyss;
+package com.min01.beyondtheabyss.effect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
-public class EffectAirSwim extends MobEffect
+public class BasicBTAEffect extends MobEffect
 {
-	public EffectAirSwim()
+	public BasicBTAEffect(MobEffectCategory p_19451_, int p_19452_) 
 	{
-		super(MobEffectCategory.NEUTRAL, 3407871);
+		super(p_19451_, p_19452_);
 	}
 	
 	@Override

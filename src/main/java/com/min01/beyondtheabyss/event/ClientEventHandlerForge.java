@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.config.BTAConfig;
+import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -115,25 +116,35 @@ public class ClientEventHandlerForge
         }
 
         ClientLevel world = MC.level;
-        if(world != null)
+        if(world != null && !MC.isPaused() && MC.player != null)
         {
-        	if(world.dimension().location().getPath().equals("deep_abyss"))
+        	if(MC.gameRenderer.currentEffect() == null)
         	{
-                if(!MC.isPaused() && MC.player != null && BTAConfig.enableAbyssShader.get())
-                {
-                	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
-                }
-        	}
-            else
-            {
-            	if(MC.gameRenderer.currentEffect() != null)
+            	if(world.dimension().location().getPath().equals("deep_abyss"))
             	{
-                	if(MC.gameRenderer.currentEffect().getName().equals("beyondtheabyss:shaders/post/abyss.json"))
-                	{
-                		MC.gameRenderer.shutdownEffect();
-                	}
+                    if(BTAConfig.enableAbyssShader.get())
+                    {
+                    	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
+                    }
             	}
-            }
+            	
+            	if(MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
+            	{
+            		MC.gameRenderer.loadEffect(new ResourceLocation("shaders/post/deconverge.json"));
+            	}
+        	}
+        	else
+        	{
+            	if(MC.gameRenderer.currentEffect().getName().equals("beyondtheabyss:shaders/post/abyss.json") && !world.dimension().location().getPath().equals("deep_abyss"))
+            	{
+            		MC.gameRenderer.shutdownEffect();
+            	}
+            	
+            	if(MC.gameRenderer.currentEffect().getName().equals("minecraft:shaders/post/deconverge.json") && !MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
+            	{
+            		MC.gameRenderer.shutdownEffect();
+            	}
+        	}
         }
     }
     

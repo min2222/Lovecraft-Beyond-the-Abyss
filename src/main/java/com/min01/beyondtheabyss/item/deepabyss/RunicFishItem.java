@@ -10,9 +10,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ItemRunicFish extends Item
+public class RunicFishItem extends Item
 {
-	public ItemRunicFish(FoodProperties properties) 
+	public RunicFishItem(FoodProperties properties) 
 	{
 		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_FOODS).food(properties));
 	}
