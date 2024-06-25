@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.renderer.layer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -34,7 +34,7 @@ public class AbyssalScalesLayer<T extends LivingEntity, M extends EntityModel<T>
     
 	public ResourceLocation getTexture(LivingEntity living)
 	{
-		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/abyssal_scale%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickcount(BTAAbilities.ABYSSAL_SCALES, living)));
+		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/abyssal_scale%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickCount(BTAAbilities.ABYSSAL_SCALES, living)));
 		return location;
 	}
 }

@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.util;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.item.BTAItems;
 

@@ -4,12 +4,14 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.PartPositionUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -51,6 +53,12 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailPos, 2));
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, bodyPos, 1));
 	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, headPos, 0));
+	}
+	
+	@Override
+	protected RenderType getRenderType(EntityGhidruth p_115322_, boolean p_115323_, boolean p_115324_, boolean p_115325_)
+	{
+		return BTARenderType.illusion(this.getTextureLocation(p_115322_));
 	}
 
 	@Override

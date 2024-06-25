@@ -31,7 +31,7 @@ public class ModelPhasmozoa extends HierarchicalModel<EntityPhasmozoa>
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 72.0F, 0.0F));
 
 		PartDefinition Phasmozoa = root.addOrReplaceChild("Phasmozoa", CubeListBuilder.create(), PartPose.offset(0.0F, -12.0F, 0.0F));
 

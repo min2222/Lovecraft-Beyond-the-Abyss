@@ -1,8 +1,10 @@
 package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -19,17 +21,26 @@ import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.level.LevelEvent;
@@ -40,7 +51,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.FORGE)
 public class ClientEventHandlerForge 
 {
-	private static final Minecraft MC = Minecraft.getInstance();
+	public static final Minecraft MC = Minecraft.getInstance();
     private static boolean YkeyPressed = false;
     
     //TEST
@@ -49,10 +60,74 @@ public class ClientEventHandlerForge
     {
     	if(event.getStage() != Stage.AFTER_PARTICLES)
     		return;
-    	
     	if(MC.player != null)
     	{
     		BTAClientUtil.testShader(event.getPartialTick());
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onRenderLevelStage(RenderLevelStageEvent event)
+    {
+    	if(event.getStage() == Stage.AFTER_PARTICLES)
+    	{
+    		PoseStack poseStack = event.getPoseStack();
+    		MC.player.getCapability(BTACapabilities.ILLUSION).ifPresent(cap -> 
+    		{
+        		EntityGhidruth ghidruth = (EntityGhidruth) cap.getIllusion();
+        		if(ghidruth != null)
+        		{
+        			EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(ghidruth);
+        			if(renderer instanceof LivingEntityRenderer)
+        			{
+        	    		poseStack.pushPose();
+            			LivingEntityRenderer<? super LivingEntity, ?> livingRenderer = (LivingEntityRenderer<? super LivingEntity, ?>) renderer;
+                		float partialTick = event.getPartialTick();
+            			float f = Mth.lerp(partialTick, ghidruth.yRotO, ghidruth.getYRot());
+            			double x = Mth.lerp((double)partialTick, ghidruth.xOld, ghidruth.getX());
+            			double y = Mth.lerp((double)partialTick, ghidruth.yOld, ghidruth.getY());
+            			double z = Mth.lerp((double)partialTick, ghidruth.zOld, ghidruth.getZ());
+            			Vec3 lerpPos = new Vec3(x, y, z);	
+            			Vec3 pos = lerpPos.subtract(event.getCamera().getPosition());
+            	        poseStack.translate(pos.x, pos.y, pos.z);
+            			livingRenderer.render(ghidruth, f, partialTick, event.getPoseStack(), MC.renderBuffers().bufferSource(), LightTexture.FULL_BRIGHT);
+                		poseStack.popPose();
+        			}
+        		}
+    		});
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onRenderGuiOverlayEvent(RenderGuiOverlayEvent event)
+    {
+    	if(MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
+    	{
+        	if(event.getOverlay() == VanillaGuiOverlay.FOOD_LEVEL.type())
+        	{
+        		PoseStack poseStack = event.getPoseStack();
+                int screenWidth = MC.getWindow().getGuiScaledWidth();
+                int screenHeight = MC.getWindow().getGuiScaledHeight();
+                IGuiOverlay overlay = GuiOverlayManager.findOverlay(VanillaGuiOverlay.FOOD_LEVEL.id()).overlay();
+        		event.setCanceled(true);
+        		poseStack.pushPose();
+        		poseStack.translate(-100, 0, 0);
+        		overlay.render((ForgeGui) MC.gui, poseStack, event.getPartialTick(), screenWidth, screenHeight);
+        		poseStack.popPose();
+        	}
+        	
+        	if(event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type())
+        	{
+        		PoseStack poseStack = event.getPoseStack();
+                int screenWidth = MC.getWindow().getGuiScaledWidth();
+                int screenHeight = MC.getWindow().getGuiScaledHeight();
+                IGuiOverlay overlay = GuiOverlayManager.findOverlay(VanillaGuiOverlay.PLAYER_HEALTH.id()).overlay();
+        		event.setCanceled(true);
+        		poseStack.pushPose();
+        		poseStack.translate(100, 0, 0);
+        		overlay.render((ForgeGui) MC.gui, poseStack, event.getPartialTick(), screenWidth, screenHeight);
+        		poseStack.popPose();
+        	}
     	}
     }
     
@@ -77,7 +152,7 @@ public class ClientEventHandlerForge
         Player player = MC.player;
         float delta = Minecraft.getInstance().getFrameTime();
         float ticksExistedDelta = player.tickCount + delta;
-        if(player != null && BTAConfig.cameraShakesAllowed.get())
+        if(player != null && BTAConfig.cameraShakes.get())
         {
             float shakeAmplitude = 0.0f;
             for(EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0))) 

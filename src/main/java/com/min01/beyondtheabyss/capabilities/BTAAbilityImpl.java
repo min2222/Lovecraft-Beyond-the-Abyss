@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.PacketDistributor;
 
-public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
+public class BTAAbilityImpl implements BTAAbilityCapability
 {
 	private LivingEntity entity;
 	private Map<BTAAbilities, Integer> abilities = new HashMap<>();
@@ -26,7 +26,7 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 		for(Map.Entry<BTAAbilities, Integer> entry : this.abilities.entrySet())
 		{
 			tag.putInt("ability", entry.getKey().id);
-			tag.putInt("tickCount", entry.getValue());
+			tag.putInt("TickCount", entry.getValue());
 		}
 		return tag;
 	}
@@ -34,7 +34,7 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		this.abilities.put(BTAAbilities.byId(nbt.getInt("ability")), nbt.getInt("tickCount"));
+		this.abilities.put(BTAAbilities.byId(nbt.getInt("ability")), nbt.getInt("TickCount"));
 	}
 
 	@Override
@@ -70,9 +70,9 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	
 	public void updateAbyssalScale(LivingEntity entity)
 	{
-		if(this.getTickcount(BTAAbilities.ABYSSAL_SCALES) < 5 && entity.tickCount % 7F == 0)
+		if(this.getTickCount(BTAAbilities.ABYSSAL_SCALES) < 5 && entity.tickCount % 7F == 0)
 		{
-			this.setTickcount(BTAAbilities.ABYSSAL_SCALES, this.getTickcount(BTAAbilities.ABYSSAL_SCALES) + 1);
+			this.setTickCount(BTAAbilities.ABYSSAL_SCALES, this.getTickCount(BTAAbilities.ABYSSAL_SCALES) + 1);
 		}
 		
 		if(!entity.hasEffect(BTAEffects.ABYSSAL_SCALES.get()))
@@ -83,9 +83,9 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	
 	public void updateAbyssalDash(LivingEntity entity)
 	{
-		this.setTickcount(BTAAbilities.ABYSSAL_DASH, this.getTickcount(BTAAbilities.ABYSSAL_DASH) + 1);
+		this.setTickCount(BTAAbilities.ABYSSAL_DASH, this.getTickCount(BTAAbilities.ABYSSAL_DASH) + 1);
 		
-		if(this.getTickcount(BTAAbilities.ABYSSAL_DASH) >= 20)
+		if(this.getTickCount(BTAAbilities.ABYSSAL_DASH) >= 20)
 		{
 			this.removeAbility(BTAAbilities.ABYSSAL_DASH);
 		}
@@ -118,14 +118,14 @@ public class BTAAbilitiesCapabilityHandler implements IBTAAbilitiesCapability
 	}
 
 	@Override
-	public void setTickcount(BTAAbilities ability, int tickCount) 
+	public void setTickCount(BTAAbilities ability, int TickCount) 
 	{
-		this.abilities.replace(ability, tickCount);
+		this.abilities.replace(ability, TickCount);
 		this.sendUpdatePacket();
 	}
 
 	@Override
-	public int getTickcount(BTAAbilities ability)
+	public int getTickCount(BTAAbilities ability)
 	{
 		return this.abilities.get(ability);
 	}

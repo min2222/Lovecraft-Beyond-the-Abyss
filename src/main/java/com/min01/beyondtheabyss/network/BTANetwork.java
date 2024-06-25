@@ -28,6 +28,7 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, SubmarinePartUpdatePacket.class, SubmarinePartUpdatePacket::encode, SubmarinePartUpdatePacket::new, SubmarinePartUpdatePacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, AltarItemSyncPacket.class, AltarItemSyncPacket::encode, AltarItemSyncPacket::new, AltarItemSyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, VehicleUpdatePacket.class, VehicleUpdatePacket::encode, VehicleUpdatePacket::new, VehicleUpdatePacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, IllusionSyncPacket.class, IllusionSyncPacket::encode, IllusionSyncPacket::new, IllusionSyncPacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToAll(MSG message) 

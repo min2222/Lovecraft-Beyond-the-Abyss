@@ -3,10 +3,10 @@ package com.min01.beyondtheabyss.util;
 import java.util.List;
 import java.util.UUID;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler;
-import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityCapability;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType;
@@ -137,14 +137,14 @@ public class BTAUtil
 	
 	public static boolean hasAbility(LivingEntity entity, BTAAbilities ability)
 	{
-		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
+		BTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityImpl());
 		return handler.getAbilities().containsKey(ability);
 	}
 	   
-	public static int getAbilityTickcount(BTAAbilities ability, LivingEntity entity)
+	public static int getAbilityTickCount(BTAAbilities ability, LivingEntity entity)
 	{
-		IBTAAbilitiesCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilitiesCapabilityHandler());
-		return handler.getTickcount(ability);
+		BTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityImpl());
+		return handler.getTickCount(ability);
 	}
 	
 	public static Vec3 moveToEntity(Vec3 from, Vec3 to, Entity mover, Entity target, float multiplier)

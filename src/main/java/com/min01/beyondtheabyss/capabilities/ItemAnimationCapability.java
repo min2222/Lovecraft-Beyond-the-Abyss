@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public interface IItemAnimationCapability extends INBTSerializable<CompoundTag>
+public interface ItemAnimationCapability extends INBTSerializable<CompoundTag>
 {
 	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "item_animation");
 

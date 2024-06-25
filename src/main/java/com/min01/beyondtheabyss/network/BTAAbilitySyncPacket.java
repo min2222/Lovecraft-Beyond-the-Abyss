@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.event.ClientEventHandler;
 
@@ -53,7 +53,7 @@ public class BTAAbilitySyncPacket
 						if(ability != BTAAbilities.NONE)
 						{
 							cap.addAbility(ability);
-							cap.setTickcount(ability, message.tickCount);
+							cap.setTickCount(ability, message.tickCount);
 						}
 					});
 				}

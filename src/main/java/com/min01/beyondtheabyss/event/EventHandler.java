@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.IBTAAbilitiesCapability;
-import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityCapability;
+import com.min01.beyondtheabyss.capabilities.ItemAnimationCapability;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
@@ -58,8 +58,8 @@ public class EventHandler
     @SubscribeEvent
     public static void registerCaps(RegisterCapabilitiesEvent event) 
     {
-    	event.register(IItemAnimationCapability.class);
-    	event.register(IBTAAbilitiesCapability.class);
+    	event.register(ItemAnimationCapability.class);
+    	event.register(BTAAbilityCapability.class);
     }
     
     @SubscribeEvent

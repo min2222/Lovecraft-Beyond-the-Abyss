@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.renderer.layer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
 import com.min01.beyondtheabyss.event.ClientEventHandler;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAUtil;

@@ -135,7 +135,7 @@ public class EntityBTACameraShake extends Entity
 
     public static void cameraShake(Level world, Vec3 position, float radius, float magnitude, int duration, int fadeDuration)
     {
-    	if(BTAConfig.cameraShakesAllowed.get())
+    	if(BTAConfig.cameraShakes.get())
     	{
             if(!world.isClientSide) 
             {

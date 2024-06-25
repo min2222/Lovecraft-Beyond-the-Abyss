@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
-public class ItemAnimationCapabilityHandler implements IItemAnimationCapability
+public class ItemAnimationImpl implements ItemAnimationCapability
 {
 	private int animationId;
 	private LivingEntity entity;

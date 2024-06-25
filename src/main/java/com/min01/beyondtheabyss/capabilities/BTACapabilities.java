@@ -16,16 +16,17 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 public class BTACapabilities
 {
-	public static final Capability<IItemAnimationCapability> ITEM_ANIMATION = CapabilityManager.get(new CapabilityToken<>() {});
-	public static final Capability<IBTAAbilitiesCapability> BTA_ABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+	public static final Capability<ItemAnimationCapability> ITEM_ANIMATION = CapabilityManager.get(new CapabilityToken<>() {});
+	public static final Capability<BTAAbilityCapability> BTA_ABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+	public static final Capability<IllusionCapability> ILLUSION = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	public static void attachItemStackCapability(AttachCapabilitiesEvent<ItemStack> e)
 	{
-		e.addCapability(IItemAnimationCapability.ID, new ICapabilitySerializable<CompoundTag>() 
+		e.addCapability(ItemAnimationCapability.ID, new ICapabilitySerializable<CompoundTag>() 
 		{
-			LazyOptional<IItemAnimationCapability> inst = LazyOptional.of(() -> 
+			LazyOptional<ItemAnimationCapability> inst = LazyOptional.of(() -> 
 			{
-				ItemAnimationCapabilityHandler i = new ItemAnimationCapabilityHandler();
+				ItemAnimationImpl i = new ItemAnimationImpl();
 				i.setItemStack(e.getObject());
 				return i;
 			});
@@ -55,11 +56,11 @@ public class BTACapabilities
 	{
 		if(e.getObject() instanceof LivingEntity living) 
 		{
-			e.addCapability(IBTAAbilitiesCapability.ID, new ICapabilitySerializable<CompoundTag>() 
+			e.addCapability(BTAAbilityCapability.ID, new ICapabilitySerializable<CompoundTag>() 
 			{
-				LazyOptional<IBTAAbilitiesCapability> inst = LazyOptional.of(() -> 
+				LazyOptional<BTAAbilityCapability> inst = LazyOptional.of(() -> 
 				{
-					BTAAbilitiesCapabilityHandler i = new BTAAbilitiesCapabilityHandler();
+					BTAAbilityImpl i = new BTAAbilityImpl();
 					i.setEntity(living);
 					return i;
 				});
@@ -69,6 +70,35 @@ public class BTACapabilities
 				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
 				{
 					return BTA_ABILITY.orEmpty(capability, this.inst.cast());
+				}
+
+				@Override
+				public CompoundTag serializeNBT() 
+				{
+					return this.inst.orElseThrow(NullPointerException::new).serializeNBT();
+				}
+
+				@Override
+				public void deserializeNBT(CompoundTag nbt)
+				{
+					this.inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
+				}
+			});
+			
+			e.addCapability(IllusionCapability.ID, new ICapabilitySerializable<CompoundTag>() 
+			{
+				LazyOptional<IllusionCapability> inst = LazyOptional.of(() -> 
+				{
+					IllusionImpl i = new IllusionImpl();
+					i.setEntity(living);
+					return i;
+				});
+
+				@Nonnull
+				@Override
+				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
+				{
+					return ILLUSION.orEmpty(capability, this.inst.cast());
 				}
 
 				@Override

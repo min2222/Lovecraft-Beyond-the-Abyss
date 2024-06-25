@@ -3,14 +3,14 @@ package com.min01.beyondtheabyss.capabilities;
 import java.util.Map;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTAAbilitiesCapabilityHandler.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public interface IBTAAbilitiesCapability extends INBTSerializable<CompoundTag>
+public interface BTAAbilityCapability extends INBTSerializable<CompoundTag>
 {
 	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "bta_ability");
 
@@ -22,9 +22,9 @@ public interface IBTAAbilitiesCapability extends INBTSerializable<CompoundTag>
 	
 	void removeAbility(BTAAbilities ability);
 	
-	void setTickcount(BTAAbilities ability, int tickCount);
+	void setTickCount(BTAAbilities ability, int tickCount);
 	
-	int getTickcount(BTAAbilities ability);
+	int getTickCount(BTAAbilities ability);
 	
 	Map<BTAAbilities, Integer> getAbilities();
 }

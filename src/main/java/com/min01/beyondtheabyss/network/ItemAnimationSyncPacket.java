@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.network;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
+import com.min01.beyondtheabyss.capabilities.ItemAnimationCapability;
 import com.min01.beyondtheabyss.event.ClientEventHandler;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,7 +19,7 @@ public class ItemAnimationSyncPacket
 	private final int animationId;
 	private final ItemStack stack;
 	
-	public ItemAnimationSyncPacket(Entity entity, ItemStack stack, IItemAnimationCapability cap) 
+	public ItemAnimationSyncPacket(Entity entity, ItemStack stack, ItemAnimationCapability cap) 
 	{
 		this.entityId = entity.getId();
 		this.stack = stack;
