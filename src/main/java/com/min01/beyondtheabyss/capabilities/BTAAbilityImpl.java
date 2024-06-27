@@ -45,12 +45,7 @@ public class BTAAbilityImpl implements BTAAbilityCapability
 
 	@Override
 	public void update() 
-	{
-		if(this.getAbilities().isEmpty() || this.getAbilities().containsKey(BTAAbilities.NONE))
-		{
-			this.abilities.clear();
-		}
-		
+	{	
 		for(Map.Entry<BTAAbilities, Integer> entry : this.abilities.entrySet())
 		{
 			BTAAbilities ability = entry.getKey();
@@ -70,7 +65,7 @@ public class BTAAbilityImpl implements BTAAbilityCapability
 	
 	public void updateAbyssalScale(LivingEntity entity)
 	{
-		if(this.getTickCount(BTAAbilities.ABYSSAL_SCALES) < 5 && entity.tickCount % 7F == 0)
+		if(this.getTickCount(BTAAbilities.ABYSSAL_SCALES) < 5 && entity.tickCount % 7.0F == 0)
 		{
 			this.setTickCount(BTAAbilities.ABYSSAL_SCALES, this.getTickCount(BTAAbilities.ABYSSAL_SCALES) + 1);
 		}

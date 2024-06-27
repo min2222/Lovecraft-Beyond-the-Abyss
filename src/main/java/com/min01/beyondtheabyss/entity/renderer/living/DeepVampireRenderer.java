@@ -57,12 +57,12 @@ public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDee
 		p_115455_.posArray[2] = tailPos;
 		p_115455_.posArray[1] = body2Pos;
 		p_115455_.posArray[0] = bodyPos;
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailEdge2Pos, 5));
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailEdgePos, 4));
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tail2Pos, 3));
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailPos, 2));
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, body2Pos, 1));
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, bodyPos, 0));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tailEdge2Pos, 5));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tailEdgePos, 4));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tail2Pos, 3));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tailPos, 2));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, body2Pos, 1));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, bodyPos, 0));
 	}
 
 	@Override

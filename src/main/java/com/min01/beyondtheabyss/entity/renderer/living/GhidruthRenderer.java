@@ -50,9 +50,9 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 		p_115455_.posArray[2] = tailPos;
 		p_115455_.posArray[1] = bodyPos;
 		p_115455_.posArray[0] = headPos;
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailPos, 2));
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, bodyPos, 1));
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, headPos, 0));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tailPos, 2));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, bodyPos, 1));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, headPos, 0));
 	}
 	
 	@Override

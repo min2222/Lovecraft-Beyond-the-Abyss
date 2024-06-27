@@ -9,8 +9,6 @@ import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType
 import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -511,10 +509,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	public void setSeatPlayer(int seatId, Player player)
 	{
 		player.startRiding(this);
-        if(!this.level.isClientSide)
-        {
-            BTANetwork.sendToAll(new VehicleUpdatePacket(player, this));
-        }
 		switch(seatId)
 		{
 		case 0:

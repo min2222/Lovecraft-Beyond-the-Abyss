@@ -46,8 +46,8 @@ public class LatcherRenderer extends MobRenderer<EntityLatcher, ModelLatcher>
 		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), TAIL);
 		p_115455_.posArray[1] = tail2Pos;
 		p_115455_.posArray[0] = tailPos;
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tail2Pos, 1));
-	    BTANetwork.sendToAll(new PartPositionUpdatePacket(p_115455_, tailPos, 0));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tail2Pos, 1));
+	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tailPos, 0));
 	}
 
 	@Override

@@ -1,12 +1,10 @@
 package com.min01.beyondtheabyss.network;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IllusionCapability;
-import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.event.ClientEventHandler;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -19,21 +17,21 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class IllusionSyncPacket 
 {
-	private final UUID entityUUID;
+	private final int entityId;
 	
 	public IllusionSyncPacket(Entity entity) 
 	{
-		this.entityUUID = entity.getUUID();
+		this.entityId = entity.getId();
 	}
 
 	public IllusionSyncPacket(FriendlyByteBuf buf)
 	{
-		this.entityUUID = buf.readUUID();
+		this.entityId = buf.readInt();
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
-		buf.writeUUID(this.entityUUID);
+		buf.writeInt(this.entityId);
 	}
 	
 	public static class Handler 
@@ -45,7 +43,7 @@ public class IllusionSyncPacket
 				Entity illusion = null;
 				for(ServerLevel serverLevel : ServerLifecycleHooks.getCurrentServer().getAllLevels())
 				{
-					Entity entity = BTAUtil.getEntityByUUID(serverLevel, message.entityUUID);
+					Entity entity = serverLevel.getEntity(message.entityId);
 					if(entity instanceof ServerPlayer serverPlayer)
 					{
 						if(serverPlayer.getCapability(BTACapabilities.ILLUSION).isPresent())
@@ -58,18 +56,22 @@ public class IllusionSyncPacket
 						}
 					}
 				}
-				if(BTAUtil.getEntityByUUID(ClientEventHandlerForge.MC.level, message.entityUUID) instanceof Player player)
+				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					if(player.getCapability(BTACapabilities.ILLUSION).isPresent())
+					Entity entity = ClientEventHandler.MC.level.getEntity(message.entityId);
+					if(entity instanceof Player player)
 					{
-						IllusionCapability cap = player.getCapability(BTACapabilities.ILLUSION).orElse(null);
-						if(cap.getIllusion() != null && illusion != null)
+						if(player.getCapability(BTACapabilities.ILLUSION).isPresent())
 						{
-							cap.getIllusion().setYBodyRot(((Mob)illusion).yBodyRot);
-							cap.getIllusion().setYHeadRot(illusion.getYHeadRot());
-							cap.getIllusion().setYRot(illusion.getYRot());
-							cap.getIllusion().setXRot(illusion.getXRot());
-							cap.getIllusion().setPos(illusion.position());
+							IllusionCapability cap = player.getCapability(BTACapabilities.ILLUSION).orElse(null);
+							if(cap.getIllusion() != null && illusion != null)
+							{
+								cap.getIllusion().setYBodyRot(((Mob)illusion).yBodyRot);
+								cap.getIllusion().setYHeadRot(illusion.getYHeadRot());
+								cap.getIllusion().setYRot(illusion.getYRot());
+								cap.getIllusion().setXRot(illusion.getXRot());
+								cap.getIllusion().setPos(illusion.position());
+							}
 						}
 					}
 				}

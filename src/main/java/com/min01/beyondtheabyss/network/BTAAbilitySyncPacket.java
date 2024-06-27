@@ -50,9 +50,12 @@ public class BTAAbilitySyncPacket
 					entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(cap -> 
 					{
 						BTAAbilities ability = BTAAbilities.byId(message.abilityId);
-						if(ability != BTAAbilities.NONE)
+						if(!cap.getAbilities().containsKey(ability))
 						{
 							cap.addAbility(ability);
+						}
+						else
+						{
 							cap.setTickCount(ability, message.tickCount);
 						}
 					});

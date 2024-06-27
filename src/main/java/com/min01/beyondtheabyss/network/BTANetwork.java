@@ -32,7 +32,12 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, IllusionAddPacket.class, IllusionAddPacket::encode, IllusionAddPacket::new, IllusionAddPacket.Handler::onMessage);
 	}
 	
-    public static <MSG> void sendToAll(MSG message) 
+    public static <MSG> void sendToServer(MSG message) 
+    {
+    	CHANNEL.sendToServer(message);
+    }
+    
+    public static <MSG> void sendToAll(MSG message)
     {
     	for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) 
     	{

@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.client.player.LocalPlayer;
 
@@ -15,7 +15,7 @@ public class MixinLocalPlayer
 	@Inject(at = @At("HEAD"), method = "getWaterVision", cancellable = true)
 	private void getWaterVision(CallbackInfoReturnable<Float> cir)
 	{
-		if(BTAUtil.isInsideSubmarine(LocalPlayer.class.cast(this)))
+		if(DeepAbyssUtil.isInsideSubmarine(LocalPlayer.class.cast(this)))
 		{
 			cir.setReturnValue(1.5F);
 		}

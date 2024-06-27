@@ -6,6 +6,8 @@ import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IllusionCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
@@ -37,7 +39,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, bus = Bus.FORGE)
 public class EventHandlerForge 
@@ -75,9 +76,17 @@ public class EventHandlerForge
 		}
 		if(effect == BTAEffects.HALLUCINATION.get())
 		{
-			if(entity instanceof ServerPlayer)
+			if(!entity.level.isClientSide)
 			{
-				BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new IllusionAddPacket(entity));
+				BTANetwork.sendToAll(new IllusionAddPacket(entity));
+			}
+			if(entity instanceof ServerPlayer serverPlayer)
+			{
+				EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(serverPlayer.level);
+				serverPlayer.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
+				{
+					t.setIllusion(ghidruth);
+				});
 			}
 		}
 	}

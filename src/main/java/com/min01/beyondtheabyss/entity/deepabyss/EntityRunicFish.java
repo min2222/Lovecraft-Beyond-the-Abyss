@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -66,7 +66,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     public void aiStep() 
     {
         super.aiStep();
-        BTAUtil.fishFlopping(this);
+        DeepAbyssUtil.fishFlopping(this);
         
         if(this.isPanic())
         {

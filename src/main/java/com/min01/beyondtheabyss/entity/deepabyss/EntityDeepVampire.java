@@ -7,7 +7,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -85,7 +85,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     public void aiStep() 
     {
         super.aiStep();
-        BTAUtil.fishFlopping(this);
+        DeepAbyssUtil.fishFlopping(this);
 
         this.setPartPosition(this.tailEdge2, this.posArray[5]);
         this.setPartPosition(this.tailEdge, this.posArray[4]);

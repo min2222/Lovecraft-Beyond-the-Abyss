@@ -1,39 +1,35 @@
 package com.min01.beyondtheabyss.network;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
-import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.event.ClientEventHandler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class IllusionAddPacket 
 {
-	private final UUID entityUUID;
+	private final int entityId;
 	
 	public IllusionAddPacket(Entity entity) 
 	{
-		this.entityUUID = entity.getUUID();
+		this.entityId = entity.getId();
 	}
 
 	public IllusionAddPacket(FriendlyByteBuf buf)
 	{
-		this.entityUUID = buf.readUUID();
+		this.entityId = buf.readInt();
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
-		buf.writeUUID(this.entityUUID);
+		buf.writeInt(this.entityId);
 	}
 	
 	public static class Handler 
@@ -42,24 +38,19 @@ public class IllusionAddPacket
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				for(ServerLevel serverLevel : ServerLifecycleHooks.getCurrentServer().getAllLevels())
+				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					Entity entity = BTAUtil.getEntityByUUID(serverLevel, message.entityUUID);
-					if(entity instanceof ServerPlayer serverPlayer)
+					Minecraft.getInstance().doRunTask(() -> 
 					{
-						EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(serverPlayer.level);
-						serverPlayer.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
+						Entity entity = ClientEventHandler.MC.level.getEntity(message.entityId);
+						if(entity instanceof Player player)
 						{
-							t.setIllusion(ghidruth);
-						});
-					}
-				}
-				if(BTAUtil.getEntityByUUID(ClientEventHandlerForge.MC.level, message.entityUUID) instanceof Player player)
-				{
-					EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(player.level);
-					player.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
-					{
-						t.setIllusion(ghidruth);
+							EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(player.level);
+							player.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
+							{
+								t.setIllusion(ghidruth);
+							});
+						}
 					});
 				}
 			});

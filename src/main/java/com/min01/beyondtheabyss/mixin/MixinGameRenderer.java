@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTATags;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -39,7 +39,7 @@ public class MixinGameRenderer
     			cir.setReturnValue(0.05F);
         	}
         	
-        	if(BTAUtil.isInsideSubmarine(p_109109_))
+        	if(DeepAbyssUtil.isInsideSubmarine(p_109109_))
         	{
     			cir.setReturnValue(1.5F);
         	}

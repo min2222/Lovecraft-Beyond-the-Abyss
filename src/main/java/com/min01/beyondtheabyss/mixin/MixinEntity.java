@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.multipart.entity.MultipartEntity;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +32,7 @@ public abstract class MixinEntity
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci)
     {
-    	BTAUtil.handleSubmarineCollision(Entity.class.cast(this));
+    	DeepAbyssUtil.handleSubmarineCollision(Entity.class.cast(this));
     }
     
     @Inject(method = "setPosRaw", at = @At("TAIL"))
@@ -53,7 +53,7 @@ public abstract class MixinEntity
     		{
     			cir.setReturnValue(true);
     		}
-    		else if(BTAUtil.isInsideSubmarine(living))
+    		else if(DeepAbyssUtil.isInsideSubmarine(living))
     		{
     			cir.setReturnValue(false);
     		}
@@ -69,7 +69,7 @@ public abstract class MixinEntity
     		{
     			cir.setReturnValue(ForgeMod.WATER_TYPE.get());
     		}
-    		else if(BTAUtil.isInsideSubmarine(living))
+    		else if(DeepAbyssUtil.isInsideSubmarine(living))
     		{
     			cir.setReturnValue(ForgeMod.EMPTY_TYPE.get());
     		}

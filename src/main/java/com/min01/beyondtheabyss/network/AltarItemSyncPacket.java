@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 public class AltarItemSyncPacket 
@@ -48,21 +47,18 @@ public class AltarItemSyncPacket
 			{
 				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					Minecraft.getInstance().doRunTask(() -> handleAltarItemSyncPacket(message));
+					Minecraft.getInstance().doRunTask(() -> 
+					{
+						Entity entity = ClientEventHandler.MC.level.getEntity(message.entityId);
+						if(entity.level.getBlockEntity(message.pos) instanceof BlockEntityRiftwellingAltar altar)
+						{
+							altar.setItem(message.stack);
+						}
+					});
 				}
 			});
 			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}
-	
-    public static void handleAltarItemSyncPacket(AltarItemSyncPacket packet)
-    {
-		Level level = ClientEventHandler.MC.level;
-		Entity entity = level.getEntity(packet.entityId);
-		if(entity.level.getBlockEntity(packet.pos) instanceof BlockEntityRiftwellingAltar altar)
-		{
-			altar.setItem(packet.stack);
-		}
-    }
 }

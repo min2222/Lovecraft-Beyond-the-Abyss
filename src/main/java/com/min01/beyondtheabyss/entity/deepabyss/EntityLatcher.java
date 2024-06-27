@@ -12,6 +12,7 @@ import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -141,7 +142,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     public void aiStep() 
     {
     	super.aiStep();
-    	BTAUtil.fishFlopping(this);
+    	DeepAbyssUtil.fishFlopping(this);
     	
     	this.setPartPosition(this.tail2, this.posArray[1]);
         this.setPartPosition(this.tail, this.posArray[0]);
