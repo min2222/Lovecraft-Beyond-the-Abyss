@@ -6,11 +6,11 @@ import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IllusionCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.IllusionAddPacket;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +21,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
@@ -31,7 +30,6 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -39,7 +37,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, bus = Bus.FORGE)
 public class EventHandlerForge 
@@ -63,32 +61,6 @@ public class EventHandlerForge
 	}
 	
 	@SubscribeEvent
-	public static void onEntityJoinLevel(EntityJoinLevelEvent event)
-	{
-		if(event.getEntity() instanceof Creeper creeper)
-		{
-			EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(creeper.level);
-			if(creeper.level.isClientSide)
-			{
-				ClientEventHandlerForge.MC.player.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
-				{
-					t.setIllusion(ghidruth);
-				});
-			}
-			else
-			{
-				for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
-				{
-					player.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
-					{
-						t.setIllusion(ghidruth);
-					});
-				}
-			}
-		}
-	}
-	
-	@SubscribeEvent
 	public static void onMobEffectAdded(MobEffectEvent.Added event)
 	{
 		MobEffectInstance instance = event.getEffectInstance();
@@ -100,6 +72,13 @@ public class EventHandlerForge
 			{
 				cap.addAbility(BTAAbilities.ABYSSAL_SCALES);
 			});
+		}
+		if(effect == BTAEffects.HALLUCINATION.get())
+		{
+			if(entity instanceof ServerPlayer)
+			{
+				BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new IllusionAddPacket(entity));
+			}
 		}
 	}
 	

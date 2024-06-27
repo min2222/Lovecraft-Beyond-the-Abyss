@@ -38,7 +38,6 @@ public class IllusionImpl implements IllusionCapability
 	{
 		this.illusion = entity;
 		this.illusion.setPos(this.entity.position());
-		//this.sendUpdatePacket();
 	}
 	
 	@Override
@@ -50,7 +49,7 @@ public class IllusionImpl implements IllusionCapability
 	@Override
 	public void removeIllusion(Entity entity)
 	{
-		this.sendUpdatePacket();
+		
 	}
 
 	@Override
@@ -58,18 +57,17 @@ public class IllusionImpl implements IllusionCapability
 	{
 		if(this.illusion != null)
 		{
-			this.illusion.xOld = this.illusion.position().x;
-			this.illusion.yOld = this.illusion.position().y;
-			this.illusion.zOld = this.illusion.position().z;
+			this.illusion.setOldPosAndRot();
 			this.illusion.tick();
+			this.sendSyncPacket();
 		}
 	}
 	
-	private void sendUpdatePacket() 
+	private void sendSyncPacket() 
 	{
 		if(this.entity instanceof ServerPlayer)
 		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new IllusionSyncPacket(this.entity, this));
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new IllusionSyncPacket(this.entity));
 		}
 	}
 }

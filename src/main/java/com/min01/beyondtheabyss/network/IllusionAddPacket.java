@@ -4,7 +4,8 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.IllusionCapability;
+import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -12,21 +13,20 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class IllusionSyncPacket 
+public class IllusionAddPacket 
 {
 	private final UUID entityUUID;
 	
-	public IllusionSyncPacket(Entity entity) 
+	public IllusionAddPacket(Entity entity) 
 	{
 		this.entityUUID = entity.getUUID();
 	}
 
-	public IllusionSyncPacket(FriendlyByteBuf buf)
+	public IllusionAddPacket(FriendlyByteBuf buf)
 	{
 		this.entityUUID = buf.readUUID();
 	}
@@ -38,40 +38,29 @@ public class IllusionSyncPacket
 	
 	public static class Handler 
 	{
-		public static boolean onMessage(IllusionSyncPacket message, Supplier<NetworkEvent.Context> ctx) 
+		public static boolean onMessage(IllusionAddPacket message, Supplier<NetworkEvent.Context> ctx) 
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				Entity illusion = null;
 				for(ServerLevel serverLevel : ServerLifecycleHooks.getCurrentServer().getAllLevels())
 				{
 					Entity entity = BTAUtil.getEntityByUUID(serverLevel, message.entityUUID);
 					if(entity instanceof ServerPlayer serverPlayer)
 					{
-						if(serverPlayer.getCapability(BTACapabilities.ILLUSION).isPresent())
+						EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(serverPlayer.level);
+						serverPlayer.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
 						{
-							IllusionCapability cap = serverPlayer.getCapability(BTACapabilities.ILLUSION).orElse(null);
-							if(cap.getIllusion() != null)
-							{
-								illusion = cap.getIllusion();
-							}
-						}
+							t.setIllusion(ghidruth);
+						});
 					}
 				}
 				if(BTAUtil.getEntityByUUID(ClientEventHandlerForge.MC.level, message.entityUUID) instanceof Player player)
 				{
-					if(player.getCapability(BTACapabilities.ILLUSION).isPresent())
+					EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(player.level);
+					player.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
 					{
-						IllusionCapability cap = player.getCapability(BTACapabilities.ILLUSION).orElse(null);
-						if(cap.getIllusion() != null && illusion != null)
-						{
-							cap.getIllusion().setYBodyRot(((Mob)illusion).yBodyRot);
-							cap.getIllusion().setYHeadRot(illusion.getYHeadRot());
-							cap.getIllusion().setYRot(illusion.getYRot());
-							cap.getIllusion().setXRot(illusion.getXRot());
-							cap.getIllusion().setPos(illusion.position());
-						}
-					}
+						t.setIllusion(ghidruth);
+					});
 				}
 			});
 

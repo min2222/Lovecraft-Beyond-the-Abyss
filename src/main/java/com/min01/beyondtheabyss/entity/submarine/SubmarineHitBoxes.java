@@ -116,10 +116,9 @@ public class SubmarineHitBoxes
     {
     	if(vec3 != null)
     	{
-        	Vec3 pos = vec3.subtract(this.entity.position());
-        	part.setX(pos.x);
-        	part.setY(pos.y);
-        	part.setZ(pos.z);
+        	part.setX(vec3.x);
+        	part.setY(vec3.y);
+        	part.setZ(vec3.z);
     	}
     }
     

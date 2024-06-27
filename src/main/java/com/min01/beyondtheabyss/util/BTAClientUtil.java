@@ -41,13 +41,26 @@ public class BTAClientUtil
 
     public static Vec3 getWorldPosition(Entity entity, float yaw, ModelPart root, String... modelPartName)
     {
-    	return getWorldPosition(entity, yaw, root, false, modelPartName);
+    	return getWorldPosition(entity, yaw, root, false, true, modelPartName);
+    }
+    
+    public static Vec3 getWorldPositionOfMultiPart(Entity entity, float yaw, ModelPart root, String... modelPartName)
+    {
+    	return getWorldPosition(entity, yaw, root, false, false, modelPartName);
     }
     
     public static Vec3 getWorldPosition(Entity entity, float yaw, ModelPart root, boolean isInWater, String... modelPartName)
     {
+    	return getWorldPosition(entity, yaw, root, isInWater, true, modelPartName);
+    }
+    
+    public static Vec3 getWorldPosition(Entity entity, float yaw, ModelPart root, boolean isInWater, boolean translateToEntity, String... modelPartName)
+    {
         PoseStack poseStack = new PoseStack();
-        poseStack.translate(entity.getX(), entity.getY(), entity.getZ());
+        if(translateToEntity)
+        {
+        	poseStack.translate(entity.getX(), entity.getY(), entity.getZ());
+        }
         float zRot = isInWater ? !entity.isInWater() ? 90.0F : 0.0F : 0.0F;
         poseStack.mulPose(new Quaternion(0, -yaw + 180.0F, zRot, true));
         poseStack.scale(-1.0F, -1.0F, 1.0F);

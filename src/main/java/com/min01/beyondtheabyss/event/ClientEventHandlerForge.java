@@ -136,13 +136,16 @@ public class ClientEventHandlerForge
     public static void onRenderPlayer(RenderPlayerEvent event)
     {
     	Player player = event.getEntity();
+    	float partialTick = event.getPartialTick();
     	if(player.getVehicle() != null && player.getVehicle() instanceof EntitySubmarine submarine)
     	{
     		PoseStack poseStack = event.getPoseStack();
-            float yRot = Mth.rotLerp(event.getPartialTick(), submarine.yRotO, submarine.getYRot());
-            float xRot = Mth.lerp(event.getPartialTick(), submarine.xRotO, submarine.getXRot());
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(yRot));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
+    		float f = Mth.rotLerp(partialTick, submarine.yBodyRotO, submarine.yBodyRot);
+    		float f1 = Mth.rotLerp(partialTick, submarine.yHeadRotO, submarine.yHeadRot);
+    		float f2 = f1 - f;
+            float f6 = Mth.lerp(partialTick, submarine.xRotO, submarine.getXRot());
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(f2));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(f6));
     	}
     }
     

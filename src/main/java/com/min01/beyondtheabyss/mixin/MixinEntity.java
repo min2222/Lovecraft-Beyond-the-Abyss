@@ -34,7 +34,7 @@ public abstract class MixinEntity
     {
     	BTAUtil.handleSubmarineCollision(Entity.class.cast(this));
     }
-
+    
     @Inject(method = "setPosRaw", at = @At("TAIL"))
     private void setPosRaw(double x, double y, double z, CallbackInfo ci)
     {

@@ -126,7 +126,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		{
 			if(this.posArray[0] != null)
 			{
-		    	this.getControllingPlayer().setPos(this.posArray[0]);
+		    	this.getControllingPlayer().setPos(this.position().add(this.posArray[0]));
 			}
 	    	
 	    	if(this.getControllingPlayer().isShiftKeyDown())
@@ -140,7 +140,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		{
 			if(this.posArray[1] != null)
 			{
-		    	this.getSeat1Player().setPos(this.posArray[1]);
+		    	this.getSeat1Player().setPos(this.position().add(this.posArray[1]));
 			}
 	    	
 	    	if(this.getSeat1Player().isShiftKeyDown())
@@ -154,7 +154,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		{
 			if(this.posArray[2] != null)
 			{
-		    	this.getSeat2Player().setPos(this.posArray[2]);
+		    	this.getSeat2Player().setPos(this.position().add(this.posArray[2]));
 			}
 	    	
 	    	if(this.getSeat2Player().isShiftKeyDown())
@@ -168,7 +168,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		{
 			if(this.posArray[3] != null)
 			{
-		    	this.getSeat3Player().setPos(this.posArray[3]);
+		    	this.getSeat3Player().setPos(this.position().add(this.posArray[3]));
 			}
 	    	
 	    	if(this.getSeat3Player().isShiftKeyDown())
@@ -182,7 +182,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		{
 			if(this.posArray[4] != null)
 			{
-		    	this.getSeat4Player().setPos(this.posArray[4]);
+		    	this.getSeat4Player().setPos(this.position().add(this.posArray[4]));
 			}
 	    	
 	    	if(this.getSeat4Player().isShiftKeyDown())
