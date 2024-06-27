@@ -1,15 +1,17 @@
 package com.min01.beyondtheabyss.capabilities;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.misc.BTAAbilities;
 import com.min01.beyondtheabyss.network.BTAAbilitySyncPacket;
+import com.min01.beyondtheabyss.network.BTAAbilitySyncPacket.PacketType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.PacketDistributor;
@@ -17,24 +19,32 @@ import net.minecraftforge.network.PacketDistributor;
 public class BTAAbilityImpl implements BTAAbilityCapability
 {
 	private LivingEntity entity;
-	private Map<BTAAbilities, Integer> abilities = new HashMap<>();
+	private List<BTAAbility> abilities = new ArrayList<>();
 	
 	@Override
 	public CompoundTag serializeNBT() 
 	{
-		CompoundTag tag = new CompoundTag();
-		for(Map.Entry<BTAAbilities, Integer> entry : this.abilities.entrySet())
+		CompoundTag nbt = new CompoundTag();
+		ListTag list = new ListTag();
+		this.abilities.forEach(t -> 
 		{
-			tag.putInt("ability", entry.getKey().id);
-			tag.putInt("TickCount", entry.getValue());
-		}
-		return tag;
+			CompoundTag tag = new CompoundTag();
+			t.save(tag);
+			list.add(tag);
+		});
+		nbt.put("Abilities", list);
+		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		this.abilities.put(BTAAbilities.byId(nbt.getInt("ability")), nbt.getInt("TickCount"));
+		ListTag list = nbt.getList("Abilities", 11);
+		for(int i = 0; i < list.size(); ++i)
+		{
+			BTAAbility ability = BTAAbility.load(list.getCompound(i));
+			this.abilities.add(ability);
+		}
 	}
 
 	@Override
@@ -45,21 +55,16 @@ public class BTAAbilityImpl implements BTAAbilityCapability
 
 	@Override
 	public void update() 
-	{	
-		for(Map.Entry<BTAAbilities, Integer> entry : this.abilities.entrySet())
+	{
+		if(!this.abilities.isEmpty())
 		{
-			BTAAbilities ability = entry.getKey();
-			switch(ability)
+			this.abilities.forEach(t -> 
 			{
-			case ABYSSAL_DASH:
-				this.updateAbyssalDash(this.entity);
-				break;
-			case ABYSSAL_SCALES:
-				this.updateAbyssalScale(this.entity);
-				break;
-			default:
-				break;
-			}
+				if(t == BTAAbilities.ABYSSAL_SCALES)
+				{
+					this.updateAbyssalScale(this.entity);
+				}
+			});
 		}
 	}
 	
@@ -75,91 +80,118 @@ public class BTAAbilityImpl implements BTAAbilityCapability
 			this.removeAbility(BTAAbilities.ABYSSAL_SCALES);
 		}
 	}
-	
-	public void updateAbyssalDash(LivingEntity entity)
-	{
-		this.setTickCount(BTAAbilities.ABYSSAL_DASH, this.getTickCount(BTAAbilities.ABYSSAL_DASH) + 1);
-		
-		if(this.getTickCount(BTAAbilities.ABYSSAL_DASH) >= 20)
-		{
-			this.removeAbility(BTAAbilities.ABYSSAL_DASH);
-		}
-	}
 
 	@Override
-	public void addAbility(BTAAbilities ability)
+	public void addAbility(BTAAbility ability)
 	{
-		this.abilities.put(ability, 0);
-		this.sendUpdatePacket();
+		this.abilities.add(ability);
+		this.sendUpdatePacket(PacketType.ADD);
 	}
 	
 	@Override
-	public void removeAbility(BTAAbilities toRemove) 
+	public void removeAbility(BTAAbility toRemove) 
 	{
-		Iterator<Entry<BTAAbilities, Integer>> iterator = this.abilities.entrySet().iterator();
-		while (iterator.hasNext())
-		{
-		    if(iterator.next().getKey().equals(toRemove))
-		    {
-		        iterator.remove();
-		    }
-		}
+		this.abilities.removeIf(t -> t == toRemove);
+		this.sendUpdatePacket(PacketType.REMOVE);
 	}
 
 	@Override
-	public Map<BTAAbilities, Integer> getAbilities() 
+	public List<BTAAbility> getAbilities() 
 	{
 		return this.abilities;
 	}
 
 	@Override
-	public void setTickCount(BTAAbilities ability, int TickCount) 
+	public void setTickCount(BTAAbility ability, int tickCount) 
 	{
-		this.abilities.replace(ability, TickCount);
-		this.sendUpdatePacket();
+		this.abilities.forEach(t -> 
+		{
+			if(t == ability)
+			{
+				t.setTickcount(tickCount);
+				this.sendUpdatePacket(PacketType.TICK);
+			}
+		});
 	}
 
 	@Override
-	public int getTickCount(BTAAbilities ability)
+	public int getTickCount(BTAAbility ability)
 	{
-		return this.abilities.get(ability);
-	}
-	
-	public enum BTAAbilities
-	{
-		NONE(0),
-		ABYSSAL_DASH(1),
-		ABYSSAL_SCALES(2);
-		
-		public int id;
-
-		private BTAAbilities(int id) 
+		for(BTAAbility ab : this.abilities)
 		{
-			this.id = id;
-		}
-		
-		public static BTAAbilities byId(int id)
-		{
-			for(BTAAbilities abilities : values()) 
+			if(ab == ability)
 			{
-				if(id == abilities.id) 
-				{
-					return abilities;
-				}
+				return ab.getTickcount();
 			}
-			return NONE;
+		}
+		return 0;
+	}
+	
+	public static class BTAAbility
+	{
+		private String name;
+		private int tickCount;
+		
+		public BTAAbility(String name)
+		{
+			this.name = name;
+		}
+		
+		public void tick()
+		{
+			
+		}
+		
+		public String getName()
+		{
+			return this.name;
+		}
+		
+		public void setTickcount(int tickCount)
+		{
+			this.tickCount = tickCount;
+		}
+		
+		public int getTickcount()
+		{
+			return this.tickCount;
+		}
+		
+		public void write(FriendlyByteBuf buf)
+		{
+			buf.writeUtf(this.name);
+			buf.writeInt(this.tickCount);
+		}
+		
+		public static BTAAbility read(FriendlyByteBuf buf)
+		{
+			BTAAbility ability = new BTAAbility(buf.readUtf());
+			ability.setTickcount(buf.readInt());
+			return ability;
+		}
+		
+		public void save(CompoundTag tag)
+		{
+			tag.putString("Ability", this.name);
+			tag.putInt("TickCount", this.tickCount);
+		}
+		
+		public static BTAAbility load(CompoundTag tag)
+		{
+			BTAAbility ability = new BTAAbility(tag.getString("Ability"));
+			ability.setTickcount(tag.getInt("TickCount"));
+			return ability;
 		}
 	}
 	
-	private void sendUpdatePacket() 
+	private void sendUpdatePacket(PacketType type) 
 	{
 		if(this.entity instanceof ServerPlayer)
 		{
-			for(Map.Entry<BTAAbilities, Integer> entry : this.abilities.entrySet())
+			this.abilities.forEach(t -> 
 			{
-				BTAAbilities ability = entry.getKey();
-				BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new BTAAbilitySyncPacket(this.entity, ability, entry.getValue()));
-			}
+				BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new BTAAbilitySyncPacket(this.entity, t, t.getTickcount(), type));
+			});
 		}
 	}
 }

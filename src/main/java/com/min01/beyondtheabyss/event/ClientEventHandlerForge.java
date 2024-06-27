@@ -8,9 +8,6 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.KeyInputPacket;
-import com.min01.beyondtheabyss.network.KeyInputPacket.InputType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssSkyRenderer;
@@ -41,7 +38,6 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -52,7 +48,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientEventHandlerForge 
 {
 	public static final Minecraft MC = Minecraft.getInstance();
-    private static boolean YkeyPressed = false;
     
     //TEST
     //@SubscribeEvent
@@ -178,21 +173,6 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onClientTickEvent(ClientTickEvent event) 
     {
-        if(event.phase == TickEvent.Phase.END) 
-        	return;
-        if(ClientEventHandler.ABYSSAL_DASH.isDown())
-        {
-            if(!YkeyPressed) 
-            {
-            	YkeyPressed = true;
-            	BTANetwork.CHANNEL.sendToServer(new KeyInputPacket(InputType.ABYSSAL_DASH));
-            }
-        } 
-        else
-        {
-        	YkeyPressed = false;
-        }
-
         ClientLevel world = MC.level;
         if(world != null && !MC.isPaused() && MC.player != null)
         {

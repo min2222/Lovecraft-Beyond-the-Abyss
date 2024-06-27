@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbility;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.event.ClientEventHandler;
 
@@ -14,27 +14,38 @@ import net.minecraftforge.network.NetworkEvent;
 public class BTAAbilitySyncPacket 
 {
 	private final int entityId;
-	private final int abilityId;
+	private final BTAAbility ability;
+	private final PacketType type;
 	private final int tickCount;
 	
-	public BTAAbilitySyncPacket(Entity entity, BTAAbilities ability, int tickCount) 
+	public static enum PacketType
+	{
+		ADD,
+		REMOVE,
+		TICK;
+	}
+	
+	public BTAAbilitySyncPacket(Entity entity, BTAAbility ability, int tickCount, PacketType type) 
 	{
 		this.entityId = entity.getId();
-		this.abilityId = ability.id;
+		this.ability = ability;
 		this.tickCount = tickCount;
+		this.type = type;
 	}
 
 	public BTAAbilitySyncPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
-		this.abilityId = buf.readInt();	
+		this.ability = BTAAbility.read(buf);
+		this.type = PacketType.values()[buf.readInt()];
 		this.tickCount = buf.readInt();
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
 		buf.writeInt(this.entityId);
-		buf.writeInt(this.abilityId);
+		this.ability.write(buf);
+		buf.writeInt(this.type.ordinal());
 		buf.writeInt(this.tickCount);
 	}
 	
@@ -49,14 +60,21 @@ public class BTAAbilitySyncPacket
 				{
 					entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(cap -> 
 					{
-						BTAAbilities ability = BTAAbilities.byId(message.abilityId);
-						if(!cap.getAbilities().containsKey(ability))
+						BTAAbility ability = message.ability;
+						int tickCount = message.tickCount;
+						switch(message.type)
 						{
+						case ADD:
 							cap.addAbility(ability);
-						}
-						else
-						{
-							cap.setTickCount(ability, message.tickCount);
+							break;
+						case REMOVE:
+							cap.removeAbility(ability);
+							break;
+						case TICK:
+							cap.setTickCount(ability, tickCount);
+							break;
+						default:
+							break;
 						}
 					});
 				}

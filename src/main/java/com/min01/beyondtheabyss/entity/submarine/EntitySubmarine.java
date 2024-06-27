@@ -508,7 +508,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	
 	public void setSeatPlayer(int seatId, Player player)
 	{
-		player.startRiding(this);
+		//player.startRiding(this);
 		switch(seatId)
 		{
 		case 0:

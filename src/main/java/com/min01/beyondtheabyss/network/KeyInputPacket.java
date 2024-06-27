@@ -2,8 +2,6 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.util.DeepAbyssUtil;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -14,7 +12,7 @@ public class KeyInputPacket
 
     public enum InputType 
     {
-        ABYSSAL_DASH
+    	
     }
 
     public KeyInputPacket(InputType type)
@@ -43,12 +41,6 @@ public class KeyInputPacket
                 {
                     switch(message.inputType) 
                     {
-					case ABYSSAL_DASH:
-						if(DeepAbyssUtil.isAbyssalDash(player))
-						{
-							DeepAbyssUtil.startAbyssalDash(player);
-						}
-						break;
 					default:
 						break;
                     }

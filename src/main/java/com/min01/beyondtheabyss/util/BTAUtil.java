@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.min01.beyondtheabyss.capabilities.BTAAbilityCapability;
 import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl;
-import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbility;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -72,13 +72,13 @@ public class BTAUtil
 		return f1;
 	}
 	
-	public static boolean hasAbility(LivingEntity entity, BTAAbilities ability)
+	public static boolean hasAbility(LivingEntity entity, BTAAbility ability)
 	{
 		BTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityImpl());
-		return handler.getAbilities().containsKey(ability);
+		return handler.getAbilities().contains(ability);
 	}
 	   
-	public static int getAbilityTickCount(BTAAbilities ability, LivingEntity entity)
+	public static int getAbilityTickCount(BTAAbility ability, LivingEntity entity)
 	{
 		BTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityImpl());
 		return handler.getTickCount(ability);

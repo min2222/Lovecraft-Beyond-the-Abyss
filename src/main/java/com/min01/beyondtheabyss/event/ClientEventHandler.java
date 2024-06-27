@@ -22,7 +22,6 @@ import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
-import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalDashLayer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalScalesLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.AbyssalBulbrayRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.AbyssalHermitCrabRenderer;
@@ -44,10 +43,8 @@ import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.particle.ShockwaveParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -70,7 +67,6 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RegisterShadersEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -81,7 +77,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 public class ClientEventHandler
 {
 	public static final Minecraft MC = Minecraft.getInstance();
-	public static final KeyMapping ABYSSAL_DASH = new KeyMapping("key." + BeyondtheAbyss.MODID + ".abyssal_dash", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_Y, "key.categories." + BeyondtheAbyss.MODID);
+	//public static final KeyMapping ABYSSAL_DASH = new KeyMapping("key." + BeyondtheAbyss.MODID + ".abyssal_dash", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_Y, "key.categories." + BeyondtheAbyss.MODID);
 	
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event)
@@ -184,14 +180,12 @@ public class ClientEventHandler
     	
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);
-    	
-    	event.registerLayerDefinition(AbyssalDashLayer.LAYER_LOCATION, AbyssalDashLayer::createLayer);
     }
     
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event)
     {
-    	event.register(ABYSSAL_DASH);
+    	//event.register(ABYSSAL_DASH);
     }
     
 	@SubscribeEvent
@@ -212,7 +206,6 @@ public class ClientEventHandler
 	
 	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer)
 	{
-		renderer.addLayer(new AbyssalDashLayer<>(renderer));
 		renderer.addLayer(new AbyssalScalesLayer<>(renderer));
 	}
 }

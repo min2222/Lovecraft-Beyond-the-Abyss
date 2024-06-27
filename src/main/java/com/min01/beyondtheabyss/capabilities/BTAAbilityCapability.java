@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.capabilities;
 
-import java.util.Map;
+import java.util.List;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbilities;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbility;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -18,13 +18,13 @@ public interface BTAAbilityCapability extends INBTSerializable<CompoundTag>
 
 	void update();
 	
-	void addAbility(BTAAbilities ability);
+	void addAbility(BTAAbility ability);
 	
-	void removeAbility(BTAAbilities ability);
+	void removeAbility(BTAAbility ability);
 	
-	void setTickCount(BTAAbilities ability, int tickCount);
+	void setTickCount(BTAAbility ability, int tickCount);
 	
-	int getTickCount(BTAAbilities ability);
+	int getTickCount(BTAAbility ability);
 	
-	Map<BTAAbilities, Integer> getAbilities();
+	List<BTAAbility> getAbilities();
 }
