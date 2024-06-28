@@ -508,7 +508,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	
 	public void setSeatPlayer(int seatId, Player player)
 	{
-		//player.startRiding(this);
 		switch(seatId)
 		{
 		case 0:
@@ -555,6 +554,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	{
 		if(entity instanceof Player player)
 		{
+			player.startRiding(this);
 			if(part == "controllerSeat")
 			{
 				this.setSeatPlayer(0, player);

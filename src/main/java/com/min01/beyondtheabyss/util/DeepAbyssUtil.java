@@ -48,7 +48,7 @@ public class DeepAbyssUtil
 	{
 		if(!(entity instanceof EntitySubmarine) && !(entity instanceof SubmarinePart))
 		{
-			List<SubmarinePart> list = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F));
+			List<SubmarinePart> list = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F), EntitySelector.NO_SPECTATORS);
 			list.removeIf(t -> t.type != SubmarinePartType.DETECTOR);
 			return !list.isEmpty();
 		}

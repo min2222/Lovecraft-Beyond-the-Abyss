@@ -15,7 +15,6 @@ import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.IllusionAddPacket;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -79,11 +78,8 @@ public class EventHandlerForge
 			if(!entity.level.isClientSide)
 			{
 				BTANetwork.sendToAll(new IllusionAddPacket(entity));
-			}
-			if(entity instanceof ServerPlayer serverPlayer)
-			{
-				EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(serverPlayer.level);
-				serverPlayer.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
+				EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(entity.level);
+				entity.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
 				{
 					t.setIllusion(ghidruth);
 				});

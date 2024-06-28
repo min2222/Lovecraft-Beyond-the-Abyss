@@ -1,8 +1,6 @@
 package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTAAbilityCapability;
-import com.min01.beyondtheabyss.capabilities.ItemAnimationCapability;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
@@ -22,7 +20,6 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent.Operation;
@@ -53,13 +50,6 @@ public class EventHandler
     	event.put(BTAEntities.ABYSSAL_BULBRAY.get(), EntityAbyssalBulbray.createAttributes().build());
     	event.put(BTAEntities.SUBMARINE.get(), LivingEntity.createLivingAttributes().build());
     	event.put(BTAEntities.PHASMOZOA.get(), EntityPhasmozoa.createAttributes().build());
-    }
-	
-    @SubscribeEvent
-    public static void registerCaps(RegisterCapabilitiesEvent event) 
-    {
-    	event.register(ItemAnimationCapability.class);
-    	event.register(BTAAbilityCapability.class);
     }
     
     @SubscribeEvent

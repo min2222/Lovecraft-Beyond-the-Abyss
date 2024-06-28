@@ -56,16 +56,13 @@ public class BTAAbilityImpl implements BTAAbilityCapability
 	@Override
 	public void update() 
 	{
-		if(!this.abilities.isEmpty())
+		this.abilities.forEach(t -> 
 		{
-			this.abilities.forEach(t -> 
+			if(t == BTAAbilities.ABYSSAL_SCALES)
 			{
-				if(t == BTAAbilities.ABYSSAL_SCALES)
-				{
-					this.updateAbyssalScale(this.entity);
-				}
-			});
-		}
+				this.updateAbyssalScale(this.entity);
+			}
+		});
 	}
 	
 	public void updateAbyssalScale(LivingEntity entity)
