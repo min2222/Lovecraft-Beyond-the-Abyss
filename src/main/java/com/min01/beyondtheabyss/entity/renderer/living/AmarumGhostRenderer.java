@@ -3,7 +3,8 @@ package com.min01.beyondtheabyss.entity.renderer.living;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
 import com.min01.beyondtheabyss.entity.model.ModelAmarumGhost;
-import com.min01.beyondtheabyss.entity.renderer.layer.AmarumGhostLayer;
+import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -15,13 +16,13 @@ public class AmarumGhostRenderer extends MobRenderer<EntityAmarumGhost, ModelAma
 	public AmarumGhostRenderer(Context p_174304_) 
 	{
 		super(p_174304_, new ModelAmarumGhost(p_174304_.bakeLayer(ModelAmarumGhost.LAYER_LOCATION)), 0.1F);
-		this.addLayer(new AmarumGhostLayer(this, this.model));
+		this.addLayer(new GlowingLayer<EntityAmarumGhost, ModelAmarumGhost>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/amarum_ghost_layer.png")));
 	}
 	
 	@Override
 	protected RenderType getRenderType(EntityAmarumGhost p_115322_, boolean p_115323_, boolean p_115324_, boolean p_115325_) 
 	{
-		return RenderType.eyes(this.getTextureLocation(p_115322_));
+		return BTARenderType.entityTranslucentColorWrite(this.getTextureLocation(p_115322_));
 	}
 
 	@Override
