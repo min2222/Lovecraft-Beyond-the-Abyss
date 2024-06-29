@@ -1,29 +1,22 @@
 {
 	"targets": [
-		"final"
+		"swap"
 	],
 	"passes": [
 		{
 			"name": "beyondtheabyss:test",
 			"intarget": "minecraft:main",
-			"outtarget": "final",
+			"outtarget": "swap",
 			"auxtargets": [
 				{
-					"name": "DepthSampler",
+					"name": "DiffuseDepthSampler",
 					"id": "minecraft:main:depth"
-				},
-				{
-					"name": "Sampler0",
-                    "id": "beyondtheabyss:noise_small",
-                    "width": 96,
-                    "height": 96,
-                    "bilinear": false
 				}
 			]
 		},
 		{
 			"name": "beyondtheabyss:copy",
-			"intarget": "final",
+			"intarget": "swap",
 			"outtarget": "minecraft:main"
 		}
 	]

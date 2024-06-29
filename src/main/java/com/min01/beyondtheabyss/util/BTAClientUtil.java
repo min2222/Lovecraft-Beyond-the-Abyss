@@ -1,9 +1,6 @@
 package com.min01.beyondtheabyss.util;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.event.ClientEventHandler;
-import com.min01.beyondtheabyss.shader.BTAShaders;
-import com.min01.beyondtheabyss.shader.ExtendedPostChain;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
@@ -14,7 +11,6 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
@@ -25,18 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BTAClientUtil
-{
-	public static void testShader(float partialTick)
-	{
-    	ExtendedPostChain shaderChain = BTAShaders.getTest();
-    	EffectInstance shader = shaderChain.getMainShader();
-    	if(shader != null && shaderChain.isEnabled)
-    	{
-    		shaderChain.process(partialTick);
-            ClientEventHandler.MC.getMainRenderTarget().bindWrite(false);
-    	}
-	}
-	
+{	
 	//https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/animate/client/util/ModelPartUtils.java#L57
 
     public static Vec3 getWorldPosition(Entity entity, float yaw, ModelPart root, String... modelPartName)

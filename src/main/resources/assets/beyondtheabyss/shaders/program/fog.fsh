@@ -12,8 +12,6 @@ in vec2 texCoord;
 
 out vec4 fragColor;
 
-#define LOG2 1.442695
-
 vec3 playerSpace(vec2 uv, float depth)
 {
 	vec3 ndc = vec3(uv, depth) * 2.0 - 1.0;
@@ -27,7 +25,6 @@ vec3 playerSpace(vec2 uv, float depth)
 vec3 applyFog(vec3 rgb, float distance, float darkness)
 {
 	float density = 0.1;
-    //float fogAmount = 1.0 - exp2(- density * density * distance * distance * LOG2);
 	float fogAmount = 0.4 + 0.6 * sqrt(distance / 16.0);
 	fogAmount = clamp(fogAmount, 0.0, 1.0);
 

@@ -1,0 +1,19 @@
+{
+	"targets":
+	[
+		"swap"
+	],
+	"passes":
+	[
+		{
+			"name": "beyondtheabyss:blur",
+			"intarget": "minecraft:main",
+			"outtarget": "swap"
+		},
+		{
+			"name": "beyondtheabyss:copy",
+			"intarget": "swap",
+			"outtarget": "minecraft:main"
+		}
+	]
+}

@@ -12,9 +12,10 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 public class BTAShaders implements ResourceManagerReloadListener 
 {
-	protected static final List<ExtendedPostChain> SHADERS = new ArrayList<>(2);
+	protected static final List<ExtendedPostChain> SHADERS = new ArrayList<>();
 
 	protected static ExtendedPostChain FOG;
+	protected static ExtendedPostChain BLUR;
 	protected static ExtendedPostChain TEST;
 
 	@Override
@@ -34,6 +35,7 @@ public class BTAShaders implements ResourceManagerReloadListener
 	public static void init(ResourceManager mgr) throws IOException
 	{
 		FOG = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "fog"));
+		BLUR = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "blur"));
 		TEST = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "test"));
 	}
 
@@ -52,6 +54,11 @@ public class BTAShaders implements ResourceManagerReloadListener
 	public static ExtendedPostChain getFog()
 	{
 		return FOG;
+	}
+	
+	public static ExtendedPostChain getBlur()
+	{
+		return BLUR;
 	}
 	
 	public static ExtendedPostChain getTest()

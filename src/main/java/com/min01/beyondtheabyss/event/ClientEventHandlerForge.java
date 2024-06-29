@@ -8,7 +8,6 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssSkyRenderer;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -48,18 +47,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientEventHandlerForge 
 {
 	public static final Minecraft MC = Minecraft.getInstance();
-    
-    //TEST
-    //@SubscribeEvent
-    public static void onRenderTick(RenderLevelStageEvent event)
-    {
-    	if(event.getStage() != Stage.AFTER_PARTICLES)
-    		return;
-    	if(MC.player != null)
-    	{
-    		BTAClientUtil.testShader(event.getPartialTick());
-    	}
-    }
     
     @SubscribeEvent
     public static void onRenderLevelStage(RenderLevelStageEvent event)
