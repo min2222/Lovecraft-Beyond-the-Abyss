@@ -35,7 +35,7 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob
 	public EntityAbyssalBulbray(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 1 + this.random.nextInt(4);
+		this.xpReward = this.random.nextInt(4);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()

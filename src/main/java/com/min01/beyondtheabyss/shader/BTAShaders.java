@@ -16,7 +16,6 @@ public class BTAShaders implements ResourceManagerReloadListener
 
 	protected static ExtendedPostChain FOG;
 	protected static ExtendedPostChain BLUR;
-	protected static ExtendedPostChain TEST;
 
 	@Override
 	public void onResourceManagerReload(ResourceManager mgr)
@@ -36,7 +35,6 @@ public class BTAShaders implements ResourceManagerReloadListener
 	{
 		FOG = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "fog"));
 		BLUR = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "blur"));
-		TEST = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "test"));
 	}
 
 	public void clear()
@@ -59,10 +57,5 @@ public class BTAShaders implements ResourceManagerReloadListener
 	public static ExtendedPostChain getBlur()
 	{
 		return BLUR;
-	}
-	
-	public static ExtendedPostChain getTest()
-	{
-		return TEST;
 	}
 }

@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
@@ -43,6 +44,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityAbyssalHermitCrab>> ABYSSAL_HERMIT_CRAB = registerEntity("abyssal_hermit_crab", createBuilder(EntityAbyssalHermitCrab::new, MobCategory.WATER_CREATURE).sized(1.2F, 1.0F));
 	public static final RegistryObject<EntityType<EntityAbyssalBulbray>> ABYSSAL_BULBRAY = registerEntity("abyssal_bulbray", createBuilder(EntityAbyssalBulbray::new, MobCategory.WATER_CREATURE).sized(1.6F, 0.8F));
 	public static final RegistryObject<EntityType<EntityPhasmozoa>> PHASMOZOA = registerEntity("phasmozoa", createBuilder(EntityPhasmozoa::new, MobCategory.WATER_CREATURE).sized(1.2F, 2.4F));
+	public static final RegistryObject<EntityType<EntityAmarumGhost>> AMARUM_GHOST = registerEntity("amarum_ghost", createBuilder(EntityAmarumGhost::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.25F));
 	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{

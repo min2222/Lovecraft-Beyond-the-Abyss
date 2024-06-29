@@ -7,30 +7,6 @@
 			"type": "minecraft:multi_noise",
 			"biomes": [
 				{
-					"biome": "beyondtheabyss:deep_abyss",
-					"parameters": {
-						"temperature": 0,
-						"humidity": [
-							-1,
-							1
-						],
-						"continentalness": [
-							-1.05,
-							-0.455
-						],
-						"erosion": [
-							-1,
-							1
-						],
-						"weirdness": [
-							-1,
-							1
-						],
-						"depth": 0,
-						"offset": 0
-					}
-				},
-				{
 					"biome": "beyondtheabyss:death_valley",
 					"parameters": {
 						"temperature": 0,

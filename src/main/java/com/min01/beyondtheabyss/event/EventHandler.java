@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
@@ -50,6 +51,7 @@ public class EventHandler
     	event.put(BTAEntities.ABYSSAL_BULBRAY.get(), EntityAbyssalBulbray.createAttributes().build());
     	event.put(BTAEntities.SUBMARINE.get(), LivingEntity.createLivingAttributes().build());
     	event.put(BTAEntities.PHASMOZOA.get(), EntityPhasmozoa.createAttributes().build());
+    	event.put(BTAEntities.AMARUM_GHOST.get(), EntityAmarumGhost.createAttributes().build());
     }
     
     @SubscribeEvent

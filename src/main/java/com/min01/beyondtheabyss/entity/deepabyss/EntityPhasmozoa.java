@@ -22,7 +22,7 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 	public EntityPhasmozoa(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 3 + this.random.nextInt(8);
+		this.xpReward = this.random.nextInt(5);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()

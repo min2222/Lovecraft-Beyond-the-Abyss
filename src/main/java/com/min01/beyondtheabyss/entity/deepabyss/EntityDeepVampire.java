@@ -45,7 +45,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 	{
 		super(p_21683_, p_21684_);
 		this.posArray = new Vec3[6];
-		this.xpReward = 2 + this.random.nextInt(8);
+		this.xpReward = this.random.nextInt(4);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()

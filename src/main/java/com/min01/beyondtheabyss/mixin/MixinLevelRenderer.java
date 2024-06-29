@@ -28,33 +28,8 @@ public class MixinLevelRenderer
 	@Inject(at = @At(value = "TAIL"), method = "renderLevel")
 	private void renderLevel(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
 	{
-		this.applyFog(mtx, frameTime);
-		this.applyBlur(frameTime);
-		//this.applyTest(mtx, frameTime);
-	}
-	
-	@Unique
-	private void applyTest(PoseStack mtx, float frameTime)
-	{
-		Minecraft mc = Minecraft.getInstance();
-
-		ExtendedPostChain shaderChain = BTAShaders.getTest();
-		EffectInstance shader = shaderChain.getMainShader();
-
-		if(shader != null)
-		{
-			PROJECTION_INVERSE.load(RenderSystem.getProjectionMatrix());
-			PROJECTION_INVERSE.invert();
-
-			VIEW_INVERSE.load(mtx.last().pose());
-			VIEW_INVERSE.invert();
-
-			shader.safeGetUniform("ProjInverseMat").set(PROJECTION_INVERSE);
-			shader.safeGetUniform("ViewInverseMat").set(VIEW_INVERSE);
-			
-			shaderChain.process(frameTime);
-			mc.getMainRenderTarget().bindWrite(false);
-		}
+		//this.applyFog(mtx, frameTime);
+		//this.applyBlur(frameTime);
 	}
 	
 	@Unique

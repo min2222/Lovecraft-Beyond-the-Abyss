@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
 import com.min01.beyondtheabyss.entity.part.CrabShellPart;
@@ -29,7 +30,7 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	public EntityAbyssalHermitCrab(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 2 + this.random.nextInt(6);
+		this.xpReward = this.random.nextInt(3);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -49,7 +50,7 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
     
 	public static boolean checkHermitCrabSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(40) == 0 && pPos.getY() >= -400 && pServerLevel.getBlockState(pPos.below()).is(Blocks.STONE) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pRandom.nextInt(40) == 0 && pPos.getY() >= -400 && pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ABYSSALITH.get()) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 
     //TODO add custom crab attack goal
@@ -96,7 +97,7 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	}
 	
 	@Override
-	public boolean canBreatheOutsideWater()
+	public boolean canBreathOutsideWater()
 	{
 		return true;
 	}

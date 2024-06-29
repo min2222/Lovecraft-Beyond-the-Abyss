@@ -53,7 +53,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
 	{
 		super(p_21683_, p_21684_);
 		this.posArray = new Vec3[2];
-		this.xpReward = 3 + this.random.nextInt(5);
+		this.xpReward = this.random.nextInt(2);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()

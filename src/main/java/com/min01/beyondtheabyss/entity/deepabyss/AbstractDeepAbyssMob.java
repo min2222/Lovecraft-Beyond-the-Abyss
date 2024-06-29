@@ -68,7 +68,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	
 	public void handleAirSupply(int p_30344_) 
 	{
-		if(this.isAlive() && !this.isInWaterOrBubble() && !this.canBreatheOutsideWater())
+		if(this.isAlive() && !this.isInWaterOrBubble() && !this.canBreathOutsideWater())
 		{
 			this.setAirSupply(p_30344_ - 1);
 			if(this.getAirSupply() == -20) 
@@ -165,7 +165,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		return 0.3F;
 	}
 	
-	public boolean canBreatheOutsideWater()
+	public boolean canBreathOutsideWater()
 	{
 		return false;
 	}
