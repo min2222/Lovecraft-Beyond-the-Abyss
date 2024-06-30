@@ -22,7 +22,7 @@ public class AmarumGhostRenderer extends MobRenderer<EntityAmarumGhost, ModelAma
 	@Override
 	protected RenderType getRenderType(EntityAmarumGhost p_115322_, boolean p_115323_, boolean p_115324_, boolean p_115325_) 
 	{
-		return BTARenderType.entityTranslucentColorWrite(this.getTextureLocation(p_115322_));
+		return BTARenderType.entityTranslucentAlpha(this.getTextureLocation(p_115322_));
 	}
 
 	@Override
