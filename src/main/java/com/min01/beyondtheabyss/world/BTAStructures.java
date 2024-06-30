@@ -31,38 +31,53 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BTAStructures
 {
+	public static class BTAStructureKeys
+	{
+		public static final ResourceKey<Structure> RUIN = register("ruin");
+		public static final ResourceKey<Structure> UNDERWATER_BASE = register("underwater_base");
+		
+	    private static ResourceKey<Structure> register(String p_209873_)
+	    {
+	    	return ResourceKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_209873_));
+	    }
+	}
+	
+	public static class BTAStructureSetKeys
+	{
+		public static final ResourceKey<StructureSet> RUIN = register("ruin");
+		public static final ResourceKey<StructureSet> UNDERWATER_BASE = register("underwater_base");
+		
+		private static ResourceKey<StructureSet> register(String p_209839_) 
+		{
+			return ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_209839_));
+		}
+	}
+	
+	public static class BTAStructureHolders
+	{
+	    public static final Holder<Structure> RUIN = register(BTAStructureKeys.RUIN, new RuinStructure(structure(BiomeTags.IS_OCEAN, TerrainAdjustment.NONE)));
+	    
+	    private static Holder<Structure> register(ResourceKey<Structure> p_236534_, Structure p_236535_) 
+	    {
+	        return BuiltinRegistries.register(BuiltinRegistries.STRUCTURES, p_236534_, p_236535_);
+	    }
+	}
+	
+	public static class BTAStructureSetHolders
+	{
+		public static final Holder<StructureSet> RUIN = register(BTAStructureSetKeys.RUIN, new StructureSet(List.of(StructureSet.entry(BTAStructureHolders.RUIN)), new RandomSpreadStructurePlacement(20, 8, RandomSpreadType.LINEAR, 1984567320)));
+	    
+		public static Holder<StructureSet> register(ResourceKey<StructureSet> p_211129_, StructureSet p_211130_)
+		{
+			return BuiltinRegistries.register(BuiltinRegistries.STRUCTURE_SETS, p_211129_, p_211130_);
+		}
+	}
+	
     public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, BeyondtheAbyss.MODID);
     public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, BeyondtheAbyss.MODID);
     
     public static final RegistryObject<StructureType<RuinStructure>> RUIN = STRUCTURE_TYPES.register("ruin", () -> () -> RuinStructure.CODEC);
     public static final RegistryObject<StructurePieceType> RUIN_PIECE = STRUCTURE_PIECE_TYPES.register("ruin_piece", () -> RuinPiece::new);
-    
-	public static final ResourceKey<Structure> RUIN_STRUCTURE_KEY = createKey("ruin");
-    
-	public static final ResourceKey<StructureSet> RUIN_STRUCTURE_SET_KEY = register("ruin");
-	
-    public static final Holder<Structure> RUIN_STRUCTURE = register(RUIN_STRUCTURE_KEY, new RuinStructure(structure(BiomeTags.IS_OCEAN, TerrainAdjustment.NONE)));
-	public static final Holder<StructureSet> RUIN_STRUCTURE_SET = register(RUIN_STRUCTURE_SET_KEY, new StructureSet(List.of(StructureSet.entry(RUIN_STRUCTURE)), new RandomSpreadStructurePlacement(20, 8, RandomSpreadType.LINEAR, 1984567320)));
-	
-    private static ResourceKey<Structure> createKey(String p_209873_)
-    {
-    	return ResourceKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_209873_));
-    }
-    
-	private static ResourceKey<StructureSet> register(String p_209839_) 
-	{
-		return ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_209839_));
-	}
-    
-	public static Holder<StructureSet> register(ResourceKey<StructureSet> p_211129_, StructureSet p_211130_)
-	{
-		return BuiltinRegistries.register(BuiltinRegistries.STRUCTURE_SETS, p_211129_, p_211130_);
-	}
-    
-    private static Holder<Structure> register(ResourceKey<Structure> p_236534_, Structure p_236535_) 
-    {
-        return BuiltinRegistries.register(BuiltinRegistries.STRUCTURES, p_236534_, p_236535_);
-    }
     
     private static Structure.StructureSettings structure(TagKey<Biome> p_236543_, TerrainAdjustment p_236544_) 
     {

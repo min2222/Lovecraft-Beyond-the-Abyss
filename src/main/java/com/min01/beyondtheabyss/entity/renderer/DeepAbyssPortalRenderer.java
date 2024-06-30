@@ -30,7 +30,7 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
 	{
 		p_114488_.pushPose();
 		RenderSystem.disableDepthTest();
-		p_114488_.mulPose(Vector3f.XP.rotationDegrees(90F));
+		p_114488_.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 		if(p_114485_.tickCount < 25)
 		{
 			p_114488_.scale(p_114485_.tickCount * 0.2F, p_114485_.tickCount * 0.2F, p_114485_.tickCount * 0.2F);
@@ -54,10 +54,10 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
         PoseStack.Pose matrixstack$entry = matrixStackIn.last();
         Matrix4f matrix4f = matrixstack$entry.pose();
         Matrix3f matrix3f = matrixstack$entry.normal();
-        drawVertex(matrix4f, matrix3f, builder, 0.5f, 0.5f, 0, minU, minV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, 0.5f, -0.5f, 0, minU, maxV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, -0.5f, -0.5f, 0, maxU, maxV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, -0.5f, 0.5f, 0, maxU, minV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, 0.5F, 0.5F, 0, minU, minV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, 0.5F, -0.5F, 0, minU, maxV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, -0.5F, -0.5F, 0, maxU, maxV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, -0.5F, 0.5F, 0, maxU, minV, 1, packedLightIn);
     }
     
     public void drawVertex(Matrix4f matrix, Matrix3f normals, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, float alpha, int packedLightIn)
