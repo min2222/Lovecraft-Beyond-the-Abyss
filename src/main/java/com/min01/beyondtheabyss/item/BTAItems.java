@@ -7,9 +7,9 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.item.armor.ItemAdvancedDiverSet;
-import com.min01.beyondtheabyss.item.armor.ItemDiverSet;
-import com.min01.beyondtheabyss.item.armor.ItemGhidruthDiverSet;
+import com.min01.beyondtheabyss.item.armor.AdvancedDivingSetItem;
+import com.min01.beyondtheabyss.item.armor.DivingSetItem;
+import com.min01.beyondtheabyss.item.armor.GhidruthDivingSetItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
@@ -84,20 +84,20 @@ public class BTAItems
 	public static final RegistryObject<Item> COOKED_LATCHER_TAIL = ITEMS.register("cooked_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).fast().build()));
 	
 	//armors
-	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new ItemDiverSet(DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));
-	public static final RegistryObject<Item> DIVING_SUIT = ITEMS.register("diving_suit", () -> new ItemDiverSet(DIVING_ARMOR_MATERIAL, EquipmentSlot.CHEST));
-	public static final RegistryObject<Item> DIVING_LEGGINGS = ITEMS.register("diving_leggings", () -> new ItemDiverSet(DIVING_ARMOR_MATERIAL, EquipmentSlot.LEGS));
-	public static final RegistryObject<Item> DIVING_BOOTS = ITEMS.register("diving_boots", () -> new ItemDiverSet(DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
+	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new DivingSetItem(DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));
+	public static final RegistryObject<Item> DIVING_SUIT = ITEMS.register("diving_suit", () -> new DivingSetItem(DIVING_ARMOR_MATERIAL, EquipmentSlot.CHEST));
+	public static final RegistryObject<Item> DIVING_LEGGINGS = ITEMS.register("diving_leggings", () -> new DivingSetItem(DIVING_ARMOR_MATERIAL, EquipmentSlot.LEGS));
+	public static final RegistryObject<Item> DIVING_BOOTS = ITEMS.register("diving_boots", () -> new DivingSetItem(DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
 	
-	public static final RegistryObject<Item> ADVANCED_DIVING_HELMET = ITEMS.register("advanced_diving_helmet", () -> new ItemAdvancedDiverSet(ADVANCED_DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));
-	public static final RegistryObject<Item> ADVANCED_DIVING_SUIT = ITEMS.register("advanced_diving_suit", () -> new ItemAdvancedDiverSet(ADVANCED_DIVING_ARMOR_MATERIAL, EquipmentSlot.CHEST));
-	public static final RegistryObject<Item> ADVANCED_DIVING_LEGGINGS = ITEMS.register("advanced_diving_leggings", () -> new ItemAdvancedDiverSet(ADVANCED_DIVING_ARMOR_MATERIAL, EquipmentSlot.LEGS));
-	public static final RegistryObject<Item> ADVANCED_DIVING_BOOTS = ITEMS.register("advanced_diving_boots", () -> new ItemAdvancedDiverSet(ADVANCED_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
+	public static final RegistryObject<Item> ADVANCED_DIVING_HELMET = ITEMS.register("advanced_diving_helmet", () -> new AdvancedDivingSetItem(ADVANCED_DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));
+	public static final RegistryObject<Item> ADVANCED_DIVING_SUIT = ITEMS.register("advanced_diving_suit", () -> new AdvancedDivingSetItem(ADVANCED_DIVING_ARMOR_MATERIAL, EquipmentSlot.CHEST));
+	public static final RegistryObject<Item> ADVANCED_DIVING_LEGGINGS = ITEMS.register("advanced_diving_leggings", () -> new AdvancedDivingSetItem(ADVANCED_DIVING_ARMOR_MATERIAL, EquipmentSlot.LEGS));
+	public static final RegistryObject<Item> ADVANCED_DIVING_BOOTS = ITEMS.register("advanced_diving_boots", () -> new AdvancedDivingSetItem(ADVANCED_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
 	
-	public static final RegistryObject<Item> GHIDRUTH_DIVING_HELMET = ITEMS.register("ghidruth_diving_helmet", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));
-	public static final RegistryObject<Item> GHIDRUTH_DIVING_SUIT = ITEMS.register("ghidruth_diving_suit", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.CHEST));
-	public static final RegistryObject<Item> GHIDRUTH_DIVING_LEGGINGS = ITEMS.register("ghidruth_diving_leggings", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.LEGS));
-	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new ItemGhidruthDiverSet(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
+	public static final RegistryObject<Item> GHIDRUTH_DIVING_HELMET = ITEMS.register("ghidruth_diving_helmet", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.HEAD));
+	public static final RegistryObject<Item> GHIDRUTH_DIVING_SUIT = ITEMS.register("ghidruth_diving_suit", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.CHEST));
+	public static final RegistryObject<Item> GHIDRUTH_DIVING_LEGGINGS = ITEMS.register("ghidruth_diving_leggings", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.LEGS));
+	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
 	
 	//blocks
 	public static final RegistryObject<Item> RIFTWELLING_ALTAR = ITEMS.register("riftwelling_altar", () -> new BlockItem(BTABlocks.RIFTWELLING_ALTAR.get(), new Item.Properties().tab(DeepAbyssTabs.ABYSS_BLOCKS).rarity(RARITY_ABYSS))

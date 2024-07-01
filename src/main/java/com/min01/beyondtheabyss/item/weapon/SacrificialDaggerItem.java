@@ -2,11 +2,11 @@ package com.min01.beyondtheabyss.item.weapon;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -44,12 +44,14 @@ public class SacrificialDaggerItem extends Item
 		{
 			p_43414_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		});
-		p_43392_.heal(0.25F);
-		if(Math.random() <= 0.1)
-		{
-			p_43391_.addEffect(new MobEffectInstance(BTAEffects.BLEEDING.get(), 40));
-		}
 		return true;
+	}
+	
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_)
+	{
+		ItemStack stack = p_41433_.getItemInHand(p_41434_);
+		return InteractionResultHolder.pass(stack);
 	}
 	
 	@Override

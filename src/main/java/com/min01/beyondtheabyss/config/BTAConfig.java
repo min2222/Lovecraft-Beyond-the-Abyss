@@ -13,7 +13,6 @@ public class BTAConfig
     public static ForgeConfigSpec CONFIG;
 
 	public static ForgeConfigSpec.BooleanValue cameraShakes;
-	public static ForgeConfigSpec.BooleanValue enableAbyssShader;
     
     public static void loadConfig(ForgeConfigSpec config, String path) 
     {
@@ -33,7 +32,6 @@ public class BTAConfig
     {
     	config.push("Client Settings");
     	BTAConfig.cameraShakes = config.comment("disable/enable camera shakes in various place").define("cameraShakes", true);
-    	BTAConfig.enableAbyssShader = config.comment("on/off green filter in deep abyss dimension").define("abyssShader", false);
         config.pop();
     }
 }

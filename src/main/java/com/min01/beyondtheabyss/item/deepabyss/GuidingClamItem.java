@@ -51,15 +51,14 @@ public class GuidingClamItem extends Item
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) 
 	{
         boolean isOverworld = entity.level.dimension() == Level.OVERWORLD;
-        boolean isDeepOcean = entity.level.getBiome(entity.blockPosition()).is(BiomeTags.IS_DEEP_OCEAN);
         boolean isInWater = entity.isEyeInFluidType(Fluids.WATER.getFluidType());
-        if(isOverworld && isDeepOcean && isInWater && entity.getThrowingEntity() != null)
+        if(isOverworld && isOpen(stack) && isInWater && entity.getThrowingEntity() != null)
         {
         	entity.setDeltaMovement(entity.getDeltaMovement().subtract(0, 0.01F, 0));
         	entity.setGlowingTag(true);
         	if(entity.isOnGround() && entity.tickCount % 20 == 0)
         	{
-            	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 30, 0.1F, 15, 25);
+            	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 20, 0.05F, 10, 15);
             	entity.discard();
             	if(!entity.level.isClientSide)
             	{

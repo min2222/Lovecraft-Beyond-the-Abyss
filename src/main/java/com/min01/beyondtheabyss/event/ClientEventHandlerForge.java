@@ -125,7 +125,7 @@ public class ClientEventHandlerForge
     		float f1 = Mth.rotLerp(partialTick, submarine.yHeadRotO, submarine.yHeadRot);
     		float f2 = f1 - f;
             float f6 = Mth.lerp(partialTick, submarine.xRotO, submarine.getXRot());
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(f2));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(f2 + 180));
             poseStack.mulPose(Vector3f.XP.rotationDegrees(f6));
     	}
     }
@@ -138,21 +138,21 @@ public class ClientEventHandlerForge
         float ticksExistedDelta = player.tickCount + delta;
         if(player != null && BTAConfig.cameraShakes.get())
         {
-            float shakeAmplitude = 0.0f;
-            for(EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0))) 
+            float shakeAmplitude = 0.0F;
+            for(EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0F))) 
             {
                 if(cameraShake.distanceTo(player) < cameraShake.getRadius())
                 {
                     shakeAmplitude += cameraShake.getShakeAmount(player, delta);
                 }
             }
-            if(shakeAmplitude > 1.0f)
+            if(shakeAmplitude > 1.0F)
             {
-                shakeAmplitude = 1.0f;
+                shakeAmplitude = 1.0F;
             }
-            event.setPitch((float)(event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3.0f + 2.0f) * 25.0));
-            event.setYaw((float)(event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5.0f + 1.0f) * 25.0));
-            event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0f) * 25.0));
+            event.setPitch((float)(event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3.0F + 2.0F) * 25.0));
+            event.setYaw((float)(event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5.0F + 1.0F) * 25.0));
+            event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
         }
     }
 	
@@ -164,14 +164,6 @@ public class ClientEventHandlerForge
         {
         	if(MC.gameRenderer.currentEffect() == null)
         	{
-            	if(level.dimension() == BTAWorlds.DEEP_ABYSS)
-            	{
-                    if(BTAConfig.enableAbyssShader.get())
-                    {
-                    	MC.gameRenderer.loadEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/abyss.json"));
-                    }
-            	}
-            	
             	if(MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
             	{
             		MC.gameRenderer.loadEffect(new ResourceLocation("shaders/post/deconverge.json"));
@@ -179,11 +171,6 @@ public class ClientEventHandlerForge
         	}
         	else
         	{
-            	if(MC.gameRenderer.currentEffect().getName().equals("beyondtheabyss:shaders/post/abyss.json") && level.dimension() != BTAWorlds.DEEP_ABYSS)
-            	{
-            		MC.gameRenderer.shutdownEffect();
-            	}
-            	
             	if(MC.gameRenderer.currentEffect().getName().equals("minecraft:shaders/post/deconverge.json") && !MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
             	{
             		MC.gameRenderer.shutdownEffect();

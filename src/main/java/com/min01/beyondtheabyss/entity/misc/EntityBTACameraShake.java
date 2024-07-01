@@ -33,21 +33,21 @@ public class EntityBTACameraShake extends Entity
     public EntityBTACameraShake(Level world, Vec3 position, float radius, float magnitude, int duration, int fadeDuration) 
     {
         super(BTAEntities.BTA_CAMERA_SHAKE.get(), world);
-        setRadius(radius);
-        setMagnitude(magnitude);
-        setDuration(duration);
-        setFadeDuration(fadeDuration);
-        setPos(position.x(), position.y(), position.z());
+        this.setRadius(radius);
+        this.setMagnitude(magnitude);
+        this.setDuration(duration);
+        this.setFadeDuration(fadeDuration);
+        this.setPos(position.x, position.y, position.z);
     }
 
     @OnlyIn(Dist.CLIENT)
     public float getShakeAmount(Player player, float delta) 
     {
-        float ticksDelta = tickCount + delta;
-        float timeFrac = 1.0f - (ticksDelta - getDuration()) / (getFadeDuration() + 1.0f);
-        float baseAmount = ticksDelta < getDuration() ? getMagnitude() : timeFrac * timeFrac * getMagnitude();
+        float ticksDelta = this.tickCount + delta;
+        float timeFrac = 1.0F - (ticksDelta - this.getDuration()) / (this.getFadeDuration() + 1.0F);
+        float baseAmount = ticksDelta < this.getDuration() ? this.getMagnitude() : timeFrac * timeFrac * this.getMagnitude();
         Vec3 playerPos = player.getEyePosition(delta);
-        float distFrac = (float) (1.0f - Mth.clamp(position().distanceTo(playerPos) / getRadius(), 0, 1));
+        float distFrac = (float) (1.0F - Mth.clamp(this.position().distanceTo(playerPos) / this.getRadius(), 0, 1));
         return baseAmount * distFrac * distFrac;
     }
 
@@ -55,76 +55,79 @@ public class EntityBTACameraShake extends Entity
     public void tick() 
     {
         super.tick();
-        if(tickCount > getDuration() + getFadeDuration()) discard() ;
+        if(this.tickCount > this.getDuration() + this.getFadeDuration()) 
+        {
+        	this.discard();
+        }
     }
 
     @Override
     protected void defineSynchedData()
     {
-        getEntityData().define(RADIUS, 10.0f);
-        getEntityData().define(MAGNITUDE, 1.0f);
-        getEntityData().define(DURATION, 0);
-        getEntityData().define(FADE_DURATION, 5);
+        this.entityData.define(RADIUS, 10.0F);
+        this.entityData.define(MAGNITUDE, 1.0F);
+        this.entityData.define(DURATION, 0);
+        this.entityData.define(FADE_DURATION, 5);
     }
 
     public float getRadius() 
     {
-        return getEntityData().get(RADIUS);
+        return this.entityData.get(RADIUS);
     }
 
     public void setRadius(float radius)
     {
-        getEntityData().set(RADIUS, radius);
+        this.entityData.set(RADIUS, radius);
     }
 
     public float getMagnitude() 
     {
-        return getEntityData().get(MAGNITUDE);
+        return this.entityData.get(MAGNITUDE);
     }
 
     public void setMagnitude(float magnitude) 
     {
-        getEntityData().set(MAGNITUDE, magnitude);
+        this.entityData.set(MAGNITUDE, magnitude);
     }
 
     public int getDuration() 
     {
-        return getEntityData().get(DURATION);
+        return this.entityData.get(DURATION);
     }
 
     public void setDuration(int duration)
     {
-        getEntityData().set(DURATION, duration);
+        this.entityData.set(DURATION, duration);
     }
 
     public int getFadeDuration()
     {
-        return getEntityData().get(FADE_DURATION);
+        return this.entityData.get(FADE_DURATION);
     }
 
     public void setFadeDuration(int fadeDuration) 
     {
-        getEntityData().set(FADE_DURATION, fadeDuration);
+        this.entityData.set(FADE_DURATION, fadeDuration);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) 
     {
-        setRadius(compound.getFloat("radius"));
-        setMagnitude(compound.getFloat("magnitude"));
-        setDuration(compound.getInt("duration"));
-        setFadeDuration(compound.getInt("fade_duration"));
-        tickCount = compound.getInt("ticks_existed");
+        this.setRadius(compound.getFloat("radius"));
+        this.setMagnitude(compound.getFloat("magnitude"));
+        this.setDuration(compound.getInt("duration"));
+        this.setFadeDuration(compound.getInt("fadeDuration"));
+        this.tickCount = compound.getInt("tickCount");
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound)
     {
-        compound.putFloat("radius", getRadius());
-        compound.putFloat("magnitude", getMagnitude());
-        compound.putInt("duration", getDuration());
-        compound.putInt("fade_duration", getFadeDuration());
-        compound.putInt("ticks_existed", tickCount);
+        compound.putFloat("radius", this.getRadius());
+        compound.putFloat("magnitude", this.getMagnitude());
+        compound.putInt("duration", this.getDuration());
+        compound.putInt("fadeDuration", this.getFadeDuration());
+        compound.putInt("tickCount", this.tickCount);
     }
 
     @Override

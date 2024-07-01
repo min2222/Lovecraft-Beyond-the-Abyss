@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
+import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.client.Minecraft;
@@ -32,12 +32,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 
-public class ItemAdvancedDiverSet extends ArmorItem
+public class GhidruthDivingSetItem extends ArmorItem
 {
 	public static final UUID[] ARMOR_MODIFIER_UUID_PER_SLOT = new UUID[]{UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")};
 	public Multimap<Attribute, AttributeModifier> modifers;
 	
-	public ItemAdvancedDiverSet(ArmorMaterial p_40386_, EquipmentSlot p_40387_)
+	public GhidruthDivingSetItem(ArmorMaterial p_40386_, EquipmentSlot p_40387_)
 	{
 		super(p_40386_, p_40387_, new Item.Properties().tab(DeepAbyssTabs.ABYSS_ARMORS));
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
@@ -48,14 +48,14 @@ public class ItemAdvancedDiverSet extends ArmorItem
 		{
 			builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", (double)p_40386_.getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
 		}
-		builder.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(UUID.randomUUID(), "Swim speed", 1D, AttributeModifier.Operation.ADDITION));
+		builder.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(UUID.randomUUID(), "Swim speed", 1.8D, AttributeModifier.Operation.ADDITION));
 		this.modifers = builder.build();
 	}
 	
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) 
 	{
-		return slot == EquipmentSlot.FEET && stack.getItem() == BTAItems.ADVANCED_DIVING_BOOTS.get() ? this.modifers : super.getAttributeModifiers(slot, stack);
+		return slot == EquipmentSlot.FEET && stack.getItem() == BTAItems.GHIDRUTH_DIVING_BOOTS.get() ? this.modifers : super.getAttributeModifiers(slot, stack);
 	}
 	
 	@Override
@@ -66,15 +66,15 @@ public class ItemAdvancedDiverSet extends ArmorItem
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) 
 			{
-				ModelAdvancedDiverSet<?> diverModel = new ModelAdvancedDiverSet<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAdvancedDiverSet.LAYER_LOCATION));
+				ModelGhidruthDiverSet<?> diverModel = new ModelGhidruthDiverSet<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGhidruthDiverSet.LAYER_LOCATION));
 				diverModel.Head.visible = equipmentSlot == EquipmentSlot.HEAD;
 				diverModel.Body.visible = equipmentSlot == EquipmentSlot.CHEST;
 				diverModel.LeftArm.visible = equipmentSlot == EquipmentSlot.CHEST;
 				diverModel.RightArm.visible = equipmentSlot == EquipmentSlot.CHEST;
 				diverModel.LeftLeg.visible = equipmentSlot == EquipmentSlot.LEGS;
 				diverModel.RightLeg.visible = equipmentSlot == EquipmentSlot.LEGS;
-				diverModel.Left_boots.visible = equipmentSlot == EquipmentSlot.FEET;
-				diverModel.Right_boots.visible = equipmentSlot == EquipmentSlot.FEET;
+				diverModel.LeftFeet.visible = equipmentSlot == EquipmentSlot.FEET;
+				diverModel.RightFeet.visible = equipmentSlot == EquipmentSlot.FEET;
 				return diverModel;
 			}
 		});
@@ -83,13 +83,13 @@ public class ItemAdvancedDiverSet extends ArmorItem
 	@Override
 	public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) 
 	{
-		return "beyondtheabyss:textures/models/armor/advanced_diver_set.png";
+		return "beyondtheabyss:textures/models/armor/ghidruth_diver_set.png";
 	}
 	
 	@Override
 	public void onArmorTick(ItemStack stack, Level level, Player player)
 	{
-		if(player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
+		if(player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.GHIDRUTH_DIVING_HELMET.get())
 		{
 			if(player.isEyeInFluidType(Fluids.WATER.getFluidType()))
 			{
