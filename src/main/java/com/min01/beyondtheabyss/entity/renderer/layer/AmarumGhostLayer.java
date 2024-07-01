@@ -3,11 +3,11 @@ package com.min01.beyondtheabyss.entity.renderer.layer;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
 import com.min01.beyondtheabyss.entity.model.ModelAmarumGhost;
-import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.resources.ResourceLocation;
@@ -39,7 +39,7 @@ public class AmarumGhostLayer extends GlowingLayer<EntityAmarumGhost, ModelAmaru
 
 	protected static void renderColoredGlowingModel(ModelAmarumGhost p_117377_, ResourceLocation p_117378_, PoseStack p_117379_, MultiBufferSource p_117380_, int p_117381_, EntityAmarumGhost p_117382_, float p_117383_, float p_117384_, float p_117385_)
 	{
-		VertexConsumer vertexconsumer = p_117380_.getBuffer(BTARenderType.entityTranslucentAdditive(p_117378_));
-		p_117377_.renderToBuffer(p_117379_, vertexconsumer, p_117381_, LivingEntityRenderer.getOverlayCoords(p_117382_, 0.0F), p_117383_, p_117384_, p_117385_, 0.1F);
+		VertexConsumer vertexconsumer = p_117380_.getBuffer(RenderType.entityTranslucent(p_117378_));
+		p_117377_.renderToBuffer(p_117379_, vertexconsumer, p_117381_, LivingEntityRenderer.getOverlayCoords(p_117382_, 0.0F), p_117383_, p_117384_, p_117385_, 0.5F);
 	}
 }

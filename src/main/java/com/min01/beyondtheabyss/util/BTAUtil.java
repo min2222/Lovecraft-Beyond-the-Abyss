@@ -129,7 +129,7 @@ public class BTAUtil
 	
     public static Entity teleportEntityToDimension(Entity entity, ServerLevel serverLevel, BlockPos pos)
     {
-        if(!entity.getLevel().dimension().location().getPath().equals(serverLevel.dimension().location().getPath()))
+        if(entity.level.dimension() != serverLevel.dimension())
         {
             entity.moveTo(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, entity.getYRot(), 0.0F);
         }

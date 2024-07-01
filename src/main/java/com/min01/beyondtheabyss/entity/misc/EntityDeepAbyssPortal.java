@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.misc;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
@@ -10,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,9 +17,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -65,12 +60,12 @@ public class EntityDeepAbyssPortal extends Entity
 			
 			if(entity.distanceTo(this) <= 2.0F)
 			{
-		        boolean abyss = entity.getLevel().dimension().location().getPath().equals("deep_abyss");
+		        boolean isAbyss = entity.level.dimension() == BTAWorlds.DEEP_ABYSS;
 		        if(!entity.level.isClientSide) 
 		        {
 		            MinecraftServer server = entity.level.getServer();
 		            ServerLevel serverLevel = server.getLevel(BTAWorlds.DEEP_ABYSS);
-		            if(!abyss && serverLevel != null && !(entity instanceof EntityBTACameraShake))
+		            if(!isAbyss && serverLevel != null && !(entity instanceof EntityBTACameraShake))
 		            {
 		            	if(entity instanceof ServerPlayer serverPlayer)
 		            	{
@@ -80,11 +75,6 @@ public class EntityDeepAbyssPortal extends Entity
 		            	{
 		                    BTAUtil.teleportEntityToDimension(entity, serverLevel, new BlockPos(entity.getX(), -350, entity.getZ()));
 		            	}
-		            	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.NONE).setKeepLiquids(false);
-		            	ResourceLocation location = new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/underwaterbase1");
-		            	ResourceLocation location2 = new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/underwaterbase2");
-		            	BTAUtil.placeStructure(server, serverLevel, settings, location, entity.blockPosition().offset(-36, -3, -12));
-		            	BTAUtil.placeStructure(server, serverLevel, settings, location2, entity.blockPosition().offset(12, -3, -12));
 		            }
 		        }
 			}

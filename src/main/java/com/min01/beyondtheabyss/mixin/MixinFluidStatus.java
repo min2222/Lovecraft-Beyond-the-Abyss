@@ -7,6 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.min01.beyondtheabyss.world.BTAWorlds;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -27,7 +29,7 @@ public class MixinFluidStatus
 		for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
 		{
 			Level level = player.level;
-			if(level != null && player != null && level.dimension().location().getPath().equals("deep_abyss"))
+			if(level != null && player != null && level.dimension() == BTAWorlds.DEEP_ABYSS)
 			{
 				BlockState water = p_188406_ < this.fluidLevel ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
 				ci.setReturnValue(water);

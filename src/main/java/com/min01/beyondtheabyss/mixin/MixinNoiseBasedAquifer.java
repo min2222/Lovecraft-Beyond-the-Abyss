@@ -5,6 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.min01.beyondtheabyss.world.BTAWorlds;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -23,7 +25,7 @@ public class MixinNoiseBasedAquifer
 			Level level = player.level;
 			if(level != null && player != null)
 			{
-				if(level.dimension().location().getPath().equals("deep_abyss"))
+				if(level.dimension() == BTAWorlds.DEEP_ABYSS)
 				{
 					ci.setReturnValue(Blocks.WATER.defaultBlockState());
 				}

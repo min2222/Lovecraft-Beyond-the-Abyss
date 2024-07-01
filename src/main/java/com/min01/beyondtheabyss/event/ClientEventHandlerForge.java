@@ -8,15 +8,14 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
-import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssSkyRenderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -132,7 +131,7 @@ public class ClientEventHandlerForge
     }
     
     @SubscribeEvent
-    public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) 
+    public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
     {
         Player player = MC.player;
         float delta = Minecraft.getInstance().getFrameTime();
@@ -158,14 +157,14 @@ public class ClientEventHandlerForge
     }
 	
     @SubscribeEvent
-    public static void onClientTickEvent(ClientTickEvent event) 
+    public static void onClientTick(ClientTickEvent event) 
     {
-        ClientLevel world = MC.level;
-        if(world != null && !MC.isPaused() && MC.player != null)
+        ClientLevel level = MC.level;
+        if(level != null && !MC.isPaused() && MC.player != null)
         {
         	if(MC.gameRenderer.currentEffect() == null)
         	{
-            	if(world.dimension().location().getPath().equals("deep_abyss"))
+            	if(level.dimension() == BTAWorlds.DEEP_ABYSS)
             	{
                     if(BTAConfig.enableAbyssShader.get())
                     {
@@ -180,7 +179,7 @@ public class ClientEventHandlerForge
         	}
         	else
         	{
-            	if(MC.gameRenderer.currentEffect().getName().equals("beyondtheabyss:shaders/post/abyss.json") && !world.dimension().location().getPath().equals("deep_abyss"))
+            	if(MC.gameRenderer.currentEffect().getName().equals("beyondtheabyss:shaders/post/abyss.json") && level.dimension() != BTAWorlds.DEEP_ABYSS)
             	{
             		MC.gameRenderer.shutdownEffect();
             	}
@@ -196,12 +195,11 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onLevelLoad(LevelEvent.Load event) 
     {
-        if(event.getLevel() instanceof ClientLevel)
+        if(event.getLevel() instanceof ClientLevel level)
         {
-        	ClientLevel world = (ClientLevel) event.getLevel();
-            if(world.dimension().location().getPath().equals("deep_abyss"))
+            if(level.dimension() == BTAWorlds.DEEP_ABYSS)
             {
-                world.effects = new DeepAbyssDimensionSpecialEffects();
+            	level.effects = new DeepAbyssDimensionSpecialEffects();
             }
         }
     }
@@ -209,8 +207,8 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onRenderFog(ViewportEvent.RenderFog event)
     {
-    	ClientLevel world = MC.level;
-        if(world.dimension().location().getPath().equals("deep_abyss"))
+    	ClientLevel level = MC.level;
+        if(level.dimension() == BTAWorlds.DEEP_ABYSS)
         {
         	FogType fogtype = event.getCamera().getFluidInCamera();
             if(fogtype == FogType.WATER)
@@ -237,10 +235,10 @@ public class ClientEventHandlerForge
     }
     
     @SubscribeEvent
-    public static void onFogColors(ViewportEvent.ComputeFogColor event)
+    public static void onComputeFogColor(ViewportEvent.ComputeFogColor event)
     {
-    	ClientLevel world = MC.level;
-        if(world.dimension().location().getPath().equals("deep_abyss"))
+    	ClientLevel level = MC.level;
+        if(level.dimension() == BTAWorlds.DEEP_ABYSS)
         {
         	FogType fogtype = event.getCamera().getFluidInCamera();
             if(fogtype == FogType.WATER)
@@ -250,26 +248,6 @@ public class ClientEventHandlerForge
                 event.setGreen((float) color.y);
                 event.setBlue((float) color.z);
             }
-        }
-    }
-    
-    //useless (already handled in onWorldLoad) + cause lag in dimension
-    //@SubscribeEvent
-    public static void onRenderLevel(RenderLevelStageEvent event) 
-    {
-        ClientLevel world = MC.level;
-        if(world.dimension().location().getPath().equals("deep_abyss"))
-        {
-        	DeepAbyssSkyRenderer skyRenderer = new DeepAbyssSkyRenderer();
-        	PoseStack stack = new PoseStack();
-        	skyRenderer.renderSky(stack, stack.last().pose(), (float) event.getPartialTick(), event.getCamera(), false, new Runnable()
-        	{
-				@Override
-				public void run() 
-				{
-					FogRenderer.setupFog(event.getCamera(), FogRenderer.FogMode.FOG_SKY, MC.gameRenderer.getRenderDistance(), false, (float) event.getPartialTick());
-				}
-			});
         }
     }
 }

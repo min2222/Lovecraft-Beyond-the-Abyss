@@ -13,7 +13,12 @@ import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.IllusionAddPacket;
+import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.world.BTASavedData;
+import com.min01.beyondtheabyss.world.BTAWorlds;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -24,6 +29,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
@@ -31,6 +40,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -51,12 +61,36 @@ public class EventHandlerForge
 			{
 				if(t instanceof ItemEntity item)
 				{
-					if(item.level.dimension().location().getPath().equals("deep_abyss"))
+					if(item.level.dimension() == BTAWorlds.DEEP_ABYSS)
 					{
 						item.setDeltaMovement(item.getDeltaMovement().subtract(0, 0.01F, 0));
 					}
 				}
 			});
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onEntityJoinLevel(EntityJoinLevelEvent event)
+	{
+		Entity entity = event.getEntity();
+		Level level = event.getLevel();
+		if(level instanceof ServerLevel serverLevel)
+		{
+			MinecraftServer server = serverLevel.getServer();
+			if(level.dimension() == BTAWorlds.DEEP_ABYSS)
+			{
+	        	BTASavedData data = BTASavedData.get(serverLevel, BTAWorlds.DEEP_ABYSS);
+	        	if(data != null && !data.isUnderwaterBaseGenerated())
+	        	{
+	            	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.NONE).setKeepLiquids(false);
+	            	ResourceLocation location = new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/underwaterbase1");
+	            	ResourceLocation location2 = new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/underwaterbase2");
+	            	BTAUtil.placeStructure(server, serverLevel, settings, location, entity.blockPosition().offset(-36, -3, -12));
+	            	BTAUtil.placeStructure(server, serverLevel, settings, location2, entity.blockPosition().offset(12, -3, -12));
+	            	data.setUnderwaterBaseGenerated(true);
+	        	}
+			}
 		}
 	}
 	
