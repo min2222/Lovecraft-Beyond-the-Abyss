@@ -23,31 +23,25 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BTAClientUtil
 {	
 	//https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/animate/client/util/ModelPartUtils.java#L57
-
-    public static Vec3 getWorldPosition(Entity entity, float yaw, ModelPart root, String... modelPartName)
+    
+    public static Vec3 getWorldPositionOfMultiPart(Entity entity, ModelPart root, Vec3 rotation, String... modelPartName)
     {
-    	return getWorldPosition(entity, yaw, root, false, true, modelPartName);
+    	return getWorldPosition(entity, root, false, rotation, modelPartName);
     }
     
-    public static Vec3 getWorldPositionOfMultiPart(Entity entity, float yaw, ModelPart root, String... modelPartName)
+    public static Vec3 getWorldPosition(Entity entity, ModelPart root, Vec3 rotation, String... modelPartName)
     {
-    	return getWorldPosition(entity, yaw, root, false, false, modelPartName);
+    	return getWorldPosition(entity, root, true, rotation, modelPartName);
     }
     
-    public static Vec3 getWorldPosition(Entity entity, float yaw, ModelPart root, boolean isInWater, String... modelPartName)
-    {
-    	return getWorldPosition(entity, yaw, root, isInWater, true, modelPartName);
-    }
-    
-    public static Vec3 getWorldPosition(Entity entity, float yaw, ModelPart root, boolean isInWater, boolean translateToEntity, String... modelPartName)
+    public static Vec3 getWorldPosition(Entity entity, ModelPart root, boolean translateToEntity, Vec3 rotation, String... modelPartName)
     {
         PoseStack poseStack = new PoseStack();
         if(translateToEntity)
         {
         	poseStack.translate(entity.getX(), entity.getY(), entity.getZ());
         }
-        float zRot = isInWater ? !entity.isInWater() ? 90.0F : 0.0F : 0.0F;
-        poseStack.mulPose(new Quaternion(0, -yaw + 180.0F, zRot, true));
+        poseStack.mulPose(new Quaternion((float)rotation.x, (float)-rotation.y + 180.0F, (float)rotation.z, true));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         ModelPart nextPart = null;
         for(int i = 0; i < modelPartName.length; i++)

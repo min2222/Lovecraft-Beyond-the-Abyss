@@ -42,9 +42,10 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 	public void render(EntityGhidruth p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
 	{
 		super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
-		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), TAIL);
-		Vec3 bodyPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), BODY);
-		Vec3 headPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), HEAD);
+		Vec3 rotation = new Vec3(-p_115455_.getXRot(), p_115455_.yHeadRot, 0.0F);
+		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL);
+		Vec3 bodyPos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, BODY);
+		Vec3 headPos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, HEAD);
 		p_115455_.posArray[2] = tailPos;
 		p_115455_.posArray[1] = bodyPos;
 		p_115455_.posArray[0] = headPos;

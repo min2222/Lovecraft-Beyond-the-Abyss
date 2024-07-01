@@ -29,18 +29,18 @@ public class DeepVampireAnimation
 				new Keyframe(1.25F, KeyframeAnimations.degreeVec(12.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
 			.addAnimation("ChinBarbelRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-				new Keyframe(0.3333F, KeyframeAnimations.degreeVec(11.8994F, 19.843F, 10.8278F), AnimationChannel.Interpolations.CATMULLROM),
-				new Keyframe(0.625F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 10.0F), AnimationChannel.Interpolations.CATMULLROM),
-				new Keyframe(0.9583F, KeyframeAnimations.degreeVec(11.8994F, -19.843F, -10.8278F), AnimationChannel.Interpolations.CATMULLROM),
-				new Keyframe(1.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
+				new Keyframe(0.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.3333F, KeyframeAnimations.degreeVec(30.0F, 19.843F, 10.8278F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.625F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 10.0F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.9583F, KeyframeAnimations.degreeVec(30.0F, -19.843F, -10.8278F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(1.25F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
 			.addAnimation("ChinBarbelLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -10.0F), AnimationChannel.Interpolations.CATMULLROM),
-				new Keyframe(0.3333F, KeyframeAnimations.degreeVec(11.8994F, 19.843F, 10.8278F), AnimationChannel.Interpolations.CATMULLROM),
-				new Keyframe(0.625F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-				new Keyframe(0.9583F, KeyframeAnimations.degreeVec(11.8994F, -19.843F, -10.8278F), AnimationChannel.Interpolations.CATMULLROM),
-				new Keyframe(1.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -10.0F), AnimationChannel.Interpolations.CATMULLROM)
+				new Keyframe(0.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F, -10.0F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.3333F, KeyframeAnimations.degreeVec(30.0F, 19.843F, 10.8278F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.625F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.9583F, KeyframeAnimations.degreeVec(30.0F, -19.843F, -10.8278F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(1.25F, KeyframeAnimations.degreeVec(30.0F, 0.0F, -10.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
 			.addAnimation("Body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, -12.5F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -70,13 +70,13 @@ public class DeepVampireAnimation
 				new Keyframe(0.9583F, KeyframeAnimations.degreeVec(0.0F, 10.66F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.25F, KeyframeAnimations.degreeVec(0.0F, 20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
-			.addAnimation("FinLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+			.addAnimation("GillLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 5.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.3333F, KeyframeAnimations.degreeVec(0.0F, -30.64F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.625F, KeyframeAnimations.degreeVec(0.0F, -12.5F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.25F, KeyframeAnimations.degreeVec(0.0F, 5.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
-			.addAnimation("FinRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+			.addAnimation("GillRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 12.5F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.625F, KeyframeAnimations.degreeVec(0.0F, -5.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.9583F, KeyframeAnimations.degreeVec(0.0F, 28.46F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -91,6 +91,22 @@ public class DeepVampireAnimation
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 30.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.6667F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.25F, KeyframeAnimations.degreeVec(0.0F, 30.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
+			))
+			.addAnimation("BigFinLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+				new Keyframe(0.0F, KeyframeAnimations.degreeVec(-40.0F, 5.0F, 35.0F), AnimationChannel.Interpolations.LINEAR)
+			))
+			.addAnimation("BigFinLeft2", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 10.0F), AnimationChannel.Interpolations.LINEAR),
+				new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -20.0F), AnimationChannel.Interpolations.LINEAR),
+				new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 10.0F), AnimationChannel.Interpolations.LINEAR)
+			))
+			.addAnimation("BigFinRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+				new Keyframe(0.0F, KeyframeAnimations.degreeVec(-40.0F, -5.0F, -35.0F), AnimationChannel.Interpolations.LINEAR)
+			))
+			.addAnimation("BigFinRight2", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 20.0F), AnimationChannel.Interpolations.LINEAR),
+				new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -10.0F), AnimationChannel.Interpolations.LINEAR),
+				new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 20.0F), AnimationChannel.Interpolations.LINEAR)
 			))
 			.build();
 
@@ -170,13 +186,13 @@ public class DeepVampireAnimation
 				new Keyframe(1.25F, KeyframeAnimations.degreeVec(0.0F, -20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.5F, KeyframeAnimations.degreeVec(0.0F, 20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
-			.addAnimation("FinLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+			.addAnimation("GillLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.0F, 15.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, -15.83F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
-			.addAnimation("FinRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+			.addAnimation("GillRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.1F, -12.3869F, 1.6039F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0549F, 12.8657F, 1.2817F), AnimationChannel.Interpolations.CATMULLROM),
@@ -268,13 +284,13 @@ public class DeepVampireAnimation
 				new Keyframe(1.25F, KeyframeAnimations.degreeVec(0.0F, 20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.5F, KeyframeAnimations.degreeVec(0.0F, -20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
-			.addAnimation("FinLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+			.addAnimation("GillLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.1F, 12.3869F, -1.6039F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0549F, -12.8657F, -1.2817F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 			))
-			.addAnimation("FinRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+			.addAnimation("GillRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.0F, -15.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 				new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, 15.83F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),

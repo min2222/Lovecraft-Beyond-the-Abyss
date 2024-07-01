@@ -27,8 +27,9 @@ public class LatcherRenderer extends MobRenderer<EntityLatcher, ModelLatcher>
 	public void render(EntityLatcher p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
 	{
 		super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
-		Vec3 tail2Pos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), TAIL2);
-		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, p_115455_.yHeadRot, this.model.root(), TAIL);
+		Vec3 rotation = new Vec3(p_115455_.getXRot(), p_115455_.yHeadRot, 0.0F);
+		Vec3 tail2Pos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL2);
+		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL);
 		p_115455_.posArray[1] = tail2Pos;
 		p_115455_.posArray[0] = tailPos;
 	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tail2Pos, 1));
