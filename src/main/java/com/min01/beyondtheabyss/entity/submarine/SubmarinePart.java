@@ -1,11 +1,14 @@
 package com.min01.beyondtheabyss.entity.submarine;
 
 import com.min01.beyondtheabyss.entity.AbstractOwnableEntity;
+import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -16,7 +19,7 @@ import net.minecraft.world.phys.AABB;
 public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implements MultipartAwareEntity
 {
     public final SubmarinePartHitBoxes hitboxHelper = new SubmarinePartHitBoxes(this);
-    public SubmarinePartType type;
+	public static final EntityDataAccessor<SubmarinePartType> PART_TYPE = SynchedEntityData.defineId(SubmarinePart.class, BTAEntityDataSerializers.SUBMARINE_PART_TYPE.get());
     
     public static enum SubmarinePartType
     {
@@ -27,6 +30,38 @@ public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implem
 	public SubmarinePart(EntityType<? extends SubmarinePart> p_19870_, Level p_19871_) 
 	{
 		super(p_19870_, p_19871_);
+	}
+	
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(PART_TYPE, SubmarinePartType.HATCH);
+	}
+	
+	@Override
+	public void tick()
+	{
+		super.tick();
+		if(this.getOwner() != null)
+		{
+			this.copyPosition(this.getOwner());
+			switch(this.getPartType())
+			{
+			case DETECTOR:
+				this.getOwner().setDetector(this);
+				break;
+			case HATCH:
+				this.getOwner().setHatch(this);
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			this.discard();
+		}
 	}
 
 	@Override
@@ -53,16 +88,16 @@ public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implem
 	@Override
 	public boolean isPickable() 
 	{
-		return this.type == SubmarinePartType.HATCH;
+		return this.getPartType() == SubmarinePartType.HATCH;
 	}
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag p_37265_) 
 	{
 		super.addAdditionalSaveData(p_37265_);
-		if(this.type != null)
+		if(this.getPartType() != null)
 		{
-			p_37265_.putInt("PartType", this.type.ordinal());
+			p_37265_.putInt("PartType", this.getPartType().ordinal());
 		}
 	}
 	
@@ -72,18 +107,28 @@ public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implem
 		super.readAdditionalSaveData(p_37262_);
 		if(p_37262_.contains("PartType"))
 		{
-			this.type = SubmarinePartType.values()[p_37262_.getInt("PartType")];
+			this.setPartType(SubmarinePartType.values()[p_37262_.getInt("PartType")]);
 		}
 	}
 	
 	@Override
 	public InteractionResult interact(Entity entity, InteractionHand hand, String part) 
 	{
-		if(part == "hatch" && this.getOwner() != null && this.type == SubmarinePartType.HATCH)
+		if(part == "hatch" && this.getOwner() != null && this.getPartType() == SubmarinePartType.HATCH)
 		{
 			this.getOwner().setHatchOpened(!this.getOwner().hatchOpened());
 			return InteractionResult.SUCCESS;
 		}
 		return MultipartAwareEntity.super.interact(entity, hand, part);
+	}
+	
+	public SubmarinePartType getPartType()
+	{
+		return this.entityData.get(PART_TYPE);
+	}
+	
+	public void setPartType(SubmarinePartType value)
+	{
+		this.entityData.set(PART_TYPE, value);
 	}
 }

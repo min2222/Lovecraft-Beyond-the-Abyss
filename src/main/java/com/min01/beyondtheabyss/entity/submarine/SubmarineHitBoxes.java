@@ -121,11 +121,4 @@ public class SubmarineHitBoxes
         	part.setZ(vec3.z);
     	}
     }
-    
-    public void setPartPosition(EntityPart part, double offsetX, double offsetY, double offsetZ) 
-    {
-    	part.setX(offsetX);
-    	part.setY(offsetY);
-    	part.setZ(offsetZ);
-    }
 }

@@ -79,8 +79,8 @@ public class BTAClientUtil
 	
 	public static void animateHead(ModelPart head, float netHeadYaw, float headPitch)
 	{
-		head.yRot += netHeadYaw * ((float)Math.PI / 180F);
-		head.xRot += headPitch * ((float)Math.PI / 180F);
+		head.yRot += netHeadYaw * ((float)Math.PI / 180.0F);
+		head.xRot += headPitch * ((float)Math.PI / 180.0F);
 	}
 	
 	public static void animateWalk(AbstractBTAMob entity, HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 

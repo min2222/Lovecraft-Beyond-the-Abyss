@@ -22,7 +22,7 @@ public class DeepAbyssUtil
 		{
 			List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox().inflate(0.15F), EntitySelector.NO_SPECTATORS);
 			List<SubmarinePart> hatches = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox(), EntitySelector.NO_SPECTATORS);
-			hatches.removeIf(t -> t.type != SubmarinePartType.HATCH);
+			hatches.removeIf(t -> t.getPartType() != SubmarinePartType.HATCH);
 
 			if(!list.isEmpty())
 			{
@@ -49,7 +49,7 @@ public class DeepAbyssUtil
 		if(!(entity instanceof EntitySubmarine) && !(entity instanceof SubmarinePart))
 		{
 			List<SubmarinePart> list = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F), EntitySelector.NO_SPECTATORS);
-			list.removeIf(t -> t.type != SubmarinePartType.DETECTOR);
+			list.removeIf(t -> t.getPartType() != SubmarinePartType.DETECTOR);
 			return !list.isEmpty();
 		}
 		return false;

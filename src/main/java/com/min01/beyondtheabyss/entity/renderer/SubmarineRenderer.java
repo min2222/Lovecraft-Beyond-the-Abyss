@@ -35,14 +35,14 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		p_114488_.pushPose();
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0, -1.5F, 0);
-		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
 		float f = Mth.rotLerp(p_114487_, p_114485_.yBodyRotO, p_114485_.yBodyRot);
 		float f1 = Mth.rotLerp(p_114487_, p_114485_.yHeadRotO, p_114485_.yHeadRot);
 		float f2 = f1 - f;
         float f6 = Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot());
+		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
 		this.model.setupAnim(p_114485_, 0, 0, 0, f2 + 180, f6);
 		this.model.renderToBuffer(p_114488_, consumer, p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		Vec3 rotation = new Vec3(p_114485_.getXRot(), f2, 0.0F);
+		Vec3 rotation = Vec3.ZERO;
 		Vec3 detectorPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine"});
 		Vec3 topPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "top"});
 		Vec3 leftWallPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "l_wall"});

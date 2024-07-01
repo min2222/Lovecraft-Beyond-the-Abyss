@@ -78,29 +78,13 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	}
 	
 	@Override
-	public void remove(RemovalReason p_146834_)
-	{
-		super.remove(p_146834_);
-		
-		if(this.getHatch() != null)
-		{
-			this.getHatch().discard();
-		}
-		
-		if(this.getDetector() != null)
-		{
-			this.getDetector().discard();
-		}
-	}
-	
-	@Override
 	public void onAddedToWorld()
 	{
 		super.onAddedToWorld();
 		if(this.getHatch() == null)
 		{
 			SubmarinePart hatch = new SubmarinePart(BTAEntities.SUBMARINE_PART.get(), this.level);
-			hatch.type = SubmarinePartType.HATCH;
+			hatch.setPartType(SubmarinePartType.HATCH);
 			hatch.setPos(this.position());
 			hatch.setOwner(this);
 			this.level.addFreshEntity(hatch);
@@ -109,7 +93,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 		if(this.getDetector() == null)
 		{
 			SubmarinePart detector = new SubmarinePart(BTAEntities.SUBMARINE_PART.get(), this.level);
-			detector.type = SubmarinePartType.DETECTOR;
+			detector.setPartType(SubmarinePartType.DETECTOR);
 			detector.setPos(this.position());
 			detector.setOwner(this);
 			this.level.addFreshEntity(detector);
@@ -282,18 +266,6 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
         {
             ++this.glowingTicks;
             this.brightness += (0.0F - this.brightness) * 0.8F;
-        }
-        
-        if(this.getHatch() != null)
-        {
-        	this.getHatch().copyPosition(this);
-        	this.getHatch().type = SubmarinePartType.HATCH;
-        }
-        
-        if(this.getDetector() != null)
-        {
-        	this.getDetector().copyPosition(this);
-        	this.getDetector().type = SubmarinePartType.DETECTOR;
         }
         
     	if(this.isInWater())

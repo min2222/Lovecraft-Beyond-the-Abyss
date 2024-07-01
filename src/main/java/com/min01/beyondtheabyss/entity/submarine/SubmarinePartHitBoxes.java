@@ -37,9 +37,9 @@ public class SubmarinePartHitBoxes
 
     public EntityBounds getHitbox(SubmarinePart entity)
     {
-    	if(entity.type != null)
+    	if(entity.getPartType() != null)
     	{
-        	switch(entity.type)
+        	switch(entity.getPartType())
         	{
     		case DETECTOR:
     			return this.detectorHitBoxes;
@@ -53,10 +53,10 @@ public class SubmarinePartHitBoxes
 
     public void updatePosition(SubmarinePart entity)
     {
-    	if(entity.type != null && this.entity.getOwner() != null)
+    	if(entity.getPartType() != null && this.entity.getOwner() != null)
     	{
         	EntitySubmarine owner = this.entity.getOwner();
-        	switch(entity.type)
+        	switch(entity.getPartType())
         	{
 	    		case DETECTOR:
 	    		{
