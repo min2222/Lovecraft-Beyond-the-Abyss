@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -45,15 +46,13 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.FORGE)
 public class ClientEventHandlerForge 
 {
-	public static final Minecraft MC = Minecraft.getInstance();
-    
     @SubscribeEvent
     public static void onRenderLevelStage(RenderLevelStageEvent event)
     {
     	if(event.getStage() == Stage.AFTER_PARTICLES)
     	{
     		PoseStack poseStack = event.getPoseStack();
-    		MC.player.getCapability(BTACapabilities.ILLUSION).ifPresent(cap -> 
+    		BTAClientUtil.MC.player.getCapability(BTACapabilities.ILLUSION).ifPresent(cap -> 
     		{
         		EntityGhidruth ghidruth = (EntityGhidruth) cap.getIllusion();
         		if(ghidruth != null)
@@ -71,7 +70,7 @@ public class ClientEventHandlerForge
             			Vec3 lerpPos = new Vec3(x, y, z);	
             			Vec3 pos = lerpPos.subtract(event.getCamera().getPosition());
             	        poseStack.translate(pos.x, pos.y, pos.z);
-            			livingRenderer.render(ghidruth, f, partialTick, event.getPoseStack(), MC.renderBuffers().bufferSource(), LightTexture.FULL_BRIGHT);
+            			livingRenderer.render(ghidruth, f, partialTick, event.getPoseStack(), BTAClientUtil.MC.renderBuffers().bufferSource(), LightTexture.FULL_BRIGHT);
                 		poseStack.popPose();
         			}
         		}
@@ -82,31 +81,31 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onRenderGuiOverlayEvent(RenderGuiOverlayEvent event)
     {
-    	if(MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
+    	if(BTAClientUtil.MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
     	{
         	if(event.getOverlay() == VanillaGuiOverlay.FOOD_LEVEL.type())
         	{
         		PoseStack poseStack = event.getPoseStack();
-                int screenWidth = MC.getWindow().getGuiScaledWidth();
-                int screenHeight = MC.getWindow().getGuiScaledHeight();
+                int screenWidth = BTAClientUtil.MC.getWindow().getGuiScaledWidth();
+                int screenHeight = BTAClientUtil.MC.getWindow().getGuiScaledHeight();
                 IGuiOverlay overlay = GuiOverlayManager.findOverlay(VanillaGuiOverlay.FOOD_LEVEL.id()).overlay();
         		event.setCanceled(true);
         		poseStack.pushPose();
         		poseStack.translate(-100, 0, 0);
-        		overlay.render((ForgeGui) MC.gui, poseStack, event.getPartialTick(), screenWidth, screenHeight);
+        		overlay.render((ForgeGui) BTAClientUtil.MC.gui, poseStack, event.getPartialTick(), screenWidth, screenHeight);
         		poseStack.popPose();
         	}
         	
         	if(event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type())
         	{
         		PoseStack poseStack = event.getPoseStack();
-                int screenWidth = MC.getWindow().getGuiScaledWidth();
-                int screenHeight = MC.getWindow().getGuiScaledHeight();
+                int screenWidth = BTAClientUtil.MC.getWindow().getGuiScaledWidth();
+                int screenHeight = BTAClientUtil.MC.getWindow().getGuiScaledHeight();
                 IGuiOverlay overlay = GuiOverlayManager.findOverlay(VanillaGuiOverlay.PLAYER_HEALTH.id()).overlay();
         		event.setCanceled(true);
         		poseStack.pushPose();
         		poseStack.translate(100, 0, 0);
-        		overlay.render((ForgeGui) MC.gui, poseStack, event.getPartialTick(), screenWidth, screenHeight);
+        		overlay.render((ForgeGui) BTAClientUtil.MC.gui, poseStack, event.getPartialTick(), screenWidth, screenHeight);
         		poseStack.popPose();
         	}
     	}
@@ -133,7 +132,7 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
     {
-        Player player = MC.player;
+        Player player = BTAClientUtil.MC.player;
         float delta = Minecraft.getInstance().getFrameTime();
         float ticksExistedDelta = player.tickCount + delta;
         if(player != null && BTAConfig.cameraShakes.get())
@@ -159,21 +158,21 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent event) 
     {
-        ClientLevel level = MC.level;
-        if(level != null && !MC.isPaused() && MC.player != null)
+        ClientLevel level = BTAClientUtil.MC.level;
+        if(level != null && !BTAClientUtil.MC.isPaused() && BTAClientUtil.MC.player != null)
         {
-        	if(MC.gameRenderer.currentEffect() == null)
+        	if(BTAClientUtil.MC.gameRenderer.currentEffect() == null)
         	{
-            	if(MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
+            	if(BTAClientUtil.MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
             	{
-            		MC.gameRenderer.loadEffect(new ResourceLocation("shaders/post/deconverge.json"));
+            		BTAClientUtil.MC.gameRenderer.loadEffect(new ResourceLocation("shaders/post/deconverge.json"));
             	}
         	}
         	else
         	{
-            	if(MC.gameRenderer.currentEffect().getName().equals("minecraft:shaders/post/deconverge.json") && !MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
+            	if(BTAClientUtil.MC.gameRenderer.currentEffect().getName().equals("minecraft:shaders/post/deconverge.json") && !BTAClientUtil.MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
             	{
-            		MC.gameRenderer.shutdownEffect();
+            		BTAClientUtil.MC.gameRenderer.shutdownEffect();
             	}
         	}
         }
@@ -194,22 +193,22 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onRenderFog(ViewportEvent.RenderFog event)
     {
-    	ClientLevel level = MC.level;
+    	ClientLevel level = BTAClientUtil.MC.level;
         if(level.dimension() == BTAWorlds.DEEP_ABYSS)
         {
         	FogType fogtype = event.getCamera().getFluidInCamera();
             if(fogtype == FogType.WATER)
             {
-            	if(!MC.player.isSpectator() && !MC.player.getAbilities().instabuild && MC.player.isInWater())
+            	if(!BTAClientUtil.MC.player.isSpectator() && !BTAClientUtil.MC.player.getAbilities().instabuild && BTAClientUtil.MC.player.isInWater())
             	{
-                	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
+                	if(BTAClientUtil.MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
                 	{
                 		int amount = 40;
-                    	if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
+                    	if(BTAClientUtil.MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
                     	{
                     		amount = 25;
                     	}
-                    	else if(MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
+                    	else if(BTAClientUtil.MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
                     	{
                     		amount = 10;
                     	}
@@ -224,7 +223,7 @@ public class ClientEventHandlerForge
     @SubscribeEvent
     public static void onComputeFogColor(ViewportEvent.ComputeFogColor event)
     {
-    	ClientLevel level = MC.level;
+    	ClientLevel level = BTAClientUtil.MC.level;
         if(level.dimension() == BTAWorlds.DEEP_ABYSS)
         {
         	FogType fogtype = event.getCamera().getFluidInCamera();

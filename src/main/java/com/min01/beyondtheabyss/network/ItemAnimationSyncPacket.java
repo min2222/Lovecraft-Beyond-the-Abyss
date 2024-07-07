@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapability;
-import com.min01.beyondtheabyss.event.ClientEventHandler;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
@@ -46,7 +46,7 @@ public class ItemAnimationSyncPacket
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				Entity entity = ClientEventHandler.MC.level.getEntity(message.entityId);
+				Entity entity = BTAClientUtil.MC.level.getEntity(message.entityId);
 				if(entity instanceof Player player)
 				{
 					for(InteractionHand hands : InteractionHand.values())

@@ -7,6 +7,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
@@ -21,7 +22,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BTAClientUtil
-{	
+{
+	public static final Minecraft MC = Minecraft.getInstance();
+	
 	//https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/animate/client/util/ModelPartUtils.java#L57
     
     public static Vec3 getWorldPositionOfMultiPart(Entity entity, ModelPart root, Vec3 rotation, String... modelPartName)
@@ -96,16 +99,9 @@ public class BTAClientUtil
 		}
 	}
     
-	public static int getCurrentFrame(Level worldIn, int frameNumber, float speed) 
+	public static int getCurrentFrame(Level worldIn, int frameNumber) 
 	{
-		if(worldIn == null)
-		{
-            return Math.round((System.currentTimeMillis() >> 6) % frameNumber);
-		}
-		else
-		{
-        	float time = Mth.ceil((((worldIn.getGameTime() >> 1) % frameNumber) * speed) * 1000F) / 10000F;
-            return Math.round(time * 5);
-        }
+    	float time = Mth.ceil((((worldIn.getGameTime() >> 1) % frameNumber) * 0.2777F) * 1000.0F) / 10000.0F;
+        return Math.round(time * 36);
 	}
 }

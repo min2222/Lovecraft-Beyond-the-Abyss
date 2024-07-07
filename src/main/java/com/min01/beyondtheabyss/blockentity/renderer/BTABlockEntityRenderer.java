@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.blockentity.renderer;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
-import com.min01.beyondtheabyss.event.ClientEventHandler;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -55,13 +55,13 @@ public class BTABlockEntityRenderer<T extends BlockEntity> implements BlockEntit
 			
 			if(!altar.getItem().isEmpty())
 			{
-				float tick = ClientEventHandler.MC.player.tickCount + p_112308_;
+				float tick = BTAClientUtil.MC.player.tickCount + p_112308_;
 				p_112309_.pushPose();
 				p_112309_.scale(0.5F, 0.5F, 0.5F);
-				p_112309_.translate(1, 3F, 1);
-				p_112309_.translate(0, 0.05f * Mth.sin(tick / 15), 0);
+				p_112309_.translate(1.0F, 3.0F, 1.0F);
+				p_112309_.translate(0, 0.05F * Mth.sin(tick / 15), 0);
 				p_112309_.mulPose(Vector3f.YP.rotationDegrees(tick));
-				Minecraft.getInstance().getItemRenderer().renderStatic(altar.getItem(), ItemTransforms.TransformType.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, p_112309_, p_112310_, 0);
+				BTAClientUtil.MC.getItemRenderer().renderStatic(altar.getItem(), ItemTransforms.TransformType.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, p_112309_, p_112310_, 0);
 				p_112309_.popPose();
 			}
 		}

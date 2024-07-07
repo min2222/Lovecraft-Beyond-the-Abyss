@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.event.ClientEventHandler;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,8 +42,8 @@ public class VehicleUpdatePacket
 				{
 					Minecraft.getInstance().doRunTask(() -> 
 					{
-						Entity rider = ClientEventHandler.MC.level.getEntity(message.rider);
-						Entity vehicle = ClientEventHandler.MC.level.getEntity(message.vehicle);
+						Entity rider = BTAClientUtil.MC.level.getEntity(message.rider);
+						Entity vehicle = BTAClientUtil.MC.level.getEntity(message.vehicle);
 						if(rider != null && vehicle != null)
 						{
 							rider.startRiding(vehicle);

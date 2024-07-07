@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.network;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
-import com.min01.beyondtheabyss.event.ClientEventHandler;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -49,7 +49,7 @@ public class AltarItemSyncPacket
 				{
 					Minecraft.getInstance().doRunTask(() -> 
 					{
-						Entity entity = ClientEventHandler.MC.level.getEntity(message.entityId);
+						Entity entity = BTAClientUtil.MC.level.getEntity(message.entityId);
 						if(entity.level.getBlockEntity(message.pos) instanceof BlockEntityRiftwellingAltar altar)
 						{
 							altar.setItem(message.stack);

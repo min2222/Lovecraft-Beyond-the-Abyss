@@ -45,6 +45,7 @@ public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDee
 	public void render(EntityDeepVampire p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
 	{
 		super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+		//FIXME
 		Vec3 rotation = new Vec3(0.0F, p_115455_.yHeadRot, p_115455_.isInWater() ? 0.0F : 90.0F);
 		Vec3 tailEdge2Pos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL_EDGE2);
 		Vec3 tailEdgePos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL_EDGE);

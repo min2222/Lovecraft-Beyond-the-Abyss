@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
-import com.min01.beyondtheabyss.event.ClientEventHandler;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,7 +42,7 @@ public class IllusionAddPacket
 				{
 					Minecraft.getInstance().doRunTask(() -> 
 					{
-						Entity entity = ClientEventHandler.MC.level.getEntity(message.entityId);
+						Entity entity = BTAClientUtil.MC.level.getEntity(message.entityId);
 						if(entity instanceof Player player)
 						{
 							EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(player.level);

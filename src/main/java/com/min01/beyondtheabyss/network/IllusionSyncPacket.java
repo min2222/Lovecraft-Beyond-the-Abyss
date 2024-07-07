@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IllusionCapability;
-import com.min01.beyondtheabyss.event.ClientEventHandler;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -58,7 +58,7 @@ public class IllusionSyncPacket
 				}
 				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					Entity entity = ClientEventHandler.MC.level.getEntity(message.entityId);
+					Entity entity = BTAClientUtil.MC.level.getEntity(message.entityId);
 					if(entity instanceof Player player)
 					{
 						if(player.getCapability(BTACapabilities.ILLUSION).isPresent())

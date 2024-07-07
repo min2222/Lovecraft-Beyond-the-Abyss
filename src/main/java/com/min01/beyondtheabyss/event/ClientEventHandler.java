@@ -33,6 +33,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.PhasmozoaRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
+import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
@@ -47,7 +48,6 @@ import com.min01.beyondtheabyss.particle.ShockwaveParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -66,9 +66,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RegisterShadersEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -78,7 +80,6 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.MOD)
 public class ClientEventHandler
 {
-	public static final Minecraft MC = Minecraft.getInstance();
 	//public static final KeyMapping ABYSSAL_DASH = new KeyMapping("key." + BeyondtheAbyss.MODID + ".abyssal_dash", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_Y, "key.categories." + BeyondtheAbyss.MODID);
 	
     @SubscribeEvent
@@ -100,7 +101,13 @@ public class ClientEventHandler
     }
     
     @SubscribeEvent
-    public static void registerShaders(RegisterShadersEvent event)
+    public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event)
+    {
+    	event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "hallucination", HallucinationOverlay::draw);
+    }
+    
+    @SubscribeEvent
+    public static void onRegisterShaders(RegisterShadersEvent event)
     {
         for(Pair<ShaderInstance, Consumer<ShaderInstance>> pair : BTARenderType.registerShaders(event.getResourceManager())) 
         {
@@ -109,19 +116,19 @@ public class ClientEventHandler
     }
     
 	@SubscribeEvent
-	public static void registerParticleProviders(RegisterParticleProvidersEvent event)
+	public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
 	{
 		event.register(BTAParticles.SHOCKWAVE.get(), ShockwaveParticle.Provider::new);
 	}
     
 	@SubscribeEvent
-	public static void onModelRegistry(ModelEvent.RegisterAdditional event)
+	public static void onModelRegisterAdditional(ModelEvent.RegisterAdditional event)
 	{
 		event.register(new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, "ghidruth_scale_harpoon_in_hand"), "inventory"));
 	}
     
     @SubscribeEvent
-    public static void modelBake(ModelEvent.BakingCompleted event)
+    public static void onModelBakingCompleted(ModelEvent.BakingCompleted event)
     {
     	registerItemModel(event, "ghidruth_scale_harpoon");
     }
@@ -135,13 +142,13 @@ public class ClientEventHandler
     }
     
 	@SubscribeEvent
-	public static void registerReloadListeners(RegisterClientReloadListenersEvent e)
+	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent e)
 	{
 		e.registerReloadListener(new BTAShaders());
 	}
 	
     @SubscribeEvent
-    public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event)
+    public static void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
     	//misc
     	event.registerEntityRenderer(BTAEntities.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
@@ -164,7 +171,7 @@ public class ClientEventHandler
     }
     
     @SubscribeEvent
-    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
+    public static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
     	event.registerLayerDefinition(ModelGhidruth.LAYER_LOCATION, ModelGhidruth::createBodyLayer);
     	event.registerLayerDefinition(ModelDeepVampire.LAYER_LOCATION, ModelDeepVampire::createBodyLayer);
@@ -187,28 +194,28 @@ public class ClientEventHandler
     }
     
     @SubscribeEvent
-    public static void registerKeyBindings(RegisterKeyMappingsEvent event)
+    public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event)
     {
     	//event.register(ABYSSAL_DASH);
     }
     
 	@SubscribeEvent
-	public static void layerRendering(EntityRenderersEvent.AddLayers event)
+	public static void onAddLayers(EntityRenderersEvent.AddLayers event)
 	{
 		Map<EntityType<?>, EntityRenderer<?>> renderers = ObfuscationReflectionHelper.getPrivateValue(EntityRenderersEvent.AddLayers.class, event, "renderers");
 		renderers.values().stream()
 		.filter(LivingEntityRenderer.class::isInstance)
 		.map(LivingEntityRenderer.class::cast)
-		.forEach(ClientEventHandler::attachRenderLayers);
+		.forEach(ClientEventHandler::addLayer);
 		
 		event.getSkins().forEach(renderer -> 
 		{
 			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
-			attachRenderLayers(Objects.requireNonNull(skin));
+			addLayer(Objects.requireNonNull(skin));
 		});
 	}
 	
-	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer)
+	private static <T extends LivingEntity, M extends EntityModel<T>> void addLayer(LivingEntityRenderer<T, M> renderer)
 	{
 		renderer.addLayer(new AbyssalScalesLayer<>(renderer));
 	}
