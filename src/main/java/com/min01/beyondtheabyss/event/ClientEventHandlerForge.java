@@ -7,6 +7,7 @@ import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
+import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
@@ -22,6 +23,8 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +41,7 @@ import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -78,7 +82,8 @@ public class ClientEventHandlerForge
     	}
     }
     
-    @SubscribeEvent
+    //practice
+    //@SubscribeEvent
     public static void onRenderGuiOverlayEvent(RenderGuiOverlayEvent event)
     {
     	if(BTAClientUtil.MC.player.hasEffect(BTAEffects.HALLUCINATION.get()))
@@ -154,6 +159,18 @@ public class ClientEventHandlerForge
             event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
         }
     }
+    
+	@SubscribeEvent
+	public static void onMobEffectAdded(MobEffectEvent.Added event)
+	{
+		MobEffectInstance instance = event.getEffectInstance();
+		MobEffect effect = instance.getEffect();
+		if(effect == BTAEffects.HALLUCINATION.get())
+		{
+			HallucinationOverlay.ADD = true;
+			HallucinationOverlay.reset();
+		}
+	}
 	
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent event) 

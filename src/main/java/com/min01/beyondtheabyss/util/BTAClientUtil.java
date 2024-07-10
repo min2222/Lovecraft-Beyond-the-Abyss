@@ -12,10 +12,8 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -97,11 +95,5 @@ public class BTAClientUtil
 				KeyframeAnimations.animate(model, animation, i, f, new Vector3f());
 			}
 		}
-	}
-    
-	public static int getCurrentFrame(Level worldIn, int frameNumber) 
-	{
-    	float time = Mth.ceil((((worldIn.getGameTime() >> 1) % frameNumber) * 0.2777F) * 1000.0F) / 10000.0F;
-        return Math.round(time * 36);
 	}
 }

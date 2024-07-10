@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IllusionCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.misc.BTAAbilities;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -16,6 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,6 +38,7 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -86,8 +90,7 @@ public class EventHandlerForge
 		}
 	}
 	
-	//TODO
-	/*@SubscribeEvent
+	@SubscribeEvent
 	public static void onMobEffectAdded(MobEffectEvent.Added event)
 	{
 		MobEffectInstance instance = event.getEffectInstance();
@@ -102,7 +105,8 @@ public class EventHandlerForge
 		}
 		if(effect == BTAEffects.HALLUCINATION.get())
 		{
-			if(!entity.level.isClientSide)
+			//TODO
+			/*if(!entity.level.isClientSide)
 			{
 				BTANetwork.sendToAll(new IllusionAddPacket(entity));
 				EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(entity.level);
@@ -110,9 +114,9 @@ public class EventHandlerForge
 				{
 					t.setIllusion(ghidruth);
 				});
-			}
+			}*/
 		}
-	}*/
+	}
 	
 	@SubscribeEvent
 	public static void onEntityInteract(PlayerInteractEvent.EntityInteractSpecific event)

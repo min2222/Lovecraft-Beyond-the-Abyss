@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.gui.overlay;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
@@ -10,6 +9,7 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -20,28 +20,61 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 public class HallucinationOverlay
 {
 	public static final List<Eyes> EYES = new ArrayList<>();
+	public static boolean ADD;
+	public static float ALPHA = 0.5F;
+	public static int TICK;
+	public static int FRAME;
 	
 	public static void draw(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight)
 	{
-		Player player = BTAClientUtil.MC.player;
-		Level level = BTAClientUtil.MC.level;
+		Minecraft mc = BTAClientUtil.MC;
+		Player player = mc.player;
+		Level level = mc.level;
 		if(player.hasEffect(BTAEffects.HALLUCINATION.get()))
 		{
-	        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-	        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.5F);
-	        RenderSystem.setShaderTexture(0, getTexture(level));
-			GuiComponent.blit(poseStack, screenWidth / 2 - 32, screenHeight / 2 - 32, 0, 0, 64, 64, 64, 64);
+			TICK++;
 			
-			if(player.tickCount % 30 == 0 && !BTAClientUtil.MC.isPaused())
+			int tick = 1200;
+			int interval = 40;
+
+			if(TICK < tick && TICK % interval == 0 && FRAME < 3)
 			{
-				Random random = new Random();
-				Eyes eyes = new Eyes(level.random.nextInt(screenWidth), level.random.nextInt(screenHeight), 3, level.random.nextInt(3) + 1, random.nextFloat(0.001F, 0.01F));
-				EYES.add(eyes);
+				FRAME++;
+			}
+			
+			if(TICK >= tick && TICK % interval == 0 && FRAME > 0)
+			{
+				FRAME--;
+			}
+			
+			if(TICK >= tick && FRAME == 0)
+			{
+				ALPHA -= 0.001F;
+			}
+			
+	        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+	        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, ALPHA);
+	        RenderSystem.setShaderTexture(0, getTexture(level));
+			GuiComponent.blit(poseStack, screenWidth / 2 - level.random.nextInt(30, 34), screenHeight / 2 - level.random.nextInt(30, 34), 0, 0, 64, 64, 64, 64);
+			
+			if(ADD)
+			{
+				/*for(int i = 0; i < 10; i++)
+				{
+					Random random = new Random();
+					Eyes eyes = new Eyes(level.random.nextInt(screenWidth), level.random.nextInt(screenHeight), 3, level.random.nextInt(3) + 1, random.nextFloat(0.001F, 0.005F));
+					EYES.add(eyes);
+				}*/
+				ADD = false;
+			}
+			else if(EYES.isEmpty() && !mc.isPaused())
+			{
+				//ALPHA -= 0.001F;
 			}
 			
 			EYES.forEach(t -> 
 			{
-				if(!BTAClientUtil.MC.isPaused())
+				if(!mc.isPaused())
 				{
 					t.tick();
 				}
@@ -50,10 +83,17 @@ public class HallucinationOverlay
 			
 			EYES.removeIf(t -> t.remove);
 		}
-		else if(!EYES.isEmpty())
+		else
 		{
-			EYES.clear();
+			reset();
 		}
+	}
+	
+	public static void reset()
+	{
+		ALPHA = 0.5F;
+		TICK = 0;
+		FRAME = 0;
 	}
 	
 	public static class Eyes
@@ -105,21 +145,21 @@ public class HallucinationOverlay
 			{
 		        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-		        RenderSystem.setShaderTexture(0, new ResourceLocation(String.format("%s:textures/effect/small_eye_%d.png", BeyondtheAbyss.MODID, 1)));
+		        RenderSystem.setShaderTexture(0, new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_1.png"));
 				GuiComponent.blit(stack, (screenWidth - this.posX) - 9 * this.size / 2, (screenHeight - this.posY) - 6 * this.size / 2, 0, 0, 9 * this.size, 6 * this.size, 9 * this.size, 6 * this.size);
 			}
 			else if(this.number == 2)
 			{
 		        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-		        RenderSystem.setShaderTexture(0, new ResourceLocation(String.format("%s:textures/effect/small_eye_%d.png", BeyondtheAbyss.MODID, 2)));
+		        RenderSystem.setShaderTexture(0, new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_2.png"));
 				GuiComponent.blit(stack, (screenWidth - this.posX) - 9 * this.size / 2, (screenHeight - this.posY) - 9 * this.size / 2, 0, 0, 9 * this.size, 9 * this.size, 9 * this.size, 9 * this.size);
 			}
 			else if(this.number == 3)
 			{
 		        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-		        RenderSystem.setShaderTexture(0, new ResourceLocation(String.format("%s:textures/effect/small_eye_%d.png", BeyondtheAbyss.MODID, 3)));
+		        RenderSystem.setShaderTexture(0, new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_3.png"));
 				GuiComponent.blit(stack, (screenWidth - this.posX) - 17 * this.size / 2, (screenHeight - this.posY) - 7 * this.size / 2, 0, 0, 17 * this.size, 7 * this.size, 17 * this.size, 7 * this.size);
 			}
 		}
@@ -127,7 +167,6 @@ public class HallucinationOverlay
 	
 	public static ResourceLocation getTexture(Level level)
 	{
-		int frame = BTAClientUtil.getCurrentFrame(level, 4);
-		return new ResourceLocation(String.format("%s:textures/effect/hallucination_eye%d.png", BeyondtheAbyss.MODID, frame));
+		return new ResourceLocation(String.format("%s:textures/effect/hallucination_eye%d.png", BeyondtheAbyss.MODID, FRAME));
 	}
 }
