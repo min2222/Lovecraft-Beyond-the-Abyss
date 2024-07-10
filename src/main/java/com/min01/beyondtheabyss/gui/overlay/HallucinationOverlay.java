@@ -34,8 +34,8 @@ public class HallucinationOverlay
 		{
 			TICK++;
 			
-			int tick = 1200;
-			int interval = 40;
+			int tick = 1800;
+			int interval = 150;
 
 			if(TICK < tick && TICK % interval == 0 && FRAME < 3)
 			{
@@ -55,7 +55,9 @@ public class HallucinationOverlay
 	        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, ALPHA);
 	        RenderSystem.setShaderTexture(0, getTexture(level));
-			GuiComponent.blit(poseStack, screenWidth / 2 - level.random.nextInt(30, 34), screenHeight / 2 - level.random.nextInt(30, 34), 0, 0, 64, 64, 64, 64);
+	        int posX = FRAME >= 3 ? level.random.nextInt(30, 34) : 32;
+	        int posY = FRAME >= 3 ? level.random.nextInt(30, 34) : 32;
+			GuiComponent.blit(poseStack, screenWidth / 2 - posX, screenHeight / 2 - posY, 0, 0, 64, 64, 64, 64);
 			
 			if(ADD)
 			{

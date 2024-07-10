@@ -82,7 +82,7 @@ public class ClientEventHandlerForge
     	}
     }
     
-    //practice
+    //test
     //@SubscribeEvent
     public static void onRenderGuiOverlayEvent(RenderGuiOverlayEvent event)
     {
