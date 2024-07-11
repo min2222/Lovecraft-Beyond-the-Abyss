@@ -55,9 +55,9 @@ public class HallucinationOverlay
 	        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, ALPHA);
 	        RenderSystem.setShaderTexture(0, getTexture(level));
-	        int posX = FRAME >= 3 ? level.random.nextInt(30, 34) : 32;
+	        int posX = FRAME >= 3 ? level.random.nextInt(38, 42) : 40;
 	        int posY = FRAME >= 3 ? level.random.nextInt(30, 34) : 32;
-			GuiComponent.blit(poseStack, screenWidth / 2 - posX, screenHeight / 2 - posY, 0, 0, 64, 64, 64, 64);
+			GuiComponent.blit(poseStack, screenWidth / 2 - posX, screenHeight / 2 - posY, 0, 0, 80, 64, 80, 64);
 			
 			if(ADD)
 			{
