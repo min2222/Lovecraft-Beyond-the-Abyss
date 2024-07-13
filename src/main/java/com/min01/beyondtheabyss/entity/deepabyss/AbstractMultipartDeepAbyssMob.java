@@ -1,17 +1,17 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import org.jetbrains.annotations.Nullable;
-
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
+import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
+import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
+import com.min01.beyondtheabyss.multipart.entity.IMultipart;
+import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.PartEntity;
 
-public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
+public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob implements IMultipart
 {
 	public Vec3[] posArray;
 	
@@ -21,66 +21,25 @@ public abstract class AbstractMultipartDeepAbyssMob extends AbstractDeepAbyssMob
 	}
 	
 	@Override
-	public boolean isMultipartEntity() 
+	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
 	{
-		return true;
+		return this.getHitBox().getEntityBounds().getBox(bounds);
 	}
-	
-	@Override 
-	@Nullable
-	public PartEntity<?>[] getParts() 
-	{
-		return this.getDeepAbyssEntityParts();
-	}
-	
-    @Override
-    public void tick() 
-    {
-    	super.tick();
-    	this.refreshDimensions();
-    	
-    	for(AbstractBTAEntityPart<AbstractBTAMob> parts : this.getDeepAbyssEntityParts())
-    	{
-    		parts.tick();
-    	}
-    	
-        Vec3[] vec3 = new Vec3[this.getDeepAbyssEntityParts().length];
-        
-        for(int i = 0; i < this.getDeepAbyssEntityParts().length; i++)
-        {
-        	vec3[i] = new Vec3(this.getDeepAbyssEntityParts()[i].getX(), this.getDeepAbyssEntityParts()[i].getY(), this.getDeepAbyssEntityParts()[i].getZ());
-        	
-        	this.getDeepAbyssEntityParts()[i].xo = vec3[i].x;
-        	this.getDeepAbyssEntityParts()[i].yo = vec3[i].y;
-        	this.getDeepAbyssEntityParts()[i].zo = vec3[i].z;
-        	this.getDeepAbyssEntityParts()[i].xOld = vec3[i].x;
-        	this.getDeepAbyssEntityParts()[i].yOld = vec3[i].y;
-        	this.getDeepAbyssEntityParts()[i].zOld = vec3[i].z;
-        }
-    }
-    
-    public void setPartPosition(AbstractBTAEntityPart<AbstractBTAMob> part, double x, double y, double z) 
-    {
-    	this.setPartPosition(part, new Vec3(x, y, z));
-    }
-    
-    public void setPartPosition(AbstractBTAEntityPart<AbstractBTAMob> part, Vec3 pos) 
-    {
-    	if(pos != null)
-    	{
-        	part.setPos(pos);
-    	}
-    }
-	
+
 	@Override
-	public void setId(int p_20235_) 
+	public EntityBounds getBounds() 
 	{
-		super.setId(p_20235_);
-		for(int i = 0; i < this.getDeepAbyssEntityParts().length; i++) 
-		{
-			this.getDeepAbyssEntityParts()[i].setId(p_20235_ + i + 1);
-		}
+		return this.getHitBox().getEntityBounds();
+	}
+
+	@Override
+	public void onSetPos(double x, double y, double z) 
+	{
+        if(this.getHitBox() != null && this.posArray != null)
+        {
+        	this.getHitBox().updatePosition();
+        }
 	}
 	
-	public abstract AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts();
+	public abstract AbstractHitBox getHitBox();
 }

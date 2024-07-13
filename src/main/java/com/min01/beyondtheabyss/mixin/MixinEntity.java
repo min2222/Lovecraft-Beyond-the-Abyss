@@ -7,8 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
-import com.min01.beyondtheabyss.multipart.entity.MultipartEntity;
+import com.min01.beyondtheabyss.multipart.entity.IMultipart;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.world.entity.Entity;
@@ -23,7 +22,7 @@ public abstract class MixinEntity
     @Inject(method = "getBoundingBox", at = @At("RETURN"), cancellable = true)
     private void getBoundingBox(CallbackInfoReturnable<AABB> cir)
     {
-        if(Entity.class.cast(this) instanceof MultipartEntity multipart)
+        if(Entity.class.cast(this) instanceof IMultipart multipart)
         {
             cir.setReturnValue(multipart.getCompoundBoundingBox(cir.getReturnValue()));
         }
@@ -38,7 +37,7 @@ public abstract class MixinEntity
     @Inject(method = "setPosRaw", at = @At("TAIL"))
     private void setPosRaw(double x, double y, double z, CallbackInfo ci)
     {
-        if(Entity.class.cast(this) instanceof MultipartAwareEntity multipart)
+        if(Entity.class.cast(this) instanceof IMultipart multipart)
         {
         	multipart.onSetPos(x, y, z);
         }

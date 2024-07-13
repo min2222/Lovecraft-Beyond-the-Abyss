@@ -2,10 +2,8 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
-import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
-import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
@@ -33,13 +31,6 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
-	public BasicBTAEntityPart body = new BasicBTAEntityPart(this, 0.6F, 0.5F);
-	public BasicBTAEntityPart body2 = new BasicBTAEntityPart(this, 0.6F, 0.5F);
-	public BasicBTAEntityPart tail = new BasicBTAEntityPart(this, 0.6F, 0.5F);
-	public BasicBTAEntityPart tail2 = new BasicBTAEntityPart(this, 0.6F, 0.5F);
-	public BasicBTAEntityPart tailEdge = new BasicBTAEntityPart(this, 0.6F, 0.5F);
-	public BasicBTAEntityPart tailEdge2 = new BasicBTAEntityPart(this, 0.6F, 0.5F);
-	public BasicBTAEntityPart[] parts = { this.body, this.body2, this.tail, this.tail2, this.tailEdge, this.tailEdge2 };
 	
 	public EntityDeepVampire(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -86,13 +77,6 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     {
         super.aiStep();
         DeepAbyssUtil.fishFlopping(this);
-
-        this.setPartPosition(this.tailEdge2, this.posArray[5]);
-        this.setPartPosition(this.tailEdge, this.posArray[4]);
-        this.setPartPosition(this.tail2, this.posArray[3]);
-        this.setPartPosition(this.tail, this.posArray[2]);
-        this.setPartPosition(this.body2, this.posArray[1]);
-        this.setPartPosition(this.body, this.posArray[0]);
     }
     
 	@Override
@@ -100,7 +84,7 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
 	{
         if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
         {
-            switch (this.getAnimationState()) 
+            switch(this.getAnimationState()) 
             {
         		case 0: 
         		{
@@ -154,10 +138,10 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     {
     	return BTAMobType.HOSTILE;
     }
-	
+    
 	@Override
-	public AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts()
+	public AbstractHitBox getHitBox()
 	{
-		return this.parts;
+		return null;
 	}
 }

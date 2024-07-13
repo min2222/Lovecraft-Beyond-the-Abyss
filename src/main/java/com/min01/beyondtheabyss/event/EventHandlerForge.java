@@ -8,7 +8,7 @@ import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
 import com.min01.beyondtheabyss.misc.BTALootTables;
-import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
+import com.min01.beyondtheabyss.multipart.entity.IMultipart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTASavedData;
 import com.min01.beyondtheabyss.world.BTAWorlds;
@@ -123,7 +123,7 @@ public class EventHandlerForge
 	{
 		Player player = event.getEntity();
 		Entity entity = event.getTarget();
-		if(entity instanceof MultipartAwareEntity multipart)
+		if(entity instanceof IMultipart multipart)
 		{
 			event.setCanceled(true);
 			Vec3 pos = player.getEyePosition(0);

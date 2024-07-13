@@ -47,12 +47,12 @@ public class DeepVampireRenderer extends MobRenderer<EntityDeepVampire, ModelDee
 		super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
 		//FIXME
 		Vec3 rotation = new Vec3(0.0F, p_115455_.yHeadRot, p_115455_.isInWater() ? 0.0F : 90.0F);
-		Vec3 tailEdge2Pos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL_EDGE2);
-		Vec3 tailEdgePos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL_EDGE);
-		Vec3 tail2Pos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL2);
-		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, TAIL);
-		Vec3 body2Pos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, BODY2);
-		Vec3 bodyPos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), rotation, BODY);
+		Vec3 tailEdge2Pos = BTAClientUtil.getWorldPositionOfMultiPart(p_115455_, this.model.root(), rotation, TAIL_EDGE2);
+		Vec3 tailEdgePos = BTAClientUtil.getWorldPositionOfMultiPart(p_115455_, this.model.root(), rotation, TAIL_EDGE);
+		Vec3 tail2Pos = BTAClientUtil.getWorldPositionOfMultiPart(p_115455_, this.model.root(), rotation, TAIL2);
+		Vec3 tailPos = BTAClientUtil.getWorldPositionOfMultiPart(p_115455_, this.model.root(), rotation, TAIL);
+		Vec3 body2Pos = BTAClientUtil.getWorldPositionOfMultiPart(p_115455_, this.model.root(), rotation, BODY2);
+		Vec3 bodyPos = BTAClientUtil.getWorldPositionOfMultiPart(p_115455_, this.model.root(), rotation, BODY);
 		p_115455_.posArray[5] = tailEdge2Pos;
 		p_115455_.posArray[4] = tailEdgePos;
 		p_115455_.posArray[3] = tail2Pos;

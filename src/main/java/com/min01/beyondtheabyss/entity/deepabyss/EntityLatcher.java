@@ -1,13 +1,12 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherFindTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherUnlatchingGoal;
-import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
-import com.min01.beyondtheabyss.entity.part.BasicBTAEntityPart;
+import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
+import com.min01.beyondtheabyss.entity.multipart.deepabyss.DeepAbyssHitBox;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
@@ -44,10 +43,8 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
 	public AnimationState startLatchAnimationState = new AnimationState();
 	public AnimationState latchAnimationState = new AnimationState();
 	public AnimationState unlatchAnimationState = new AnimationState();
-	public BasicBTAEntityPart tail = new BasicBTAEntityPart(this, 0.5F, 0.5F);
-	public BasicBTAEntityPart tail2 = new BasicBTAEntityPart(this, 0.5F, 0.5F);
 	
-	public BasicBTAEntityPart[] parts = { this.tail, this.tail2 };
+	public final DeepAbyssHitBox.LatcherHitBox hitBox = new DeepAbyssHitBox.LatcherHitBox(this);
 	
 	public EntityLatcher(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -94,7 +91,7 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
 	{
         if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
         {
-            switch (this.getAnimationState()) 
+            switch(this.getAnimationState()) 
             {
             	case -1:
             	{
@@ -143,9 +140,6 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     {
     	super.aiStep();
     	DeepAbyssUtil.fishFlopping(this);
-    	
-    	this.setPartPosition(this.tail2, this.posArray[1]);
-        this.setPartPosition(this.tail, this.posArray[0]);
         
         if(this.getVehicle() != null)
         {
@@ -211,16 +205,16 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     	}
     	return super.doHurtTarget(p_21372_);
     }
-
-	@Override
-	public AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts()
-	{
-		return this.parts;
-	}
 	
     @Override
     public BTAMobType getBTAMobType()
     {
     	return BTAMobType.HOSTILE;
     }
+
+	@Override
+	public AbstractHitBox getHitBox() 
+	{
+		return this.hitBox;
+	}
 }

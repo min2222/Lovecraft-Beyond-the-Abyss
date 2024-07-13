@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.entity.submarine;
 import com.min01.beyondtheabyss.entity.AbstractOwnableEntity;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
-import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
+import com.min01.beyondtheabyss.multipart.entity.IMultipart;
 import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
 
 import net.minecraft.nbt.CompoundTag;
@@ -16,9 +16,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implements MultipartAwareEntity
+public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implements IMultipart
 {
-    public final SubmarinePartHitBoxes hitboxHelper = new SubmarinePartHitBoxes(this);
+    public SubmarinePartHitBox hitbox = new SubmarinePartHitBox(this);
 	public static final EntityDataAccessor<SubmarinePartType> PART_TYPE = SynchedEntityData.defineId(SubmarinePart.class, BTAEntityDataSerializers.SUBMARINE_PART_TYPE.get());
     
     public static enum SubmarinePartType
@@ -67,21 +67,21 @@ public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implem
 	@Override
 	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
 	{
-		return this.hitboxHelper.getHitbox(this).getBox(bounds);
+		return this.hitbox.getHitbox(this).getBox(bounds);
 	}
 
 	@Override
 	public EntityBounds getBounds() 
 	{
-		return this.hitboxHelper.getHitbox(this);
+		return this.hitbox.getHitbox(this);
 	}
 
 	@Override
 	public void onSetPos(double x, double y, double z) 
 	{
-        if(this.hitboxHelper != null)
+        if(this.hitbox != null)
         {
-        	this.hitboxHelper.updatePosition(this);
+        	this.hitbox.updatePosition(this);
         }
 	}
 	
@@ -119,7 +119,7 @@ public class SubmarinePart extends AbstractOwnableEntity<EntitySubmarine> implem
 			this.getOwner().setHatchOpened(!this.getOwner().hatchOpened());
 			return InteractionResult.SUCCESS;
 		}
-		return MultipartAwareEntity.super.interact(entity, hand, part);
+		return IMultipart.super.interact(entity, hand, part);
 	}
 	
 	public SubmarinePartType getPartType()

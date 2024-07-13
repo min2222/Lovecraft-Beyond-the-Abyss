@@ -255,7 +255,7 @@ public final class OrientedBox {
 
     public double getMax(final Direction.Axis axis) {
         final Matrix3d matrix = getMatrix();
-        return switch (axis) {
+        return switch(axis) {
             case X -> Math.max(matrix.m00, Math.max(matrix.m01, matrix.m02)) * halfExtents.x + center.x;
             case Y -> Math.max(matrix.m10, Math.max(matrix.m11, matrix.m12)) * halfExtents.y + center.y;
             case Z -> Math.max(matrix.m20, Math.max(matrix.m21, matrix.m22)) * halfExtents.z + center.z;
@@ -264,7 +264,7 @@ public final class OrientedBox {
 
     public double getMin(final Direction.Axis axis) {
         final Matrix3d matrix = getMatrix();
-        return switch (axis) {
+        return switch(axis) {
             case X -> Math.min(matrix.m00, Math.min(matrix.m01, matrix.m02)) * halfExtents.x + center.x;
             case Y -> Math.min(matrix.m10, Math.min(matrix.m11, matrix.m12)) * halfExtents.y + center.y;
             case Z -> Math.min(matrix.m20, Math.min(matrix.m21, matrix.m22)) * halfExtents.z + center.z;

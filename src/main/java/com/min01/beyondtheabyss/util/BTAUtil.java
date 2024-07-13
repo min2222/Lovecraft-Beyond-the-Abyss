@@ -154,9 +154,20 @@ public class BTAUtil
     	return teleportedEntity;
     }
     
+    public static double getMeleeAttackRangeSqr(float width, LivingEntity target, float multiplier)
+    {
+    	return (double)(width * multiplier * width * multiplier + target.getBbWidth());
+    }
+    
     public static double getMeleeAttackRangeSqr(Entity owner, LivingEntity target, float multiplier)
     {
     	return (double)(owner.getBbWidth() * multiplier * owner.getBbWidth() * multiplier + target.getBbWidth());
+    }
+    
+    public static boolean isWithinMeleeAttackRange(Vec3 pos, float width, LivingEntity target, float multiplier)
+    {
+    	double d0 = pos.distanceToSqr(target.getX(), target.getY(), target.getZ());
+    	return d0 <= getMeleeAttackRangeSqr(width, target, multiplier);
     }
 
     public static boolean isWithinMeleeAttackRange(Entity owner, LivingEntity target, float multiplier)

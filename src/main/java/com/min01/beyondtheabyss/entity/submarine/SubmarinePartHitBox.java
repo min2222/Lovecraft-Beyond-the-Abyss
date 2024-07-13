@@ -7,7 +7,7 @@ import com.min01.beyondtheabyss.multipart.entity.MutableBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class SubmarinePartHitBoxes 
+public class SubmarinePartHitBox 
 {
     private final SubmarinePart entity;
     private final AABB collisionHitbox = new AABB(Vec3.ZERO, Vec3.ZERO);
@@ -30,7 +30,7 @@ public class SubmarinePartHitBoxes
             .overrideCollisionBox(this.collisionHitbox)
             .getFactory().create();
     
-    public SubmarinePartHitBoxes(SubmarinePart entity)
+    public SubmarinePartHitBox(SubmarinePart entity)
     {
     	this.entity = entity;
     }

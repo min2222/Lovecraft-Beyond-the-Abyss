@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType;
 import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
-import com.min01.beyondtheabyss.multipart.entity.MultipartAwareEntity;
+import com.min01.beyondtheabyss.multipart.entity.IMultipart;
 import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -31,9 +31,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 
-public class EntitySubmarine extends LivingEntity implements MultipartAwareEntity
+public class EntitySubmarine extends LivingEntity implements IMultipart
 {
-    public final SubmarineHitBoxes hitboxHelper = new SubmarineHitBoxes(this);
+    public SubmarineHitBox hitbox = new SubmarineHitBox(this);
 	
 	public static final EntityDataAccessor<Optional<UUID>> CONTROLLING_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT1_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -503,21 +503,21 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 	@Override
 	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
 	{
-		return this.hitboxHelper.getHitbox().getBox(bounds);
+		return this.hitbox.getHitbox().getBox(bounds);
 	}
 
 	@Override
 	public EntityBounds getBounds() 
 	{
-		return this.hitboxHelper.getHitbox();
+		return this.hitbox.getHitbox();
 	}
 
 	@Override
 	public void onSetPos(double x, double y, double z) 
 	{
-        if(this.hitboxHelper != null)
+        if(this.hitbox != null)
         {
-        	this.hitboxHelper.updatePosition();
+        	this.hitbox.updatePosition();
         }
 	}
 	
@@ -549,7 +549,7 @@ public class EntitySubmarine extends LivingEntity implements MultipartAwareEntit
 			}
 			return InteractionResult.SUCCESS;
 		}
-		return MultipartAwareEntity.super.interact(entity, hand, part);
+		return IMultipart.super.interact(entity, hand, part);
 	}
 	
 	@Override

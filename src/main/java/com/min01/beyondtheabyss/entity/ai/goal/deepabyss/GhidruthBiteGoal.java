@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
@@ -29,24 +30,27 @@ public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return BTAUtil.isWithinMeleeAttackRange(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash() && !this.mob.isStun();
+		Vec3 headPos = this.mob.posArray[0];
+		return BTAUtil.isWithinMeleeAttackRange(headPos, 2.9375F, this.mob.getTarget(), 4.0F) && headPos.distanceTo(this.mob.getTarget().position()) <= 4.0F && !this.mob.isDash() && !this.mob.isStun();
 	}
 
 	@Override
 	protected void performSkill() 
 	{
+		Vec3 headPos = this.mob.posArray[0];
 		this.mob.playSound(BTASounds.GHIDRUTH_BITE.get());
-		if(BTAUtil.isWithinMeleeAttackRange(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F)
+		if(BTAUtil.isWithinMeleeAttackRange(headPos, 2.9375F, this.mob.getTarget(), 4.0F) && headPos.distanceTo(this.mob.getTarget().position()) <= 4.0F)
 		{
+			AABB headAABB = new AABB(new Vec3(1.46875F, 0.0F, 1.96875F).reverse(), new Vec3(1.46875F, 3.1875F, 1.96875F));
 			Vec3 vec3 = BTAUtil.getLookPos(this.mob.getXRot(), this.mob.getYRot(), 0, 0.5F);
-			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.head.getBoundingBox().move(vec3).inflate(2F));
+			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, headAABB.move(vec3).inflate(2.0F));
 			list.removeIf((living) -> living == this.mob);
 			list.forEach((living) -> 
 			{
 				if(living.hurt(DamageSource.mobAttack(this.mob), 17))
 				{
-                    double d0 = living.getX() - this.mob.head.getX();
-                    double d1 = living.getZ() - this.mob.head.getZ();
+                    double d0 = living.getX() - headPos.x;
+                    double d1 = living.getZ() - headPos.z;
                     double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
                     float f = 1.5F;
                     living.push(d0 / d2 * f, 0.15F, d1 / d2 * f);

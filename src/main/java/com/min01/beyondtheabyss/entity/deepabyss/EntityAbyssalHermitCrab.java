@@ -1,11 +1,8 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.part.AbstractBTAEntityPart;
-import com.min01.beyondtheabyss.entity.part.CrabShellPart;
+import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -19,14 +16,9 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.Vec3;
 
 public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob 
 {
-	public CrabShellPart shell = new CrabShellPart(this, 0.8F, 0.8F);
-	public CrabShellPart shell2 = new CrabShellPart(this, 0.6F, 0.6F);
-	public CrabShellPart[] parts = { this.shell, this.shell2 };
-	
 	public EntityAbyssalHermitCrab(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
@@ -60,23 +52,6 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
     	super.registerGoals();
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.15D));
     }
-    
-    @Override
-    public void tick() 
-    {
-    	super.tick();
-    	Vec3 shell2Pos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, -1.0F);
-    	Vec3 shellPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, -0.2F);
-    	
-        this.setPartPosition(this.shell2, this.getX() + shell2Pos.x, this.getY() + 0.1F, this.getZ() + shell2Pos.z);
-        this.setPartPosition(this.shell, this.getX() + shellPos.x, this.getY() + 0.5F, this.getZ() + shellPos.z);
-    }
-
-	@Override
-	public AbstractBTAEntityPart<AbstractBTAMob>[] getDeepAbyssEntityParts() 
-	{
-		return this.parts;
-	}
 	
 	@Override
 	public float getInsideWaterSpeed() 
@@ -88,6 +63,12 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.NETURAL;
+	}
+	
+	@Override
+	public AbstractHitBox getHitBox()
+	{
+		return null;
 	}
 	
 	@Override

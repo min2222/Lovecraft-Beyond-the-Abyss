@@ -7,7 +7,7 @@ import com.min01.beyondtheabyss.multipart.entity.MutableBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class SubmarineHitBoxes 
+public class SubmarineHitBox 
 {
     private final EntitySubmarine entity;
     private final AABB collisionHitbox = new AABB(Vec3.ZERO, new Vec3(5.5F, 1.0F, 5.5F));
@@ -28,7 +28,7 @@ public class SubmarineHitBoxes
     private final String back = "back";
     private final String left = "left";
     private final String right = "right";
-    private final EntityBounds hitboxes = EntityBounds.builder()
+    private final EntityBounds hitbox = EntityBounds.builder()
             .add(this.root).setBounds(0.0, 0.0, 0.0).build()
             .add(this.submarine).setBounds(0.0, 0.0, 0.0).setParent(this.root).build()
             .add(this.controllerSeat).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
@@ -49,35 +49,35 @@ public class SubmarineHitBoxes
             .overrideCollisionBox(this.collisionHitbox)
             .getFactory().create();
     
-    public SubmarineHitBoxes(EntitySubmarine entity)
+    public SubmarineHitBox(EntitySubmarine entity)
     {
         this.entity = entity;
     }
 
     public EntityBounds getHitbox()
     {
-    	return this.hitboxes;
+    	return this.hitbox;
     }
 
     public void updatePosition()
     {
-        EntityPart root = this.hitboxes.getPart(this.root);
-        EntityPart submarine = this.hitboxes.getPart(this.submarine);
-        EntityPart controllerSeat = this.hitboxes.getPart(this.controllerSeat);
-        EntityPart seat1 = this.hitboxes.getPart(this.seat1);
-        EntityPart seat2 = this.hitboxes.getPart(this.seat2);
-        EntityPart seat3 = this.hitboxes.getPart(this.seat3);
-        EntityPart seat4 = this.hitboxes.getPart(this.seat4);
-        EntityPart bottom = this.hitboxes.getPart(this.bottom);
-        EntityPart topLeft = this.hitboxes.getPart(this.topLeft);
-        EntityPart topRight = this.hitboxes.getPart(this.topRight);
-        EntityPart topFront = this.hitboxes.getPart(this.topFront);
-        EntityPart topBack = this.hitboxes.getPart(this.topBack);
-        EntityPart hatch = this.hitboxes.getPart(this.hatch);
-        EntityPart front = this.hitboxes.getPart(this.front);
-        EntityPart back = this.hitboxes.getPart(this.back);
-        EntityPart left = this.hitboxes.getPart(this.left);
-        EntityPart right = this.hitboxes.getPart(this.right);
+        EntityPart root = this.hitbox.getPart(this.root);
+        EntityPart submarine = this.hitbox.getPart(this.submarine);
+        EntityPart controllerSeat = this.hitbox.getPart(this.controllerSeat);
+        EntityPart seat1 = this.hitbox.getPart(this.seat1);
+        EntityPart seat2 = this.hitbox.getPart(this.seat2);
+        EntityPart seat3 = this.hitbox.getPart(this.seat3);
+        EntityPart seat4 = this.hitbox.getPart(this.seat4);
+        EntityPart bottom = this.hitbox.getPart(this.bottom);
+        EntityPart topLeft = this.hitbox.getPart(this.topLeft);
+        EntityPart topRight = this.hitbox.getPart(this.topRight);
+        EntityPart topFront = this.hitbox.getPart(this.topFront);
+        EntityPart topBack = this.hitbox.getPart(this.topBack);
+        EntityPart hatch = this.hitbox.getPart(this.hatch);
+        EntityPart front = this.hitbox.getPart(this.front);
+        EntityPart back = this.hitbox.getPart(this.back);
+        EntityPart left = this.hitbox.getPart(this.left);
+        EntityPart right = this.hitbox.getPart(this.right);
         
         root.setRotation(0, this.entity.yHeadRot - this.entity.yBodyRot, 0, true);
         submarine.setRotation(this.entity.getXRot(), 0, 0, true);
@@ -105,7 +105,7 @@ public class SubmarineHitBoxes
         this.setPartPosition(seat1, this.entity.posArray[1]);
         this.setPartPosition(controllerSeat, this.entity.posArray[0]);
         
-        MutableBox overrideBox = this.hitboxes.getOverrideBox();
+        MutableBox overrideBox = this.hitbox.getOverrideBox();
         if(overrideBox != null)
         {
             overrideBox.setBox(this.collisionHitbox.move(this.entity.position()).move(-2.75F, 0.05F, -2.75F));

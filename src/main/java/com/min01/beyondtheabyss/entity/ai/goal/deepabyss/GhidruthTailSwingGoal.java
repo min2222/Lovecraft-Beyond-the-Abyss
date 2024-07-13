@@ -8,6 +8,8 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 {
@@ -27,7 +29,8 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 	@Override
 	public boolean additionalStartCondition()
 	{
-		return BTAUtil.isWithinMeleeAttackRange(this.mob.head, this.mob.getTarget(), 4F) && this.mob.head.distanceTo(this.mob.getTarget()) <= 4F && !this.mob.isDash() && !this.mob.isStun();
+		Vec3 headPos = this.mob.posArray[0];
+		return BTAUtil.isWithinMeleeAttackRange(headPos, 2.9375F, this.mob.getTarget(), 4.0F) && headPos.distanceTo(this.mob.getTarget().position()) <= 4.0F && !this.mob.isDash() && !this.mob.isStun();
 	}
 	
 	@Override
@@ -36,11 +39,13 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 		super.tick();
 		if(this.mob.skillUsingTickCount <= 25 && this.mob.skillUsingTickCount >= 5)
 		{
-			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.tail.getBoundingBox().inflate(3.5F));
+			AABB tailAABB = new AABB(new Vec3(0.71875F, 0.0F, 0.734375F).reverse(), new Vec3(0.71875F, 1.75F, 0.734375F));
+			AABB bodyAABB = new AABB(new Vec3(1.46875F, 0.0F, 2.53125F).reverse(), new Vec3(1.46875F, 3.1875F, 2.53125F));
+			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, tailAABB.inflate(3.5F));
 			list.removeIf((living) -> living == this.mob);
 			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 20));
 			
-			List<LivingEntity> list1 = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.body.getBoundingBox().inflate(3.5F));
+			List<LivingEntity> list1 = this.mob.level.getEntitiesOfClass(LivingEntity.class, bodyAABB.inflate(3.5F));
 			list1.removeIf((living) -> living == this.mob);
 			list1.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 20));
 		}

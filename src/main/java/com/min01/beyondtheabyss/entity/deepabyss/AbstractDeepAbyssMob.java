@@ -76,7 +76,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 				this.setAirSupply(0);
 				this.hurt(DamageSource.DROWN, 2.0F);
 			}
-		} 
+		}
 		else 
 		{
 			this.setAirSupply(300);
