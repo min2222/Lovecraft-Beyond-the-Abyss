@@ -16,8 +16,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class LatcherRenderer extends MobRenderer<EntityLatcher, ModelLatcher>
 {
-	public static final String[] TAIL2 = new String[] {"Body", "Tails", "Tails2", "TailEdge"};
-	public static final String[] TAIL = new String[] {"Body", "Tails", "Tails2"};
+	public static final String[] TAIL2 = new String[] {"Body", "Tails", "Tails2", "tailPos2"};
+	public static final String[] TAIL = new String[] {"Body", "Tails", "tailPos"};
 	public LatcherRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelLatcher(p_174304_.bakeLayer(ModelLatcher.LAYER_LOCATION)), 0.5F);

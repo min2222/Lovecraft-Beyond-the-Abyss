@@ -48,10 +48,10 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob
 	{
 		return BTAMobType.PASSIVE;
 	}
-	
+
 	@Override
-	public AbstractHitBox getHitBox()
-	{
+	public AbstractHitBox getHitBox() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

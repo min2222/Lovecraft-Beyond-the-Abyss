@@ -1,9 +1,6 @@
-package com.min01.beyondtheabyss.multipart.entity;
+package com.min01.beyondtheabyss.cerbon;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.min01.beyondtheabyss.multipart.util.OrientedBox;
-import com.min01.beyondtheabyss.multipart.util.QuaternionD;
 
 import net.minecraft.world.phys.AABB;
 

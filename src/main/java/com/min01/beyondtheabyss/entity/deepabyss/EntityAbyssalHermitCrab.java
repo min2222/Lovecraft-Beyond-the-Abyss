@@ -66,12 +66,6 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	}
 	
 	@Override
-	public AbstractHitBox getHitBox()
-	{
-		return null;
-	}
-	
-	@Override
 	public boolean isSwimable() 
 	{
 		return false;
@@ -81,5 +75,11 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	public boolean canBreathOutsideWater()
 	{
 		return true;
+	}
+
+	@Override
+	public AbstractHitBox getHitBox() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

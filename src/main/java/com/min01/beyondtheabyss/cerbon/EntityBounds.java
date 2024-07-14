@@ -1,12 +1,9 @@
-package com.min01.beyondtheabyss.multipart.entity;
+package com.min01.beyondtheabyss.cerbon;
 
 import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
-import com.min01.beyondtheabyss.multipart.util.OrientedBox;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;

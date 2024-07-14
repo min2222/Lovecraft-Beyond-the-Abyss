@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.multipart.entity;
+package com.min01.beyondtheabyss.cerbon;
 
 import net.minecraft.world.phys.AABB;
 

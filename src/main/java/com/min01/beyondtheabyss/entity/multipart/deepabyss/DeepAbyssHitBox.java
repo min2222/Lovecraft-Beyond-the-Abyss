@@ -1,11 +1,11 @@
 package com.min01.beyondtheabyss.entity.multipart.deepabyss;
 
+import com.min01.beyondtheabyss.cerbon.EntityBounds;
+import com.min01.beyondtheabyss.cerbon.EntityPart;
+import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
 import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
-import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
-import com.min01.beyondtheabyss.multipart.entity.EntityPart;
-import com.min01.beyondtheabyss.multipart.entity.MutableBox;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
@@ -68,9 +68,9 @@ public class DeepAbyssHitBox
 		}
 		
 		@Override
-		public Vec3 getRotation() 
+		public Vec3 getRotation()
 		{
-			return new Vec3(this.entity.getXRot(), -this.entity.getYRot() - 180, 0);
+			return new Vec3(this.entity.getXRot(), 0, 0);
 		}
 		
 		@Override

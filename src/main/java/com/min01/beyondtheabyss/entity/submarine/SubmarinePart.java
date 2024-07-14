@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.entity.submarine;
 
+import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
+import com.min01.beyondtheabyss.cerbon.EntityBounds;
+import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.entity.AbstractOwnableEntity;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
-import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
-import com.min01.beyondtheabyss.multipart.entity.IMultipart;
-import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

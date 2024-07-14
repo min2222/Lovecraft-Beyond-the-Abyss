@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
+import com.min01.beyondtheabyss.cerbon.EntityBounds;
+import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType;
-import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
-import com.min01.beyondtheabyss.multipart.entity.IMultipart;
-import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;

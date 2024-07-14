@@ -138,10 +138,10 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     {
     	return BTAMobType.HOSTILE;
     }
-    
+
 	@Override
-	public AbstractHitBox getHitBox()
-	{
+	public AbstractHitBox getHitBox() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

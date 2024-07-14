@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.multipart.util;
+package com.min01.beyondtheabyss.cerbon;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Iterators;
 import com.min01.beyondtheabyss.mixin.multipart.MixinArrayVoxelShape;
-import com.min01.beyondtheabyss.multipart.entity.MutableBox;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;

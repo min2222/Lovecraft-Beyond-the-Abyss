@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.entity.submarine;
 
-import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
-import com.min01.beyondtheabyss.multipart.entity.EntityPart;
-import com.min01.beyondtheabyss.multipart.entity.MutableBox;
+import com.min01.beyondtheabyss.cerbon.EntityBounds;
+import com.min01.beyondtheabyss.cerbon.EntityPart;
+import com.min01.beyondtheabyss.cerbon.MutableBox;
 
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;

@@ -85,8 +85,12 @@ public class ModelLatcher extends HierarchicalModel<EntityLatcher>
 		PartDefinition Tails = Body.addOrReplaceChild("Tails", CubeListBuilder.create().texOffs(14, 51).addBox(-2.5F, -1.5F, -1.0F, 5.0F, 4.0F, 7.0F, new CubeDeformation(0.02F))
 		.texOffs(49, 15).addBox(-5.5F, 1.521F, 0.02F, 11.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.3F, 14.0F));
 
+		Tails.addOrReplaceChild("tailPos", CubeListBuilder.create(), PartPose.offset(0.0F, -2.3F, 3.0F));
+
 		PartDefinition Tails2 = Tails.addOrReplaceChild("Tails2", CubeListBuilder.create().texOffs(37, 41).addBox(-2.5F, -1.5F, -1.0F, 5.0F, 3.0F, 10.0F, new CubeDeformation(0.0F))
 		.texOffs(33, 30).addBox(-5.5F, 1.501F, 0.0F, 11.0F, 0.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 6.0F));
+
+		Tails2.addOrReplaceChild("tailPos2", CubeListBuilder.create(), PartPose.offset(0.0F, -3.3F, 7.0F));
 
 		Tails2.addOrReplaceChild("TailEdge", CubeListBuilder.create().texOffs(49, 22).addBox(-4.5F, 0.0F, 0.0F, 9.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.5F, 9.0F));
 

@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.multipart;
 
-import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
-import com.min01.beyondtheabyss.multipart.entity.EntityPart;
+import com.min01.beyondtheabyss.cerbon.EntityBounds;
+import com.min01.beyondtheabyss.cerbon.EntityPart;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;

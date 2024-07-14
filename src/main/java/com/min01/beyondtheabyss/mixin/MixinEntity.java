@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.multipart.entity.IMultipart;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.world.entity.Entity;

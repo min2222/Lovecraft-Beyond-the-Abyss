@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
+import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.Shapes;

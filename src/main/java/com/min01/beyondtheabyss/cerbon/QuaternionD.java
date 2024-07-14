@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.multipart.util;
+package com.min01.beyondtheabyss.cerbon;
 
 import com.mojang.math.Quaternion;
 import net.minecraft.world.phys.Vec3;

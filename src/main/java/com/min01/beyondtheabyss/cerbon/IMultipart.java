@@ -1,6 +1,4 @@
-package com.min01.beyondtheabyss.multipart.entity;
-
-import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
+package com.min01.beyondtheabyss.cerbon;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

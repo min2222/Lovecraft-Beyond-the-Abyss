@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
+import com.min01.beyondtheabyss.cerbon.EntityBounds;
+import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
-import com.min01.beyondtheabyss.multipart.entity.EntityBounds;
-import com.min01.beyondtheabyss.multipart.entity.IMultipart;
-import com.min01.beyondtheabyss.multipart.util.CompoundOrientedBox;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
