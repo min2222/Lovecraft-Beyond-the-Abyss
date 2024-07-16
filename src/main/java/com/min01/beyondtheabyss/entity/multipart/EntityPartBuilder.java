@@ -273,7 +273,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     
     public String getModelPartName(ModelPart root, ModelPart target) 
     {
-        AtomicReference<String> name = new AtomicReference<>("model");
+        AtomicReference<String> name = new AtomicReference<>(ROOT);
         root.getAllParts().filter(part -> 
         {
     		Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
