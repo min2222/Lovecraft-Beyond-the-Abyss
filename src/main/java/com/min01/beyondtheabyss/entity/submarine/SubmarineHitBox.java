@@ -10,7 +10,6 @@ import net.minecraft.world.phys.Vec3;
 public class SubmarineHitBox 
 {
     private final EntitySubmarine entity;
-    private final AABB collisionHitbox = new AABB(Vec3.ZERO, new Vec3(5.5F, 1.0F, 5.5F));
     private final String root = "root";
     private final String submarine = "submarine";
     private final String controllerSeat = "controllerSeat";
@@ -28,35 +27,41 @@ public class SubmarineHitBox
     private final String back = "back";
     private final String left = "left";
     private final String right = "right";
-    private final EntityBounds hitbox = EntityBounds.builder()
-            .add(this.root).setBounds(0.0, 0.0, 0.0).build()
-            .add(this.submarine).setBounds(0.0, 0.0, 0.0).setParent(this.root).build()
-            .add(this.controllerSeat).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
-            .add(this.seat1).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
-            .add(this.seat2).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
-            .add(this.seat3).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
-            .add(this.seat4).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
-            .add(this.bottom).setBounds(3.1875F, 0.625F, 4.375F).setParent(this.submarine).build()
-            .add(this.topLeft).setBounds(0.85416F, 0.4375F, 4.375F).setParent(this.submarine).build()
-            .add(this.topRight).setBounds(0.85416F, 0.4375F, 4.375F).setParent(this.submarine).build()
-            .add(this.topFront).setBounds(0.85416F, 0.4375F, 1.4583F).setParent(this.submarine).build()
-            .add(this.topBack).setBounds(0.85416F, 0.4375F, 1.4583F).setParent(this.submarine).build()
-            .add(this.hatch).setBounds(1.3125F, 0.5F, 1.3125F).setParent(this.submarine).build()
-            .add(this.front).setBounds(2.6875F, 2.625F, 1.125F).setParent(this.submarine).build()
-            .add(this.back).setBounds(2.5625F, 2.6875F, 1.125F).setParent(this.submarine).build()
-            .add(this.left).setBounds(0.3125F, 2.875F, 4.375F).setParent(this.submarine).build()
-            .add(this.right).setBounds(0.3125F, 2.875F, 4.375F).setParent(this.submarine).build()
-            .overrideCollisionBox(this.collisionHitbox)
-            .getFactory().create();
+    private final EntityBounds hitbox;
     
     public SubmarineHitBox(EntitySubmarine entity)
     {
         this.entity = entity;
+        this.hitbox = EntityBounds.builder()
+        .add(this.root).setBounds(0.0, 0.0, 0.0).build()
+        .add(this.submarine).setBounds(0.0, 0.0, 0.0).setParent(this.root).build()
+        .add(this.controllerSeat).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
+        .add(this.seat1).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
+        .add(this.seat2).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
+        .add(this.seat3).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
+        .add(this.seat4).setBounds(0.75F, 0.3125F, 0.625F).setParent(this.submarine).build()
+        .add(this.bottom).setBounds(3.1875F, 0.625F, 4.375F).setParent(this.submarine).build()
+        .add(this.topLeft).setBounds(0.85416F, 0.4375F, 4.375F).setParent(this.submarine).build()
+        .add(this.topRight).setBounds(0.85416F, 0.4375F, 4.375F).setParent(this.submarine).build()
+        .add(this.topFront).setBounds(0.85416F, 0.4375F, 1.4583F).setParent(this.submarine).build()
+        .add(this.topBack).setBounds(0.85416F, 0.4375F, 1.4583F).setParent(this.submarine).build()
+        .add(this.hatch).setBounds(1.3125F, 0.5F, 1.3125F).setParent(this.submarine).build()
+        .add(this.front).setBounds(2.6875F, 2.625F, 1.125F).setParent(this.submarine).build()
+        .add(this.back).setBounds(2.5625F, 2.6875F, 1.125F).setParent(this.submarine).build()
+        .add(this.left).setBounds(0.3125F, 2.875F, 4.375F).setParent(this.submarine).build()
+        .add(this.right).setBounds(0.3125F, 2.875F, 4.375F).setParent(this.submarine).build()
+        .overrideCollisionBox(this.getBoundingBox(Vec3.ZERO))
+        .getFactory().create();
     }
 
     public EntityBounds getHitbox()
     {
     	return this.hitbox;
+    }
+    
+    public AABB getBoundingBox(Vec3 pos) 
+    {
+    	return this.entity.getDimensions(this.entity.getPose()).makeBoundingBox(pos);
     }
 
     public void updatePosition()
@@ -108,7 +113,7 @@ public class SubmarineHitBox
         MutableBox overrideBox = this.hitbox.getOverrideBox();
         if(overrideBox != null)
         {
-            overrideBox.setBox(this.collisionHitbox.move(this.entity.position()).move(-2.75F, 0.05F, -2.75F));
+            overrideBox.setBox(this.getBoundingBox(this.entity.position()));
         }
     }
     

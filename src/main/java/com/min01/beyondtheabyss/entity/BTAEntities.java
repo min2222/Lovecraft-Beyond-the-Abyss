@@ -30,8 +30,8 @@ public class BTAEntities
 	//misc
 	public static final RegistryObject<EntityType<EntityDeepAbyssPortal>> DEEP_ABYSS_PORTAL = registerEntity("deep_abyss_portal", createBuilder(EntityDeepAbyssPortal::new, MobCategory.MISC).sized(3F, 0.25F));
 	public static final RegistryObject<EntityType<EntityBTACameraShake>> BTA_CAMERA_SHAKE = registerEntity("bta_camera_shake", createBuilder(EntityBTACameraShake::new, MobCategory.MISC));
-	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = registerEntity("submarine", createBuilder(EntitySubmarine::new, MobCategory.MISC).sized(8.0F, 8.0F));
-	public static final RegistryObject<EntityType<SubmarinePart>> SUBMARINE_PART = registerEntity("submarine_part", EntityType.Builder.<SubmarinePart>of(SubmarinePart::new, MobCategory.MISC).sized(8.0F, 8.0F));
+	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = registerEntity("submarine", createBuilder(EntitySubmarine::new, MobCategory.MISC).sized(6.0F, 6.0F));
+	public static final RegistryObject<EntityType<SubmarinePart>> SUBMARINE_PART = registerEntity("submarine_part", EntityType.Builder.<SubmarinePart>of(SubmarinePart::new, MobCategory.MISC).sized(6.0F, 6.0F));
 
 	//projectile
 	public static final RegistryObject<EntityType<EntityThrownHarpoon>> THROWN_HARPOON = registerEntity("thrown_harpoon", EntityType.Builder.<EntityThrownHarpoon>of(EntityThrownHarpoon::new, MobCategory.MISC).sized(0.5F, 0.5F));
@@ -42,7 +42,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityRunicFish>> RUNIC_FISH = registerEntity("runic_fish", createBuilder(EntityRunicFish::new, MobCategory.WATER_CREATURE).sized(0.5F, 0.7F));
 	public static final RegistryObject<EntityType<EntityLatcher>> LATCHER = registerEntity("latcher", createBuilder(EntityLatcher::new, MobCategory.WATER_CREATURE).sized(0.8F, 0.3F));
 	public static final RegistryObject<EntityType<EntityAbyssalHermitCrab>> ABYSSAL_HERMIT_CRAB = registerEntity("abyssal_hermit_crab", createBuilder(EntityAbyssalHermitCrab::new, MobCategory.WATER_CREATURE).sized(1.2F, 1.0F));
-	public static final RegistryObject<EntityType<EntityAbyssalBulbray>> ABYSSAL_BULBRAY = registerEntity("abyssal_bulbray", createBuilder(EntityAbyssalBulbray::new, MobCategory.WATER_CREATURE).sized(1.6F, 0.8F));
+	public static final RegistryObject<EntityType<EntityAbyssalBulbray>> ABYSSAL_BULBRAY = registerEntity("abyssal_bulbray", createBuilder(EntityAbyssalBulbray::new, MobCategory.WATER_CREATURE).sized(3.5F, 0.8F));
 	public static final RegistryObject<EntityType<EntityPhasmozoa>> PHASMOZOA = registerEntity("phasmozoa", createBuilder(EntityPhasmozoa::new, MobCategory.WATER_CREATURE).sized(1.2F, 2.4F));
 	public static final RegistryObject<EntityType<EntityAmarumGhost>> AMARUM_GHOST = registerEntity("amarum_ghost", createBuilder(EntityAmarumGhost::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.25F));
 	

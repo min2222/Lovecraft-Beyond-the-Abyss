@@ -7,7 +7,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherUnlatchingGoal;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
@@ -46,13 +45,12 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob<EntityLatcher>
 	public AnimationState latchAnimationState = new AnimationState();
 	public AnimationState unlatchAnimationState = new AnimationState();
 	
-	public final ModelLatcher model = ((LatcherRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
+	public final ModelLatcher model = new ModelLatcher(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLatcher.LAYER_LOCATION));
 	public final EntityPartBuilder<EntityLatcher> partBuilder = new EntityPartBuilder<EntityLatcher>(this, this.model);
 	
 	public EntityLatcher(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.posArray = new Vec3[2];
 		this.xpReward = this.random.nextInt(2);
 	}
 	

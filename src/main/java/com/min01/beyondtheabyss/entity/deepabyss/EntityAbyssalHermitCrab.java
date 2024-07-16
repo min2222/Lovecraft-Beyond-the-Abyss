@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.entity.renderer.living.AbyssalHermitCrabRenderer;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
 import net.minecraft.client.Minecraft;
@@ -22,7 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 
 public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<EntityAbyssalHermitCrab>
 {
-	public final ModelAbyssalHermitCrab model = ((AbyssalHermitCrabRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
+	public final ModelAbyssalHermitCrab model = new ModelAbyssalHermitCrab(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalHermitCrab.LAYER_LOCATION));
 	public final EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this, this.model);
 	
 	public EntityAbyssalHermitCrab(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 

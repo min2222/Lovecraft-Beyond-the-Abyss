@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
@@ -28,20 +27,25 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.Vec3;
 
 public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepVampire>
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
 	
-	public final ModelDeepVampire model = ((DeepVampireRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
-	public final EntityPartBuilder<EntityDeepVampire> partBuilder = new EntityPartBuilder<EntityDeepVampire>(this, this.model);
+	public final ModelDeepVampire model = new ModelDeepVampire(Minecraft.getInstance().getEntityModels().bakeLayer(ModelDeepVampire.LAYER_LOCATION));
+	public final EntityPartBuilder<EntityDeepVampire> partBuilder = new EntityPartBuilder<EntityDeepVampire>(this, this.model)
+	{
+		@Override
+		public boolean isInWater() 
+		{
+			return true;
+		}
+	};
 	
 	public EntityDeepVampire(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.posArray = new Vec3[6];
 		this.xpReward = this.random.nextInt(4);
 	}
 	

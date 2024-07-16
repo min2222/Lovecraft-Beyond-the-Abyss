@@ -22,6 +22,7 @@ import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -59,9 +60,11 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         
         EntityPart root = this.hitbox.getPart(ROOT);
         
-        root.setOffX(posX);
-        root.setOffY(posY + this.getOffset());
-        root.setOffZ(posZ);
+        Vec3 renderOffset = this.getOffset();
+        float waterOffset = this.isInWater() && !this.isInWater(this.entity) ? -0.5F : 0.0F;
+        root.setOffX(posX + renderOffset.x + waterOffset);
+        root.setOffY(posY + renderOffset.y);
+        root.setOffZ(posZ + renderOffset.z);
         
         this.model.root().getAllParts().forEach((part) -> 
         {
@@ -92,11 +95,11 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
             entityPart.setPivotX(pivot.x);
             entityPart.setPivotY(pivot.y);
             entityPart.setPivotZ(pivot.z);
-            Quaternion rot = new Quaternion(0, 0, 0, 1);
-            rot.mul(Vector3f.ZP.rotation(part.zRot));
-            rot.mul(Vector3f.YP.rotation(-part.yRot));
-            rot.mul(Vector3f.XP.rotation(-part.xRot));
-            entityPart.setRotation(new QuaternionD((double)rot.i(), (double)rot.j(), (double)rot.k(), (double)rot.r()));
+            Quaternion rotation = new Quaternion(0, 0, 0, 1);
+            rotation.mul(Vector3f.ZP.rotation(part.zRot));
+            rotation.mul(Vector3f.YP.rotation(-part.yRot));
+            rotation.mul(Vector3f.XP.rotation(-part.xRot));
+            entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
         });
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
@@ -116,7 +119,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         return builder.overrideCollisionBox(this.getBoundingBox(Vec3.ZERO)).getFactory().create();
 	}
 	
-    protected EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
+    public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
     {
         String name = this.getModelPartName(this.model.root(), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
@@ -140,7 +143,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         return builder;
     }
     
-    protected AABB getPartSize(ModelPart part, String name)
+    public AABB getPartSize(ModelPart part, String name)
     {
         AABB box = null;
     	List<ModelPart.Cube> cubes = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104212_");
@@ -167,7 +170,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         {
             return box1;
         }
-        else 
+        else
         {
             Vec3 offset = box.getCenter().multiply(-1.0, -1.0, 1.0);
             this.partOffset.put(name, offset);
@@ -286,6 +289,11 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         {
         	rotation.mul(Vector3f.ZP.rotationDegrees(180.0F));
         }
+        
+        if(this.isInWater() && !this.isInWater(entity))
+        {
+        	rotation.mul(Vector3f.ZP.rotationDegrees(90.0F));
+        }
 
         return new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r());
     }
@@ -351,9 +359,20 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 		return 1.0F;
 	}
 	
-	public float getOffset()
+	public Vec3 getOffset()
 	{
-		return 1.5F;
+		return new Vec3(0.0F, 1.5F, 0.0F);
+	}
+	
+	public boolean isInWater(Entity entity)
+	{
+		boolean wasTouchingWater = ObfuscationReflectionHelper.getPrivateValue(Entity.class, this.entity, "f_19798_");
+		return wasTouchingWater;
+	}
+	
+	public boolean isInWater()
+	{
+		return false;
 	}
 	
     public AABB getBoundingBox(Vec3 pos) 

@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -33,9 +32,9 @@ public class ModelAbyssalBulbray extends HierarchicalModel<EntityAbyssalBulbray>
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition Mantangler = partdefinition.addOrReplaceChild("Mantangler", CubeListBuilder.create(), PartPose.offset(0.0F, 20.0F, 9.0F));
+		PartDefinition Mantangler = partdefinition.addOrReplaceChild("Mantangler", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition Body = Mantangler.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-14.5F, -4.0F, -17.0F, 29.0F, 4.0F, 34.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, 0.0F, -4.0F));
+		PartDefinition Body = Mantangler.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-14.5F, -4.0F, -17.0F, 29.0F, 4.0F, 34.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, -4.0F, -4.0F));
 
 		PartDefinition Fin = Body.addOrReplaceChild("Fin", CubeListBuilder.create(), PartPose.offset(0.0F, -2.0F, 2.0F));
 
@@ -77,7 +76,7 @@ public class ModelAbyssalBulbray extends HierarchicalModel<EntityAbyssalBulbray>
 		Fin2.addOrReplaceChild("Smallfinright", CubeListBuilder.create().texOffs(67, 74).addBox(-11.0F, 0.0F, -7.0F, 11.0F, 0.0F, 28.0F, new CubeDeformation(0.0F)), PartPose.offset(-11.5F, 2.0F, 11.0F));
 
 		PartDefinition Tails = Mantangler.addOrReplaceChild("Tails", CubeListBuilder.create().texOffs(105, 103).addBox(-2.5F, -2.0F, -1.0F, 5.0F, 5.0F, 23.0F, new CubeDeformation(0.0F))
-		.texOffs(97, 132).addBox(0.0F, -7.0F, 0.0F, 0.0F, 5.0F, 22.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 13.0F));
+		.texOffs(97, 132).addBox(0.0F, -7.0F, 0.0F, 0.0F, 5.0F, 22.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, 13.0F));
 
 		PartDefinition Tails2 = Tails.addOrReplaceChild("Tails2", CubeListBuilder.create().texOffs(68, 126).addBox(-1.5F, -1.5F, -1.0F, 3.0F, 3.0F, 22.0F, new CubeDeformation(0.02F)), PartPose.offset(0.0F, 0.75F, 22.0F));
 
@@ -100,13 +99,6 @@ public class ModelAbyssalBulbray extends HierarchicalModel<EntityAbyssalBulbray>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.Mantangler, netHeadYaw, headPitch);
-		if(entity.getAnimationState() == 0)
-		{
-			if(BTAUtil.isMoving(entity))
-			{
-				
-			}
-		}
 	}
 
 	@Override

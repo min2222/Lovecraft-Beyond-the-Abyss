@@ -35,7 +35,10 @@ public abstract class AbstractMultipartDeepAbyssMob<T extends AbstractDeepAbyssM
 	@Override
 	public void onSetPos(double x, double y, double z) 
 	{
-		
+		if(this.getPartBuilder() != null)
+		{
+			this.getPartBuilder().tick(1.0F);
+		}
 	}
 	
 	@Override

@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.sound.BTASounds;
@@ -47,13 +46,13 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth
 	
 	public static final double DEFAULT_MOVEMENT_SPEED = 1.0D;
 	
-	public final ModelGhidruth model = ((GhidruthRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
+	public final ModelGhidruth model = new ModelGhidruth(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
 	public final EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this, this.model)
 	{
 		@Override
-		public float getOffset() 
+		public Vec3 getOffset()
 		{
-			return 2.5F;
+			return new Vec3(0.0F, 2.5F, 0.0F);
 		}
 		
 		@Override

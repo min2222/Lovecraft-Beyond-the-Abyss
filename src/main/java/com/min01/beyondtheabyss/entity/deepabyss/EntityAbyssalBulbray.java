@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.entity.renderer.living.AbyssalBulbrayRenderer;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
 import net.minecraft.client.Minecraft;
@@ -21,7 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 
 public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob<EntityAbyssalBulbray>
 {
-	public final ModelAbyssalBulbray model = ((AbyssalBulbrayRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
+	public final ModelAbyssalBulbray model = new ModelAbyssalBulbray(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalBulbray.LAYER_LOCATION));
 	public final EntityPartBuilder<EntityAbyssalBulbray> partBuilder = new EntityPartBuilder<EntityAbyssalBulbray>(this, this.model);
 	
 	public EntityAbyssalBulbray(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
