@@ -3,10 +3,13 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
-import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
+import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -27,10 +30,13 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
+public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepVampire>
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
+	
+	public final ModelDeepVampire model = ((DeepVampireRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
+	public final EntityPartBuilder<EntityDeepVampire> partBuilder = new EntityPartBuilder<EntityDeepVampire>(this, this.model);
 	
 	public EntityDeepVampire(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -139,9 +145,9 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob
     	return BTAMobType.HOSTILE;
     }
 
-	@Override
-	public AbstractHitBox getHitBox() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public EntityPartBuilder<EntityDeepVampire> getPartBuilder()
+    {
+    	return this.partBuilder;
+    }
 }

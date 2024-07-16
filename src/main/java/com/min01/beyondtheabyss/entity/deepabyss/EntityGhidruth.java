@@ -3,12 +3,14 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
-import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
-import com.min01.beyondtheabyss.entity.multipart.deepabyss.DeepAbyssHitBox;
+import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.sound.BTASounds;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,7 +27,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
+public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth>
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
@@ -45,7 +47,21 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
 	
 	public static final double DEFAULT_MOVEMENT_SPEED = 1.0D;
 	
-	public final DeepAbyssHitBox.GhidruthHitBox hitBox = new DeepAbyssHitBox.GhidruthHitBox(this);
+	public final ModelGhidruth model = ((GhidruthRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
+	public final EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this, this.model)
+	{
+		@Override
+		public float getOffset() 
+		{
+			return 2.5F;
+		}
+		
+		@Override
+		public float getRenderScale() 
+		{
+			return 1.5F;
+		}
+	};
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
@@ -223,9 +239,9 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob
     }
     
     @Override
-    public AbstractHitBox getHitBox() 
+    public EntityPartBuilder<EntityGhidruth> getPartBuilder() 
     {
-    	return this.hitBox;
+    	return this.partBuilder;
     }
     
     public void setStunTick(int count)

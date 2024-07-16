@@ -111,9 +111,9 @@ public class BTAItems
 				public BlockEntityWithoutLevelRenderer getCustomRenderer() 
 				{
 					return new BTABlockEntityItemRenderer(new BlockEntityRiftwellingAltar(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
-				};
+				}
 			});
-		};
+		}
 	});
 	
 	public static final RegistryObject<Item> DEEP_ABYSSALITH = registerBlockItem("deep_abyssalith", () -> BTABlocks.DEEP_ABYSSALITH.get(), new Item.Properties());

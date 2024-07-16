@@ -5,14 +5,16 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherFindTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherUnlatchingGoal;
-import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
-import com.min01.beyondtheabyss.entity.multipart.deepabyss.DeepAbyssHitBox;
+import com.min01.beyondtheabyss.entity.model.ModelLatcher;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -37,14 +39,15 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityLatcher extends AbstractMultipartDeepAbyssMob 
+public class EntityLatcher extends AbstractMultipartDeepAbyssMob<EntityLatcher>
 {
 	public AnimationState propelAnimationState = new AnimationState();
 	public AnimationState startLatchAnimationState = new AnimationState();
 	public AnimationState latchAnimationState = new AnimationState();
 	public AnimationState unlatchAnimationState = new AnimationState();
 	
-	public final DeepAbyssHitBox.LatcherHitBox hitBox = new DeepAbyssHitBox.LatcherHitBox(this);
+	public final ModelLatcher model = ((LatcherRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
+	public final EntityPartBuilder<EntityLatcher> partBuilder = new EntityPartBuilder<EntityLatcher>(this, this.model);
 	
 	public EntityLatcher(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -211,10 +214,10 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob
     {
     	return BTAMobType.HOSTILE;
     }
-
-	@Override
-	public AbstractHitBox getHitBox() 
-	{
-		return this.hitBox;
-	}
+    
+    @Override
+    public EntityPartBuilder<EntityLatcher> getPartBuilder() 
+    {
+    	return this.partBuilder;
+    }
 }

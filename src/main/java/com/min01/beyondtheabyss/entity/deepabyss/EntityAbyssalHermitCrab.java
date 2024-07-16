@@ -1,9 +1,12 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.entity.multipart.AbstractHitBox;
+import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.entity.renderer.living.AbyssalHermitCrabRenderer;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -17,8 +20,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob 
+public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<EntityAbyssalHermitCrab>
 {
+	public final ModelAbyssalHermitCrab model = ((AbyssalHermitCrabRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(this)).getModel();
+	public final EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this, this.model);
+	
 	public EntityAbyssalHermitCrab(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
@@ -78,8 +84,8 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob
 	}
 
 	@Override
-	public AbstractHitBox getHitBox() {
-		// TODO Auto-generated method stub
-		return null;
+	public EntityPartBuilder<EntityAbyssalHermitCrab> getPartBuilder() 
+	{
+		return this.partBuilder;
 	}
 }

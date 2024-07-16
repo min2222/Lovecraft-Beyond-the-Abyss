@@ -9,7 +9,6 @@
 		"MixinSwimNodeEvaluator",
 		"MixinNoiseBasedAquifer",
 		"multipart.MixinArrayVoxelShape",
-		"multipart.MixinAABB",
 		"multipart.MixinVoxelShape",
 		"multipart.MixinShapes"
 	],

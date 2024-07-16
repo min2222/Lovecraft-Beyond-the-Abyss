@@ -11,9 +11,9 @@ public interface IMultipart
 
     CompoundOrientedBox getCompoundBoundingBox(AABB bounds);
 
-    void onSetPos(final double x, final double y, final double z);
+    void onSetPos(double x, double y, double z);
     
-    default InteractionResult interact(final Entity entity, final InteractionHand hand, final String part) 
+    default InteractionResult interact(Entity entity, InteractionHand hand, String part) 
     {
         return InteractionResult.PASS;
     }

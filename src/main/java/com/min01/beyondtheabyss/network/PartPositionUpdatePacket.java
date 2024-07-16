@@ -48,7 +48,7 @@ public class PartPositionUpdatePacket
 				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
 					Entity entity = level.getEntity(message.entityId);
-					if(entity instanceof AbstractMultipartDeepAbyssMob mob) 
+					if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
 					{
 						mob.posArray[message.array] = message.pos;
 					}
