@@ -17,6 +17,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Direction;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
@@ -52,6 +54,8 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         double posX = Mth.lerp((double)partialTick, this.entity.xOld, this.entity.getX());
         double posY = Mth.lerp((double)partialTick, this.entity.yOld, this.entity.getY());
         double posZ = Mth.lerp((double)partialTick, this.entity.zOld, this.entity.getZ());
+
+        this.defaultAnimation(this.model, this.entity, partialTick);
         
         EntityPart root = this.hitbox.getPart(ROOT);
         
@@ -171,6 +175,52 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
     }
     
+    public void defaultAnimation(EntityModel<T> model, T entity, float partialTick)
+    {
+        boolean shouldSit = entity.isPassenger() && entity.getVehicle() != null && entity.getVehicle().shouldRiderSit();
+        float limbSwing = !shouldSit && entity.isAlive() ? entity.animationPosition - entity.animationSpeed * (1.0F - partialTick) : 0.0F;
+        float limbSwingAmount = !shouldSit && entity.isAlive() ? Mth.lerp(partialTick, entity.animationSpeedOld, entity.animationSpeed) : 0.0F;
+        model.attackTime = entity.getAttackAnim(partialTick);
+        model.young = entity.isBaby();
+        model.riding = shouldSit;
+        Vec2 headRot = this.defaultHeadRotation(entity, partialTick);
+        model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
+        model.setupAnim(entity, limbSwing, limbSwingAmount, (float)entity.tickCount + partialTick, headRot.y, headRot.x);
+    }
+
+    public Vec2 defaultHeadRotation(LivingEntity entity, float partialTick)
+    {
+        boolean shouldSit = entity.isPassenger() && entity.getVehicle() != null && entity.getVehicle().shouldRiderSit();
+        float headPitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
+        float headRot = Mth.rotLerp(partialTick, entity.yHeadRotO, entity.yHeadRot);
+        float bodyRot = Mth.rotLerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
+        float realHeadRot = headRot - bodyRot;
+        if(shouldSit)
+        {
+            if(entity.getVehicle() instanceof LivingEntity vehicle)
+            {
+                bodyRot = Mth.rotLerp(partialTick, vehicle.yBodyRotO, vehicle.yBodyRot);
+                float delta = Mth.wrapDegrees(headRot - bodyRot);
+                delta = Mth.clamp(delta, -85.0F, 85.0F);
+                bodyRot = headRot - delta;
+                if(delta * delta > 2500.0F) 
+                {
+                    bodyRot += delta * 0.2F;
+                }
+
+                realHeadRot = headRot - bodyRot;
+            }
+        }
+
+        if(this.isEntityUpsideDown(entity)) 
+        {
+            headPitch *= -1.0F;
+            realHeadRot *= -1.0F;
+        }
+
+        return new Vec2(headPitch, realHeadRot);
+    }
+    
     public float defaultBodyRotation(LivingEntity entity, float partialTick) 
     {
         boolean shouldSit = entity.isPassenger() && entity.getVehicle() != null && entity.getVehicle().shouldRiderSit();
@@ -227,20 +277,20 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         else if(entity.hasPose(Pose.SLEEPING)) 
         {
             Direction direction = entity.getBedOrientation();
-            float sleepRot = direction != null ? sleepDirectionToRotation(direction) : bodyRot;
+            float sleepRot = direction != null ? this.sleepDirectionToRotation(direction) : bodyRot;
             rotation.mul(Vector3f.YP.rotationDegrees(sleepRot));
             rotation.mul(Vector3f.ZP.rotationDegrees(90.0F));
             rotation.mul(Vector3f.YP.rotationDegrees(270.0F));
         }
-        else if(isEntityUpsideDown(entity)) 
+        else if(this.isEntityUpsideDown(entity)) 
         {
-            rotation.mul(Vector3f.ZP.rotationDegrees(180.0F));
+        	rotation.mul(Vector3f.ZP.rotationDegrees(180.0F));
         }
 
         return new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r());
     }
     
-    private static float sleepDirectionToRotation(Direction direction) 
+    public float sleepDirectionToRotation(Direction direction) 
     {
         switch(direction)
         {
@@ -257,15 +307,15 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
     }
     
-    public static boolean isEntityUpsideDown(LivingEntity entity) 
+    public boolean isEntityUpsideDown(LivingEntity entity) 
     {
         if(entity instanceof Player || entity.hasCustomName())
         {
-           String s = ChatFormatting.stripFormatting(entity.getName().getString());
-           if("Dinnerbone".equals(s) || "Grumm".equals(s)) 
-           {
-              return !(entity instanceof Player) || ((Player)entity).isModelPartShown(PlayerModelPart.CAPE);
-           }
+        	String s = ChatFormatting.stripFormatting(entity.getName().getString());
+        	if("Dinnerbone".equals(s) || "Grumm".equals(s)) 
+        	{
+        		return !(entity instanceof Player) || ((Player)entity).isModelPartShown(PlayerModelPart.CAPE);
+        	}
         }
 
         return false;
@@ -276,14 +326,14 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         AtomicReference<String> name = new AtomicReference<>(ROOT);
         root.getAllParts().filter(part -> 
         {
-    		Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
+        	Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
             return children.containsValue(target);
         }).findFirst().ifPresent(part -> 
         {
     		Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
-            Iterator<Map.Entry<String, ModelPart>> iterator = children.entrySet().iterator();
+    		Iterator<Map.Entry<String, ModelPart>> iterator = children.entrySet().iterator();
 
-            while(iterator.hasNext())
+    		while(iterator.hasNext())
             {
                 Map.Entry<String, ModelPart> entry = iterator.next();
                 if(entry.getValue() == target) 
