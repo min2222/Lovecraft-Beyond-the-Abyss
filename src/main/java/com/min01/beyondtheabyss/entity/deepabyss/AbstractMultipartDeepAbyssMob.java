@@ -15,38 +15,34 @@ public abstract class AbstractMultipartDeepAbyssMob<T extends AbstractDeepAbyssM
 {
 	public Vec3[] posArray;
 	
+	private final EntityPartBuilder<T> partBuilder;
+	
 	public AbstractMultipartDeepAbyssMob(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_)
 	{
 		super(p_33002_, p_33003_);
+		this.partBuilder = this.createBuilder();
 	}
 	
 	@Override
 	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
 	{
-		return this.getPartBuilder().hitbox.getBox(bounds);
+		return this.partBuilder.hitbox.getBox(bounds);
 	}
 
 	@Override
 	public EntityBounds getBounds() 
 	{
-		return this.getPartBuilder().hitbox;
+		return this.partBuilder.hitbox;
 	}
 
 	@Override
 	public void onSetPos(double x, double y, double z) 
 	{
-		if(this.getPartBuilder() != null)
+		if(this.partBuilder != null)
 		{
-			this.getPartBuilder().tick(1.0F);
+			this.partBuilder.tick(1.0F);
 		}
 	}
 	
-	@Override
-	public void tick() 
-	{
-		super.tick();
-		this.getPartBuilder().tick(1.0F);
-	}
-	
-	public abstract EntityPartBuilder<T> getPartBuilder();
+	public abstract EntityPartBuilder<T> createBuilder();
 }

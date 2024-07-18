@@ -37,6 +37,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityLatcher extends AbstractMultipartDeepAbyssMob<EntityLatcher>
 {
@@ -44,9 +46,6 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob<EntityLatcher>
 	public AnimationState startLatchAnimationState = new AnimationState();
 	public AnimationState latchAnimationState = new AnimationState();
 	public AnimationState unlatchAnimationState = new AnimationState();
-	
-	public final ModelLatcher model = new ModelLatcher(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLatcher.LAYER_LOCATION));
-	public final EntityPartBuilder<EntityLatcher> partBuilder = new EntityPartBuilder<EntityLatcher>(this, this.model);
 	
 	public EntityLatcher(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -62,6 +61,15 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob<EntityLatcher>
         		.add(Attributes.ATTACK_DAMAGE, 1)
         		.add(Attributes.FOLLOW_RANGE, 2.5)
         		.add(Attributes.ARMOR, 1);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public EntityPartBuilder<EntityLatcher> createBuilder()
+    {
+    	ModelLatcher model = new ModelLatcher(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLatcher.LAYER_LOCATION));
+    	EntityPartBuilder<EntityLatcher> partBuilder = new EntityPartBuilder<EntityLatcher>(this, model);
+    	return partBuilder;
     }
     
     @Override
@@ -211,11 +219,5 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob<EntityLatcher>
     public BTAMobType getBTAMobType()
     {
     	return BTAMobType.HOSTILE;
-    }
-    
-    @Override
-    public EntityPartBuilder<EntityLatcher> getPartBuilder() 
-    {
-    	return this.partBuilder;
     }
 }

@@ -27,21 +27,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepVampire>
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
-	
-	public final ModelDeepVampire model = new ModelDeepVampire(Minecraft.getInstance().getEntityModels().bakeLayer(ModelDeepVampire.LAYER_LOCATION));
-	public final EntityPartBuilder<EntityDeepVampire> partBuilder = new EntityPartBuilder<EntityDeepVampire>(this, this.model)
-	{
-		@Override
-		public boolean isInWater() 
-		{
-			return true;
-		}
-	};
 	
 	public EntityDeepVampire(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -56,6 +48,22 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepV
     			.add(Attributes.MOVEMENT_SPEED, 0.6F)
         		.add(Attributes.ATTACK_DAMAGE, 5)
         		.add(Attributes.FOLLOW_RANGE, 25);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public EntityPartBuilder<EntityDeepVampire> createBuilder()
+    {
+    	ModelDeepVampire model = new ModelDeepVampire(Minecraft.getInstance().getEntityModels().bakeLayer(ModelDeepVampire.LAYER_LOCATION));
+    	EntityPartBuilder<EntityDeepVampire> partBuilder = new EntityPartBuilder<EntityDeepVampire>(this, model)
+    	{
+    		@Override
+    		public boolean isInWater() 
+    		{
+    			return true;
+    		}
+    	};
+    	return partBuilder;
     }
     
     @Override
@@ -147,11 +155,5 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepV
     public BTAMobType getBTAMobType()
     {
     	return BTAMobType.HOSTILE;
-    }
-
-    @Override
-    public EntityPartBuilder<EntityDeepVampire> getPartBuilder()
-    {
-    	return this.partBuilder;
     }
 }

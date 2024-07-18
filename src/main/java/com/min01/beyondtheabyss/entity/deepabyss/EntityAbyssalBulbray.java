@@ -17,12 +17,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob<EntityAbyssalBulbray>
 {
-	public final ModelAbyssalBulbray model = new ModelAbyssalBulbray(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalBulbray.LAYER_LOCATION));
-	public final EntityPartBuilder<EntityAbyssalBulbray> partBuilder = new EntityPartBuilder<EntityAbyssalBulbray>(this, this.model);
-	
 	public EntityAbyssalBulbray(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
@@ -36,6 +35,15 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob<EntityAb
     			.add(Attributes.MOVEMENT_SPEED, 0.8F)
         		.add(Attributes.ARMOR, 2);
     }
+
+    @OnlyIn(Dist.CLIENT)
+	@Override
+	public EntityPartBuilder<EntityAbyssalBulbray> createBuilder() 
+	{
+		ModelAbyssalBulbray model = new ModelAbyssalBulbray(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalBulbray.LAYER_LOCATION));
+		EntityPartBuilder<EntityAbyssalBulbray> partBuilder = new EntityPartBuilder<EntityAbyssalBulbray>(this, model);
+		return partBuilder;
+	}
     
     @Override
     public int getMaxSpawnClusterSize()
@@ -52,11 +60,5 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob<EntityAb
 	public BTAMobType getBTAMobType()
 	{
 		return BTAMobType.PASSIVE;
-	}
-
-	@Override
-	public EntityPartBuilder<EntityAbyssalBulbray> getPartBuilder() 
-	{
-		return this.partBuilder;
 	}
 }

@@ -47,7 +47,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 		this.entity = entity;
 		this.model = model;
 		this.hitbox = this.buildHitBox();
-		this.tick(1.0F);
 	}
 	
 	public void tick(float partialTick)

@@ -18,12 +18,11 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<EntityAbyssalHermitCrab>
 {
-	public final ModelAbyssalHermitCrab model = new ModelAbyssalHermitCrab(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalHermitCrab.LAYER_LOCATION));
-	public final EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this, this.model);
-	
 	public EntityAbyssalHermitCrab(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
@@ -38,6 +37,15 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<Entit
     			.add(Attributes.KNOCKBACK_RESISTANCE, 1)
     			.add(Attributes.MOVEMENT_SPEED, 0.35F);
     }
+
+    @OnlyIn(Dist.CLIENT)
+	@Override
+	public EntityPartBuilder<EntityAbyssalHermitCrab> createBuilder() 
+	{
+    	ModelAbyssalHermitCrab model = new ModelAbyssalHermitCrab(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalHermitCrab.LAYER_LOCATION));
+    	EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this, model);
+		return partBuilder;
+	}
     
     @Override
     public int getMaxSpawnClusterSize()
@@ -80,11 +88,5 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<Entit
 	public boolean canBreathOutsideWater()
 	{
 		return true;
-	}
-
-	@Override
-	public EntityPartBuilder<EntityAbyssalHermitCrab> getPartBuilder() 
-	{
-		return this.partBuilder;
 	}
 }

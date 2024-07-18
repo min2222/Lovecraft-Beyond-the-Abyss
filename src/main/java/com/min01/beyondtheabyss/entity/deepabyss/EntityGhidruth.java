@@ -66,6 +66,28 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth
         		.add(Attributes.ARMOR_TOUGHNESS, 150)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10);
     }
+	
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public EntityPartBuilder<EntityGhidruth> createBuilder() 
+    {
+    	ModelGhidruth model = new ModelGhidruth(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
+    	EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this, model)
+    	{
+    		@Override
+    		public Vec3 getOffset()
+    		{
+    			return new Vec3(0.0F, 2.5F, 0.0F);
+    		}
+    		
+    		@Override
+    		public float getRenderScale() 
+    		{
+    			return 1.5F;
+    		}
+    	};
+    	return partBuilder;
+    }
     
     @Override
     protected void defineSynchedData() 
@@ -221,28 +243,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth
     public BTAMobType getBTAMobType()
     {
     	return BTAMobType.BOSS;
-    }
-    
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public EntityPartBuilder<EntityGhidruth> getPartBuilder() 
-    {
-    	ModelGhidruth model = new ModelGhidruth(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
-    	EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this, model)
-    	{
-    		@Override
-    		public Vec3 getOffset()
-    		{
-    			return new Vec3(0.0F, 2.5F, 0.0F);
-    		}
-    		
-    		@Override
-    		public float getRenderScale() 
-    		{
-    			return 1.5F;
-    		}
-    	};
-    	return partBuilder;
     }
     
     public void setStunTick(int count)
