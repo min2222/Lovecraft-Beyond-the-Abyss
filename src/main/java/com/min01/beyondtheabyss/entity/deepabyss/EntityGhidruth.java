@@ -25,6 +25,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth>
 {
@@ -45,22 +47,6 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth
 	public static final EntityDataAccessor<Integer> STUN_TICK = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
 	
 	public static final double DEFAULT_MOVEMENT_SPEED = 1.0D;
-	
-	public final ModelGhidruth model = new ModelGhidruth(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
-	public final EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this, this.model)
-	{
-		@Override
-		public Vec3 getOffset()
-		{
-			return new Vec3(0.0F, 2.5F, 0.0F);
-		}
-		
-		@Override
-		public float getRenderScale() 
-		{
-			return 1.5F;
-		}
-	};
 	
 	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
 	{
@@ -237,10 +223,26 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth
     	return BTAMobType.BOSS;
     }
     
+    @OnlyIn(Dist.CLIENT)
     @Override
     public EntityPartBuilder<EntityGhidruth> getPartBuilder() 
     {
-    	return this.partBuilder;
+    	ModelGhidruth model = new ModelGhidruth(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
+    	EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this, model)
+    	{
+    		@Override
+    		public Vec3 getOffset()
+    		{
+    			return new Vec3(0.0F, 2.5F, 0.0F);
+    		}
+    		
+    		@Override
+    		public float getRenderScale() 
+    		{
+    			return 1.5F;
+    		}
+    	};
+    	return partBuilder;
     }
     
     public void setStunTick(int count)

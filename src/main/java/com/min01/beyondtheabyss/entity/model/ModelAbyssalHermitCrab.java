@@ -21,7 +21,8 @@ public class ModelAbyssalHermitCrab extends HierarchicalModel<EntityAbyssalHermi
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "abyssal_hermit_crab"), "main");
 	private final ModelPart AbyssHermit;
 
-	public ModelAbyssalHermitCrab(ModelPart root) {
+	public ModelAbyssalHermitCrab(ModelPart root)
+	{
 		this.AbyssHermit = root.getChild("AbyssHermit");
 	}
 
