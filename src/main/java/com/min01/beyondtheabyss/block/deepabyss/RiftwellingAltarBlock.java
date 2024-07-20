@@ -33,10 +33,10 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.PacketDistributor;
 
-public class BlockRiftwellingAltar extends BaseEntityBlock implements SimpleWaterloggedBlock
+public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public BlockRiftwellingAltar() 
+	public RiftwellingAltarBlock() 
 	{
 		super(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn((p_61031_, p_61032_, p_61033_, p_61034_) -> false).noOcclusion());
 	}

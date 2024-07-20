@@ -26,6 +26,6 @@ public class BTAEffects
 	});
 	
 	public static final RegistryObject<MobEffect> AIR_SWIM = EFFECTS.register("air_swim", () -> new BasicBTAEffect(MobEffectCategory.NEUTRAL, 3407871));
-	public static final RegistryObject<MobEffect> BLEEDING = EFFECTS.register("bleeding", () -> new EffectBleeding());
+	public static final RegistryObject<MobEffect> BLEEDING = EFFECTS.register("bleeding", () -> new BleedingEffect());
 	public static final RegistryObject<MobEffect> HALLUCINATION = EFFECTS.register("hallucination", () -> new BasicBTAEffect(MobEffectCategory.HARMFUL, 8109500));
 }

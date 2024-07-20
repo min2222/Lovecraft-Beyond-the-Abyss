@@ -62,11 +62,16 @@
 	"block.beyondtheabyss.riftwelling_altar": "Riftwelling Altar",
 	"block.beyondtheabyss.abyssalith": "Abyssalith",
 	"block.beyondtheabyss.deep_abyssalith": "Deep Abyssalith",
+	"block.beyondtheabyss.small_bone_block": "Small Bone",
 	"block.beyondtheabyss.bta_light": "BTA Light",
 	"death.attack.ghidruth_flesh": "%1$s teeth shattered while trying to chew on Ghidruth's flesh.",
 	"death.attack.bleeding": "%1$s died from excessive bleeding.",
 	"effect.beyondtheabyss.abyssal_scales": "Abyssal Scales",
+	"effect.beyondtheabyss.abyssal_scales.description": "provide extra armor point",
 	"effect.beyondtheabyss.air_swim": "Air Swim",
+	"effect.beyondtheabyss.air_swim.description": "able to swim in air",
 	"effect.beyondtheabyss.bleeding": "Bleeding",
-	"effect.beyondtheabyss.hallucination": "Hallucination"
+	"effect.beyondtheabyss.bleeding.description": "bleeding",
+	"effect.beyondtheabyss.hallucination": "Hallucination",
+	"effect.beyondtheabyss.hallucination.description": "hallucination"
 }

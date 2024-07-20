@@ -118,6 +118,7 @@ public class BTAItems
 	
 	public static final RegistryObject<Item> DEEP_ABYSSALITH = registerBlockItem("deep_abyssalith", () -> BTABlocks.DEEP_ABYSSALITH.get(), new Item.Properties());
 	public static final RegistryObject<Item> ABYSSALITH = registerBlockItem("abyssalith", () -> BTABlocks.ABYSSALITH.get(), new Item.Properties());
+	public static final RegistryObject<Item> SMALL_BONE_BLOCK = registerBlockItem("small_bone_block", () -> BTABlocks.SMALL_BONE_BLOCK.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{
