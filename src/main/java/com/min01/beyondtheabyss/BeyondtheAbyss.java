@@ -14,7 +14,6 @@ import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -56,12 +55,9 @@ public class BeyondtheAbyss
 	
     public void setupCurios(InterModEnqueueEvent event) 
     {
-        SlotTypePreset[] types = {SlotTypePreset.HEAD, SlotTypePreset.NECKLACE, SlotTypePreset.BELT};
-        for(SlotTypePreset type : types) 
+        for(SlotTypePreset type : SlotTypePreset.values()) 
         {
             InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> type.getMessageBuilder().build());
         }
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HANDS.getMessageBuilder().size(2).build());
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("feet").priority(220).icon(InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS).build());
     }
 }

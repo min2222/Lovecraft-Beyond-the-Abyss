@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "beyondtheabyss:block/rib"
+    },
+    "facing=east": {
+      "model": "beyondtheabyss:block/rib",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "beyondtheabyss:block/rib",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "beyondtheabyss:block/rib",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "beyondtheabyss:block/rib"
+    },
+    "facing=west": {
+      "model": "beyondtheabyss:block/rib",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

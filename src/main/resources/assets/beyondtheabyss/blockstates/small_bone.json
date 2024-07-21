@@ -1,106 +1,106 @@
 {
   "variants": {
     "facing=down,middle=true,solo=true": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 180
     },
     "facing=east,middle=true,solo=true": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 90,
       "y": 90
     },
     "facing=north,middle=true,solo=true": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 90
     },
     "facing=south,middle=true,solo=true": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 90,
       "y": 180
     },
     "facing=up,middle=true,solo=true": {
-      "model": "beyondtheabyss:block/middle_bone_small"
+      "model": "beyondtheabyss:block/small_middle_bone"
     },
     "facing=west,middle=true,solo=true": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 90,
       "y": 270
     },
     "facing=down,middle=false,solo=true": {
-      "model": "beyondtheabyss:block/bone_small",
+      "model": "beyondtheabyss:block/small_bone",
       "x": 180
     },
     "facing=east,middle=false,solo=true": {
-      "model": "beyondtheabyss:block/bone_small",
+      "model": "beyondtheabyss:block/small_bone",
       "x": 90,
       "y": 90
     },
     "facing=north,middle=false,solo=true": {
-      "model": "beyondtheabyss:block/bone_small",
+      "model": "beyondtheabyss:block/small_bone",
       "x": 90
     },
     "facing=south,middle=false,solo=true": {
-      "model": "beyondtheabyss:block/bone_small",
+      "model": "beyondtheabyss:block/small_bone",
       "x": 90,
       "y": 180
     },
     "facing=up,middle=false,solo=true": {
-      "model": "beyondtheabyss:block/bone_small"
+      "model": "beyondtheabyss:block/small_bone"
     },
     "facing=west,middle=false,solo=true": {
-      "model": "beyondtheabyss:block/bone_small",
+      "model": "beyondtheabyss:block/small_bone",
       "x": 90,
       "y": 270
     },
     "facing=down,middle=true,solo=false": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 180
     },
     "facing=east,middle=true,solo=false": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 90,
       "y": 90
     },
     "facing=north,middle=true,solo=false": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 90
     },
     "facing=south,middle=true,solo=false": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 90,
       "y": 180
     },
     "facing=up,middle=true,solo=false": {
-      "model": "beyondtheabyss:block/middle_bone_small"
+      "model": "beyondtheabyss:block/small_middle_bone"
     },
     "facing=west,middle=true,solo=false": {
-      "model": "beyondtheabyss:block/middle_bone_small",
+      "model": "beyondtheabyss:block/small_middle_bone",
       "x": 90,
       "y": 270
     },
     "facing=down,middle=false,solo=false": {
-      "model": "beyondtheabyss:block/edge_bone_small",
+      "model": "beyondtheabyss:block/small_edge_bone",
       "x": 180
     },
     "facing=east,middle=false,solo=false": {
-      "model": "beyondtheabyss:block/edge_bone_small",
+      "model": "beyondtheabyss:block/small_edge_bone",
       "x": 90,
       "y": 90
     },
     "facing=north,middle=false,solo=false": {
-      "model": "beyondtheabyss:block/edge_bone_small",
+      "model": "beyondtheabyss:block/small_edge_bone",
       "x": 90
     },
     "facing=south,middle=false,solo=false": {
-      "model": "beyondtheabyss:block/edge_bone_small",
+      "model": "beyondtheabyss:block/small_edge_bone",
       "x": 90,
       "y": 180
     },
     "facing=up,middle=false,solo=false": {
-      "model": "beyondtheabyss:block/edge_bone_small"
+      "model": "beyondtheabyss:block/small_edge_bone"
     },
     "facing=west,middle=false,solo=false": {
-      "model": "beyondtheabyss:block/edge_bone_small",
+      "model": "beyondtheabyss:block/small_edge_bone",
       "x": 90,
       "y": 270
     }

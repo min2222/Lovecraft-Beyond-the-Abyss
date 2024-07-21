@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "beyondtheabyss:block/fish_bone"
+    },
+    "facing=east": {
+      "model": "beyondtheabyss:block/fish_bone",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "beyondtheabyss:block/fish_bone",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "beyondtheabyss:block/fish_bone",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "beyondtheabyss:block/fish_bone"
+    },
+    "facing=west": {
+      "model": "beyondtheabyss:block/fish_bone",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

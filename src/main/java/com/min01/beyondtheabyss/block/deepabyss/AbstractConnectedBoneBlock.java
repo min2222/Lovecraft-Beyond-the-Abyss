@@ -16,14 +16,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 public abstract class AbstractConnectedBoneBlock extends RodBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty MIDDLE = BooleanProperty.create("middle");
 	public static final BooleanProperty SOLO = BooleanProperty.create("solo");
 	
@@ -39,8 +37,8 @@ public abstract class AbstractConnectedBoneBlock extends RodBlock implements Sim
     	LevelAccessor level = p_152019_.getLevel();
     	BlockPos blockPos = p_152019_.getClickedPos();
     	Direction direction = p_152019_.getClickedFace();
-    	Boolean isMiddle = Boolean.valueOf(level.getBlockState(blockPos.relative(direction, 1)).is(BTABlocks.SMALL_BONE_BLOCK.get()) && level.getBlockState(blockPos.relative(direction, -1)).is(BTABlocks.SMALL_BONE_BLOCK.get()));
-    	Boolean isSolo = Boolean.valueOf(!(level.getBlockState(blockPos.relative(direction, 1)).is(BTABlocks.SMALL_BONE_BLOCK.get())) && !(level.getBlockState(blockPos.relative(direction, -1)).is(BTABlocks.SMALL_BONE_BLOCK.get())));
+    	Boolean isMiddle = Boolean.valueOf(level.getBlockState(blockPos.relative(direction, 1)).is(BTABlocks.SMALL_BONE.get()) && level.getBlockState(blockPos.relative(direction, -1)).is(BTABlocks.SMALL_BONE.get()));
+    	Boolean isSolo = Boolean.valueOf(!(level.getBlockState(blockPos.relative(direction, 1)).is(BTABlocks.SMALL_BONE.get())) && !(level.getBlockState(blockPos.relative(direction, -1)).is(BTABlocks.SMALL_BONE.get())));
     	return this.getFacingStateForPlacement(p_152019_).setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockPos).getType() == Fluids.WATER)).setValue(MIDDLE, isMiddle).setValue(SOLO, isSolo);
     }
     
@@ -50,16 +48,16 @@ public abstract class AbstractConnectedBoneBlock extends RodBlock implements Sim
     	BlockState blockstate = p_53087_.getLevel().getBlockState(p_53087_.getClickedPos().relative(direction.getOpposite()));
     	BlockState blockstate2 = p_53087_.getLevel().getBlockState(p_53087_.getClickedPos().relative(direction, -1));
     	BlockState blockstate3 = p_53087_.getLevel().getBlockState(p_53087_.getClickedPos().relative(direction, -2));
-    	boolean flag = blockstate2.is(BTABlocks.SMALL_BONE_BLOCK.get()) && blockstate3.is(BTABlocks.SMALL_BONE_BLOCK.get());
-    	return (blockstate.is(BTABlocks.SMALL_BONE_BLOCK.get()) && blockstate.getValue(FACING) == direction) || flag ? this.defaultBlockState().setValue(FACING, direction.getOpposite()) : this.defaultBlockState().setValue(FACING, direction);
+    	boolean flag = blockstate2.is(BTABlocks.SMALL_BONE.get()) && blockstate3.is(BTABlocks.SMALL_BONE.get());
+    	return (blockstate.is(BTABlocks.SMALL_BONE.get()) && blockstate.getValue(FACING) == direction) || flag ? this.defaultBlockState().setValue(FACING, direction.getOpposite()) : this.defaultBlockState().setValue(FACING, direction);
     }
     
     @Override
     public BlockState updateShape(BlockState p_60541_, Direction p_60542_, BlockState p_60543_, LevelAccessor p_60544_, BlockPos p_60545_, BlockPos p_60546_)
     {
     	Direction direction = p_60541_.getValue(FACING);
-    	Boolean isMiddle = Boolean.valueOf(p_60544_.getBlockState(p_60545_.relative(direction, 1)).is(BTABlocks.SMALL_BONE_BLOCK.get()) && p_60544_.getBlockState(p_60545_.relative(direction, -1)).is(BTABlocks.SMALL_BONE_BLOCK.get()));
-    	Boolean isSolo = Boolean.valueOf(!(p_60544_.getBlockState(p_60545_.relative(direction, 1)).is(BTABlocks.SMALL_BONE_BLOCK.get())) && !(p_60544_.getBlockState(p_60545_.relative(direction, -1)).is(BTABlocks.SMALL_BONE_BLOCK.get())));
+    	Boolean isMiddle = Boolean.valueOf(p_60544_.getBlockState(p_60545_.relative(direction, 1)).is(BTABlocks.SMALL_BONE.get()) && p_60544_.getBlockState(p_60545_.relative(direction, -1)).is(BTABlocks.SMALL_BONE.get()));
+    	Boolean isSolo = Boolean.valueOf(!(p_60544_.getBlockState(p_60545_.relative(direction, 1)).is(BTABlocks.SMALL_BONE.get())) && !(p_60544_.getBlockState(p_60545_.relative(direction, -1)).is(BTABlocks.SMALL_BONE.get())));
     	return p_60541_.setValue(MIDDLE, isMiddle).setValue(SOLO, isSolo);
     }
     

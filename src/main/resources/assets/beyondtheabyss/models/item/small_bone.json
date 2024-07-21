@@ -1,5 +1,5 @@
 {
-  	"parent": "beyondtheabyss:block/bone_small",
+  	"parent": "beyondtheabyss:block/small_bone",
     "gui_light": "side",
     "display": {
         "gui": {

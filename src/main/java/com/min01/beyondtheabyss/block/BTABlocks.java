@@ -1,6 +1,9 @@
 package com.min01.beyondtheabyss.block;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.block.deepabyss.FishBoneBlock;
+import com.min01.beyondtheabyss.block.deepabyss.JawBoneBlock;
+import com.min01.beyondtheabyss.block.deepabyss.RibBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RiftwellingAltarBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SmallBoneBlock;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
@@ -25,7 +28,10 @@ public class BTABlocks
     public static final RegistryObject<Block> ABYSSALITH = BLOCKS.register("abyssalith", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
     public static final RegistryObject<Block> DEEP_ABYSSALITH = BLOCKS.register("deep_abyssalith", () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)));
 
-    public static final RegistryObject<Block> SMALL_BONE_BLOCK = BLOCKS.register("small_bone_block", () -> new SmallBoneBlock());
+    public static final RegistryObject<Block> SMALL_BONE = BLOCKS.register("small_bone", () -> new SmallBoneBlock());
+    public static final RegistryObject<Block> JAW_BONE = BLOCKS.register("jaw_bone", () -> new JawBoneBlock());
+    public static final RegistryObject<Block> RIB = BLOCKS.register("rib", () -> new RibBlock());
+    public static final RegistryObject<Block> FISH_BONE = BLOCKS.register("fish_bone", () -> new FishBoneBlock());
     
     public static final RegistryObject<BlockEntityType<BlockEntityRiftwellingAltar>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(BlockEntityRiftwellingAltar::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
 }

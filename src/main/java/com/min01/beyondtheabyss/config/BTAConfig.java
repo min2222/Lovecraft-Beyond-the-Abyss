@@ -31,7 +31,7 @@ public class BTAConfig
     public static void init(ForgeConfigSpec.Builder config) 
     {
     	config.push("Client Settings");
-    	BTAConfig.cameraShakes = config.comment("disable/enable camera shakes in various place").define("cameraShakes", true);
+    	BTAConfig.cameraShakes = config.comment("disable/enable camera shakes that used in various place").define("cameraShakes", true);
         config.pop();
     }
 }
