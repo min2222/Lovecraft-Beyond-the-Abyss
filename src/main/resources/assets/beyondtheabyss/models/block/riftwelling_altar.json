@@ -1,5 +1,5 @@
 {
-  "textures": {
-    "particle": "beyondtheabyss:block/riftwelling_altar_particle"
-  }
+	"textures": {
+		"particle": "beyondtheabyss:block/riftwelling_altar_particle"
+	}
 }

@@ -1,11 +1,11 @@
 package com.min01.beyondtheabyss.item;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
+import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
+import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.armor.AdvancedDivingSetItem;
 import com.min01.beyondtheabyss.item.armor.DivingSetItem;
@@ -13,14 +13,11 @@ import com.min01.beyondtheabyss.item.armor.GhidruthDivingSetItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
-import com.min01.beyondtheabyss.item.renderer.BTABlockEntityItemRenderer;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.item.weapon.SacrificialDaggerItem;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -33,7 +30,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -100,32 +97,29 @@ public class BTAItems
 	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, EquipmentSlot.FEET));
 	
 	//blocks
-	public static final RegistryObject<Item> RIFTWELLING_ALTAR = ITEMS.register("riftwelling_altar", () -> new BlockItem(BTABlocks.RIFTWELLING_ALTAR.get(), new Item.Properties().tab(DeepAbyssTabs.ABYSS_BLOCKS).rarity(RARITY_ABYSS))
-	{
-		@Override
-		public void initializeClient(Consumer<IClientItemExtensions> consumer) 
-		{
-			consumer.accept(new IClientItemExtensions()
-			{
-				@Override
-				public BlockEntityWithoutLevelRenderer getCustomRenderer() 
-				{
-					return new BTABlockEntityItemRenderer(new BlockEntityRiftwellingAltar(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
-				}
-			});
-		}
-	});
-	
+	public static final RegistryObject<Item> RIFTWELLING_ALTAR = registerCustomRendererBlockItem("riftwelling_altar", () -> BTABlocks.RIFTWELLING_ALTAR.get(), () -> new RiftwellingAltarBlockEntity(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), new Item.Properties().rarity(RARITY_ABYSS));
 	public static final RegistryObject<Item> DEEP_ABYSSALITH = registerBlockItem("deep_abyssalith", () -> BTABlocks.DEEP_ABYSSALITH.get(), new Item.Properties());
 	public static final RegistryObject<Item> ABYSSALITH = registerBlockItem("abyssalith", () -> BTABlocks.ABYSSALITH.get(), new Item.Properties());
 	public static final RegistryObject<Item> SMALL_BONE = registerBlockItem("small_bone", () -> BTABlocks.SMALL_BONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> JAW_BONE = registerBlockItem("jaw_bone", () -> BTABlocks.JAW_BONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> RIB = registerBlockItem("rib", () -> BTABlocks.RIB.get(), new Item.Properties());
 	public static final RegistryObject<Item> FISH_BONE = registerBlockItem("fish_bone", () -> BTABlocks.FISH_BONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> FANG_SKULL = registerNoRotationLimitBlockItem("fang_skull", () -> BTABlocks.FANG_SKULL.get(), new Item.Properties());
+	public static final RegistryObject<Item> LARGE_SKULL = registerNoRotationLimitBlockItem("large_skull", () -> BTABlocks.LARGE_SKULL.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{
 		return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties().tab(DeepAbyssTabs.ABYSS_MOBS)));
+	}
+	
+	public static RegistryObject<Item> registerNoRotationLimitBlockItem(String name, Supplier<Block> block, Item.Properties propertie)
+	{
+		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), propertie.tab(DeepAbyssTabs.ABYSS_BLOCKS), () -> new NoRotationLimitBlockEntity(BlockPos.ZERO, block.get().defaultBlockState())));
+	}
+	
+	public static RegistryObject<Item> registerCustomRendererBlockItem(String name, Supplier<Block> block, Supplier<BlockEntity> blockEntity, Item.Properties propertie)
+	{
+		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), propertie.tab(DeepAbyssTabs.ABYSS_BLOCKS), blockEntity));
 	}
 	
 	public static RegistryObject<Item> registerBlockItem(String name, Supplier<Block> block, Item.Properties propertie)

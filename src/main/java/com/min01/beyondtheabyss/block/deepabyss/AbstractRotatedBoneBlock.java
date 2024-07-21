@@ -19,11 +19,11 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 
-public abstract class AbstractBoneBlock extends DirectionalBlock implements SimpleWaterloggedBlock
+public abstract class AbstractRotatedBoneBlock extends DirectionalBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
-	public AbstractBoneBlock(Properties p_49795_) 
+	public AbstractRotatedBoneBlock(Properties p_49795_) 
 	{
 		super(p_49795_.dynamicShape().noOcclusion().requiresCorrectToolForDrops().sound(SoundType.BONE_BLOCK));
 	}

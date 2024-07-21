@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.blockentity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
+import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -20,14 +20,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class BTABlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T>
+public class RiftwellingAltarRenderer<T extends BlockEntity> implements BlockEntityRenderer<T>
 {
     private static final ResourceLocation ALTAR_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar.png");
     private static final ResourceLocation ALTAR_LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar_layer.png");
     
 	private final ModelRiftwellingAltar altarModel;
 	
-	public BTABlockEntityRenderer(BlockEntityRendererProvider.Context p_172550_)
+	public RiftwellingAltarRenderer(BlockEntityRendererProvider.Context p_172550_)
 	{
 		this.altarModel = new ModelRiftwellingAltar(Minecraft.getInstance().getEntityModels().bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
 	}
@@ -35,7 +35,7 @@ public class BTABlockEntityRenderer<T extends BlockEntity> implements BlockEntit
 	@Override
 	public void render(T p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
 	{
-		if(p_112307_ instanceof BlockEntityRiftwellingAltar altar)
+		if(p_112307_ instanceof RiftwellingAltarBlockEntity altar)
 		{
 			p_112309_.pushPose();
 			p_112309_.translate(0.5D, 0.5D, 0.5D);

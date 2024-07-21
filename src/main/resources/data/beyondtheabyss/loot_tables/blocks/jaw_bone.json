@@ -3,8 +3,8 @@
 	"pools": [
 		{
 			"rolls": {
-				"min": 1,
-				"max": 2
+				"min": 2,
+				"max": 3
 			},
 			"entries": [
 				{
@@ -36,7 +36,7 @@
 			"entries": [
 				{
 					"type": "minecraft:item",
-					"name": "beyondtheabyss:small_bone"
+					"name": "beyondtheabyss:jaw_bone"
 				}
 			],
 			"conditions": [

@@ -9,17 +9,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockEntityRiftwellingAltar extends BlockEntity
+public class RiftwellingAltarBlockEntity extends BlockEntity
 {
 	private ItemStack item;
 	
-	public BlockEntityRiftwellingAltar(BlockPos p_155229_, BlockState p_155230_) 
+	public RiftwellingAltarBlockEntity(BlockPos p_155229_, BlockState p_155230_) 
 	{
 		super(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), p_155229_, p_155230_);
 		this.item = ItemStack.EMPTY;
 	}
 	
-	public static void update(Level level, BlockPos pos, BlockState state, BlockEntityRiftwellingAltar altar)
+	public static void update(Level level, BlockPos pos, BlockState state, RiftwellingAltarBlockEntity altar)
 	{
 		
 	}

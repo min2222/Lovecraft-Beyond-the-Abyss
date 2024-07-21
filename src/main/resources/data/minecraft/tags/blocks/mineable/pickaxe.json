@@ -3,6 +3,11 @@
 	"values": [
 		"beyondtheabyss:deep_abyssalith",
 		"beyondtheabyss:abyssalith",
-		"beyondtheabyss:small_bone_block"
+		"beyondtheabyss:small_bone",
+		"beyondtheabyss:jaw_bone",
+		"beyondtheabyss:rib",
+		"beyondtheabyss:fish_bone",
+		"beyondtheabyss:fang_skull",
+		"beyondtheabyss:large_skull"
 	]
 }

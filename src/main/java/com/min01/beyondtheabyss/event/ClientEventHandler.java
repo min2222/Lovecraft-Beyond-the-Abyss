@@ -6,8 +6,11 @@ import java.util.function.Consumer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.block.model.ModelFangSkull;
+import com.min01.beyondtheabyss.block.model.ModelLargeSkull;
 import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
-import com.min01.beyondtheabyss.blockentity.renderer.BTABlockEntityRenderer;
+import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
+import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
@@ -85,7 +88,8 @@ public class ClientEventHandler
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), BTABlockEntityRenderer::new);
+        BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
+        BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
         ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
@@ -188,6 +192,8 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelGhidruthDiverSet.LAYER_LOCATION, ModelGhidruthDiverSet::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelRiftwellingAltar.LAYER_LOCATION, ModelRiftwellingAltar::createBodyLayer);
+    	event.registerLayerDefinition(ModelFangSkull.LAYER_LOCATION, ModelFangSkull::createBodyLayer);
+    	event.registerLayerDefinition(ModelLargeSkull.LAYER_LOCATION, ModelLargeSkull::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);

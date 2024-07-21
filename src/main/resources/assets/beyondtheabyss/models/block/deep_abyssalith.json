@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "beyondtheabyss:block/deep_abyssalith"
-  }
+	"parent": "minecraft:block/cube_all",
+	"textures": {
+		"all": "beyondtheabyss:block/deep_abyssalith"
+	}
 }

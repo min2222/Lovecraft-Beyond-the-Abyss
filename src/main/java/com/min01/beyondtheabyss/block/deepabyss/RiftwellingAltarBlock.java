@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.block.deepabyss;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.blockentity.deepabyss.BlockEntityRiftwellingAltar;
+import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.network.AltarItemSyncPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
 
@@ -50,7 +50,7 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 	@Override
 	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_)
 	{
-		return new BlockEntityRiftwellingAltar(p_153215_, p_153216_);
+		return new RiftwellingAltarBlockEntity(p_153215_, p_153216_);
 	}
 	
 	@Override
@@ -58,12 +58,12 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 	{
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
-		if(!(blockEntity instanceof BlockEntityRiftwellingAltar) || player.isShiftKeyDown())
+		if(!(blockEntity instanceof RiftwellingAltarBlockEntity) || player.isShiftKeyDown())
 		{
 			return InteractionResult.FAIL;
 		}
 
-		ItemStack currentStack = ((BlockEntityRiftwellingAltar) blockEntity).getItem();
+		ItemStack currentStack = ((RiftwellingAltarBlockEntity) blockEntity).getItem();
 		ItemStack toInsert = player.getItemInHand(hand);
 
 		if(currentStack.isEmpty())
@@ -71,7 +71,7 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 			ItemStack stack = toInsert.copy();
 			stack.setCount(1);
 			
-			((BlockEntityRiftwellingAltar) blockEntity).setItem(stack);
+			((RiftwellingAltarBlockEntity) blockEntity).setItem(stack);
 			
 			if(!world.isClientSide)
 			{
@@ -97,7 +97,7 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 				}
 			}
 
-			((BlockEntityRiftwellingAltar)blockEntity).setItem(ItemStack.EMPTY);
+			((RiftwellingAltarBlockEntity)blockEntity).setItem(ItemStack.EMPTY);
 		}
 		return InteractionResult.SUCCESS;
 	}
@@ -110,9 +110,9 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<BlockEntityRiftwellingAltar> p_151990_)
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<RiftwellingAltarBlockEntity> p_151990_)
     {
-        return createTickerHelper(p_151989_, p_151990_, BlockEntityRiftwellingAltar::update);
+        return createTickerHelper(p_151989_, p_151990_, RiftwellingAltarBlockEntity::update);
     }
     
     @Override

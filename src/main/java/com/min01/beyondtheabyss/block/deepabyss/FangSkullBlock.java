@@ -11,14 +11,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class RibBlock extends AbstractRotatedBoneBlock
+public class FangSkullBlock extends AbstractRotatedSkullBlock
 {
-	protected static final VoxelShape X_AXIS_AABB = Shapes.create(0.0D, 0.0D, 0.1D, 1.0D, 0.8D, 0.9D);
-	protected static final VoxelShape Z_AXIS_AABB = Shapes.create(0.1D, 0.0D, 0.0D, 0.9D, 0.8D, 1.0D);
+	protected static final VoxelShape X_AXIS_AABB = Shapes.create(0.15D, 0.0D, 0.25D, 0.9D, 0.55D, 0.75D);
+	protected static final VoxelShape Z_AXIS_AABB = Shapes.create(0.25D, 0.0D, 0.15D, 0.75D, 0.55D, 0.9D);
 	
-	public RibBlock()
+	public FangSkullBlock()
 	{
-		super(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SAND).strength(1.2F));
+		super(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SAND).strength(1.8F));
 	}
 	
 	@Override
