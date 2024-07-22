@@ -178,11 +178,11 @@ public class EventHandlerForge
     	{
         	if(player.getItemBySlot(EquipmentSlot.CHEST).getItem() == BTAItems.ADVANCED_DIVING_SUIT.get())
         	{
-        		event.setNewSpeed(event.getOriginalSpeed() * 5F);
+        		event.setNewSpeed(event.getOriginalSpeed() * 5.0F);
         	}
         	else if(player.getItemBySlot(EquipmentSlot.CHEST).getItem() == BTAItems.GHIDRUTH_DIVING_SUIT.get())
         	{
-        		event.setNewSpeed(event.getOriginalSpeed() * 7F);
+        		event.setNewSpeed(event.getOriginalSpeed() * 7.0F);
         	}
     	}
     }

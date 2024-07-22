@@ -106,6 +106,9 @@ public class BTAItems
 	public static final RegistryObject<Item> FISH_BONE = registerBlockItem("fish_bone", () -> BTABlocks.FISH_BONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> FANG_SKULL = registerNoRotationLimitBlockItem("fang_skull", () -> BTABlocks.FANG_SKULL.get(), new Item.Properties());
 	public static final RegistryObject<Item> LARGE_SKULL = registerNoRotationLimitBlockItem("large_skull", () -> BTABlocks.LARGE_SKULL.get(), new Item.Properties());
+	public static final RegistryObject<Item> SPINE_BONE_TIP = registerBlockItem("spine_bone_tip", () -> BTABlocks.SPINE_BONE_TIP.get(), new Item.Properties());
+	public static final RegistryObject<Item> SPINE_BONE_MIDDLE = registerBlockItem("spine_bone_middle", () -> BTABlocks.SPINE_BONE_MIDDLE.get(), new Item.Properties());
+	public static final RegistryObject<Item> SPINE_BONE_BASE = registerBlockItem("spine_bone_base", () -> BTABlocks.SPINE_BONE_BASE.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{

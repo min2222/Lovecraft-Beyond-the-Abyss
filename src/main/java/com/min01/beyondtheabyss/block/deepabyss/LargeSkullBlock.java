@@ -3,18 +3,18 @@ package com.min01.beyondtheabyss.block.deepabyss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class LargeSkullBlock extends AbstractRotatedSkullBlock
 {
-	protected static final VoxelShape X_AXIS_AABB = Shapes.create(0.0D, 0.0D, 0.25D, 0.95D, 0.9D, 0.75D);
-	protected static final VoxelShape Z_AXIS_AABB = Shapes.create(0.25D, 0.0D, 0.0D, 0.75D, 0.9D, 0.95D);
+	protected static final VoxelShape X_AXIS_AABB = Block.box(0.0D, 0.0D, 4.0D, 15.0D, 15.0D, 12.0D);
+	protected static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 0.0D, 0.0D, 12.0D, 15.0D, 15.0D);
 	
 	public LargeSkullBlock()
 	{

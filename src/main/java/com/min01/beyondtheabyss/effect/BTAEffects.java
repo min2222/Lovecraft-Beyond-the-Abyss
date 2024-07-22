@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.effect;
 import java.util.UUID;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.effect.deepabyss.EffectAbyssalScales;
+import com.min01.beyondtheabyss.effect.deepabyss.AbyssalScalesEffect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -19,7 +19,7 @@ public class BTAEffects
 	
 	public static final RegistryObject<MobEffect> ABYSSAL_SCALES = EFFECTS.register("abyssal_scales", () -> 
 	{
-		EffectAbyssalScales scale = new EffectAbyssalScales(4);
+		AbyssalScalesEffect scale = new AbyssalScalesEffect(4);
 		scale.addAttributeModifier(Attributes.ARMOR, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		scale.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		return scale;

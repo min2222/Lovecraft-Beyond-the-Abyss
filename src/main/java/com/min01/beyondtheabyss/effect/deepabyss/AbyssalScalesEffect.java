@@ -4,11 +4,11 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-public class EffectAbyssalScales extends MobEffect
+public class AbyssalScalesEffect extends MobEffect
 {
 	protected final double multiplier;
 	   
-	public EffectAbyssalScales(double multiplier)
+	public AbyssalScalesEffect(double multiplier)
 	{
 		super(MobEffectCategory.NEUTRAL, 657950);
 		this.multiplier = multiplier;
