@@ -11,9 +11,9 @@
 				"absolute": -300
 			}
 		},
-		"yScale": 3,
+		"yScale": 1,
 		"lava_level": {
-			"above_bottom": 8
+			"absolute": -640
 		},
 		"replaceable": "#beyondtheabyss:death_valley_replaceables",
 		"vertical_rotation": {

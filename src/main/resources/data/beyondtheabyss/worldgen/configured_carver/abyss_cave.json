@@ -5,15 +5,15 @@
 		"y": {
 			"type": "minecraft:uniform",
 			"min_inclusive": {
-				"absolute": 0
+				"absolute": -640
 			},
 			"max_inclusive": {
-				"below_top": 1
+				"absolute": -440
 			}
 		},
-		"yScale": 0.5,
+		"yScale": 1,
 		"lava_level": {
-			"above_bottom": 10
+			"absolute": -640
 		},
 		"replaceable": "#beyondtheabyss:abyss_carver_replaceables",
 		"horizontal_radius_multiplier": 1,
