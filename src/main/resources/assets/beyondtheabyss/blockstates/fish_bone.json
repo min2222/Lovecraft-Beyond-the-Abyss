@@ -1,8 +1,5 @@
 {
   "variants": {
-    "facing=down": {
-      "model": "beyondtheabyss:block/fish_bone"
-    },
     "facing=east": {
       "model": "beyondtheabyss:block/fish_bone",
       "y": 90
@@ -13,9 +10,6 @@
     "facing=south": {
       "model": "beyondtheabyss:block/fish_bone",
       "y": 180
-    },
-    "facing=up": {
-      "model": "beyondtheabyss:block/fish_bone"
     },
     "facing=west": {
       "model": "beyondtheabyss:block/fish_bone",

@@ -1,8 +1,5 @@
 {
   "variants": {
-    "facing=down": {
-      "model": "beyondtheabyss:block/rib"
-    },
     "facing=east": {
       "model": "beyondtheabyss:block/rib",
       "y": 90
@@ -13,9 +10,6 @@
     "facing=south": {
       "model": "beyondtheabyss:block/rib",
       "y": 180
-    },
-    "facing=up": {
-      "model": "beyondtheabyss:block/rib"
     },
     "facing=west": {
       "model": "beyondtheabyss:block/rib",

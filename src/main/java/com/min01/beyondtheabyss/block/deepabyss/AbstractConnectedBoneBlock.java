@@ -74,9 +74,6 @@ public abstract class AbstractConnectedBoneBlock extends RodBlock implements Sim
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
     {
-    	p_152043_.add(WATERLOGGED);
-    	p_152043_.add(FACING);
-    	p_152043_.add(MIDDLE);
-    	p_152043_.add(SOLO);
+    	p_152043_.add(WATERLOGGED, FACING, MIDDLE, SOLO);
     }
 }

@@ -1,12 +1,15 @@
 package com.min01.beyondtheabyss.block;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.block.deepabyss.BonePilesBlock;
+import com.min01.beyondtheabyss.block.deepabyss.FallenSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FangSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FishBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.JawBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.LargeSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RibBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RiftwellingAltarBlock;
+import com.min01.beyondtheabyss.block.deepabyss.SittingSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SmallBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneBaseBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneMiddleBlock;
@@ -43,9 +46,15 @@ public class BTABlocks
     public static final RegistryObject<Block> SPINE_BONE_TIP = BLOCKS.register("spine_bone_tip", () -> new SpineBoneTipBlock());
     public static final RegistryObject<Block> SPINE_BONE_MIDDLE = BLOCKS.register("spine_bone_middle", () -> new SpineBoneMiddleBlock());
     public static final RegistryObject<Block> SPINE_BONE_BASE = BLOCKS.register("spine_bone_base", () -> new SpineBoneBaseBlock());
+    public static final RegistryObject<Block> BONE_PILES = BLOCKS.register("bone_piles", () -> new BonePilesBlock());
+    public static final RegistryObject<Block> SITTING_SKELETON = BLOCKS.register("sitting_skeleton", () -> new SittingSkeletonBlock());
+    public static final RegistryObject<Block> FALLEN_SKELETON = BLOCKS.register("fallen_skeleton", () -> new FallenSkeletonBlock());
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 
     		BTABlocks.FANG_SKULL.get(),
-    		BTABlocks.LARGE_SKULL.get()).build(null));
+    		BTABlocks.LARGE_SKULL.get(),
+    		BTABlocks.BONE_PILES.get(),
+    		BTABlocks.SITTING_SKELETON.get(),
+    		BTABlocks.FALLEN_SKELETON.get()).build(null));
 }

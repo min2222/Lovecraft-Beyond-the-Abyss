@@ -11,7 +11,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class LargeSkullBlock extends AbstractRotatedSkullBlock
+public class LargeSkullBlock extends AbstractNoRotationLimitBoneBlock
 {
 	protected static final VoxelShape X_AXIS_AABB = Block.box(0.0D, 0.0D, 4.0D, 15.0D, 15.0D, 12.0D);
 	protected static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 0.0D, 0.0D, 12.0D, 15.0D, 15.0D);

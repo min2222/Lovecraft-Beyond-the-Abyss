@@ -3,13 +3,16 @@ package com.min01.beyondtheabyss.item;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import com.min01.beyondtheabyss.block.deepabyss.AbstractMultiPartSkeletonBlock;
 import com.min01.beyondtheabyss.item.renderer.BTABlockEntityItemRenderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class CustomRendererBlockItem extends BlockItem
@@ -34,4 +37,14 @@ public class CustomRendererBlockItem extends BlockItem
 			}
 		});
 	}
-}
+	
+	@Override
+	protected boolean placeBlock(BlockPlaceContext p_40561_, BlockState p_40562_)
+	{
+		if(p_40562_.getBlock() instanceof AbstractMultiPartSkeletonBlock)
+		{
+			return p_40561_.getLevel().setBlock(p_40561_.getClickedPos(), p_40562_, 26);
+		}
+		return super.placeBlock(p_40561_, p_40562_);
+	}
+}	

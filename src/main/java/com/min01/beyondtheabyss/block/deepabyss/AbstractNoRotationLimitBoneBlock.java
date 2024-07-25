@@ -8,9 +8,9 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class AbstractRotatedSkullBlock extends AbstractRotatedBoneBlock implements EntityBlock
+public abstract class AbstractNoRotationLimitBoneBlock extends AbstractRotatedBoneBlock implements EntityBlock
 {
-	public AbstractRotatedSkullBlock(Properties p_49795_) 
+	public AbstractNoRotationLimitBoneBlock(Properties p_49795_) 
 	{
 		super(p_49795_);
 	}

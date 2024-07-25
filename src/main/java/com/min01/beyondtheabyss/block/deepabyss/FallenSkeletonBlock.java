@@ -11,14 +11,14 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class FangSkullBlock extends AbstractNoRotationLimitBoneBlock
+public class FallenSkeletonBlock extends AbstractMultiPartSkeletonBlock
 {
-	protected static final VoxelShape X_AXIS_AABB = Block.box(2.0D, 0.0D, 4.0D, 15.0D, 9.0D, 12.0D);
-	protected static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 0.0D, 2.0D, 12.0D, 9.0D, 15.0D);
+	protected static final VoxelShape X_AXIS_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
+	protected static final VoxelShape Z_AXIS_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
 	
-	public FangSkullBlock()
+	public FallenSkeletonBlock()
 	{
-		super(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SAND).strength(1.8F));
+		super(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SAND).strength(2.0F));
 	}
 	
 	@Override
