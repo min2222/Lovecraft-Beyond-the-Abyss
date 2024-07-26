@@ -41,7 +41,7 @@ public class EventHandler
 	}
 	
     @SubscribeEvent
-    public static void entityAttributes(EntityAttributeCreationEvent event) 
+    public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) 
     {
     	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
     	event.put(BTAEntities.DEEP_VAMPIRE.get(), EntityDeepVampire.createAttributes().build());
@@ -55,7 +55,7 @@ public class EventHandler
     }
     
     @SubscribeEvent
-    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event)
+    public static void onSpawnPlacementRegister(SpawnPlacementRegisterEvent event)
     {
     	event.register(BTAEntities.DEEP_VAMPIRE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDeepVampire::checkDeepVampireSpawnRules, Operation.AND);
     	event.register(BTAEntities.RUNIC_FISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityRunicFish::checkRunicFishSpawnRules, Operation.AND);
