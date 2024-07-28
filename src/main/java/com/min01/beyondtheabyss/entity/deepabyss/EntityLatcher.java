@@ -6,14 +6,15 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherUnlatchingGoal;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
+import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -63,13 +64,20 @@ public class EntityLatcher extends AbstractMultipartDeepAbyssMob<EntityLatcher>
         		.add(Attributes.ARMOR, 1);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public EntityPartBuilder<EntityLatcher> createBuilder()
     {
-    	ModelLatcher model = new ModelLatcher(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLatcher.LAYER_LOCATION));
-    	EntityPartBuilder<EntityLatcher> partBuilder = new EntityPartBuilder<EntityLatcher>(this, model);
+    	EntityPartBuilder<EntityLatcher> partBuilder = new EntityPartBuilder<EntityLatcher>(this);
     	return partBuilder;
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ClientEntityPartBuilder<EntityLatcher> getClientPartBuilder()
+    {
+    	ModelLatcher model = new ModelLatcher(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelLatcher.LAYER_LOCATION));
+    	ClientEntityPartBuilder<EntityLatcher> clientBuilder = new ClientEntityPartBuilder<EntityLatcher>(this, model);
+    	return clientBuilder;
     }
     
     @Override

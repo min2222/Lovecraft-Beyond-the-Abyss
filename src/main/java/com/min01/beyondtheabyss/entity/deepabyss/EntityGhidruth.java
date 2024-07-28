@@ -3,13 +3,11 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
-import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.sound.BTASounds;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,8 +23,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth>
 {
@@ -67,12 +63,10 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10);
     }
 	
-    @OnlyIn(Dist.CLIENT)
     @Override
     public EntityPartBuilder<EntityGhidruth> createBuilder() 
     {
-    	ModelGhidruth model = new ModelGhidruth(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
-    	EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this, model)
+    	EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this)
     	{
     		@Override
     		public Vec3 getOffset()

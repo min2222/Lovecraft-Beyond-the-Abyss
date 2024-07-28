@@ -3,12 +3,10 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
-import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -27,8 +25,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepVampire>
 {
@@ -50,12 +46,10 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepV
         		.add(Attributes.FOLLOW_RANGE, 25);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public EntityPartBuilder<EntityDeepVampire> createBuilder()
     {
-    	ModelDeepVampire model = new ModelDeepVampire(Minecraft.getInstance().getEntityModels().bakeLayer(ModelDeepVampire.LAYER_LOCATION));
-    	EntityPartBuilder<EntityDeepVampire> partBuilder = new EntityPartBuilder<EntityDeepVampire>(this, model)
+    	EntityPartBuilder<EntityDeepVampire> partBuilder = new EntityPartBuilder<EntityDeepVampire>(this)
     	{
     		@Override
     		public boolean isInWater() 

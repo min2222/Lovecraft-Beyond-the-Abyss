@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityPhasmozoa;
 import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
 import com.min01.beyondtheabyss.entity.renderer.layer.PhasmozoaLayer;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -21,7 +22,7 @@ public class PhasmozoaRenderer extends MobRenderer<EntityPhasmozoa, ModelPhasmoz
 	@Override
 	protected RenderType getRenderType(EntityPhasmozoa p_115322_, boolean p_115323_, boolean p_115324_, boolean p_115325_) 
 	{
-		return RenderType.eyes(this.getTextureLocation(p_115322_));
+		return BTARenderType.eyesFix(this.getTextureLocation(p_115322_));
 	}
 
 	@Override

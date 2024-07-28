@@ -1,25 +1,20 @@
 package com.min01.beyondtheabyss.entity.multipart;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.jetbrains.annotations.Nullable;
 
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.MultiPartBuildPacket;
+import com.min01.beyondtheabyss.network.MultiPartUpdatePacket;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -34,71 +29,90 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 {
-	public final T entity;
-	public final HierarchicalModel<T> model;
-	public final EntityBounds hitbox;
 	public static final String ROOT = "root";
 	public static final float SCALE = 0.0625F;
+	public final T entity;
+	public EntityBounds hitbox = EntityBounds.builder()
+	        .add(ROOT).setBounds(0.0, 0.0, 0.0).build()
+	        .overrideCollisionBox(new AABB(Vec3.ZERO, new Vec3(1, 1, 1)))
+	        .getFactory().create();
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
+	public final Map<Vec3, Vec3> allParts = new HashMap<>();
+	public final Map<EntityPart, String> entityParts = new HashMap<>();
 	
-	public EntityPartBuilder(T entity, HierarchicalModel<T> model) 
+	public EntityPartBuilder(T entity) 
 	{
 		this.entity = entity;
-		this.model = model;
-		this.hitbox = this.buildHitBox();
+		if(entity.level.isClientSide)
+		{
+			BTANetwork.sendToServer(new MultiPartBuildPacket(this.entity));
+		}
+		else
+		{
+			BTANetwork.sendToAll(new MultiPartBuildPacket(this.entity));
+		}
 	}
 	
 	public void tick(float partialTick)
 	{
+		if(this.entity.level.isClientSide)
+		{
+			BTANetwork.sendToServer(new MultiPartUpdatePacket(this.entity));
+		}
+		else
+		{
+			BTANetwork.sendToAll(new MultiPartUpdatePacket(this.entity));
+		}
+		
         double posX = Mth.lerp((double)partialTick, this.entity.xOld, this.entity.getX());
         double posY = Mth.lerp((double)partialTick, this.entity.yOld, this.entity.getY());
         double posZ = Mth.lerp((double)partialTick, this.entity.zOld, this.entity.getZ());
-
-        this.defaultAnimation(this.model, this.entity, partialTick);
         
         EntityPart root = this.hitbox.getPart(ROOT);
         
         Vec3 renderOffset = this.getOffset();
+        //FIXME
         float waterOffset = this.isInWater() && !this.isInWater(this.entity) ? -0.5F : 0.0F;
         root.setOffX(posX + renderOffset.x + waterOffset);
         root.setOffY(posY + renderOffset.y);
         root.setOffZ(posZ + renderOffset.z);
         
-        this.model.root().getAllParts().forEach((part) -> 
+        this.allParts.forEach((pos, rot) -> 
         {
-            String name = this.getModelPartName(this.model.root(), part);
-            EntityPart entityPart = this.hitbox.getPart(name);
-            Vec3 partPos = (new Vec3((double)(-part.x), (double)(-part.y), (double)part.z)).scale(SCALE * this.getRenderScale());
-            Vec3 pivot = Vec3.ZERO;
-            
-            if(this.partOffset.containsKey(name))
+            this.entityParts.forEach((entityPart, name) -> 
             {
-                Vec3 offset = this.partOffset.get(name);
-                pivot = offset;
-                partPos = partPos.add(offset);
-            }
+	            Vec3 partPos = (new Vec3((double)(-pos.x), (double)(-pos.y), (double)pos.z)).scale(SCALE * this.getRenderScale());
+	            Vec3 pivot = Vec3.ZERO;
+	            
+	            if(this.partOffset.containsKey(name))
+	            {
+	                Vec3 offset = this.partOffset.get(name);
+	                pivot = offset;
+	                partPos = partPos.add(offset);
+	            }
 
-            if(this.parts.containsKey(name)) 
-            {
-                String parent = this.parts.get(name);
-                if(this.partOffset.containsKey(parent)) 
-                {
-                    partPos = partPos.subtract(this.partOffset.get(parent));
-                }
-            }
+	            if(this.parts.containsKey(name)) 
+	            {
+	                String parent = this.parts.get(name);
+	                if(this.partOffset.containsKey(parent)) 
+	                {
+	                    partPos = partPos.subtract(this.partOffset.get(parent));
+	                }
+	            }
 
-            entityPart.setX(partPos.x);
-            entityPart.setY(partPos.y);
-            entityPart.setZ(partPos.z);
-            entityPart.setPivotX(pivot.x);
-            entityPart.setPivotY(pivot.y);
-            entityPart.setPivotZ(pivot.z);
-            Quaternion rotation = new Quaternion(0, 0, 0, 1);
-            rotation.mul(Vector3f.ZP.rotation(part.zRot));
-            rotation.mul(Vector3f.YP.rotation(-part.yRot));
-            rotation.mul(Vector3f.XP.rotation(-part.xRot));
-            entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
+	            entityPart.setX(partPos.x);
+	            entityPart.setY(partPos.y);
+	            entityPart.setZ(partPos.z);
+	            entityPart.setPivotX(pivot.x);
+	            entityPart.setPivotY(pivot.y);
+	            entityPart.setPivotZ(pivot.z);
+	            Quaternion rotation = new Quaternion(0, 0, 0, 1);
+	            rotation.mul(Vector3f.ZP.rotation((float) rot.z));
+	            rotation.mul(Vector3f.YP.rotation((float) -rot.y));
+	            rotation.mul(Vector3f.XP.rotation((float) -rot.x));
+	            entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
+            });
         });
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
@@ -110,85 +124,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         	overrideBox.setBox(this.getBoundingBox(new Vec3(posX, posY, posZ)));
         }
 	}
-	
-	public EntityBounds buildHitBox()
-	{
-        EntityBounds.EntityBoundsBuilder builder = EntityBounds.builder();
-        builder = this.addPart(builder, this.model.root(), null);
-        return builder.overrideCollisionBox(this.getBoundingBox(Vec3.ZERO)).getFactory().create();
-	}
-	
-    public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
-    {
-        String name = this.getModelPartName(this.model.root(), part);
-        EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
-        if(parent != null)
-        {
-            partInfo.setParent(parent);
-            this.parts.put(name, parent);
-        }
-
-        partInfo.setBounds(this.getPartSize(part, name));
-        partInfo.build();
-        builder = partInfo.build();
-
-        ModelPart child;
-		Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
-        for(Iterator<ModelPart> iterator = children.values().iterator(); iterator.hasNext(); builder = this.addPart(builder, child, name)) 
-        {
-            child = iterator.next();
-        }
-
-        return builder;
-    }
-    
-    public AABB getPartSize(ModelPart part, String name)
-    {
-        AABB box = null;
-    	List<ModelPart.Cube> cubes = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104212_");
-        Iterator<ModelPart.Cube> iterator = cubes.iterator();
-
-        while(iterator.hasNext())
-        {
-            ModelPart.Cube cube = iterator.next();
-            Vec3 min = (new Vec3((double)cube.minX, (double)cube.minY, (double)cube.minZ)).scale(SCALE * this.getRenderScale());
-            Vec3 max = (new Vec3((double)cube.maxX, (double)cube.maxY, (double)cube.maxZ)).scale(SCALE * this.getRenderScale());
-            AABB cubeBox = new AABB(min, max);
-            if(box == null)
-            {
-                box = cubeBox;
-            }
-            else
-            {
-                box = box.minmax(cubeBox);
-            }
-        }
-
-        AABB box1 = new AABB(Vec3.ZERO, Vec3.ZERO);
-        if(box == null) 
-        {
-            return box1;
-        }
-        else
-        {
-            Vec3 offset = box.getCenter().multiply(-1.0, -1.0, 1.0);
-            this.partOffset.put(name, offset);
-            return box1.inflate(box.getXsize() / 2.0, box.getYsize() / 2.0, box.getZsize() / 2.0);
-        }
-    }
-    
-    public void defaultAnimation(EntityModel<T> model, T entity, float partialTick)
-    {
-        boolean shouldSit = entity.isPassenger() && entity.getVehicle() != null && entity.getVehicle().shouldRiderSit();
-        float limbSwing = !shouldSit && entity.isAlive() ? entity.animationPosition - entity.animationSpeed * (1.0F - partialTick) : 0.0F;
-        float limbSwingAmount = !shouldSit && entity.isAlive() ? Mth.lerp(partialTick, entity.animationSpeedOld, entity.animationSpeed) : 0.0F;
-        model.attackTime = entity.getAttackAnim(partialTick);
-        model.young = entity.isBaby();
-        model.riding = shouldSit;
-        Vec2 headRot = this.defaultHeadRotation(entity, partialTick);
-        model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
-        model.setupAnim(entity, limbSwing, limbSwingAmount, (float)entity.tickCount + partialTick, headRot.y, headRot.x);
-    }
 
     public Vec2 defaultHeadRotation(LivingEntity entity, float partialTick)
     {
@@ -326,31 +261,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
 
         return false;
-    }
-    
-    public String getModelPartName(ModelPart root, ModelPart target) 
-    {
-        AtomicReference<String> name = new AtomicReference<>(ROOT);
-        root.getAllParts().filter(part -> 
-        {
-        	Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
-            return children.containsValue(target);
-        }).findFirst().ifPresent(part -> 
-        {
-    		Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
-    		Iterator<Map.Entry<String, ModelPart>> iterator = children.entrySet().iterator();
-
-    		while(iterator.hasNext())
-            {
-                Map.Entry<String, ModelPart> entry = iterator.next();
-                if(entry.getValue() == target) 
-                {
-                    name.set(entry.getKey());
-                    break;
-                }
-            }
-        });
-        return name.get();
     }
 	
 	public float getRenderScale()

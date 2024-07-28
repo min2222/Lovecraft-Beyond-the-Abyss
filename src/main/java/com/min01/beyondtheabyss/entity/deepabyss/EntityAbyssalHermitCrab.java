@@ -1,11 +1,9 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -18,8 +16,6 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<EntityAbyssalHermitCrab>
 {
@@ -38,12 +34,10 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<Entit
     			.add(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
-    @OnlyIn(Dist.CLIENT)
 	@Override
 	public EntityPartBuilder<EntityAbyssalHermitCrab> createBuilder() 
 	{
-    	ModelAbyssalHermitCrab model = new ModelAbyssalHermitCrab(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalHermitCrab.LAYER_LOCATION));
-    	EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this, model);
+    	EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this);
 		return partBuilder;
 	}
     

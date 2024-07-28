@@ -1,10 +1,8 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
@@ -17,8 +15,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob<EntityAbyssalBulbray>
 {
@@ -36,12 +32,10 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob<EntityAb
         		.add(Attributes.ARMOR, 2);
     }
 
-    @OnlyIn(Dist.CLIENT)
 	@Override
 	public EntityPartBuilder<EntityAbyssalBulbray> createBuilder() 
 	{
-		ModelAbyssalBulbray model = new ModelAbyssalBulbray(Minecraft.getInstance().getEntityModels().bakeLayer(ModelAbyssalBulbray.LAYER_LOCATION));
-		EntityPartBuilder<EntityAbyssalBulbray> partBuilder = new EntityPartBuilder<EntityAbyssalBulbray>(this, model);
+		EntityPartBuilder<EntityAbyssalBulbray> partBuilder = new EntityPartBuilder<EntityAbyssalBulbray>(this);
 		return partBuilder;
 	}
     
