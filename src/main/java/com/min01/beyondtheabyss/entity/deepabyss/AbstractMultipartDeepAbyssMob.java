@@ -18,7 +18,7 @@ public abstract class AbstractMultipartDeepAbyssMob<T extends AbstractDeepAbyssM
 {
 	public Vec3[] posArray;
 	
-	public EntityPartBuilder<T> partBuilder;
+	public final EntityPartBuilder<T> partBuilder;
 	
 	public AbstractMultipartDeepAbyssMob(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_)
 	{

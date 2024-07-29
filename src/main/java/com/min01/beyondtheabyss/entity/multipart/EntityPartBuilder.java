@@ -1,6 +1,8 @@
 package com.min01.beyondtheabyss.entity.multipart;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
@@ -8,6 +10,7 @@ import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
+import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssMob;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.MultiPartBuildPacket;
 import com.min01.beyondtheabyss.network.MultiPartUpdatePacket;
@@ -25,6 +28,8 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class EntityPartBuilder<T extends LivingEntity & IMultipart>
@@ -38,36 +43,43 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	        .getFactory().create();
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
-	public final Map<Vec3, Vec3> allParts = new HashMap<>();
-	public final Map<EntityPart, String> entityParts = new HashMap<>();
+	public final List<Part> allParts = new ArrayList<>();
 	
 	public EntityPartBuilder(T entity) 
 	{
+		this(entity, false);
+	}
+
+	public EntityPartBuilder(T entity, boolean isClient) 
+	{
 		this.entity = entity;
-		if(entity.level.isClientSide)
+		if(this.entity.level.isClientSide && !isClient)
 		{
+			this.buildClientHitBox();
 			BTANetwork.sendToServer(new MultiPartBuildPacket(this.entity));
-		}
-		else
-		{
-			BTANetwork.sendToAll(new MultiPartBuildPacket(this.entity));
 		}
 	}
 	
-	public void tick(float partialTick)
+	@OnlyIn(Dist.CLIENT)
+	public void buildClientHitBox()
 	{
-		if(this.entity.level.isClientSide)
-		{
-			BTANetwork.sendToServer(new MultiPartUpdatePacket(this.entity));
-		}
-		else
-		{
-			BTANetwork.sendToAll(new MultiPartUpdatePacket(this.entity));
-		}
-		
+    	ClientEntityPartBuilder<?> clientBuilder = ((AbstractMultipartDeepAbyssMob<?>) this.entity).getClientPartBuilder();
+    	this.hitbox = clientBuilder.buildHitBox();
+    	this.parts.putAll(clientBuilder.parts);
+    	this.partOffset.putAll(clientBuilder.partOffset);
+	}
+	
+	public void tick(float partialTick)
+	{	
         double posX = Mth.lerp((double)partialTick, this.entity.xOld, this.entity.getX());
         double posY = Mth.lerp((double)partialTick, this.entity.yOld, this.entity.getY());
         double posZ = Mth.lerp((double)partialTick, this.entity.zOld, this.entity.getZ());
+        
+		if(this.entity.level.isClientSide)
+		{
+			this.clientTick();
+			BTANetwork.sendToServer(new MultiPartUpdatePacket(this.entity));
+		}
         
         EntityPart root = this.hitbox.getPart(ROOT);
         
@@ -78,41 +90,40 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         root.setOffY(posY + renderOffset.y);
         root.setOffZ(posZ + renderOffset.z);
         
-        this.allParts.forEach((pos, rot) -> 
+        this.allParts.forEach((part) -> 
         {
-            this.entityParts.forEach((entityPart, name) -> 
+        	String name = part.name;
+        	EntityPart entityPart = part.part;
+            Vec3 partPos = (new Vec3((double)(-part.x), (double)(-part.y), (double)part.z)).scale(SCALE * this.getRenderScale());
+            Vec3 pivot = Vec3.ZERO;
+            
+            if(this.partOffset.containsKey(name))
             {
-	            Vec3 partPos = (new Vec3((double)(-pos.x), (double)(-pos.y), (double)pos.z)).scale(SCALE * this.getRenderScale());
-	            Vec3 pivot = Vec3.ZERO;
-	            
-	            if(this.partOffset.containsKey(name))
-	            {
-	                Vec3 offset = this.partOffset.get(name);
-	                pivot = offset;
-	                partPos = partPos.add(offset);
-	            }
+                Vec3 offset = this.partOffset.get(name);
+                pivot = offset;
+                partPos = partPos.add(offset);
+            }
 
-	            if(this.parts.containsKey(name)) 
-	            {
-	                String parent = this.parts.get(name);
-	                if(this.partOffset.containsKey(parent)) 
-	                {
-	                    partPos = partPos.subtract(this.partOffset.get(parent));
-	                }
-	            }
+            if(this.parts.containsKey(name)) 
+            {
+                String parent = this.parts.get(name);
+                if(this.partOffset.containsKey(parent)) 
+                {
+                    partPos = partPos.subtract(this.partOffset.get(parent));
+                }
+            }
 
-	            entityPart.setX(partPos.x);
-	            entityPart.setY(partPos.y);
-	            entityPart.setZ(partPos.z);
-	            entityPart.setPivotX(pivot.x);
-	            entityPart.setPivotY(pivot.y);
-	            entityPart.setPivotZ(pivot.z);
-	            Quaternion rotation = new Quaternion(0, 0, 0, 1);
-	            rotation.mul(Vector3f.ZP.rotation((float) rot.z));
-	            rotation.mul(Vector3f.YP.rotation((float) -rot.y));
-	            rotation.mul(Vector3f.XP.rotation((float) -rot.x));
-	            entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
-            });
+            entityPart.setX(partPos.x);
+            entityPart.setY(partPos.y);
+            entityPart.setZ(partPos.z);
+            entityPart.setPivotX(pivot.x);
+            entityPart.setPivotY(pivot.y);
+            entityPart.setPivotZ(pivot.z);
+            Quaternion rotation = new Quaternion(0, 0, 0, 1);
+            rotation.mul(Vector3f.ZP.rotation(part.zRot));
+            rotation.mul(Vector3f.YP.rotation(-part.yRot));
+            rotation.mul(Vector3f.XP.rotation(-part.xRot));
+            entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
         });
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
@@ -123,6 +134,22 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         {
         	overrideBox.setBox(this.getBoundingBox(new Vec3(posX, posY, posZ)));
         }
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void clientTick()
+	{
+    	ClientEntityPartBuilder<?> clientBuilder = ((AbstractMultipartDeepAbyssMob<?>) this.entity).getClientPartBuilder();
+    	clientBuilder.tick(1.0F);
+    	clientBuilder.model.root().getAllParts().forEach(part -> 
+    	{
+            String name = clientBuilder.getModelPartName(clientBuilder.model.root(), part);
+            EntityPart entityPart = this.hitbox.getPart(name);
+            if(entityPart != null)
+            {
+            	this.allParts.add(new Part(name, entityPart, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
+            }
+    	});
 	}
 
     public Vec2 defaultHeadRotation(LivingEntity entity, float partialTick)
@@ -287,5 +314,32 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     public AABB getBoundingBox(Vec3 pos) 
     {
     	return this.entity.getDimensions(this.entity.getPose()).makeBoundingBox(pos);
+    }
+    
+    public static class Part
+    {
+    	public String name;
+    	
+    	public EntityPart part;
+    	
+    	public float x;
+    	public float y;
+    	public float z;
+    	
+    	public float xRot;
+    	public float yRot;
+    	public float zRot;
+    	
+    	public Part(String name, EntityPart part, float x, float y, float z, float xRot, float yRot, float zRot)
+    	{
+    		this.name = name;
+    		this.part = part;
+    		this.x = x;
+    		this.y = y;
+    		this.z = z;
+    		this.xRot = xRot;
+    		this.yRot = yRot;
+    		this.zRot = zRot;
+    	}
     }
 }

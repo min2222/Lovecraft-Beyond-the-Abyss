@@ -6,14 +6,11 @@ import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssMob;
 import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder.Part;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
@@ -42,52 +39,24 @@ public class MultiPartUpdatePacket
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				if(ctx.get().getDirection().getReceptionSide().isServer())
+				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
-					for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
+					Entity entity = level.getEntity(message.entityId);
+					if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
 					{
-						Entity entity = level.getEntity(message.entityId);
-						if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
-						{
-					    	EntityPartBuilder<?> partBuilder = mob.partBuilder;
-					    	ClientEntityPartBuilder<?> clientBuilder = mob.getClientPartBuilder();
-					    	clientBuilder.tick(1.0F);
-					    	clientBuilder.model.root().getAllParts().forEach(part -> 
-					    	{
-					            String name = clientBuilder.getModelPartName(clientBuilder.model.root(), part);
-					            EntityPart entityPart = partBuilder.hitbox.getPart(name);
-					            if(entityPart != null)
-					            {
-					            	partBuilder.entityParts.put(entityPart, name);
-					            }
-						    	partBuilder.allParts.put(new Vec3(part.x, part.y, part.z), new Vec3(part.xRot, part.yRot, part.zRot));
-					    	});
-						}
+				    	EntityPartBuilder<?> partBuilder = mob.partBuilder;
+				    	ClientEntityPartBuilder<?> clientBuilder = mob.getClientPartBuilder();
+				    	clientBuilder.tick(1.0F);
+				    	clientBuilder.model.root().getAllParts().forEach(part -> 
+				    	{
+				            String name = clientBuilder.getModelPartName(clientBuilder.model.root(), part);
+				            EntityPart entityPart = partBuilder.hitbox.getPart(name);
+				            if(entityPart != null)
+				            {
+					            partBuilder.allParts.add(new Part(name, entityPart, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
+				            }
+				    	});
 					}
-				}
-				else
-				{
-					Minecraft.getInstance().doRunTask(() -> 
-					{
-						Level level = BTAClientUtil.MC.level;
-						Entity entity = level.getEntity(message.entityId);
-						if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
-						{
-					    	EntityPartBuilder<?> partBuilder = mob.partBuilder;
-					    	ClientEntityPartBuilder<?> clientBuilder = mob.getClientPartBuilder();
-					    	clientBuilder.tick(1.0F);
-					    	clientBuilder.model.root().getAllParts().forEach(part -> 
-					    	{
-					            String name = clientBuilder.getModelPartName(clientBuilder.model.root(), part);
-					            EntityPart entityPart = partBuilder.hitbox.getPart(name);
-					            if(entityPart != null)
-					            {
-					            	partBuilder.entityParts.put(entityPart, name);
-					            }
-						    	partBuilder.allParts.put(new Vec3(part.x, part.y, part.z), new Vec3(part.xRot, part.yRot, part.zRot));
-					    	});
-						}
-					});
 				}
 			});
 			ctx.get().setPacketHandled(true);

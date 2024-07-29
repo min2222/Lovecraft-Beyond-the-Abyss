@@ -4,13 +4,10 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssMob;
 import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
@@ -39,30 +36,16 @@ public class MultiPartBuildPacket
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				if(ctx.get().getDirection().getReceptionSide().isServer())
+				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
-					for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
+					Entity entity = level.getEntity(message.entityId);
+					if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
 					{
-						Entity entity = level.getEntity(message.entityId);
-						if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
-						{
-					    	ClientEntityPartBuilder<?> clientBuilder = mob.getClientPartBuilder();
-					    	mob.partBuilder.hitbox = clientBuilder.buildHitBox();
-						}
+				    	ClientEntityPartBuilder<?> clientBuilder = mob.getClientPartBuilder();
+				    	mob.partBuilder.hitbox = clientBuilder.buildHitBox();
+				    	mob.partBuilder.parts.putAll(clientBuilder.parts);
+				    	mob.partBuilder.partOffset.putAll(clientBuilder.partOffset);
 					}
-				}
-				else
-				{
-					Minecraft.getInstance().doRunTask(() -> 
-					{
-						Level level = BTAClientUtil.MC.level;
-						Entity entity = level.getEntity(message.entityId);
-						if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
-						{
-					    	ClientEntityPartBuilder<?> clientBuilder = mob.getClientPartBuilder();
-					    	mob.partBuilder.hitbox = clientBuilder.buildHitBox();
-						}
-					});
 				}
 			});
 			ctx.get().setPacketHandled(true);

@@ -26,7 +26,7 @@ public class ClientEntityPartBuilder<T extends LivingEntity & IMultipart> extend
 	
 	public ClientEntityPartBuilder(T entity, HierarchicalModel<T> model) 
 	{
-		super(entity);
+		super(entity, true);
 		this.model = model;
 	}
 	
