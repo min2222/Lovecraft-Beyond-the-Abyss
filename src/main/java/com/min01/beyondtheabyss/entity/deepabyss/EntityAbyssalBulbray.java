@@ -1,7 +1,10 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
+import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -9,16 +12,18 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob<EntityAbyssalBulbray>
+public class EntityAbyssalBulbray extends AbstractDeepAbyssMob
 {
-	public EntityAbyssalBulbray(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public EntityAbyssalBulbray(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(4);
@@ -38,6 +43,15 @@ public class EntityAbyssalBulbray extends AbstractMultipartDeepAbyssMob<EntityAb
 		EntityPartBuilder<EntityAbyssalBulbray> partBuilder = new EntityPartBuilder<EntityAbyssalBulbray>(this);
 		return partBuilder;
 	}
+	
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ClientEntityPartBuilder<EntityAbyssalBulbray> getClientPartBuilder()
+    {
+    	ModelAbyssalBulbray model = new ModelAbyssalBulbray(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelAbyssalBulbray.LAYER_LOCATION));
+    	ClientEntityPartBuilder<EntityAbyssalBulbray> clientBuilder = new ClientEntityPartBuilder<EntityAbyssalBulbray>(this, model);
+    	return clientBuilder;
+    }
     
     @Override
     public int getMaxSpawnClusterSize()

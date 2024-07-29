@@ -1,22 +1,33 @@
 package com.min01.beyondtheabyss.entity;
 
+import javax.annotation.Nullable;
+
+import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
+import com.min01.beyondtheabyss.cerbon.EntityBounds;
+import com.min01.beyondtheabyss.cerbon.IMultipart;
+import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public abstract class AbstractBTAMob extends PathfinderMob
+public abstract class AbstractBTAMob extends Monster implements IMultipart
 {
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAMob.class, EntityDataSerializers.BOOLEAN);
@@ -26,9 +37,14 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	
 	public int skillUsingTickCount;
 	
-	public AbstractBTAMob(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public Vec3[] posArray;
+	
+	public final EntityPartBuilder<? extends AbstractBTAMob> partBuilder;
+	
+	public AbstractBTAMob(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.partBuilder = this.createBuilder();
 		this.noCulling = true;
 	}
 	
@@ -43,6 +59,50 @@ public abstract class AbstractBTAMob extends PathfinderMob
 	{
 		return this.getBTAMobType().removeWhenFarAway;
 	}
+	
+	@Override
+	public boolean isPreventingPlayerRest(Player p_33036_) 
+	{
+		return this.getBTAMobType() == BTAMobType.HOSTILE;
+	}
+	
+	@Override
+	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
+	{
+		return this.partBuilder.hitbox.getBox(bounds);
+	}
+
+	@Override
+	public EntityBounds getBounds() 
+	{
+		return this.partBuilder.hitbox;
+	}
+	
+	@Override
+	public void onSetPos(double x, double y, double z) 
+	{
+		if(this.partBuilder != null)
+		{
+			this.partBuilder.tick(1.0F);
+		}
+	}
+	
+	@Override
+	public void setNextDamagedPart(@Nullable String part)
+	{
+		this.partBuilder.setNextDamagedPart(part);
+	}
+	
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_)
+	{
+		return this.partBuilder.canDamage(this, p_21016_, p_21017_) && super.hurt(p_21016_, p_21017_);
+	}
+	
+	public abstract EntityPartBuilder<? extends AbstractBTAMob> createBuilder();
+	
+	@OnlyIn(Dist.CLIENT)
+	public abstract ClientEntityPartBuilder<? extends AbstractBTAMob> getClientPartBuilder();
 	
 	@Override
 	protected void defineSynchedData()

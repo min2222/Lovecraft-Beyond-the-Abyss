@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.network;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.cerbon.EntityPart;
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder.Part;
@@ -42,7 +42,7 @@ public class MultiPartUpdatePacket
 				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
 					Entity entity = level.getEntity(message.entityId);
-					if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
+					if(entity instanceof AbstractBTAMob mob) 
 					{
 				    	EntityPartBuilder<?> partBuilder = mob.partBuilder;
 				    	ClientEntityPartBuilder<?> clientBuilder = mob.getClientPartBuilder();

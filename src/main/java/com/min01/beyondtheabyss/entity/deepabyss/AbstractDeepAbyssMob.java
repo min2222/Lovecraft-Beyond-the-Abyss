@@ -10,13 +10,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 {
-	public AbstractDeepAbyssMob(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
+	public AbstractDeepAbyssMob(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);

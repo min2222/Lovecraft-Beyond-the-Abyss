@@ -3,10 +3,13 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
+import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
+import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.sound.BTASounds;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,14 +20,16 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth>
+public class EntityGhidruth extends AbstractDeepAbyssMob
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
@@ -44,7 +49,7 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth
 	
 	public static final double DEFAULT_MOVEMENT_SPEED = 1.0D;
 	
-	public EntityGhidruth(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
+	public EntityGhidruth(EntityType<? extends Monster> p_33002_, Level p_33003_) 
 	{
 		super(p_33002_, p_33003_);
 		this.posArray = new Vec3[3];
@@ -81,6 +86,28 @@ public class EntityGhidruth extends AbstractMultipartDeepAbyssMob<EntityGhidruth
     		}
     	};
     	return partBuilder;
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ClientEntityPartBuilder<EntityGhidruth> getClientPartBuilder()
+    {
+    	ModelGhidruth model = new ModelGhidruth(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
+    	ClientEntityPartBuilder<EntityGhidruth> clientBuilder = new ClientEntityPartBuilder<EntityGhidruth>(this, model)
+    	{
+    		@Override
+    		public Vec3 getOffset()
+    		{
+    			return new Vec3(0.0F, 2.5F, 0.0F);
+    		}
+    		
+    		@Override
+    		public float getRenderScale() 
+    		{
+    			return 1.5F;
+    		}
+    	};
+    	return clientBuilder;
     }
     
     @Override

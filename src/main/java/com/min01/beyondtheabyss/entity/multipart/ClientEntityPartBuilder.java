@@ -9,18 +9,18 @@ import org.jetbrains.annotations.Nullable;
 
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
-public class ClientEntityPartBuilder<T extends LivingEntity & IMultipart> extends EntityPartBuilder<T> 
+public class ClientEntityPartBuilder<T extends AbstractBTAMob & IMultipart> extends EntityPartBuilder<T> 
 {
 	public final HierarchicalModel<T> model;
 	

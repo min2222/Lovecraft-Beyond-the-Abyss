@@ -3,8 +3,11 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
+import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
+import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
@@ -19,19 +22,21 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepVampire>
+public class EntityDeepVampire extends AbstractDeepAbyssMob
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
 	
-	public EntityDeepVampire(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public EntityDeepVampire(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(4);
@@ -58,6 +63,22 @@ public class EntityDeepVampire extends AbstractMultipartDeepAbyssMob<EntityDeepV
     		}
     	};
     	return partBuilder;
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ClientEntityPartBuilder<EntityDeepVampire> getClientPartBuilder()
+    {
+    	ModelDeepVampire model = new ModelDeepVampire(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelDeepVampire.LAYER_LOCATION));
+    	ClientEntityPartBuilder<EntityDeepVampire> clientBuilder = new ClientEntityPartBuilder<EntityDeepVampire>(this, model)
+    	{
+    		@Override
+    		public boolean isInWater() 
+    		{
+    			return true;
+    		}
+    	};
+    	return clientBuilder;
     }
     
     @Override

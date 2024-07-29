@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.cerbon;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -12,6 +14,11 @@ public interface IMultipart
     CompoundOrientedBox getCompoundBoundingBox(AABB bounds);
 
     void onSetPos(double x, double y, double z);
+    
+    default void setNextDamagedPart(@Nullable String part)
+    {
+    	
+    }
     
     default InteractionResult interact(Entity entity, InteractionHand hand, String part) 
     {

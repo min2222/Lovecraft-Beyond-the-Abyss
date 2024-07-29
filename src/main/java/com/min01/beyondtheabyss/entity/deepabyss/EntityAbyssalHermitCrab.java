@@ -1,25 +1,30 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
+import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<EntityAbyssalHermitCrab>
+public class EntityAbyssalHermitCrab extends AbstractDeepAbyssMob
 {
-	public EntityAbyssalHermitCrab(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
+	public EntityAbyssalHermitCrab(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(3);
@@ -40,6 +45,15 @@ public class EntityAbyssalHermitCrab extends AbstractMultipartDeepAbyssMob<Entit
     	EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this);
 		return partBuilder;
 	}
+	
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ClientEntityPartBuilder<EntityAbyssalHermitCrab> getClientPartBuilder()
+    {
+    	ModelAbyssalHermitCrab model = new ModelAbyssalHermitCrab(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelAbyssalHermitCrab.LAYER_LOCATION));
+    	ClientEntityPartBuilder<EntityAbyssalHermitCrab> clientBuilder = new ClientEntityPartBuilder<EntityAbyssalHermitCrab>(this, model);
+    	return clientBuilder;
+    }
     
     @Override
     public int getMaxSpawnClusterSize()

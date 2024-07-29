@@ -1,7 +1,11 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
+import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
@@ -15,12 +19,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityRunicFish extends AbstractDeepAbyssMob
 {
@@ -28,7 +34,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
 	public static final EntityDataAccessor<Integer> PANIC_TICK = SynchedEntityData.defineId(EntityRunicFish.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> IS_PANIC = SynchedEntityData.defineId(EntityRunicFish.class, EntityDataSerializers.BOOLEAN);
 	
-	public EntityRunicFish(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public EntityRunicFish(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(2);
@@ -39,6 +45,36 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 5)
     			.add(Attributes.MOVEMENT_SPEED, 0.8F);
+    }
+    
+    @Override
+    public EntityPartBuilder<EntityRunicFish> createBuilder()
+    {
+    	EntityPartBuilder<EntityRunicFish> partBuilder = new EntityPartBuilder<EntityRunicFish>(this)
+    	{
+    		@Override
+    		public boolean isInWater() 
+    		{
+    			return true;
+    		}
+    	};
+    	return partBuilder;
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ClientEntityPartBuilder<EntityRunicFish> getClientPartBuilder()
+    {
+    	ModelRunicFish model = new ModelRunicFish(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelRunicFish.LAYER_LOCATION));
+    	ClientEntityPartBuilder<EntityRunicFish> clientBuilder = new ClientEntityPartBuilder<EntityRunicFish>(this, model)
+    	{
+    		@Override
+    		public boolean isInWater() 
+    		{
+    			return true;
+    		}
+    	};
+    	return clientBuilder;
     }
     
 	@Override

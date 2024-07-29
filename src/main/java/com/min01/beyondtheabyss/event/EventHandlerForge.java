@@ -4,7 +4,6 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTAAbilityCapability;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IllusionCapability;
-import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
@@ -33,14 +32,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -115,24 +112,6 @@ public class EventHandlerForge
 					t.setIllusion(ghidruth);
 				});
 			}*/
-		}
-	}
-	
-	@SubscribeEvent
-	public static void onEntityInteract(PlayerInteractEvent.EntityInteractSpecific event)
-	{
-		Player player = event.getEntity();
-		Entity entity = event.getTarget();
-		if(entity instanceof IMultipart multipart)
-		{
-			event.setCanceled(true);
-			Vec3 pos = player.getEyePosition(0);
-            Vec3 dir = player.getViewVector(0);
-            double reach = player.getReachDistance();
-            String part = multipart.getBounds().raycast(pos, pos.add(dir.scale(reach)));
-            if(part == null)
-            	return;
-			event.setCancellationResult(multipart.interact(player, event.getHand(), part));
 		}
 	}
 	

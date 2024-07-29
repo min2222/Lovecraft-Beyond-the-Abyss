@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.MultiPartBuildPacket;
 import com.min01.beyondtheabyss.network.MultiPartUpdatePacket;
@@ -20,6 +22,7 @@ import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
@@ -32,7 +35,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
-public class EntityPartBuilder<T extends LivingEntity & IMultipart>
+public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 {
 	public static final String ROOT = "root";
 	public static final float SCALE = 0.0625F;
@@ -44,6 +47,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
 	public final List<Part> allParts = new ArrayList<>();
+	public String nextDamagedPart;
 	
 	public EntityPartBuilder(T entity) 
 	{
@@ -63,7 +67,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	@OnlyIn(Dist.CLIENT)
 	public void buildClientHitBox()
 	{
-    	ClientEntityPartBuilder<?> clientBuilder = ((AbstractMultipartDeepAbyssMob<?>) this.entity).getClientPartBuilder();
+    	ClientEntityPartBuilder<?> clientBuilder = this.entity.getClientPartBuilder();
     	this.hitbox = clientBuilder.buildHitBox();
     	this.parts.putAll(clientBuilder.parts);
     	this.partOffset.putAll(clientBuilder.partOffset);
@@ -139,7 +143,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	@OnlyIn(Dist.CLIENT)
 	public void clientTick()
 	{
-    	ClientEntityPartBuilder<?> clientBuilder = ((AbstractMultipartDeepAbyssMob<?>) this.entity).getClientPartBuilder();
+    	ClientEntityPartBuilder<?> clientBuilder = this.entity.getClientPartBuilder();
     	clientBuilder.tick(1.0F);
     	clientBuilder.model.root().getAllParts().forEach(part -> 
     	{
@@ -309,6 +313,18 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	public boolean isInWater()
 	{
 		return false;
+	}
+	
+	public void setNextDamagedPart(@Nullable String part)
+	{
+		this.nextDamagedPart = part;
+	}
+	
+	public boolean canDamage(LivingEntity living, DamageSource damageSource, float amount)
+	{
+        String part = this.nextDamagedPart;
+        this.nextDamagedPart = null;
+        return part != null || damageSource.isBypassInvul();
 	}
 	
     public AABB getBoundingBox(Vec3 pos) 

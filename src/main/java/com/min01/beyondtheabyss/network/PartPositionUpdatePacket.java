@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractMultipartDeepAbyssMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -48,7 +48,7 @@ public class PartPositionUpdatePacket
 				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
 					Entity entity = level.getEntity(message.entityId);
-					if(entity instanceof AbstractMultipartDeepAbyssMob<?> mob) 
+					if(entity instanceof AbstractBTAMob mob) 
 					{
 						mob.posArray[message.array] = message.pos;
 					}

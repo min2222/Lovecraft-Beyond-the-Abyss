@@ -27,12 +27,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -41,14 +41,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityLatcher extends AbstractMultipartDeepAbyssMob<EntityLatcher>
+public class EntityLatcher extends AbstractDeepAbyssMob
 {
 	public AnimationState propelAnimationState = new AnimationState();
 	public AnimationState startLatchAnimationState = new AnimationState();
 	public AnimationState latchAnimationState = new AnimationState();
 	public AnimationState unlatchAnimationState = new AnimationState();
 	
-	public EntityLatcher(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public EntityLatcher(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(2);

@@ -10,13 +10,15 @@
 		"MixinNoiseBasedAquifer",
 		"multipart.MixinArrayVoxelShape",
 		"multipart.MixinVoxelShape",
-		"multipart.MixinShapes"
+		"multipart.MixinShapes",
+		"multipart.MixinProjectile"
 	],
 	"client": [
 		"MixinLevelRenderer",
 		"MixinGameRenderer",
 		"MixinLocalPlayer",
-		"multipart.MixinEntityRenderDispatcher"
+		"multipart.MixinEntityRenderDispatcher",
+		"multipart.MixinMultiPlayerGameMode"
 	],
 	"server": [],
 	"injectors": {

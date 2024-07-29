@@ -1,16 +1,22 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
+import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityPhasmozoa extends AbstractDeepAbyssMob
 {
@@ -19,7 +25,7 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
 	public static final EntityDataAccessor<Float> SPECTRE_ALPHA = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Boolean> IS_SPECTRE = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.BOOLEAN);
 	
-	public EntityPhasmozoa(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public EntityPhasmozoa(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(5);
@@ -31,6 +37,22 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
     			.add(Attributes.MAX_HEALTH, 15)
     			.add(Attributes.MOVEMENT_SPEED, 0.4F)
         		.add(Attributes.FOLLOW_RANGE, 15);
+    }
+    
+    @Override
+    public EntityPartBuilder<EntityPhasmozoa> createBuilder()
+    {
+    	EntityPartBuilder<EntityPhasmozoa> partBuilder = new EntityPartBuilder<EntityPhasmozoa>(this);
+    	return partBuilder;
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ClientEntityPartBuilder<EntityPhasmozoa> getClientPartBuilder()
+    {
+    	ModelPhasmozoa model = new ModelPhasmozoa(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelPhasmozoa.LAYER_LOCATION));
+    	ClientEntityPartBuilder<EntityPhasmozoa> clientBuilder = new ClientEntityPartBuilder<EntityPhasmozoa>(this, model);
+    	return clientBuilder;
     }
 	
 	@Override
