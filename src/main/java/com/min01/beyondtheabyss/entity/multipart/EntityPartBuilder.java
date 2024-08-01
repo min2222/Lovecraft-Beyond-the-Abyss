@@ -23,7 +23,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +32,6 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 {
@@ -88,9 +86,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
         EntityPart root = this.hitbox.getPart(ROOT);
         
         Vec3 renderOffset = this.getOffset();
-        //FIXME
-        float waterOffset = this.isInWater() && !this.isInWater(this.entity) ? -0.5F : 0.0F;
-        root.setOffX(posX + renderOffset.x + waterOffset);
+        root.setOffX(posX + renderOffset.x);
         root.setOffY(posY + renderOffset.y);
         root.setOffZ(posZ + renderOffset.z);
         
@@ -132,6 +128,10 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
         root.rotate(rotation);
+        if(this.isInWater() && !this.entity.isInWater())
+        {
+        	root.setPivotY(-0.5F);
+        }
         
         MutableBox overrideBox = this.hitbox.getOverrideBox();
         if(overrideBox != null) 
@@ -216,7 +216,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
     {
     	Quaternion rotation = new Quaternion(0, 0, 0, 1);
         float bodyRot = this.defaultBodyRotation(entity, partialTick);
-        if(entity.isFullyFrozen()) 
+        if(entity.isFullyFrozen())
         {
         	bodyRot = (float)((double)bodyRot + Math.cos((double)entity.tickCount * 3.25) * Math.PI * 0.4000000059604645);
         }
@@ -255,7 +255,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
         	rotation.mul(Vector3f.ZP.rotationDegrees(180.0F));
         }
         
-        if(this.isInWater() && !this.isInWater(entity))
+        if(this.isInWater() && !this.entity.isInWater())
         {
         	rotation.mul(Vector3f.ZP.rotationDegrees(90.0F));
         }
@@ -301,13 +301,8 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	
 	public Vec3 getOffset()
 	{
-		return new Vec3(0.0F, 1.5F, 0.0F);
-	}
-	
-	public boolean isInWater(Entity entity)
-	{
-		boolean wasTouchingWater = ObfuscationReflectionHelper.getPrivateValue(Entity.class, this.entity, "f_19798_");
-		return wasTouchingWater;
+        float waterOffset = this.isInWater() && !this.entity.isInWater() ? -0.5F : 0.0F;
+		return new Vec3(0.0F, 1.5F + waterOffset, 0.0F);
 	}
 	
 	public boolean isInWater()
