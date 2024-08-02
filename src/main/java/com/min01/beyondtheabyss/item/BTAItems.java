@@ -56,6 +56,7 @@ public class BTAItems
 	public static final RegistryObject<Item> ABYSSAL_BULBRAY_SPAWN_EGG = registerSpawnEgg("abyssal_bulbray_spawn_egg", () -> BTAEntities.ABYSSAL_BULBRAY.get(), 2432294, 2499894);
 	public static final RegistryObject<Item> PHASMOZOA_SPAWN_EGG = registerSpawnEgg("phasmozoa_spawn_egg", () -> BTAEntities.PHASMOZOA.get(), 4686944, 8876197);
 	public static final RegistryObject<Item> AMARUM_GHOST_SPAWN_EGG = registerSpawnEgg("amarum_ghost_spawn_egg", () -> BTAEntities.AMARUM_GHOST.get(), 930103, 5756886);
+	public static final RegistryObject<Item> GNASHER_SPAWN_EGG = registerSpawnEgg("gnasher_spawn_egg", () -> BTAEntities.GNASHER.get(), 1318679, 3019282);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS).rarity(RARITY_ABYSS)));

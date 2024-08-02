@@ -1,7 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
@@ -15,11 +14,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -147,24 +143,6 @@ public class EntityDeepVampire extends AbstractDeepAbyssMob
 		this.biteRightAnimationState.stop();
 		this.biteLeftAnimationState.stop();
 	}
-    
-    @Override
-    public boolean doHurtTarget(Entity p_21372_) 
-    {
-    	boolean flag = super.doHurtTarget(p_21372_);
-    	if(flag)
-    	{
-    		if(p_21372_ instanceof LivingEntity living)
-    		{
-    			if(Math.random() <= 0.1)
-    			{
-        			living.addEffect(new MobEffectInstance(BTAEffects.BLEEDING.get(), 40));
-    			}
-    		}
-        	this.heal(this.random.nextInt(1, 3));
-    	}
-    	return flag;
-    }
 	
     @Override
     public BTAMobType getBTAMobType()
