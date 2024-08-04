@@ -45,7 +45,7 @@ public class MultiPartUpdatePacket
 					if(entity instanceof AbstractBTAMob mob) 
 					{
 				    	EntityPartBuilder<?> partBuilder = mob.partBuilder;
-				    	ClientEntityPartBuilder<?> clientBuilder = mob.getClientPartBuilder();
+				    	ClientEntityPartBuilder<?> clientBuilder = mob.partBuilder.clientBuilder;
 				    	clientBuilder.tick(1.0F);
 				    	clientBuilder.model.root().getAllParts().forEach(part -> 
 				    	{

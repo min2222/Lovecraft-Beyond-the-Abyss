@@ -239,9 +239,15 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 		this.leader = null;
 	}
 	
+	@Override
+	public int getMaxSpawnClusterSize() 
+	{
+		return 2;
+	}
+	
 	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(20) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pRandom.nextInt(180) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
 	@Nullable

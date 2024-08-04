@@ -27,7 +27,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
-{	
+{
 	public static void placeStructure(MinecraftServer server, ServerLevel level, StructurePlaceSettings settings, ResourceLocation location, BlockPos pos)
 	{
 		Optional<StructureTemplate> optional = server.getStructureManager().get(location);

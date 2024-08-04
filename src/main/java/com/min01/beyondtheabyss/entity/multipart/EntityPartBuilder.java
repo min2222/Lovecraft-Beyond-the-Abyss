@@ -47,6 +47,9 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	public final List<Part> allParts = new ArrayList<>();
 	public String nextDamagedPart;
 	
+	@OnlyIn(Dist.CLIENT)
+	public ClientEntityPartBuilder<?> clientBuilder;
+	
 	public EntityPartBuilder(T entity) 
 	{
 		this(entity, false);
@@ -57,6 +60,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 		this.entity = entity;
 		if(this.entity.level.isClientSide && !isClient)
 		{
+			this.clientBuilder = this.entity.getClientPartBuilder();
 			this.buildClientHitBox();
 			BTANetwork.sendToServer(new MultiPartBuildPacket(this.entity));
 		}
@@ -65,7 +69,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	@OnlyIn(Dist.CLIENT)
 	public void buildClientHitBox()
 	{
-    	ClientEntityPartBuilder<?> clientBuilder = this.entity.getClientPartBuilder();
+    	ClientEntityPartBuilder<?> clientBuilder = this.clientBuilder;
     	this.hitbox = clientBuilder.buildHitBox();
     	this.parts.putAll(clientBuilder.parts);
     	this.partOffset.putAll(clientBuilder.partOffset);
@@ -143,7 +147,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	@OnlyIn(Dist.CLIENT)
 	public void clientTick()
 	{
-    	ClientEntityPartBuilder<?> clientBuilder = this.entity.getClientPartBuilder();
+    	ClientEntityPartBuilder<?> clientBuilder = this.clientBuilder;
     	clientBuilder.tick(1.0F);
     	clientBuilder.model.root().getAllParts().forEach(part -> 
     	{

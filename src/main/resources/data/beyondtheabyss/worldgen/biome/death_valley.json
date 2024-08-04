@@ -36,7 +36,10 @@
 		"air": "beyondtheabyss:death_valley"
 	},
 	"features": [
-		[],
+		[
+			"beyondtheabyss:coral_tree",
+			"beyondtheabyss:bones"
+		],
 		[],
 		[],
 		[],

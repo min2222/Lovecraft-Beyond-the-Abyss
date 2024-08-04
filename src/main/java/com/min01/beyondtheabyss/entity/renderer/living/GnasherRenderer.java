@@ -98,7 +98,7 @@ public class GnasherRenderer extends EntityRenderer<EntityGnasher>
 		else if(p_115317_.hasPose(Pose.SLEEPING))
 		{
 			Direction direction = p_115317_.getBedOrientation();
-			float f1 = direction != null ? p_115317_.getClientPartBuilder().sleepDirectionToRotation(direction) : p_115320_;
+			float f1 = direction != null ? p_115317_.partBuilder.clientBuilder.sleepDirectionToRotation(direction) : p_115320_;
 			p_115318_.mulPose(Vector3f.YP.rotationDegrees(f1));
 			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
 			p_115318_.mulPose(Vector3f.YP.rotationDegrees(270.0F));
