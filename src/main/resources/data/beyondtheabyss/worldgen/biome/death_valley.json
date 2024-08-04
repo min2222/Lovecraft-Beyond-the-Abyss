@@ -21,7 +21,14 @@
 		"misc": [],
 		"monster": [],
 		"underground_water_creature": [],
-		"water_ambient": [],
+		"water_ambient": [
+			{
+				"type": "beyondtheabyss:gnasher",
+				"weight": 1,
+				"minCount": 1,
+				"maxCount": 1
+			}
+		],
 		"water_creature": []
 	},
 	"spawn_costs": {},

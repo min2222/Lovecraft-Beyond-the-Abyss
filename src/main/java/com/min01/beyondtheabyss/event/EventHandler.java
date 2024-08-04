@@ -64,5 +64,6 @@ public class EventHandler
     	event.register(BTAEntities.LATCHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityLatcher::checkLatcherSpawnRules, Operation.AND);
     	event.register(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalHermitCrab::checkHermitCrabSpawnRules, Operation.AND);
     	event.register(BTAEntities.ABYSSAL_BULBRAY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalBulbray::checkBulbraySpawnRules, Operation.AND);
+    	event.register(BTAEntities.GNASHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGnasher::checkGnasherSpawnRules, Operation.AND);
     }
 }

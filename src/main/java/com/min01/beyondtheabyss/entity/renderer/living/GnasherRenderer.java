@@ -4,10 +4,12 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -22,6 +24,9 @@ public class GnasherRenderer extends EntityRenderer<EntityGnasher>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher.png");
 	private static final ResourceLocation TEXTURE_LEADER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher_leader.png");
+	private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher_layer.png");
+	private static final ResourceLocation LAYER_TEXTURE_LEADER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher_layer_leader.png");
+	
 	private final ModelGnasher model;
 	private final ModelGnasherLeader leaderModel;
 	
@@ -46,16 +51,18 @@ public class GnasherRenderer extends EntityRenderer<EntityGnasher>
 		this.setupRotations(p_114485_, p_114488_, f7, f, p_114487_);
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0, -1.5F, 0);
-		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityCutout(this.getTextureLocation(p_114485_)));
+		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_)));
 		if(p_114485_.isLeader())
 		{
 			this.leaderModel.setupAnim(p_114485_, f5, f8, f7, f2, f6);
 			this.leaderModel.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+			this.coloredGlowingModelCopyLayerRender(this.leaderModel, this.leaderModel, LAYER_TEXTURE_LEADER, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
 		}
 		else
 		{
 			this.model.setupAnim(p_114485_, f5, f8, f7, f2, f6);
 			this.model.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+			this.coloredGlowingModelCopyLayerRender(this.model, this.model, LAYER_TEXTURE, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
 		}
 		p_114488_.popPose();
 	}
@@ -107,6 +114,23 @@ public class GnasherRenderer extends EntityRenderer<EntityGnasher>
 			p_115318_.translate(0.5F, 0, 0);
 			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
 		}
+	}
+	
+	public void coloredGlowingModelCopyLayerRender(EntityModel<EntityGnasher> p_117360_, EntityModel<EntityGnasher> p_117361_, ResourceLocation p_117362_, PoseStack p_117363_, MultiBufferSource p_117364_, int p_117365_, EntityGnasher p_117366_, float p_117367_, float p_117368_, float p_117369_, float p_117370_, float p_117371_, float p_117372_, float p_117373_, float p_117374_, float p_117375_)
+	{
+		if(!p_117366_.isInvisible())
+		{
+			p_117360_.copyPropertiesTo(p_117361_);
+			p_117361_.prepareMobModel(p_117366_, p_117367_, p_117368_, p_117372_);
+			p_117361_.setupAnim(p_117366_, p_117367_, p_117368_, p_117369_, p_117370_, p_117371_);
+			this.renderColoredGlowingModel(p_117361_, p_117362_, p_117363_, p_117364_, p_117365_, p_117366_, p_117373_, p_117374_, p_117375_);
+		}
+	}
+
+	public void renderColoredGlowingModel(EntityModel<EntityGnasher> p_117377_, ResourceLocation p_117378_, PoseStack p_117379_, MultiBufferSource p_117380_, int p_117381_, EntityGnasher p_117382_, float p_117383_, float p_117384_, float p_117385_)
+	{
+		VertexConsumer vertexconsumer = p_117380_.getBuffer(BTARenderType.eyesFix(p_117378_));
+		p_117377_.renderToBuffer(p_117379_, vertexconsumer, p_117381_, LivingEntityRenderer.getOverlayCoords(p_117382_, 0.0F), p_117383_, p_117384_, p_117385_, 1.0F);
 	}
 
 	@Override

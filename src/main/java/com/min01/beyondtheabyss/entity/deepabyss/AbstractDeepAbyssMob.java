@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.ai.control.AbyssFishMoveControl;
+import com.min01.beyondtheabyss.entity.ai.control.DeepAbyssFishMoveControl;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -104,7 +104,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	
 	public MoveControl getFishMoveControl()
 	{
-		return new AbyssFishMoveControl(this, this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
+		return new DeepAbyssFishMoveControl(this, this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
 	}
     
     @Override
@@ -130,9 +130,16 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
     protected void registerGoals() 
     {
     	super.registerGoals();
-    	if(this.isSwimable())
+    	if(this.isSwimable() && this.canRandomSwim())
     	{
-            this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20));
+            this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20)
+            {
+            	@Override
+            	public boolean canUse() 
+            	{
+            		return AbstractDeepAbyssMob.this.canRandomSwim() && super.canUse();
+            	}
+            });
     	}
     }
 	
@@ -163,6 +170,11 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	public float getInsideWaterSpeed()
 	{
 		return 0.3F;
+	}
+	
+	public boolean canRandomSwim()
+	{
+		return true;
 	}
 	
 	public boolean canBreathOutsideWater()

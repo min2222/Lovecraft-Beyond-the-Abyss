@@ -7,13 +7,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraftforge.common.ForgeMod;
 
-public class AbyssFishMoveControl extends MoveControl
+public class DeepAbyssFishMoveControl extends MoveControl
 {
     protected final AbstractDeepAbyssMob fish;
     protected final int maxTurnY;
     protected final float inWaterSpeedModifier;
 
-    public AbyssFishMoveControl(AbstractDeepAbyssMob p_27501_, int p_148072_, float p_148073_) 
+    public DeepAbyssFishMoveControl(AbstractDeepAbyssMob p_27501_, int p_148072_, float p_148073_) 
     {
     	super(p_27501_);
     	this.fish = p_27501_;
