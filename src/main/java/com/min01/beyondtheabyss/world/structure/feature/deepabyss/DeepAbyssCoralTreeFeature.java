@@ -30,7 +30,7 @@ public class DeepAbyssCoralTreeFeature extends Feature<NoneFeatureConfiguration>
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159749_)
 	{
 		WorldGenLevel level = p_159749_.level();
-		BlockPos blockPos = p_159749_.origin();
+		BlockPos blockPos = p_159749_.origin().offset(-7, 0, -7);
 		RandomSource random = p_159749_.random();
 		StructureTemplateManager manager = level.getLevel().getStructureManager();
 		ResourceLocation location = new ResourceLocation(String.format("%s:features/deepabyss/coral_tree_%d", BeyondtheAbyss.MODID, random.nextInt(3) + 1));
@@ -41,10 +41,10 @@ public class DeepAbyssCoralTreeFeature extends Feature<NoneFeatureConfiguration>
 				&& level.getBlockState(blockPos.below().offset(1, 0, 0)).is(BTABlocks.ABYSSALITH.get())
 				&& level.getBlockState(blockPos.below().offset(0, 0, -1)).is(BTABlocks.ABYSSALITH.get())
 				&& level.getBlockState(blockPos.below().offset(0, 0, 1)).is(BTABlocks.ABYSSALITH.get());
-		if(blockState.is(Blocks.WATER) && level.getBlockState(blockPos.above()).is(Blocks.WATER) && isAbyssalith && blockPos.getY() > -360 && blockPos.getY() <= -320 && random.nextFloat() < 0.01F) 
+		if(blockState.is(Blocks.WATER) && level.getBlockState(blockPos.above()).is(Blocks.WATER) && isAbyssalith && blockPos.getY() > -380 && blockPos.getY() <= -320 && random.nextFloat() < 0.05F) 
 		{
 	    	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.NONE);
-	    	template.placeInWorld(level, blockPos.offset(-7, 0, -7), blockPos.offset(-7, 0, -7), settings, random, 3);
+	    	template.placeInWorld(level, blockPos, blockPos, settings, random, 3);
 			return true;
 		}
 		else

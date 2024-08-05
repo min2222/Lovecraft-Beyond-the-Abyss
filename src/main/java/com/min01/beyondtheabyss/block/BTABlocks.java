@@ -49,6 +49,11 @@ public class BTABlocks
     public static final RegistryObject<Block> BONE_PILES = BLOCKS.register("bone_piles", () -> new BonePilesBlock());
     public static final RegistryObject<Block> SITTING_SKELETON = BLOCKS.register("sitting_skeleton", () -> new SittingSkeletonBlock());
     public static final RegistryObject<Block> FALLEN_SKELETON = BLOCKS.register("fallen_skeleton", () -> new FallenSkeletonBlock());
+    public static final RegistryObject<Block> CHISELED_METAL = BLOCKS.register("chiseled_metal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+    public static final RegistryObject<Block> METAL_BRICK = BLOCKS.register("metal_brick", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+    public static final RegistryObject<Block> CUT_METAL = BLOCKS.register("cut_metal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+    public static final RegistryObject<Block> METAL_TILE = BLOCKS.register("metal_tile", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+    public static final RegistryObject<Block> METAL_PLATE = BLOCKS.register("metal_plate", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 
