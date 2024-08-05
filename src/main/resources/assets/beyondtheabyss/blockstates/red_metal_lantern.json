@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "beyondtheabyss:block/red_metal_lantern_off"
+    },
+    "lit=true": {
+      "model": "beyondtheabyss:block/red_metal_lantern"
+    }
+  }
+}

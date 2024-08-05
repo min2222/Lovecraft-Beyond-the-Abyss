@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.block;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.deepabyss.BonePilesBlock;
+import com.min01.beyondtheabyss.block.deepabyss.ColoredMetalLanternBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FallenSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FangSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FishBoneBlock;
@@ -54,6 +55,10 @@ public class BTABlocks
     public static final RegistryObject<Block> CUT_METAL = BLOCKS.register("cut_metal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
     public static final RegistryObject<Block> METAL_TILE = BLOCKS.register("metal_tile", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
     public static final RegistryObject<Block> METAL_PLATE = BLOCKS.register("metal_plate", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+    public static final RegistryObject<Block> BLUE_METAL_LANTERN = BLOCKS.register("blue_metal_lantern", () -> new ColoredMetalLanternBlock());
+    public static final RegistryObject<Block> GREEN_METAL_LANTERN = BLOCKS.register("green_metal_lantern", () -> new ColoredMetalLanternBlock());
+    public static final RegistryObject<Block> PINK_METAL_LANTERN = BLOCKS.register("pink_metal_lantern", () -> new ColoredMetalLanternBlock());
+    public static final RegistryObject<Block> RED_METAL_LANTERN = BLOCKS.register("red_metal_lantern", () -> new ColoredMetalLanternBlock());
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 

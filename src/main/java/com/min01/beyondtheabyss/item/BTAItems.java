@@ -118,6 +118,10 @@ public class BTAItems
 	public static final RegistryObject<Item> CUT_METAL = registerBlockItem("cut_metal", () -> BTABlocks.CUT_METAL.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_TILE = registerBlockItem("metal_tile", () -> BTABlocks.METAL_TILE.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_PLATE = registerBlockItem("metal_plate", () -> BTABlocks.METAL_PLATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> BLUE_METAL_LANTERN = registerBlockItem("blue_metal_lantern", () -> BTABlocks.BLUE_METAL_LANTERN.get(), new Item.Properties());
+	public static final RegistryObject<Item> GREEN_METAL_LANTERN = registerBlockItem("green_metal_lantern", () -> BTABlocks.GREEN_METAL_LANTERN.get(), new Item.Properties());
+	public static final RegistryObject<Item> PINK_METAL_LANTERN = registerBlockItem("pink_metal_lantern", () -> BTABlocks.PINK_METAL_LANTERN.get(), new Item.Properties());
+	public static final RegistryObject<Item> RED_METAL_LANTERN = registerBlockItem("red_metal_lantern", () -> BTABlocks.RED_METAL_LANTERN.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{
