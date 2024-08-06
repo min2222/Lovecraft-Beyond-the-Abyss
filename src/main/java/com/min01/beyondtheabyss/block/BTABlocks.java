@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.block.deepabyss.FangSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FishBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.JawBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.LargeSkullBlock;
+import com.min01.beyondtheabyss.block.deepabyss.MetalWindowBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RibBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RiftwellingAltarBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SittingSkeletonBlock;
@@ -59,6 +60,7 @@ public class BTABlocks
     public static final RegistryObject<Block> GREEN_METAL_LANTERN = BLOCKS.register("green_metal_lantern", () -> new ColoredMetalLanternBlock());
     public static final RegistryObject<Block> PINK_METAL_LANTERN = BLOCKS.register("pink_metal_lantern", () -> new ColoredMetalLanternBlock());
     public static final RegistryObject<Block> RED_METAL_LANTERN = BLOCKS.register("red_metal_lantern", () -> new ColoredMetalLanternBlock());
+    public static final RegistryObject<Block> METAL_WINDOW = BLOCKS.register("metal_window", () -> new MetalWindowBlock());
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 

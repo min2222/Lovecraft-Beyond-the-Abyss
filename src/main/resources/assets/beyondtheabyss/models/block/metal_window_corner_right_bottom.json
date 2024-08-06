@@ -1,0 +1,25 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "cutout",
+	"textures": {
+		"0": "beyondtheabyss:block/translucent",
+		"2": "beyondtheabyss:block/metal_window_single",
+		"3": "beyondtheabyss:block/metal_window_single_bottom",
+		"4": "beyondtheabyss:block/metal_window_corner_right_bottom",
+		"particle": "beyondtheabyss:block/metal_window_single"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#4"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#4"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
+			}
+		}
+	]
+}

@@ -122,6 +122,7 @@ public class BTAItems
 	public static final RegistryObject<Item> GREEN_METAL_LANTERN = registerBlockItem("green_metal_lantern", () -> BTABlocks.GREEN_METAL_LANTERN.get(), new Item.Properties());
 	public static final RegistryObject<Item> PINK_METAL_LANTERN = registerBlockItem("pink_metal_lantern", () -> BTABlocks.PINK_METAL_LANTERN.get(), new Item.Properties());
 	public static final RegistryObject<Item> RED_METAL_LANTERN = registerBlockItem("red_metal_lantern", () -> BTABlocks.RED_METAL_LANTERN.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_WINDOW = registerBlockItem("metal_window", () -> BTABlocks.METAL_WINDOW.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{
