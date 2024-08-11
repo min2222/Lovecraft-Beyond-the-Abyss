@@ -24,6 +24,13 @@
 		"beyondtheabyss:green_metal_lantern",
 		"beyondtheabyss:pink_metal_lantern",
 		"beyondtheabyss:red_metal_lantern",
-		"beyondtheabyss:metal_window"
+		"beyondtheabyss:metal_window",
+		"beyondtheabyss:blank_rune_stone",
+		"beyondtheabyss:soul_rune_stone",
+		"beyondtheabyss:cross_rune_stone",
+		"beyondtheabyss:word_rune_stone",
+		"beyondtheabyss:vision_rune_stone",
+		"beyondtheabyss:energy_rune_stone",
+		"beyondtheabyss:spike_rune_stone"
 	]
 }

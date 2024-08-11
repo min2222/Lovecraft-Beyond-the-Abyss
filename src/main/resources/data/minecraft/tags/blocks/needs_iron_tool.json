@@ -1,0 +1,15 @@
+{
+	"replace": false,
+	"values": [
+		"beyondtheabyss:chiseled_metal",
+		"beyondtheabyss:metal_brick",
+		"beyondtheabyss:cut_metal",
+		"beyondtheabyss:metal_tile",
+		"beyondtheabyss:metal_plate",
+		"beyondtheabyss:blue_metal_lantern",
+		"beyondtheabyss:green_metal_lantern",
+		"beyondtheabyss:pink_metal_lantern",
+		"beyondtheabyss:red_metal_lantern",
+		"beyondtheabyss:metal_window"
+	]
+}

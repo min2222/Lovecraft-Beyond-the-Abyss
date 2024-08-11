@@ -123,6 +123,13 @@ public class BTAItems
 	public static final RegistryObject<Item> PINK_METAL_LANTERN = registerBlockItem("pink_metal_lantern", () -> BTABlocks.PINK_METAL_LANTERN.get(), new Item.Properties());
 	public static final RegistryObject<Item> RED_METAL_LANTERN = registerBlockItem("red_metal_lantern", () -> BTABlocks.RED_METAL_LANTERN.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_WINDOW = registerBlockItem("metal_window", () -> BTABlocks.METAL_WINDOW.get(), new Item.Properties());
+	public static final RegistryObject<Item> BLANK_RUNE_STONE = registerBlockItem("blank_rune_stone", () -> BTABlocks.BLANK_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> SOUL_RUNE_STONE = registerBlockItem("soul_rune_stone", () -> BTABlocks.SOUL_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> CROSS_RUNE_STONE = registerBlockItem("cross_rune_stone", () -> BTABlocks.CROSS_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> WORD_RUNE_STONE = registerBlockItem("word_rune_stone", () -> BTABlocks.WORD_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> VISION_RUNE_STONE = registerBlockItem("vision_rune_stone", () -> BTABlocks.VISION_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> ENERGY_RUNE_STONE = registerBlockItem("energy_rune_stone", () -> BTABlocks.ENERGY_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> SPIKE_RUNE_STONE = registerBlockItem("spike_rune_stone", () -> BTABlocks.SPIKE_RUNE_STONE.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{

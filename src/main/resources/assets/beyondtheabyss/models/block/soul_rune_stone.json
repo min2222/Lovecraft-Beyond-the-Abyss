@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/cube_all",
+	"textures": {
+		"all": "beyondtheabyss:block/soul_rune_stone"
+	}
+}
