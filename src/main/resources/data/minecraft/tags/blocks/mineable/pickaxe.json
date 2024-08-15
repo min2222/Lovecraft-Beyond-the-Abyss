@@ -31,6 +31,10 @@
 		"beyondtheabyss:word_rune_stone",
 		"beyondtheabyss:vision_rune_stone",
 		"beyondtheabyss:energy_rune_stone",
-		"beyondtheabyss:spike_rune_stone"
+		"beyondtheabyss:spike_rune_stone",
+		"beyondtheabyss:blue_metal_crate",
+		"beyondtheabyss:green_metal_crate",
+		"beyondtheabyss:pink_metal_crate",
+		"beyondtheabyss:red_metal_crate"
 	]
 }

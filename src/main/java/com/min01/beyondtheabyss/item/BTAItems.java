@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.item.weapon.SacrificialDaggerItem;
+import com.min01.beyondtheabyss.misc.BTAArmorMaterial;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.ChatFormatting;
@@ -130,6 +131,10 @@ public class BTAItems
 	public static final RegistryObject<Item> VISION_RUNE_STONE = registerBlockItem("vision_rune_stone", () -> BTABlocks.VISION_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> ENERGY_RUNE_STONE = registerBlockItem("energy_rune_stone", () -> BTABlocks.ENERGY_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> SPIKE_RUNE_STONE = registerBlockItem("spike_rune_stone", () -> BTABlocks.SPIKE_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> BLUE_METAL_CRATE = registerBlockItem("blue_metal_crate", () -> BTABlocks.BLUE_METAL_CRATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> GREEN_METAL_CRATE = registerBlockItem("green_metal_crate", () -> BTABlocks.GREEN_METAL_CRATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> PINK_METAL_CRATE = registerBlockItem("pink_metal_crate", () -> BTABlocks.PINK_METAL_CRATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> RED_METAL_CRATE = registerBlockItem("red_metal_crate", () -> BTABlocks.RED_METAL_CRATE.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{

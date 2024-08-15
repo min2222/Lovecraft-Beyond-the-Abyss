@@ -17,7 +17,7 @@ public class ColoredMetalLanternBlock extends Block
 	   
 	public ColoredMetalLanternBlock()
 	{
-		super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).lightLevel(value -> value.getValue(LIT) ? 15 : 0));
+		super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).requiresCorrectToolForDrops().lightLevel(value -> value.getValue(LIT) ? 15 : 0));
 		this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)));
 	}
 	

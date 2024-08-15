@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.item;
+package com.min01.beyondtheabyss.misc;
 
 import java.util.function.Supplier;
 

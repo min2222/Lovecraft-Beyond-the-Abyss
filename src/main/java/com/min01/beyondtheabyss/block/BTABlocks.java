@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.block.deepabyss.FangSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FishBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.JawBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.LargeSkullBlock;
+import com.min01.beyondtheabyss.block.deepabyss.MetalCrateBlock;
 import com.min01.beyondtheabyss.block.deepabyss.MetalWindowBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RibBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RiftwellingAltarBlock;
@@ -17,6 +18,7 @@ import com.min01.beyondtheabyss.block.deepabyss.SpineBoneBaseBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneMiddleBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneTipBlock;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
+import com.min01.beyondtheabyss.blockentity.deepabyss.MetalCrateBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 
 import net.minecraft.world.level.block.Block;
@@ -62,6 +64,10 @@ public class BTABlocks
     public static final RegistryObject<Block> PINK_METAL_LANTERN = BLOCKS.register("pink_metal_lantern", () -> new ColoredMetalLanternBlock());
     public static final RegistryObject<Block> RED_METAL_LANTERN = BLOCKS.register("red_metal_lantern", () -> new ColoredMetalLanternBlock());
     public static final RegistryObject<Block> METAL_WINDOW = BLOCKS.register("metal_window", () -> new MetalWindowBlock());
+    public static final RegistryObject<Block> BLUE_METAL_CRATE = BLOCKS.register("blue_metal_crate", () -> new MetalCrateBlock());
+    public static final RegistryObject<Block> GREEN_METAL_CRATE = BLOCKS.register("green_metal_crate", () -> new MetalCrateBlock());
+    public static final RegistryObject<Block> PINK_METAL_CRATE = BLOCKS.register("pink_metal_crate", () -> new MetalCrateBlock());
+    public static final RegistryObject<Block> RED_METAL_CRATE = BLOCKS.register("red_metal_crate", () -> new MetalCrateBlock());
     
     public static final RegistryObject<Block> BLANK_RUNE_STONE = BLOCKS.register("blank_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     public static final RegistryObject<Block> SOUL_RUNE_STONE = BLOCKS.register("soul_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
@@ -78,4 +84,9 @@ public class BTABlocks
     		BTABlocks.BONE_PILES.get(),
     		BTABlocks.SITTING_SKELETON.get(),
     		BTABlocks.FALLEN_SKELETON.get()).build(null));
+    public static final RegistryObject<BlockEntityType<MetalCrateBlockEntity>> METAL_CRATE_BLOCK_ENTITY = BLOCK_ENTITIES.register("metal_crate", () -> BlockEntityType.Builder.of(MetalCrateBlockEntity::new, 
+    		BTABlocks.BLUE_METAL_CRATE.get(),
+    		BTABlocks.GREEN_METAL_CRATE.get(),
+    		BTABlocks.PINK_METAL_CRATE.get(),
+    		BTABlocks.RED_METAL_CRATE.get()).build(null));
 }

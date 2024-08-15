@@ -10,6 +10,10 @@
 		"beyondtheabyss:green_metal_lantern",
 		"beyondtheabyss:pink_metal_lantern",
 		"beyondtheabyss:red_metal_lantern",
-		"beyondtheabyss:metal_window"
+		"beyondtheabyss:metal_window",
+		"beyondtheabyss:blue_metal_crate",
+		"beyondtheabyss:green_metal_crate",
+		"beyondtheabyss:pink_metal_crate",
+		"beyondtheabyss:red_metal_crate"
 	]
 }
