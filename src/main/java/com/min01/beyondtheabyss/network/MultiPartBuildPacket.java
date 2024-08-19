@@ -41,7 +41,7 @@ public class MultiPartBuildPacket
 					Entity entity = level.getEntity(message.entityId);
 					if(entity instanceof AbstractBTAMob mob) 
 					{
-				    	ClientEntityPartBuilder<?> clientBuilder = mob.partBuilder.clientBuilder;
+				    	ClientEntityPartBuilder<?> clientBuilder = mob.partBuilder.entity.getClientPartBuilder();
 				    	mob.partBuilder.hitbox = clientBuilder.buildHitBox();
 				    	mob.partBuilder.parts.putAll(clientBuilder.parts);
 				    	mob.partBuilder.partOffset.putAll(clientBuilder.partOffset);

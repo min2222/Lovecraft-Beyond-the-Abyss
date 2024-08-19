@@ -47,9 +47,6 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	public final List<Part> allParts = new ArrayList<>();
 	public String nextDamagedPart;
 	
-	@OnlyIn(Dist.CLIENT)
-	public ClientEntityPartBuilder<?> clientBuilder;
-	
 	public EntityPartBuilder(T entity) 
 	{
 		this(entity, false);
@@ -60,7 +57,6 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 		this.entity = entity;
 		if(this.entity.level.isClientSide && !isClient)
 		{
-			this.clientBuilder = this.entity.getClientPartBuilder();
 			this.buildClientHitBox();
 			BTANetwork.sendToServer(new MultiPartBuildPacket(this.entity));
 		}
@@ -69,14 +65,15 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	@OnlyIn(Dist.CLIENT)
 	public void buildClientHitBox()
 	{
-    	ClientEntityPartBuilder<?> clientBuilder = this.clientBuilder;
+    	ClientEntityPartBuilder<?> clientBuilder = this.entity.getClientPartBuilder();
     	this.hitbox = clientBuilder.buildHitBox();
     	this.parts.putAll(clientBuilder.parts);
     	this.partOffset.putAll(clientBuilder.partOffset);
 	}
 	
+	//FIXME cause FPS lag
 	public void tick(float partialTick)
-	{	
+	{
         double posX = Mth.lerp((double)partialTick, this.entity.xOld, this.entity.getX());
         double posY = Mth.lerp((double)partialTick, this.entity.yOld, this.entity.getY());
         double posZ = Mth.lerp((double)partialTick, this.entity.zOld, this.entity.getZ());
@@ -147,7 +144,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	@OnlyIn(Dist.CLIENT)
 	public void clientTick()
 	{
-    	ClientEntityPartBuilder<?> clientBuilder = this.clientBuilder;
+    	ClientEntityPartBuilder<?> clientBuilder = this.entity.getClientPartBuilder();
     	clientBuilder.tick(1.0F);
     	clientBuilder.model.root().getAllParts().forEach(part -> 
     	{

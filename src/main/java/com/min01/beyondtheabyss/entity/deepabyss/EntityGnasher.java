@@ -74,12 +74,14 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
     	return partBuilder;
 	}
 
+	//FIXME
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ClientEntityPartBuilder<EntityGnasher> getClientPartBuilder() 
 	{
 		ModelGnasher model = new ModelGnasher(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGnasher.LAYER_LOCATION));
 		ModelGnasherLeader leaderModel = new ModelGnasherLeader(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGnasherLeader.LAYER_LOCATION));
+		System.out.println(this.isLeader());
     	ClientEntityPartBuilder<EntityGnasher> clientBuilder = new ClientEntityPartBuilder<EntityGnasher>(this, this.isLeader() ? leaderModel : model)
     	{
     		@Override
@@ -123,6 +125,7 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
     public void tick() 
     {
     	super.tick();
+    	
         if(this.hasFollowers() && this.level.random.nextInt(200) == 1) 
         {
         	List<? extends EntityGnasher> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
@@ -141,6 +144,23 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 				this.startFollowing(t);
 			}
 		});
+    }
+    
+    @Override
+    public void addAdditionalSaveData(CompoundTag p_21484_)
+    {
+    	super.addAdditionalSaveData(p_21484_);
+    	p_21484_.putBoolean("isLeader", this.isLeader());
+    }
+    
+    @Override
+    public void readAdditionalSaveData(CompoundTag p_21450_)
+    {
+    	super.readAdditionalSaveData(p_21450_);
+    	if(p_21450_.contains("isLeader"))
+    	{
+    		this.setLeader(p_21450_.getBoolean("isLeader"));
+    	}
     }
     
     public void setLeader(boolean value)
@@ -258,7 +278,7 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 		{
 			this.setAsLeader();
 		}
-	    
+
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 	
