@@ -1,14 +1,15 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -63,18 +64,10 @@ public class EntityDeepVampire extends AbstractDeepAbyssMob
     
     @OnlyIn(Dist.CLIENT)
     @Override
-    public ClientEntityPartBuilder<EntityDeepVampire> getClientPartBuilder()
+    public HierarchicalModel<? extends AbstractBTAMob> getModel()
     {
     	ModelDeepVampire model = new ModelDeepVampire(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelDeepVampire.LAYER_LOCATION));
-    	ClientEntityPartBuilder<EntityDeepVampire> clientBuilder = new ClientEntityPartBuilder<EntityDeepVampire>(this, model)
-    	{
-    		@Override
-    		public boolean isInWater() 
-    		{
-    			return true;
-    		}
-    	};
-    	return clientBuilder;
+    	return model;
     }
     
     @Override

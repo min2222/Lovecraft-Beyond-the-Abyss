@@ -1,5 +1,8 @@
 package com.min01.beyondtheabyss.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -12,8 +15,12 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,6 +29,50 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
+	public static final Map<ModelPart, String> PART_MAP = new HashMap<>();
+	
+	public static void setupRotations(AbstractBTAMob p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) 
+	{
+		if(p_115317_.isFullyFrozen())
+		{
+			p_115320_ += (float)(Math.cos((double)p_115317_.tickCount * 3.25D) * Math.PI * (double)0.4F);
+		}
+
+		if(!p_115317_.hasPose(Pose.SLEEPING)) 
+		{
+			p_115318_.mulPose(Vector3f.YP.rotationDegrees(180.0F - p_115320_));
+		}
+
+		if(p_115317_.deathTime > 0)
+		{
+			float f = ((float)p_115317_.deathTime + p_115321_ - 1.0F) / 20.0F * 1.6F;
+			f = Mth.sqrt(f);
+			if(f > 1.0F) 
+			{
+				f = 1.0F;
+			}
+
+			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(f * 90.0F));
+		} 
+		else if(p_115317_.isAutoSpinAttack()) 
+		{
+			p_115318_.mulPose(Vector3f.XP.rotationDegrees(-90.0F - p_115317_.getXRot()));
+			p_115318_.mulPose(Vector3f.YP.rotationDegrees(((float)p_115317_.tickCount + p_115321_) * -75.0F));
+		} 
+		else if(p_115317_.hasPose(Pose.SLEEPING))
+		{
+			Direction direction = p_115317_.getBedOrientation();
+			float f1 = direction != null ? p_115317_.partBuilder.sleepDirectionToRotation(direction) : p_115320_;
+			p_115318_.mulPose(Vector3f.YP.rotationDegrees(f1));
+			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+			p_115318_.mulPose(Vector3f.YP.rotationDegrees(270.0F));
+		}
+		else if(LivingEntityRenderer.isEntityUpsideDown(p_115317_)) 
+		{
+			p_115318_.translate(0.0D, (double)(p_115317_.getBbHeight() + 0.1F), 0.0D);
+			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+		}
+	}
 	
 	//https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/animate/client/util/ModelPartUtils.java#L57
     
@@ -80,8 +131,8 @@ public class BTAClientUtil
 	
 	public static void animateHead(ModelPart head, float netHeadYaw, float headPitch)
 	{
-		head.yRot += netHeadYaw * ((float)Math.PI / 180.0F);
-		head.xRot += headPitch * ((float)Math.PI / 180.0F);
+		head.yRot += Math.toRadians(netHeadYaw);
+		head.xRot += Math.toRadians(headPitch);
 	}
 	
 	public static void animateWalk(AbstractBTAMob entity, HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 

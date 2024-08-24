@@ -1,12 +1,12 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherFindTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherUnlatchingGoal;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -73,11 +74,10 @@ public class EntityLatcher extends AbstractDeepAbyssMob
     
     @OnlyIn(Dist.CLIENT)
     @Override
-    public ClientEntityPartBuilder<EntityLatcher> getClientPartBuilder()
+    public HierarchicalModel<? extends AbstractBTAMob> getModel()
     {
     	ModelLatcher model = new ModelLatcher(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelLatcher.LAYER_LOCATION));
-    	ClientEntityPartBuilder<EntityLatcher> clientBuilder = new ClientEntityPartBuilder<EntityLatcher>(this, model);
-    	return clientBuilder;
+    	return model;
     }
     
     @Override

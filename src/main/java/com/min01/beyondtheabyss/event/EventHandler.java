@@ -11,6 +11,8 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityPhasmozoa;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -54,6 +56,8 @@ public class EventHandler
     	event.put(BTAEntities.PHASMOZOA.get(), EntityPhasmozoa.createAttributes().build());
     	event.put(BTAEntities.AMARUM_GHOST.get(), EntityAmarumGhost.createAttributes().build());
     	event.put(BTAEntities.GNASHER.get(), EntityGnasher.createAttributes().build());
+    	event.put(BTAEntities.SIAMSERPENT_HEAD.get(), EntitySiamserpentHead.createAttributes().build());
+    	event.put(BTAEntities.SIAMSERPENT_BONE.get(), EntitySiamserpentBone.createAttributes().build());
     }
     
     @SubscribeEvent

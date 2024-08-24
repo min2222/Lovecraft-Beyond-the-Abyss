@@ -1,16 +1,17 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -90,24 +91,10 @@ public class EntityGhidruth extends AbstractDeepAbyssMob
     
     @OnlyIn(Dist.CLIENT)
     @Override
-    public ClientEntityPartBuilder<EntityGhidruth> getClientPartBuilder()
+    public HierarchicalModel<? extends AbstractBTAMob> getModel()
     {
     	ModelGhidruth model = new ModelGhidruth(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
-    	ClientEntityPartBuilder<EntityGhidruth> clientBuilder = new ClientEntityPartBuilder<EntityGhidruth>(this, model)
-    	{
-    		@Override
-    		public Vec3 getOffset()
-    		{
-    			return new Vec3(0.0F, 2.5F, 0.0F);
-    		}
-    		
-    		@Override
-    		public float getRenderScale() 
-    		{
-    			return 1.5F;
-    		}
-    	};
-    	return clientBuilder;
+    	return model;
     }
     
     @Override

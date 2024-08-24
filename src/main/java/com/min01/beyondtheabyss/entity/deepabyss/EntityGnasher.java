@@ -5,15 +5,16 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepAbyssFollowFlockLeaderGoal;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -74,23 +75,13 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
     	return partBuilder;
 	}
 
-	//FIXME
 	@OnlyIn(Dist.CLIENT)
-	@Override
-	public ClientEntityPartBuilder<EntityGnasher> getClientPartBuilder() 
-	{
+    @Override
+    public HierarchicalModel<? extends AbstractBTAMob> getModel()
+    {
 		ModelGnasher model = new ModelGnasher(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGnasher.LAYER_LOCATION));
 		ModelGnasherLeader leaderModel = new ModelGnasherLeader(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGnasherLeader.LAYER_LOCATION));
-		System.out.println(this.isLeader());
-    	ClientEntityPartBuilder<EntityGnasher> clientBuilder = new ClientEntityPartBuilder<EntityGnasher>(this, this.isLeader() ? leaderModel : model)
-    	{
-    		@Override
-    		public boolean isInWater() 
-    		{
-    			return true;
-    		}
-    	};
-    	return clientBuilder;
+    	return this.isLeader() ? leaderModel : model;
 	}
 	
 	@Override

@@ -1,12 +1,13 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -48,11 +49,10 @@ public class EntityAbyssalHermitCrab extends AbstractDeepAbyssMob
 	
     @OnlyIn(Dist.CLIENT)
     @Override
-    public ClientEntityPartBuilder<EntityAbyssalHermitCrab> getClientPartBuilder()
+    public HierarchicalModel<? extends AbstractBTAMob> getModel()
     {
     	ModelAbyssalHermitCrab model = new ModelAbyssalHermitCrab(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelAbyssalHermitCrab.LAYER_LOCATION));
-    	ClientEntityPartBuilder<EntityAbyssalHermitCrab> clientBuilder = new ClientEntityPartBuilder<EntityAbyssalHermitCrab>(this, model);
-    	return clientBuilder;
+    	return model;
     }
     
     @Override

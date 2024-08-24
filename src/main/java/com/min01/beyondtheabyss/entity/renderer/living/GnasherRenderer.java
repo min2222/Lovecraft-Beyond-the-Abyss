@@ -5,6 +5,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
 import com.min01.beyondtheabyss.misc.BTARenderType;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -15,10 +16,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Pose;
 
 public class GnasherRenderer extends EntityRenderer<EntityGnasher>
 {
@@ -48,7 +47,12 @@ public class GnasherRenderer extends EntityRenderer<EntityGnasher>
         float f8 = Mth.lerp(p_114487_, p_114485_.animationSpeedOld, p_114485_.animationSpeed);
         float f7 = p_114485_.tickCount + p_114487_;
         float f5 = p_114485_.animationPosition - p_114485_.animationSpeed * (1.0F - p_114487_);
-		this.setupRotations(p_114485_, p_114488_, f7, f, p_114487_);
+		BTAClientUtil.setupRotations(p_114485_, p_114488_, f7, f, p_114487_);
+		if(!p_114485_.isInWater())
+		{
+			p_114488_.translate(0.5F, 0, 0);
+			p_114488_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+		}
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0, -1.5F, 0);
 		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_)));
@@ -65,55 +69,6 @@ public class GnasherRenderer extends EntityRenderer<EntityGnasher>
 			this.coloredGlowingModelCopyLayerRender(this.model, this.model, LAYER_TEXTURE, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
 		}
 		p_114488_.popPose();
-	}
-	
-	public void setupRotations(EntityGnasher p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) 
-	{
-		if(p_115317_.isFullyFrozen())
-		{
-			p_115320_ += (float)(Math.cos((double)p_115317_.tickCount * 3.25D) * Math.PI * (double)0.4F);
-		}
-
-		if(!p_115317_.hasPose(Pose.SLEEPING)) 
-		{
-			p_115318_.mulPose(Vector3f.YP.rotationDegrees(180.0F - p_115320_));
-		}
-
-		if(p_115317_.deathTime > 0)
-		{
-			float f = ((float)p_115317_.deathTime + p_115321_ - 1.0F) / 20.0F * 1.6F;
-			f = Mth.sqrt(f);
-			if(f > 1.0F) 
-			{
-				f = 1.0F;
-			}
-
-			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(f * 90.0F));
-		} 
-		else if(p_115317_.isAutoSpinAttack()) 
-		{
-			p_115318_.mulPose(Vector3f.XP.rotationDegrees(-90.0F - p_115317_.getXRot()));
-			p_115318_.mulPose(Vector3f.YP.rotationDegrees(((float)p_115317_.tickCount + p_115321_) * -75.0F));
-		} 
-		else if(p_115317_.hasPose(Pose.SLEEPING))
-		{
-			Direction direction = p_115317_.getBedOrientation();
-			float f1 = direction != null ? p_115317_.getClientPartBuilder().sleepDirectionToRotation(direction) : p_115320_;
-			p_115318_.mulPose(Vector3f.YP.rotationDegrees(f1));
-			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
-			p_115318_.mulPose(Vector3f.YP.rotationDegrees(270.0F));
-		}
-		else if(LivingEntityRenderer.isEntityUpsideDown(p_115317_)) 
-		{
-			p_115318_.translate(0.0D, (double)(p_115317_.getBbHeight() + 0.1F), 0.0D);
-			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
-		}
-		
-		if(!p_115317_.isInWater())
-		{
-			p_115318_.translate(0.5F, 0, 0);
-			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
-		}
 	}
 	
 	public void coloredGlowingModelCopyLayerRender(EntityModel<EntityGnasher> p_117360_, EntityModel<EntityGnasher> p_117361_, ResourceLocation p_117362_, PoseStack p_117363_, MultiBufferSource p_117364_, int p_117365_, EntityGnasher p_117366_, float p_117367_, float p_117368_, float p_117369_, float p_117370_, float p_117371_, float p_117372_, float p_117373_, float p_117374_, float p_117375_)

@@ -26,6 +26,10 @@ import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
 import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
 import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
@@ -41,6 +45,8 @@ import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.PhasmozoaRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentBoneRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentHeadRenderer;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -92,7 +98,7 @@ public class ClientEventHandler
 	//public static final KeyMapping ABYSSAL_DASH = new KeyMapping("key." + BeyondtheAbyss.MODID + ".abyssal_dash", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, InputConstants.KEY_Y, "key.categories." + BeyondtheAbyss.MODID);
 	
     @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event)
+    public static void onFMLClientSetup(FMLClientSetupEvent event)
     {
         BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
         BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
@@ -179,6 +185,8 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.PHASMOZOA.get(), PhasmozoaRenderer::new);
     	event.registerEntityRenderer(BTAEntities.AMARUM_GHOST.get(), AmarumGhostRenderer::new);
     	event.registerEntityRenderer(BTAEntities.GNASHER.get(), GnasherRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.SIAMSERPENT_HEAD.get(), SiamserpentHeadRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.SIAMSERPENT_BONE.get(), SiamserpentBoneRenderer::new);
     }
     
     @SubscribeEvent
@@ -195,6 +203,10 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelAmarumGhost.LAYER_LOCATION, ModelAmarumGhost::createBodyLayer);
     	event.registerLayerDefinition(ModelGnasher.LAYER_LOCATION, ModelGnasher::createBodyLayer);
     	event.registerLayerDefinition(ModelGnasherLeader.LAYER_LOCATION, ModelGnasherLeader::createBodyLayer);
+    	event.registerLayerDefinition(ModelSiamserpentSlasher.LAYER_LOCATION, ModelSiamserpentSlasher::createBodyLayer);
+    	event.registerLayerDefinition(ModelSiamserpentBlaster.LAYER_LOCATION, ModelSiamserpentBlaster::createBodyLayer);
+    	event.registerLayerDefinition(ModelSiamserpentBone.LAYER_LOCATION, ModelSiamserpentBone::createBodyLayer);
+    	event.registerLayerDefinition(ModelSiamserpentMiddleBone.LAYER_LOCATION, ModelSiamserpentMiddleBone::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);

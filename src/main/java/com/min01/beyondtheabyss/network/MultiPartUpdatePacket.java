@@ -2,11 +2,8 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder.Part;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -45,17 +42,7 @@ public class MultiPartUpdatePacket
 					if(entity instanceof AbstractBTAMob mob) 
 					{
 				    	EntityPartBuilder<?> partBuilder = mob.partBuilder;
-				    	ClientEntityPartBuilder<?> clientBuilder = mob.partBuilder.entity.getClientPartBuilder();
-				    	clientBuilder.tick(1.0F);
-				    	clientBuilder.model.root().getAllParts().forEach(part -> 
-				    	{
-				            String name = clientBuilder.getModelPartName(clientBuilder.model.root(), part);
-				            EntityPart entityPart = partBuilder.hitbox.getPart(name);
-				            if(entityPart != null)
-				            {
-					            partBuilder.allParts.add(new Part(name, entityPart, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
-				            }
-				    	});
+				    	partBuilder.clientTick(1.0F);
 					}
 				}
 			});

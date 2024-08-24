@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
  */
 public final class EntityBounds {
     private CompoundOrientedBox cache;
-    private final Map<String, EntityPart> partMap;
+    public final Map<String, EntityPart> partMap;
     private @Nullable
     final MutableBox overrideBox;
 

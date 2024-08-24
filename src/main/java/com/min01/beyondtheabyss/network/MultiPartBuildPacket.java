@@ -1,9 +1,10 @@
 package com.min01.beyondtheabyss.network;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -13,21 +14,21 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class MultiPartBuildPacket 
 {
-	private final int entityId;
+	private final UUID entityUUID;
 
 	public MultiPartBuildPacket(Entity entity) 
 	{
-		this.entityId = entity.getId();
+		this.entityUUID = entity.getUUID();
 	}
 
 	public MultiPartBuildPacket(FriendlyByteBuf buf)
 	{
-		this.entityId = buf.readInt();
+		this.entityUUID = buf.readUUID();
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
-		buf.writeInt(this.entityId);
+		buf.writeUUID(this.entityUUID);
 	}
 
 	public static class Handler 
@@ -38,13 +39,11 @@ public class MultiPartBuildPacket
 			{
 				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
-					Entity entity = level.getEntity(message.entityId);
+					Entity entity = level.getEntity(message.entityUUID);
 					if(entity instanceof AbstractBTAMob mob) 
 					{
-				    	ClientEntityPartBuilder<?> clientBuilder = mob.partBuilder.entity.getClientPartBuilder();
-				    	mob.partBuilder.hitbox = clientBuilder.buildHitBox();
-				    	mob.partBuilder.parts.putAll(clientBuilder.parts);
-				    	mob.partBuilder.partOffset.putAll(clientBuilder.partOffset);
+						EntityPartBuilder<?> builder = mob.partBuilder;
+				    	mob.partBuilder.hitbox = builder.buildHitBox();
 					}
 				}
 			});

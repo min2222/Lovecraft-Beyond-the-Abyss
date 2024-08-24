@@ -1,13 +1,14 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -63,18 +64,10 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     
     @OnlyIn(Dist.CLIENT)
     @Override
-    public ClientEntityPartBuilder<EntityRunicFish> getClientPartBuilder()
+    public HierarchicalModel<? extends AbstractBTAMob> getModel()
     {
     	ModelRunicFish model = new ModelRunicFish(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelRunicFish.LAYER_LOCATION));
-    	ClientEntityPartBuilder<EntityRunicFish> clientBuilder = new ClientEntityPartBuilder<EntityRunicFish>(this, model)
-    	{
-    		@Override
-    		public boolean isInWater() 
-    		{
-    			return true;
-    		}
-    	};
-    	return clientBuilder;
+    	return model;
     }
     
 	@Override

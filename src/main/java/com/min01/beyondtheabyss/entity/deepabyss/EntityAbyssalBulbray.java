@@ -1,11 +1,12 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
@@ -45,12 +46,11 @@ public class EntityAbyssalBulbray extends AbstractDeepAbyssMob
 	}
 	
     @OnlyIn(Dist.CLIENT)
-    @Override
-    public ClientEntityPartBuilder<EntityAbyssalBulbray> getClientPartBuilder()
-    {
+	@Override
+	public HierarchicalModel<? extends AbstractBTAMob> getModel() 
+	{
     	ModelAbyssalBulbray model = new ModelAbyssalBulbray(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelAbyssalBulbray.LAYER_LOCATION));
-    	ClientEntityPartBuilder<EntityAbyssalBulbray> clientBuilder = new ClientEntityPartBuilder<EntityAbyssalBulbray>(this, model);
-    	return clientBuilder;
+    	return model;
     }
     
     @Override

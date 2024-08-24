@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -102,7 +102,7 @@ public abstract class AbstractBTAMob extends Monster implements IMultipart
 	public abstract EntityPartBuilder<? extends AbstractBTAMob> createBuilder();
 	
 	@OnlyIn(Dist.CLIENT)
-	public abstract ClientEntityPartBuilder<? extends AbstractBTAMob> getClientPartBuilder();
+	public abstract HierarchicalModel<? extends AbstractBTAMob> getModel();
 	
 	@Override
 	protected void defineSynchedData()

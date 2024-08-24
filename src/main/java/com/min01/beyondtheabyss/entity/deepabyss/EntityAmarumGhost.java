@@ -1,11 +1,12 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.model.ModelAmarumGhost;
-import com.min01.beyondtheabyss.entity.multipart.ClientEntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -64,11 +65,10 @@ public class EntityAmarumGhost extends AbstractDeepAbyssMob
 	
     @OnlyIn(Dist.CLIENT)
     @Override
-    public ClientEntityPartBuilder<EntityAmarumGhost> getClientPartBuilder()
+    public HierarchicalModel<? extends AbstractBTAMob> getModel()
     {
     	ModelAmarumGhost model = new ModelAmarumGhost(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelAmarumGhost.LAYER_LOCATION));
-    	ClientEntityPartBuilder<EntityAmarumGhost> clientBuilder = new ClientEntityPartBuilder<EntityAmarumGhost>(this, model);
-    	return clientBuilder;
+    	return model;
     }
     
     @Override
