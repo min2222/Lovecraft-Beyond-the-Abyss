@@ -1,24 +1,23 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.item.BasicBTAFoodItem;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
-import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class GhidruthFleshItem extends Item
+public class GhidruthFleshItem extends BasicBTAFoodItem
 {
 	private boolean isRaw;
 	
 	public GhidruthFleshItem(FoodProperties properties, boolean isRaw) 
 	{
-		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_FOODS).food(properties));
+		super(properties);
 		this.isRaw = isRaw;
 	}
 	
