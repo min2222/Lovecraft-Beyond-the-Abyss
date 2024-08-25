@@ -35,7 +35,7 @@ public class ModelRunicFish extends HierarchicalModel<EntityRunicFish>
 
 		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition RunicFish = root.addOrReplaceChild("RunicFish", CubeListBuilder.create(), PartPose.offset(0.0F, -9.0F, 0.0F));
+		PartDefinition RunicFish = root.addOrReplaceChild("RunicFish", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		PartDefinition Body = RunicFish.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, -4.0F, -6.5F, 5.0F, 8.0F, 13.0F, new CubeDeformation(0.0F))
 		.texOffs(30, 15).addBox(0.0F, -10.0F, -4.5F, 0.0F, 6.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, 0.0F));
@@ -77,7 +77,7 @@ public class ModelRunicFish extends HierarchicalModel<EntityRunicFish>
 	public void setupAnim(EntityRunicFish entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("RunicFish"), netHeadYaw, headPitch);
 		BTAClientUtil.animateWalk(entity, this, RunicFishAnimation.RUNIC_FISH_SWIM, limbSwing, limbSwingAmount, 1.0F, entity.isPanic() ? 3.5F : 2.5F);
 	}
 

@@ -20,19 +20,21 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelGnasherLeader extends HierarchicalModel<EntityGnasher>
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "gnasher_leader"), "main");
-	private final ModelPart LeadGnasher;
+	private final ModelPart root;
 
 	public ModelGnasherLeader(ModelPart root) 
 	{
-		this.LeadGnasher = root.getChild("LeadGnasher");
+		this.root = root.getChild("root");
 	}
 
 	public static LayerDefinition createBodyLayer() 
 	{
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
+		
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition LeadGnasher = partdefinition.addOrReplaceChild("LeadGnasher", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition LeadGnasher = root.addOrReplaceChild("LeadGnasher", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		PartDefinition Head = LeadGnasher.addOrReplaceChild("Head", CubeListBuilder.create(), PartPose.offset(0.0F, -4.0F, -10.0F));
 
@@ -70,18 +72,18 @@ public class ModelGnasherLeader extends HierarchicalModel<EntityGnasher>
 	public void setupAnim(EntityGnasher entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.LeadGnasher, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("LeadGnasher"), netHeadYaw, headPitch);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		LeadGnasher.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	@Override
 	public ModelPart root() 
 	{
-		return this.LeadGnasher;
+		return this.root;
 	}
 }

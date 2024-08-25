@@ -24,6 +24,15 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 	private final ModelSiamserpentSlasher slasherModel;
 	private final ModelSiamserpentBlaster blasterModel;
 	
+	private static final ResourceLocation TEXTURE_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher.png");
+	private static final ResourceLocation TEXTURE_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster.png");
+	private static final ResourceLocation DISABLED_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_disabled.png");
+	private static final ResourceLocation DISABLED_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_disabled.png");
+	private static final ResourceLocation DORMANT_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_dormant.png");
+	private static final ResourceLocation DORMANT_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_dormant.png");
+	private static final ResourceLocation LAYER_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_layer.png");
+	private static final ResourceLocation LAYER_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_layer.png");
+	
 	public SiamserpentHeadRenderer(Context p_174008_) 
 	{
 		super(p_174008_);
@@ -51,10 +60,18 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 		case SLASHER:
 			this.slasherModel.setupAnim(p_114485_, f5, f8, f7, f2, f6);
 			this.slasherModel.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+			if(!p_114485_.isDisabled() && !p_114485_.isDormant())
+			{
+				BTAClientUtil.coloredGlowingModelCopyLayerRender(this.slasherModel, this.slasherModel, LAYER_SLASHER, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
+			}
 			break;
 		case BLASTER:
 			this.blasterModel.setupAnim(p_114485_, f5, f8, f7, f2, f6);
 			this.blasterModel.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+			if(!p_114485_.isDisabled() && !p_114485_.isDormant())
+			{
+				BTAClientUtil.coloredGlowingModelCopyLayerRender(this.blasterModel, this.blasterModel, LAYER_BLASTER, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
+			}
 			break;
 		}
 		p_114488_.popPose();
@@ -72,9 +89,9 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 		switch(p_114482_.getHeadType())
 		{
 		case SLASHER:
-			return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher.png");
+			return p_114482_.isDisabled() ? DISABLED_SLASHER : p_114482_.isDormant() ? DORMANT_SLASHER : TEXTURE_SLASHER;
 		case BLASTER:
-			return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster.png");
+			return p_114482_.isDisabled() ? DISABLED_BLASTER : p_114482_.isDormant() ? DORMANT_BLASTER : TEXTURE_BLASTER;
 		}
 		return null;
 	}

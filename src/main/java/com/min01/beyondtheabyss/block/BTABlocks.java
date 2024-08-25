@@ -56,7 +56,6 @@ public class BTABlocks
     
     public static final RegistryObject<Block> CHISELED_METAL = BLOCKS.register("chiseled_metal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
     public static final RegistryObject<Block> METAL_BRICK = BLOCKS.register("metal_brick", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
-    public static final RegistryObject<Block> CUT_METAL = BLOCKS.register("cut_metal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
     public static final RegistryObject<Block> METAL_TILE = BLOCKS.register("metal_tile", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
     public static final RegistryObject<Block> METAL_PLATE = BLOCKS.register("metal_plate", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
     public static final RegistryObject<Block> BLUE_METAL_LANTERN = BLOCKS.register("blue_metal_lantern", () -> new ColoredMetalLanternBlock());

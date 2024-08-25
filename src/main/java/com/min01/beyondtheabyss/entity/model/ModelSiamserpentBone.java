@@ -20,11 +20,11 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBone> 
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "siamserpent_bone"), "main");
-	private final ModelPart SiamserpentBone;
+	private final ModelPart root;
 
 	public ModelSiamserpentBone(ModelPart root) 
 	{
-		this.SiamserpentBone = root.getChild("SiamserpentBone");
+		this.root = root.getChild("root");
 	}
 
 	public static LayerDefinition createBodyLayer() 
@@ -32,9 +32,11 @@ public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBon
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition SiamserpentBone = partdefinition.addOrReplaceChild("SiamserpentBone", CubeListBuilder.create().texOffs(43, 32).addBox(-2.0F, -6.042F, -7.7143F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+		PartDefinition SiamserpentBone = root.addOrReplaceChild("SiamserpentBone", CubeListBuilder.create().texOffs(43, 32).addBox(-2.0F, -6.042F, -7.7143F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
 		.texOffs(35, 53).addBox(0.0F, -13.042F, -7.7143F, 0.0F, 7.0F, 16.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 0).addBox(-9.0F, -4.042F, -7.7143F, 18.0F, 15.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 13.042F, -0.2857F));
+		.texOffs(0, 0).addBox(-9.0F, -4.042F, -7.7143F, 18.0F, 15.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.958F, -0.2857F));
 
 		SiamserpentBone.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 32).mirror().addBox(-16.0F, 0.0F, -8.0F, 16.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-9.0F, 7.958F, 1.2857F, 0.0F, 0.0F, -0.6109F));
 
@@ -51,18 +53,18 @@ public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBon
 	public void setupAnim(EntitySiamserpentBone entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.SiamserpentBone, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBone"), netHeadYaw, headPitch);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		SiamserpentBone.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	@Override
 	public ModelPart root()
 	{
-		return this.SiamserpentBone;
+		return this.root;
 	}
 }

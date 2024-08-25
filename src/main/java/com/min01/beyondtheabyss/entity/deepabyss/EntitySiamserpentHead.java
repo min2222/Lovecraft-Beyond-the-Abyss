@@ -27,6 +27,9 @@ import net.minecraft.world.phys.Vec2;
 public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySiamserpentHead>
 {
 	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
+	
 	public final KinematicChain chain = new KinematicChain(this);
 	
 	public EntitySiamserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
@@ -48,6 +51,8 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
     {
     	super.defineSynchedData();
     	this.entityData.define(HEAD_TYPE, 0);
+    	this.entityData.define(IS_DISABLED, false);
+    	this.entityData.define(IS_DORMANT, false);
     }
 
 	@Override
@@ -77,6 +82,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
     		this.setYHeadRot(rot.y + 180.0F);
     		this.setYBodyRot(rot.y + 180.0F);
     		this.setCanLookOrMove(false);
+    		this.setDormant(true);
 		}
 	}
 
@@ -101,6 +107,26 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
 		{
 			this.setHeadType(HeadType.values()[p_21450_.getInt("HeadType")]);
 		}
+	}
+	
+	public void setDormant(boolean value)
+	{
+		this.entityData.set(IS_DORMANT, value);
+	}
+	
+	public boolean isDormant()
+	{
+		return this.entityData.get(IS_DORMANT);
+	}
+	
+	public void setDisabled(boolean value)
+	{
+		this.entityData.set(IS_DISABLED, value);
+	}
+	
+	public boolean isDisabled()
+	{
+		return this.entityData.get(IS_DISABLED);
 	}
 	
 	public void setHeadType(HeadType value)

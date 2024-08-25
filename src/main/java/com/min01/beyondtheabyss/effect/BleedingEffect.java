@@ -1,10 +1,9 @@
 package com.min01.beyondtheabyss.effect;
 
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
-public class BleedingEffect extends MobEffect
+public class BleedingEffect extends BasicBTAEffect
 {
 	public BleedingEffect()
 	{
@@ -12,14 +11,8 @@ public class BleedingEffect extends MobEffect
 	}
 	
 	@Override
-	public boolean isDurationEffectTick(int duration, int amplifier) 
-	{
-		return duration > 0;
-	}
-	
-	@Override
 	public void applyEffectTick(LivingEntity p_19467_, int p_19468_) 
 	{
-		
+		//TODO
 	}
 }

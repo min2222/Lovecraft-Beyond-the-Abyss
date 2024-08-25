@@ -20,11 +20,11 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelSiamserpentMiddleBone extends HierarchicalModel<EntitySiamserpentBone> 
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "siamserpent_middlebone"), "main");
-	private final ModelPart SiamserpentMiddlebone;
+	private final ModelPart root;
 
 	public ModelSiamserpentMiddleBone(ModelPart root) 
 	{
-		this.SiamserpentMiddlebone = root.getChild("SiamserpentMiddlebone");
+		this.root = root.getChild("root");
 	}
 
 	public static LayerDefinition createBodyLayer() 
@@ -32,9 +32,11 @@ public class ModelSiamserpentMiddleBone extends HierarchicalModel<EntitySiamserp
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("SiamserpentMiddlebone", CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, -2.5F, -8.0F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+		root.addOrReplaceChild("SiamserpentMiddlebone", CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, -2.5F, -8.0F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
 		.texOffs(25, 37).addBox(0.0F, -10.5F, -8.0F, 0.0F, 8.0F, 16.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 0).addBox(-9.0F, -0.5F, -8.0F, 18.0F, 15.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 9.5F, 0.0F));
+		.texOffs(0, 0).addBox(-9.0F, -0.5F, -8.0F, 18.0F, 15.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -14.5F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
@@ -43,18 +45,18 @@ public class ModelSiamserpentMiddleBone extends HierarchicalModel<EntitySiamserp
 	public void setupAnim(EntitySiamserpentBone entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.SiamserpentMiddlebone, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentMiddlebone"), netHeadYaw, headPitch);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		SiamserpentMiddlebone.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	@Override
 	public ModelPart root()
 	{
-		return this.SiamserpentMiddlebone;
+		return this.root;
 	}
 }

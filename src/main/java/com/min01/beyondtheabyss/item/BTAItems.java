@@ -117,7 +117,6 @@ public class BTAItems
 	public static final RegistryObject<Item> FALLEN_SKELETON = registerNoRotationLimitBlockItem("fallen_skeleton", () -> BTABlocks.FALLEN_SKELETON.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHISELED_METAL = registerBlockItem("chiseled_metal", () -> BTABlocks.CHISELED_METAL.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_BRICK = registerBlockItem("metal_brick", () -> BTABlocks.METAL_BRICK.get(), new Item.Properties());
-	public static final RegistryObject<Item> CUT_METAL = registerBlockItem("cut_metal", () -> BTABlocks.CUT_METAL.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_TILE = registerBlockItem("metal_tile", () -> BTABlocks.METAL_TILE.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_PLATE = registerBlockItem("metal_plate", () -> BTABlocks.METAL_PLATE.get(), new Item.Properties());
 	public static final RegistryObject<Item> BLUE_METAL_LANTERN = registerBlockItem("blue_metal_lantern", () -> BTABlocks.BLUE_METAL_LANTERN.get(), new Item.Properties());

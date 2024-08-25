@@ -20,24 +20,26 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelSiamserpentSlasher extends HierarchicalModel<EntitySiamserpentHead>
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "siamserpent_slasher"), "main");
-	private final ModelPart SiamserpentSlasher;
+	private final ModelPart root;
 
 	public ModelSiamserpentSlasher(ModelPart root) 
 	{
-		this.SiamserpentSlasher = root.getChild("SiamserpentSlasher");
+		this.root = root.getChild("root");
 	}
 
 	public static LayerDefinition createBodyLayer()
 	{
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
+		
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("SiamserpentSlasher", CubeListBuilder.create().texOffs(0, 53).addBox(-7.0F, -4.3333F, -3.9167F, 14.0F, 10.0F, 23.0F, new CubeDeformation(0.0F))
+		root.addOrReplaceChild("SiamserpentSlasher", CubeListBuilder.create().texOffs(0, 53).addBox(-7.0F, -4.3333F, -3.9167F, 14.0F, 10.0F, 23.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 29).addBox(-11.0F, 2.6667F, -3.9167F, 22.0F, 0.0F, 23.0F, new CubeDeformation(0.0F))
 		.texOffs(52, 64).addBox(-7.0F, 5.6667F, -3.9167F, 14.0F, 3.0F, 23.0F, new CubeDeformation(0.0F))
 		.texOffs(73, 0).addBox(0.0F, -7.3333F, 5.0833F, 0.0F, 3.0F, 14.0F, new CubeDeformation(0.0F))
 		.texOffs(65, 29).addBox(-2.0F, -4.3333F, -29.9167F, 4.0F, 4.0F, 26.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 0).addBox(-11.0F, -2.3333F, -31.9167F, 22.0F, 0.0F, 28.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 13.3333F, -7.5833F));
+		.texOffs(0, 0).addBox(-11.0F, -2.3333F, -31.9167F, 22.0F, 0.0F, 28.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.6667F, -7.5833F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
@@ -46,18 +48,18 @@ public class ModelSiamserpentSlasher extends HierarchicalModel<EntitySiamserpent
 	public void setupAnim(EntitySiamserpentHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.SiamserpentSlasher, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentSlasher"), netHeadYaw, headPitch);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) 
 	{
-		SiamserpentSlasher.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	@Override
 	public ModelPart root() 
 	{
-		return this.SiamserpentSlasher;
+		return this.root;
 	}
 }

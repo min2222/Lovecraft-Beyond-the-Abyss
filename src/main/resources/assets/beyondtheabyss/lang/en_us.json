@@ -84,7 +84,6 @@
 	"block.beyondtheabyss.fallen_skeleton": "Fallen Skeleton",
 	"block.beyondtheabyss.chiseled_metal": "Chiseled Metal",
 	"block.beyondtheabyss.metal_brick": "Metal Brick",
-	"block.beyondtheabyss.cut_metal": "Cut Metal",
 	"block.beyondtheabyss.metal_tile": "Metal Tile",
 	"block.beyondtheabyss.metal_plate": "Metal Plate",
 	"block.beyondtheabyss.blue_metal_lantern": "Blue Metal Lantern",
@@ -112,7 +111,9 @@
 	"effect.beyondtheabyss.air_swim": "Air Swim",
 	"effect.beyondtheabyss.air_swim.description": "able to swim in air",
 	"effect.beyondtheabyss.bleeding": "Bleeding",
-	"effect.beyondtheabyss.bleeding.description": "bleeding",
+	"effect.beyondtheabyss.bleeding.description": "TODO",
+	"effect.beyondtheabyss.black_bleeding": "Black Bleeding",
+	"effect.beyondtheabyss.black_bleeding.description": "TODO",
 	"effect.beyondtheabyss.hallucination": "Hallucination",
-	"effect.beyondtheabyss.hallucination.description": "hallucination"
+	"effect.beyondtheabyss.hallucination.description": "TODO"
 }

@@ -20,11 +20,11 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelAbyssalBulbray extends HierarchicalModel<EntityAbyssalBulbray> 
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "abyssal_bulbray"), "main");
-	private final ModelPart Mantangler;
+	private final ModelPart root;
 
 	public ModelAbyssalBulbray(ModelPart root)
 	{
-		this.Mantangler = root.getChild("Mantangler");
+		this.root = root.getChild("root");
 	}
 
 	public static LayerDefinition createBodyLayer() 
@@ -32,7 +32,9 @@ public class ModelAbyssalBulbray extends HierarchicalModel<EntityAbyssalBulbray>
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition Mantangler = partdefinition.addOrReplaceChild("Mantangler", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+		PartDefinition Mantangler = root.addOrReplaceChild("Mantangler", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		PartDefinition Body = Mantangler.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-14.5F, -4.0F, -17.0F, 29.0F, 4.0F, 34.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, -4.0F, -4.0F));
 
@@ -98,18 +100,18 @@ public class ModelAbyssalBulbray extends HierarchicalModel<EntityAbyssalBulbray>
 	public void setupAnim(EntityAbyssalBulbray entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.Mantangler, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("Mantangler"), netHeadYaw, headPitch);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) 
 	{
-		Mantangler.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	@Override
 	public ModelPart root() 
 	{
-		return this.Mantangler;
+		return this.root;
 	}
 }

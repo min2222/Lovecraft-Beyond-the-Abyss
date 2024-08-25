@@ -1,9 +1,7 @@
 package com.min01.beyondtheabyss.entity.multipart;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.Nullable;
 
@@ -32,7 +30,6 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 {
@@ -71,6 +68,11 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 		if(this.entity.level.isClientSide)
 		{
 			this.clientTick(partialTick);
+			
+			if(this.entity.tickCount == 4)
+			{
+				this.hitbox = this.buildHitBox();
+			}
 		}
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
@@ -92,10 +94,11 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	public void clientTick(float partialTick)
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
+		this.defaultAnimation(model, this.entity, partialTick);
 		model.root().getAllParts().forEach(part ->
 		{
         	//FIXME cause fps lag
-			String name = BTAClientUtil.getModelPartName(model.root(), part);
+			String name = this.getModelPartName(model.root(), part);
         	EntityPart entityPart = this.hitbox.getPart(name);
             Vec3 partPos = (new Vec3((double)(-part.x), (double)(-part.y), (double)part.z)).scale(SCALE * this.getRenderScale());
             Vec3 pivot = Vec3.ZERO;
@@ -145,7 +148,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
     public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
     {
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
-        String name = BTAClientUtil.getModelPartName(model.root(), part);
+        String name = this.getModelPartName(model.root(), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
         if(parent != null) 
         {
@@ -166,8 +169,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
     public AABB getPartSize(ModelPart part, String name)
     {
         AABB box = null;
-    	List<ModelPart.Cube> cubes = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104212_");
-        for(ModelPart.Cube cube : cubes)
+        for(ModelPart.Cube cube : part.cubes)
         {
             Vec3 min = (new Vec3((double)cube.minX, (double)cube.minY, (double)cube.minZ)).scale(SCALE * this.getRenderScale());
             Vec3 max = (new Vec3((double)cube.maxX, (double)cube.maxY, (double)cube.maxZ)).scale(SCALE * this.getRenderScale());
@@ -198,37 +200,11 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	@OnlyIn(Dist.CLIENT)
     public String getModelPartName(ModelPart root, ModelPart target) 
     {
-        AtomicReference<String> name = new AtomicReference<>(ROOT);
-        root.getAllParts().forEach(part -> 
+        if(target != root)
         {
-        	Map<String, ModelPart> children = part.children;
-        	if(children.containsValue(target))
-        	{
-        		children.forEach((t, u) -> 
-        		{
-        			if(u == target)
-        			{
-        				name.set(t);
-        			}
-        		});
-        	}
-        });
-        return name.get();
-		/*for(ModelPart part : root.getAllParts().toList())
-        {
-        	Map<String, ModelPart> children = part.children;
-        	if(children.containsValue(target))
-        	{
-        		for(Map.Entry<String, ModelPart> entry : children.entrySet())
-        		{
-        			if(entry.getValue() == target)
-        			{
-        				return entry.getKey();
-        			}
-        		}
-        	}
+        	return String.valueOf(target.hashCode());
         }
-        return ROOT;*/
+        return ROOT;
     }
 
 	@OnlyIn(Dist.CLIENT)

@@ -20,19 +20,21 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelGnasher extends HierarchicalModel<EntityGnasher>
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "gnasher"), "main");
-	private final ModelPart Gnasher;
+	private final ModelPart root;
 
 	public ModelGnasher(ModelPart root) 
 	{
-		this.Gnasher = root.getChild("Gnasher");
+		this.root = root.getChild("root");
 	}
 
 	public static LayerDefinition createBodyLayer() 
 	{
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
+		
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition Gnasher = partdefinition.addOrReplaceChild("Gnasher", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition Gnasher = root.addOrReplaceChild("Gnasher", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		PartDefinition Body = Gnasher.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, -6.3333F, -6.8333F, 10.0F, 12.0F, 14.0F, new CubeDeformation(0.0F))
 		.texOffs(35, 13).addBox(0.0F, 4.6667F, -4.8333F, 0.0F, 4.0F, 14.0F, new CubeDeformation(0.0F))
@@ -61,18 +63,18 @@ public class ModelGnasher extends HierarchicalModel<EntityGnasher>
 	public void setupAnim(EntityGnasher entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.Gnasher, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("Gnasher"), netHeadYaw, headPitch);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) 
 	{
-		Gnasher.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	@Override
 	public ModelPart root() 
 	{
-		return this.Gnasher;
+		return this.root;
 	}
 }

@@ -1,11 +1,10 @@
 package com.min01.beyondtheabyss.util;
 
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.renderer.IModel;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -14,11 +13,14 @@ import com.mojang.math.Vector4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
@@ -31,6 +33,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
+	
+	public static <T extends AbstractBTAMob> void coloredGlowingModelCopyLayerRender(EntityModel<T> p_117360_, EntityModel<T> p_117361_, ResourceLocation p_117362_, PoseStack p_117363_, MultiBufferSource p_117364_, int p_117365_, T p_117366_, float p_117367_, float p_117368_, float p_117369_, float p_117370_, float p_117371_, float p_117372_, float p_117373_, float p_117374_, float p_117375_)
+	{
+		if(!p_117366_.isInvisible())
+		{
+			p_117360_.copyPropertiesTo(p_117361_);
+			p_117361_.prepareMobModel(p_117366_, p_117367_, p_117368_, p_117372_);
+			p_117361_.setupAnim(p_117366_, p_117367_, p_117368_, p_117369_, p_117370_, p_117371_);
+			renderColoredGlowingModel(p_117361_, p_117362_, p_117363_, p_117364_, p_117365_, p_117366_, p_117373_, p_117374_, p_117375_);
+		}
+	}
+
+	public static <T extends AbstractBTAMob> void renderColoredGlowingModel(EntityModel<T> p_117377_, ResourceLocation p_117378_, PoseStack p_117379_, MultiBufferSource p_117380_, int p_117381_, T p_117382_, float p_117383_, float p_117384_, float p_117385_)
+	{
+		VertexConsumer vertexconsumer = p_117380_.getBuffer(BTARenderType.eyesFix(p_117378_));
+		p_117377_.renderToBuffer(p_117379_, vertexconsumer, p_117381_, LivingEntityRenderer.getOverlayCoords(p_117382_, 0.0F), p_117383_, p_117384_, p_117385_, 1.0F);
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T extends AbstractBTAMob> HierarchicalModel<T> getModelFromEntity(T entity)
@@ -46,26 +65,6 @@ public class BTAClientUtil
 		}
 		return null;
 	}
-	
-    public static String getModelPartName(ModelPart root, ModelPart target) 
-    {
-        AtomicReference<String> name = new AtomicReference<>("root");
-        root.getAllParts().filter(part -> 
-        {
-            return part.children.containsValue(target);
-        }).findFirst().ifPresent(part -> 
-        {
-            for(Map.Entry<String, ModelPart> entry : part.children.entrySet()) 
-            {
-                if(entry.getValue() == target) 
-                {
-                    name.set(entry.getKey());
-                    return;
-                }
-            }
-        });
-        return name.get();
-    }
 	
 	public static void setupRotations(AbstractBTAMob p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) 
 	{

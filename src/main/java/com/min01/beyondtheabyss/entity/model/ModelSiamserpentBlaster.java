@@ -20,19 +20,21 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelSiamserpentBlaster extends HierarchicalModel<EntitySiamserpentHead>
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "iamserpent_blaster"), "main");
-	private final ModelPart SiamserpentBlaster;
+	private final ModelPart root;
 
 	public ModelSiamserpentBlaster(ModelPart root) 
 	{
-		this.SiamserpentBlaster = root.getChild("SiamserpentBlaster");
+		this.root = root.getChild("root");
 	}
 
 	public static LayerDefinition createBodyLayer() 
 	{
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
+		
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition SiamserpentBlaster = partdefinition.addOrReplaceChild("SiamserpentBlaster", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition SiamserpentBlaster = root.addOrReplaceChild("SiamserpentBlaster", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		PartDefinition Up = SiamserpentBlaster.addOrReplaceChild("Up", CubeListBuilder.create().texOffs(0, 66).addBox(-6.0F, -8.9532F, -15.7F, 12.0F, 9.0F, 17.0F, new CubeDeformation(0.0F))
 		.texOffs(58, 9).addBox(-6.0F, 0.0468F, -23.7F, 12.0F, 2.0F, 25.0F, new CubeDeformation(0.0F))
@@ -56,18 +58,18 @@ public class ModelSiamserpentBlaster extends HierarchicalModel<EntitySiamserpent
 	public void setupAnim(EntitySiamserpentHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.SiamserpentBlaster, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBlaster"), netHeadYaw, headPitch);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		SiamserpentBlaster.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	@Override
 	public ModelPart root() 
 	{
-		return this.SiamserpentBlaster;
+		return this.root;
 	}
 }

@@ -35,9 +35,9 @@ public class ModelDeepVampire extends HierarchicalModel<EntityDeepVampire>
 
 		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition DeepVamp = root.addOrReplaceChild("DeepVamp", CubeListBuilder.create(), PartPose.offset(0.0F, -8.0F, 35.4241F));
+		PartDefinition DeepVamp = root.addOrReplaceChild("DeepVamp", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 35.4241F));
 
-		PartDefinition Head = DeepVamp.addOrReplaceChild("Head", CubeListBuilder.create(), PartPose.offset(0.0F, -0.8F, -32.0F));
+		PartDefinition Head = DeepVamp.addOrReplaceChild("Head", CubeListBuilder.create(), PartPose.offset(0.0F, -8.8F, 3.4241F));
 
 		Head.addOrReplaceChild("Up", CubeListBuilder.create().texOffs(0, 65).addBox(-3.5F, -5.5F, -11.0F, 7.0F, 5.0F, 11.0F, new CubeDeformation(0.02F))
 		.texOffs(62, 0).addBox(-3.5F, -0.5F, -11.0F, 7.0F, 6.0F, 11.0F, new CubeDeformation(0.02F)), PartPose.offset(0.0F, 3.0F, 0.0F));
@@ -61,7 +61,7 @@ public class ModelDeepVampire extends HierarchicalModel<EntityDeepVampire>
 
 		cube5.addOrReplaceChild("cube6", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 5.0F, 0.0F));
 
-		PartDefinition Body = DeepVamp.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(32, 0).addBox(-2.5F, -3.0F, 0.25F, 5.0F, 5.0F, 19.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, 0.0F, -32.25F));
+		PartDefinition Body = DeepVamp.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(32, 0).addBox(-2.5F, -3.0F, 0.25F, 5.0F, 5.0F, 19.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, -8.0F, 3.1741F));
 
 		Body.addOrReplaceChild("BodyPos", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 12.0F));
 
@@ -113,7 +113,7 @@ public class ModelDeepVampire extends HierarchicalModel<EntityDeepVampire>
 	public void setupAnim(EntityDeepVampire entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("DeepVamp"), netHeadYaw, headPitch);
 		BTAClientUtil.animateWalk(entity, this, DeepVampireAnimation.DEEP_VAMPIRE_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 		this.animate(entity.biteRightAnimationState, DeepVampireAnimation.DEEP_VAMPIRE_BITE_RIGHT, ageInTicks);
 		this.animate(entity.biteLeftAnimationState, DeepVampireAnimation.DEEP_VAMPIRE_BITE_LEFT, ageInTicks);

@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.deepabyss.AbyssalScalesEffect;
+import com.min01.beyondtheabyss.effect.deepabyss.BlackBleedingEffect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -27,5 +28,6 @@ public class BTAEffects
 	
 	public static final RegistryObject<MobEffect> AIR_SWIM = EFFECTS.register("air_swim", () -> new BasicBTAEffect(MobEffectCategory.NEUTRAL, 3407871));
 	public static final RegistryObject<MobEffect> BLEEDING = EFFECTS.register("bleeding", () -> new BleedingEffect());
+	public static final RegistryObject<MobEffect> BLACK_BLEEDING = EFFECTS.register("black_bleeding", () -> new BlackBleedingEffect());
 	public static final RegistryObject<MobEffect> HALLUCINATION = EFFECTS.register("hallucination", () -> new BasicBTAEffect(MobEffectCategory.HARMFUL, 8109500));
 }

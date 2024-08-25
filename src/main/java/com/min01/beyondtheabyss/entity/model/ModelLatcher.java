@@ -21,11 +21,11 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelLatcher extends HierarchicalModel<EntityLatcher> 
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "latcher"), "main");
-	private final ModelPart LatchingIsopod;
+	private final ModelPart root;
 
 	public ModelLatcher(ModelPart root)
 	{
-		this.LatchingIsopod = root.getChild("LatchingIsopod");
+		this.root = root.getChild("root");
 	}
 
 	public static LayerDefinition createBodyLayer() 
@@ -33,7 +33,9 @@ public class ModelLatcher extends HierarchicalModel<EntityLatcher>
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition LatchingIsopod = partdefinition.addOrReplaceChild("LatchingIsopod", CubeListBuilder.create(), PartPose.offset(0.0F, 21.0F, 0.0F));
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+		PartDefinition LatchingIsopod = root.addOrReplaceChild("LatchingIsopod", CubeListBuilder.create(), PartPose.offset(0.0F, -3.0F, 0.0F));
 
 		PartDefinition Body = LatchingIsopod.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 30).addBox(-4.5F, -3.0F, 0.0F, 9.0F, 6.0F, 14.0F, new CubeDeformation(0.02F))
 		.texOffs(0, 51).addBox(0.0F, -5.0F, 1.0F, 0.0F, 2.0F, 13.0F, new CubeDeformation(0.0F))
@@ -122,7 +124,7 @@ public class ModelLatcher extends HierarchicalModel<EntityLatcher>
 	public void setupAnim(EntityLatcher entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		//BTAClientUtil.animateHead(this.LatchingIsopod, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("LatchingIsopod"), netHeadYaw, headPitch);
 		this.animate(entity.propelAnimationState, LatcherAnimation.LATCHER_PROPEL, ageInTicks);
 		this.animate(entity.startLatchAnimationState, LatcherAnimation.LATCHER_START_LATCH, ageInTicks);
 		this.animate(entity.latchAnimationState, LatcherAnimation.LATCHER_LATCH, ageInTicks);
@@ -132,12 +134,12 @@ public class ModelLatcher extends HierarchicalModel<EntityLatcher>
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) 
 	{
-		LatchingIsopod.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	@Override
 	public ModelPart root() 
 	{
-		return this.LatchingIsopod;
+		return this.root;
 	}
 }
