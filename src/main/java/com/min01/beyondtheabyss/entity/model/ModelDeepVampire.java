@@ -35,7 +35,7 @@ public class ModelDeepVampire extends HierarchicalModel<EntityDeepVampire>
 
 		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition DeepVamp = root.addOrReplaceChild("DeepVamp", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 35.4241F));
+		PartDefinition DeepVamp = root.addOrReplaceChild("DeepVamp", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.4241F));
 
 		PartDefinition Head = DeepVamp.addOrReplaceChild("Head", CubeListBuilder.create(), PartPose.offset(0.0F, -8.8F, 3.4241F));
 
