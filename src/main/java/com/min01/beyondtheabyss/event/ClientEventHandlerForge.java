@@ -14,9 +14,10 @@ import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -90,27 +91,29 @@ public class ClientEventHandlerForge
     	{
         	if(event.getOverlay() == VanillaGuiOverlay.FOOD_LEVEL.type())
         	{
-        		PoseStack poseStack = event.getPoseStack();
+        		GuiGraphics guiGraphics = event.getGuiGraphics();
+        		PoseStack poseStack = guiGraphics.pose();
                 int screenWidth = BTAClientUtil.MC.getWindow().getGuiScaledWidth();
                 int screenHeight = BTAClientUtil.MC.getWindow().getGuiScaledHeight();
                 IGuiOverlay overlay = GuiOverlayManager.findOverlay(VanillaGuiOverlay.FOOD_LEVEL.id()).overlay();
         		event.setCanceled(true);
         		poseStack.pushPose();
         		poseStack.translate(-100, 0, 0);
-        		overlay.render((ForgeGui) BTAClientUtil.MC.gui, poseStack, event.getPartialTick(), screenWidth, screenHeight);
+        		overlay.render((ForgeGui) BTAClientUtil.MC.gui, guiGraphics, event.getPartialTick(), screenWidth, screenHeight);
         		poseStack.popPose();
         	}
         	
         	if(event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type())
         	{
-        		PoseStack poseStack = event.getPoseStack();
+        		GuiGraphics guiGraphics = event.getGuiGraphics();
+        		PoseStack poseStack = guiGraphics.pose();
                 int screenWidth = BTAClientUtil.MC.getWindow().getGuiScaledWidth();
                 int screenHeight = BTAClientUtil.MC.getWindow().getGuiScaledHeight();
                 IGuiOverlay overlay = GuiOverlayManager.findOverlay(VanillaGuiOverlay.PLAYER_HEALTH.id()).overlay();
         		event.setCanceled(true);
         		poseStack.pushPose();
         		poseStack.translate(100, 0, 0);
-        		overlay.render((ForgeGui) BTAClientUtil.MC.gui, poseStack, event.getPartialTick(), screenWidth, screenHeight);
+        		overlay.render((ForgeGui) BTAClientUtil.MC.gui, guiGraphics, event.getPartialTick(), screenWidth, screenHeight);
         		poseStack.popPose();
         	}
     	}
@@ -129,8 +132,8 @@ public class ClientEventHandlerForge
     		float f1 = Mth.rotLerp(partialTick, submarine.yHeadRotO, submarine.yHeadRot);
     		float f2 = f1 - f;
             float f6 = Mth.lerp(partialTick, submarine.xRotO, submarine.getXRot());
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(f2 + 180));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(f6));
+            poseStack.mulPose(Axis.YP.rotationDegrees(f2 + 180));
+            poseStack.mulPose(Axis.XP.rotationDegrees(f6));
     	}
     }
     

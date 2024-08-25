@@ -69,9 +69,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.BlockModelRotation;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -125,7 +122,7 @@ public class ClientEventHandler
     @SubscribeEvent
     public static void onRegisterShaders(RegisterShadersEvent event)
     {
-        for(Pair<ShaderInstance, Consumer<ShaderInstance>> pair : BTARenderType.registerShaders(event.getResourceManager())) 
+        for(Pair<ShaderInstance, Consumer<ShaderInstance>> pair : BTARenderType.registerShaders(event.getResourceProvider())) 
         {
             event.registerShader(pair.getFirst(), pair.getSecond());
         }
@@ -134,7 +131,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
 	{
-		event.register(BTAParticles.SHOCKWAVE.get(), ShockwaveParticle.Provider::new);
+		event.registerSpriteSet(BTAParticles.SHOCKWAVE.get(), ShockwaveParticle.Provider::new);
 	}
     
 	@SubscribeEvent
@@ -144,17 +141,16 @@ public class ClientEventHandler
 	}
     
     @SubscribeEvent
-    public static void onModelBakingCompleted(ModelEvent.BakingCompleted event)
+    public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event)
     {
     	registerItemModel(event, "ghidruth_scale_harpoon");
     }
     
-    public static void registerItemModel(ModelEvent.BakingCompleted event, String model)
+    public static void registerItemModel(ModelEvent.ModifyBakingResult event, String model)
     {
     	ModelResourceLocation loc = new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, model), "inventory");
     	ModelResourceLocation modelLoc = new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, model + "_in_hand"), "inventory");
-    	BakedModel bakedModel = event.getModelBakery().getModel(modelLoc).bake(event.getModelBakery(), Material::sprite, BlockModelRotation.X0_Y0, new ResourceLocation(BeyondtheAbyss.MODID, model));
-    	event.getModels().replace(loc, new SimpleBakedModelWrapper(event.getModels().get(loc), bakedModel));
+    	event.getModels().replace(loc, new SimpleBakedModelWrapper(event.getModels().get(loc), event.getModels().get(modelLoc)));
     }
     
 	@SubscribeEvent

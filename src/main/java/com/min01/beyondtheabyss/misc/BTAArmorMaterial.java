@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.misc;
 import java.util.function.Supplier;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -31,15 +31,15 @@ public class BTAArmorMaterial implements ArmorMaterial
 	}
 
 	@Override
-	public int getDurabilityForSlot(EquipmentSlot p_40484_) 
+	public int getDurabilityForType(ArmorItem.Type p_40484_) 
 	{
-		return this.durability[p_40484_.getIndex()];
+		return this.durability[p_40484_.ordinal()];
 	}
 
 	@Override
-	public int getDefenseForSlot(EquipmentSlot p_40487_)
+	public int getDefenseForType(ArmorItem.Type p_40487_)
 	{
-		return this.slotProtections[p_40487_.getIndex()];
+		return this.slotProtections[p_40487_.ordinal()];
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.joml.Quaternionf;
+
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
@@ -12,8 +14,7 @@ import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.EntityModel;
@@ -128,11 +129,8 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
             entityPart.setPivotX(pivot.x);
             entityPart.setPivotY(pivot.y);
             entityPart.setPivotZ(pivot.z);
-            Quaternion rotation = new Quaternion(0, 0, 0, 1);
-            rotation.mul(Vector3f.ZP.rotation(part.zRot));
-            rotation.mul(Vector3f.YP.rotation(-part.yRot));
-            rotation.mul(Vector3f.XP.rotation(-part.xRot));
-            entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
+            Quaternionf rotation = new Quaternionf().rotateZYX(part.zRot, -part.yRot, -part.xRot);
+            entityPart.setRotation(new QuaternionD((double)rotation.x, (double)rotation.y, (double)rotation.z, (double)rotation.w));
         });
 	}
 
@@ -211,8 +209,8 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
     public void defaultAnimation(EntityModel<T> model, T entity, float partialTick)
     {
         boolean shouldSit = entity.isPassenger() && entity.getVehicle() != null && entity.getVehicle().shouldRiderSit();
-        float limbSwing = !shouldSit && entity.isAlive() ? entity.animationPosition - entity.animationSpeed * (1.0F - partialTick) : 0.0F;
-        float limbSwingAmount = !shouldSit && entity.isAlive() ? Mth.lerp(partialTick, entity.animationSpeedOld, entity.animationSpeed) : 0.0F;
+        float limbSwing = !shouldSit && entity.isAlive() ? entity.walkAnimation.position(partialTick) : 0.0F;
+        float limbSwingAmount = !shouldSit && entity.isAlive() ? entity.walkAnimation.speed(partialTick) : 0.0F;
         model.attackTime = entity.getAttackAnim(partialTick);
         model.young = entity.isBaby();
         model.riding = shouldSit;
@@ -279,7 +277,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
     
     public QuaternionD defaultEntityRotation(LivingEntity entity, float partialTick)
     {
-    	Quaternion rotation = new Quaternion(0, 0, 0, 1);
+    	Quaternionf rotation = new Quaternionf();
         float bodyRot = this.defaultBodyRotation(entity, partialTick);
         if(entity.isFullyFrozen())
         {
@@ -288,7 +286,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 
         if(!entity.hasPose(Pose.SLEEPING)) 
         {
-            rotation.mul(Vector3f.YP.rotationDegrees(180.0F - bodyRot));
+            rotation.mul(Axis.YP.rotationDegrees(180.0F - bodyRot));
         }
 
         if(entity.deathTime > 0)
@@ -300,32 +298,32 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
                 progress = 1.0F;
             }
 
-            rotation.mul(Vector3f.ZP.rotationDegrees(progress * 90.0F));
+            rotation.mul(Axis.ZP.rotationDegrees(progress * 90.0F));
         }
         else if(entity.isAutoSpinAttack()) 
         {
-        	rotation.mul(Vector3f.XP.rotationDegrees(-90.0F - entity.getXRot()));
-            rotation.mul(Vector3f.YP.rotationDegrees(((float)entity.tickCount + partialTick) * -75.0F));
+        	rotation.mul(Axis.XP.rotationDegrees(-90.0F - entity.getXRot()));
+            rotation.mul(Axis.YP.rotationDegrees(((float)entity.tickCount + partialTick) * -75.0F));
         }
         else if(entity.hasPose(Pose.SLEEPING)) 
         {
             Direction direction = entity.getBedOrientation();
             float sleepRot = direction != null ? this.sleepDirectionToRotation(direction) : bodyRot;
-            rotation.mul(Vector3f.YP.rotationDegrees(sleepRot));
-            rotation.mul(Vector3f.ZP.rotationDegrees(90.0F));
-            rotation.mul(Vector3f.YP.rotationDegrees(270.0F));
+            rotation.mul(Axis.YP.rotationDegrees(sleepRot));
+            rotation.mul(Axis.ZP.rotationDegrees(90.0F));
+            rotation.mul(Axis.YP.rotationDegrees(270.0F));
         }
         else if(this.isEntityUpsideDown(entity)) 
         {
-        	rotation.mul(Vector3f.ZP.rotationDegrees(180.0F));
+        	rotation.mul(Axis.ZP.rotationDegrees(180.0F));
         }
         
         if(this.isInWater() && !this.entity.isInWater())
         {
-        	rotation.mul(Vector3f.ZP.rotationDegrees(90.0F));
+        	rotation.mul(Axis.ZP.rotationDegrees(90.0F));
         }
 
-        return new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r());
+        return new QuaternionD((double)rotation.x, (double)rotation.y, (double)rotation.z, (double)rotation.w);
     }
     
     public float sleepDirectionToRotation(Direction direction) 

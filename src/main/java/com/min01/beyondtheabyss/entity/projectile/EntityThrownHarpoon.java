@@ -128,7 +128,7 @@ public class EntityThrownHarpoon extends AbstractArrow
 		}
 
 		Entity entity1 = this.getOwner();
-		DamageSource damagesource = DamageSource.trident(this, (Entity)(entity1 == null ? this : entity1));
+		DamageSource damagesource = this.damageSources().trident(this, (Entity)(entity1 == null ? this : entity1));
 		if(!this.isReinforced())
 		{
 			this.dealtDamage = true;

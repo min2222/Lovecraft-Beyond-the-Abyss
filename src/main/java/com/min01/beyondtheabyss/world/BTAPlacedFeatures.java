@@ -4,20 +4,32 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 
-public class BTAPlacedFeatures 
+public class BTAPlacedFeatures
 {
-	public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, BeyondtheAbyss.MODID);
+	public static final ResourceKey<PlacedFeature> CORAL_TREE = register("coral_tree");
+	public static final ResourceKey<PlacedFeature> BONES = register("bones");
 	
-	public static final RegistryObject<PlacedFeature> CORAL_TREE = PLACED_FEATURES.register("coral_tree", () -> new PlacedFeature(Holder.hackyErase(BTAConfiguredFeatures.CORAL_TREE.getHolder().get()), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
-	public static final RegistryObject<PlacedFeature> BONES = PLACED_FEATURES.register("bones", () -> new PlacedFeature(Holder.hackyErase(BTAConfiguredFeatures.BONES.getHolder().get()), List.copyOf(List.of(NoiseBasedCountPlacement.of(10, 200.0D, 0.1D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+	private static ResourceKey<PlacedFeature> register(String p_209839_) 
+	{
+		return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(BeyondtheAbyss.MODID, p_209839_));
+	}
+	
+	public static void bootstrap(BootstapContext<PlacedFeature> context) 
+	{
+		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
+		context.register(CORAL_TREE, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.CORAL_TREE), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+		context.register(BONES, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.BONES), List.copyOf(List.of(NoiseBasedCountPlacement.of(10, 200.0D, 0.1D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+	}
 }

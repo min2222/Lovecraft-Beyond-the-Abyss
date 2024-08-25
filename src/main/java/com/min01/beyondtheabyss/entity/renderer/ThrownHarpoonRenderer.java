@@ -1,13 +1,14 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
+import org.joml.Matrix4f;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.LightTexture;
@@ -40,8 +41,8 @@ public class ThrownHarpoonRenderer extends EntityRenderer<EntityThrownHarpoon>
 	public void render(EntityThrownHarpoon p_116111_, float p_116112_, float p_116113_, PoseStack p_116114_, MultiBufferSource p_116115_, int p_116116_) 
 	{
 		p_116114_.pushPose();
-		p_116114_.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(p_116113_, p_116111_.yRotO, p_116111_.getYRot()) - 90.0F));
-		p_116114_.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(p_116113_, p_116111_.xRotO, p_116111_.getXRot()) + 90.0F));
+		p_116114_.mulPose(Axis.YP.rotationDegrees(Mth.lerp(p_116113_, p_116111_.yRotO, p_116111_.getYRot()) - 90.0F));
+		p_116114_.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(p_116113_, p_116111_.xRotO, p_116111_.getXRot()) + 90.0F));
 		VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(p_116115_, this.getModel(p_116111_).renderType(this.getTextureLocation(p_116111_)), false, p_116111_.isFoil());
 		this.getModel(p_116111_).renderToBuffer(p_116114_, vertexconsumer, p_116116_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		p_116114_.popPose();
@@ -57,7 +58,7 @@ public class ThrownHarpoonRenderer extends EntityRenderer<EntityThrownHarpoon>
 		p_115464_.pushPose();
 		Vec3 vec3 = p_115466_.getRopeHoldPosition(p_115463_);
 		double d0 = (double)(Mth.lerp(p_115463_, p_115462_.yRotO, p_115462_.getYRot()) * ((float)Math.PI / 180F)) + (Math.PI / 2D);
-		Vec3 vec31 = p_115462_.getLeashOffset();
+		Vec3 vec31 = p_115462_.getLeashOffset( p_115463_);
 		double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
 		double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;
 		double d3 = Mth.lerp((double)p_115463_, p_115462_.xo, p_115462_.getX()) + d1;
@@ -69,11 +70,11 @@ public class ThrownHarpoonRenderer extends EntityRenderer<EntityThrownHarpoon>
 		float f2 = (float)(vec3.z - d5);
 		VertexConsumer vertexconsumer = p_115465_.getBuffer(RenderType.leash());
 		Matrix4f matrix4f = p_115464_.last().pose();
-		float f4 = Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F;
+		float f4 = Mth.invSqrt(f * f + f2 * f2) * 0.025F / 2.0F;
 		float f5 = f2 * f4;
 		float f6 = f * f4;
-		BlockPos blockpos = new BlockPos(p_115462_.getEyePosition(p_115463_));
-		BlockPos blockpos1 = new BlockPos(p_115466_.getEyePosition(p_115463_));
+		BlockPos blockpos = BlockPos.containing(p_115462_.getEyePosition(p_115463_));
+		BlockPos blockpos1 = BlockPos.containing(p_115466_.getEyePosition(p_115463_));
 		int i = this.getBlockLightLevel(p_115462_, blockpos);
 		int j = this.getBlockLightLevel(p_115462_, blockpos1);
 		int k = p_115462_.level.getBrightness(LightLayer.SKY, blockpos);

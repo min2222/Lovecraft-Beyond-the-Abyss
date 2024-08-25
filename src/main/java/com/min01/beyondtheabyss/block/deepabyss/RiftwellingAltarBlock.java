@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -38,7 +37,7 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public RiftwellingAltarBlock() 
 	{
-		super(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn((p_61031_, p_61032_, p_61033_, p_61034_) -> false).noOcclusion());
+		super(BlockBehaviour.Properties.of().strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn((p_61031_, p_61032_, p_61033_, p_61034_) -> false).noOcclusion());
 	}
 	
 	@Override

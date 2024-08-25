@@ -152,6 +152,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
 		return super.getTypeName();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
 	{

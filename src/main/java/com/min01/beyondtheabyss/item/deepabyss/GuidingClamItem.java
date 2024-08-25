@@ -4,7 +4,6 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BiomeTags;
@@ -19,7 +18,7 @@ public class GuidingClamItem extends Item
 {
 	public GuidingClamItem()
 	{
-		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MISC).stacksTo(1).rarity(BTAItems.RARITY_ABYSS));
+		super(new Item.Properties().stacksTo(1).rarity(BTAItems.RARITY_ABYSS));
 	}
 	
 	@Override
@@ -52,11 +51,11 @@ public class GuidingClamItem extends Item
 	{
         boolean isOverworld = entity.level.dimension() == Level.OVERWORLD;
         boolean isInWater = entity.isEyeInFluidType(Fluids.WATER.getFluidType());
-        if(isOverworld && isOpen(stack) && isInWater && entity.getThrowingEntity() != null)
+        if(isOverworld && isOpen(stack) && isInWater && entity.getOwner() != null)
         {
         	entity.setDeltaMovement(entity.getDeltaMovement().subtract(0, 0.01F, 0));
         	entity.setGlowingTag(true);
-        	if(entity.isOnGround() && entity.tickCount % 20 == 0)
+        	if(entity.onGround() && entity.tickCount % 20 == 0)
         	{
             	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 20, 0.05F, 10, 15);
             	entity.discard();

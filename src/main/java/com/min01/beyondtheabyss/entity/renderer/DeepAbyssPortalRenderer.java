@@ -1,13 +1,14 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -30,7 +31,7 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
 	{
 		p_114488_.pushPose();
 		RenderSystem.disableDepthTest();
-		p_114488_.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+		p_114488_.mulPose(Axis.XP.rotationDegrees(90.0F));
 		if(p_114485_.tickCount < 25)
 		{
 			p_114488_.scale(p_114485_.tickCount * 0.2F, p_114485_.tickCount * 0.2F, p_114485_.tickCount * 0.2F);
@@ -40,7 +41,7 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
 			p_114488_.scale(5, 5, 5);
 		}
 		p_114488_.translate(0, 0, -0.001F);
-		p_114488_.mulPose(Vector3f.ZP.rotationDegrees(p_114485_.tickCount));
+		p_114488_.mulPose(Axis.ZP.rotationDegrees(p_114485_.tickCount));
 		this.renderFlatQuad(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), p_114490_);
 		p_114488_.popPose();
 	}

@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.joml.Vector3f;
+
 import com.min01.beyondtheabyss.item.model.HierarchicalItemModel;
-import com.mojang.math.Vector3f;
 
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;

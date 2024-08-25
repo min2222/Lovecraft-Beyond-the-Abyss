@@ -6,7 +6,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -43,11 +42,11 @@ public class GhidruthTailSwingGoal extends BasicBTASkillGoal<EntityGhidruth>
 			AABB bodyAABB = new AABB(new Vec3(1.46875F, 0.0F, 2.53125F).reverse(), new Vec3(1.46875F, 3.1875F, 2.53125F));
 			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, tailAABB.inflate(3.5F));
 			list.removeIf((living) -> living == this.mob);
-			list.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 20));
+			list.forEach((living) -> living.hurt(this.mob.damageSources().mobAttack(this.mob), 20));
 			
 			List<LivingEntity> list1 = this.mob.level.getEntitiesOfClass(LivingEntity.class, bodyAABB.inflate(3.5F));
 			list1.removeIf((living) -> living == this.mob);
-			list1.forEach((living) -> living.hurt(DamageSource.mobAttack(this.mob), 20));
+			list1.forEach((living) -> living.hurt(this.mob.damageSources().mobAttack(this.mob), 20));
 		}
 	}
 

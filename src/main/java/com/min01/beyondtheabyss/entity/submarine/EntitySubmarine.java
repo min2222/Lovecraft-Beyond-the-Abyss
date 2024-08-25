@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -102,7 +103,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart
 	}
 	
 	@Override
-	public void positionRider(Entity p_20312_) 
+	public void positionRider(Entity p_20312_, Entity.MoveFunction function) 
 	{
 		if(this.getControllingPlayer() != null)
 		{
@@ -356,7 +357,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart
     @Override
     public boolean hurt(DamageSource p_21016_, float p_21017_)
     {
-    	if(!p_21016_.isBypassInvul())
+    	if(!p_21016_.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
     	{
     		return false;
     	}

@@ -12,10 +12,10 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class HarpoonItemRenderer extends BlockEntityWithoutLevelRenderer
@@ -31,7 +31,7 @@ public class HarpoonItemRenderer extends BlockEntityWithoutLevelRenderer
 	}
 	
 	@Override
-	public void renderByItem(ItemStack p_108830_, TransformType p_108831_, PoseStack p_108832_, MultiBufferSource p_108833_, int p_108834_, int p_108835_)
+	public void renderByItem(ItemStack p_108830_, ItemDisplayContext p_108831_, PoseStack p_108832_, MultiBufferSource p_108833_, int p_108834_, int p_108835_)
 	{
 		if(p_108830_.getItem() instanceof HarpoonItem harpoon)
 		{

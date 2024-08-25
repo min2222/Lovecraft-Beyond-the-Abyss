@@ -62,7 +62,7 @@ public class DeepAbyssUtil
 	
 	public static void fishFlopping(LivingEntity entity, SoundEvent flopSound, float volume, float yMotion)
 	{
-        if(!entity.isInWater() && entity.isOnGround() && entity.verticalCollision) 
+        if(!entity.isInWater() && entity.onGround() && entity.verticalCollision) 
         {
         	entity.setDeltaMovement(entity.getDeltaMovement().add((double)((entity.getRandom().nextFloat() * 2.0F - 1.0F) * 0.05F), yMotion, (double)((entity.getRandom().nextFloat() * 2.0F - 1.0F) * 0.05F)));
         	entity.setOnGround(false);

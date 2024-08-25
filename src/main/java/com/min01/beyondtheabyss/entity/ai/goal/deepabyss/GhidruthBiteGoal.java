@@ -7,7 +7,6 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -47,7 +46,7 @@ public class GhidruthBiteGoal extends BasicBTASkillGoal<EntityGhidruth>
 			list.removeIf((living) -> living == this.mob);
 			list.forEach((living) -> 
 			{
-				if(living.hurt(DamageSource.mobAttack(this.mob), 17))
+				if(living.hurt(this.mob.damageSources().mobAttack(this.mob), 17))
 				{
                     double d0 = living.getX() - headPos.x;
                     double d1 = living.getZ() - headPos.z;

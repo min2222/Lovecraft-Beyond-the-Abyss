@@ -14,7 +14,9 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.misc.BTADataProvider;
 
+import net.minecraft.data.DataGenerator;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +26,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent.Operation;
@@ -69,5 +72,12 @@ public class EventHandler
     	event.register(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalHermitCrab::checkHermitCrabSpawnRules, Operation.AND);
     	event.register(BTAEntities.ABYSSAL_BULBRAY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalBulbray::checkBulbraySpawnRules, Operation.AND);
     	event.register(BTAEntities.GNASHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGnasher::checkGnasherSpawnRules, Operation.AND);
+    }
+    
+    @SubscribeEvent
+    public static void onGatherData(GatherDataEvent event)
+    {
+        DataGenerator dataGenerator = event.getGenerator();
+        dataGenerator.addProvider(event.includeServer(), new BTADataProvider(dataGenerator.getPackOutput(), event.getLookupProvider()));
     }
 }

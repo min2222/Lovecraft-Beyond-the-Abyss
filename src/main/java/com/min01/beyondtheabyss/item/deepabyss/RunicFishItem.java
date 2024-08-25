@@ -1,20 +1,19 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
-import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
+import com.min01.beyondtheabyss.item.BasicBTAFoodItem;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class RunicFishItem extends Item
+public class RunicFishItem extends BasicBTAFoodItem
 {
 	public RunicFishItem(FoodProperties properties) 
 	{
-		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_FOODS).food(properties));
+		super(properties);
 	}
 	
 	@Override

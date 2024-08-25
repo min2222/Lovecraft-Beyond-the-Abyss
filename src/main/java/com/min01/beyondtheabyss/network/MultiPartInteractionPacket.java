@@ -70,7 +70,7 @@ public class MultiPartInteractionPacket
 	            ServerPlayer serverPlayer = ctx.get().getSender();
 	            if(serverPlayer != null)
 	            {
-		            ServerLevel serverLevel = serverPlayer.getLevel();
+		            ServerLevel serverLevel = (ServerLevel) serverPlayer.level;
 		            Entity entity = serverLevel.getEntity(message.entityId);
 		            if(entity != null)
 		            {

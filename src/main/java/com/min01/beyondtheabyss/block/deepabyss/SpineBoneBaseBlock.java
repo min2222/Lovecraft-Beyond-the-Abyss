@@ -14,8 +14,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -28,7 +27,7 @@ public class SpineBoneBaseBlock extends Block implements SimpleWaterloggedBlock
 	
 	public SpineBoneBaseBlock() 
 	{
-		super(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SAND).strength(2.0F).dynamicShape().noOcclusion().requiresCorrectToolForDrops().sound(SoundType.BONE_BLOCK));
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.SAND).strength(2.0F).dynamicShape().noOcclusion().requiresCorrectToolForDrops().sound(SoundType.BONE_BLOCK));
 	}
 	
 	@Override

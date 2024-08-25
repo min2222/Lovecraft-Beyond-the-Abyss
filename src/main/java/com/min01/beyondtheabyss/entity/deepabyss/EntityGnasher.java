@@ -245,6 +245,7 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 		return pRandom.nextInt(180) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
+	@SuppressWarnings("deprecation")
 	@Nullable
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, @Nullable SpawnGroupData p_21437_, @Nullable CompoundTag p_21438_) 

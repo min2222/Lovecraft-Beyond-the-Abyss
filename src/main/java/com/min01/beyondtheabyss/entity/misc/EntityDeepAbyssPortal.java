@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -69,11 +70,11 @@ public class EntityDeepAbyssPortal extends Entity
 		            {
 		            	if(entity instanceof ServerPlayer serverPlayer)
 		            	{
-		                    BTAUtil.teleportEntityToDimension(serverPlayer, serverLevel, new BlockPos(entity.getX(), -350, entity.getZ()));
+		                    BTAUtil.teleportEntityToDimension(serverPlayer, serverLevel, BlockPos.containing(entity.getX(), -350, entity.getZ()));
 		            	}
 		            	else
 		            	{
-		                    BTAUtil.teleportEntityToDimension(entity, serverLevel, new BlockPos(entity.getX(), -350, entity.getZ()));
+		                    BTAUtil.teleportEntityToDimension(entity, serverLevel, BlockPos.containing(entity.getX(), -350, entity.getZ()));
 		            	}
 		            }
 		        }
@@ -113,7 +114,7 @@ public class EntityDeepAbyssPortal extends Entity
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() 
+	public Packet<ClientGamePacketListener> getAddEntityPacket() 
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

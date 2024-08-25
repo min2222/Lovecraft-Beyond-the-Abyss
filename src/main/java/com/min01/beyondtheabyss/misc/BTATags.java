@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -18,7 +18,7 @@ public class BTATags
 		
 		private static TagKey<EntityType<?>> create(String p_203849_) 
 		{
-			return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
+			return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
 		}
 	}
 	
@@ -28,7 +28,7 @@ public class BTATags
 		
 		private static TagKey<Item> create(String p_203849_) 
 		{
-			return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
+			return TagKey.create(Registries.ITEM, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
 		}
 	}
 	
@@ -39,7 +39,7 @@ public class BTATags
 		
 		private static TagKey<Block> create(String p_203849_) 
 		{
-			return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
+			return TagKey.create(Registries.BLOCK, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
 		}
 	}
 }

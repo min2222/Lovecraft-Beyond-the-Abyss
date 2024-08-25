@@ -7,7 +7,6 @@ import com.google.common.collect.Multimap;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.renderer.HarpoonItemRenderer;
-import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -37,7 +36,7 @@ public class HarpoonItem extends Item
 	   
 	public HarpoonItem(Item.Properties properties, boolean isReinforced) 
 	{
-		super(properties.tab(DeepAbyssTabs.ABYSS_WEAPONS));
+		super(properties);
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", !isReinforced ? 5.0D : 8.0D, AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", !isReinforced ? -3.2D : - 3.0D, AttributeModifier.Operation.ADDITION));

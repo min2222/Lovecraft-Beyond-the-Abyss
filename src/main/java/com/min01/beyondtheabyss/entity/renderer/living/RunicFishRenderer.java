@@ -5,7 +5,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
 import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
 import com.min01.beyondtheabyss.entity.renderer.layer.RunicFishLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -26,7 +26,7 @@ public class RunicFishRenderer extends MobRenderer<EntityRunicFish, ModelRunicFi
 		if(!p_116226_.isInWater()) 
 		{
 			p_116227_.translate(0.5F, 0, 0);
-			p_116227_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+			p_116227_.mulPose(Axis.ZP.rotationDegrees(90.0F));
 		}
 	}
 

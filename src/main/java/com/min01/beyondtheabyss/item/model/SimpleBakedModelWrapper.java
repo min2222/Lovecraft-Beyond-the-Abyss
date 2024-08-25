@@ -2,8 +2,8 @@ package com.min01.beyondtheabyss.item.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraftforge.client.model.BakedModelWrapper;
 
 public class SimpleBakedModelWrapper extends BakedModelWrapper<BakedModel> 
@@ -17,7 +17,7 @@ public class SimpleBakedModelWrapper extends BakedModelWrapper<BakedModel>
 	}
 	
 	@Override
-	public BakedModel applyTransform(TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) 
+	public BakedModel applyTransform(ItemDisplayContext cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) 
 	{
 		switch(cameraTransformType)
 		{

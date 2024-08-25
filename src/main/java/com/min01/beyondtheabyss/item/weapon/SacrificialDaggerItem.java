@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.item.weapon;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +23,7 @@ public class SacrificialDaggerItem extends Item
 	   
 	public SacrificialDaggerItem(Item.Properties properties) 
 	{
-		super(properties.tab(DeepAbyssTabs.ABYSS_WEAPONS));
+		super(properties);
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 4.0D, AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -1.5D, AttributeModifier.Operation.ADDITION));

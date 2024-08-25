@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.mixin;
 
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,7 +11,6 @@ import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.shader.ExtendedPostChain;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -64,10 +64,10 @@ public class MixinLevelRenderer
 
 		if(shader != null)
 		{
-			PROJECTION_INVERSE.load(RenderSystem.getProjectionMatrix());
+			PROJECTION_INVERSE.add(RenderSystem.getProjectionMatrix());
 			PROJECTION_INVERSE.invert();
 
-			VIEW_INVERSE.load(mtx.last().pose());
+			VIEW_INVERSE.add(mtx.last().pose());
 			VIEW_INVERSE.invert();
 
 			shader.safeGetUniform("ProjInverseMat").set(PROJECTION_INVERSE);

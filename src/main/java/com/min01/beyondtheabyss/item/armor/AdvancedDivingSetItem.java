@@ -10,7 +10,6 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
-import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -37,12 +36,12 @@ public class AdvancedDivingSetItem extends ArmorItem
 	public static final UUID[] ARMOR_MODIFIER_UUID_PER_SLOT = new UUID[]{UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")};
 	public Multimap<Attribute, AttributeModifier> modifers;
 	
-	public AdvancedDivingSetItem(ArmorMaterial p_40386_, EquipmentSlot p_40387_)
+	public AdvancedDivingSetItem(ArmorMaterial p_40386_, ArmorItem.Type p_40387_)
 	{
-		super(p_40386_, p_40387_, new Item.Properties().tab(DeepAbyssTabs.ABYSS_ARMORS));
+		super(p_40386_, p_40387_, new Item.Properties());
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		UUID uuid = ARMOR_MODIFIER_UUID_PER_SLOT[p_40387_.getIndex()];
-		builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", (double)p_40386_.getDefenseForSlot(p_40387_), AttributeModifier.Operation.ADDITION));
+		UUID uuid = ARMOR_MODIFIER_UUID_PER_SLOT[p_40387_.ordinal()];
+		builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", (double)p_40386_.getDefenseForType(p_40387_), AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", (double)p_40386_.getToughness(), AttributeModifier.Operation.ADDITION));
 		if(p_40386_.getKnockbackResistance() > 0)
 		{

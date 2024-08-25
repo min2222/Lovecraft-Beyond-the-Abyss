@@ -7,10 +7,9 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.world.structure.deepabyss.RuinPiece;
 import com.min01.beyondtheabyss.world.structure.deepabyss.RuinStructure;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
@@ -38,7 +37,7 @@ public class BTAStructures
 		
 	    private static ResourceKey<Structure> register(String p_209873_)
 	    {
-	    	return ResourceKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_209873_));
+	    	return ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(BeyondtheAbyss.MODID, p_209873_));
 	    }
 	}
 	
@@ -49,49 +48,35 @@ public class BTAStructures
 		
 		private static ResourceKey<StructureSet> register(String p_209839_) 
 		{
-			return ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, new ResourceLocation(BeyondtheAbyss.MODID, p_209839_));
+			return ResourceKey.create(Registries.STRUCTURE_SET, new ResourceLocation(BeyondtheAbyss.MODID, p_209839_));
 		}
 	}
 	
-	public static class BTAStructureHolders
-	{
-	    public static final Holder<Structure> RUIN = register(BTAStructureKeys.RUIN, new RuinStructure(structure(BiomeTags.IS_OCEAN, TerrainAdjustment.NONE)));
-	    
-	    private static Holder<Structure> register(ResourceKey<Structure> p_236534_, Structure p_236535_) 
-	    {
-	        return BuiltinRegistries.register(BuiltinRegistries.STRUCTURES, p_236534_, p_236535_);
-	    }
-	}
-	
-	public static class BTAStructureSetHolders
-	{
-		public static final Holder<StructureSet> RUIN = register(BTAStructureSetKeys.RUIN, new StructureSet(List.of(StructureSet.entry(BTAStructureHolders.RUIN)), new RandomSpreadStructurePlacement(20, 8, RandomSpreadType.LINEAR, 1984567320)));
-	    
-		public static Holder<StructureSet> register(ResourceKey<StructureSet> p_211129_, StructureSet p_211130_)
-		{
-			return BuiltinRegistries.register(BuiltinRegistries.STRUCTURE_SETS, p_211129_, p_211130_);
-		}
-	}
-	
-    public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, BeyondtheAbyss.MODID);
-    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, BeyondtheAbyss.MODID);
+    public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, BeyondtheAbyss.MODID);
+    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registries.STRUCTURE_PIECE, BeyondtheAbyss.MODID);
     
     public static final RegistryObject<StructureType<RuinStructure>> RUIN = STRUCTURE_TYPES.register("ruin", () -> () -> RuinStructure.CODEC);
     public static final RegistryObject<StructurePieceType> RUIN_PIECE = STRUCTURE_PIECE_TYPES.register("ruin_piece", () -> RuinPiece::new);
-    
-    private static Structure.StructureSettings structure(TagKey<Biome> p_236543_, TerrainAdjustment p_236544_) 
+
+	public static void bootstrapStructures(BootstapContext<Structure> context) 
+	{
+		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+		context.register(BTAStructureKeys.RUIN, new RuinStructure(structure(biomes, BiomeTags.IS_OCEAN, TerrainAdjustment.NONE)));
+	}
+	
+	public static void bootstrapSets(BootstapContext<StructureSet> context)
+	{
+		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
+		context.register(BTAStructureSetKeys.RUIN, new StructureSet(List.of(StructureSet.entry(structures.getOrThrow(BTAStructureKeys.RUIN))), new RandomSpreadStructurePlacement(20, 8, RandomSpreadType.LINEAR, 1984567320)));
+	}
+	
+    private static Structure.StructureSettings structure(HolderGetter<Biome> biome, TagKey<Biome> p_236543_, TerrainAdjustment p_236544_) 
     {
-        return structure(p_236543_, Map.of(), GenerationStep.Decoration.SURFACE_STRUCTURES, p_236544_);
+        return structure(biome, p_236543_, Map.of(), GenerationStep.Decoration.SURFACE_STRUCTURES, p_236544_);
     }
     
-    private static Structure.StructureSettings structure(TagKey<Biome> p_236546_, Map<MobCategory, StructureSpawnOverride> p_236547_, GenerationStep.Decoration p_236548_, TerrainAdjustment p_236549_) 
+    private static Structure.StructureSettings structure(HolderGetter<Biome> biome, TagKey<Biome> p_236546_, Map<MobCategory, StructureSpawnOverride> p_236547_, GenerationStep.Decoration p_236548_, TerrainAdjustment p_236549_) 
     {
-    	return new Structure.StructureSettings(biomes(p_236546_), p_236547_, p_236548_, p_236549_);
-    }
-    
-    @SuppressWarnings("deprecation")
-	private static HolderSet<Biome> biomes(TagKey<Biome> p_236537_) 
-    {
-    	return BuiltinRegistries.BIOME.getOrCreateTag(p_236537_);
+    	return new Structure.StructureSettings(biome.getOrThrow(p_236546_), p_236547_, p_236548_, p_236549_);
     }
 }

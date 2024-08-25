@@ -6,13 +6,12 @@ import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.misc.BTACreativeModeTabs;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
-import com.min01.beyondtheabyss.world.BTAConfiguredFeatures;
 import com.min01.beyondtheabyss.world.BTAFeatures;
-import com.min01.beyondtheabyss.world.BTAPlacedFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
@@ -20,14 +19,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
 
 @Mod(BeyondtheAbyss.MODID)
 public class BeyondtheAbyss
@@ -37,7 +31,6 @@ public class BeyondtheAbyss
 	public BeyondtheAbyss() 
 	{
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        bus.addListener(this::setupCurios);
 		BTAEntities.ENTITY_TYPES.register(bus);
 		BTAItems.ITEMS.register(bus);
 		BTABlocks.BLOCKS.register(bus);
@@ -50,20 +43,11 @@ public class BeyondtheAbyss
 		BTAStructures.STRUCTURE_TYPES.register(bus);
 		BTAStructures.STRUCTURE_PIECE_TYPES.register(bus);
 		BTAFeatures.FEATURES.register(bus);
-		BTAConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
-		BTAPlacedFeatures.PLACED_FEATURES.register(bus);
+		BTACreativeModeTabs.CREATIVE_MODE_TAB.register(bus);
 		
 		BTANetwork.registerMessages();
         BTAConfig.loadConfig(BTAConfig.CONFIG, FMLPaths.CONFIGDIR.get().resolve("beyond-the-abyss.toml").toString());
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::attachEntityCapability);
 		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::attachItemStackCapability);
 	}
-	
-    public void setupCurios(InterModEnqueueEvent event) 
-    {
-        for(SlotTypePreset type : SlotTypePreset.values()) 
-        {
-            InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> type.getMessageBuilder().build());
-        }
-    }
 }

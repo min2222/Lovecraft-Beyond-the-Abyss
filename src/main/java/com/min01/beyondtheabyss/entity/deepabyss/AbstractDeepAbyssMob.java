@@ -6,7 +6,6 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
@@ -74,7 +73,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 			if(this.getAirSupply() == -20) 
 			{
 				this.setAirSupply(0);
-				this.hurt(DamageSource.DROWN, 2.0F);
+				this.hurt(this.damageSources().drown(), 2.0F);
 			}
 		}
 		else 

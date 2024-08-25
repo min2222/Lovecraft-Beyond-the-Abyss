@@ -48,9 +48,9 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 		float f1 = Mth.rotLerp(p_114487_, p_114485_.yHeadRotO, p_114485_.yHeadRot);
 		float f2 = f1 - f;
         float f6 = Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot());
-        float f8 = Mth.lerp(p_114487_, p_114485_.animationSpeedOld, p_114485_.animationSpeed);
+        float f8 = p_114485_.walkAnimation.speed(p_114487_);
         float f7 = p_114485_.tickCount + p_114487_;
-        float f5 = p_114485_.animationPosition - p_114485_.animationSpeed * (1.0F - p_114487_);
+        float f5 = p_114485_.walkAnimation.position(p_114487_);
 		BTAClientUtil.setupRotations(p_114485_, p_114488_, f7, f, p_114487_);
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0, -1.5F, 0);

@@ -1,14 +1,16 @@
 package com.min01.beyondtheabyss.util;
 
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.renderer.IModel;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.AnimationDefinition;
@@ -75,7 +77,7 @@ public class BTAClientUtil
 
 		if(!p_115317_.hasPose(Pose.SLEEPING)) 
 		{
-			p_115318_.mulPose(Vector3f.YP.rotationDegrees(180.0F - p_115320_));
+			p_115318_.mulPose(Axis.YP.rotationDegrees(180.0F - p_115320_));
 		}
 
 		if(p_115317_.deathTime > 0)
@@ -87,25 +89,25 @@ public class BTAClientUtil
 				f = 1.0F;
 			}
 
-			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(f * 90.0F));
+			p_115318_.mulPose(Axis.ZP.rotationDegrees(f * 90.0F));
 		} 
 		else if(p_115317_.isAutoSpinAttack()) 
 		{
-			p_115318_.mulPose(Vector3f.XP.rotationDegrees(-90.0F - p_115317_.getXRot()));
-			p_115318_.mulPose(Vector3f.YP.rotationDegrees(((float)p_115317_.tickCount + p_115321_) * -75.0F));
+			p_115318_.mulPose(Axis.XP.rotationDegrees(-90.0F - p_115317_.getXRot()));
+			p_115318_.mulPose(Axis.YP.rotationDegrees(((float)p_115317_.tickCount + p_115321_) * -75.0F));
 		} 
 		else if(p_115317_.hasPose(Pose.SLEEPING))
 		{
 			Direction direction = p_115317_.getBedOrientation();
 			float f1 = direction != null ? p_115317_.partBuilder.sleepDirectionToRotation(direction) : p_115320_;
-			p_115318_.mulPose(Vector3f.YP.rotationDegrees(f1));
-			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
-			p_115318_.mulPose(Vector3f.YP.rotationDegrees(270.0F));
+			p_115318_.mulPose(Axis.YP.rotationDegrees(f1));
+			p_115318_.mulPose(Axis.ZP.rotationDegrees(90.0F));
+			p_115318_.mulPose(Axis.YP.rotationDegrees(270.0F));
 		}
 		else if(LivingEntityRenderer.isEntityUpsideDown(p_115317_)) 
 		{
 			p_115318_.translate(0.0D, (double)(p_115317_.getBbHeight() + 0.1F), 0.0D);
-			p_115318_.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+			p_115318_.mulPose(Axis.ZP.rotationDegrees(180.0F));
 		}
 	}
 	
@@ -128,7 +130,8 @@ public class BTAClientUtil
         {
         	poseStack.translate(entity.getX(), entity.getY(), entity.getZ());
         }
-        poseStack.mulPose(new Quaternion((float)rotation.x, (float)-rotation.y + 180.0F, (float)rotation.z, true));
+        Quaternionf quat = new Quaternionf().rotateXYZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(-rotation.y + 180.0F), (float) Math.toRadians(rotation.z));
+        poseStack.mulPose(quat);
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         ModelPart nextPart = null;
         for(int i = 0; i < modelPartName.length; i++)
@@ -148,7 +151,7 @@ public class BTAClientUtil
         PoseStack.Pose last = poseStack.last();
         Matrix4f matrix4f = last.pose();
         Vector4f vector4f = new Vector4f(0, 0, 0, 1);
-        vector4f.transform(matrix4f);
+        vector4f.mul(matrix4f);
         return new Vec3(vector4f.x(), vector4f.y(), vector4f.z());
     }
 	

@@ -23,6 +23,6 @@ public class BTASounds
 	
 	private static RegistryObject<SoundEvent> registerSound(String name) 
 	{
-		return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(BeyondtheAbyss.MODID, name)));
+		return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(BeyondtheAbyss.MODID, name)));
     }
 }

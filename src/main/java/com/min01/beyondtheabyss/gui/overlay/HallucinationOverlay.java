@@ -7,10 +7,9 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +24,7 @@ public class HallucinationOverlay
 	public static int TICK;
 	public static int FRAME;
 	
-	public static void draw(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight)
+	public static void draw(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight)
 	{
 		Minecraft mc = BTAClientUtil.MC;
 		Player player = mc.player;
@@ -57,7 +56,7 @@ public class HallucinationOverlay
 	        RenderSystem.setShaderTexture(0, getTexture(level));
 	        int posX = FRAME >= 3 ? level.random.nextInt(38, 42) : 40;
 	        int posY = FRAME >= 3 ? level.random.nextInt(30, 34) : 32;
-			GuiComponent.blit(poseStack, screenWidth / 2 - posX, screenHeight / 2 - posY, 0, 0, 80, 64, 80, 64);
+	        guiGraphics.blit(getTexture(level), screenWidth / 2 - posX, screenHeight / 2 - posY, 0, 0, 80, 64, 80, 64);
 			
 			if(ADD)
 			{
@@ -80,7 +79,7 @@ public class HallucinationOverlay
 				{
 					t.tick();
 				}
-				t.draw(poseStack, screenWidth, screenHeight);
+				t.draw(guiGraphics, screenWidth, screenHeight);
 			});
 			
 			EYES.removeIf(t -> t.remove);
@@ -141,28 +140,31 @@ public class HallucinationOverlay
 			}
 		}
 		
-		public void draw(PoseStack stack, int screenWidth, int screenHeight)
+		public void draw(GuiGraphics guiGraphics, int screenWidth, int screenHeight)
 		{
 			if(this.number == 1)
 			{
+				ResourceLocation texture = new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_1.png");
 		        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-		        RenderSystem.setShaderTexture(0, new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_1.png"));
-				GuiComponent.blit(stack, (screenWidth - this.posX) - 9 * this.size / 2, (screenHeight - this.posY) - 6 * this.size / 2, 0, 0, 9 * this.size, 6 * this.size, 9 * this.size, 6 * this.size);
+		        RenderSystem.setShaderTexture(0, texture);
+		        guiGraphics.blit(texture, (screenWidth - this.posX) - 9 * this.size / 2, (screenHeight - this.posY) - 6 * this.size / 2, 0, 0, 9 * this.size, 6 * this.size, 9 * this.size, 6 * this.size);
 			}
 			else if(this.number == 2)
 			{
+				ResourceLocation texture = new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_2.png");
 		        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
 		        RenderSystem.setShaderTexture(0, new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_2.png"));
-				GuiComponent.blit(stack, (screenWidth - this.posX) - 9 * this.size / 2, (screenHeight - this.posY) - 9 * this.size / 2, 0, 0, 9 * this.size, 9 * this.size, 9 * this.size, 9 * this.size);
+		        guiGraphics.blit(texture, (screenWidth - this.posX) - 9 * this.size / 2, (screenHeight - this.posY) - 9 * this.size / 2, 0, 0, 9 * this.size, 9 * this.size, 9 * this.size, 9 * this.size);
 			}
 			else if(this.number == 3)
 			{
+				ResourceLocation texture = new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_3.png");
 		        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
 		        RenderSystem.setShaderTexture(0, new ResourceLocation(BeyondtheAbyss.MODID, "textures/effect/small_eye_3.png"));
-				GuiComponent.blit(stack, (screenWidth - this.posX) - 17 * this.size / 2, (screenHeight - this.posY) - 7 * this.size / 2, 0, 0, 17 * this.size, 7 * this.size, 17 * this.size, 7 * this.size);
+		        guiGraphics.blit(texture, (screenWidth - this.posX) - 17 * this.size / 2, (screenHeight - this.posY) - 7 * this.size / 2, 0, 0, 17 * this.size, 7 * this.size, 17 * this.size, 7 * this.size);
 			}
 		}
 	}

@@ -103,7 +103,7 @@ public abstract class AbstractBTAMob extends Monster implements IMultipart
 		}
 		else
 		{
-			double yvec = this.onGround || this.isNoGravity() ? 0 : this.getDeltaMovement().y;
+			double yvec = this.onGround() || this.isNoGravity() ? 0 : this.getDeltaMovement().y;
 			super.move(p_19973_, new Vec3(0, yvec, 0));
 		}
 	}

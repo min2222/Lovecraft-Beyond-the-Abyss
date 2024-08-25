@@ -11,7 +11,7 @@ import com.min01.beyondtheabyss.block.model.ModelLargeSkull;
 import com.min01.beyondtheabyss.block.model.ModelSittingSkeleton;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -122,17 +122,17 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 		case DOWN:
 			break;
 		case EAST:
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
+			poseStack.mulPose(Axis.YP.rotationDegrees(90));
 			break;
 		case NORTH:
 			break;
 		case SOUTH:
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+			poseStack.mulPose(Axis.YP.rotationDegrees(180));
 			break;
 		case UP:
 			break;
 		case WEST:
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(270));
+			poseStack.mulPose(Axis.YP.rotationDegrees(270));
 			break;
 		default:
 			break;

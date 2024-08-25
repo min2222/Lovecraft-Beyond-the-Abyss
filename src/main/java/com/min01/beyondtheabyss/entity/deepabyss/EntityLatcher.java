@@ -17,7 +17,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -148,7 +147,7 @@ public class EntityLatcher extends AbstractDeepAbyssMob
         {
         	if(this.tickCount % 20 == 0)
         	{
-        		this.getVehicle().hurt(DamageSource.mobAttack(this), (float) this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
+        		this.getVehicle().hurt(this.damageSources().mobAttack(this), (float) this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
         	}
         }
     }
