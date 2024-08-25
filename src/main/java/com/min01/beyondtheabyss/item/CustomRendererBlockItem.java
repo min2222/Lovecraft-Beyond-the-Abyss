@@ -8,8 +8,12 @@ import com.min01.beyondtheabyss.item.renderer.BTABlockEntityItemRenderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,5 +50,22 @@ public class CustomRendererBlockItem extends BlockItem
 			return p_40561_.getLevel().setBlock(p_40561_.getClickedPos(), p_40562_, 26);
 		}
 		return super.placeBlock(p_40561_, p_40562_);
+	}
+	
+	@Override
+	public InteractionResult place(BlockPlaceContext p_40577_) 
+	{
+		Level level = p_40577_.getLevel();
+		BlockPos pos = p_40577_.getClickedPos();
+		if(this.getBlock() instanceof AbstractMultiPartSkeletonBlock skeleton)
+		{
+			Direction direction = skeleton.getPartDirection(skeleton.getStateForPlacement(p_40577_));
+			BlockPos blockpos = pos.relative(direction);
+			if(!level.getBlockState(blockpos).isAir())
+			{
+				return InteractionResult.FAIL;
+			}
+		}
+		return super.place(p_40577_);
 	}
 }	

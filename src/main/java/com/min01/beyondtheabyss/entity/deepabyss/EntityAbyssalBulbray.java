@@ -1,12 +1,8 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
@@ -19,8 +15,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityAbyssalBulbray extends AbstractDeepAbyssMob
 {
@@ -44,14 +38,6 @@ public class EntityAbyssalBulbray extends AbstractDeepAbyssMob
 		EntityPartBuilder<EntityAbyssalBulbray> partBuilder = new EntityPartBuilder<EntityAbyssalBulbray>(this);
 		return partBuilder;
 	}
-	
-    @OnlyIn(Dist.CLIENT)
-	@Override
-	public HierarchicalModel<? extends AbstractBTAMob> getModel() 
-	{
-    	ModelAbyssalBulbray model = new ModelAbyssalBulbray(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelAbyssalBulbray.LAYER_LOCATION));
-    	return model;
-    }
     
     @Override
     public int getMaxSpawnClusterSize()

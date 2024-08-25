@@ -1,15 +1,11 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
-import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -25,8 +21,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityDeepVampire extends AbstractDeepAbyssMob
 {
@@ -60,14 +54,6 @@ public class EntityDeepVampire extends AbstractDeepAbyssMob
     		}
     	};
     	return partBuilder;
-    }
-    
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public HierarchicalModel<? extends AbstractBTAMob> getModel()
-    {
-    	ModelDeepVampire model = new ModelDeepVampire(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelDeepVampire.LAYER_LOCATION));
-    	return model;
     }
     
     @Override

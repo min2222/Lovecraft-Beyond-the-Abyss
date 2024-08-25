@@ -1,9 +1,10 @@
 package com.min01.beyondtheabyss.util;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.renderer.IModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
@@ -15,6 +16,7 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -29,7 +31,41 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
-	public static final Map<ModelPart, String> PART_MAP = new HashMap<>();
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <T extends AbstractBTAMob> HierarchicalModel<T> getModelFromEntity(T entity)
+	{
+		EntityRenderer renderer = MC.getEntityRenderDispatcher().getRenderer(entity);
+		if(renderer instanceof LivingEntityRenderer livingRenderer)
+		{
+			return (HierarchicalModel<T>) livingRenderer.getModel();
+		}
+		else if(renderer instanceof IModel model)
+		{
+			return model.getModel(entity);
+		}
+		return null;
+	}
+	
+    public static String getModelPartName(ModelPart root, ModelPart target) 
+    {
+        AtomicReference<String> name = new AtomicReference<>("root");
+        root.getAllParts().filter(part -> 
+        {
+            return part.children.containsValue(target);
+        }).findFirst().ifPresent(part -> 
+        {
+            for(Map.Entry<String, ModelPart> entry : part.children.entrySet()) 
+            {
+                if(entry.getValue() == target) 
+                {
+                    name.set(entry.getKey());
+                    return;
+                }
+            }
+        });
+        return name.get();
+    }
 	
 	public static void setupRotations(AbstractBTAMob p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) 
 	{

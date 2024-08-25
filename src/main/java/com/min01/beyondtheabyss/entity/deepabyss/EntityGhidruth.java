@@ -1,17 +1,11 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
-import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.sound.BTASounds;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,8 +21,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityGhidruth extends AbstractDeepAbyssMob
 {
@@ -89,14 +81,6 @@ public class EntityGhidruth extends AbstractDeepAbyssMob
     	return partBuilder;
     }
     
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public HierarchicalModel<? extends AbstractBTAMob> getModel()
-    {
-    	ModelGhidruth model = new ModelGhidruth(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGhidruth.LAYER_LOCATION));
-    	return model;
-    }
-    
     @Override
     protected void defineSynchedData() 
     {
@@ -112,8 +96,8 @@ public class EntityGhidruth extends AbstractDeepAbyssMob
     protected void registerGoals()
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
-        this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
+        //this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
+        //this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
         this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
     }
     

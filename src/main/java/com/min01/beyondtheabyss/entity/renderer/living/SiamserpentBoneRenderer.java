@@ -4,10 +4,12 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
+import com.min01.beyondtheabyss.entity.renderer.IModel;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -16,7 +18,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class SiamserpentBoneRenderer extends EntityRenderer<EntitySiamserpentBone>
+public class SiamserpentBoneRenderer extends EntityRenderer<EntitySiamserpentBone> implements IModel<EntitySiamserpentBone>
 {
 	private final ModelSiamserpentBone model;
 	private final ModelSiamserpentMiddleBone middleModel;
@@ -54,6 +56,12 @@ public class SiamserpentBoneRenderer extends EntityRenderer<EntitySiamserpentBon
 			this.middleModel.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
 		}
 		p_114488_.popPose();
+	}
+	
+	@Override
+	public HierarchicalModel<EntitySiamserpentBone> getModel(EntitySiamserpentBone entity)
+	{
+		return entity.getVariant() == 2 ? this.middleModel : this.model;
 	}
 
 	@Override

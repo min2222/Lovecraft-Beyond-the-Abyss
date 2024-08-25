@@ -2,12 +2,15 @@ package com.min01.beyondtheabyss.entity.renderer.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
+import com.min01.beyondtheabyss.entity.renderer.IModel;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -16,7 +19,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHead>
+public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHead> implements IModel<EntitySiamserpentHead>
 {
 	private final ModelSiamserpentSlasher slasherModel;
 	private final ModelSiamserpentBlaster blasterModel;
@@ -55,6 +58,12 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 			break;
 		}
 		p_114488_.popPose();
+	}
+	
+	@Override
+	public HierarchicalModel<EntitySiamserpentHead> getModel(EntitySiamserpentHead entity)
+	{
+		return entity.getHeadType() == HeadType.SLASHER ? this.slasherModel : this.blasterModel;
 	}
 
 	@Override

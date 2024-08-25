@@ -82,10 +82,6 @@ public class MultiPartInteractionPacket
 			            else if(message.interactionType == InteractionType.ATTACK)
 			            {
 				            serverPlayer.setShiftKeyDown(message.isSneaking);
-			                if(entity instanceof IMultipart multipart)
-			                {
-			                	multipart.setNextDamagedPart(message.part);
-			                }
 			                serverPlayer.attack(entity);
 			            }
 			            else if(message.interactionType == InteractionType.PROJECTILE)
@@ -93,7 +89,6 @@ public class MultiPartInteractionPacket
 				            Projectile projectile = (Projectile) serverLevel.getEntity(message.projectileId);
 			                if(entity instanceof IMultipart multipart)
 			                {
-			                	multipart.setNextDamagedPart(message.part);
 								Method m = ObfuscationReflectionHelper.findMethod(Projectile.class, "m_5790_", EntityHitResult.class);
 								try 
 								{

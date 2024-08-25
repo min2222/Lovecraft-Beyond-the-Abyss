@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
+import com.min01.beyondtheabyss.entity.renderer.IModel;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,6 +12,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -19,7 +21,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class GnasherRenderer extends EntityRenderer<EntityGnasher>
+public class GnasherRenderer extends EntityRenderer<EntityGnasher> implements IModel<EntityGnasher>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher.png");
 	private static final ResourceLocation TEXTURE_LEADER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher_leader.png");
@@ -69,6 +71,12 @@ public class GnasherRenderer extends EntityRenderer<EntityGnasher>
 			this.coloredGlowingModelCopyLayerRender(this.model, this.model, LAYER_TEXTURE, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
 		}
 		p_114488_.popPose();
+	}
+	
+	@Override
+	public HierarchicalModel<EntityGnasher> getModel(EntityGnasher entity)
+	{
+		return entity.isLeader() ? this.leaderModel : this.model;
 	}
 	
 	public void coloredGlowingModelCopyLayerRender(EntityModel<EntityGnasher> p_117360_, EntityModel<EntityGnasher> p_117361_, ResourceLocation p_117362_, PoseStack p_117363_, MultiBufferSource p_117364_, int p_117365_, EntityGnasher p_117366_, float p_117367_, float p_117368_, float p_117369_, float p_117370_, float p_117371_, float p_117372_, float p_117373_, float p_117374_, float p_117375_)

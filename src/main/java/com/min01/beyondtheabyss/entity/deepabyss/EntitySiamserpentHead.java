@@ -2,15 +2,11 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.KinematicChain;
 import com.min01.beyondtheabyss.util.KinematicChain.ChainSegment;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -27,8 +23,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec2;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySiamserpentHead>
 {
@@ -61,15 +55,6 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
 	{
 		EntityPartBuilder<EntitySiamserpentHead> partBuilder = new EntityPartBuilder<EntitySiamserpentHead>(this);
 		return partBuilder;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-    @Override
-    public HierarchicalModel<? extends AbstractBTAMob> getModel()
-    {
-		ModelSiamserpentSlasher slasherModel = new ModelSiamserpentSlasher(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelSiamserpentSlasher.LAYER_LOCATION));
-		ModelSiamserpentBlaster blasterModel = new ModelSiamserpentBlaster(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelSiamserpentBlaster.LAYER_LOCATION));
-    	return this.getHeadType() == HeadType.SLASHER ? slasherModel : blasterModel;
 	}
 	
 	@Override

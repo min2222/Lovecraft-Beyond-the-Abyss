@@ -1,21 +1,17 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherFindTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherUnlatchingGoal;
-import com.min01.beyondtheabyss.entity.model.ModelLatcher;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -39,8 +35,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityLatcher extends AbstractDeepAbyssMob
 {
@@ -70,14 +64,6 @@ public class EntityLatcher extends AbstractDeepAbyssMob
     {
     	EntityPartBuilder<EntityLatcher> partBuilder = new EntityPartBuilder<EntityLatcher>(this);
     	return partBuilder;
-    }
-    
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public HierarchicalModel<? extends AbstractBTAMob> getModel()
-    {
-    	ModelLatcher model = new ModelLatcher(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelLatcher.LAYER_LOCATION));
-    	return model;
     }
     
     @Override

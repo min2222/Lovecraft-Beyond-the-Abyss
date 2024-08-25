@@ -1,13 +1,9 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -20,8 +16,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityAbyssalHermitCrab extends AbstractDeepAbyssMob
 {
@@ -46,14 +40,6 @@ public class EntityAbyssalHermitCrab extends AbstractDeepAbyssMob
     	EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this);
 		return partBuilder;
 	}
-	
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public HierarchicalModel<? extends AbstractBTAMob> getModel()
-    {
-    	ModelAbyssalHermitCrab model = new ModelAbyssalHermitCrab(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelAbyssalHermitCrab.LAYER_LOCATION));
-    	return model;
-    }
     
     @Override
     public int getMaxSpawnClusterSize()

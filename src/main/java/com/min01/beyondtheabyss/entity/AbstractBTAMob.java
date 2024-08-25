@@ -1,19 +1,15 @@
 package com.min01.beyondtheabyss.entity;
 
-import javax.annotation.Nullable;
-
 import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,8 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class AbstractBTAMob extends Monster implements IMultipart
 {
@@ -87,22 +81,7 @@ public abstract class AbstractBTAMob extends Monster implements IMultipart
 		}
 	}
 	
-	@Override
-	public void setNextDamagedPart(@Nullable String part)
-	{
-		this.partBuilder.setNextDamagedPart(part);
-	}
-	
-	@Override
-	public boolean hurt(DamageSource p_21016_, float p_21017_)
-	{
-		return this.partBuilder.canDamage(this, p_21016_, p_21017_) && super.hurt(p_21016_, p_21017_);
-	}
-	
 	public abstract EntityPartBuilder<? extends AbstractBTAMob> createBuilder();
-	
-	@OnlyIn(Dist.CLIENT)
-	public abstract HierarchicalModel<? extends AbstractBTAMob> getModel();
 	
 	@Override
 	protected void defineSynchedData()

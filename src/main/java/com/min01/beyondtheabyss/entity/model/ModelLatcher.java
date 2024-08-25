@@ -122,7 +122,7 @@ public class ModelLatcher extends HierarchicalModel<EntityLatcher>
 	public void setupAnim(EntityLatcher entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.LatchingIsopod, netHeadYaw, headPitch);
+		//BTAClientUtil.animateHead(this.LatchingIsopod, netHeadYaw, headPitch);
 		this.animate(entity.propelAnimationState, LatcherAnimation.LATCHER_PROPEL, ageInTicks);
 		this.animate(entity.startLatchAnimationState, LatcherAnimation.LATCHER_START_LATCH, ageInTicks);
 		this.animate(entity.latchAnimationState, LatcherAnimation.LATCHER_LATCH, ageInTicks);

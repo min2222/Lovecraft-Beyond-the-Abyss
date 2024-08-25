@@ -1,13 +1,10 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.KinematicChain.ChainSegment;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,8 +16,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySiamserpentHead>
 {
@@ -71,14 +66,6 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySia
 	{
 		EntityPartBuilder<EntitySiamserpentBone> partBuilder = new EntityPartBuilder<EntitySiamserpentBone>(this);
 		return partBuilder;
-	}
-
-    @OnlyIn(Dist.CLIENT)
-	@Override
-	public HierarchicalModel<? extends AbstractBTAMob> getModel() 
-	{
-		ModelSiamserpentBone model = new ModelSiamserpentBone(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelSiamserpentBone.LAYER_LOCATION));
-    	return model;
 	}
 	
 	@Override

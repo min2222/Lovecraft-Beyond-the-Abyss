@@ -1,12 +1,8 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,8 +12,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityPhasmozoa extends AbstractDeepAbyssMob
 {
@@ -45,14 +39,6 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMob
     {
     	EntityPartBuilder<EntityPhasmozoa> partBuilder = new EntityPartBuilder<EntityPhasmozoa>(this);
     	return partBuilder;
-    }
-    
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public HierarchicalModel<? extends AbstractBTAMob> getModel()
-    {
-    	ModelPhasmozoa model = new ModelPhasmozoa(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelPhasmozoa.LAYER_LOCATION));
-    	return model;
     }
 	
 	@Override

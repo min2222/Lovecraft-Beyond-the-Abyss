@@ -37,7 +37,6 @@ public abstract class MixinProjectile extends Entity
                 String part = multipart.getBounds().raycast(this.position(), this.position().add(this.getDeltaMovement()));
                 if(part != null)
                 {
-                    multipart.setNextDamagedPart(part);
                     BTANetwork.sendToServer(new MultiPartInteractionPacket(entity.getId(), this.getId(), part, InteractionHand.MAIN_HAND, false, InteractionType.PROJECTILE));
                 }
             }

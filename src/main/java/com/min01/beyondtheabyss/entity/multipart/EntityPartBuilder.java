@@ -1,7 +1,6 @@
 package com.min01.beyondtheabyss.entity.multipart;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -14,19 +13,16 @@ import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.MultiPartBuildPacket;
-import com.min01.beyondtheabyss.network.MultiPartUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -49,15 +45,13 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	        .getFactory().create();
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
-	public String nextDamagedPart;
 
-	public EntityPartBuilder(T entity) 
+	public EntityPartBuilder(T entity)
 	{
 		this.entity = entity;
 		if(this.entity.level.isClientSide)
 		{
 			this.hitbox = this.buildHitBox();
-			BTANetwork.sendToServer(new MultiPartBuildPacket(this.entity));
 		}
 	}
 	
@@ -66,7 +60,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
         double posX = Mth.lerp((double)partialTick, this.entity.xOld, this.entity.getX());
         double posY = Mth.lerp((double)partialTick, this.entity.yOld, this.entity.getY());
         double posZ = Mth.lerp((double)partialTick, this.entity.zOld, this.entity.getZ());
-		
+
         EntityPart root = this.hitbox.getPart(ROOT);
         
         Vec3 renderOffset = this.getOffset();
@@ -77,11 +71,11 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 		if(this.entity.level.isClientSide)
 		{
 			this.clientTick(partialTick);
-			BTANetwork.sendToServer(new MultiPartUpdatePacket(this.entity));
 		}
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
         root.rotate(rotation);
+
         if(this.isInWater() && !this.entity.isInWater())
         {
         	root.setPivotY(-0.5F);
@@ -94,17 +88,15 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
         }
 	}
 	
-	@SuppressWarnings("unchecked")
 	@OnlyIn(Dist.CLIENT)
 	public void clientTick(float partialTick)
 	{
-		HierarchicalModel<?> model = this.entity.getModel();
-		this.defaultAnimation((HierarchicalModel<T>) model, this.entity, partialTick);
-		model.root().getAllParts().forEach((part) -> 
-        {
-        	String name = BTAClientUtil.PART_MAP.get(part);//this.getModelPartName(model.root(), part);
+		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
+		model.root().getAllParts().forEach(part ->
+		{
+        	//FIXME cause fps lag
+			String name = BTAClientUtil.getModelPartName(model.root(), part);
         	EntityPart entityPart = this.hitbox.getPart(name);
-        	
             Vec3 partPos = (new Vec3((double)(-part.x), (double)(-part.y), (double)part.z)).scale(SCALE * this.getRenderScale());
             Vec3 pivot = Vec3.ZERO;
             
@@ -144,15 +136,16 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	@OnlyIn(Dist.CLIENT)
 	public EntityBounds buildHitBox()
 	{
-		HierarchicalModel<?> model = this.entity.getModel();
+		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         EntityBounds.EntityBoundsBuilder builder = EntityBounds.builder();
-        return this.addPart(builder, model, model.root(), null).overrideCollisionBox(this.getBoundingBox(Vec3.ZERO)).getFactory().create();
+        return this.addPart(builder, model.root(), null).overrideCollisionBox(this.getBoundingBox(Vec3.ZERO)).getFactory().create();
 	}
 
 	@OnlyIn(Dist.CLIENT)
-    public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, HierarchicalModel<?> model, ModelPart part, @Nullable String parent)
+    public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
     {
-        String name =  this.getModelPartName(model.root(), part);
+		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
+        String name = BTAClientUtil.getModelPartName(model.root(), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
         if(parent != null) 
         {
@@ -161,10 +154,10 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
         }
         partInfo.setBounds(this.getPartSize(part, name));
         EntityBounds.EntityBoundsBuilder builder2 = partInfo.build();
-		Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
-        for(ModelPart child : children.values())
+        for(ModelPart child : part.children.values())
         {
-            builder2 = this.addPart(builder2, model, child, name);
+        	//FIXME cause fps lag
+        	this.addPart(builder2, child, name);
         }
         return builder2;
     }
@@ -174,11 +167,8 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
     {
         AABB box = null;
     	List<ModelPart.Cube> cubes = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104212_");
-        Iterator<ModelPart.Cube> iterator = cubes.iterator();
-
-        while(iterator.hasNext())
+        for(ModelPart.Cube cube : cubes)
         {
-            ModelPart.Cube cube = iterator.next();
             Vec3 min = (new Vec3((double)cube.minX, (double)cube.minY, (double)cube.minZ)).scale(SCALE * this.getRenderScale());
             Vec3 max = (new Vec3((double)cube.maxX, (double)cube.maxY, (double)cube.maxZ)).scale(SCALE * this.getRenderScale());
             AABB cubeBox = new AABB(min, max);
@@ -206,18 +196,16 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
     }
 
 	@OnlyIn(Dist.CLIENT)
-	//FIXME cause fps lag
     public String getModelPartName(ModelPart root, ModelPart target) 
     {
         AtomicReference<String> name = new AtomicReference<>(ROOT);
         root.getAllParts().forEach(part -> 
         {
-        	Map<String, ModelPart> children = ObfuscationReflectionHelper.getPrivateValue(ModelPart.class, part, "f_104213_");
+        	Map<String, ModelPart> children = part.children;
         	if(children.containsValue(target))
         	{
         		children.forEach((t, u) -> 
         		{
-    		        BTAClientUtil.PART_MAP.put(u, t);
         			if(u == target)
         			{
         				name.set(t);
@@ -226,10 +214,25 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
         	}
         });
         return name.get();
+		/*for(ModelPart part : root.getAllParts().toList())
+        {
+        	Map<String, ModelPart> children = part.children;
+        	if(children.containsValue(target))
+        	{
+        		for(Map.Entry<String, ModelPart> entry : children.entrySet())
+        		{
+        			if(entry.getValue() == target)
+        			{
+        				return entry.getKey();
+        			}
+        		}
+        	}
+        }
+        return ROOT;*/
     }
 
 	@OnlyIn(Dist.CLIENT)
-    public void defaultAnimation(HierarchicalModel<T> model, T entity, float partialTick)
+    public void defaultAnimation(EntityModel<T> model, T entity, float partialTick)
     {
         boolean shouldSit = entity.isPassenger() && entity.getVehicle() != null && entity.getVehicle().shouldRiderSit();
         float limbSwing = !shouldSit && entity.isAlive() ? entity.animationPosition - entity.animationSpeed * (1.0F - partialTick) : 0.0F;
@@ -394,18 +397,6 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	public boolean isInWater()
 	{
 		return false;
-	}
-	
-	public void setNextDamagedPart(@Nullable String part)
-	{
-		this.nextDamagedPart = part;
-	}
-	
-	public boolean canDamage(LivingEntity living, DamageSource damageSource, float amount)
-	{
-        String part = this.nextDamagedPart;
-        this.nextDamagedPart = null;
-        return part != null || damageSource.isBypassInvul();
 	}
 	
     public AABB getBoundingBox(Vec3 pos) 

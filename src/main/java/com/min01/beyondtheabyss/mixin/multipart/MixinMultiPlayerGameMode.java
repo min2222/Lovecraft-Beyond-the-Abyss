@@ -44,7 +44,6 @@ public class MixinMultiPlayerGameMode
                 BTANetwork.sendToServer(new MultiPartInteractionPacket(target.getId(), 0, part, InteractionHand.MAIN_HAND, client.cameraEntity.isShiftKeyDown(), InteractionType.ATTACK));
                 if(this.localPlayerMode != GameType.SPECTATOR)
                 {
-                	multipart.setNextDamagedPart(part);
                     player.attack(target);
                     player.resetAttackStrengthTicker();
                 }
