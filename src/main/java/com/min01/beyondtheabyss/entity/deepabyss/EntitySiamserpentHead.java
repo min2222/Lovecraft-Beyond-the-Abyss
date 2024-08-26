@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -85,6 +86,15 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
     		this.setDormant(true);
 		}
 	}
+	
+    @Override
+    protected void doPush(Entity p_20971_) 
+    {
+    	if(!(p_20971_ instanceof EntitySiamserpentBone))
+    	{
+        	super.doPush(p_20971_);
+    	}
+    }
 
 	@Override
 	public BTAMobType getBTAMobType() 

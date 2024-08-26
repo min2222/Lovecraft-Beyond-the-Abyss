@@ -145,7 +145,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         EntityBounds.EntityBoundsBuilder builder = EntityBounds.builder();
-        return this.addPart(builder, model.root(), null).overrideCollisionBox(this.getBoundingBox(Vec3.ZERO)).getFactory().create();
+        return this.addPart(builder, model.root(), null).overrideCollisionBox(this.getBoundingBox(this.entity.position())).getFactory().create();
 	}
 
 	@OnlyIn(Dist.CLIENT)

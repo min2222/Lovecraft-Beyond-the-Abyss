@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -50,6 +51,15 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySia
     		this.setYRot(rot.y);
     		this.setYHeadRot(rot.y);
     		this.setYBodyRot(rot.y);
+    	}
+    }
+    
+    @Override
+    protected void doPush(Entity p_20971_) 
+    {
+    	if(!(p_20971_ instanceof EntitySiamserpentHead) && !(p_20971_ instanceof EntitySiamserpentBone))
+    	{
+        	super.doPush(p_20971_);
     	}
     }
 	
