@@ -63,7 +63,8 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 		{
 			Direction direction = this.getPartDirection(p_49501_);
 			BlockPos blockpos = p_49500_.relative(direction);
-			if(p_49499_.getBlockState(blockpos).isAir())
+			boolean flag = p_49499_.isEmptyBlock(blockpos) ? true : p_49499_.getBlockState(blockpos).getMaterial().isLiquid();
+			if(flag)
 			{
 				p_49499_.setBlock(blockpos, p_49501_.setValue(SKELETON_PART, SkeletonPart.UPPER), 3);
 				p_49499_.blockUpdated(p_49500_, Blocks.AIR);

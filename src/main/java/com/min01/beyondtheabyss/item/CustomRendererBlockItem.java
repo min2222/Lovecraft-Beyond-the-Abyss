@@ -61,7 +61,8 @@ public class CustomRendererBlockItem extends BlockItem
 		{
 			Direction direction = skeleton.getPartDirection(skeleton.getStateForPlacement(p_40577_));
 			BlockPos blockpos = pos.relative(direction);
-			if(!level.getBlockState(blockpos).isAir())
+			boolean flag = !level.isEmptyBlock(blockpos) ? !level.getBlockState(blockpos).getMaterial().isLiquid() : true;
+			if(flag)
 			{
 				return InteractionResult.FAIL;
 			}

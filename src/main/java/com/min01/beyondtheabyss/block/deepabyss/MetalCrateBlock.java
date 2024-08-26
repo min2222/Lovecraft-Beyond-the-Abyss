@@ -15,17 +15,28 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class MetalCrateBlock extends BaseEntityBlock 
+public class MetalCrateBlock extends BaseEntityBlock implements SimpleWaterloggedBlock
 {
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	
 	public MetalCrateBlock() 
 	{
 		super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion());
@@ -64,6 +75,26 @@ public class MetalCrateBlock extends BaseEntityBlock
 			super.onRemove(p_49076_, p_49077_, p_49078_, p_49079_, p_49080_);
 		}
 	}
+	
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext p_49820_) 
+	{
+    	LevelAccessor level = p_49820_.getLevel();
+    	BlockPos blockPos = p_49820_.getClickedPos();
+		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockPos).getType() == Fluids.WATER));
+	}
+	
+    @Override
+    public FluidState getFluidState(BlockState p_152045_)
+    {
+    	return p_152045_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
+    {
+    	p_152043_.add(WATERLOGGED);
+    }
 
 	@Override
 	public void tick(BlockState p_220758_, ServerLevel p_220759_, BlockPos p_220760_, RandomSource p_220761_) 

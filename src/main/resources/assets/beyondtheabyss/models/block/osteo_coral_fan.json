@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:block/coral_fan",
+	"render_type": "cutout",
+	"textures": {
+		"fan": "beyondtheabyss:block/osteo_coral_fan"
+	}
+}

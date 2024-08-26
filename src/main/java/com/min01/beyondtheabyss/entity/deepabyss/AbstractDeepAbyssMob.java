@@ -2,6 +2,8 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.ai.control.DeepAbyssFishMoveControl;
+import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinGroundPathNavigation;
+import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinWaterBoundPathNavigation;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -15,7 +17,6 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -39,7 +40,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
     @Override
     protected PathNavigation createNavigation(Level p_27480_) 
     {
-    	return this.isSwimable() ? new WaterBoundPathNavigation(this, p_27480_) : super.createNavigation(p_27480_);
+    	return this.isSwimable() ? new NoSpinWaterBoundPathNavigation(this, p_27480_) : new NoSpinGroundPathNavigation(this, p_27480_);
     }
     
     @Override

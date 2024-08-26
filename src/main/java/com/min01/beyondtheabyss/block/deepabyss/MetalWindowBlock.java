@@ -10,13 +10,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 
-public class MetalWindowBlock extends Block
+public class MetalWindowBlock extends Block implements SimpleWaterloggedBlock
 {
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final EnumProperty<WindowType> WINDOW_TYPE = EnumProperty.create("window_type", WindowType.class);
 	
 	public MetalWindowBlock()
@@ -30,7 +36,7 @@ public class MetalWindowBlock extends Block
 	{
     	LevelAccessor level = p_49820_.getLevel();
     	BlockPos blockPos = p_49820_.getClickedPos();
-		return this.updateState(this.defaultBlockState(), level, blockPos);
+		return this.updateState(this.defaultBlockState(), level, blockPos).setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockPos).getType() == Fluids.WATER));
 	}
 	
 	@Override
@@ -153,9 +159,15 @@ public class MetalWindowBlock extends Block
 	}
 	
     @Override
+    public FluidState getFluidState(BlockState p_152045_)
+    {
+    	return p_152045_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    }
+	
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
     {
-    	p_152043_.add(WINDOW_TYPE);
+    	p_152043_.add(WATERLOGGED, WINDOW_TYPE);
     }
 	
 	public static enum WindowType implements StringRepresentable
