@@ -23,7 +23,7 @@ public class MultiPartInteractionPacket
         INTERACT
     }
 
-    public MultiPartInteractionPacket(int entityId, int projectileId, String part, InteractionHand hand, boolean isSneaking, InteractionType interactionType)
+    public MultiPartInteractionPacket(int entityId, String part, InteractionHand hand, boolean isSneaking, InteractionType interactionType)
     {
         this.entityId = entityId;
         this.part = part;
