@@ -35,8 +35,11 @@
 		"beyondtheabyss:green_metal_crate",
 		"beyondtheabyss:pink_metal_crate",
 		"beyondtheabyss:red_metal_crate",
+		"beyondtheabyss:dead_osteo_coral_block",
 		"beyondtheabyss:osteo_coral_block",
+		"beyondtheabyss:dead_osteo_coral_fan",
 		"beyondtheabyss:osteo_coral_fan",
+		"beyondtheabyss:dead_osteo_coral_wall_fan",
 		"beyondtheabyss:osteo_coral_wall_fan"
 	]
 }

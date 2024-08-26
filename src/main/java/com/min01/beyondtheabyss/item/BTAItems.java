@@ -136,7 +136,9 @@ public class BTAItems
 	public static final RegistryObject<Item> GREEN_METAL_CRATE = registerBlockItem("green_metal_crate", () -> BTABlocks.GREEN_METAL_CRATE.get(), new Item.Properties());
 	public static final RegistryObject<Item> PINK_METAL_CRATE = registerBlockItem("pink_metal_crate", () -> BTABlocks.PINK_METAL_CRATE.get(), new Item.Properties());
 	public static final RegistryObject<Item> RED_METAL_CRATE = registerBlockItem("red_metal_crate", () -> BTABlocks.RED_METAL_CRATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_BLOCK = registerBlockItem("dead_osteo_coral_block", () -> BTABlocks.DEAD_OSTEO_CORAL_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> OSTEO_CORAL_BLOCK = registerBlockItem("osteo_coral_block", () -> BTABlocks.OSTEO_CORAL_BLOCK.get(), new Item.Properties());
+	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_FAN = ITEMS.register("dead_osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.DEAD_OSTEO_CORAL_FAN.get(), BTABlocks.DEAD_OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()).tab(DeepAbyssTabs.ABYSS_BLOCKS)));
 	public static final RegistryObject<Item> OSTEO_CORAL_FAN = ITEMS.register("osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.OSTEO_CORAL_FAN.get(), BTABlocks.OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()).tab(DeepAbyssTabs.ABYSS_BLOCKS)));
 	public static final RegistryObject<Item> WHALEFALL = registerBlockItem("whalefall", () -> BTABlocks.WHALEFALL.get(), new Item.Properties());
 	
