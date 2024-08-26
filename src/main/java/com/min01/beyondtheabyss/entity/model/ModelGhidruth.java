@@ -33,12 +33,12 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition root2 = root.addOrReplaceChild("root2", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition root2 = root.addOrReplaceChild("root2", CubeListBuilder.create(), PartPose.offset(0.0F, -24.0F, 0.0F));
 
 		PartDefinition Head = root2.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(177, 0).addBox(-18.5F, -26.6071F, -85.65F, 37.0F, 18.0F, 53.0F, new CubeDeformation(0.0F))
-		.texOffs(260, 82).addBox(-13.5F, -8.6071F, -74.65F, 27.0F, 6.0F, 40.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -16.3929F, 15.04F));
+		.texOffs(260, 82).addBox(-13.5F, -8.6071F, -74.65F, 27.0F, 6.0F, 40.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.6071F, 1.04F));
 
 		Head.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(146, 260).addBox(0.0F, 0.0F, -20.0F, 0.0F, 7.0F, 40.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-15.5F, -8.6071F, -54.65F, 0.0F, 0.0F, 0.384F));
 
