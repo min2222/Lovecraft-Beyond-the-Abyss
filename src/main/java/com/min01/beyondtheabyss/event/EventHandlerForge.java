@@ -68,7 +68,7 @@ public class EventHandlerForge
 	{
 		Entity entity = event.getEntity();
 		Level level = event.getLevel();
-		if(level instanceof ServerLevel serverLevel)
+		if(level instanceof ServerLevel serverLevel && entity instanceof Player)
 		{
 			MinecraftServer server = serverLevel.getServer();
 			if(level.dimension() == BTAWorlds.DEEP_ABYSS)
@@ -118,7 +118,7 @@ public class EventHandlerForge
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event)
     {
-        if(event.getName().toString().matches("minecraft:chests/shipwreck_supply")) 
+        if(event.getName().toString().matches("minecraft:chests/buried_treasure")) 
         {
         	event.getTable().addPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootTableReference.lootTableReference(BTALootTables.GUIDING_CLAM)).build());
         }

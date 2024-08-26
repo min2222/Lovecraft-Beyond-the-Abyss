@@ -41,7 +41,7 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySia
     public void tick() 
     {
     	super.tick();
-    	
+
     	if(this.getOwner() != null)
     	{
     		ChainSegment segment = this.getOwner().chain.getSegments()[this.getIndex()];
