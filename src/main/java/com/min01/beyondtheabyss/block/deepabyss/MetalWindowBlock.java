@@ -56,62 +56,21 @@ public class MetalWindowBlock extends Block implements SimpleWaterloggedBlock
 		BlockState right = level.getBlockState(pos.relative(Direction.EAST, -1));
 		BlockState forward = level.getBlockState(pos.relative(Direction.NORTH, 1));
 		BlockState backward = level.getBlockState(pos.relative(Direction.NORTH, -1));
-		//TODO left && right && forward && backward;
-		//need new model;
-		if(!(above.is(BTABlocks.METAL_WINDOW.get())) && !(below.is(BTABlocks.METAL_WINDOW.get())))
+		if(!(above.is(BTABlocks.METAL_WINDOW.get())) && below.is(BTABlocks.METAL_WINDOW.get()))
 		{
-			return state.setValue(WINDOW_TYPE, WindowType.SINGLE);
-		}
-		if(above.is(BTABlocks.METAL_WINDOW.get()) && !(below.is(BTABlocks.METAL_WINDOW.get())))
-		{
-			if(left.is(BTABlocks.METAL_WINDOW.get()) && !(right.is(BTABlocks.METAL_WINDOW.get())))
+			if(!(right.is(BTABlocks.METAL_WINDOW.get())) && left.is(BTABlocks.METAL_WINDOW.get()))
 			{
-				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT_BOTTOM);
-			}
-			else if(right.is(BTABlocks.METAL_WINDOW.get()) && !(left.is(BTABlocks.METAL_WINDOW.get())))
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.CORNER_LEFT_BOTTOM);
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT);
 			}
 			else if(right.is(BTABlocks.METAL_WINDOW.get()) && left.is(BTABlocks.METAL_WINDOW.get()))
 			{
-				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_BOTTOM);
-			}
-			else if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT_BOTTOM_Y);
-			}
-			else if(backward.is(BTABlocks.METAL_WINDOW.get()) && !(forward.is(BTABlocks.METAL_WINDOW.get())))
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.CORNER_LEFT_BOTTOM_Y);
-			}
-			else if(backward.is(BTABlocks.METAL_WINDOW.get()) && forward.is(BTABlocks.METAL_WINDOW.get()))
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_BOTTOM_Y);
-			}
-			else
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.SINGLE_BOTTOM);
-			}
-		}
-		if(below.is(BTABlocks.METAL_WINDOW.get()) && !(above.is(BTABlocks.METAL_WINDOW.get())))
-		{
-			if(left.is(BTABlocks.METAL_WINDOW.get()) && !(right.is(BTABlocks.METAL_WINDOW.get())))
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT);
+				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_TOP);
 			}
 			else if(right.is(BTABlocks.METAL_WINDOW.get()) && !(left.is(BTABlocks.METAL_WINDOW.get())))
 			{
 				return state.setValue(WINDOW_TYPE, WindowType.CORNER_LEFT);
 			}
-			else if(left.is(BTABlocks.METAL_WINDOW.get()) && right.is(BTABlocks.METAL_WINDOW.get()))
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_TOP);
-			}
-			else if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT_Y);
-			}
-			else if(backward.is(BTABlocks.METAL_WINDOW.get()) && !(forward.is(BTABlocks.METAL_WINDOW.get())))
+			else if(!(forward.is(BTABlocks.METAL_WINDOW.get())) && backward.is(BTABlocks.METAL_WINDOW.get()))
 			{
 				return state.setValue(WINDOW_TYPE, WindowType.CORNER_LEFT_Y);
 			}
@@ -119,43 +78,131 @@ public class MetalWindowBlock extends Block implements SimpleWaterloggedBlock
 			{
 				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_TOP_Y);
 			}
-			else
+			else if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
 			{
-				return state.setValue(WINDOW_TYPE, WindowType.SINGLE_TOP);
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT_Y);
 			}
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_TOP);
 		}
-		if(below.is(BTABlocks.METAL_WINDOW.get()) && above.is(BTABlocks.METAL_WINDOW.get()))
+		if(above.is(BTABlocks.METAL_WINDOW.get()) && below.is(BTABlocks.METAL_WINDOW.get()))
 		{
-			if(left.is(BTABlocks.METAL_WINDOW.get()) && !(right.is(BTABlocks.METAL_WINDOW.get())))
+			if(!(right.is(BTABlocks.METAL_WINDOW.get())) && left.is(BTABlocks.METAL_WINDOW.get()))
 			{
 				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_RIGHT);
+			}
+			else if(right.is(BTABlocks.METAL_WINDOW.get()) && left.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.TRANSLUCENT);
 			}
 			else if(right.is(BTABlocks.METAL_WINDOW.get()) && !(left.is(BTABlocks.METAL_WINDOW.get())))
 			{
 				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_LEFT);
 			}
-			else if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_RIGHT_Y);
-			}
-			else if(backward.is(BTABlocks.METAL_WINDOW.get()) && !(forward.is(BTABlocks.METAL_WINDOW.get())))
+			if(!(forward.is(BTABlocks.METAL_WINDOW.get())) && backward.is(BTABlocks.METAL_WINDOW.get()))
 			{
 				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_LEFT_Y);
 			}
+			if(forward.is(BTABlocks.METAL_WINDOW.get()) && backward.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.TRANSLUCENT);
+			}
+			if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_RIGHT_Y);
+			}
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_MIDDLE);
+		}
+		if(above.is(BTABlocks.METAL_WINDOW.get()) && !(below.is(BTABlocks.METAL_WINDOW.get())))
+		{
+			if(!(right.is(BTABlocks.METAL_WINDOW.get())) && left.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT_BOTTOM);
+			}
+			else if(right.is(BTABlocks.METAL_WINDOW.get()) && left.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_BOTTOM);
+			}
+			else if(right.is(BTABlocks.METAL_WINDOW.get()) && !(left.is(BTABlocks.METAL_WINDOW.get())))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_LEFT_BOTTOM);
+			}
+			else if(!(forward.is(BTABlocks.METAL_WINDOW.get())) && backward.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_LEFT_BOTTOM_Y);
+			}
 			else if(forward.is(BTABlocks.METAL_WINDOW.get()) && backward.is(BTABlocks.METAL_WINDOW.get()))
 			{
-				return state.setValue(WINDOW_TYPE, WindowType.TRANSLUCENT);
+				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_BOTTOM_Y);
 			}
-			else if(left.is(BTABlocks.METAL_WINDOW.get()) && right.is(BTABlocks.METAL_WINDOW.get()))
+			else if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
 			{
-				return state.setValue(WINDOW_TYPE, WindowType.TRANSLUCENT);
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT_BOTTOM_Y);
 			}
-			else
-			{
-				return state.setValue(WINDOW_TYPE, WindowType.SINGLE_MIDDLE);
-			}
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_BOTTOM);
 		}
-		return state;
+		
+		if(!(right.is(BTABlocks.METAL_WINDOW.get())) && left.is(BTABlocks.METAL_WINDOW.get()))
+		{
+			if(!(forward.is(BTABlocks.METAL_WINDOW.get())) && backward.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT_BOTTOM_X);
+			}
+			if(forward.is(BTABlocks.METAL_WINDOW.get()) && backward.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_RIGHT_X);
+			}
+			if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_RIGHT_X);
+			}
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_TOP_XY);
+		}
+		if(right.is(BTABlocks.METAL_WINDOW.get()) && left.is(BTABlocks.METAL_WINDOW.get()))
+		{
+			if(!(forward.is(BTABlocks.METAL_WINDOW.get())) && backward.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_BOTTOM_X);
+			}
+			if(forward.is(BTABlocks.METAL_WINDOW.get()) && backward.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.TRANSLUCENT);
+			}
+			if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_TOP_X);
+			}
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_MIDDLE_XY);
+		}
+		if(right.is(BTABlocks.METAL_WINDOW.get()) && !(left.is(BTABlocks.METAL_WINDOW.get())))
+		{
+			if(!(forward.is(BTABlocks.METAL_WINDOW.get())) && backward.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_LEFT_X);
+			}
+			if(forward.is(BTABlocks.METAL_WINDOW.get()) && backward.is(BTABlocks.METAL_WINDOW.get()))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.MIDDLE_LEFT_X);
+			}
+			if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
+			{
+				return state.setValue(WINDOW_TYPE, WindowType.CORNER_LEFT_BOTTOM_X);
+			}
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_BOTTOM_XY);
+		}
+		
+		if(!(forward.is(BTABlocks.METAL_WINDOW.get())) && backward.is(BTABlocks.METAL_WINDOW.get()))
+		{
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_TOP_X);
+		}
+		if(forward.is(BTABlocks.METAL_WINDOW.get()) && backward.is(BTABlocks.METAL_WINDOW.get()))
+		{
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_MIDDLE_X);
+		}
+		if(forward.is(BTABlocks.METAL_WINDOW.get()) && !(backward.is(BTABlocks.METAL_WINDOW.get())))
+		{
+			return state.setValue(WINDOW_TYPE, WindowType.SINGLE_BOTTOM_X);
+		}
+		return state.setValue(WINDOW_TYPE, WindowType.SINGLE);
 	}
 	
     @Override
@@ -174,16 +221,30 @@ public class MetalWindowBlock extends Block implements SimpleWaterloggedBlock
 	{
 		SINGLE("single"),
 		SINGLE_TOP("single_top"),
+		SINGLE_TOP_XY("single_top_xy"),
+		SINGLE_MIDDLE_XY("single_middle_xy"),
+		SINGLE_BOTTOM_XY("single_bottom_xy"),
+		SINGLE_TOP_X("single_top_x"),
+		SINGLE_MIDDLE_X("single_middle_x"),
+		SINGLE_BOTTOM_X("single_bottom_x"),
 		SINGLE_MIDDLE("single_middle"),
 		SINGLE_BOTTOM("single_bottom"),
 		MIDDLE_TOP("middle_top"),
 		MIDDLE_BOTTOM("middle_bottom"),
+		MIDDLE_TOP_X("middle_top_x"),
+		MIDDLE_BOTTOM_X("middle_bottom_x"),
 		MIDDLE_RIGHT("middle_right"),
 		MIDDLE_LEFT("middle_left"),
+		MIDDLE_RIGHT_X("middle_right_x"),
+		MIDDLE_LEFT_X("middle_left_x"),
 		CORNER_RIGHT("corner_right"),
 		CORNER_LEFT("corner_left"),
+		CORNER_RIGHT_X("corner_right_x"),
+		CORNER_LEFT_X("corner_left_x"),
 		CORNER_RIGHT_BOTTOM("corner_right_bottom"),
 		CORNER_LEFT_BOTTOM("corner_left_bottom"),
+		CORNER_RIGHT_BOTTOM_X("corner_right_bottom_x"),
+		CORNER_LEFT_BOTTOM_X("corner_left_bottom_x"),
 		MIDDLE_TOP_Y("middle_top_y"),
 		MIDDLE_BOTTOM_Y("middle_bottom_y"),
 		MIDDLE_RIGHT_Y("middle_right_y"),

@@ -6,6 +6,33 @@
     "window_type=single_top": {
       "model": "beyondtheabyss:block/metal_window_single_top"
     },
+    "window_type=single_top_xy": {
+      "model": "beyondtheabyss:block/metal_window_single_top",
+      "x": -90,
+      "y": 90
+    },
+	"window_type=single_middle_xy": {
+      "model": "beyondtheabyss:block/metal_window_single_middle",
+      "x": -90,
+      "y": 90
+    },
+    "window_type=single_bottom_xy": {
+      "model": "beyondtheabyss:block/metal_window_single_bottom",
+      "x": 90,
+      "y": -90
+    },
+    "window_type=single_top_x": {
+      "model": "beyondtheabyss:block/metal_window_single_top",
+      "x": 90
+    },
+	"window_type=single_middle_x": {
+      "model": "beyondtheabyss:block/metal_window_single_middle",
+      "x": 90
+    },
+    "window_type=single_bottom_x": {
+      "model": "beyondtheabyss:block/metal_window_single_bottom",
+      "x": 90
+    },
     "window_type=single_middle": {
       "model": "beyondtheabyss:block/metal_window_single_middle"
     },
@@ -18,11 +45,27 @@
     "window_type=middle_bottom": {
       "model": "beyondtheabyss:block/metal_window_middle_bottom"
     },
+    "window_type=middle_top_x": {
+      "model": "beyondtheabyss:block/metal_window_middle_top",
+      "x": -90
+    },
+    "window_type=middle_bottom_x": {
+      "model": "beyondtheabyss:block/metal_window_middle_bottom",
+      "x": -90
+    },
     "window_type=middle_right": {
       "model": "beyondtheabyss:block/metal_window_middle_right"
     },
     "window_type=middle_left": {
       "model": "beyondtheabyss:block/metal_window_middle_left"
+    },
+	"window_type=middle_right_x": {
+      "model": "beyondtheabyss:block/metal_window_middle_right",
+      "x": 90
+    },
+    "window_type=middle_left_x": {
+      "model": "beyondtheabyss:block/metal_window_middle_left",
+      "x": 90
     },
     "window_type=corner_right": {
       "model": "beyondtheabyss:block/metal_window_corner_right"
@@ -30,11 +73,27 @@
     "window_type=corner_left": {
       "model": "beyondtheabyss:block/metal_window_corner_left"
     },
+    "window_type=corner_right_x": {
+      "model": "beyondtheabyss:block/metal_window_corner_right",
+      "x": -90
+    },
+    "window_type=corner_left_x": {
+      "model": "beyondtheabyss:block/metal_window_corner_left",
+      "x": 90
+    },
     "window_type=corner_right_bottom": {
       "model": "beyondtheabyss:block/metal_window_corner_right_bottom"
     },
     "window_type=corner_left_bottom": {
       "model": "beyondtheabyss:block/metal_window_corner_left_bottom"
+    },
+    "window_type=corner_right_bottom_x": {
+      "model": "beyondtheabyss:block/metal_window_corner_right_bottom",
+      "x": -90
+    },
+    "window_type=corner_left_bottom_x": {
+      "model": "beyondtheabyss:block/metal_window_corner_left_bottom",
+      "x": 90
     },
     "window_type=middle_top_y": {
       "model": "beyondtheabyss:block/metal_window_middle_top",
