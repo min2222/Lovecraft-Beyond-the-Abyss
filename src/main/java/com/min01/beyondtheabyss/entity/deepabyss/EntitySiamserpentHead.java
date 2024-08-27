@@ -190,19 +190,16 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
 			EntitySiamserpentBone bone = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
 			bone.setOwner(this);
 			bone.setIndex(0);
-			bone.setPos(this.position());
 			this.level.addFreshEntity(bone);
 			
 			EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
 			bone2.setOwner(this);
 			bone2.setIndex(11);
-			bone2.setPos(this.position());
 			this.level.addFreshEntity(bone2);
 			
 			EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
 			head.setOwner(this);
 			head.setHeadType(this.getHeadType() == HeadType.SLASHER ? HeadType.BLASTER : HeadType.SLASHER);
-			head.setPos(this.position());
 			this.level.addFreshEntity(head);
 			
 			for(int i = 1; i < 11; i++)
@@ -211,7 +208,6 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
 				bone1.setOwner(this);
 				bone1.setIndex(i);
 				bone1.setVariant(this.level.random.nextInt(1, 3));
-				bone1.setPos(this.position());
 				this.level.addFreshEntity(bone1);
 			}
 		}
