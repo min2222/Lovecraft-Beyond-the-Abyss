@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
-import com.min01.beyondtheabyss.entity.ai.control.DeepAbyssFishMoveControl;
+import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinWaterBoundPathNavigation;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -12,9 +12,9 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -38,7 +38,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
     @Override
     protected PathNavigation createNavigation(Level p_27480_) 
     {
-    	return this.isSwimable() ? new WaterBoundPathNavigation(this, p_27480_) : super.createNavigation(p_27480_);
+    	return this.isSwimable() ? new NoSpinWaterBoundPathNavigation(this, p_27480_) : super.createNavigation(p_27480_);
     }
     
     @Override
@@ -96,14 +96,14 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		super.tick();
 		if(this.isSwimable())
 		{
-			this.moveControl = this.getFishMoveControl();
+			this.moveControl = this.getSwimmingMoveControl();
 			this.lookControl = new SmoothSwimmingLookControl(this, 10);
 		}
 	}
 	
-	public MoveControl getFishMoveControl()
+	public MoveControl getSwimmingMoveControl()
 	{
-		return new DeepAbyssFishMoveControl(this, this.getBodyRotationSpeed(), this.getInsideWaterSpeed());
+		return new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), this.getInsideWaterSpeed(), 0.1F, false);
 	}
     
     @Override
@@ -114,10 +114,6 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
     		this.moveRelative(this.getSpeed(), p_27490_);
     		this.move(MoverType.SELF, this.getDeltaMovement());
     		this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-    		if(this.getTarget() == null) 
-    		{
-    			this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
-    		}
     	}
     	else
     	{
@@ -168,7 +164,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	
 	public float getInsideWaterSpeed()
 	{
-		return 0.3F;
+		return 0.05F;
 	}
 	
 	public boolean canRandomSwim()

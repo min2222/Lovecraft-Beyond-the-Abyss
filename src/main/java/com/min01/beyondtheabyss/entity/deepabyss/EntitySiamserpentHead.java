@@ -7,11 +7,14 @@ import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.KinematicChain;
 import com.min01.beyondtheabyss.util.KinematicChain.ChainSegment;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec2;
 
 public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySiamserpentHead>
@@ -86,6 +90,17 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
     		this.setDormant(true);
 		}
 	}
+	
+	@Override
+	public int getMaxSpawnClusterSize() 
+	{
+		return 1;
+	}
+
+	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+		return pRandom.nextInt(150) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+    }
 	
     @Override
     protected void doPush(Entity p_20971_) 

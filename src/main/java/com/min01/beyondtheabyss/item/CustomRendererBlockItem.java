@@ -52,6 +52,7 @@ public class CustomRendererBlockItem extends BlockItem
 		return super.placeBlock(p_40561_, p_40562_);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public InteractionResult place(BlockPlaceContext p_40577_) 
 	{
@@ -61,7 +62,8 @@ public class CustomRendererBlockItem extends BlockItem
 		{
 			Direction direction = skeleton.getPartDirection(skeleton.getStateForPlacement(p_40577_));
 			BlockPos blockpos = pos.relative(direction);
-			if(!level.getBlockState(blockpos).isAir())
+			boolean flag = !level.isEmptyBlock(blockpos) && !level.getBlockState(blockpos).liquid();
+			if(flag)
 			{
 				return InteractionResult.FAIL;
 			}

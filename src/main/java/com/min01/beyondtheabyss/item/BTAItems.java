@@ -19,6 +19,7 @@ import com.min01.beyondtheabyss.misc.BTAArmorMaterial;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -28,6 +29,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -134,6 +136,11 @@ public class BTAItems
 	public static final RegistryObject<Item> GREEN_METAL_CRATE = registerBlockItem("green_metal_crate", () -> BTABlocks.GREEN_METAL_CRATE.get(), new Item.Properties());
 	public static final RegistryObject<Item> PINK_METAL_CRATE = registerBlockItem("pink_metal_crate", () -> BTABlocks.PINK_METAL_CRATE.get(), new Item.Properties());
 	public static final RegistryObject<Item> RED_METAL_CRATE = registerBlockItem("red_metal_crate", () -> BTABlocks.RED_METAL_CRATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_BLOCK = registerBlockItem("dead_osteo_coral_block", () -> BTABlocks.DEAD_OSTEO_CORAL_BLOCK.get(), new Item.Properties());
+	public static final RegistryObject<Item> OSTEO_CORAL_BLOCK = registerBlockItem("osteo_coral_block", () -> BTABlocks.OSTEO_CORAL_BLOCK.get(), new Item.Properties());
+	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_FAN = ITEMS.register("dead_osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.DEAD_OSTEO_CORAL_FAN.get(), BTABlocks.DEAD_OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()), Direction.DOWN));
+	public static final RegistryObject<Item> OSTEO_CORAL_FAN = ITEMS.register("osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.OSTEO_CORAL_FAN.get(), BTABlocks.OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()), Direction.DOWN));
+	public static final RegistryObject<Item> WHALEFALL = registerBlockItem("whalefall", () -> BTABlocks.WHALEFALL.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{

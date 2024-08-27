@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity;
 import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
+import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinGroundPathNavigation;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -92,6 +94,12 @@ public abstract class AbstractBTAMob extends Monster implements IMultipart
 		this.entityData.define(CAN_LOOK_OR_MOVE, true);
 		this.entityData.define(IS_USING_SKILL, false);
 		this.entityData.define(HAS_TARGET, false);
+	}
+	
+	@Override
+	protected PathNavigation createNavigation(Level p_21480_)
+	{
+		return new NoSpinGroundPathNavigation(this, p_21480_);
 	}
 	
     @Override

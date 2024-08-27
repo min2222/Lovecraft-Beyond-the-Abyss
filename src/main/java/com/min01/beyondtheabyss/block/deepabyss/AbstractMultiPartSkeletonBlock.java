@@ -55,6 +55,7 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 		return p_49534_ == SkeletonPart.LOWER ? p_49535_.getOpposite() : p_49535_;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void setPlacedBy(Level p_49499_, BlockPos p_49500_, BlockState p_49501_, @Nullable LivingEntity p_49502_, ItemStack p_49503_) 
 	{
@@ -63,7 +64,8 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 		{
 			Direction direction = this.getPartDirection(p_49501_);
 			BlockPos blockpos = p_49500_.relative(direction);
-			if(p_49499_.getBlockState(blockpos).isAir())
+			boolean flag = p_49499_.isEmptyBlock(blockpos) || p_49499_.getBlockState(blockpos).liquid();
+			if(flag)
 			{
 				p_49499_.setBlock(blockpos, p_49501_.setValue(SKELETON_PART, SkeletonPart.UPPER), 3);
 				p_49499_.blockUpdated(p_49500_, Blocks.AIR);

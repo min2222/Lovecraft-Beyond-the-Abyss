@@ -138,7 +138,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
 	@Override
 	public float getInsideWaterSpeed() 
 	{
-		return this.isPanic() ? 0.5F : super.getInsideWaterSpeed();
+		return this.isPanic() ? 0.1F : super.getInsideWaterSpeed();
 	}
     
     @Override
