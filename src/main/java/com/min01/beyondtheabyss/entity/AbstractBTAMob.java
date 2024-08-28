@@ -134,9 +134,14 @@ public abstract class AbstractBTAMob extends Monster implements IMultipart
 	public void tick() 
 	{
 		super.tick();
-		if(this.getTarget() != null)
+		
+		if(!this.level.isClientSide)
 		{
 			this.setHasTarget(this.getTarget() != null);
+		}
+		
+		if(this.getTarget() != null)
+		{
 			if(this.canLookOrMove())
 			{
 				if(this.getBTAMobType().moveToTarget)
