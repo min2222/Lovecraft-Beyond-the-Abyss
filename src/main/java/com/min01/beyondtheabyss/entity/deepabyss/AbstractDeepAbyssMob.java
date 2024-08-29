@@ -170,7 +170,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	
 	public boolean canRandomSwim()
 	{
-		return true;
+		return !this.isUsingSkill() || this.getTarget() == null;
 	}
 	
 	public boolean canBreathOutsideWater()

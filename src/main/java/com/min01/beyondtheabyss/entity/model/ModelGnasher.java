@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.GnasherAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -46,13 +47,13 @@ public class ModelGnasher extends HierarchicalModel<EntityGnasher>
 
 		Fins.addOrReplaceChild("Right", CubeListBuilder.create().texOffs(35, 0).addBox(-10.0F, -6.5F, 0.0F, 10.0F, 10.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.0F, 2.5F, 0.0F, 0.0F, 1.2217F, 0.0F));
 
-		PartDefinition Head = Gnasher.addOrReplaceChild("Head", CubeListBuilder.create(), PartPose.offset(0.0F, -4.0F, -7.0F));
+		PartDefinition Head = Body.addOrReplaceChild("Head", CubeListBuilder.create(), PartPose.offset(0.0F, 1.6667F, -6.8333F));
 
 		Head.addOrReplaceChild("Up", CubeListBuilder.create().texOffs(0, 27).addBox(-4.0F, -6.0F, -11.0F, 8.0F, 6.0F, 12.0F, new CubeDeformation(0.001F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		Head.addOrReplaceChild("Jaw", CubeListBuilder.create().texOffs(29, 34).addBox(-4.0F, -0.5F, -11.0F, 8.0F, 3.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.5F, 0.0F));
 
-		PartDefinition Tails = Gnasher.addOrReplaceChild("Tails", CubeListBuilder.create().texOffs(23, 50).addBox(-2.5F, -2.5F, -1.0F, 5.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -7.5F, 7.0F));
+		PartDefinition Tails = Body.addOrReplaceChild("Tails", CubeListBuilder.create().texOffs(23, 50).addBox(-2.5F, -2.5F, -1.0F, 5.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.8333F, 7.1667F));
 
 		Tails.addOrReplaceChild("TailEdge", CubeListBuilder.create().texOffs(0, 46).addBox(0.0F, -6.5F, -1.0F, 0.0F, 13.0F, 11.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 7.0F));
 
@@ -64,6 +65,8 @@ public class ModelGnasher extends HierarchicalModel<EntityGnasher>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("Gnasher"), netHeadYaw, headPitch);
+		BTAClientUtil.animateWalk(entity, this, GnasherAnimation.GNASHER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
+		this.animate(entity.biteAnimationState, GnasherAnimation.GNASHER_BITE, ageInTicks);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepAbyssFollowFlockLeaderGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -18,6 +19,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -36,6 +38,8 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 	@Nullable
 	private EntityGnasher leader;
 	private int schoolSize = 1;
+	
+	public AnimationState biteAnimationState = new AnimationState();
 	
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	
@@ -73,6 +77,7 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 	{
 		super.registerGoals();
 		this.goalSelector.addGoal(5, new DeepAbyssFollowFlockLeaderGoal(this));
+		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
 	}
 	
 	@Override
@@ -80,6 +85,34 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 	{
 		super.defineSynchedData();
 		this.entityData.define(IS_LEADER, false);
+	}
+	
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
+	{
+        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
+        {
+            switch(this.getAnimationState()) 
+            {
+        		case 0: 
+        		{
+        			this.stopAllAnimationStates();
+        			break;
+        		}
+        		case 1:
+        		{
+        			this.stopAllAnimationStates();
+        			this.biteAnimationState.start(this.tickCount);
+        			break;
+        		}
+            }
+        }
+	}
+	
+	@Override
+	public void stopAllAnimationStates() 
+	{
+		this.biteAnimationState.stop();
 	}
 	
 	@Override
