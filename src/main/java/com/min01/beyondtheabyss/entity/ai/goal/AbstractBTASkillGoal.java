@@ -49,6 +49,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     	if(this.stopMovingWhenStart())
     	{
         	this.getMob().setCanMove(false);
+        	this.getMob().getNavigation().stop();
     	}
     	
     	this.getMob().setAggressive(true);
