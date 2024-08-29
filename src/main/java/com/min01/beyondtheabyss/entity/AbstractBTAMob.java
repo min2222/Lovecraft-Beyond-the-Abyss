@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -101,20 +100,6 @@ public abstract class AbstractBTAMob extends Monster implements IMultipart
 		return new NoSpinGroundPathNavigation(this, p_21480_);
 	}
 	
-    @Override
-	public void move(MoverType p_19973_, Vec3 p_19974_) 
-	{
-		if(this.canMove())
-		{
-			super.move(p_19973_, p_19974_);
-		}
-		else
-		{
-			double yvec = this.onGround || this.isNoGravity() ? 0 : this.getDeltaMovement().y;
-			super.move(p_19973_, new Vec3(0, yvec, 0));
-		}
-	}
-	
 	@Override
 	protected void registerGoals() 
 	{
@@ -143,7 +128,7 @@ public abstract class AbstractBTAMob extends Monster implements IMultipart
 		{
 			if(this.canLookOrMove())
 			{
-				if(this.getBTAMobType().moveToTarget)
+				if(this.getBTAMobType().moveToTarget && this.canMove())
 				{
 					this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
 				}
