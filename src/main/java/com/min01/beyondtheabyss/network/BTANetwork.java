@@ -21,10 +21,9 @@ public class BTANetwork
 	public static int ID = 0;
 	public static void registerMessages()
 	{
-		CHANNEL.registerMessage(ID++, ItemAnimationSyncPacket.class, ItemAnimationSyncPacket::encode, ItemAnimationSyncPacket::new, ItemAnimationSyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, KeyInputPacket.class, KeyInputPacket::encode, KeyInputPacket::new, KeyInputPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, BTAAbilitySyncPacket.class, BTAAbilitySyncPacket::encode, BTAAbilitySyncPacket::new, BTAAbilitySyncPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, PartPositionUpdatePacket.class, PartPositionUpdatePacket::encode, PartPositionUpdatePacket::new, PartPositionUpdatePacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, PosArrayUpdatePacket.class, PosArrayUpdatePacket::encode, PosArrayUpdatePacket::new, PosArrayUpdatePacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, SubmarinePartUpdatePacket.class, SubmarinePartUpdatePacket::encode, SubmarinePartUpdatePacket::new, SubmarinePartUpdatePacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, AltarItemSyncPacket.class, AltarItemSyncPacket::encode, AltarItemSyncPacket::new, AltarItemSyncPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, VehicleUpdatePacket.class, VehicleUpdatePacket::encode, VehicleUpdatePacket::new, VehicleUpdatePacket.Handler::onMessage);

@@ -17,7 +17,6 @@ import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
@@ -56,7 +55,6 @@ public class BeyondtheAbyss
 		BTANetwork.registerMessages();
         BTAConfig.loadConfig(BTAConfig.CONFIG, FMLPaths.CONFIGDIR.get().resolve("beyond-the-abyss.toml").toString());
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::attachEntityCapability);
-		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::attachItemStackCapability);
 	}
 	
     public void setupCurios(InterModEnqueueEvent event) 

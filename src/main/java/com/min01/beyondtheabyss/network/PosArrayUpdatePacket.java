@@ -12,20 +12,20 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class PartPositionUpdatePacket 
+public class PosArrayUpdatePacket 
 {
 	private final int entityId;
 	private final int array;
 	private final Vec3 pos;
 
-	public PartPositionUpdatePacket(Entity entity, Vec3 pos, int array) 
+	public PosArrayUpdatePacket(Entity entity, Vec3 pos, int array) 
 	{
 		this.entityId = entity.getId();
 		this.pos = pos;
 		this.array = array;
 	}
 
-	public PartPositionUpdatePacket(FriendlyByteBuf buf)
+	public PosArrayUpdatePacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 		this.pos = BTAEntityDataSerializers.readVec3(buf);
@@ -41,7 +41,7 @@ public class PartPositionUpdatePacket
 
 	public static class Handler 
 	{
-		public static boolean onMessage(PartPositionUpdatePacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(PosArrayUpdatePacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{

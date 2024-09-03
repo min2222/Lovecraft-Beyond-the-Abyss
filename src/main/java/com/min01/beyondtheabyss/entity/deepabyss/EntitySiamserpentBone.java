@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -61,6 +62,16 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySia
     	{
         	super.doPush(p_20971_);
     	}
+    }
+    
+    @Override
+    public boolean hurt(DamageSource p_21016_, float p_21017_) 
+    {
+    	if(p_21016_ == DamageSource.IN_WALL)
+    	{
+    		return false;
+    	}
+    	return super.hurt(p_21016_, p_21017_);
     }
 	
 	@Override

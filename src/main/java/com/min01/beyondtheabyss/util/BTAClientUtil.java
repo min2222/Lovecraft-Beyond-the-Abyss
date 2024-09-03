@@ -172,14 +172,8 @@ public class BTAClientUtil
 	
 	public static void animateWalk(AbstractBTAMob entity, HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 
 	{
-		if(entity.getAnimationState() == 0)
-		{
-			if(BTAUtil.isMoving(entity))
-			{
-				long i = (long)(limbSwing * 50.0F * p_268138_);
-				float f = Math.min(limbSwingAmount * p_268165_, 1.0F);
-				KeyframeAnimations.animate(model, animation, i, f, new Vector3f());
-			}
-		}
+		long i = (long)(limbSwing * 50.0F * p_268138_);
+		float f = Math.min(limbSwingAmount * p_268165_, 1.0F);
+		KeyframeAnimations.animate(model, animation, i, f, new Vector3f());
 	}
 }

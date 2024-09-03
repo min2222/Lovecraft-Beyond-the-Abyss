@@ -2,8 +2,10 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.KinematicChain;
 import com.min01.beyondtheabyss.util.KinematicChain.ChainSegment;
 
@@ -16,6 +18,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -24,18 +27,24 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 
 public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySiamserpentHead>
 {
 	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.FLOAT);
 	
 	public final KinematicChain chain = new KinematicChain(this);
+	
+	public AnimationState beamAnimationState = new AnimationState();
 	
 	public EntitySiamserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -58,13 +67,49 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
     	this.entityData.define(HEAD_TYPE, 0);
     	this.entityData.define(IS_DISABLED, false);
     	this.entityData.define(IS_DORMANT, false);
+    	this.entityData.define(BEAM_LENGTH, 0.0F);
     }
-
+    
 	@Override
 	public EntityPartBuilder<? extends AbstractBTAMob> createBuilder()
 	{
 		EntityPartBuilder<EntitySiamserpentHead> partBuilder = new EntityPartBuilder<EntitySiamserpentHead>(this);
 		return partBuilder;
+	}
+    
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
+	{
+        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
+        {
+            switch(this.getAnimationState()) 
+            {
+        		case 0: 
+        		{
+        			this.stopAllAnimationStates();
+        			break;
+        		}
+        		case 1:
+        		{
+        			this.stopAllAnimationStates();
+        			this.beamAnimationState.start(this.tickCount);
+        			break;
+        		}
+            }
+        }
+	}
+	
+	@Override
+	public void stopAllAnimationStates() 
+	{
+		this.beamAnimationState.stop();
+	}
+	
+	@Override
+	protected void registerGoals() 
+	{
+		super.registerGoals();
+		this.goalSelector.addGoal(4, new SiamserpentBlasterBeamGoal(this));
 	}
 	
 	@Override
@@ -89,10 +134,21 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
     		this.setCanLookOrMove(false);
     		this.setDormant(true);
 		}
+		
+		if(this.getHeadType() == HeadType.BLASTER)
+		{
+			if(this.getAnimationState() == 1)
+			{
+				Vec3 pos = this.position().add(0, 0.5F, 0);
+				Vec3 lookPos = BTAUtil.getLookPos( new Vec2(this.getXRot(), this.getYHeadRot()), pos, 0.0F, 0.0F, 100.0F);
+				HitResult result = this.level.clip(new ClipContext(pos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+				this.setBeamLength((float) (result.getLocation().subtract(this.position()).length() + 2.5F) * 2);
+			}
+		}
 	}
 	
 	@Override
-	public int getMaxSpawnClusterSize() 
+	public int getMaxSpawnClusterSize()
 	{
 		return 1;
 	}
@@ -132,6 +188,16 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
 		{
 			this.setHeadType(HeadType.values()[p_21450_.getInt("HeadType")]);
 		}
+	}
+	
+	public void setBeamLength(float value)
+	{
+		this.entityData.set(BEAM_LENGTH, value);
+	}
+	
+	public float getBeamLength()
+	{
+		return this.entityData.get(BEAM_LENGTH);
 	}
 	
 	public void setDormant(boolean value)

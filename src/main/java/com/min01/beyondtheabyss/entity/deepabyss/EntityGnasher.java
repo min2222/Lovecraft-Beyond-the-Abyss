@@ -35,13 +35,13 @@ import net.minecraft.world.level.block.Blocks;
 
 public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 {
-	@Nullable
-	private EntityGnasher leader;
-	private int schoolSize = 1;
+	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	
 	public AnimationState biteAnimationState = new AnimationState();
 	
-	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
+	@Nullable
+	private EntityGnasher leader;
+	private int schoolSize = 1;
 	
 	public EntityGnasher(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{

@@ -5,7 +5,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.PartPositionUpdatePacket;
+import com.min01.beyondtheabyss.network.PosArrayUpdatePacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -49,9 +49,9 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 		p_115455_.posArray[2] = tailPos;
 		p_115455_.posArray[1] = bodyPos;
 		p_115455_.posArray[0] = headPos;
-	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, tailPos, 2));
-	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, bodyPos, 1));
-	    BTANetwork.sendToServer(new PartPositionUpdatePacket(p_115455_, headPos, 0));
+	    BTANetwork.sendToServer(new PosArrayUpdatePacket(p_115455_, tailPos, 2));
+	    BTANetwork.sendToServer(new PosArrayUpdatePacket(p_115455_, bodyPos, 1));
+	    BTANetwork.sendToServer(new PosArrayUpdatePacket(p_115455_, headPos, 0));
 	}
 
 	@Override
