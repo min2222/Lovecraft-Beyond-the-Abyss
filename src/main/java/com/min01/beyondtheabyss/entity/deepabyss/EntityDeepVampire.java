@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityDeepVampire extends AbstractDeepAbyssMob
+public class EntityDeepVampire extends AbstractDeepAbyssMonster
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
@@ -69,7 +69,7 @@ public class EntityDeepVampire extends AbstractDeepAbyssMob
     	return 2;
     }
     
-	public static boolean checkDeepVampireSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkDeepVampireSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(30) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

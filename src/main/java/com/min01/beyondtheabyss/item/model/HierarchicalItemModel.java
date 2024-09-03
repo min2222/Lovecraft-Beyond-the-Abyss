@@ -12,9 +12,9 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
-public abstract class HierarchicalItemModel<T extends Item> extends Model
+public abstract class HierarchicalItemModel extends Model
 {
 	private static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
 	
@@ -23,7 +23,7 @@ public abstract class HierarchicalItemModel<T extends Item> extends Model
 		super(RenderType::entityCutoutNoCull);
 	}
 	
-	public abstract void setupAnim(T p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_);
+	public abstract void setupAnim(ItemStack p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_);
 
 	@Override
 	public void renderToBuffer(PoseStack p_170625_, VertexConsumer p_170626_, int p_170627_, int p_170628_, float p_170629_, float p_170630_, float p_170631_, float p_170632_) 

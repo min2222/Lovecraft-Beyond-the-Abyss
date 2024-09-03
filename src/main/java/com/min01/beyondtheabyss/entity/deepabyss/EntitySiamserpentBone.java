@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.KinematicChain.ChainSegment;
@@ -19,7 +19,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 
-public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySiamserpentHead>
+public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<EntitySiamserpentHead>
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
@@ -83,7 +83,7 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySia
 	}
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMob> createBuilder() 
+	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
 	{
 		EntityPartBuilder<EntitySiamserpentBone> partBuilder = new EntityPartBuilder<EntitySiamserpentBone>(this);
 		return partBuilder;

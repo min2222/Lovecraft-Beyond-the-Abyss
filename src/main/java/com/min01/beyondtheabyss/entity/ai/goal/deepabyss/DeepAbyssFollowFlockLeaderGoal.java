@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractDeepAbyssMob;
+import com.min01.beyondtheabyss.entity.deepabyss.AbstractDeepAbyssMonster;
 import com.min01.beyondtheabyss.entity.deepabyss.IFlocking;
 import com.mojang.datafixers.DataFixUtils;
 
@@ -12,17 +12,17 @@ import net.minecraft.world.entity.ai.goal.Goal;
 public class DeepAbyssFollowFlockLeaderGoal extends Goal
 {
 	private static final int INTERVAL_TICKS = 200;
-	private final AbstractDeepAbyssMob mob;
+	private final AbstractDeepAbyssMonster mob;
 	private int timeToRecalcPath;
 	private int nextStartTick;
 
-	public DeepAbyssFollowFlockLeaderGoal(AbstractDeepAbyssMob p_25249_) 
+	public DeepAbyssFollowFlockLeaderGoal(AbstractDeepAbyssMonster p_25249_) 
 	{
 		this.mob = p_25249_;
 		this.nextStartTick = this.nextStartTick(p_25249_);
 	}
 
-	protected int nextStartTick(AbstractDeepAbyssMob p_25252_)
+	protected int nextStartTick(AbstractDeepAbyssMonster p_25252_)
 	{
 		return reducedTickDelay(INTERVAL_TICKS + p_25252_.getRandom().nextInt(INTERVAL_TICKS) % 20);
 	}
@@ -46,12 +46,12 @@ public class DeepAbyssFollowFlockLeaderGoal extends Goal
 		else 
 		{
 			this.nextStartTick = this.nextStartTick(this.mob);
-			Predicate<AbstractDeepAbyssMob> predicate = (p_25258_) -> 
+			Predicate<AbstractDeepAbyssMonster> predicate = (p_25258_) -> 
 			{
 				return ((IFlocking) p_25258_).canBeFollowed() || !((IFlocking) p_25258_).isFollower();
 			};
-			List<? extends AbstractDeepAbyssMob> list = this.mob.level.getEntitiesOfClass(this.mob.getClass(), this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), predicate);
-			AbstractDeepAbyssMob fish = DataFixUtils.orElse(list.stream().filter(t -> ((IFlocking) t).canBeFollowed()).findAny(), this.mob);
+			List<? extends AbstractDeepAbyssMonster> list = this.mob.level.getEntitiesOfClass(this.mob.getClass(), this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), predicate);
+			AbstractDeepAbyssMonster fish = DataFixUtils.orElse(list.stream().filter(t -> ((IFlocking) t).canBeFollowed()).findAny(), this.mob);
 			((IFlocking) fish).addFollowers(list.stream().filter((p_25255_) -> 
 			{
 				return !((IFlocking) p_25255_).isFollower();

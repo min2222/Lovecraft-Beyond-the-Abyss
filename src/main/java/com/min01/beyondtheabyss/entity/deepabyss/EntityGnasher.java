@@ -33,7 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
+public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	
@@ -240,7 +240,7 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 	}
 
 	@Override
-	public void addFollowers(Stream<? extends AbstractDeepAbyssMob> p_27534_)
+	public void addFollowers(Stream<? extends AbstractDeepAbyssMonster> p_27534_)
 	{
 		p_27534_.limit((long)(this.getMaxSchoolSize() - this.schoolSize)).filter((p_27538_) -> 
 		{
@@ -273,7 +273,7 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 		return 2;
 	}
 	
-	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(180) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

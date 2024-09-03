@@ -13,16 +13,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
-public class IllusionAddPacket 
+public class AddIllusionPacket 
 {
 	private final int entityId;
 	
-	public IllusionAddPacket(Entity entity) 
+	public AddIllusionPacket(Entity entity) 
 	{
 		this.entityId = entity.getId();
 	}
 
-	public IllusionAddPacket(FriendlyByteBuf buf)
+	public AddIllusionPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 	}
@@ -34,7 +34,7 @@ public class IllusionAddPacket
 	
 	public static class Handler 
 	{
-		public static boolean onMessage(IllusionAddPacket message, Supplier<NetworkEvent.Context> ctx) 
+		public static boolean onMessage(AddIllusionPacket message, Supplier<NetworkEvent.Context> ctx) 
 		{
 			ctx.get().enqueueWork(() ->
 			{

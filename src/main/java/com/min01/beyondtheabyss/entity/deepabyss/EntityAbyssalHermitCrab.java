@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityAbyssalHermitCrab extends AbstractDeepAbyssMob
+public class EntityAbyssalHermitCrab extends AbstractDeepAbyssMonster
 {
 	public EntityAbyssalHermitCrab(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -47,7 +47,7 @@ public class EntityAbyssalHermitCrab extends AbstractDeepAbyssMob
     	return 1;
     }
     
-	public static boolean checkHermitCrabSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkHermitCrabSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(40) == 0 && pPos.getY() >= -400 && pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ABYSSALITH.get()) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

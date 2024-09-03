@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.IllusionSyncPacket;
+import com.min01.beyondtheabyss.network.UpdateIllusionPacket;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -67,7 +67,7 @@ public class IllusionImpl implements IllusionCapability
 	{
 		if(this.entity instanceof ServerPlayer)
 		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new IllusionSyncPacket(this.entity));
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdateIllusionPacket(this.entity));
 		}
 	}
 }

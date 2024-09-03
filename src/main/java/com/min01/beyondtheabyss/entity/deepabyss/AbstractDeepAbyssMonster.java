@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinWaterBoundPathNavigation;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -22,9 +22,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
+public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 {
-	public AbstractDeepAbyssMob(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public AbstractDeepAbyssMonster(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
@@ -133,7 +133,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
             	@Override
             	public boolean canUse() 
             	{
-            		return AbstractDeepAbyssMob.this.canRandomSwim() && super.canUse();
+            		return AbstractDeepAbyssMonster.this.canRandomSwim() && super.canUse();
             	}
             });
     	}

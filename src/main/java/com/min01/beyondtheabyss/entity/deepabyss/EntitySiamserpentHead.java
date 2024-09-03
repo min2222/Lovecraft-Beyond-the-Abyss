@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
@@ -35,7 +35,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySiamserpentHead>
+public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<EntitySiamserpentHead>
 {
 	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
@@ -71,7 +71,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
     }
     
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMob> createBuilder()
+	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
 	{
 		EntityPartBuilder<EntitySiamserpentHead> partBuilder = new EntityPartBuilder<EntitySiamserpentHead>(this);
 		return partBuilder;
@@ -131,7 +131,8 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
     		this.setYRot(rot.y + 180.0F);
     		this.setYHeadRot(rot.y + 180.0F);
     		this.setYBodyRot(rot.y + 180.0F);
-    		this.setCanLookOrMove(false);
+    		this.setCanLook(false);
+    		this.setCanMove(false);
     		this.setDormant(true);
 		}
 		
@@ -153,7 +154,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMob<EntitySia
 		return 1;
 	}
 	
-	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(150) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

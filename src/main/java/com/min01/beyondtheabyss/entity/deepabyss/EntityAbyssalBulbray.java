@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityAbyssalBulbray extends AbstractDeepAbyssMob
+public class EntityAbyssalBulbray extends AbstractDeepAbyssMonster
 {
 	public EntityAbyssalBulbray(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -45,7 +45,7 @@ public class EntityAbyssalBulbray extends AbstractDeepAbyssMob
     	return 1;
     }
     
-	public static boolean checkBulbraySpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkBulbraySpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(70) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

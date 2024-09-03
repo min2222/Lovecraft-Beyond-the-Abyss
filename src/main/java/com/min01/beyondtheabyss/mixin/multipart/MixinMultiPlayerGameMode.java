@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.MultiPartInteractionPacket;
-import com.min01.beyondtheabyss.network.MultiPartInteractionPacket.InteractionType;
+import com.min01.beyondtheabyss.network.InteractMultiPartPacket;
+import com.min01.beyondtheabyss.network.InteractMultiPartPacket.InteractionType;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -41,7 +41,7 @@ public class MixinMultiPlayerGameMode
             String part = multipart.getBounds().raycast(pos, pos.add(dir.scale(reach)));
             if(part != null)
             {
-                BTANetwork.sendToServer(new MultiPartInteractionPacket(target.getId(), part, InteractionHand.MAIN_HAND, client.cameraEntity.isShiftKeyDown(), InteractionType.ATTACK));
+                BTANetwork.sendToServer(new InteractMultiPartPacket(target.getId(), part, InteractionHand.MAIN_HAND, client.cameraEntity.isShiftKeyDown(), InteractionType.ATTACK));
                 if(this.localPlayerMode != GameType.SPECTATOR)
                 {
                     player.attack(target);
@@ -66,7 +66,7 @@ public class MixinMultiPlayerGameMode
             String part = multipart.getBounds().raycast(pos, pos.add(dir.scale(reach)));
             if(part != null)
             {
-                BTANetwork.sendToServer(new MultiPartInteractionPacket(entity.getId(), part, hand, client.cameraEntity.isShiftKeyDown(), InteractionType.INTERACT));
+                BTANetwork.sendToServer(new InteractMultiPartPacket(entity.getId(), part, hand, client.cameraEntity.isShiftKeyDown(), InteractionType.INTERACT));
                 if(this.localPlayerMode != GameType.SPECTATOR)
                 {
                     cir.setReturnValue(multipart.interact(player, hand, part));

@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityAmarumGhost extends AbstractDeepAbyssMob
+public class EntityAmarumGhost extends AbstractDeepAbyssMonster
 {
 	public static final EntityDataAccessor<Boolean> IS_CONTACTED = SynchedEntityData.defineId(EntityAmarumGhost.class, EntityDataSerializers.BOOLEAN);
 	   
@@ -199,7 +199,7 @@ public class EntityAmarumGhost extends AbstractDeepAbyssMob
     	return 1;
     }
     
-	public static boolean checkAmarumGhostSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkAmarumGhostSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(250) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

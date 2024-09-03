@@ -13,7 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public class EntityPhasmozoa extends AbstractDeepAbyssMob
+public class EntityPhasmozoa extends AbstractDeepAbyssMonster
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> SPECTRE_COOLDOWN = SynchedEntityData.defineId(EntityPhasmozoa.class, EntityDataSerializers.INT);

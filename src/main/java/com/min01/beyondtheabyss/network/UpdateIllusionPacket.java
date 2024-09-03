@@ -15,16 +15,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class IllusionSyncPacket 
+public class UpdateIllusionPacket 
 {
 	private final int entityId;
 	
-	public IllusionSyncPacket(Entity entity) 
+	public UpdateIllusionPacket(Entity entity) 
 	{
 		this.entityId = entity.getId();
 	}
 
-	public IllusionSyncPacket(FriendlyByteBuf buf)
+	public UpdateIllusionPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 	}
@@ -36,7 +36,7 @@ public class IllusionSyncPacket
 	
 	public static class Handler 
 	{
-		public static boolean onMessage(IllusionSyncPacket message, Supplier<NetworkEvent.Context> ctx) 
+		public static boolean onMessage(UpdateIllusionPacket message, Supplier<NetworkEvent.Context> ctx) 
 		{
 			ctx.get().enqueueWork(() ->
 			{

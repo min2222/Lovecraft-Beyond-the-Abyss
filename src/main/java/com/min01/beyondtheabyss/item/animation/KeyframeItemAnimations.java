@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class KeyframeItemAnimations
 {
-	public static void animate(HierarchicalItemModel<?> p_232320_, AnimationDefinition p_232321_, long p_232322_, float p_232323_, Vector3f p_232324_) 
+	public static void animate(HierarchicalItemModel p_232320_, AnimationDefinition p_232321_, long p_232322_, float p_232323_, Vector3f p_232324_) 
 	{
 		float f = getElapsedSeconds(p_232321_, p_232322_);
 

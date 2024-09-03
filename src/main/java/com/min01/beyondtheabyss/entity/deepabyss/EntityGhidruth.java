@@ -22,7 +22,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGhidruth extends AbstractDeepAbyssMob
+public class EntityGhidruth extends AbstractDeepAbyssMonster
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();

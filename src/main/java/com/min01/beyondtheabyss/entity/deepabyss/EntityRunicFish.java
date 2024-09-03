@@ -23,7 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityRunicFish extends AbstractDeepAbyssMob
+public class EntityRunicFish extends AbstractDeepAbyssMonster
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityRunicFish.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> PANIC_TICK = SynchedEntityData.defineId(EntityRunicFish.class, EntityDataSerializers.INT);
@@ -72,7 +72,7 @@ public class EntityRunicFish extends AbstractDeepAbyssMob
     }
     
     //TODO probably only spawn in poi type of structure for temple guardian
-	public static boolean checkRunicFishSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkRunicFishSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(20) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

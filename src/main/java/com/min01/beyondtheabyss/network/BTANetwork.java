@@ -22,16 +22,16 @@ public class BTANetwork
 	public static void registerMessages()
 	{
 		CHANNEL.registerMessage(ID++, KeyInputPacket.class, KeyInputPacket::encode, KeyInputPacket::new, KeyInputPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, BTAAbilitySyncPacket.class, BTAAbilitySyncPacket::encode, BTAAbilitySyncPacket::new, BTAAbilitySyncPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, PosArrayUpdatePacket.class, PosArrayUpdatePacket::encode, PosArrayUpdatePacket::new, PosArrayUpdatePacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, SubmarinePartUpdatePacket.class, SubmarinePartUpdatePacket::encode, SubmarinePartUpdatePacket::new, SubmarinePartUpdatePacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, AltarItemSyncPacket.class, AltarItemSyncPacket::encode, AltarItemSyncPacket::new, AltarItemSyncPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, VehicleUpdatePacket.class, VehicleUpdatePacket::encode, VehicleUpdatePacket::new, VehicleUpdatePacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, IllusionSyncPacket.class, IllusionSyncPacket::encode, IllusionSyncPacket::new, IllusionSyncPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, IllusionAddPacket.class, IllusionAddPacket::encode, IllusionAddPacket::new, IllusionAddPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, MultiPartBuildPacket.class, MultiPartBuildPacket::encode, MultiPartBuildPacket::new, MultiPartBuildPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, MultiPartUpdatePacket.class, MultiPartUpdatePacket::encode, MultiPartUpdatePacket::new, MultiPartUpdatePacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, MultiPartInteractionPacket.class, MultiPartInteractionPacket::encode, MultiPartInteractionPacket::new, MultiPartInteractionPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateBTAAbilityPacket.class, UpdateBTAAbilityPacket::encode, UpdateBTAAbilityPacket::new, UpdateBTAAbilityPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdatePosArrayPacket.class, UpdatePosArrayPacket::encode, UpdatePosArrayPacket::new, UpdatePosArrayPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateSubmarinePartPacket.class, UpdateSubmarinePartPacket::encode, UpdateSubmarinePartPacket::new, UpdateSubmarinePartPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateAltarItemPacket.class, UpdateAltarItemPacket::encode, UpdateAltarItemPacket::new, UpdateAltarItemPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateVehiclePacket.class, UpdateVehiclePacket::encode, UpdateVehiclePacket::new, UpdateVehiclePacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateIllusionPacket.class, UpdateIllusionPacket::encode, UpdateIllusionPacket::new, UpdateIllusionPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, AddIllusionPacket.class, AddIllusionPacket::encode, AddIllusionPacket::new, AddIllusionPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, BuildMultiPartPacket.class, BuildMultiPartPacket::encode, BuildMultiPartPacket::new, BuildMultiPartPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateMultiPartPacket.class, UpdateMultiPartPacket::encode, UpdateMultiPartPacket::new, UpdateMultiPartPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, InteractMultiPartPacket.class, InteractMultiPartPacket::encode, InteractMultiPartPacket::new, InteractMultiPartPacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 

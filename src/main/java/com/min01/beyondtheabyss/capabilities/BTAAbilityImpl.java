@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
-import com.min01.beyondtheabyss.network.BTAAbilitySyncPacket;
-import com.min01.beyondtheabyss.network.BTAAbilitySyncPacket.PacketType;
+import com.min01.beyondtheabyss.network.UpdateBTAAbilityPacket;
+import com.min01.beyondtheabyss.network.UpdateBTAAbilityPacket.PacketType;
 import com.min01.beyondtheabyss.network.BTANetwork;
 
 import net.minecraft.nbt.CompoundTag;
@@ -187,7 +187,7 @@ public class BTAAbilityImpl implements BTAAbilityCapability
 		{
 			this.abilities.forEach(t -> 
 			{
-				BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new BTAAbilitySyncPacket(this.entity, t, t.getTickcount(), type));
+				BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdateBTAAbilityPacket(this.entity, t, t.getTickcount(), type));
 			});
 		}
 	}

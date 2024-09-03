@@ -15,11 +15,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractOwnableDeepAbyssMob<T extends AbstractDeepAbyssMob> extends AbstractDeepAbyssMob
+public abstract class AbstractOwnableDeepAbyssMonster<T extends AbstractDeepAbyssMonster> extends AbstractDeepAbyssMonster
 {
-	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractOwnableDeepAbyssMob.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractOwnableDeepAbyssMonster.class, EntityDataSerializers.OPTIONAL_UUID);
 	
-	public AbstractOwnableDeepAbyssMob(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public AbstractOwnableDeepAbyssMonster(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 	}
