@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -8,7 +7,6 @@ import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
@@ -72,12 +70,6 @@ public class EntityDeepVampire extends AbstractDeepAbyssMonster
 	public static boolean checkDeepVampireSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(30) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
-    }
-	
-    @Override
-    protected ResourceLocation getDefaultLootTable() 
-    {
-    	return new ResourceLocation(BeyondtheAbyss.MODID, "entity/deep_vampire");
     }
     
     @Override

@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/cube_all",
+	"textures": {
+		"all": "beyondtheabyss:block/rot_soil_variant_1"
+	}
+}

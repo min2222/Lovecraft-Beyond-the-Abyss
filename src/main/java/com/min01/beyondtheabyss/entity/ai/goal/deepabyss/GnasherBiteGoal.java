@@ -27,9 +27,12 @@ public class GnasherBiteGoal extends BasicBTASkillGoal<EntityGnasher>
 	@Override
 	protected void performSkill()
 	{
-		if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2))
+		if(this.mob.getTarget() != null)
 		{
-			this.mob.doHurtTarget(this.mob.getTarget());
+			if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2))
+			{
+				this.mob.doHurtTarget(this.mob.getTarget());
+			}
 		}
 	}
 	

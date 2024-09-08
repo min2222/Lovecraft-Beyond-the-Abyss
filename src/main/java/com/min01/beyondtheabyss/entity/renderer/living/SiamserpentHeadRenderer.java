@@ -70,7 +70,7 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 			this.blasterModel.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
 			if(!p_114485_.isDisabled() && !p_114485_.isDormant())
 			{
-				BTAClientUtil.coloredGlowingModelCopyLayerRender(this.blasterModel, this.blasterModel, LAYER_BLASTER, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
+				BTAClientUtil.coloredGlowingModelCopyLayerRender(this.blasterModel, this.blasterModel, LAYER_BLASTER, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 0.3F, 0.3F, 0.3F);
 			}
 			break;
 		}

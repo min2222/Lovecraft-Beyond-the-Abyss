@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import java.util.List;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
@@ -16,21 +18,27 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -44,7 +52,8 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	
 	public final KinematicChain chain = new KinematicChain(this);
 	
-	public AnimationState beamAnimationState = new AnimationState();
+	public AnimationState beamStartAnimationState = new AnimationState();
+	public AnimationState beamStopAnimationState = new AnimationState();
 	
 	public EntitySiamserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -92,7 +101,13 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
         		case 1:
         		{
         			this.stopAllAnimationStates();
-        			this.beamAnimationState.start(this.tickCount);
+        			this.beamStartAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 2:
+        		{
+        			this.stopAllAnimationStates();
+        			this.beamStopAnimationState.start(this.tickCount);
         			break;
         		}
             }
@@ -102,7 +117,8 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	@Override
 	public void stopAllAnimationStates() 
 	{
-		this.beamAnimationState.stop();
+		this.beamStartAnimationState.stop();
+		this.beamStopAnimationState.stop();
 	}
 	
 	@Override
@@ -140,12 +156,60 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 		{
 			if(this.getAnimationState() == 1)
 			{
-				Vec3 pos = this.position().add(0, 0.5F, 0);
-				Vec3 lookPos = BTAUtil.getLookPos( new Vec2(this.getXRot(), this.getYHeadRot()), pos, 0.0F, 0.0F, 100.0F);
-				HitResult result = this.level.clip(new ClipContext(pos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-				this.setBeamLength((float) (result.getLocation().subtract(this.position()).length() + 2.5F) * 2);
+				Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYRot()), this.position().add(0.0F, 0.5F, 0.0F), 0.0F, 0.0F, -0.2F);
+				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYRot()), startPos, 0.0F, 0.0F, 100.0F);
+				HitResult hitResult = this.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+				EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(this.level, this, startPos, lookPos, this.getBoundingBox().inflate(100.0F), Entity::isPickable);
+				Vec3 pos = hitResult.getLocation();
+				
+	            if(entityHit != null)
+	            {
+	            	hitResult = entityHit;
+	            }
+	            
+	            if(hitResult != null)
+	            {
+		        	this.setBeamLength((float) (pos.subtract(startPos).length() * 2) + 2.5F);
+		        	
+					if(hitResult.getType() == HitResult.Type.ENTITY)
+					{
+		                Vec3 vec31 = pos.subtract(startPos);
+		                Vec3 vec32 = vec31.normalize();
+		                for(int i = 1; i < Mth.floor(vec31.length()) + 1; ++i)
+		                {
+		                	Vec3 vec33 = startPos.add(vec32.scale(i));
+		                	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(vec33, vec33).inflate(0.5F));
+		                	list.removeIf(t -> t == this || t.isAlliedTo(this));
+		                	list.forEach(t -> 
+		                	{
+		                        if(t.hurt(DamageSource.mobAttack(this), 2.5F)) 
+		                        {
+		                        	
+		                        }
+		                	});
+		                }
+					}
+	            }
+			}
+			
+			if(this.getAnimationState() == 2 && this.getAnimationTick() <= 0)
+			{
+				this.setAnimationState(0);
 			}
 		}
+	}
+	
+	@Override
+	public boolean isAlliedTo(Entity p_20355_) 
+	{
+		if(p_20355_ instanceof EntitySiamserpentHead head)
+		{
+			if(this.getOwner() != null)
+			{
+				return this.getOwner() == head;
+			}
+		}
+		return super.isAlliedTo(p_20355_);
 	}
 	
 	@Override
@@ -156,7 +220,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(150) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pRandom.nextInt(650) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
     @Override

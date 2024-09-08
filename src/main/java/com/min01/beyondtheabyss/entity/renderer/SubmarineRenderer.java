@@ -40,7 +40,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		float f2 = f1 - f;
         float f6 = Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot());
 		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
-		this.model.setupAnim(p_114485_, 0, 0, 0, f2 + 180, f6);
+		this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
 		this.model.renderToBuffer(p_114488_, consumer, p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		Vec3 rotation = Vec3.ZERO;
 		Vec3 detectorPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine"});
@@ -91,7 +91,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 	        strength = Mth.clamp(strength, 0.1F, 1);
 	        
 			VertexConsumer eyeConsumer = p_114489_.getBuffer(RenderType.eyes(LAYER_TEXTURE));
-			this.model.setupAnim(p_114485_, 0, 0, 0, f2 + 180, f6);
+			this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
 			this.model.renderToBuffer(p_114488_, eyeConsumer, p_114490_, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
 		}
 		p_114488_.popPose();

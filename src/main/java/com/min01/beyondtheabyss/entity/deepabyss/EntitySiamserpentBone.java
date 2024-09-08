@@ -55,6 +55,16 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Entit
     	}
     }
     
+	@Override
+	public boolean isAlliedTo(Entity p_20355_) 
+	{
+		if(this.getOwner() != null)
+		{
+			return p_20355_ == this.getOwner();
+		}
+		return super.isAlliedTo(p_20355_);
+	}
+    
     @Override
     protected void doPush(Entity p_20971_) 
     {

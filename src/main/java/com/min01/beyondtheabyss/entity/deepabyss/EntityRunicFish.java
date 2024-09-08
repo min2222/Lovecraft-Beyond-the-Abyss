@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -9,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -103,12 +101,6 @@ public class EntityRunicFish extends AbstractDeepAbyssMonster
 		}
 		return super.hurt(p_21016_, p_21017_);
 	}
-	
-    @Override
-    protected ResourceLocation getDefaultLootTable() 
-    {
-    	return new ResourceLocation(BeyondtheAbyss.MODID, "entity/runic_fish");
-    }
 	
 	public void setPanicTick(int value)
 	{

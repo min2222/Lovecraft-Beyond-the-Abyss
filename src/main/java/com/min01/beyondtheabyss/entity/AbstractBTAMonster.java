@@ -7,6 +7,7 @@ import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinGroundPathNavigation;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -141,7 +142,8 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 			}
 			if(this.getBTAMobType().lookTarget && this.canLook())
 			{
-				this.getLookControl().setLookAt(this.getTarget(), 30.0F, 30.0F);
+				//this.getLookControl().setLookAt(this.getTarget(), 30.0F, 30.0F);
+				this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
 			}
 		}
 	}

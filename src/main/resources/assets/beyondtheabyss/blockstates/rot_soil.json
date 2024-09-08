@@ -1,0 +1,25 @@
+{
+	"variants": {
+		"soil_type=variant_1": {
+			"model": "beyondtheabyss:block/rot_soil_variant_1"
+		},
+		"soil_type=normal": {
+			"model": "beyondtheabyss:block/rot_soil"
+		},
+		"soil_type=spine": {
+			"model": "beyondtheabyss:block/rot_soil_spine"
+		},
+		"soil_type=skull": {
+			"model": "beyondtheabyss:block/rot_soil_skull"
+		},
+		"soil_type=no_bone": {
+			"model": "beyondtheabyss:block/rot_soil_no_bone"
+		},
+		"soil_type=grey": {
+			"model": "beyondtheabyss:block/rot_soil_grey"
+		},
+		"soil_type=fish": {
+			"model": "beyondtheabyss:block/rot_soil_fish"
+		}
+	}
+}

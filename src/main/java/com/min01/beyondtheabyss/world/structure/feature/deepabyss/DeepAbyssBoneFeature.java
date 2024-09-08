@@ -39,14 +39,14 @@ public class DeepAbyssBoneFeature extends Feature<NoneFeatureConfiguration>
 		ResourceLocation[] location = new ResourceLocation[] {bonePiles, bonePillars, fossils};
 		StructureTemplate template = manager.getOrCreate(location[random.nextInt(3)]);
 		BlockState blockState = level.getBlockState(blockPos);
-		boolean isAbyssalith = level.getBlockState(blockPos.below()).is(BTABlocks.ABYSSALITH.get()) 
-				&& level.getBlockState(blockPos.below().offset(-1, 0, 0)).is(BTABlocks.ABYSSALITH.get()) 
-				&& level.getBlockState(blockPos.below().offset(1, 0, 0)).is(BTABlocks.ABYSSALITH.get())
-				&& level.getBlockState(blockPos.below().offset(0, 0, -1)).is(BTABlocks.ABYSSALITH.get())
-				&& level.getBlockState(blockPos.below().offset(0, 0, 1)).is(BTABlocks.ABYSSALITH.get());
-		if(blockState.is(Blocks.WATER) && level.getBlockState(blockPos.above()).is(Blocks.WATER) && isAbyssalith && blockPos.getY() > -380 && blockPos.getY() <= -320 && random.nextFloat() < 0.05F) 
+		boolean canPlace = level.getBlockState(blockPos.below()).is(BTABlocks.ROT_SOIL.get()) 
+				&& level.getBlockState(blockPos.below().offset(-5, 0, 0)).is(BTABlocks.ROT_SOIL.get()) 
+				&& level.getBlockState(blockPos.below().offset(5, 0, 0)).is(BTABlocks.ROT_SOIL.get())
+				&& level.getBlockState(blockPos.below().offset(0, 0, -5)).is(BTABlocks.ROT_SOIL.get())
+				&& level.getBlockState(blockPos.below().offset(0, 0, 5)).is(BTABlocks.ROT_SOIL.get());
+		if(blockState.is(Blocks.WATER) && level.getBlockState(blockPos.above()).is(Blocks.WATER) && canPlace && blockPos.getY() > -380 && blockPos.getY() <= -320 && random.nextFloat() < 0.05F) 
 		{
-	    	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.NONE);
+	    	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.getRandom(random));
 	    	template.placeInWorld(level, blockPos, blockPos, settings, random, 3);
 			return true;
 		}

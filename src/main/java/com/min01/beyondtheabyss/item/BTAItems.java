@@ -141,6 +141,7 @@ public class BTAItems
 	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_FAN = ITEMS.register("dead_osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.DEAD_OSTEO_CORAL_FAN.get(), BTABlocks.DEAD_OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()).tab(DeepAbyssTabs.ABYSS_BLOCKS)));
 	public static final RegistryObject<Item> OSTEO_CORAL_FAN = ITEMS.register("osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.OSTEO_CORAL_FAN.get(), BTABlocks.OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()).tab(DeepAbyssTabs.ABYSS_BLOCKS)));
 	public static final RegistryObject<Item> WHALEFALL = registerBlockItem("whalefall", () -> BTABlocks.WHALEFALL.get(), new Item.Properties());
+	public static final RegistryObject<Item> ROT_SOIL = registerBlockItem("rot_soil", () -> BTABlocks.ROT_SOIL.get(), new Item.Properties());
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{

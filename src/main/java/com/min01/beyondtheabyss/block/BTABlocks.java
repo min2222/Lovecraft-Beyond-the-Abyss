@@ -12,6 +12,7 @@ import com.min01.beyondtheabyss.block.deepabyss.MetalCrateBlock;
 import com.min01.beyondtheabyss.block.deepabyss.MetalWindowBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RibBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RiftwellingAltarBlock;
+import com.min01.beyondtheabyss.block.deepabyss.RotSoilBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SittingSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SmallBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneBaseBlock;
@@ -92,6 +93,7 @@ public class BTABlocks
     public static final RegistryObject<Block> OSTEO_CORAL_WALL_FAN = BLOCKS.register("osteo_coral_wall_fan", () -> new CoralWallFanBlock(DEAD_OSTEO_CORAL_WALL_FAN.get(), BlockBehaviour.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_BLUE).noCollission().instabreak().sound(SoundType.WET_GRASS).lootFrom(() -> OSTEO_CORAL_FAN.get())));
     
     public static final RegistryObject<Block> WHALEFALL = BLOCKS.register("whalefall", () -> new WhalefallBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)));
+    public static final RegistryObject<Block> ROT_SOIL = BLOCKS.register("rot_soil", () -> new RotSoilBlock());
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 

@@ -72,6 +72,28 @@ public class EntitySubmarine extends LivingEntity implements IMultipart
 	}
 	
 	@Override
+	public void travel(Vec3 p_21280_) 
+	{
+		if(this.getControllingPlayer() != null)
+		{
+			Player player = this.getControllingPlayer();
+			Vec3 travelVector = new Vec3(player.xxa, player.yya, player.zza);
+	        if(player.zza != 0 || player.xxa != 0)
+	        {
+	        	this.setXRot(player.getXRot());
+	        	this.setYRot(player.getYRot());
+	            this.setYHeadRot(player.getYHeadRot());
+	            this.setYBodyRot(player.yBodyRot);
+	        }
+	        super.travel(travelVector);
+		}
+		else
+		{
+			super.travel(p_21280_);
+		}
+	}
+	
+	@Override
 	public boolean showVehicleHealth() 
 	{
 		return false;
@@ -299,12 +321,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart
     }
     
     @Override
-    public boolean canBeCollidedWith()
-    {
-    	return true;
-    }
-    
-    @Override
     public void push(double p_20286_, double p_20287_, double p_20288_) 
     {
     	
@@ -324,12 +340,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart
     
     @Override
     public boolean isPushable() 
-    {
-    	return false;
-    }
-    
-    @Override
-    protected boolean isAffectedByFluids()
     {
     	return false;
     }
@@ -498,6 +508,12 @@ public class EntitySubmarine extends LivingEntity implements IMultipart
 			this.entityData.set(SEAT4_PLAYER, Optional.of(player.getUUID()));
 			break;
 		}
+	}
+	
+	@Override
+	public boolean canBeCollidedWith()
+	{
+		return true;
 	}
 
 	@Override

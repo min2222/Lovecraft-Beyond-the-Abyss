@@ -15,49 +15,43 @@ public class SiamserpentBlasterBeamGoal extends BasicBTASkillGoal<EntitySiamserp
 	public void start() 
 	{
 		super.start();
-		this.mob.setAnimationState(1);
-	}
-	
-	@Override
-	public boolean stopMovingWhenStart() 
-	{
-		return false;
 	}
 	
 	@Override
 	public boolean additionalStartCondition() 
 	{
-		return this.mob.getHeadType() == HeadType.BLASTER;
+		return this.mob.getHeadType() == HeadType.BLASTER && !this.mob.isDormant();
 	}
 
 	@Override
 	protected void performSkill() 
 	{
-		
+		this.mob.setAnimationState(1);
 	}
 	
 	@Override
 	public void stop()
 	{
 		super.stop();
-		this.mob.setAnimationState(0);
+		this.mob.setAnimationState(2);
+		this.mob.setAnimationTick(15);
 	}
 
 	@Override
 	protected int getSkillUsingTime() 
 	{
-		return 140;
+		return 80;
 	}
 	
 	@Override
 	protected int getSkillWarmupTime() 
 	{
-		return 0;
+		return 10;
 	}
 
 	@Override
 	protected int getSkillUsingInterval() 
 	{
-		return 40;
+		return 150;
 	}
 }

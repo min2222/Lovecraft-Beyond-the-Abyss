@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherFindTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
@@ -14,7 +13,6 @@ import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -157,12 +155,6 @@ public class EntityLatcher extends AbstractDeepAbyssMonster
     public int getBodyRotationSpeed() 
     {
     	return 40;
-    }
-    
-    @Override
-    protected ResourceLocation getDefaultLootTable() 
-    {
-    	return new ResourceLocation(BeyondtheAbyss.MODID, "entity/latcher");
     }
     
     @Override

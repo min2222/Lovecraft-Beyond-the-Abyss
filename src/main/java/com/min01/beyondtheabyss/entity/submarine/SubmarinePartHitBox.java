@@ -64,7 +64,7 @@ public class SubmarinePartHitBox
 	                EntityPart submarine = this.detectorHitBoxes.getPart(this.submarine);
 	                EntityPart detector = this.detectorHitBoxes.getPart(this.detector);
 	                
-	                root.setRotation(0, owner.yHeadRot - owner.yBodyRot, 0, true);
+	                root.setRotation(0, -(owner.yHeadRot - owner.yBodyRot), 0, true);
 	                submarine.setRotation(owner.getXRot(), 0, 0, true);
 	                
 	                root.setX(this.entity.getX());
@@ -86,7 +86,7 @@ public class SubmarinePartHitBox
 	                EntityPart submarine = this.hatchHitBoxes.getPart(this.submarine);
 	                EntityPart hatch = this.hatchHitBoxes.getPart(this.hatch);
 	                
-	                root.setRotation(0, owner.yHeadRot - owner.yBodyRot, 0, true);
+	                root.setRotation(0, -(owner.yHeadRot - owner.yBodyRot), 0, true);
 	                submarine.setRotation(owner.getXRot(), 0, 0, true);
 	                
 	                root.setX(this.entity.getX());
