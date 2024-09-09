@@ -24,6 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -52,7 +53,7 @@ public class BTAClientUtil
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T extends AbstractBTAMonster> HierarchicalModel<T> getModelFromEntity(T entity)
+	public static <T extends LivingEntity> HierarchicalModel<T> getModelFromEntity(T entity)
 	{
 		EntityRenderer renderer = MC.getEntityRenderDispatcher().getRenderer(entity);
 		if(renderer instanceof LivingEntityRenderer livingRenderer)
@@ -170,7 +171,7 @@ public class BTAClientUtil
 		head.xRot += Math.toRadians(headPitch);
 	}
 	
-	public static void animateWalk(AbstractBTAMonster entity, HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 
+	public static void animateWalk(LivingEntity entity, HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 
 	{
 		long i = (long)(limbSwing * 50.0F * p_268138_);
 		float f = Math.min(limbSwingAmount * p_268165_, 1.0F);

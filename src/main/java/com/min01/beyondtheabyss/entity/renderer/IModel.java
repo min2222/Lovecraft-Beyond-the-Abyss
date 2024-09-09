@@ -1,10 +1,9 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.world.entity.LivingEntity;
 
-public interface IModel<T extends AbstractBTAMonster>
+public interface IModel<T extends LivingEntity>
 {
 	HierarchicalModel<T> getModel(T entity);
 }

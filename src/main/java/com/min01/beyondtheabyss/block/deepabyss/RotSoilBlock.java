@@ -3,6 +3,9 @@ package com.min01.beyondtheabyss.block.deepabyss;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -18,8 +21,8 @@ public class RotSoilBlock extends Block
 	public static final EnumProperty<SoilType> SOIL_TYPE = EnumProperty.create("soil_type", SoilType.class);
 	public RotSoilBlock()
 	{
-		super(BlockBehaviour.Properties.copy(Blocks.COARSE_DIRT));
-		this.registerDefaultState(this.defaultBlockState().setValue(SOIL_TYPE, SoilType.NORMAL));
+		super(BlockBehaviour.Properties.copy(Blocks.COARSE_DIRT).randomTicks());
+		this.registerDefaultState(this.stateDefinition.any().setValue(SOIL_TYPE, SoilType.NORMAL));
 	}
 	
 	@Override
@@ -28,15 +31,29 @@ public class RotSoilBlock extends Block
 		return this.randomizeSoil(this.defaultBlockState());
 	}
 	
+	//TODO temp method
+	@SuppressWarnings("deprecation")
+	@Override
+	public void randomTick(BlockState p_222508_, ServerLevel p_222509_, BlockPos p_222510_, RandomSource p_222511_)
+	{
+		if(p_222508_.getValue(SOIL_TYPE) == SoilType.NORMAL) 
+		{
+			if(p_222509_.isAreaLoaded(p_222510_, 1))
+			{
+				p_222509_.setBlockAndUpdate(p_222510_, this.randomizeSoil(p_222508_));
+			}
+		}
+	}
+	
 	public BlockState randomizeSoil(BlockState state)
 	{
-		List<SoilType> list = Arrays.asList(SoilType.VARIANT_1, SoilType.NORMAL, SoilType.SPINE, SoilType.NO_BONE, SoilType.GREY);
+		List<SoilType> list = Arrays.asList(SoilType.VARIANT_1, SoilType.SPINE, SoilType.NO_BONE);
 		int random = (int) Math.floor(Math.random() * list.size());
-		if(Math.random() <= 0.1F)
+		if(Math.random() <= 0.01F)
 		{
 			return state.setValue(SOIL_TYPE, SoilType.SKULL);
 		}
-		else if(Math.random() <= 0.3F)
+		else if(Math.random() <= 0.05F)
 		{
 			return state.setValue(SOIL_TYPE, SoilType.FISH);
 		}
@@ -59,7 +76,6 @@ public class RotSoilBlock extends Block
 		SPINE("spine"),
 		SKULL("skull"),
 		NO_BONE("no_bone"),
-		GREY("grey"),
 		FISH("fish");
 		
 		private final String name;

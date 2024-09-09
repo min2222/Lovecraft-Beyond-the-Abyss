@@ -293,7 +293,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart
     	if(this.isInWater())
     	{
     		/*BlockPos prevPos = this.getPrevPos();
-        	Vec3 lightPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, 8F);
+        	Vec3 lightPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, 8.0F);
         	HitResult result = this.level.clip(new ClipContext(this.position().add(0, 1.5F, 0), this.position().add(0, 1.5F, 0).add(lightPos), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             if(result instanceof BlockHitResult blockHit)
             {

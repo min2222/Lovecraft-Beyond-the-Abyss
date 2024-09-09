@@ -41,7 +41,7 @@ public class DeepAbyssCoralTreeFeature extends Feature<NoneFeatureConfiguration>
 				&& level.getBlockState(blockPos.below().offset(5, 0, 0)).is(BTABlocks.ROT_SOIL.get())
 				&& level.getBlockState(blockPos.below().offset(0, 0, -5)).is(BTABlocks.ROT_SOIL.get())
 				&& level.getBlockState(blockPos.below().offset(0, 0, 5)).is(BTABlocks.ROT_SOIL.get());
-		if(blockState.is(Blocks.WATER) && level.getBlockState(blockPos.above()).is(Blocks.WATER) && canPlace && blockPos.getY() > -380 && blockPos.getY() <= -320 && random.nextFloat() < 0.05F) 
+		if(blockState.is(Blocks.WATER) && level.getBlockState(blockPos.above()).is(Blocks.WATER) && canPlace && blockPos.getY() > -380 && blockPos.getY() <= -320 && random.nextFloat() < 0.1F) 
 		{
 	    	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.getRandom(random));
 	    	template.placeInWorld(level, blockPos, blockPos, settings, random, 3);

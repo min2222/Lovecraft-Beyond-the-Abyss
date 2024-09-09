@@ -69,4 +69,13 @@ public class DeepAbyssTabs
 			return new ItemStack(BTAItems.RUSTY_HARPOON.get());
 		}
 	};
+	
+	public static final CreativeModeTab ABYSS_TOOLS = new CreativeModeTab("abyss_tools") 
+	{
+		@Override
+		public ItemStack makeIcon()
+		{
+			return new ItemStack(BTAItems.FLASHLIGHT.get());
+		}
+	};
 }

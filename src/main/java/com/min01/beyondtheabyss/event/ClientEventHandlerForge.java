@@ -130,7 +130,7 @@ public class ClientEventHandlerForge
     		float f1 = Mth.rotLerp(partialTick, submarine.yHeadRotO, submarine.yHeadRot);
     		float f2 = f1 - f;
             float f6 = Mth.lerp(partialTick, submarine.xRotO, submarine.getXRot());
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(f2 + 180));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(f2));
             poseStack.mulPose(Vector3f.XP.rotationDegrees(f6));
     	}
     }

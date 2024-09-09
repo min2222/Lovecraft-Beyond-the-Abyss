@@ -50,6 +50,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentHeadRenderer;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
@@ -113,6 +114,10 @@ public class ClientEventHandler
         ItemProperties.register(BTAItems.GUIDING_CLAM.get(), new ResourceLocation("open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return GuidingClamItem.isOpen(p_174585_) ? 1.0F : 0.0F;
+        });
+        ItemProperties.register(BTAItems.FLASHLIGHT.get(), new ResourceLocation("on"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        {
+        	return FlashlightItem.isOn(p_174585_) ? 1.0F : 0.0F;
         });
     }
     

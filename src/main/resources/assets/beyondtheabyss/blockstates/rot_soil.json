@@ -15,9 +15,6 @@
 		"soil_type=no_bone": {
 			"model": "beyondtheabyss:block/rot_soil_no_bone"
 		},
-		"soil_type=grey": {
-			"model": "beyondtheabyss:block/rot_soil_grey"
-		},
 		"soil_type=fish": {
 			"model": "beyondtheabyss:block/rot_soil_fish"
 		}

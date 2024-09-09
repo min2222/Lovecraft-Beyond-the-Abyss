@@ -10,7 +10,6 @@ import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.BuildMultiPartPacket;
 import com.min01.beyondtheabyss.network.UpdateMultiPartPacket;
@@ -34,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityPartBuilder<T extends AbstractBTAMonster & IMultipart>
+public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 {
 	public static final String ROOT = "root";
 	public static final float SCALE = 0.0625F;

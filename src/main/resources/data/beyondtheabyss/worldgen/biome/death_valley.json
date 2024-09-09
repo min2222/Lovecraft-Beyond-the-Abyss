@@ -33,12 +33,6 @@
 				"weight": 1,
 				"minCount": 1,
 				"maxCount": 1
-			},
-			{
-				"type": "beyondtheabyss:siamserpent_head",
-				"weight": 1,
-				"minCount": 1,
-				"maxCount": 1
 			}
 		],
 		"water_creature": []
