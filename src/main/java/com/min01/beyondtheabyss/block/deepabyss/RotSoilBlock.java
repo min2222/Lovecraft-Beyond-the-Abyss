@@ -22,7 +22,7 @@ public class RotSoilBlock extends Block
 	public RotSoilBlock()
 	{
 		super(BlockBehaviour.Properties.copy(Blocks.COARSE_DIRT).randomTicks());
-		this.registerDefaultState(this.stateDefinition.any().setValue(SOIL_TYPE, SoilType.NORMAL));
+		this.registerDefaultState(this.stateDefinition.any().setValue(SOIL_TYPE, SoilType.VARIANT_1));
 	}
 	
 	@Override
@@ -36,7 +36,7 @@ public class RotSoilBlock extends Block
 	@Override
 	public void randomTick(BlockState p_222508_, ServerLevel p_222509_, BlockPos p_222510_, RandomSource p_222511_)
 	{
-		if(p_222508_.getValue(SOIL_TYPE) == SoilType.NORMAL) 
+		if(p_222508_.getValue(SOIL_TYPE) == SoilType.VARIANT_1) 
 		{
 			if(p_222509_.isAreaLoaded(p_222510_, 1))
 			{
@@ -47,7 +47,7 @@ public class RotSoilBlock extends Block
 	
 	public BlockState randomizeSoil(BlockState state)
 	{
-		List<SoilType> list = Arrays.asList(SoilType.VARIANT_1, SoilType.SPINE, SoilType.NO_BONE);
+		List<SoilType> list = Arrays.asList(SoilType.VARIANT_2, SoilType.VARIANT_3, SoilType.VARIANT_4);
 		int random = (int) Math.floor(Math.random() * list.size());
 		if(Math.random() <= 0.01F)
 		{
@@ -72,10 +72,10 @@ public class RotSoilBlock extends Block
 	public static enum SoilType implements StringRepresentable
 	{
 		VARIANT_1("variant_1"),
-		NORMAL("normal"),
-		SPINE("spine"),
+		VARIANT_2("variant_2"),
+		VARIANT_3("variant_3"),
+		VARIANT_4("variant_4"),
 		SKULL("skull"),
-		NO_BONE("no_bone"),
 		FISH("fish");
 		
 		private final String name;
