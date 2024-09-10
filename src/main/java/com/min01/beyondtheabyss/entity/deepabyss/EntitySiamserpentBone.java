@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.KinematicChain.ChainSegment;
@@ -9,6 +9,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -18,7 +20,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 
-public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySiamserpentHead>
+public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<EntitySiamserpentHead>
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
@@ -54,6 +56,16 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySia
     	}
     }
     
+	@Override
+	public boolean isAlliedTo(Entity p_20355_) 
+	{
+		if(this.getOwner() != null)
+		{
+			return p_20355_ == this.getOwner();
+		}
+		return super.isAlliedTo(p_20355_);
+	}
+    
     @Override
     protected void doPush(Entity p_20971_) 
     {
@@ -61,6 +73,16 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySia
     	{
         	super.doPush(p_20971_);
     	}
+    }
+    
+    @Override
+    public boolean hurt(DamageSource p_21016_, float p_21017_) 
+    {
+    	if(p_21016_.is(DamageTypes.IN_WALL))
+    	{
+    		return false;
+    	}
+    	return super.hurt(p_21016_, p_21017_);
     }
 	
 	@Override
@@ -72,7 +94,7 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMob<EntitySia
 	}
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMob> createBuilder() 
+	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
 	{
 		EntityPartBuilder<EntitySiamserpentBone> partBuilder = new EntityPartBuilder<EntitySiamserpentBone>(this);
 		return partBuilder;

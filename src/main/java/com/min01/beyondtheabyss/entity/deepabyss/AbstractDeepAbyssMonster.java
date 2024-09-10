@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinWaterBoundPathNavigation;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -21,9 +21,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
+public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 {
-	public AbstractDeepAbyssMob(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public AbstractDeepAbyssMonster(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
@@ -132,7 +132,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
             	@Override
             	public boolean canUse() 
             	{
-            		return AbstractDeepAbyssMob.this.canRandomSwim() && super.canUse();
+            		return AbstractDeepAbyssMonster.this.canRandomSwim() && super.canUse();
             	}
             });
     	}
@@ -146,8 +146,8 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 		double d1 = p_20034_.y - vec3.y;
 		double d2 = p_20034_.z - vec3.z;
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-		this.setXRot(Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180F / (float)Math.PI)))));
+		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
+		this.setXRot(Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)))));
 		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, (float)this.getBodyRotationSpeed()));
 		this.setYHeadRot(this.getYRot());
 		this.xRotO = this.getXRot();
@@ -169,7 +169,7 @@ public abstract class AbstractDeepAbyssMob extends AbstractBTAMob
 	
 	public boolean canRandomSwim()
 	{
-		return true;
+		return !this.isUsingSkill() || this.getTarget() == null;
 	}
 	
 	public boolean canBreathOutsideWater()

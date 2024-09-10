@@ -42,7 +42,7 @@ public class RiftwellingAltarRenderer<T extends BlockEntity> implements BlockEnt
 			p_112309_.scale(-1, -1, 1);
 			p_112309_.translate(0, -1, 0);
 			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(ALTAR_TEXTURE));
-			this.altarModel.renderToBuffer(p_112309_, consumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			this.altarModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			p_112309_.popPose();
 
 			p_112309_.pushPose();
@@ -50,7 +50,7 @@ public class RiftwellingAltarRenderer<T extends BlockEntity> implements BlockEnt
 			p_112309_.scale(-1, -1, 1);
 			p_112309_.translate(0, -1, 0);
 			VertexConsumer layerConsumer = p_112310_.getBuffer(RenderType.eyes(ALTAR_LAYER_TEXTURE));
-			this.altarModel.renderToBuffer(p_112309_, layerConsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			this.altarModel.renderToBuffer(p_112309_, layerConsumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			p_112309_.popPose();
 			
 			if(!altar.getItem().isEmpty())

@@ -36,7 +36,7 @@ public class LatcherPropelGoal extends BasicBTASkillGoal<EntityLatcher>
 	@Override
 	public boolean canContinueToUse() 
 	{
-		return this.mob.skillUsingTickCount > 0;
+		return this.mob.getAnimationTick() > 0;
 	}
 	
 	@Override

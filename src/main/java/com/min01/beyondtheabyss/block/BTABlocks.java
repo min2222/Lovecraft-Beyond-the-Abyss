@@ -12,6 +12,7 @@ import com.min01.beyondtheabyss.block.deepabyss.MetalCrateBlock;
 import com.min01.beyondtheabyss.block.deepabyss.MetalWindowBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RibBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RiftwellingAltarBlock;
+import com.min01.beyondtheabyss.block.deepabyss.RotSoilBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SittingSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SmallBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneBaseBlock;
@@ -44,7 +45,7 @@ public class BTABlocks
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BeyondtheAbyss.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BeyondtheAbyss.MODID);
 
-    public static final RegistryObject<Block> BTA_LIGHT = BLOCKS.register("bta_light", () -> new BTALightBlock(BlockBehaviour.Properties.of().strength(-1.0F, 3600000.8F).noLootTable().noOcclusion().lightLevel(BTALightBlock.LIGHT_EMISSION)));
+    public static final RegistryObject<Block> BTA_LIGHT = BLOCKS.register("bta_light", () -> new BTALightBlock());
     
     public static final RegistryObject<Block> RIFTWELLING_ALTAR = BLOCKS.register("riftwelling_altar", () -> new RiftwellingAltarBlock());
     public static final RegistryObject<Block> ABYSSALITH = BLOCKS.register("abyssalith", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
@@ -93,6 +94,8 @@ public class BTABlocks
     public static final RegistryObject<Block> OSTEO_CORAL_WALL_FAN = BLOCKS.register("osteo_coral_wall_fan", () -> new CoralWallFanBlock(DEAD_OSTEO_CORAL_WALL_FAN.get(), BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).noCollission().instabreak().sound(SoundType.WET_GRASS).lootFrom(() -> OSTEO_CORAL_FAN.get()).pushReaction(PushReaction.DESTROY)));
 
     public static final RegistryObject<Block> WHALEFALL = BLOCKS.register("whalefall", () -> new WhalefallBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)));
+    public static final RegistryObject<Block> ROT_SOIL = BLOCKS.register("rot_soil", () -> new RotSoilBlock());
+    public static final RegistryObject<Block> COMPACT_ROT_SOIL = BLOCKS.register("compact_rot_soil", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 

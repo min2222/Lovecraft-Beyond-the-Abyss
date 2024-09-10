@@ -1,8 +1,10 @@
 package com.min01.beyondtheabyss.entity.ai.goal;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.IAnimatable;
 
-public abstract class BasicBTASkillGoal<T extends AbstractBTAMob> extends AbstractBTASkillGoal
+import net.minecraft.world.entity.Mob;
+
+public abstract class BasicBTASkillGoal<T extends Mob & IAnimatable> extends AbstractBTASkillGoal<T>
 {
 	public T mob;
 	
@@ -12,7 +14,7 @@ public abstract class BasicBTASkillGoal<T extends AbstractBTAMob> extends Abstra
 	}
 
 	@Override
-	public AbstractBTAMob getMob() 
+	public T getMob() 
 	{
 		return this.mob;
 	}

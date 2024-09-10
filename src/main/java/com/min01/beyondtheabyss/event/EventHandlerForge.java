@@ -15,7 +15,6 @@ import com.min01.beyondtheabyss.world.BTAWorlds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +22,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -131,16 +129,6 @@ public class EventHandlerForge
         
     	entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(BTAAbilityCapability::update);
     	entity.getCapability(BTACapabilities.ILLUSION).ifPresent(IllusionCapability::tickIllusion);
-    	
-		for(InteractionHand hands : InteractionHand.values())
-		{
-			ItemStack stack = entity.getItemInHand(hands);
-			stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(cap ->
-			{
-				cap.setEntity(entity);
-				cap.update();
-			});
-		}
 		
 		if(entity.hasEffect(BTAEffects.AIR_SWIM.get()))
 		{

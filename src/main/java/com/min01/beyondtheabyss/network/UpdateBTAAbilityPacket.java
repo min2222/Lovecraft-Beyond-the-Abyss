@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
-public class BTAAbilitySyncPacket 
+public class UpdateBTAAbilityPacket 
 {
 	private final int entityId;
 	private final BTAAbility ability;
@@ -25,7 +25,7 @@ public class BTAAbilitySyncPacket
 		TICK;
 	}
 	
-	public BTAAbilitySyncPacket(Entity entity, BTAAbility ability, int tickCount, PacketType type) 
+	public UpdateBTAAbilityPacket(Entity entity, BTAAbility ability, int tickCount, PacketType type) 
 	{
 		this.entityId = entity.getId();
 		this.ability = ability;
@@ -33,7 +33,7 @@ public class BTAAbilitySyncPacket
 		this.type = type;
 	}
 
-	public BTAAbilitySyncPacket(FriendlyByteBuf buf)
+	public UpdateBTAAbilityPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 		this.ability = BTAAbility.read(buf);
@@ -51,7 +51,7 @@ public class BTAAbilitySyncPacket
 	
 	public static class Handler 
 	{
-		public static boolean onMessage(BTAAbilitySyncPacket message, Supplier<NetworkEvent.Context> ctx) 
+		public static boolean onMessage(UpdateBTAAbilityPacket message, Supplier<NetworkEvent.Context> ctx) 
 		{
 			ctx.get().enqueueWork(() ->
 			{

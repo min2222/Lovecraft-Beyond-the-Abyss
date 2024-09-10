@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepAbyssFollowFlockLeaderGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -18,6 +19,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -31,13 +33,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
+public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 {
+	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
+
+	public AnimationState biteAnimationState = new AnimationState();
+
 	@Nullable
 	private EntityGnasher leader;
 	private int schoolSize = 1;
-	
-	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	
 	public EntityGnasher(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -73,6 +77,7 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 	{
 		super.registerGoals();
 		this.goalSelector.addGoal(5, new DeepAbyssFollowFlockLeaderGoal(this));
+		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
 	}
 	
 	@Override
@@ -80,6 +85,34 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 	{
 		super.defineSynchedData();
 		this.entityData.define(IS_LEADER, false);
+	}
+	
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
+	{
+        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
+        {
+            switch(this.getAnimationState()) 
+            {
+        		case 0: 
+        		{
+        			this.stopAllAnimationStates();
+        			break;
+        		}
+        		case 1:
+        		{
+        			this.stopAllAnimationStates();
+        			this.biteAnimationState.start(this.tickCount);
+        			break;
+        		}
+            }
+        }
+	}
+
+	@Override
+	public void stopAllAnimationStates() 
+	{
+		this.biteAnimationState.stop();
 	}
 	
 	@Override
@@ -207,7 +240,7 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 	}
 
 	@Override
-	public void addFollowers(Stream<? extends AbstractDeepAbyssMob> p_27534_)
+	public void addFollowers(Stream<? extends AbstractDeepAbyssMonster> p_27534_)
 	{
 		p_27534_.limit((long)(this.getMaxSchoolSize() - this.schoolSize)).filter((p_27538_) -> 
 		{
@@ -240,9 +273,9 @@ public class EntityGnasher extends AbstractDeepAbyssMob implements IFlocking
 		return 2;
 	}
 	
-	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(180) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pRandom.nextInt(350) == 0 && pPos.getY() >= -400 && pPos.getY() <= -200 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
 	@SuppressWarnings("deprecation")

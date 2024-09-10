@@ -12,10 +12,9 @@ import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.MultiPartBuildPacket;
-import com.min01.beyondtheabyss.network.MultiPartUpdatePacket;
+import com.min01.beyondtheabyss.network.BuildMultiPartPacket;
+import com.min01.beyondtheabyss.network.UpdateMultiPartPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.math.Axis;
 
@@ -35,7 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
+public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 {
 	public static final String ROOT = "root";
 	public static final float SCALE = 0.0625F;
@@ -53,7 +52,7 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 		if(this.entity.level.isClientSide)
 		{
 			this.hitbox = this.buildHitBox();
-			BTANetwork.sendToServer(new MultiPartBuildPacket(this.entity, this.partOffset, this.parts));
+			BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts));
 		}
 	}
 	
@@ -73,12 +72,12 @@ public class EntityPartBuilder<T extends AbstractBTAMob & IMultipart>
 		if(this.entity.level.isClientSide)
 		{
 			this.clientTick(partialTick);
-			BTANetwork.sendToServer(new MultiPartUpdatePacket(this.entity));
+			BTANetwork.sendToServer(new UpdateMultiPartPacket(this.entity));
 			
 			if(this.entity.tickCount == 4)
 			{
 				this.hitbox = this.buildHitBox();
-				BTANetwork.sendToServer(new MultiPartBuildPacket(this.entity, this.partOffset, this.parts));
+				BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts));
 			}
 		}
         

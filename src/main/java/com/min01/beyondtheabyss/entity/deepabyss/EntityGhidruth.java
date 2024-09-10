@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -9,7 +8,6 @@ import com.min01.beyondtheabyss.sound.BTASounds;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
@@ -22,7 +20,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGhidruth extends AbstractDeepAbyssMob
+public class EntityGhidruth extends AbstractDeepAbyssMonster
 {
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
@@ -99,12 +97,6 @@ public class EntityGhidruth extends AbstractDeepAbyssMob
         //this.goalSelector.addGoal(4, new GhidruthBiteGoal(this));
         //this.goalSelector.addGoal(4, new GhidruthTailSwingGoal(this));
         this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
-    }
-    
-    @Override
-    protected ResourceLocation getDefaultLootTable() 
-    {
-    	return new ResourceLocation(BeyondtheAbyss.MODID, "entity/ghidruth");
     }
     
 	@Override

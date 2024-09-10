@@ -26,6 +26,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -120,7 +121,7 @@ public class ClientEventHandlerForge
     }
     
 	//FIXME
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void onRenderPlayer(RenderPlayerEvent event)
     {
     	Player player = event.getEntity();
@@ -132,7 +133,7 @@ public class ClientEventHandlerForge
     		float f1 = Mth.rotLerp(partialTick, submarine.yHeadRotO, submarine.yHeadRot);
     		float f2 = f1 - f;
             float f6 = Mth.lerp(partialTick, submarine.xRotO, submarine.getXRot());
-            poseStack.mulPose(Axis.YP.rotationDegrees(f2 + 180));
+            poseStack.mulPose(Axis.YP.rotationDegrees(f2));
             poseStack.mulPose(Axis.XP.rotationDegrees(f6));
     	}
     }
@@ -244,15 +245,19 @@ public class ClientEventHandlerForge
     public static void onComputeFogColor(ViewportEvent.ComputeFogColor event)
     {
     	ClientLevel level = BTAClientUtil.MC.level;
+    	Entity entity = event.getCamera().getEntity();
         if(level.dimension() == BTAWorlds.DEEP_ABYSS)
         {
-        	FogType fogtype = event.getCamera().getFluidInCamera();
-            if(fogtype == FogType.WATER)
+        	FogType fogType = event.getCamera().getFluidInCamera();
+            if(fogType == FogType.WATER)
             {
-            	Vec3 color = Vec3.fromRGB24(65811);
-                event.setRed((float) color.x);
-                event.setGreen((float) color.y);
-                event.setBlue((float) color.z);
+            	if(level.getBiome(entity.blockPosition()).is(new ResourceLocation(BeyondtheAbyss.MODID, "death_valley")))
+            	{
+                	Vec3 color = Vec3.fromRGB24(6704177);
+                    event.setRed((float) color.x);
+                    event.setGreen((float) color.y);
+                    event.setBlue((float) color.z);
+            	}
             }
         }
     }

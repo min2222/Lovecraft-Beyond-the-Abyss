@@ -27,9 +27,12 @@ public class DeepVampireBiteGoal extends BasicBTASkillGoal<EntityDeepVampire>
 	@Override
 	protected void performSkill()
 	{
-		if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 3))
+		if(this.mob.getTarget() != null)
 		{
-			this.mob.doHurtTarget(this.mob.getTarget());
+			if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 3))
+			{
+				this.mob.doHurtTarget(this.mob.getTarget());
+			}
 		}
 	}
 	

@@ -2,10 +2,9 @@ package com.min01.beyondtheabyss.util;
 
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.renderer.IModel;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,8 +12,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -26,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,7 +34,7 @@ public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
 	
-	public static <T extends AbstractBTAMob> void coloredGlowingModelCopyLayerRender(EntityModel<T> p_117360_, EntityModel<T> p_117361_, ResourceLocation p_117362_, PoseStack p_117363_, MultiBufferSource p_117364_, int p_117365_, T p_117366_, float p_117367_, float p_117368_, float p_117369_, float p_117370_, float p_117371_, float p_117372_, float p_117373_, float p_117374_, float p_117375_)
+	public static <T extends AbstractBTAMonster> void coloredGlowingModelCopyLayerRender(EntityModel<T> p_117360_, EntityModel<T> p_117361_, ResourceLocation p_117362_, PoseStack p_117363_, MultiBufferSource p_117364_, int p_117365_, T p_117366_, float p_117367_, float p_117368_, float p_117369_, float p_117370_, float p_117371_, float p_117372_, float p_117373_, float p_117374_, float p_117375_)
 	{
 		if(!p_117366_.isInvisible())
 		{
@@ -47,14 +45,14 @@ public class BTAClientUtil
 		}
 	}
 
-	public static <T extends AbstractBTAMob> void renderColoredGlowingModel(EntityModel<T> p_117377_, ResourceLocation p_117378_, PoseStack p_117379_, MultiBufferSource p_117380_, int p_117381_, T p_117382_, float p_117383_, float p_117384_, float p_117385_)
+	public static <T extends AbstractBTAMonster> void renderColoredGlowingModel(EntityModel<T> p_117377_, ResourceLocation p_117378_, PoseStack p_117379_, MultiBufferSource p_117380_, int p_117381_, T p_117382_, float p_117383_, float p_117384_, float p_117385_)
 	{
 		VertexConsumer vertexconsumer = p_117380_.getBuffer(BTARenderType.eyesFix(p_117378_));
 		p_117377_.renderToBuffer(p_117379_, vertexconsumer, p_117381_, LivingEntityRenderer.getOverlayCoords(p_117382_, 0.0F), p_117383_, p_117384_, p_117385_, 1.0F);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T extends AbstractBTAMob> HierarchicalModel<T> getModelFromEntity(T entity)
+	public static <T extends LivingEntity> HierarchicalModel<T> getModelFromEntity(T entity)
 	{
 		EntityRenderer renderer = MC.getEntityRenderDispatcher().getRenderer(entity);
 		if(renderer instanceof LivingEntityRenderer livingRenderer)
@@ -68,7 +66,7 @@ public class BTAClientUtil
 		return null;
 	}
 	
-	public static void setupRotations(AbstractBTAMob p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) 
+	public static void setupRotations(AbstractBTAMonster p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) 
 	{
 		if(p_115317_.isFullyFrozen())
 		{
@@ -171,18 +169,5 @@ public class BTAClientUtil
 	{
 		head.yRot += Math.toRadians(netHeadYaw);
 		head.xRot += Math.toRadians(headPitch);
-	}
-	
-	public static void animateWalk(AbstractBTAMob entity, HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 
-	{
-		if(entity.getAnimationState() == 0)
-		{
-			if(BTAUtil.isMoving(entity))
-			{
-				long i = (long)(limbSwing * 50.0F * p_268138_);
-				float f = Math.min(limbSwingAmount * p_268165_, 1.0F);
-				KeyframeAnimations.animate(model, animation, i, f, new Vector3f());
-			}
-		}
 	}
 }

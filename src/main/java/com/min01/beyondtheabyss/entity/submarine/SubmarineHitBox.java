@@ -10,6 +10,7 @@ import net.minecraft.world.phys.Vec3;
 public class SubmarineHitBox 
 {
     private final EntitySubmarine entity;
+    private final AABB collisionHitbox = new AABB(new Vec3(3.0F, 0.0F, 3.0F).reverse(), new Vec3(3.0F, 1.0F, 3.0F));
     private final String root = "root";
     private final String submarine = "submarine";
     private final String controllerSeat = "controllerSeat";
@@ -50,18 +51,13 @@ public class SubmarineHitBox
         .add(this.back).setBounds(2.5625F, 2.6875F, 1.125F).setParent(this.submarine).build()
         .add(this.left).setBounds(0.3125F, 2.875F, 4.375F).setParent(this.submarine).build()
         .add(this.right).setBounds(0.3125F, 2.875F, 4.375F).setParent(this.submarine).build()
-        .overrideCollisionBox(this.getBoundingBox(Vec3.ZERO))
+        .overrideCollisionBox(this.collisionHitbox)
         .getFactory().create();
     }
 
     public EntityBounds getHitbox()
     {
     	return this.hitbox;
-    }
-    
-    public AABB getBoundingBox(Vec3 pos) 
-    {
-    	return this.entity.getDimensions(this.entity.getPose()).makeBoundingBox(pos);
     }
 
     public void updatePosition()
@@ -84,7 +80,7 @@ public class SubmarineHitBox
         EntityPart left = this.hitbox.getPart(this.left);
         EntityPart right = this.hitbox.getPart(this.right);
         
-        root.setRotation(0, this.entity.yHeadRot - this.entity.yBodyRot, 0, true);
+        root.setRotation(0, -(this.entity.yHeadRot - this.entity.yBodyRot), 0, true);
         submarine.setRotation(this.entity.getXRot(), 0, 0, true);
         
         root.setX(this.entity.getX());
@@ -113,7 +109,7 @@ public class SubmarineHitBox
         MutableBox overrideBox = this.hitbox.getOverrideBox();
         if(overrideBox != null)
         {
-            overrideBox.setBox(this.getBoundingBox(this.entity.position()));
+            overrideBox.setBox(this.collisionHitbox.move(this.entity.position()));
         }
     }
     

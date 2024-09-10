@@ -105,4 +105,12 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.GHIDRUTH_SCALE_HARPOON.get());
 				output.accept(BTAItems.SACRIFICIAL_DAGGER.get());
     		}).build());
+    
+    public static final RegistryObject<CreativeModeTab> ABYSS_TOOLS = CREATIVE_MODE_TAB.register("abyss_tools", () -> CreativeModeTab.builder()
+    		.title(Component.translatable("itemGroup.abyss_tools"))
+    		.icon(() -> new ItemStack(BTAItems.FLASHLIGHT.get()))
+    		.displayItems((enabledFeatures, output) -> 
+    		{
+				output.accept(BTAItems.FLASHLIGHT.get());
+    		}).build());
 }

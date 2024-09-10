@@ -1,14 +1,20 @@
 package com.min01.beyondtheabyss.entity.ai.goal;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.IAnimatable;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public abstract class AbstractBTASkillGoal extends Goal
+public abstract class AbstractBTASkillGoal<T extends Mob & IAnimatable> extends Goal
 {
 	protected int skillWarmupDelay;
 	protected int nextSkillTickCount;
+	
+	public AbstractBTASkillGoal() 
+	{
+
+	}
 	
     @Override
     public boolean canUse() 
@@ -19,12 +25,12 @@ public abstract class AbstractBTASkillGoal extends Goal
     		if(this.getMob().isUsingSkill())
     		{
     			return false;
-    		} 
+    		}
     		else 
     		{
     			return this.getMob().tickCount >= this.nextSkillTickCount && this.additionalStartCondition();
     		}
-    	} 
+    	}
     	else 
     	{
     		return false;
@@ -39,8 +45,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     @Override
     public boolean canContinueToUse() 
     {
-    	LivingEntity livingentity = this.getMob().getTarget();
-    	return livingentity != null && livingentity.isAlive() && this.getMob().skillUsingTickCount > 0;
+    	return this.getMob().getAnimationTick() > 0;
     }
     
     @Override
@@ -54,7 +59,7 @@ public abstract class AbstractBTASkillGoal extends Goal
     	
     	this.getMob().setAggressive(true);
     	this.skillWarmupDelay = this.adjustedTickDelay(this.getSkillWarmupTime());
-    	this.getMob().skillUsingTickCount = this.getSkillUsingTime();
+    	this.getMob().setAnimationTick(this.getSkillUsingTime());
     	this.nextSkillTickCount = this.getMob().tickCount + this.getSkillUsingInterval();
     	
     	this.getMob().setIsUsingSkill(true);
@@ -84,6 +89,17 @@ public abstract class AbstractBTASkillGoal extends Goal
     	{
     		this.performSkill();
     	}
+    	
+		if(this.getMob().canMove() && this.getMob().getAnimationTick() == this.getMob().getPrevAnimationTick() - this.getMob().getMoveStopDelay())
+		{
+			this.getMob().setCanMove(false);
+			this.perfomSkillAfterMove();
+		}
+    }
+
+    public void perfomSkillAfterMove()
+    {
+    	
     }
 
     protected abstract void performSkill();
@@ -98,5 +114,5 @@ public abstract class AbstractBTASkillGoal extends Goal
 
     protected abstract int getSkillUsingInterval();
     
-    public abstract AbstractBTAMob getMob();
+    public abstract T getMob();
 }

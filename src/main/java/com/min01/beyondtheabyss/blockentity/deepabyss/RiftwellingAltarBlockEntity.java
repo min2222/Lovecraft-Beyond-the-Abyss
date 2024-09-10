@@ -39,14 +39,14 @@ public class RiftwellingAltarBlockEntity extends BlockEntity
 	{
 		super.saveAdditional(nbt);
 		CompoundTag itemTag = new CompoundTag();
-		nbt.put("item", this.item.save(itemTag));
+		nbt.put("Item", this.item.save(itemTag));
 	}
 	
 	@Override
 	public void load(CompoundTag nbt)
 	{
 		super.load(nbt);
-		CompoundTag itemTag = nbt.getCompound("item");
+		CompoundTag itemTag = nbt.getCompound("Item");
 		this.item = ItemStack.of(itemTag);
 	}
 }

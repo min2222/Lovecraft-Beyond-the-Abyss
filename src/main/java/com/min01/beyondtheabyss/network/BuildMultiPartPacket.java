@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMob;
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 
@@ -15,20 +15,20 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class MultiPartBuildPacket 
+public class BuildMultiPartPacket 
 {
 	private final UUID entityUUID;
 	public final Map<String, Vec3> partOffset;
 	public final Map<String, String> parts;
 
-	public MultiPartBuildPacket(Entity entity, Map<String, Vec3> partOffset, Map<String, String> parts) 
+	public BuildMultiPartPacket(Entity entity, Map<String, Vec3> partOffset, Map<String, String> parts) 
 	{
 		this.entityUUID = entity.getUUID();
 		this.partOffset = partOffset;
 		this.parts = parts;
 	}
 
-	public MultiPartBuildPacket(FriendlyByteBuf buf)
+	public BuildMultiPartPacket(FriendlyByteBuf buf)
 	{
 		this.entityUUID = buf.readUUID();
 		this.partOffset = buf.readMap(t -> t.readUtf(), t -> BTAEntityDataSerializers.readVec3(t));
@@ -44,14 +44,14 @@ public class MultiPartBuildPacket
 
 	public static class Handler 
 	{
-		public static boolean onMessage(MultiPartBuildPacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(BuildMultiPartPacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{
 				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
 					Entity entity = level.getEntity(message.entityUUID);
-					if(entity instanceof AbstractBTAMob mob) 
+					if(entity instanceof AbstractBTAMonster mob) 
 					{
 						EntityPartBuilder<?> builder = mob.partBuilder;
 				    	mob.partBuilder.hitbox = builder.buildHitBox();

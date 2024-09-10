@@ -114,7 +114,7 @@ public class ModelDeepVampire extends HierarchicalModel<EntityDeepVampire>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("DeepVamp"), netHeadYaw, headPitch);
-		BTAClientUtil.animateWalk(entity, this, DeepVampireAnimation.DEEP_VAMPIRE_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
+		this.animateWalk(DeepVampireAnimation.DEEP_VAMPIRE_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 		this.animate(entity.biteRightAnimationState, DeepVampireAnimation.DEEP_VAMPIRE_BITE_RIGHT, ageInTicks);
 		this.animate(entity.biteLeftAnimationState, DeepVampireAnimation.DEEP_VAMPIRE_BITE_LEFT, ageInTicks);
 	}

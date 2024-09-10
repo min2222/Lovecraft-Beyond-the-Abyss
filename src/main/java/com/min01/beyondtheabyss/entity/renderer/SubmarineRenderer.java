@@ -4,7 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.SubmarinePartUpdatePacket;
+import com.min01.beyondtheabyss.network.UpdateSubmarinePartPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -40,7 +40,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		float f2 = f1 - f;
         float f6 = Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot());
 		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
-		this.model.setupAnim(p_114485_, 0, 0, 0, f2 + 180, f6);
+		this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
 		this.model.renderToBuffer(p_114488_, consumer, p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		Vec3 rotation = Vec3.ZERO;
 		Vec3 detectorPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine"});
@@ -69,19 +69,19 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		p_114485_.posArray[2] = seat2Pos;
 		p_114485_.posArray[1] = seat1Pos;
 		p_114485_.posArray[0] = controllerPos;
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, detectorPos, 12));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, topPos, 11));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, leftWallPos, 10));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, rightWallPos, 9));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, hatchPos, 8));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, frontPos, 7));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, backPos, 6));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, bottomPos, 5));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, seat4Pos, 4));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, seat3Pos, 3));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, seat2Pos, 2));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, seat1Pos, 1));
-	    BTANetwork.sendToServer(new SubmarinePartUpdatePacket(p_114485_, controllerPos, 0));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, detectorPos, 12));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, topPos, 11));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, leftWallPos, 10));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, rightWallPos, 9));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, hatchPos, 8));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, frontPos, 7));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, backPos, 6));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, bottomPos, 5));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, seat4Pos, 4));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, seat3Pos, 3));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, seat2Pos, 2));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, seat1Pos, 1));
+	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, controllerPos, 0));
 
 		if(p_114485_.getControllingPlayer() != null)
 		{
@@ -91,7 +91,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 	        strength = Mth.clamp(strength, 0.1F, 1);
 	        
 			VertexConsumer eyeConsumer = p_114489_.getBuffer(RenderType.eyes(LAYER_TEXTURE));
-			this.model.setupAnim(p_114485_, 0, 0, 0, f2 + 180, f6);
+			this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
 			this.model.renderToBuffer(p_114488_, eyeConsumer, p_114490_, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
 		}
 		p_114488_.popPose();

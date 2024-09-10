@@ -1,12 +1,12 @@
 {
 	"temperature": 0.5,
 	"downfall": 0.5,
-	"has_precipitation": false,
+	"precipitation": "none",
 	"effects": {
-		"sky_color": 855436,
-		"fog_color": 65811,
-		"water_color": 65811,
-		"water_fog_color": 65811,
+		"sky_color": 6704177,
+		"fog_color": 6704177,
+		"water_color": 6704177,
+		"water_fog_color": 6704177,
 		"mood_sound": {
 			"sound": "minecraft:ambient.cave",
 			"tick_delay": 6000,
@@ -30,12 +30,6 @@
 			},
 			{
 				"type": "beyondtheabyss:gnasher",
-				"weight": 1,
-				"minCount": 1,
-				"maxCount": 1
-			},
-			{
-				"type": "beyondtheabyss:siamserpent_head",
 				"weight": 1,
 				"minCount": 1,
 				"maxCount": 1

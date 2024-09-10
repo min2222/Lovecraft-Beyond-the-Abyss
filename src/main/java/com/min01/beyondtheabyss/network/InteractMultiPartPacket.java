@@ -9,7 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
-public class MultiPartInteractionPacket 
+public class InteractMultiPartPacket 
 {
 	private final int entityId;
     private final String part;
@@ -23,7 +23,7 @@ public class MultiPartInteractionPacket
         INTERACT
     }
 
-    public MultiPartInteractionPacket(int entityId, String part, InteractionHand hand, boolean isSneaking, InteractionType interactionType)
+    public InteractMultiPartPacket(int entityId, String part, InteractionHand hand, boolean isSneaking, InteractionType interactionType)
     {
         this.entityId = entityId;
         this.part = part;
@@ -32,7 +32,7 @@ public class MultiPartInteractionPacket
         this.interactionType = interactionType;
     }
 
-	public MultiPartInteractionPacket(FriendlyByteBuf buf)
+	public InteractMultiPartPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
         this.part = buf.readUtf(32767);
@@ -52,7 +52,7 @@ public class MultiPartInteractionPacket
 
 	public static class Handler 
 	{
-		public static boolean onMessage(MultiPartInteractionPacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(InteractMultiPartPacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{

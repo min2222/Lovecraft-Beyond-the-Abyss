@@ -23,5 +23,5 @@
 	"injectors": {
 		"defaultRequire": 1
 	},
-	"refmap": "beyondtheabyss.mixin-refmap.json"
+	"refmap": "beyondtheabyss.refmap.json"
 }

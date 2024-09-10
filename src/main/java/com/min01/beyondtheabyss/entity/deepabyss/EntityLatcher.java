@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherFindTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
@@ -8,13 +7,12 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherUnlatchingGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.VehicleUpdatePacket;
+import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
@@ -35,7 +33,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityLatcher extends AbstractDeepAbyssMob
+public class EntityLatcher extends AbstractDeepAbyssMonster
 {
 	public AnimationState propelAnimationState = new AnimationState();
 	public AnimationState startLatchAnimationState = new AnimationState();
@@ -83,7 +81,7 @@ public class EntityLatcher extends AbstractDeepAbyssMob
         this.targetSelector.addGoal(4, new LatcherFindTargetGoal<Player>(this, Player.class, false, false));
     }
     
-	public static boolean checkLatcherSpawnRules(EntityType<? extends AbstractDeepAbyssMob> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkLatcherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(40) == 0 && pPos.getY() >= -400 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
@@ -159,12 +157,6 @@ public class EntityLatcher extends AbstractDeepAbyssMob
     }
     
     @Override
-    protected ResourceLocation getDefaultLootTable() 
-    {
-    	return new ResourceLocation(BeyondtheAbyss.MODID, "entity/latcher");
-    }
-    
-    @Override
     public void stopRiding()
     {
     	if(!this.isInWater() || this.getVehicle() == null || !this.isAlive() || (this.getVehicle() instanceof Player player && player.isSpectator()))
@@ -193,7 +185,7 @@ public class EntityLatcher extends AbstractDeepAbyssMob
     @Override
     public boolean startRiding(Entity p_20330_) 
     {
-    	BTANetwork.sendToAll(new VehicleUpdatePacket(this, p_20330_));
+    	BTANetwork.sendToAll(new UpdateVehiclePacket(this, p_20330_));
     	return super.startRiding(p_20330_);
     }
     

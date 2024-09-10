@@ -69,4 +69,10 @@ public class GuidingClamItem extends Item
         }
 		return super.onEntityItemUpdate(stack, entity);
 	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) 
+	{
+		return newStack.getItem() != this;
+	}
 }

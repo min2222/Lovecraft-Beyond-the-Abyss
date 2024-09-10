@@ -12,7 +12,7 @@ public interface IFlocking
 	
 	boolean inRangeOfLeader();
 	
-	void addFollowers(Stream<? extends AbstractDeepAbyssMob> p_27534_);
+	void addFollowers(Stream<? extends AbstractDeepAbyssMonster> p_27534_);
 	
 	void pathToLeader();
 	

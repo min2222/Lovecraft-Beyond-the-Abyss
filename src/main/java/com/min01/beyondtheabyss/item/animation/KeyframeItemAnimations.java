@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class KeyframeItemAnimations
 {
-	public static void animate(HierarchicalItemModel<?> p_232320_, AnimationDefinition p_232321_, long p_232322_, float p_232323_, Vector3f p_232324_) 
+	public static void animate(HierarchicalItemModel p_232320_, AnimationDefinition p_232321_, long p_232322_, float p_232323_, Vector3f p_232324_) 
 	{
 		float f = getElapsedSeconds(p_232321_, p_232322_);
 
@@ -61,7 +61,7 @@ public class KeyframeItemAnimations
 
 	public static Vector3f degreeVec(float p_232332_, float p_232333_, float p_232334_) 
 	{
-		return new Vector3f(p_232332_ * ((float) Math.PI / 180F), p_232333_ * ((float) Math.PI / 180F), p_232334_ * ((float) Math.PI / 180F));
+		return new Vector3f(p_232332_ * ((float) Math.PI / 180.0F), p_232333_ * ((float) Math.PI / 180.0F), p_232334_ * ((float) Math.PI / 180.0F));
 	}
 
 	public static Vector3f scaleVec(double p_232299_, double p_232300_, double p_232301_) 

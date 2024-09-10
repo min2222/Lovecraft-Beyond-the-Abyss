@@ -12,20 +12,20 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
-public class AltarItemSyncPacket 
+public class UpdateAltarItemPacket 
 {
 	public final int entityId;
 	public final ItemStack stack;
 	public final BlockPos pos;
 
-	public AltarItemSyncPacket(Entity entity, ItemStack stack, BlockPos pos) 
+	public UpdateAltarItemPacket(Entity entity, ItemStack stack, BlockPos pos) 
 	{
 		this.entityId = entity.getId();
 		this.stack = stack;
 		this.pos = pos;
 	}
 
-	public AltarItemSyncPacket(FriendlyByteBuf buf)
+	public UpdateAltarItemPacket(FriendlyByteBuf buf)
 	{
 		this.entityId = buf.readInt();
 		this.stack = buf.readItem();
@@ -41,7 +41,7 @@ public class AltarItemSyncPacket
 
 	public static class Handler 
 	{
-		public static boolean onMessage(AltarItemSyncPacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(UpdateAltarItemPacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{

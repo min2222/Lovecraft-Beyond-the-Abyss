@@ -1,5 +1,8 @@
 package com.min01.beyondtheabyss.mixin;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -8,11 +11,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
@@ -28,10 +35,24 @@ public abstract class MixinEntity
         }
     }
     
-    @Inject(method = "tick", at = @At("HEAD"))
-    private void tick(CallbackInfo ci)
+    @Inject(method = "collide", at = @At("RETURN"), cancellable = true)
+    private void collide(Vec3 vec3, CallbackInfoReturnable<Vec3> cir)
     {
-    	DeepAbyssUtil.handleSubmarineCollision(Entity.class.cast(this));
+    	Entity entity = Entity.class.cast(this);
+        AABB aabb = entity.getBoundingBox();
+        List<VoxelShape> list = entity.level.getEntityCollisions(entity, aabb.expandTowards(vec3));
+        if(!list.isEmpty())
+        {
+            Predicate<Entity> predicate = EntitySelector.NO_SPECTATORS.and(entity::canCollideWith);
+            List<Entity> entityList = entity.level.getEntities(entity, aabb.expandTowards(vec3).inflate(1.0E-7D), predicate);
+        	for(Entity collidedEntity : entityList)
+        	{
+        		if(collidedEntity instanceof EntitySubmarine)
+        		{
+        			cir.setReturnValue(cir.getReturnValue().scale(1.5F));
+        		}
+        	}
+        }
     }
     
     @Inject(method = "setPosRaw", at = @At("TAIL"))

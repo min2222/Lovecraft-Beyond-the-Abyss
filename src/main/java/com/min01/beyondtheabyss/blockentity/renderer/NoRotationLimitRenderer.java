@@ -13,7 +13,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -60,7 +59,7 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 			p_112309_.translate(0, -1, 0);
 			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(FANG_SKULL_TEXTURE));
-			this.fangSkullModel.renderToBuffer(p_112309_, consumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			this.fangSkullModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			p_112309_.popPose();
 		}
 		else if(blockState.is(BTABlocks.LARGE_SKULL.get()))
@@ -71,7 +70,7 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 			p_112309_.translate(0, -1, 0);
 			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(LARGE_SKULL_TEXTURE));
-			this.largeSkullModel.renderToBuffer(p_112309_, consumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			this.largeSkullModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			p_112309_.popPose();
 		}
 		else if(blockState.is(BTABlocks.BONE_PILES.get()))
@@ -82,7 +81,7 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 			p_112309_.translate(0, -1, 0);
 			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(BONE_PILES_TEXTURE));
-			this.bonePilesModel.renderToBuffer(p_112309_, consumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			this.bonePilesModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			p_112309_.popPose();
 		}
 		else if(blockState.is(BTABlocks.SITTING_SKELETON.get()))
@@ -95,7 +94,7 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 				p_112309_.translate(0, -1, 0);
 				this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 				VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(SITTING_SKELETON_TEXTURE));
-				this.sittingSkeletonModel.renderToBuffer(p_112309_, consumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+				this.sittingSkeletonModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 				p_112309_.popPose();
 			}
 		}
@@ -109,7 +108,7 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 				p_112309_.translate(0, -1, 0);
 				this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 				VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(FALLEN_SKELETON_TEXTURE));
-				this.fallenSkeletonModel.renderToBuffer(p_112309_, consumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+				this.fallenSkeletonModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 				p_112309_.popPose();
 			}
 		}
