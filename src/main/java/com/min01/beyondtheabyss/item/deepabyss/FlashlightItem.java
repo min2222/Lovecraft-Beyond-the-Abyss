@@ -1,9 +1,13 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
+import java.util.function.Consumer;
+
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.item.renderer.FlashlightRenderer;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -21,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class FlashlightItem extends Item
 {
@@ -119,6 +124,19 @@ public class FlashlightItem extends Item
     			level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
     		}
     	}
+	}
+	
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer)
+	{
+		consumer.accept(new IClientItemExtensions()
+		{
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() 
+			{
+				return new FlashlightRenderer();
+			}
+		});
 	}
 	
 	@Override

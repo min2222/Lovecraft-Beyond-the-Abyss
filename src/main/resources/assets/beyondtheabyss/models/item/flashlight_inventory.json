@@ -1,0 +1,14 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "beyondtheabyss:item/flashlight_off"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"on": 1
+			},
+			"model": "beyondtheabyss:item/flashlight_on"
+		}
+	]
+}

@@ -6,10 +6,9 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.renderer.HarpoonItemRenderer;
+import com.min01.beyondtheabyss.item.renderer.HarpoonRenderer;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -108,7 +107,7 @@ public class HarpoonItem extends Item
 			@Override
 			public BlockEntityWithoutLevelRenderer getCustomRenderer() 
 			{
-				return new HarpoonItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				return new HarpoonRenderer();
 			}
 		});
 	}

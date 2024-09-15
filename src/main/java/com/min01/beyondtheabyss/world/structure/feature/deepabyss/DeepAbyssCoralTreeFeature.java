@@ -1,55 +1,59 @@
 package com.min01.beyondtheabyss.world.structure.feature.deepabyss;
 
-import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.block.BTABlocks;
+import java.util.List;
+
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
-public class DeepAbyssCoralTreeFeature extends Feature<NoneFeatureConfiguration>
+public class DeepAbyssCoralTreeFeature extends AbstractDeepAbyssCoralFeature 
 {
-	public DeepAbyssCoralTreeFeature(Codec<NoneFeatureConfiguration> p_65786_)
+	public DeepAbyssCoralTreeFeature(Codec<NoneFeatureConfiguration> p_65452_) 
 	{
-		super(p_65786_);
+		super(p_65452_);
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159749_)
+	protected boolean placeFeature(LevelAccessor p_224987_, RandomSource p_224988_, BlockPos p_224989_, BlockState p_224990_) 
 	{
-		WorldGenLevel level = p_159749_.level();
-		BlockPos blockPos = p_159749_.origin().offset(-7, 0, -7);
-		RandomSource random = p_159749_.random();
-		StructureTemplateManager manager = level.getLevel().getStructureManager();
-		ResourceLocation location = new ResourceLocation(String.format("%s:features/deepabyss/coral_tree_%d", BeyondtheAbyss.MODID, random.nextInt(4) + 1));
-		StructureTemplate template = manager.getOrCreate(location);
-		BlockState blockState = level.getBlockState(blockPos);
-		boolean canPlace = level.getBlockState(blockPos.below()).is(BTABlocks.ROT_SOIL.get()) 
-				&& level.getBlockState(blockPos.below().offset(-5, 0, 0)).is(BTABlocks.ROT_SOIL.get()) 
-				&& level.getBlockState(blockPos.below().offset(5, 0, 0)).is(BTABlocks.ROT_SOIL.get())
-				&& level.getBlockState(blockPos.below().offset(0, 0, -5)).is(BTABlocks.ROT_SOIL.get())
-				&& level.getBlockState(blockPos.below().offset(0, 0, 5)).is(BTABlocks.ROT_SOIL.get());
-		if(blockState.is(Blocks.WATER) && level.getBlockState(blockPos.above()).is(Blocks.WATER) && canPlace && blockPos.getY() > -380 && blockPos.getY() <= -320 && random.nextFloat() < 0.1F) 
+		BlockPos.MutableBlockPos blockpos$mutableblockpos = p_224989_.mutable();
+		int i = p_224988_.nextInt(3) + 1;
+
+		for(int j = 0; j < i; ++j) 
 		{
-	    	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.getRandom(random));
-	    	template.placeInWorld(level, blockPos, blockPos, settings, random, 3);
-			return true;
+			if(!this.placeCoralBlock(p_224987_, p_224988_, blockpos$mutableblockpos, p_224990_)) 
+			{
+				return true;
+			}
+			blockpos$mutableblockpos.move(Direction.UP);
 		}
-		else
+
+		BlockPos blockpos = blockpos$mutableblockpos.immutable();
+		int k = p_224988_.nextInt(3) + 2;
+		List<Direction> list = Direction.Plane.HORIZONTAL.shuffledCopy(p_224988_);
+
+		for(Direction direction : list.subList(0, k))
 		{
-			return false;
+			blockpos$mutableblockpos.set(blockpos);
+			blockpos$mutableblockpos.move(direction);
+			int l = p_224988_.nextInt(5) + 2;
+			int i1 = 0;
+			for (int j1 = 0; j1 < l && this.placeCoralBlock(p_224987_, p_224988_, blockpos$mutableblockpos, p_224990_); ++j1) 
+			{
+				++i1;
+				blockpos$mutableblockpos.move(Direction.UP);
+				if(j1 == 0 || i1 >= 2 && p_224988_.nextFloat() < 0.25F) 
+				{
+					blockpos$mutableblockpos.move(direction);
+					i1 = 0;
+				}
+			}
 		}
+		return true;
 	}
 }

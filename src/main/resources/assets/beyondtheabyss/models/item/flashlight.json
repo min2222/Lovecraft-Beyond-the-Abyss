@@ -1,14 +1,18 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": {
-		"layer0": "beyondtheabyss:item/flashlight_off"
+	"loader": "forge:separate-perspective",
+	"gui_light": "front",
+	"base": {
+		"parent": "beyondtheabyss:item/flashlight_in_hand"
 	},
-	"overrides": [
-		{
-			"predicate": {
-				"on": 1
-			},
-			"model": "beyondtheabyss:item/flashlight_on"
+	"perspectives": {
+		"gui": {
+			"parent": "beyondtheabyss:item/flashlight_inventory"
+		},
+		"ground": {
+			"parent": "beyondtheabyss:item/flashlight_inventory"
+		},
+		"fixed": {
+			"parent": "beyondtheabyss:item/flashlight_inventory"
 		}
-	]
+	}
 }
