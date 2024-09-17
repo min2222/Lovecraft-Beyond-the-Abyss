@@ -8,11 +8,9 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
-import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
@@ -26,7 +24,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FogType;
@@ -204,36 +201,6 @@ public class ClientEventHandlerForge
             if(level.dimension() == BTAWorlds.DEEP_ABYSS)
             {
             	level.effects = new DeepAbyssDimensionSpecialEffects();
-            }
-        }
-    }
-    
-    @SubscribeEvent
-    public static void onRenderFog(ViewportEvent.RenderFog event)
-    {
-    	ClientLevel level = BTAClientUtil.MC.level;
-        if(level.dimension() == BTAWorlds.DEEP_ABYSS)
-        {
-        	FogType fogtype = event.getCamera().getFluidInCamera();
-            if(fogtype == FogType.WATER)
-            {
-            	if(!BTAClientUtil.MC.player.isSpectator() && !BTAClientUtil.MC.player.getAbilities().instabuild && BTAClientUtil.MC.player.isInWater())
-            	{
-                	if(BTAClientUtil.MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() != BTAItems.GHIDRUTH_DIVING_HELMET.get())
-                	{
-                		int amount = 40;
-                    	if(BTAClientUtil.MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.DIVING_HELMET.get())
-                    	{
-                    		amount = 25;
-                    	}
-                    	else if(BTAClientUtil.MC.player.getItemBySlot(EquipmentSlot.HEAD).getItem() == BTAItems.ADVANCED_DIVING_HELMET.get())
-                    	{
-                    		amount = 10;
-                    	}
-                        RenderSystem.setShaderFogStart(-8.0F + amount);
-                        RenderSystem.setShaderFogEnd(50.0F - amount);
-                	}
-            	}
             }
         }
     }

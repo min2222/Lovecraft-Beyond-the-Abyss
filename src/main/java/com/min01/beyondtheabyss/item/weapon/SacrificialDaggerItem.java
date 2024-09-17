@@ -4,72 +4,36 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
-public class SacrificialDaggerItem extends Item
+public class SacrificialDaggerItem extends SwordItem
 {
-	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
-	   
 	public SacrificialDaggerItem(Item.Properties properties) 
 	{
-		super(properties.tab(DeepAbyssTabs.ABYSS_WEAPONS));
+		super(Tiers.IRON, 0, 0.0F, properties.tab(DeepAbyssTabs.ABYSS_WEAPONS));
+	}
+	
+	@Override
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) 
+	{
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 4.0D, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -1.5D, AttributeModifier.Operation.ADDITION));
-		this.defaultModifiers = builder.build();
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool Modifier", 4.0D, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool Modifier", -1.5D, AttributeModifier.Operation.ADDITION));
+		return slot == EquipmentSlot.MAINHAND ? builder.build() : ImmutableMultimap.of();
 	}
 	
 	@Override
-	public boolean canAttackBlock(BlockState p_43291_, Level p_43292_, BlockPos p_43293_, Player p_43294_)
+	public boolean canPerformAction(ItemStack stack, ToolAction toolAction)
 	{
-		return !p_43294_.isCreative();
-	}
-	
-	@Override
-	public boolean hurtEnemy(ItemStack p_43390_, LivingEntity p_43391_, LivingEntity p_43392_) 
-	{
-		p_43390_.hurtAndBreak(1, p_43392_, (p_43414_) ->
-		{
-			p_43414_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-		});
-		return true;
-	}
-	
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_)
-	{
-		ItemStack stack = p_41433_.getItemInHand(p_41434_);
-		return InteractionResultHolder.pass(stack);
-	}
-	
-	@Override
-	public boolean mineBlock(ItemStack p_43399_, Level p_43400_, BlockState p_43401_, BlockPos p_43402_, LivingEntity p_43403_) 
-	{
-		if((double)p_43401_.getDestroySpeed(p_43400_, p_43402_) != 0.0D) 
-		{
-			p_43399_.hurtAndBreak(2, p_43403_, (p_43385_) ->
-			{
-				p_43385_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-			});
-		}
-		return true;
-	}
-	
-	@SuppressWarnings("deprecation")
-	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot p_43383_)
-	{
-		return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
+		return toolAction == ToolActions.SWORD_DIG;
 	}
 }

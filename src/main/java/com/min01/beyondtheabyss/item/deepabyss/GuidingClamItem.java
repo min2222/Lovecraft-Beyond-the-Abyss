@@ -19,7 +19,7 @@ public class GuidingClamItem extends Item
 {
 	public GuidingClamItem()
 	{
-		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MISC).stacksTo(1).rarity(BTAItems.RARITY_ABYSS));
+		super(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MISC).stacksTo(1).rarity(BTAItems.RARITY_DEEP_ABYSS));
 	}
 	
 	@Override

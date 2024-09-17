@@ -12,12 +12,13 @@ import net.minecraft.client.player.LocalPlayer;
 @Mixin(LocalPlayer.class)
 public class MixinLocalPlayer 
 {
-	@Inject(at = @At("HEAD"), method = "getWaterVision", cancellable = true)
+	@Inject(at = @At("RETURN"), method = "getWaterVision", cancellable = true)
 	private void getWaterVision(CallbackInfoReturnable<Float> cir)
 	{
-		if(DeepAbyssUtil.isInsideSubmarine(LocalPlayer.class.cast(this)))
+		LocalPlayer player = LocalPlayer.class.cast(this);
+		if(DeepAbyssUtil.isInsideSubmarine(player))
 		{
-			cir.setReturnValue(1.5F);
+			cir.setReturnValue(cir.getReturnValue() + 1.5F);
 		}
 	}
 }
