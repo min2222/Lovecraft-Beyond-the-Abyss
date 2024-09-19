@@ -5,29 +5,28 @@ import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public class HarpoonItemRenderer extends BlockEntityWithoutLevelRenderer
+public class HarpoonRenderer extends BlockEntityWithoutLevelRenderer
 {
 	private ModelHarpoon model;
 	private ModelGhidruthHarpoon modelGhidruth;
 	
-	public HarpoonItemRenderer(BlockEntityRenderDispatcher p_172550_, EntityModelSet p_172551_) 
+	public HarpoonRenderer() 
 	{
-		super(p_172550_, p_172551_);
-		this.model = new ModelHarpoon(p_172551_.bakeLayer(ModelHarpoon.LAYER_LOCATION));
-		this.modelGhidruth = new ModelGhidruthHarpoon(p_172551_.bakeLayer(ModelGhidruthHarpoon.LAYER_LOCATION));
+		super(BTAClientUtil.MC.getBlockEntityRenderDispatcher(), BTAClientUtil.MC.getEntityModels());
+		this.model = new ModelHarpoon(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelHarpoon.LAYER_LOCATION));
+		this.modelGhidruth = new ModelGhidruthHarpoon(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGhidruthHarpoon.LAYER_LOCATION));
 	}
 	
 	@Override
@@ -36,9 +35,9 @@ public class HarpoonItemRenderer extends BlockEntityWithoutLevelRenderer
 		if(p_108830_.getItem() instanceof HarpoonItem harpoon)
 		{
 	        p_108832_.pushPose();
-	        p_108832_.scale(1.0F, -1.0F, -1.0F);
-	        VertexConsumer vertexconsumer1 = ItemRenderer.getFoilBufferDirect(p_108833_, this.getModel(harpoon).renderType(this.getTextureLocation(harpoon)), false, p_108830_.hasFoil());
-	        this.getModel(harpoon).renderToBuffer(p_108832_, vertexconsumer1, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
+	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
+	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, this.getModel(harpoon).renderType(this.getTextureLocation(harpoon)), false, p_108830_.hasFoil());
+	        this.getModel(harpoon).renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
 	        p_108832_.popPose();
 		}
 	}

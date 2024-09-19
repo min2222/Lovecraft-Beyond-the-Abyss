@@ -6,11 +6,9 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.renderer.HarpoonItemRenderer;
+import com.min01.beyondtheabyss.item.renderer.HarpoonRenderer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -25,22 +23,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
-public class HarpoonItem extends Item
+public class HarpoonItem extends SwordItem
 {
-	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
-	   
-	public HarpoonItem(Item.Properties properties, boolean isReinforced) 
+	public HarpoonItem(Item.Properties properties) 
 	{
-		super(properties);
-		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", !isReinforced ? 5.0D : 8.0D, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", !isReinforced ? -3.2D : - 3.0D, AttributeModifier.Operation.ADDITION));
-		this.defaultModifiers = builder.build();
+		super(Tiers.IRON, 0, 0.0F, properties);
 	}
 	
 	@Override
@@ -79,6 +74,7 @@ public class HarpoonItem extends Item
 					{
 						p_43388_.broadcastBreakEvent(p_41414_.getUsedItemHand());
 					});
+					
 					EntityThrownHarpoon harpoon = new EntityThrownHarpoon(p_41413_, player, p_41412_, this == BTAItems.GHIDRUTH_SCALE_HARPOON.get());
 					harpoon.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, this == BTAItems.GHIDRUTH_SCALE_HARPOON.get() ? 2.0F : 1.2F, 1.0F);
 					if(player.getAbilities().instabuild) 
@@ -87,7 +83,7 @@ public class HarpoonItem extends Item
 					}
 
 					p_41413_.addFreshEntity(harpoon);
-					p_41413_.playSound((Player)null, harpoon, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+					p_41413_.playSound(player, harpoon, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
 					if(!player.getAbilities().instabuild)
 					{
 						player.getInventory().removeItem(p_41412_);
@@ -107,32 +103,9 @@ public class HarpoonItem extends Item
 			@Override
 			public BlockEntityWithoutLevelRenderer getCustomRenderer() 
 			{
-				return new HarpoonItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				return new HarpoonRenderer();
 			}
 		});
-	}
-	
-	@Override
-	public boolean hurtEnemy(ItemStack p_43390_, LivingEntity p_43391_, LivingEntity p_43392_) 
-	{
-		p_43390_.hurtAndBreak(1, p_43392_, (p_43414_) ->
-		{
-			p_43414_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-		});
-		return true;
-	}
-	
-	@Override
-	public boolean mineBlock(ItemStack p_43399_, Level p_43400_, BlockState p_43401_, BlockPos p_43402_, LivingEntity p_43403_) 
-	{
-		if((double)p_43401_.getDestroySpeed(p_43400_, p_43402_) != 0.0D) 
-		{
-			p_43399_.hurtAndBreak(2, p_43403_, (p_43385_) ->
-			{
-				p_43385_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-			});
-		}
-		return true;
 	}
 	
 	@Override
@@ -141,9 +114,19 @@ public class HarpoonItem extends Item
 		return 72000;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot p_43383_)
+	@Override
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) 
 	{
-		return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
+		boolean isReinforced = stack.getItem() == BTAItems.GHIDRUTH_SCALE_HARPOON.get();
+		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool Modifier", !isReinforced ? 5.0D : 8.0D, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool Modifier", !isReinforced ? -3.2D : -3.0D, AttributeModifier.Operation.ADDITION));
+		return slot == EquipmentSlot.MAINHAND ? builder.build() : ImmutableMultimap.of();
+	}
+	
+	@Override
+	public boolean canPerformAction(ItemStack stack, ToolAction toolAction)
+	{
+		return toolAction == ToolActions.SWORD_DIG;
 	}
 }

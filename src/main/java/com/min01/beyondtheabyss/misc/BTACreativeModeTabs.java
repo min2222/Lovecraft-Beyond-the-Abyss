@@ -40,7 +40,6 @@ public class BTACreativeModeTabs
     		{
 				output.accept(BTAItems.GHIDRUTH_SCALE.get());
 				output.accept(BTAItems.OXYGEN_TANK.get());
-				output.accept(BTAItems.JUGGERNAUT_SUCTION_ORGAN.get());
 				output.accept(BTAItems.VAMPIRE_MEMBRANE.get());
 				output.accept(BTAItems.VAMPIRE_TOOTH.get());
     		}).build());

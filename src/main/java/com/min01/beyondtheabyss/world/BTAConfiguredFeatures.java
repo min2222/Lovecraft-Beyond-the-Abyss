@@ -15,8 +15,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFea
 
 public class BTAConfiguredFeatures 
 {
-	public static final ResourceKey<ConfiguredFeature<?, ?>> CORAL_TREE = register("coral_tree");
+	//public static final ResourceKey<ConfiguredFeature<?, ?>> CORAL_TREE = register("coral_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BONES = register("bones");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ABYSS_CORALS = register("abyss_corals");
 	
 	private static ResourceKey<ConfiguredFeature<?, ?>> register(String p_209839_) 
 	{
@@ -25,7 +26,8 @@ public class BTAConfiguredFeatures
 	
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context)
     {
-		context.register(CORAL_TREE, new ConfiguredFeature<>(Feature.SIMPLE_RANDOM_SELECTOR, new SimpleRandomFeatureConfiguration(HolderSet.direct(PlacementUtils.inlinePlaced(BTAFeatures.CORAL_TREE.get(), FeatureConfiguration.NONE)))));
+		//context.register(CORAL_TREE, new ConfiguredFeature<>(Feature.SIMPLE_RANDOM_SELECTOR, new SimpleRandomFeatureConfiguration(HolderSet.direct(PlacementUtils.inlinePlaced(BTAFeatures.CORAL_TREE.get(), FeatureConfiguration.NONE)))));
 		context.register(BONES, new ConfiguredFeature<>(Feature.SIMPLE_RANDOM_SELECTOR, new SimpleRandomFeatureConfiguration(HolderSet.direct(PlacementUtils.inlinePlaced(BTAFeatures.BONES.get(), FeatureConfiguration.NONE)))));
+		context.register(ABYSS_CORALS, new ConfiguredFeature<>(Feature.SIMPLE_RANDOM_SELECTOR, new SimpleRandomFeatureConfiguration(HolderSet.direct(PlacementUtils.inlinePlaced(BTAFeatures.CORAL_TREE.get(), FeatureConfiguration.NONE), PlacementUtils.inlinePlaced(BTAFeatures.CORAL_CLAW.get(), FeatureConfiguration.NONE), PlacementUtils.inlinePlaced(BTAFeatures.CORAL_MUSHROOM.get(), FeatureConfiguration.NONE)))));
     }	
 }

@@ -18,8 +18,9 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class BTAPlacedFeatures
 {
-	public static final ResourceKey<PlacedFeature> CORAL_TREE = register("coral_tree");
+	//public static final ResourceKey<PlacedFeature> CORAL_TREE = register("coral_tree");
 	public static final ResourceKey<PlacedFeature> BONES = register("bones");
+	public static final ResourceKey<PlacedFeature> ABYSS_CORALS = register("abyss_corals");
 	
 	private static ResourceKey<PlacedFeature> register(String p_209839_) 
 	{
@@ -29,7 +30,8 @@ public class BTAPlacedFeatures
 	public static void bootstrap(BootstapContext<PlacedFeature> context) 
 	{
 		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
-		context.register(CORAL_TREE, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.CORAL_TREE), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+		//context.register(CORAL_TREE, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.CORAL_TREE), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
 		context.register(BONES, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.BONES), List.copyOf(List.of(NoiseBasedCountPlacement.of(10, 200.0D, 0.1D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+		context.register(ABYSS_CORALS, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.ABYSS_CORALS), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
 	}
 }

@@ -16,22 +16,18 @@ import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.item.weapon.SacrificialDaggerItem;
-import com.min01.beyondtheabyss.misc.BTAArmorMaterial;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.StandingAndWallBlockItem;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -41,11 +37,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BTAItems 
 {
-	public static final ArmorMaterial DIVING_ARMOR_MATERIAL = new BTAArmorMaterial("diver", new int[]{450, 550, 500, 250}, new int[]{3, 5, 4, 2}, 10, SoundEvents.ARMOR_EQUIP_ELYTRA, 0, 0, () -> Ingredient.EMPTY);
-	public static final ArmorMaterial ADVANCED_DIVING_ARMOR_MATERIAL = new BTAArmorMaterial("advanced_diver", new int[]{650, 750, 700, 450}, new int[]{4, 6, 5, 3}, 15, SoundEvents.ARMOR_EQUIP_ELYTRA, 1, 0, () -> Ingredient.EMPTY);
-	public static final ArmorMaterial GHIDRUTH_DIVING_ARMOR_MATERIAL = new BTAArmorMaterial("ghidruth_diver", new int[]{1650, 1750, 1700, 1450}, new int[]{14, 16, 15, 13}, 25, SoundEvents.ARMOR_EQUIP_NETHERITE, 15, 0.5F, () -> Ingredient.of(BTAItems.GHIDRUTH_SCALE.get()));
-	
-    public static final Rarity RARITY_ABYSS = Rarity.create("beyondtheabyss:abyss", ChatFormatting.DARK_AQUA);
+    public static final Rarity RARITY_DEEP_ABYSS = Rarity.create("beyondtheabyss:deep_abyss", ChatFormatting.DARK_AQUA);
     
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
 	
@@ -63,31 +55,30 @@ public class BTAItems
 	public static final RegistryObject<Item> SIAMSERPENT_SPAWN_EGG = registerSpawnEgg("siamserpent_spawn_egg", () -> BTAEntities.SIAMSERPENT_HEAD.get(), 6584912, 9608315);
 	
 	//materials
-	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_ABYSS)));
+	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> JUGGERNAUT_SUCTION_ORGAN = ITEMS.register("juggernaut_suction_organ", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> VAMPIRE_MEMBRANE = ITEMS.register("vampire_membrane", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> VAMPIRE_TOOTH = ITEMS.register("vampire_tooth", () -> new Item(new Item.Properties()));
 	
 	//armors
-	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new DivingSetItem(DIVING_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-	public static final RegistryObject<Item> DIVING_SUIT = ITEMS.register("diving_suit", () -> new DivingSetItem(DIVING_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE));
-	public static final RegistryObject<Item> DIVING_LEGGINGS = ITEMS.register("diving_leggings", () -> new DivingSetItem(DIVING_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS));
-	public static final RegistryObject<Item> DIVING_BOOTS = ITEMS.register("diving_boots", () -> new DivingSetItem(DIVING_ARMOR_MATERIAL, ArmorItem.Type.BOOTS));
+	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new DivingSetItem(ArmorItem.Type.HELMET));
+	public static final RegistryObject<Item> DIVING_SUIT = ITEMS.register("diving_suit", () -> new DivingSetItem(ArmorItem.Type.CHESTPLATE));
+	public static final RegistryObject<Item> DIVING_LEGGINGS = ITEMS.register("diving_leggings", () -> new DivingSetItem(ArmorItem.Type.LEGGINGS));
+	public static final RegistryObject<Item> DIVING_BOOTS = ITEMS.register("diving_boots", () -> new DivingSetItem(ArmorItem.Type.BOOTS));
 	
-	public static final RegistryObject<Item> ADVANCED_DIVING_HELMET = ITEMS.register("advanced_diving_helmet", () -> new AdvancedDivingSetItem(ADVANCED_DIVING_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-	public static final RegistryObject<Item> ADVANCED_DIVING_SUIT = ITEMS.register("advanced_diving_suit", () -> new AdvancedDivingSetItem(ADVANCED_DIVING_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE));
-	public static final RegistryObject<Item> ADVANCED_DIVING_LEGGINGS = ITEMS.register("advanced_diving_leggings", () -> new AdvancedDivingSetItem(ADVANCED_DIVING_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS));
-	public static final RegistryObject<Item> ADVANCED_DIVING_BOOTS = ITEMS.register("advanced_diving_boots", () -> new AdvancedDivingSetItem(ADVANCED_DIVING_ARMOR_MATERIAL, ArmorItem.Type.BOOTS));
+	public static final RegistryObject<Item> ADVANCED_DIVING_HELMET = ITEMS.register("advanced_diving_helmet", () -> new AdvancedDivingSetItem(ArmorItem.Type.HELMET));
+	public static final RegistryObject<Item> ADVANCED_DIVING_SUIT = ITEMS.register("advanced_diving_suit", () -> new AdvancedDivingSetItem(ArmorItem.Type.CHESTPLATE));
+	public static final RegistryObject<Item> ADVANCED_DIVING_LEGGINGS = ITEMS.register("advanced_diving_leggings", () -> new AdvancedDivingSetItem(ArmorItem.Type.LEGGINGS));
+	public static final RegistryObject<Item> ADVANCED_DIVING_BOOTS = ITEMS.register("advanced_diving_boots", () -> new AdvancedDivingSetItem(ArmorItem.Type.BOOTS));
 	
-	public static final RegistryObject<Item> GHIDRUTH_DIVING_HELMET = ITEMS.register("ghidruth_diving_helmet", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-	public static final RegistryObject<Item> GHIDRUTH_DIVING_SUIT = ITEMS.register("ghidruth_diving_suit", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE));
-	public static final RegistryObject<Item> GHIDRUTH_DIVING_LEGGINGS = ITEMS.register("ghidruth_diving_leggings", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS));
-	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new GhidruthDivingSetItem(GHIDRUTH_DIVING_ARMOR_MATERIAL, ArmorItem.Type.BOOTS));
+	public static final RegistryObject<Item> GHIDRUTH_DIVING_HELMET = ITEMS.register("ghidruth_diving_helmet", () -> new GhidruthDivingSetItem(ArmorItem.Type.HELMET));
+	public static final RegistryObject<Item> GHIDRUTH_DIVING_SUIT = ITEMS.register("ghidruth_diving_suit", () -> new GhidruthDivingSetItem(ArmorItem.Type.CHESTPLATE));
+	public static final RegistryObject<Item> GHIDRUTH_DIVING_LEGGINGS = ITEMS.register("ghidruth_diving_leggings", () -> new GhidruthDivingSetItem(ArmorItem.Type.LEGGINGS));
+	public static final RegistryObject<Item> GHIDRUTH_DIVING_BOOTS = ITEMS.register("ghidruth_diving_boots", () -> new GhidruthDivingSetItem(ArmorItem.Type.BOOTS));
 	
 	//misc
 	public static final RegistryObject<Item> GUIDING_CLAM = ITEMS.register("guiding_clam", () -> new GuidingClamItem());
-	public static final RegistryObject<Item> HEART_OF_FORNEUS = ITEMS.register("heart_of_forneus", () -> new Item(new Item.Properties().rarity(RARITY_ABYSS)));
+	public static final RegistryObject<Item> HEART_OF_FORNEUS = ITEMS.register("heart_of_forneus", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
 	
 	//foods
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build(), true));
@@ -97,7 +88,7 @@ public class BTAItems
 	public static final RegistryObject<Item> COOKED_LATCHER_TAIL = ITEMS.register("cooked_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).fast().build()));
 	
 	//blocks
-	public static final RegistryObject<Item> RIFTWELLING_ALTAR = registerCustomRendererBlockItem("riftwelling_altar", () -> BTABlocks.RIFTWELLING_ALTAR.get(), () -> new RiftwellingAltarBlockEntity(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), new Item.Properties().rarity(RARITY_ABYSS));
+	public static final RegistryObject<Item> RIFTWELLING_ALTAR = registerCustomRendererBlockItem("riftwelling_altar", () -> BTABlocks.RIFTWELLING_ALTAR.get(), () -> new RiftwellingAltarBlockEntity(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), new Item.Properties().rarity(RARITY_DEEP_ABYSS));
 	public static final RegistryObject<Item> DEEP_ABYSSALITH = registerBlockItem("deep_abyssalith", () -> BTABlocks.DEEP_ABYSSALITH.get(), new Item.Properties());
 	public static final RegistryObject<Item> ABYSSALITH = registerBlockItem("abyssalith", () -> BTABlocks.ABYSSALITH.get(), new Item.Properties());
 	public static final RegistryObject<Item> SMALL_BONE = registerBlockItem("small_bone", () -> BTABlocks.SMALL_BONE.get(), new Item.Properties());
@@ -141,8 +132,8 @@ public class BTAItems
 	public static final RegistryObject<Item> COMPACT_ROT_SOIL = registerBlockItem("compact_rot_soil", () -> BTABlocks.COMPACT_ROT_SOIL.get(), new Item.Properties());
 	
 	//weapons
-	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750), false));
-	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(3550).rarity(RARITY_ABYSS), true));
+	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));
+	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(3550).rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", () -> new SacrificialDaggerItem(new Item.Properties().durability(150)));
 
 	//tools

@@ -1,8 +1,12 @@
 package com.min01.beyondtheabyss.effect.deepabyss;
 
+import java.util.UUID;
+
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class AbyssalScalesEffect extends MobEffect
 {
@@ -11,6 +15,8 @@ public class AbyssalScalesEffect extends MobEffect
 	public AbyssalScalesEffect(double multiplier)
 	{
 		super(MobEffectCategory.NEUTRAL, 657950);
+		this.addAttributeModifier(Attributes.ARMOR, UUID.randomUUID().toString(), 0, Operation.ADDITION);
+		this.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, UUID.randomUUID().toString(), 0, Operation.ADDITION);	
 		this.multiplier = multiplier;
 	}
 	

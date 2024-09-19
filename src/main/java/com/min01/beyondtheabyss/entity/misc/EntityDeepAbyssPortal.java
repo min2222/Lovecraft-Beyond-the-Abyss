@@ -70,11 +70,11 @@ public class EntityDeepAbyssPortal extends Entity
 		            {
 		            	if(entity instanceof ServerPlayer serverPlayer)
 		            	{
-		                    BTAUtil.teleportEntityToDimension(serverPlayer, serverLevel, BlockPos.containing(entity.getX(), -350, entity.getZ()));
+		                    BTAUtil.teleportEntityToDimension(serverPlayer, serverLevel, BlockPos.containing(entity.getX(), -180, entity.getZ()));
 		            	}
 		            	else
 		            	{
-		                    BTAUtil.teleportEntityToDimension(entity, serverLevel, BlockPos.containing(entity.getX(), -350, entity.getZ()));
+		                    BTAUtil.teleportEntityToDimension(entity, serverLevel, BlockPos.containing(entity.getX(), -180, entity.getZ()));
 		            	}
 		            }
 		        }
