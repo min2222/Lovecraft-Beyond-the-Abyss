@@ -14,5 +14,13 @@
 		"fixed": {
 			"parent": "beyondtheabyss:item/flashlight_inventory"
 		}
-	}
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"on": 1
+			},
+			"model": "beyondtheabyss:item/flashlight_on"
+		}
+	]
 }
