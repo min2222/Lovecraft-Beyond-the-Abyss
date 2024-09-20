@@ -41,7 +41,6 @@ public class BTAClientUtil
 		{
 			p_117360_.copyPropertiesTo(p_117361_);
 			p_117361_.prepareMobModel(p_117366_, p_117367_, p_117368_, p_117372_);
-			p_117361_.setupAnim(p_117366_, p_117367_, p_117368_, p_117369_, p_117370_, p_117371_);
 			renderColoredGlowingModel(p_117361_, p_117362_, p_117363_, p_117364_, p_117365_, p_117366_, p_117373_, p_117374_, p_117375_);
 		}
 	}

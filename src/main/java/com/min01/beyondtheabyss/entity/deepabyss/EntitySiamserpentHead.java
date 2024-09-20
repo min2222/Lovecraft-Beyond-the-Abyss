@@ -20,7 +20,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
@@ -28,7 +27,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -133,6 +131,14 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	{
 		super.tick();
 		
+		if(this.tickCount == 1)
+		{
+			if(this.getOwner() == null)
+			{
+				this.setupChain();
+			}
+		}
+		
 		for(int i = 0; i < 20; i++)
 		{
 			this.chain.tick();
@@ -220,7 +226,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(650) == 0 && pPos.getY() >= -400 && pPos.getY() <= -200 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pRandom.nextInt(850) == 0 && pPos.getY() >= -180 && pPos.getY() <= -100 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
     @Override
@@ -252,6 +258,50 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 		if(p_21450_.contains("HeadType"))
 		{
 			this.setHeadType(HeadType.values()[p_21450_.getInt("HeadType")]);
+		}
+	}
+	
+	public void setupChain()
+	{
+		if(Math.random() <= 0.5F)
+		{
+			this.setHeadType(HeadType.BLASTER);
+			
+			EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
+			head.setOwner(this);
+			head.setHeadType(HeadType.SLASHER);
+			head.setPos(this.position());
+			this.level.addFreshEntity(head);
+		}
+		else
+		{
+			EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
+			head.setOwner(this);
+			head.setHeadType(HeadType.BLASTER);
+			head.setPos(this.position());
+			this.level.addFreshEntity(head);
+		}
+		
+		EntitySiamserpentBone bone = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
+		bone.setOwner(this);
+		bone.setIndex(0);
+		bone.setPos(this.position());
+		this.level.addFreshEntity(bone);
+		
+		EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
+		bone2.setOwner(this);
+		bone2.setIndex(11);
+		bone2.setPos(this.position());
+		this.level.addFreshEntity(bone2);
+		
+		for(int i = 1; i < 11; i++)
+		{
+			EntitySiamserpentBone bone1 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
+			bone1.setOwner(this);
+			bone1.setIndex(i);
+			bone1.setVariant(this.level.random.nextInt(1, 3));
+			bone1.setPos(this.position());
+			this.level.addFreshEntity(bone1);
 		}
 	}
 	
@@ -306,43 +356,6 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 			return Component.translatable("entity.beyondtheabyss.siamserpent_blaster");
 		}
 		return super.getTypeName();
-	}
-	
-	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
-	{
-		if(this.getOwner() == null)
-		{
-			if(Math.random() <= 0.5F)
-			{
-				this.setHeadType(HeadType.BLASTER);
-			}
-			
-			EntitySiamserpentBone bone = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
-			bone.setOwner(this);
-			bone.setIndex(0);
-			this.level.addFreshEntity(bone);
-			
-			EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
-			bone2.setOwner(this);
-			bone2.setIndex(11);
-			this.level.addFreshEntity(bone2);
-			
-			EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
-			head.setOwner(this);
-			head.setHeadType(this.getHeadType() == HeadType.SLASHER ? HeadType.BLASTER : HeadType.SLASHER);
-			this.level.addFreshEntity(head);
-			
-			for(int i = 1; i < 11; i++)
-			{
-				EntitySiamserpentBone bone1 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
-				bone1.setOwner(this);
-				bone1.setIndex(i);
-				bone1.setVariant(this.level.random.nextInt(1, 3));
-				this.level.addFreshEntity(bone1);
-			}
-		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 	
 	public static enum HeadType

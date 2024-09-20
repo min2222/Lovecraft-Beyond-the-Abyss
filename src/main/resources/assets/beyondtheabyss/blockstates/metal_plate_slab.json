@@ -1,0 +1,13 @@
+{
+	"variants": {
+		"type=bottom": {
+			"model": "beyondtheabyss:block/metal_plate_slab"
+		},
+		"type=double": {
+			"model": "beyondtheabyss:block/metal_plate"
+		},
+		"type=top": {
+			"model": "beyondtheabyss:block/metal_plate_slab_top"
+		}
+	}
+}

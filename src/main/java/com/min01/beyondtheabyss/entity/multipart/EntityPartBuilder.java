@@ -18,10 +18,10 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
@@ -44,15 +44,11 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	        .getFactory().create();
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
+	public final Map<String, Part> partMap = new HashMap<>();
 
 	public EntityPartBuilder(T entity)
 	{
 		this.entity = entity;
-		if(this.entity.level.isClientSide)
-		{
-			this.hitbox = this.buildHitBox();
-			BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts));
-		}
 	}
 	
 	public void tick(float partialTick)
@@ -73,12 +69,14 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 			this.clientTick(partialTick);
 			BTANetwork.sendToServer(new UpdateMultiPartPacket(this.entity));
 			
-			if(this.entity.tickCount == 4)
+			if(this.entity.tickCount == 1)
 			{
 				this.hitbox = this.buildHitBox();
-				BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts));
+				BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts, this.partMap));
 			}
 		}
+		
+		this.partTick(partialTick);
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
         root.rotate(rotation);
@@ -95,50 +93,61 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
 	}
 	
+	public void partTick(float partialTick)
+	{
+		for(Part part : this.partMap.values())
+		{
+			String name = part.name;
+	    	EntityPart entityPart = this.hitbox.getPart(name);
+	        Vec3 partPos = (new Vec3((double)(-part.x), (double)(-part.y), (double)part.z)).scale(SCALE * this.getRenderScale());
+	        Vec3 pivot = Vec3.ZERO;
+	        
+	        if(this.partOffset.containsKey(name))
+	        {
+	            Vec3 offset = this.partOffset.get(name);
+	            pivot = offset;
+	            partPos = partPos.add(offset);
+	        }
+
+	        if(this.parts.containsKey(name)) 
+	        {
+	            String parent = this.parts.get(name);
+	            if(this.partOffset.containsKey(parent)) 
+	            {
+	                partPos = partPos.subtract(this.partOffset.get(parent));
+	            }
+	        }
+	        
+	        if(entityPart == null)
+	        	return;
+
+	        entityPart.setX(partPos.x);
+	        entityPart.setY(partPos.y);
+	        entityPart.setZ(partPos.z);
+	        entityPart.setPivotX(pivot.x);
+	        entityPart.setPivotY(pivot.y);
+	        entityPart.setPivotZ(pivot.z);
+	        Quaternion rotation = new Quaternion(0, 0, 0, 1);
+	        rotation.mul(Vector3f.ZP.rotation(part.zRot));
+	        rotation.mul(Vector3f.YP.rotation(-part.yRot));
+	        rotation.mul(Vector3f.XP.rotation(-part.xRot));
+	        entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
+		}
+	}
+	
 	@OnlyIn(Dist.CLIENT)
 	public void clientTick(float partialTick)
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
-		this.defaultAnimation(model, this.entity, partialTick);
-		model.root().getAllParts().forEach(part ->
+		for(ModelPart part : model.root().getAllParts().toList())
 		{
-        	//FIXME cause fps lag
 			String name = this.getModelPartName(model.root(), part);
-        	EntityPart entityPart = this.hitbox.getPart(name);
-            Vec3 partPos = (new Vec3((double)(-part.x), (double)(-part.y), (double)part.z)).scale(SCALE * this.getRenderScale());
-            Vec3 pivot = Vec3.ZERO;
-            
-            if(this.partOffset.containsKey(name))
-            {
-                Vec3 offset = this.partOffset.get(name);
-                pivot = offset;
-                partPos = partPos.add(offset);
-            }
-
-            if(this.parts.containsKey(name)) 
-            {
-                String parent = this.parts.get(name);
-                if(this.partOffset.containsKey(parent)) 
-                {
-                    partPos = partPos.subtract(this.partOffset.get(parent));
-                }
-            }
-            
-            if(entityPart == null)
-            	return;
-
-            entityPart.setX(partPos.x);
-            entityPart.setY(partPos.y);
-            entityPart.setZ(partPos.z);
-            entityPart.setPivotX(pivot.x);
-            entityPart.setPivotY(pivot.y);
-            entityPart.setPivotZ(pivot.z);
-            Quaternion rotation = new Quaternion(0, 0, 0, 1);
-            rotation.mul(Vector3f.ZP.rotation(part.zRot));
-            rotation.mul(Vector3f.YP.rotation(-part.yRot));
-            rotation.mul(Vector3f.XP.rotation(-part.xRot));
-            entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
-        });
+			Part p = this.partMap.get(name);
+			if(p != null)
+			{
+				p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+			}
+		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -164,8 +173,12 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         EntityBounds.EntityBoundsBuilder builder2 = partInfo.build();
         for(ModelPart child : part.children.values())
         {
-        	//FIXME cause fps lag
         	this.addPart(builder2, child, name);
+        }
+        Part p = new Part(name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+        if(!this.partMap.containsValue(p))
+        {
+        	this.partMap.put(p.name, p);
         }
         return builder2;
     }
@@ -210,20 +223,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         	return String.valueOf(target.hashCode());
         }
         return ROOT;
-    }
-
-	@OnlyIn(Dist.CLIENT)
-    public void defaultAnimation(EntityModel<T> model, T entity, float partialTick)
-    {
-        boolean shouldSit = entity.isPassenger() && entity.getVehicle() != null && entity.getVehicle().shouldRiderSit();
-        float limbSwing = !shouldSit && entity.isAlive() ? entity.animationPosition - entity.animationSpeed * (1.0F - partialTick) : 0.0F;
-        float limbSwingAmount = !shouldSit && entity.isAlive() ? Mth.lerp(partialTick, entity.animationSpeedOld, entity.animationSpeed) : 0.0F;
-        model.attackTime = entity.getAttackAnim(partialTick);
-        model.young = entity.isBaby();
-        model.riding = shouldSit;
-        Vec2 headRot = this.defaultHeadRotation(entity, partialTick);
-        model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
-        model.setupAnim(entity, limbSwing, limbSwingAmount, (float)entity.tickCount + partialTick, headRot.y, headRot.x);
     }
 
     public Vec2 defaultHeadRotation(LivingEntity entity, float partialTick)
@@ -383,5 +382,55 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     public AABB getBoundingBox(Vec3 pos) 
     {
     	return this.entity.getDimensions(this.entity.getPose()).makeBoundingBox(pos);
+    }
+    
+    public static class Part
+    {
+    	public String name;
+    	
+    	public float x;
+    	public float y;
+    	public float z;
+    	
+    	public float xRot;
+    	public float yRot;
+    	public float zRot;
+    	
+    	public Part(String name, float x, float y, float z, float xRot, float yRot, float zRot)
+    	{
+    		this.name = name;
+    		this.x = x;
+    		this.y = y;
+    		this.z = z;
+    		this.xRot = xRot;
+    		this.yRot = yRot;
+    		this.zRot = zRot;
+    	}
+    	
+    	public void tick(float x, float y, float z, float xRot, float yRot, float zRot)
+    	{
+    		this.x = x;
+    		this.y = y;
+    		this.z = z;
+    		this.xRot = xRot;
+    		this.yRot = yRot;
+    		this.zRot = zRot;
+    	}
+    	
+    	public static Part read(FriendlyByteBuf buf)
+    	{
+    		return new Part(buf.readUtf(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
+    	}
+    	
+    	public static void write(FriendlyByteBuf buf, Part part)
+    	{
+    		buf.writeUtf(part.name);
+    		buf.writeFloat(part.x);
+    		buf.writeFloat(part.y);
+    		buf.writeFloat(part.z);
+    		buf.writeFloat(part.xRot);
+    		buf.writeFloat(part.yRot);
+    		buf.writeFloat(part.zRot);
+    	}
     }
 }

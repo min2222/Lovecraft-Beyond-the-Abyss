@@ -106,6 +106,12 @@ public class BTAItems
 	public static final RegistryObject<Item> METAL_BRICK = registerBlockItem("metal_brick", () -> BTABlocks.METAL_BRICK.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_TILE = registerBlockItem("metal_tile", () -> BTABlocks.METAL_TILE.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_PLATE = registerBlockItem("metal_plate", () -> BTABlocks.METAL_PLATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_BRICK_STAIRS = registerBlockItem("metal_brick_stairs", () -> BTABlocks.METAL_BRICK_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_TILE_STAIRS = registerBlockItem("metal_tile_stairs", () -> BTABlocks.METAL_TILE_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_PLATE_STAIRS = registerBlockItem("metal_plate_stairs", () -> BTABlocks.METAL_PLATE_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_BRICK_SLAB = registerBlockItem("metal_brick_slab", () -> BTABlocks.METAL_BRICK_SLAB.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_TILE_SLAB = registerBlockItem("metal_tile_slab", () -> BTABlocks.METAL_TILE_SLAB.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_PLATE_SLAB = registerBlockItem("metal_plate_slab", () -> BTABlocks.METAL_PLATE_SLAB.get(), new Item.Properties());
 	public static final RegistryObject<Item> BLUE_METAL_LANTERN = registerBlockItem("blue_metal_lantern", () -> BTABlocks.BLUE_METAL_LANTERN.get(), new Item.Properties());
 	public static final RegistryObject<Item> GREEN_METAL_LANTERN = registerBlockItem("green_metal_lantern", () -> BTABlocks.GREEN_METAL_LANTERN.get(), new Item.Properties());
 	public static final RegistryObject<Item> PINK_METAL_LANTERN = registerBlockItem("pink_metal_lantern", () -> BTABlocks.PINK_METAL_LANTERN.get(), new Item.Properties());

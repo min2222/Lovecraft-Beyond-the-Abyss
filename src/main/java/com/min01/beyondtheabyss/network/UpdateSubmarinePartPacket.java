@@ -7,10 +7,10 @@ import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class UpdateSubmarinePartPacket 
 {
@@ -45,9 +45,11 @@ public class UpdateSubmarinePartPacket
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
+				ServerPlayer player = ctx.get().getSender();
+				if(player != null)
 				{
-					Entity entity = level.getEntity(message.entityId);
+					ServerLevel serverLevel = player.getLevel();
+					Entity entity = serverLevel.getEntity(message.entityId);
 					if(entity instanceof EntitySubmarine submarine) 
 					{
 						submarine.posArray[message.array] = message.pos;
