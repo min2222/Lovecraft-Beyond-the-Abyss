@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.IPosArray;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -31,7 +32,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 
-public class EntitySubmarine extends LivingEntity implements IMultipart
+public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray
 {
     public SubmarineHitBox hitbox = new SubmarineHitBox(this);
 	
@@ -91,6 +92,12 @@ public class EntitySubmarine extends LivingEntity implements IMultipart
 		{
 			super.travel(p_21280_);
 		}
+	}
+	
+	@Override
+	public Vec3[] getPosArray() 
+	{
+		return this.posArray;
 	}
 	
 	@Override

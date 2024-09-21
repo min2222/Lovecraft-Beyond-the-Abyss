@@ -45,10 +45,16 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
 	public final Map<String, Part> partMap = new HashMap<>();
+	public boolean rebuild;
 
 	public EntityPartBuilder(T entity)
 	{
 		this.entity = entity;
+		if(this.entity.level.isClientSide)
+		{
+			//this.hitbox = this.buildHitBox();
+			//BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts, this.partMap));
+		}
 	}
 	
 	public void tick(float partialTick)
@@ -66,14 +72,12 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         
 		if(this.entity.level.isClientSide)
 		{
-			this.clientTick(partialTick);
-			BTANetwork.sendToServer(new UpdateMultiPartPacket(this.entity));
-			
-			if(this.entity.tickCount == 1)
+			if(!this.rebuild)
 			{
 				this.hitbox = this.buildHitBox();
-				BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts, this.partMap));
+				this.rebuild = true;
 			}
+			BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts, this.partMap));
 		}
 		
 		this.partTick(partialTick);
@@ -136,9 +140,8 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void clientTick(float partialTick)
+	public void clientTick(HierarchicalModel<?> model)
 	{
-		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
 		for(ModelPart part : model.root().getAllParts().toList())
 		{
 			String name = this.getModelPartName(model.root(), part);
@@ -146,6 +149,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 			if(p != null)
 			{
 				p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+				BTANetwork.sendToServer(new UpdateMultiPartPacket(this.entity, p));
 			}
 		}
 	}

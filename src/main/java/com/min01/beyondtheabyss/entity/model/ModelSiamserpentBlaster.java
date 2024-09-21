@@ -63,7 +63,7 @@ public class ModelSiamserpentBlaster extends HierarchicalModel<EntitySiamserpent
 	public void setupAnim(EntitySiamserpentHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBlaster"), netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBlaster"), entity.shouldInvertRotation() ? netHeadYaw + 180.0F : netHeadYaw, headPitch);
 		this.root.getChild("SiamserpentBlaster").getChild("RayofEnergy").visible = entity.getHeadType() == HeadType.BLASTER && entity.getAnimationState() == 1;
 		this.animate(entity.beamStartAnimationState, SiamserpentBlasterAnimation.BLASTER_BEAM_START, ageInTicks);
 		this.animate(entity.beamStopAnimationState, SiamserpentBlasterAnimation.BLASTER_BEAM_STOP, ageInTicks);

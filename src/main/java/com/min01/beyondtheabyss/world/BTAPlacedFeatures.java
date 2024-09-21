@@ -10,6 +10,7 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
+import net.minecraft.world.level.levelgen.placement.NoiseThresholdCountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -21,4 +22,5 @@ public class BTAPlacedFeatures
 	//public static final RegistryObject<PlacedFeature> CORAL_TREE = PLACED_FEATURES.register("coral_tree", () -> new PlacedFeature(Holder.hackyErase(BTAConfiguredFeatures.CORAL_TREE.getHolder().get()), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
 	public static final RegistryObject<PlacedFeature> ABYSS_CORALS = PLACED_FEATURES.register("abyss_corals", () -> new PlacedFeature(Holder.hackyErase(BTAConfiguredFeatures.ABYSS_CORALS.getHolder().get()), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
 	public static final RegistryObject<PlacedFeature> BONES = PLACED_FEATURES.register("bones", () -> new PlacedFeature(Holder.hackyErase(BTAConfiguredFeatures.BONES.getHolder().get()), List.copyOf(List.of(NoiseBasedCountPlacement.of(10, 200.0D, 0.1D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+	public static final RegistryObject<PlacedFeature> SPINES = PLACED_FEATURES.register("spines", () -> new PlacedFeature(Holder.hackyErase(BTAConfiguredFeatures.SPINES.getHolder().get()), List.copyOf(List.of(NoiseThresholdCountPlacement.of(-0.8D, 5, 10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
 }

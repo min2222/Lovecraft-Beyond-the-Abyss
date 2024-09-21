@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
@@ -98,8 +99,13 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 		if(this.isSwimable())
 		{
 			this.moveControl = this.getSwimmingMoveControl();
-			this.lookControl = new SmoothSwimmingLookControl(this, 10);
+			this.lookControl = this.getSwimmingLookControl();
 		}
+	}
+	
+	public LookControl getSwimmingLookControl()
+	{
+		return new SmoothSwimmingLookControl(this, 10);
 	}
 	
 	public MoveControl getSwimmingMoveControl()
