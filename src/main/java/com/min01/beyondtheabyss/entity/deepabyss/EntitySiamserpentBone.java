@@ -3,12 +3,14 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.KinematicChain.ChainSegment;
+import com.min01.beyondtheabyss.util.WormKinematicChain;
+import com.min01.beyondtheabyss.util.WormSegmentController;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -18,13 +20,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec2;
 
-public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<EntitySiamserpentHead>
+public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<AbstractDeepAbyssMonster>
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
 	
+	public final WormKinematicChain wormChain = new WormKinematicChain(this);
+			
 	public EntitySiamserpentBone(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
@@ -43,16 +46,23 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Entit
     public void tick() 
     {
     	super.tick();
-    	
     	if(this.getOwner() != null)
     	{
-    		ChainSegment segment = this.getOwner().chain.getSegments()[this.getIndex()];
-    		Vec2 rot = segment.getRot();
-    		this.setPos(segment.getPos());
-    		this.setXRot(rot.x);
-    		this.setYRot(rot.y);
-    		this.setYHeadRot(rot.y);
-    		this.setYBodyRot(rot.y);
+    		if(!this.level.isClientSide)
+    		{
+    			WormSegmentController.tick((ServerLevel) this.level, this.getX(), this.getY(), this.getZ(), this, this.getOwner(), 1.0F, 0.5F);
+    		}
+    		/*ChainSegment segment = this.wormChain.getSegments()[this.getIndex()];
+    		this.wormChain.tick();
+    		this.setYRot(segment.getRot().y);
+    		this.setXRot(segment.getRot().x);
+    		this.setYBodyRot(this.getYRot());
+    		this.setYHeadRot(this.getYRot());
+    		this.yRotO = this.getYRot();
+    		this.xRotO = this.getXRot();
+    		this.yBodyRotO = this.getYRot();
+    		this.yHeadRotO = this.getYRot();
+    		this.teleportTo(this.getOwner().getX() + segment.getPos().x, this.getOwner().getY() + segment.getPos().y, this.getOwner().getZ() + segment.getPos().z);*/
     	}
     }
     
@@ -120,6 +130,11 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Entit
 		{
 			this.setVariant(p_37262_.getInt("Variant"));
 		}
+	}
+	
+	public boolean shouldInvertRotation()
+	{
+		return this.getIndex() == 11;
 	}
 	
 	public void setIndex(int value)

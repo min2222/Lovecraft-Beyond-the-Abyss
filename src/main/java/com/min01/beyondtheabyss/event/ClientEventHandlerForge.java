@@ -4,8 +4,10 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.IPartBuilder;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
@@ -16,6 +18,7 @@ import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -78,6 +81,18 @@ public class ClientEventHandlerForge
         			}
         		}
     		});
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onRenderEntity(RenderEntityEvent<?> event)
+    {
+    	LivingEntity living = event.getEntity();
+    	if(living instanceof IPartBuilder partBuilder)
+    	{
+    		EntityPartBuilder<?> builder = partBuilder.getPartBuilder();
+    		HierarchicalModel<?> model = BTAClientUtil.getModelFromEntity(living);
+    		builder.clientTick(model);
     	}
     }
     

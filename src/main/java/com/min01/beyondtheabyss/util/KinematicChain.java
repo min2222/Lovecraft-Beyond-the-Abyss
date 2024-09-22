@@ -9,9 +9,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class KinematicChain 
 {
-	private Entity entity;
-	private Entity target;
-	private ChainSegment[] segments = new ChainSegment[13];
+	protected Entity entity;
+	protected Entity target;
+	protected ChainSegment[] segments = new ChainSegment[13];
 	
 	public KinematicChain(Entity entity) 
 	{

@@ -4,7 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateSubmarinePartPacket;
+import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -69,19 +69,19 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		p_114485_.posArray[2] = seat2Pos;
 		p_114485_.posArray[1] = seat1Pos;
 		p_114485_.posArray[0] = controllerPos;
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, detectorPos, 12));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, topPos, 11));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, leftWallPos, 10));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, rightWallPos, 9));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, hatchPos, 8));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, frontPos, 7));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, backPos, 6));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, bottomPos, 5));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, seat4Pos, 4));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, seat3Pos, 3));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, seat2Pos, 2));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, seat1Pos, 1));
-	    BTANetwork.sendToServer(new UpdateSubmarinePartPacket(p_114485_, controllerPos, 0));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, detectorPos, 12));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, topPos, 11));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, leftWallPos, 10));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, rightWallPos, 9));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, hatchPos, 8));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, frontPos, 7));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, backPos, 6));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, bottomPos, 5));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, seat4Pos, 4));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, seat3Pos, 3));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, seat2Pos, 2));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, seat1Pos, 1));
+	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, controllerPos, 0));
 
 		if(p_114485_.getControllingPlayer() != null)
 		{

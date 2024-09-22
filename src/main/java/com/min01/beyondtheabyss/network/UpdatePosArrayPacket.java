@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.IPosArray;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -48,9 +48,9 @@ public class UpdatePosArrayPacket
 				for(ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) 
 				{
 					Entity entity = level.getEntity(message.entityId);
-					if(entity instanceof AbstractBTAMonster mob) 
+					if(entity instanceof IPosArray mob) 
 					{
-						mob.posArray[message.array] = message.pos;
+						mob.getPosArray()[message.array] = message.pos;
 					}
 				}
 			});

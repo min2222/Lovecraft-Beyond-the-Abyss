@@ -5,6 +5,7 @@ import com.min01.beyondtheabyss.world.structure.feature.deepabyss.DeepAbyssBoneF
 import com.min01.beyondtheabyss.world.structure.feature.deepabyss.DeepAbyssCoralClawFeature;
 import com.min01.beyondtheabyss.world.structure.feature.deepabyss.DeepAbyssCoralMushroomFeature;
 import com.min01.beyondtheabyss.world.structure.feature.deepabyss.DeepAbyssCoralTreeFeature;
+import com.min01.beyondtheabyss.world.structure.feature.deepabyss.DeepAbyssSpineFeature;
 
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -20,4 +21,5 @@ public class BTAFeatures
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> CORAL_MUSHROOM = FEATURES.register("coral_mushroom", () -> new DeepAbyssCoralMushroomFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> CORAL_CLAW = FEATURES.register("coral_claw", () -> new DeepAbyssCoralClawFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> BONES = FEATURES.register("bones", () -> new DeepAbyssBoneFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> SPINES = FEATURES.register("spines", () -> new DeepAbyssSpineFeature(NoneFeatureConfiguration.CODEC));
 }

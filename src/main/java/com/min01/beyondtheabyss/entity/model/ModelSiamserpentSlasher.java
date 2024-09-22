@@ -48,7 +48,7 @@ public class ModelSiamserpentSlasher extends HierarchicalModel<EntitySiamserpent
 	public void setupAnim(EntitySiamserpentHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("SiamserpentSlasher"), netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentSlasher"), entity.shouldInvertRotation() ? netHeadYaw + 180.0F : netHeadYaw, headPitch);
 	}
 
 	@Override

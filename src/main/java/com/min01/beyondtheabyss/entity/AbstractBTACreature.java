@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractBTACreature extends PathfinderMob implements IMultipart, IAnimatable
+public abstract class AbstractBTACreature extends PathfinderMob implements IMultipart, IAnimatable, IPosArray, IPartBuilder
 {
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.INT);
@@ -75,6 +75,18 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 		{
 			this.partBuilder.tick(1.0F);
 		}
+	}
+	
+	@Override
+	public Vec3[] getPosArray() 
+	{
+		return this.posArray;
+	}
+	
+	@Override
+	public EntityPartBuilder<?> getPartBuilder() 
+	{
+		return this.partBuilder;
 	}
 	
 	public abstract EntityPartBuilder<? extends AbstractBTACreature> createBuilder();

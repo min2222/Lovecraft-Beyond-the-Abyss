@@ -143,15 +143,15 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
         	}
         }
         
-		List<EntityGnasher> list = this.level.getEntitiesOfClass(EntityGnasher.class, this.getBoundingBox().inflate(100));
-		list.removeIf(t -> !t.isLeader());
-		list.forEach(t -> 
+		if(!this.isLeader() && !this.isFollower())
 		{
-			if(!this.isLeader() && !this.isFollower())
+			List<EntityGnasher> list = this.level.getEntitiesOfClass(EntityGnasher.class, this.getBoundingBox().inflate(15));
+			list.removeIf(t -> !t.isLeader() || t == this);
+			list.forEach(t -> 
 			{
 				this.startFollowing(t);
-			}
-		});
+			});
+		}
     }
     
     @Override

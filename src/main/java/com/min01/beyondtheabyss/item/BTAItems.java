@@ -52,7 +52,7 @@ public class BTAItems
 	public static final RegistryObject<Item> PHASMOZOA_SPAWN_EGG = registerSpawnEgg("phasmozoa_spawn_egg", () -> BTAEntities.PHASMOZOA.get(), 4686944, 8876197);
 	public static final RegistryObject<Item> AMARUM_GHOST_SPAWN_EGG = registerSpawnEgg("amarum_ghost_spawn_egg", () -> BTAEntities.AMARUM_GHOST.get(), 930103, 5756886);
 	public static final RegistryObject<Item> GNASHER_SPAWN_EGG = registerSpawnEgg("gnasher_spawn_egg", () -> BTAEntities.GNASHER.get(), 1318679, 3019282);
-	public static final RegistryObject<Item> SIAMSERPENT_SPAWN_EGG = registerSpawnEgg("siamserpent_spawn_egg", () -> BTAEntities.SIAMSERPENT_HEAD.get(), 6584912, 9608315);
+	public static final RegistryObject<Item> SIAMSERPENT_SPAWN_EGG = registerSpawnEgg("siamserpent_spawn_egg", () -> BTAEntities.SIAMSERPENT_HEAD.get(), 7035974, 9537638);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
@@ -103,10 +103,15 @@ public class BTAItems
 	public static final RegistryObject<Item> BONE_PILES = registerNoRotationLimitBlockItem("bone_piles", () -> BTABlocks.BONE_PILES.get(), new Item.Properties());
 	public static final RegistryObject<Item> SITTING_SKELETON = registerNoRotationLimitBlockItem("sitting_skeleton", () -> BTABlocks.SITTING_SKELETON.get(), new Item.Properties());
 	public static final RegistryObject<Item> FALLEN_SKELETON = registerNoRotationLimitBlockItem("fallen_skeleton", () -> BTABlocks.FALLEN_SKELETON.get(), new Item.Properties());
-	public static final RegistryObject<Item> CHISELED_METAL = registerBlockItem("chiseled_metal", () -> BTABlocks.CHISELED_METAL.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_BRICK = registerBlockItem("metal_brick", () -> BTABlocks.METAL_BRICK.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_TILE = registerBlockItem("metal_tile", () -> BTABlocks.METAL_TILE.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_PLATE = registerBlockItem("metal_plate", () -> BTABlocks.METAL_PLATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_BRICK_STAIRS = registerBlockItem("metal_brick_stairs", () -> BTABlocks.METAL_BRICK_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_TILE_STAIRS = registerBlockItem("metal_tile_stairs", () -> BTABlocks.METAL_TILE_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_PLATE_STAIRS = registerBlockItem("metal_plate_stairs", () -> BTABlocks.METAL_PLATE_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_BRICK_SLAB = registerBlockItem("metal_brick_slab", () -> BTABlocks.METAL_BRICK_SLAB.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_TILE_SLAB = registerBlockItem("metal_tile_slab", () -> BTABlocks.METAL_TILE_SLAB.get(), new Item.Properties());
+	public static final RegistryObject<Item> METAL_PLATE_SLAB = registerBlockItem("metal_plate_slab", () -> BTABlocks.METAL_PLATE_SLAB.get(), new Item.Properties());
 	public static final RegistryObject<Item> BLUE_METAL_LANTERN = registerBlockItem("blue_metal_lantern", () -> BTABlocks.BLUE_METAL_LANTERN.get(), new Item.Properties());
 	public static final RegistryObject<Item> GREEN_METAL_LANTERN = registerBlockItem("green_metal_lantern", () -> BTABlocks.GREEN_METAL_LANTERN.get(), new Item.Properties());
 	public static final RegistryObject<Item> PINK_METAL_LANTERN = registerBlockItem("pink_metal_lantern", () -> BTABlocks.PINK_METAL_LANTERN.get(), new Item.Properties());

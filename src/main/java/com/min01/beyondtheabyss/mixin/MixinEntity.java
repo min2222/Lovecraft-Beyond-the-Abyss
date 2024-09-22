@@ -1,8 +1,5 @@
 package com.min01.beyondtheabyss.mixin;
 
-import java.util.List;
-import java.util.function.Predicate;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,15 +8,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
@@ -35,7 +28,7 @@ public abstract class MixinEntity
         }
     }
     
-    @Inject(method = "collide", at = @At("RETURN"), cancellable = true)
+    /*@Inject(method = "collide", at = @At("RETURN"), cancellable = true)
     private void collide(Vec3 vec3, CallbackInfoReturnable<Vec3> cir)
     {
     	Entity entity = Entity.class.cast(this);
@@ -53,7 +46,7 @@ public abstract class MixinEntity
         		}
         	}
         }
-    }
+    }*/
     
     @Inject(method = "setPosRaw", at = @At("TAIL"))
     private void setPosRaw(double x, double y, double z, CallbackInfo ci)
