@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "beyondtheabyss:block/spike_rune_stone"
-    }
-  }
+	"variants": {
+		"": {
+			"model": "beyondtheabyss:block/spike_rune_stone"
+		}
+	}
 }

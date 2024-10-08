@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
@@ -29,13 +30,13 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMonster
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 15)
+    			.add(Attributes.MAX_HEALTH, 15.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.4F)
-        		.add(Attributes.FOLLOW_RANGE, 15);
+        		.add(Attributes.FOLLOW_RANGE, 15.0F);
     }
     
     @Override
-    public EntityPartBuilder<EntityPhasmozoa> createBuilder()
+    public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
     {
     	EntityPartBuilder<EntityPhasmozoa> partBuilder = new EntityPartBuilder<EntityPhasmozoa>(this);
     	return partBuilder;

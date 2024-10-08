@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
@@ -27,13 +28,13 @@ public class EntityAbyssalBulbray extends AbstractDeepAbyssCreature
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 80)
+    			.add(Attributes.MAX_HEALTH, 80.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.8F)
-        		.add(Attributes.ARMOR, 2);
+        		.add(Attributes.ARMOR, 2.0F);
     }
 
 	@Override
-	public EntityPartBuilder<EntityAbyssalBulbray> createBuilder() 
+	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder() 
 	{
 		EntityPartBuilder<EntityAbyssalBulbray> partBuilder = new EntityPartBuilder<EntityAbyssalBulbray>(this);
 		return partBuilder;

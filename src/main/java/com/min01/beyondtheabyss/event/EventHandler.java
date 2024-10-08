@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityFallenDiver;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
@@ -58,6 +59,7 @@ public class EventHandler
     	event.put(BTAEntities.GNASHER.get(), EntityGnasher.createAttributes().build());
     	event.put(BTAEntities.SIAMSERPENT_HEAD.get(), EntitySiamserpentHead.createAttributes().build());
     	event.put(BTAEntities.SIAMSERPENT_BONE.get(), EntitySiamserpentBone.createAttributes().build());
+    	event.put(BTAEntities.FALLEN_DIVER.get(), EntityFallenDiver.createAttributes().build());
     }
     
     @SubscribeEvent
@@ -66,10 +68,11 @@ public class EventHandler
     	event.register(BTAEntities.DEEP_VAMPIRE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDeepVampire::checkDeepVampireSpawnRules, Operation.AND);
     	event.register(BTAEntities.RUNIC_FISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityRunicFish::checkRunicFishSpawnRules, Operation.AND);
     	event.register(BTAEntities.LATCHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityLatcher::checkLatcherSpawnRules, Operation.AND);
-    	event.register(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalHermitCrab::checkHermitCrabSpawnRules, Operation.AND);
+    	event.register(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, EntityAbyssalHermitCrab::checkHermitCrabSpawnRules, Operation.AND);
     	event.register(BTAEntities.ABYSSAL_BULBRAY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalBulbray::checkBulbraySpawnRules, Operation.AND);
     	event.register(BTAEntities.AMARUM_GHOST.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAmarumGhost::checkAmarumGhostSpawnRules, Operation.AND);
     	event.register(BTAEntities.GNASHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGnasher::checkGnasherSpawnRules, Operation.AND);
     	event.register(BTAEntities.SIAMSERPENT_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntitySiamserpentHead::checkSiamserpentSpawnRules, Operation.AND);
+    	event.register(BTAEntities.FALLEN_DIVER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, EntityFallenDiver::checkFallenDiverSpawnRules, Operation.AND);
     }
 }

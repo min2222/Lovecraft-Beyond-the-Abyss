@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "beyondtheabyss:block/blue_metal_crate"
-    }
-  }
+	"variants": {
+		"": {
+			"model": "beyondtheabyss:block/blue_metal_crate"
+		}
+	}
 }

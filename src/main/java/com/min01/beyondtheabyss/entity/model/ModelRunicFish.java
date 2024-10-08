@@ -78,7 +78,7 @@ public class ModelRunicFish extends HierarchicalModel<EntityRunicFish>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("RunicFish"), netHeadYaw, headPitch);
-		BTAClientUtil.animateWalk(entity, this, RunicFishAnimation.RUNIC_FISH_SWIM, limbSwing, limbSwingAmount, 1.0F, entity.isPanic() ? 3.5F : 2.5F);
+		BTAClientUtil.animateWalk(entity, this, RunicFishAnimation.RUNIC_FISH_SWIM, limbSwing, limbSwingAmount, entity.isPanic() ? 2.5F : 1.5F, 2.5F);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class AbyssalHermitCrabRenderer extends MobRenderer<EntityAbyssalHermitCr
 		super(p_174304_, new ModelAbyssalHermitCrab(p_174304_.bakeLayer(ModelAbyssalHermitCrab.LAYER_LOCATION)), 0.5F);
 		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/abyssal_hermit_crab_layer.png")));
 	}
-
+	
 	@Override
 	public ResourceLocation getTextureLocation(EntityAbyssalHermitCrab p_115812_) 
 	{

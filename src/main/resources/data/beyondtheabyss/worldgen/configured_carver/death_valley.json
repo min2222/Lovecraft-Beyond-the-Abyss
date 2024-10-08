@@ -19,8 +19,8 @@
 		"vertical_rotation": {
 			"type": "minecraft:uniform",
 			"value": {
-				"min_inclusive": -0.125,
-				"max_exclusive": 0.125
+				"min_inclusive": -1.125,
+				"max_exclusive": 1.125
 			}
 		},
 		"shape": {
@@ -39,7 +39,7 @@
 					"plateau": 2
 				}
 			},
-			"width_smoothness": 3,
+			"width_smoothness": 5,
 			"horizontal_radius_factor": {
 				"type": "minecraft:uniform",
 				"value": {

@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "beyondtheabyss:block/spine_bone_tip"
-    }
-  }
+	"variants": {
+		"": {
+			"model": "beyondtheabyss:block/spine_bone_tip"
+		}
+	}
 }

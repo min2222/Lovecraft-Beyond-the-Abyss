@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "beyondtheabyss:block/energy_rune_stone"
-    }
-  }
+	"variants": {
+		"": {
+			"model": "beyondtheabyss:block/energy_rune_stone"
+		}
+	}
 }

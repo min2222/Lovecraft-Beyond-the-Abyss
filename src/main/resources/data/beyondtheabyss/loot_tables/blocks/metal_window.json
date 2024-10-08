@@ -3,10 +3,16 @@
 	"pools": [
 		{
 			"rolls": 1,
+			"bonus_rolls": 0,
 			"entries": [
 				{
 					"type": "minecraft:item",
 					"name": "beyondtheabyss:metal_window"
+				}
+			],
+			"conditions": [
+				{
+					"condition": "minecraft:survives_explosion"
 				}
 			]
 		}

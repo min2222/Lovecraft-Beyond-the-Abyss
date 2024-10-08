@@ -1,19 +1,19 @@
 {
-  "variants": {
-    "facing=east": {
-      "model": "beyondtheabyss:block/bone_piles",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "beyondtheabyss:block/bone_piles"
-    },
-    "facing=south": {
-      "model": "beyondtheabyss:block/bone_piles",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "beyondtheabyss:block/bone_piles",
-      "y": 270
-    }
-  }
+	"variants": {
+		"facing=east": {
+			"model": "beyondtheabyss:block/bone_piles",
+			"y": 90
+		},
+		"facing=north": {
+			"model": "beyondtheabyss:block/bone_piles"
+		},
+		"facing=south": {
+			"model": "beyondtheabyss:block/bone_piles",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "beyondtheabyss:block/bone_piles",
+			"y": 270
+		}
+	}
 }

@@ -20,6 +20,7 @@ public class BTASounds
 	public static final RegistryObject<SoundEvent> GHIDRUTH_CHARGE_LOOP = registerSound("ghidruth_charge_loop");
 	public static final RegistryObject<SoundEvent> GHIDRUTH_BITE = registerSound("ghidruth_bite");
 	public static final RegistryObject<SoundEvent> GHIDRUTH_AWAKEN = registerSound("ghidruth_awaken");
+	public static final RegistryObject<SoundEvent> ABYSS_PORTAL_OPENING = registerSound("abyss_portal_opening");
 	
 	private static RegistryObject<SoundEvent> registerSound(String name) 
 	{

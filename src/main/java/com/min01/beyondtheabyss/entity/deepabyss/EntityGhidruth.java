@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -38,7 +39,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> STUN_TICK = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
 	
-	public static final double DEFAULT_MOVEMENT_SPEED = 1.0D;
+	public static final float DEFAULT_MOVEMENT_SPEED = 1.0F;
 	
 	public EntityGhidruth(EntityType<? extends Monster> p_33002_, Level p_33003_) 
 	{
@@ -50,17 +51,17 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 300)
+    			.add(Attributes.MAX_HEALTH, 300.0F)
     			.add(Attributes.MOVEMENT_SPEED, DEFAULT_MOVEMENT_SPEED)
-        		.add(Attributes.ATTACK_DAMAGE, 5)
-        		.add(Attributes.FOLLOW_RANGE, 100)
-        		.add(Attributes.ARMOR, 150)
-        		.add(Attributes.ARMOR_TOUGHNESS, 150)
-        		.add(Attributes.KNOCKBACK_RESISTANCE, 10);
+        		.add(Attributes.ATTACK_DAMAGE, 5.0F)
+        		.add(Attributes.FOLLOW_RANGE, 100.0F)
+        		.add(Attributes.ARMOR, 150.0F)
+        		.add(Attributes.ARMOR_TOUGHNESS, 150.0F)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F);
     }
 	
     @Override
-    public EntityPartBuilder<EntityGhidruth> createBuilder() 
+    public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
     {
     	EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this)
     	{

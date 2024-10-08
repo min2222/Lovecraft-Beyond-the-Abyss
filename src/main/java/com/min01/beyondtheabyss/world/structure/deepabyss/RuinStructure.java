@@ -32,11 +32,11 @@ public class RuinStructure extends Structure
 	{
 		return onTopOfChunkCenter(p_226571_, Heightmap.Types.OCEAN_FLOOR_WG, (p_229979_) ->
 		{
-			generatePieces(p_229979_, p_226571_);
+			//generatePieces(p_229979_, p_226571_);
 		});
 	}
 	
-	private static void generatePieces(StructurePiecesBuilder p_229981_, Structure.GenerationContext p_229982_)
+	public static void generatePieces(StructurePiecesBuilder p_229981_, Structure.GenerationContext p_229982_)
 	{
 		BlockPos blockpos = new BlockPos(p_229982_.chunkPos().getMinBlockX(), 90, p_229982_.chunkPos().getMinBlockZ());
 		Rotation rotation = Rotation.getRandom(p_229982_.random());

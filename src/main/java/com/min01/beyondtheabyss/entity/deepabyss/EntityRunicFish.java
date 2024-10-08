@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -36,12 +37,12 @@ public class EntityRunicFish extends AbstractDeepAbyssCreature
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 5)
+    			.add(Attributes.MAX_HEALTH, 5.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.8F);
     }
     
     @Override
-    public EntityPartBuilder<EntityRunicFish> createBuilder()
+    public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
     {
     	EntityPartBuilder<EntityRunicFish> partBuilder = new EntityPartBuilder<EntityRunicFish>(this)
     	{

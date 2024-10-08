@@ -1,19 +1,19 @@
 {
-  "variants": {
-    "facing=east": {
-      "model": "beyondtheabyss:block/large_skull",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "beyondtheabyss:block/large_skull"
-    },
-    "facing=south": {
-      "model": "beyondtheabyss:block/large_skull",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "beyondtheabyss:block/large_skull",
-      "y": 270
-    }
-  }
+	"variants": {
+		"facing=east": {
+			"model": "beyondtheabyss:block/large_skull",
+			"y": 90
+		},
+		"facing=north": {
+			"model": "beyondtheabyss:block/large_skull"
+		},
+		"facing=south": {
+			"model": "beyondtheabyss:block/large_skull",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "beyondtheabyss:block/large_skull",
+			"y": 270
+		}
+	}
 }

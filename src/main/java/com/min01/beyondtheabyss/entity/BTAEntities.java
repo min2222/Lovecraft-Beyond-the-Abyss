@@ -5,6 +5,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityFallenDiver;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
@@ -51,6 +52,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityGnasher>> GNASHER = registerEntity("gnasher", createBuilder(EntityGnasher::new, MobCategory.WATER_CREATURE).sized(0.875F, 0.75F));
 	public static final RegistryObject<EntityType<EntitySiamserpentHead>> SIAMSERPENT_HEAD = registerEntity("siamserpent_head", createBuilder(EntitySiamserpentHead::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
 	public static final RegistryObject<EntityType<EntitySiamserpentBone>> SIAMSERPENT_BONE = registerEntity("siamserpent_bone", createBuilder(EntitySiamserpentBone::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
+	public static final RegistryObject<EntityType<EntityFallenDiver>> FALLEN_DIVER = registerEntity("fallen_diver", createBuilder(EntityFallenDiver::new, MobCategory.WATER_CREATURE).sized(0.6F, 1.95F));
 	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{

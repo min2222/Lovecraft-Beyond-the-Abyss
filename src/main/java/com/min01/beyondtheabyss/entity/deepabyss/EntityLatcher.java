@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherFindTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherLatchingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LatcherPropelGoal;
@@ -50,15 +51,15 @@ public class EntityLatcher extends AbstractDeepAbyssMonster
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 10)
+    			.add(Attributes.MAX_HEALTH, 10.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F)
-        		.add(Attributes.ATTACK_DAMAGE, 1)
-        		.add(Attributes.FOLLOW_RANGE, 2.5)
-        		.add(Attributes.ARMOR, 1);
+        		.add(Attributes.ATTACK_DAMAGE, 1.0F)
+        		.add(Attributes.FOLLOW_RANGE, 2.5F)
+        		.add(Attributes.ARMOR, 1.0F);
     }
 
     @Override
-    public EntityPartBuilder<EntityLatcher> createBuilder()
+    public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
     {
     	EntityPartBuilder<EntityLatcher> partBuilder = new EntityPartBuilder<EntityLatcher>(this);
     	return partBuilder;
@@ -76,7 +77,7 @@ public class EntityLatcher extends AbstractDeepAbyssMonster
         this.goalSelector.addGoal(4, new LatcherPropelGoal(this));
         this.goalSelector.addGoal(4, new LatcherLatchingGoal(this));
         this.goalSelector.addGoal(4, new LatcherUnlatchingGoal(this));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0, false));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0F, false));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(4, new LatcherFindTargetGoal<Player>(this, Player.class, false, false));

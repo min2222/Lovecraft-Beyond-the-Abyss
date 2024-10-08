@@ -13,6 +13,7 @@ import com.min01.beyondtheabyss.item.armor.GhidruthDivingSetItem;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
+import com.min01.beyondtheabyss.item.deepabyss.OxygenTankItem;
 import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.item.weapon.SacrificialDaggerItem;
@@ -53,10 +54,11 @@ public class BTAItems
 	public static final RegistryObject<Item> AMARUM_GHOST_SPAWN_EGG = registerSpawnEgg("amarum_ghost_spawn_egg", () -> BTAEntities.AMARUM_GHOST.get(), 930103, 5756886);
 	public static final RegistryObject<Item> GNASHER_SPAWN_EGG = registerSpawnEgg("gnasher_spawn_egg", () -> BTAEntities.GNASHER.get(), 1318679, 3019282);
 	public static final RegistryObject<Item> SIAMSERPENT_SPAWN_EGG = registerSpawnEgg("siamserpent_spawn_egg", () -> BTAEntities.SIAMSERPENT_HEAD.get(), 7035974, 9537638);
+	public static final RegistryObject<Item> FALLEN_DIVER_SPAWN_EGG = registerSpawnEgg("fallen_diver_spawn_egg", () -> BTAEntities.FALLEN_DIVER.get(), 0, 0);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS).rarity(RARITY_DEEP_ABYSS)));
-	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new OxygenTankItem());
 	public static final RegistryObject<Item> VAMPIRE_MEMBRANE = ITEMS.register("vampire_membrane", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	public static final RegistryObject<Item> VAMPIRE_TOOTH = ITEMS.register("vampire_tooth", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	

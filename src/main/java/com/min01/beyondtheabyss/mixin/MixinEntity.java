@@ -9,9 +9,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
+import com.min01.beyondtheabyss.world.BTAWorlds;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
@@ -26,6 +28,18 @@ public abstract class MixinEntity
         {
             cir.setReturnValue(multipart.getCompoundBoundingBox(cir.getReturnValue()));
         }
+    }
+    
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void tick(CallbackInfo ci)
+    {
+		if(Entity.class.cast(this) instanceof ItemEntity item)
+		{
+			if(item.level.dimension() == BTAWorlds.DEEP_ABYSS)
+			{
+				item.setDeltaMovement(item.getDeltaMovement().subtract(0, 0.01F, 0));
+			}
+		}
     }
     
     /*@Inject(method = "collide", at = @At("RETURN"), cancellable = true)

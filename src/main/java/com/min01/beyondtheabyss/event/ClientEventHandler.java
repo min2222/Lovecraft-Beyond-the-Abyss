@@ -20,6 +20,7 @@ import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.model.ModelAmarumGhost;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
+import com.min01.beyondtheabyss.entity.model.ModelFallenDiver;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
@@ -40,6 +41,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.AbyssalBulbrayRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.AbyssalHermitCrabRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.AmarumGhostRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.FallenDiverRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
@@ -49,6 +51,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentHeadRenderer;
 import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
+import com.min01.beyondtheabyss.gui.overlay.OxygenOverlay;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
@@ -66,6 +69,9 @@ import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -126,6 +132,7 @@ public class ClientEventHandler
     public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event)
     {
     	event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "hallucination", HallucinationOverlay::draw);
+    	event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "oxygen", OxygenOverlay::draw);
     }
     
     @SubscribeEvent
@@ -193,6 +200,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.GNASHER.get(), GnasherRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SIAMSERPENT_HEAD.get(), SiamserpentHeadRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SIAMSERPENT_BONE.get(), SiamserpentBoneRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.FALLEN_DIVER.get(), FallenDiverRenderer::new);
     }
     
     @SubscribeEvent
@@ -213,6 +221,9 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelSiamserpentBlaster.LAYER_LOCATION, ModelSiamserpentBlaster::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentBone.LAYER_LOCATION, ModelSiamserpentBone::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentMiddleBone.LAYER_LOCATION, ModelSiamserpentMiddleBone::createBodyLayer);
+    	event.registerLayerDefinition(ModelFallenDiver.LAYER_LOCATION, () -> ModelFallenDiver.createBodyLayer(CubeDeformation.NONE));
+    	event.registerLayerDefinition(ModelFallenDiver.INNER_LAYER_LOCATION, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.5F), 0.0F), 64, 32));
+    	event.registerLayerDefinition(ModelFallenDiver.OUTER_LAYER_LOCATION, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.5F), 0.0F), 64, 32));
     	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);

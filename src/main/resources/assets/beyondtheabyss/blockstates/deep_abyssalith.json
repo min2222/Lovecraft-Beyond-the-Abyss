@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "beyondtheabyss:block/deep_abyssalith"
-    }
-  }
+	"variants": {
+		"": {
+			"model": "beyondtheabyss:block/deep_abyssalith"
+		}
+	}
 }

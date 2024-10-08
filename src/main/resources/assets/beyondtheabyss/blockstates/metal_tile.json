@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "beyondtheabyss:block/metal_tile"
-    }
-  }
+	"variants": {
+		"": {
+			"model": "beyondtheabyss:block/metal_tile"
+		}
+	}
 }

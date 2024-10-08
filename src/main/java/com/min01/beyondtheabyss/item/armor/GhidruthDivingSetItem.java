@@ -46,6 +46,13 @@ public class GhidruthDivingSetItem extends AbstractDivingSetItem
 	}
 	
 	@Override
+	public int getMaxOxygen() 
+	{
+		//1 hour;
+		return 72000;
+	}
+	
+	@Override
 	public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) 
 	{
 		return "beyondtheabyss:textures/models/armor/ghidruth_diver_set.png";
