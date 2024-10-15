@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.gui.overlay;
 
+import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.item.armor.AbstractDivingSetItem;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -27,15 +28,17 @@ public class OxygenOverlay
 			{
 				int oxygen = AbstractDivingSetItem.getOxygen(stack);
 				float maxOxygen = item.getMaxOxygen();
-				int progress = (int) (32.0F - oxygen / maxOxygen * 32.0F);
+				int progress = (int) (64.0F - oxygen / maxOxygen * 64.0F);
+				int progress2 = (int) (64.0F - progress);
 				int posX = 100;
-				int posY = 80;
+				int posY = 45;
 		        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		        RenderSystem.setShaderTexture(0, new ResourceLocation("textures/mob_effect/water_breathing.png"));
-				GuiComponent.blit(poseStack, screenWidth / 2 + posX, screenHeight / 2 + posY, 0, 0, 32, 32, 32, 32);
+		        RenderSystem.setShaderTexture(0, new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/oxygen_tank.png"));
+				GuiComponent.blit(poseStack, screenWidth / 2 + posX + 32, screenHeight / 2 + posY + 64, 0, 0, -32, -progress2, 32, 64);
 		        RenderSystem.setShaderColor(0.5F, 0.5F, 0.5F, 1.0F);
-				GuiComponent.blit(poseStack, screenWidth / 2 + posX, screenHeight / 2 + posY, 0, 0, 32, progress, 32, 32);
+		        RenderSystem.setShaderTexture(0, new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/anti_oxygen_tank.png"));
+				GuiComponent.blit(poseStack, screenWidth / 2 + posX, screenHeight / 2 + posY, 0, 0, 32, progress, 32, 64);
 			}
 		}
 	}

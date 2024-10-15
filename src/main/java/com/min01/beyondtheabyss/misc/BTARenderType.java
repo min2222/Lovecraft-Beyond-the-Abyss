@@ -19,10 +19,8 @@ import net.minecraft.server.packs.resources.ResourceProvider;
 public class BTARenderType extends RenderType
 {
     public static ShaderInstance illusionShader;
-    public static ShaderInstance testShader;
 
     private static final ShaderStateShard ILLUSION_SHADER = new ShaderStateShard(() -> illusionShader);
-    private static final ShaderStateShard TEST_SHADER = new ShaderStateShard(() -> testShader);
     
 	public BTARenderType(String p_173178_, VertexFormat p_173179_, Mode p_173180_, int p_173181_, boolean p_173182_, boolean p_173183_, Runnable p_173184_, Runnable p_173185_)
 	{
@@ -36,21 +34,12 @@ public class BTARenderType extends RenderType
 			return List.of(Pair.of(new ShaderInstance(resourceManager, new ResourceLocation(BeyondtheAbyss.MODID, "rendertype_illusion"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> 
 			{
 				illusionShader = shaderInstance;
-			}), Pair.of(new ShaderInstance(resourceManager, new ResourceLocation(BeyondtheAbyss.MODID, "rendertype_test"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> 
-			{
-				testShader = shaderInstance;
 			}));
 		}
 		catch (IOException e) 
 		{
 			throw new RuntimeException(e);
 		}
-    }
-    
-    public static RenderType test(ResourceLocation p_173253_)
-    {
-        RenderStateShard.TextureStateShard renderstateshard$texturestateshard = new RenderStateShard.TextureStateShard(p_173253_, false, false);
-        return create("test", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, RenderType.CompositeState.builder().setShaderState(TEST_SHADER).setTextureState(renderstateshard$texturestateshard).setTransparencyState(NO_TRANSPARENCY).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).createCompositeState(true));
     }
     
     public static RenderType illusion(ResourceLocation p_173253_)
