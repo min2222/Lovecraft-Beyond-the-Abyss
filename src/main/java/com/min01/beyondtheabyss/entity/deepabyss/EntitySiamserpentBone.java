@@ -1,8 +1,14 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.WormSegmentController;
 
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +28,7 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.OPTIONAL_UUID);
 	
 	public EntitySiamserpentBone(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -36,6 +43,22 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     			.add(Attributes.MOVEMENT_SPEED, 0.5F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
+	
+	@Override
+	protected void defineSynchedData() 
+	{
+		super.defineSynchedData();
+		this.entityData.define(VARIANT, 0);
+		this.entityData.define(INDEX, 0);
+		this.entityData.define(HEAD_UUID, Optional.empty());
+	}
+
+	@Override
+	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
+	{
+		EntityPartBuilder<EntitySiamserpentBone> partBuilder = new EntityPartBuilder<EntitySiamserpentBone>(this);
+		return partBuilder;
+	}
     
     @Override
     public void tick() 
@@ -49,16 +72,23 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     	{
     		this.discard();
     	}
+    	
+    	if(this.getHead() != null)
+    	{
+    		EntitySiamserpentHead head = this.getHead();
+    		this.hurtTime = head.hurtTime;
+    		this.deathTime = head.deathTime;
+    		if(!head.segments.contains(this) && head.segments.size() > this.getIndex())
+    		{
+    			head.segments.add(this.getIndex(), this);
+    		}
+    	}
     }
     
 	@Override
 	public boolean isAlliedTo(Entity p_20355_) 
 	{
-		if(this.getOwner() != null)
-		{
-			return p_20355_ == this.getOwner();
-		}
-		return super.isAlliedTo(p_20355_);
+		return p_20355_ == this.getOwner() || p_20355_ == this.getHead() || super.isAlliedTo(p_20355_);
 	}
     
     @Override
@@ -73,27 +103,18 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     @Override
     public boolean hurt(DamageSource p_21016_, float p_21017_) 
     {
-    	if(p_21016_ == DamageSource.IN_WALL)
+    	if(!this.isInvulnerableTo(p_21016_) && this.getHead() != null)
     	{
-    		return false;
+    		this.getHead().hurt(p_21016_, p_21017_);
     	}
-    	return super.hurt(p_21016_, p_21017_);
+    	return false;
     }
-	
-	@Override
-	protected void defineSynchedData() 
-	{
-		super.defineSynchedData();
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(INDEX, 0);
-	}
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
-	{
-		EntityPartBuilder<EntitySiamserpentBone> partBuilder = new EntityPartBuilder<EntitySiamserpentBone>(this);
-		return partBuilder;
-	}
+    
+    @Override
+    public boolean isInvulnerableTo(DamageSource p_20122_)
+    {
+    	return super.isInvulnerableTo(p_20122_) || p_20122_ == DamageSource.IN_WALL || p_20122_.isFall();
+    }
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag p_37265_) 
@@ -101,6 +122,10 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
 		super.addAdditionalSaveData(p_37265_);
 		p_37265_.putInt("Index", this.getIndex());
 		p_37265_.putInt("Variant", this.getVariant());
+		if(this.entityData.get(HEAD_UUID).isPresent())
+		{
+			p_37265_.putUUID("Head", this.entityData.get(HEAD_UUID).get());
+		}
 	}
 	
 	@Override
@@ -115,6 +140,25 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
 		{
 			this.setVariant(p_37262_.getInt("Variant"));
 		}
+		if(p_37262_.hasUUID("Head")) 
+		{
+			this.entityData.set(HEAD_UUID, Optional.of(p_37262_.getUUID("Head")));
+		}
+	}
+	
+	public void setHead(EntitySiamserpentHead p_37263_)
+	{
+		this.entityData.set(HEAD_UUID, Optional.of(p_37263_.getUUID()));
+	}
+	
+	@Nullable
+	public EntitySiamserpentHead getHead() 
+	{
+		if(this.entityData.get(HEAD_UUID).isPresent()) 
+		{
+			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(HEAD_UUID).get());
+		}
+		return null;
 	}
 	
 	public boolean shouldInvertRotation()

@@ -45,6 +45,7 @@ public class BeyondtheAbyss
 		BTABlocks.BLOCK_ENTITIES.register(bus);
 		BTASounds.SOUNDS.register(bus);
 		BTAEffects.EFFECTS.register(bus);
+		BTAEffects.POTIONS.register(bus);
 		BTAEntityDataSerializers.SERIALIZERS.register(bus);
 		BTAParticles.PARTICLES.register(bus);
 		BTAWorldCarvers.CARVERS.register(bus);

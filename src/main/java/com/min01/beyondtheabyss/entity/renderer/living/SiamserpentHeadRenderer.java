@@ -6,18 +6,24 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
 import com.min01.beyondtheabyss.entity.renderer.IModel;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHead> implements IModel<EntitySiamserpentHead>
 {
@@ -32,8 +38,9 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 	private static final ResourceLocation DORMANT_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_dormant.png");
 	private static final ResourceLocation LAYER_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_layer.png");
 	private static final ResourceLocation LAYER_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_layer.png");
+	private static final ResourceLocation LASER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_laser.png");
 	
-	public SiamserpentHeadRenderer(Context p_174008_) 
+	public SiamserpentHeadRenderer(Context p_174008_)
 	{
 		super(p_174008_);
 		this.slasherModel = new ModelSiamserpentSlasher(p_174008_.bakeLayer(ModelSiamserpentSlasher.LAYER_LOCATION));
@@ -62,7 +69,8 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 			this.slasherModel.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
 			if(!p_114485_.isDisabled() && !p_114485_.isDormant())
 			{
-				BTAClientUtil.coloredGlowingModelCopyLayerRender(this.slasherModel, this.slasherModel, LAYER_SLASHER, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
+				VertexConsumer layerConsumer = p_114489_.getBuffer(BTARenderType.eyesFix(LAYER_SLASHER));
+				this.slasherModel.renderToBuffer(p_114488_, layerConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0.3F, 0.3F, 0.3F, 1.0F);
 			}
 			break;
 		case BLASTER:
@@ -70,7 +78,21 @@ public class SiamserpentHeadRenderer extends EntityRenderer<EntitySiamserpentHea
 			this.blasterModel.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
 			if(!p_114485_.isDisabled() && !p_114485_.isDormant())
 			{
-				BTAClientUtil.coloredGlowingModelCopyLayerRender(this.blasterModel, this.blasterModel, LAYER_BLASTER, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 0.3F, 0.3F, 0.3F);
+				VertexConsumer layerConsumer = p_114489_.getBuffer(BTARenderType.eyesFix(LAYER_BLASTER));
+				this.blasterModel.renderToBuffer(p_114488_, layerConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0.3F, 0.3F, 0.3F, 1.0F);
+				
+				//TODO
+				if(p_114485_.getAnimationState() == 1)
+				{
+					p_114488_.pushPose();
+					Vec3 size = new Vec3(0.6F / 2, 0.6F / 2, p_114485_.getBeamLength());
+					AABB aabb = new AABB(size.reverse(), new Vec3(0.6F / 2, 0.6F / 2, 0.0F));
+					p_114488_.translate(0.0F, 1.0F, 0.0F);
+					p_114488_.mulPose(Vector3f.YP.rotationDegrees(f2));
+					p_114488_.mulPose(Vector3f.XP.rotationDegrees(f6));
+					BTAClientUtil.drawBox(aabb, p_114488_, p_114489_, Vec3.fromRGB24(16777215), LightTexture.FULL_BLOCK, 255, BTARenderType.eyesFix(LASER_TEXTURE));
+					p_114488_.popPose();
+				}
 			}
 			break;
 		}

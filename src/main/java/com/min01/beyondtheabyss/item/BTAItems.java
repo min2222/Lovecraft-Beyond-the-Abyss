@@ -27,6 +27,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
@@ -61,6 +62,10 @@ public class BTAItems
 	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new OxygenTankItem());
 	public static final RegistryObject<Item> VAMPIRE_MEMBRANE = ITEMS.register("vampire_membrane", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	public static final RegistryObject<Item> VAMPIRE_TOOTH = ITEMS.register("vampire_tooth", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> GNASHER_EYE = ITEMS.register("gnasher_eye", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> GNASHER_TOOTH = ITEMS.register("gnasher_tooth", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> GHOUL_BLOOM_SEED_POD = ITEMS.register("ghoul_bloom_seed_pod", () -> new ItemNameBlockItem(BTABlocks.GHOUL_BLOOM.get(), new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> FIBER = ITEMS.register("fiber", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	
 	//armors
 	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new DivingSetItem(EquipmentSlot.HEAD));
@@ -83,11 +88,13 @@ public class BTAItems
 	public static final RegistryObject<Item> HEART_OF_FORNEUS = ITEMS.register("heart_of_forneus", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MISC).rarity(RARITY_DEEP_ABYSS)));
 	
 	//foods
-	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build(), true));
+	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.5F).build(), true));
 	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = ITEMS.register("cooked_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(9).saturationMod(1.0F).build(), false));
 	public static final RegistryObject<Item> RUNIC_FISH = ITEMS.register("runic_fish", () -> new RunicFishItem(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).alwaysEat().fast().build()));
-	public static final RegistryObject<Item> RAW_LATCHER_TAIL = ITEMS.register("raw_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).fast().build()));
-	public static final RegistryObject<Item> COOKED_LATCHER_TAIL = ITEMS.register("cooked_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).fast().build()));
+	public static final RegistryObject<Item> RAW_LATCHER_TAIL = ITEMS.register("raw_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).fast().build()));
+	public static final RegistryObject<Item> COOKED_LATCHER_TAIL = ITEMS.register("cooked_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).fast().build()));
+	public static final RegistryObject<Item> RAW_GNASHER = ITEMS.register("raw_gnasher", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build()));
+	public static final RegistryObject<Item> COOKED_GNASHER = ITEMS.register("cooked_gnasher", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build()));
 	
 	//blocks
 	public static final RegistryObject<Item> RIFTWELLING_ALTAR = registerCustomRendererBlockItem("riftwelling_altar", () -> BTABlocks.RIFTWELLING_ALTAR.get(), () -> new RiftwellingAltarBlockEntity(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), new Item.Properties().rarity(RARITY_DEEP_ABYSS));
@@ -145,6 +152,9 @@ public class BTAItems
 	
 	//tools
 	public static final RegistryObject<Item> FLASHLIGHT = ITEMS.register("flashlight", () -> new FlashlightItem());
+	
+	//accessories
+	public static final RegistryObject<Item> HEMATHORN_AMULET = ITEMS.register("hemathorn_amulet", () -> new Item(new Item.Properties().stacksTo(1).tab(DeepAbyssTabs.ABYSS_ACCESSORIES)));
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{

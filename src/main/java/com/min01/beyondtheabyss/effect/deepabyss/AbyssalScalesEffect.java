@@ -2,13 +2,14 @@ package com.min01.beyondtheabyss.effect.deepabyss;
 
 import java.util.UUID;
 
-import net.minecraft.world.effect.MobEffect;
+import com.min01.beyondtheabyss.effect.BasicBTAEffect;
+
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
-public class AbyssalScalesEffect extends MobEffect
+public class AbyssalScalesEffect extends BasicBTAEffect
 {
 	protected final double multiplier;
 	   
@@ -18,12 +19,6 @@ public class AbyssalScalesEffect extends MobEffect
 		this.addAttributeModifier(Attributes.ARMOR, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		this.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		this.multiplier = multiplier;
-	}
-	
-	@Override
-	public boolean isDurationEffectTick(int duration, int amplifier) 
-	{
-		return duration > 0;
 	}
 	
 	@Override

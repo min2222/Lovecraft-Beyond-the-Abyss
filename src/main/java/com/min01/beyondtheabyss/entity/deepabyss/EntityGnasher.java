@@ -311,5 +311,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
 		this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(15);
 		this.setLeader(true);
+		this.partBuilder.rebuildHitbox();
     }
 }

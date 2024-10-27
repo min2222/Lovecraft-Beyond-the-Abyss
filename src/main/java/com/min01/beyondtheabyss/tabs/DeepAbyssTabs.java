@@ -78,4 +78,13 @@ public class DeepAbyssTabs
 			return new ItemStack(BTAItems.FLASHLIGHT.get());
 		}
 	};
+	
+	public static final CreativeModeTab ABYSS_ACCESSORIES = new CreativeModeTab("abyss_accessories") 
+	{
+		@Override
+		public ItemStack makeIcon()
+		{
+			return new ItemStack(BTAItems.HEMATHORN_AMULET.get());
+		}
+	};
 }

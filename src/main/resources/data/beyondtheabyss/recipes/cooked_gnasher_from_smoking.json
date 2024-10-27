@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smoking",
+	"ingredient": {
+		"item": "beyondtheabyss:raw_gnasher"
+	},
+	"result": "beyondtheabyss:cooked_gnasher",
+	"experience": 0.35,
+	"cookingtime": 40
+}

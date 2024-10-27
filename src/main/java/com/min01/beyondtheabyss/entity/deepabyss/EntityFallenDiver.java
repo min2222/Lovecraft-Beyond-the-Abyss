@@ -1,6 +1,8 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FallenDiverMeleeAttackGoal;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
@@ -24,7 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityFallenDiver extends AbstractDeepAbyssMonster2
+public class EntityFallenDiver extends AbstractDeepAbyssMonster
 {
 	public EntityFallenDiver(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -38,6 +40,13 @@ public class EntityFallenDiver extends AbstractDeepAbyssMonster2
     			.add(Attributes.MOVEMENT_SPEED, 0.5F)
         		.add(Attributes.ATTACK_DAMAGE, 3.5F)
         		.add(Attributes.FOLLOW_RANGE, 15.0F);
+    }
+    
+    @Override
+    public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+    {
+    	EntityPartBuilder<EntityFallenDiver> partBuilder = new EntityPartBuilder<EntityFallenDiver>(this);
+    	return partBuilder;
     }
     
     @Override
@@ -71,7 +80,7 @@ public class EntityFallenDiver extends AbstractDeepAbyssMonster2
 		return this.isInWater() ? SoundEvents.DROWNED_DEATH_WATER : SoundEvents.DROWNED_DEATH;
 	}
 	
-	public static boolean checkFallenDiverSpawnRules(EntityType<? extends AbstractDeepAbyssMonster2> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkFallenDiverSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pRandom.nextInt(40) == 0 && pPos.getY() >= -200 && pPos.getY() <= -160 && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

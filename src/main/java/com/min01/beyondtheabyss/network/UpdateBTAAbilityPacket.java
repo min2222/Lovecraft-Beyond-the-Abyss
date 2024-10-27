@@ -37,7 +37,7 @@ public class UpdateBTAAbilityPacket
 	{
 		this.entityId = buf.readInt();
 		this.ability = BTAAbility.read(buf);
-		this.type = PacketType.values()[buf.readInt()];
+		this.type = buf.readEnum(PacketType.class);
 		this.tickCount = buf.readInt();
 	}
 
@@ -45,7 +45,7 @@ public class UpdateBTAAbilityPacket
 	{
 		buf.writeInt(this.entityId);
 		this.ability.write(buf);
-		buf.writeInt(this.type.ordinal());
+		buf.writeEnum(this.type);
 		buf.writeInt(this.tickCount);
 	}
 	
@@ -56,7 +56,7 @@ public class UpdateBTAAbilityPacket
 			ctx.get().enqueueWork(() ->
 			{
 				Entity entity = BTAClientUtil.MC.level.getEntity(message.entityId);
-				if(entity instanceof Player player)
+				if(entity instanceof Player)
 				{
 					entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(cap -> 
 					{

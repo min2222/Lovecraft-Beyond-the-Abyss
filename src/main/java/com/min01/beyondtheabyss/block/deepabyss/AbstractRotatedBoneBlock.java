@@ -32,7 +32,7 @@ public abstract class AbstractRotatedBoneBlock extends HorizontalDirectionalBloc
     	Direction direction = p_49820_.getHorizontalDirection().getOpposite();
     	LevelAccessor level = p_49820_.getLevel();
     	BlockPos blockPos = p_49820_.getClickedPos();
-		return this.defaultBlockState().setValue(FACING, direction).setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockPos).getType() == Fluids.WATER));
+		return this.defaultBlockState().setValue(FACING, direction).setValue(WATERLOGGED, level.getFluidState(blockPos).getType() == Fluids.WATER);
 	}
 
 	@Override

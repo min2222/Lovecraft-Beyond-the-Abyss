@@ -69,9 +69,6 @@ import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -221,9 +218,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelSiamserpentBlaster.LAYER_LOCATION, ModelSiamserpentBlaster::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentBone.LAYER_LOCATION, ModelSiamserpentBone::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentMiddleBone.LAYER_LOCATION, ModelSiamserpentMiddleBone::createBodyLayer);
-    	event.registerLayerDefinition(ModelFallenDiver.LAYER_LOCATION, () -> ModelFallenDiver.createBodyLayer(CubeDeformation.NONE));
-    	event.registerLayerDefinition(ModelFallenDiver.INNER_LAYER_LOCATION, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.5F), 0.0F), 64, 32));
-    	event.registerLayerDefinition(ModelFallenDiver.OUTER_LAYER_LOCATION, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.5F), 0.0F), 64, 32));
+    	event.registerLayerDefinition(ModelFallenDiver.LAYER_LOCATION, ModelFallenDiver::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);

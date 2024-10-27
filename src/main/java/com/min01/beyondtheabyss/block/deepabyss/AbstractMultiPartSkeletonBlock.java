@@ -84,7 +84,7 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 		LOWER("lower");
 
 		private final String name;
-		   
+		
 		private SkeletonPart(String p_61339_)
 		{
 			this.name = p_61339_;

@@ -25,6 +25,7 @@ public class BTATags
 	public static class BTAItems
 	{
 		public static final TagKey<Item> DIVING_SET = create("diving_set");
+		public static final TagKey<Item> TEETH = create("teeth");
 		
 		private static TagKey<Item> create(String p_203849_) 
 		{
