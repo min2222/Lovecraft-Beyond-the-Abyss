@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepVampireBiteGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -34,14 +35,14 @@ public class EntityDeepVampire extends AbstractDeepAbyssMonster
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 40)
+    			.add(Attributes.MAX_HEALTH, 40.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.6F)
-        		.add(Attributes.ATTACK_DAMAGE, 5)
-        		.add(Attributes.FOLLOW_RANGE, 25);
+        		.add(Attributes.ATTACK_DAMAGE, 5.0F)
+        		.add(Attributes.FOLLOW_RANGE, 25.0F);
     }
 
     @Override
-    public EntityPartBuilder<EntityDeepVampire> createBuilder()
+    public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
     {
     	EntityPartBuilder<EntityDeepVampire> partBuilder = new EntityPartBuilder<EntityDeepVampire>(this)
     	{

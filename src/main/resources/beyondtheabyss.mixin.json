@@ -10,7 +10,9 @@
 		"MixinNoiseBasedAquifer",
 		"multipart.MixinArrayVoxelShape",
 		"multipart.MixinVoxelShape",
-		"multipart.MixinShapes"
+		"multipart.MixinShapes",
+		"multipart.MixinProjectile",
+		"multipart.ProjectileInvoker"
 	],
 	"client": [
 		"MixinLevelRenderer",

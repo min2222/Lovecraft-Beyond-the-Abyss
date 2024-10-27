@@ -3,9 +3,9 @@
   "placement": [
     {
       "type": "minecraft:noise_threshold_count",
-      "above_noise": 10,
-      "below_noise": 5,
-      "noise_level": -0.8
+      "above_noise": 12,
+      "below_noise": 7,
+      "noise_level": -0.9
     },
     {
       "type": "minecraft:in_square"

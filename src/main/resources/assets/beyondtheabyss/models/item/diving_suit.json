@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "beyondtheabyss:item/diving_suit"
-  }
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "beyondtheabyss:item/diving_suit"
+	}
 }

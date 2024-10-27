@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
@@ -28,14 +29,14 @@ public class EntityAbyssalHermitCrab extends AbstractDeepAbyssCreature
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 30)
-    			.add(Attributes.ATTACK_DAMAGE, 5)
-    			.add(Attributes.KNOCKBACK_RESISTANCE, 1)
+    			.add(Attributes.MAX_HEALTH, 30.0F)
+    			.add(Attributes.ATTACK_DAMAGE, 5.0F)
+    			.add(Attributes.KNOCKBACK_RESISTANCE, 1.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
 	@Override
-	public EntityPartBuilder<EntityAbyssalHermitCrab> createBuilder() 
+	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder() 
 	{
     	EntityPartBuilder<EntityAbyssalHermitCrab> partBuilder = new EntityPartBuilder<EntityAbyssalHermitCrab>(this);
 		return partBuilder;
@@ -57,7 +58,7 @@ public class EntityAbyssalHermitCrab extends AbstractDeepAbyssCreature
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.15D));
+        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.35F));
     }
 	
 	@Override

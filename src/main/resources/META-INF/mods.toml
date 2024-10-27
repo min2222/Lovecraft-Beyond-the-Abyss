@@ -16,20 +16,18 @@ license="GPLv3 License"
 [[mods]] #mandatory
 # The modid of the mod
 modId="beyondtheabyss" #mandatory
-# The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-# ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
-# see the associated build.gradle script for how to populate this completely automatically during a build
+# The version number of the mod
 version="1.0.0" #mandatory
- # A display name for the mod
+# A display name for the mod
 displayName="Lovecraft : Beyond the Abyss" #mandatory
-# A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
-#updateJSONURL="" #optional
+# A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="" #optional
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="beyondtheabyss.png" #optional
+#logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
-credits="" #optional
+#credits="" #optional
 # A text field displayed in the mod UI
 authors="min01" #optional
 # Display Test controls the display for your mod in the server connection screen
@@ -41,9 +39,7 @@ authors="min01" #optional
 #displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)
 
 # The description text for the mod (multi line!) (#mandatory)
-description='''
-a lovecraftian cosmic horror, cthulhu mythos, mysterious creatures, and abyssal horror themed mod
-'''
+description='''a lovecraftian cosmic horror, cthulhu mythos, mysterious creatures, and abyssal horror themed mod'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.beyondtheabyss]] #optional
     # the modid of the dependency
@@ -52,9 +48,11 @@ a lovecraftian cosmic horror, cthulhu mythos, mysterious creatures, and abyssal 
     mandatory=true #mandatory
     # The version range of the dependency
     versionRange="[47,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the dependency is not mandatory
+    # BEFORE - This mod is loaded BEFORE the dependency
+    # AFTER - This mod is loaded AFTER the dependency
     ordering="NONE"
-    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    # Side this dependency is applied on - BOTH, CLIENT, or SERVER
     side="BOTH"
 [[dependencies.beyondtheabyss]]
     modId="curios"
@@ -72,7 +70,13 @@ a lovecraftian cosmic horror, cthulhu mythos, mysterious creatures, and abyssal 
 [[dependencies.beyondtheabyss]]
     modId="minecraft"
     mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.20.1,1.21)"
     ordering="NONE"
     side="BOTH"
+
+# Features are specific properties of the game environment, that you may want to declare you require. This example declares
+# that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
+# stop your mod loading on the server for example.
+#[features.${mod_id}]
+#openGLVersion="[3.2,)"

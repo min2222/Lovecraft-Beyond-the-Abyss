@@ -1,0 +1,12 @@
+{
+  "feature": "beyondtheabyss:bone_spikes",
+  "placement": [
+    {
+      "type": "minecraft:carving_mask",
+      "step": "air"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

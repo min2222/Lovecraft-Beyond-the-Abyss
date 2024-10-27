@@ -119,7 +119,7 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
     	{
     		this.moveRelative(this.getSpeed(), p_27490_);
     		this.move(MoverType.SELF, this.getDeltaMovement());
-    		this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+    		this.setDeltaMovement(this.getDeltaMovement().scale(0.9F));
     	}
     	else
     	{
@@ -131,7 +131,7 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
     protected void registerGoals() 
     {
     	super.registerGoals();
-    	if(this.isSwimable() && this.canRandomSwim())
+    	if(this.isSwimable())
     	{
             this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20)
             {

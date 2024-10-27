@@ -29,6 +29,18 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
 {
+	public static Vec2 lookAt(Vec3 startPos, Vec3 pos)
+	{
+		Vec3 vec3 = startPos;
+		double d0 = pos.x - vec3.x;
+		double d1 = pos.y - vec3.y;
+		double d2 = pos.z - vec3.z;
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		float xRot = Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI))));
+		float yRot = Mth.wrapDegrees((float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F);
+	    return new Vec2(xRot, yRot);
+	}
+	
 	public static Vec3 getLookPos(Vec2 rotation, Vec3 position, double left, double up, double forwards) 
 	{
 		Vec2 vec2 = rotation;

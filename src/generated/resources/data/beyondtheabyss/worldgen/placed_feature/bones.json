@@ -2,10 +2,10 @@
   "feature": "beyondtheabyss:bones",
   "placement": [
     {
-      "type": "minecraft:noise_based_count",
-      "noise_factor": 200.0,
-      "noise_offset": 0.1,
-      "noise_to_count_ratio": 10
+      "type": "minecraft:noise_threshold_count",
+      "above_noise": 10,
+      "below_noise": 5,
+      "noise_level": -0.8
     },
     {
       "type": "minecraft:in_square"

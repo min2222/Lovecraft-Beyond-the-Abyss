@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "beyondtheabyss:block/whalefall"
-    }
-  }
+	"variants": {
+		"": {
+			"model": "beyondtheabyss:block/whalefall"
+		}
+	}
 }

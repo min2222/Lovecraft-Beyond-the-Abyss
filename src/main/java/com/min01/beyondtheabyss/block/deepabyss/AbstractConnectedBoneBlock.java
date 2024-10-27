@@ -41,7 +41,7 @@ public abstract class AbstractConnectedBoneBlock extends RodBlock implements Sim
     	BlockState below = level.getBlockState(blockPos.relative(direction, -1));
     	Boolean isMiddle = Boolean.valueOf(above.is(BTABlocks.SMALL_BONE.get()) && below.is(BTABlocks.SMALL_BONE.get()));
     	Boolean isSolo = Boolean.valueOf(!(above.is(BTABlocks.SMALL_BONE.get())) && !(below.is(BTABlocks.SMALL_BONE.get())));
-    	return this.getFacingStateForPlacement(p_152019_).setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockPos).getType() == Fluids.WATER)).setValue(MIDDLE, isMiddle).setValue(SOLO, isSolo);
+    	return this.getFacingStateForPlacement(p_152019_).setValue(WATERLOGGED, level.getFluidState(blockPos).getType() == Fluids.WATER).setValue(MIDDLE, isMiddle).setValue(SOLO, isSolo);
     }
     
     public BlockState getFacingStateForPlacement(BlockPlaceContext p_53087_)

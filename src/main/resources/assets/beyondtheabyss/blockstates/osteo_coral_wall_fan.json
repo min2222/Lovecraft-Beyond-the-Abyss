@@ -1,19 +1,19 @@
 {
-  "variants": {
-    "facing=east": {
-      "model": "beyondtheabyss:block/osteo_coral_wall_fan",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "beyondtheabyss:block/osteo_coral_wall_fan"
-    },
-    "facing=south": {
-      "model": "beyondtheabyss:block/osteo_coral_wall_fan",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "beyondtheabyss:block/osteo_coral_wall_fan",
-      "y": 270
-    }
-  }
+	"variants": {
+		"facing=east": {
+			"model": "beyondtheabyss:block/osteo_coral_wall_fan",
+			"y": 90
+		},
+		"facing=north": {
+			"model": "beyondtheabyss:block/osteo_coral_wall_fan"
+		},
+		"facing=south": {
+			"model": "beyondtheabyss:block/osteo_coral_wall_fan",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "beyondtheabyss:block/osteo_coral_wall_fan",
+			"y": 270
+		}
+	}
 }

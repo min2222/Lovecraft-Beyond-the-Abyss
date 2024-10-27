@@ -5,17 +5,20 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
 import com.min01.beyondtheabyss.entity.renderer.IModel;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -60,13 +63,17 @@ public class GnasherRenderer extends EntityRenderer<EntityGnasher> implements IM
 		{
 			this.leaderModel.setupAnim(p_114485_, f5, f8, f7, f2, f6);
 			this.leaderModel.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-			BTAClientUtil.coloredGlowingModelCopyLayerRender(this.leaderModel, this.leaderModel, LAYER_TEXTURE_LEADER, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
+			
+			VertexConsumer layerConsumer = p_114489_.getBuffer(BTARenderType.eyesFix(LAYER_TEXTURE_LEADER));
+			this.leaderModel.renderToBuffer(p_114488_, layerConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		}
 		else
 		{
 			this.model.setupAnim(p_114485_, f5, f8, f7, f2, f6);
 			this.model.renderToBuffer(p_114488_, consumer, p_114490_, LivingEntityRenderer.getOverlayCoords(p_114485_, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-			BTAClientUtil.coloredGlowingModelCopyLayerRender(this.model, this.model, LAYER_TEXTURE, p_114488_, p_114489_, p_114490_, p_114485_, f5, f8, f7, f2, f6, p_114487_, 1.0F, 1.0F, 1.0F);
+			
+			VertexConsumer layerConsumer = p_114489_.getBuffer(BTARenderType.eyesFix(LAYER_TEXTURE));
+			this.model.renderToBuffer(p_114488_, layerConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		}
 		p_114488_.popPose();
 	}

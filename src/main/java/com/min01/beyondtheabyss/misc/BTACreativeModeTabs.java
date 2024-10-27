@@ -42,6 +42,10 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.OXYGEN_TANK.get());
 				output.accept(BTAItems.VAMPIRE_MEMBRANE.get());
 				output.accept(BTAItems.VAMPIRE_TOOTH.get());
+				output.accept(BTAItems.GNASHER_EYE.get());
+				output.accept(BTAItems.GNASHER_TOOTH.get());
+				output.accept(BTAItems.GHOUL_BLOOM_SEED_POD.get());
+				output.accept(BTAItems.FIBER.get());
     		}).build());
     
     public static final RegistryObject<CreativeModeTab> ABYSS_ARMORS = CREATIVE_MODE_TAB.register("abyss_armors", () -> CreativeModeTab.builder()
@@ -111,5 +115,13 @@ public class BTACreativeModeTabs
     		.displayItems((enabledFeatures, output) -> 
     		{
 				output.accept(BTAItems.FLASHLIGHT.get());
+    		}).build());
+    
+    public static final RegistryObject<CreativeModeTab> ABYSS_ACCESSORIES = CREATIVE_MODE_TAB.register("abyss_accessories", () -> CreativeModeTab.builder()
+    		.title(Component.translatable("itemGroup.abyss_accessories"))
+    		.icon(() -> new ItemStack(BTAItems.HEMATHORN_AMULET.get()))
+    		.displayItems((enabledFeatures, output) -> 
+    		{
+				output.accept(BTAItems.HEMATHORN_AMULET.get());
     		}).build());
 }

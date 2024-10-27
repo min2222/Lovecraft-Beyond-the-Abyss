@@ -66,18 +66,15 @@ public class KinematicChain
 				segment.setRot(this.lookAt(pos, parent.getPos()));
 				if(segment != this.segments[0])
 				{
-					segment.setPos(this.getLookPos(this.lookAt(parent.getPos(), pos), parent.getPos(), 0, 0, 1.0D));
+					segment.setPos(this.getLookPos(this.lookAt(parent.getPos(), pos), parent.getPos(), 0, 0, 1.0F));
 				}
 				
 				parent.setRot(this.lookAt(parent.getPos(), pos));
-				parent.setPos(this.getLookPos(this.lookAt(pos, parent.getPos()), pos, 0, 0, 1.0D));
-			}
-			
-			if(segment.getName() == "tip")
-			{
-				this.followTarget();
+				parent.setPos(this.getLookPos(this.lookAt(pos, parent.getPos()), pos, 0, 0, 1.0F));
 			}
 		}
+
+		this.followTarget();
 	}
 	
 	public void followTarget()
@@ -85,9 +82,9 @@ public class KinematicChain
 		ChainSegment tip = this.segments[this.segments.length - 1];
 		if(this.target != null)
 		{
-			Vec3 pos = this.target.position().add(0, this.entity.getEyeHeight(), 0);
+			Vec3 pos = this.target.getEyePosition();
 			tip.setRot(this.lookAt(tip.getPos(), pos));
-			tip.setPos(this.getLookPos(this.lookAt(pos, tip.getPos()), pos, 0, 0, 0.1D));
+			tip.setPos(this.getLookPos(this.lookAt(pos, tip.getPos()), pos, 0, 0, 0.1F));
 		}
 	}
 	

@@ -23,12 +23,6 @@
 		"underground_water_creature": [],
 		"water_ambient": [
 			{
-				"type": "beyondtheabyss:amarum_ghost",
-				"weight": 1,
-				"minCount": 1,
-				"maxCount": 1
-			},
-			{
 				"type": "beyondtheabyss:gnasher",
 				"weight": 1,
 				"minCount": 1,
@@ -36,6 +30,12 @@
 			},
 			{
 				"type": "beyondtheabyss:siamserpent_head",
+				"weight": 1,
+				"minCount": 1,
+				"maxCount": 1
+			},
+			{
+				"type": "beyondtheabyss:fallen_diver",
 				"weight": 1,
 				"minCount": 1,
 				"maxCount": 1
@@ -49,7 +49,11 @@
 	},
 	"features": [
 		[
-			"beyondtheabyss:spines"
+			"beyondtheabyss:spines",
+			"beyondtheabyss:bones",
+			"beyondtheabyss:bone_spikes",
+			"beyondtheabyss:coral_trees",
+			"beyondtheabyss:fossils"
 		],
 		[],
 		[],

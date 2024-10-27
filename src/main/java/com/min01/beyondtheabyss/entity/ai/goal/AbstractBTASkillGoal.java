@@ -92,7 +92,6 @@ public abstract class AbstractBTASkillGoal<T extends Mob & IAnimatable> extends 
     	
 		if(this.getMob().canMove() && this.getMob().getAnimationTick() == this.getMob().getPrevAnimationTick() - this.getMob().getMoveStopDelay())
 		{
-			this.getMob().setCanMove(false);
 			this.perfomSkillAfterMove();
 		}
     }

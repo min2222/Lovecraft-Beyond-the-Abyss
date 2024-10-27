@@ -1,10 +1,8 @@
 {
-	"targets":
-	[
+	"targets": [
 		"swap"
 	],
-	"passes":
-	[
+	"passes": [
 		{
 			"name": "beyondtheabyss:blur",
 			"intarget": "minecraft:main",

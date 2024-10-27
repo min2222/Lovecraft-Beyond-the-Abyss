@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
@@ -14,6 +16,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -44,9 +47,9 @@ public class EntityAmarumGhost extends AbstractDeepAbyssMonster
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 15)
+    			.add(Attributes.MAX_HEALTH, 15.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.3F)
-        		.add(Attributes.FOLLOW_RANGE, 10);
+        		.add(Attributes.FOLLOW_RANGE, 10.0F);
     }
     
     @Override
@@ -57,7 +60,7 @@ public class EntityAmarumGhost extends AbstractDeepAbyssMonster
     }
     
 	@Override
-	public EntityPartBuilder<EntityAmarumGhost> createBuilder() 
+	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
 	{
     	EntityPartBuilder<EntityAmarumGhost> partBuilder = new EntityPartBuilder<EntityAmarumGhost>(this);
 		return partBuilder;
@@ -175,6 +178,7 @@ public class EntityAmarumGhost extends AbstractDeepAbyssMonster
         areaeffectcloud.setRadius(3.0F);
         areaeffectcloud.setDuration(60);
         areaeffectcloud.setRadiusPerTick(0.05F);
+        areaeffectcloud.addEffect(new MobEffectInstance(BTAEffects.LUNGSPORE.get(), 100, 0));
         this.level.addFreshEntity(areaeffectcloud);
     }
     
@@ -201,7 +205,7 @@ public class EntityAmarumGhost extends AbstractDeepAbyssMonster
 
 	public static boolean checkAmarumGhostSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(550) == 0 && pPos.getY() >= -180 && pPos.getY() <= -100 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pRandom.nextInt(550) == 0 && pPos.getY() >= -180 && pPos.getY() <= -160 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 
 	@Override

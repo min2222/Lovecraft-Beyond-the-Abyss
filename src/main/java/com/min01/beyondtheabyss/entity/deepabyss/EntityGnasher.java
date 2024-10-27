@@ -5,6 +5,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepAbyssFollowFlockLeaderGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
@@ -52,14 +54,14 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 15)
+    			.add(Attributes.MAX_HEALTH, 15.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.8F)
-        		.add(Attributes.ATTACK_DAMAGE, 2.5)
-        		.add(Attributes.FOLLOW_RANGE, 10);
+        		.add(Attributes.ATTACK_DAMAGE, 2.5F)
+        		.add(Attributes.FOLLOW_RANGE, 10.0F);
     }
 
 	@Override
-	public EntityPartBuilder<EntityGnasher> createBuilder() 
+	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
 	{
     	EntityPartBuilder<EntityGnasher> partBuilder = new EntityPartBuilder<EntityGnasher>(this)
     	{
@@ -270,12 +272,12 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 	@Override
 	public int getMaxSpawnClusterSize() 
 	{
-		return 2;
+		return 1;
 	}
 	
 	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(350) == 0 && pPos.getY() >= -180 && pPos.getY() <= -100 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pRandom.nextInt(350) == 0 && pPos.getY() >= -180 && pPos.getY() <= -160 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
 	@SuppressWarnings("deprecation")
@@ -283,19 +285,33 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, @Nullable SpawnGroupData p_21437_, @Nullable CompoundTag p_21438_) 
 	{
-		if(Math.random() <= 0.1F) 
+		if(p_21436_ == MobSpawnType.NATURAL)
 		{
-			this.setAsLeader();
+			this.spawnAsSwarm();
 		}
 
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 	
+	public void spawnAsSwarm()
+	{
+		this.setAsLeader();
+		for(int i = 0; i <= 5; i++)
+		{
+			EntityGnasher gnasher = new EntityGnasher(BTAEntities.GNASHER.get(), this.level);
+			gnasher.setPos(this.position());
+			gnasher.startFollowing(this);
+			this.level.addFreshEntity(gnasher);
+		}
+	}
+	
     public void setAsLeader()
     {
+    	this.setHealth(30);
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
 		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
 		this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(15);
 		this.setLeader(true);
+		this.partBuilder.rebuildHitbox();
     }
 }

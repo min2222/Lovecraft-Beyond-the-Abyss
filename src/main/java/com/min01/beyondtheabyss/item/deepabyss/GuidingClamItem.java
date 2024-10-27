@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.sound.BTASounds;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BiomeTags;
@@ -58,6 +59,7 @@ public class GuidingClamItem extends Item
         	if(entity.onGround() && entity.tickCount % 20 == 0)
         	{
             	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 20, 0.05F, 10, 15);
+            	entity.playSound(BTASounds.ABYSS_PORTAL_OPENING.get(), 100.0F, 1.0F);
             	entity.discard();
             	if(!entity.level.isClientSide)
             	{

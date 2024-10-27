@@ -51,11 +51,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	public EntityPartBuilder(T entity)
 	{
 		this.entity = entity;
-		if(this.entity.level.isClientSide)
-		{
-			//this.hitbox = this.buildHitBox();
-			//BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts, this.partMap));
-		}
+		this.rebuildHitbox();
 	}
 	
 	public void tick(float partialTick)
@@ -71,16 +67,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         root.setOffY(posY + renderOffset.y);
         root.setOffZ(posZ + renderOffset.z);
         
-		if(this.entity.level.isClientSide)
-		{
-			if(!this.rebuild)
-			{
-				this.hitbox = this.buildHitBox();
-				this.rebuild = true;
-			}
-			BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts, this.partMap));
-		}
-
 		this.partTick(partialTick);
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
@@ -361,6 +347,15 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
 
         return false;
+    }
+    
+    public void rebuildHitbox()
+    {
+		if(this.entity.level.isClientSide)
+		{
+			this.hitbox = this.buildHitBox();
+			BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts, this.partMap));
+		}
     }
 	
 	public float getRenderScale()

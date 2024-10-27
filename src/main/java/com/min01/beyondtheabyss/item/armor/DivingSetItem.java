@@ -47,6 +47,13 @@ public class DivingSetItem extends AbstractDivingSetItem
 	}
 	
 	@Override
+	public int getMaxOxygen() 
+	{
+		//10 minutes;
+		return 12000;
+	}
+	
+	@Override
 	public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) 
 	{
 		return "beyondtheabyss:textures/models/armor/diver_set.png";

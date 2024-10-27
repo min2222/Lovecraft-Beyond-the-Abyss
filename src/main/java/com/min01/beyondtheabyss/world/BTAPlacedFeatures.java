@@ -10,19 +10,21 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.GenerationStep.Carving;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.CarvingMaskPlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
 import net.minecraft.world.level.levelgen.placement.NoiseThresholdCountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class BTAPlacedFeatures
 {
-	//public static final ResourceKey<PlacedFeature> CORAL_TREE = register("coral_tree");
-	public static final ResourceKey<PlacedFeature> BONES = register("bones");
-	public static final ResourceKey<PlacedFeature> ABYSS_CORALS = register("abyss_corals");
 	public static final ResourceKey<PlacedFeature> SPINES = register("spines");
+	public static final ResourceKey<PlacedFeature> BONES = register("bones");
+	public static final ResourceKey<PlacedFeature> BONE_SPIKES = register("bone_spikes");
+	public static final ResourceKey<PlacedFeature> CORAL_TREES = register("coral_trees");
+	public static final ResourceKey<PlacedFeature> FOSSILS = register("fossils");
 	
 	private static ResourceKey<PlacedFeature> register(String p_209839_) 
 	{
@@ -32,9 +34,10 @@ public class BTAPlacedFeatures
 	public static void bootstrap(BootstapContext<PlacedFeature> context) 
 	{
 		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
-		//context.register(CORAL_TREE, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.CORAL_TREE), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
-		context.register(BONES, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.BONES), List.copyOf(List.of(NoiseBasedCountPlacement.of(10, 200.0D, 0.1D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
-		context.register(ABYSS_CORALS, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.ABYSS_CORALS), List.copyOf(List.of(NoiseBasedCountPlacement.of(20, 400.0D, 0.0D), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
-		context.register(SPINES, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.SPINES), List.copyOf(List.of(NoiseThresholdCountPlacement.of(-0.8D, 5, 10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+		context.register(SPINES, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.SPINES), List.copyOf(List.of(NoiseThresholdCountPlacement.of(-0.9D, 7, 12), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+		context.register(BONES, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.BONES), List.copyOf(List.of(NoiseThresholdCountPlacement.of(-0.8D, 5, 10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+		context.register(BONE_SPIKES, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.BONE_SPIKES), List.copyOf(List.of(CarvingMaskPlacement.forStep(Carving.AIR), BiomeFilter.biome()))));
+		context.register(CORAL_TREES, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.CORAL_TREES), List.copyOf(List.of(NoiseThresholdCountPlacement.of(-0.7D, 3, 8), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
+		context.register(FOSSILS, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.FOSSILS), List.copyOf(List.of(NoiseThresholdCountPlacement.of(-0.2D, 1, 5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome()))));
 	}
 }

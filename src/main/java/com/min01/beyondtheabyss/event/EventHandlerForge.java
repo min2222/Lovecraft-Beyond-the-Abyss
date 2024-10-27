@@ -15,12 +15,13 @@ import com.min01.beyondtheabyss.world.BTAWorlds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Mirror;
@@ -31,9 +32,9 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,24 +44,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, bus = Bus.FORGE)
 public class EventHandlerForge 
 {
-	@SubscribeEvent
-	public static void onLevelTick(LevelTickEvent event)
-	{
-		if(event.level instanceof ServerLevel level)
-		{
-			level.getAllEntities().forEach(t -> 
-			{
-				if(t instanceof ItemEntity item)
-				{
-					if(item.level.dimension() == BTAWorlds.DEEP_ABYSS)
-					{
-						item.setDeltaMovement(item.getDeltaMovement().subtract(0, 0.01F, 0));
-					}
-				}
-			});
-		}
-	}
-	
 	@SubscribeEvent
 	public static void onEntityJoinLevel(EntityJoinLevelEvent event)
 	{
@@ -134,6 +117,21 @@ public class EventHandlerForge
 		{
 			entity.setOnGround(false);
 			entity.resetFallDistance();
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onLivingHurt(LivingHurtEvent event)
+	{
+		DamageSource source = event.getSource();
+		LivingEntity living = event.getEntity();
+		if(source.is(DamageTypes.DROWN))
+		{
+			if(living.hasEffect(BTAEffects.LUNGSPORE.get()))
+			{
+				MobEffectInstance effect = living.getEffect(BTAEffects.LUNGSPORE.get());
+				event.setAmount(event.getAmount() + (effect.getAmplifier() * 0.5F));
+			}
 		}
 	}
     

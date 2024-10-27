@@ -17,10 +17,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -39,7 +41,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<AbstractDeepAbyssMonster>
@@ -64,9 +65,9 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 60)
+    			.add(Attributes.MAX_HEALTH, 60.0F)
     			.add(Attributes.MOVEMENT_SPEED, 1.2F)
-        		.add(Attributes.FOLLOW_RANGE, 30);
+        		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
     
     @Override
@@ -133,6 +134,15 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 	public void tick() 
 	{
 		super.tick();
+		
+		this.resetFallDistance();
+		this.setCanLook(!this.isDormant() && !this.isDisabled());
+		this.setCanMove(!this.isDormant() && !this.isDisabled());
+		
+		if(this.getHeadType() == HeadType.BLASTER && this.tickCount == 2)
+		{
+			this.partBuilder.rebuildHitbox();
+		}
 
 		if(this.getOwner() == null)
 		{
@@ -140,25 +150,27 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 			{
 				this.setupChain();
 			}
+			
+			if(this.isDormant() || this.isDisabled())
+			{
+				this.discard();
+			}
 		}
-		
-		if(this.getOwner() != null)
+		else
 		{
-    		this.setCanLook(false);
-    		this.setCanMove(false);
     		this.setDormant(true);
-    		if(!this.level.isClientSide)
-    		{
-    			WormSegmentController.tick((ServerLevel) this.level, this.getX(), this.getY(), this.getZ(), this, this.getOwner(), 1.0F, 0.5F);
-    		}
+    		this.hurtTime = this.getOwner().hurtTime;
+    		this.deathTime = this.getOwner().deathTime;
+    		
+			WormSegmentController.tick(this.getX(), this.getY(), this.getZ(), this, this.getOwner(), 1.0F, 0.5F);
 		}
 		
 		if(this.getHeadType() == HeadType.BLASTER)
 		{
 			if(this.getAnimationState() == 1)
 			{
-				Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYRot()), this.position().add(0.0F, 0.5F, 0.0F), 0.0F, 0.0F, -0.2F);
-				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYRot()), startPos, 0.0F, 0.0F, 100.0F);
+				Vec3 startPos = BTAUtil.getLookPos(this.getRotationVector(), this.position().add(0.0F, 0.5F, 0.0F), 0.0F, 0.0F, -0.2F);
+				Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), startPos, 0.0F, 0.0F, 100.0F);
 				HitResult hitResult = this.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 				EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(this.level, this, startPos, lookPos, this.getBoundingBox().inflate(100.0F), Entity::isPickable);
 				Vec3 pos = hitResult.getLocation();
@@ -172,7 +184,8 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 	            {
 	                Vec3 vec31 = pos.subtract(startPos);
 	                Vec3 vec32 = vec31.normalize();
-		        	this.setBeamLength((float) startPos.add(vec32.scale(Mth.floor(vec31.length()))).length());
+	                List<LivingEntity> arrayList = new ArrayList<>();
+	                this.setBeamLength((float) vec31.length());
 					if(hitResult.getType() == HitResult.Type.ENTITY)
 					{
 		                for(int i = 1; i < Mth.floor(vec31.length()) + 1; ++i)
@@ -182,13 +195,18 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 		                	list.removeIf(t -> t == this || t.isAlliedTo(this));
 		                	list.forEach(t -> 
 		                	{
-		                        if(t.hurt(this.damageSources().mobAttack(this), 2.5F)) 
-		                        {
-		                        	
-		                        }
+		                		if(!arrayList.contains(t))
+		                		{
+		                			arrayList.add(t);
+		                		}
 		                	});
 		                }
 					}
+					
+					arrayList.forEach(t -> 
+                	{
+                		t.hurt(this.damageSources().mobAttack(this), 2.5F);
+                	});
 	            }
 			}
 			
@@ -201,7 +219,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 	
 	public boolean shouldInvertRotation()
 	{
-		return this.getOwner() != null;
+		return this.isDormant() || this.isDisabled();
 	}
 	
 	@Override
@@ -213,15 +231,25 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 	@Override
 	public boolean isAlliedTo(Entity p_20355_) 
 	{
-		if(p_20355_ instanceof EntitySiamserpentHead head)
-		{
-			if(this.getOwner() != null)
-			{
-				return this.getOwner() == head;
-			}
-		}
-		return super.isAlliedTo(p_20355_);
+		return p_20355_ == this.getOwner() || this.segments.contains(p_20355_) || super.isAlliedTo(p_20355_);
 	}
+	
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	{
+		if(!this.isInvulnerableTo(p_21016_) && this.getOwner() != null)
+		{
+    		this.getOwner().hurt(p_21016_, p_21017_);
+			return false;
+		}
+		return super.hurt(p_21016_, p_21017_);
+	}
+	
+    @Override
+    public boolean isInvulnerableTo(DamageSource p_20122_)
+    {
+    	return super.isInvulnerableTo(p_20122_) || p_20122_.is(DamageTypes.IN_WALL) || p_20122_.is(DamageTypeTags.IS_FALL);
+    }
 	
 	@Override
 	public int getMaxSpawnClusterSize()
@@ -231,13 +259,14 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(850) == 0 && pPos.getY() >= -180 && pPos.getY() <= -100 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		//LocateCommand
+		return pRandom.nextInt(850) == 0 && pPos.getY() >= -180 && pPos.getY() <= -160 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
     @Override
     protected void doPush(Entity p_20971_) 
     {
-    	if(!(p_20971_ instanceof EntitySiamserpentBone))
+    	if(!(p_20971_ instanceof EntitySiamserpentHead) && !(p_20971_ instanceof EntitySiamserpentBone))
     	{
         	super.doPush(p_20971_);
     	}
@@ -289,6 +318,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 		bone.setOwner(this);
 		bone.setIndex(0);
 		bone.setPos(this.position());
+		bone.setHead(this);
 		this.segments.add(0, bone);
 		this.level.addFreshEntity(bone);
 		
@@ -300,12 +330,13 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 				bone2.setOwner(this.segments.get(10));
 				bone2.setIndex(11);
 				bone2.setPos(this.position());
+				bone2.setHead(this);
 				this.segments.add(11, bone2);
 				this.level.addFreshEntity(bone2);
 			}
 			else if(i == 11)
 			{
-				if(Math.random() <= 0.5F)
+				if(this.random.nextBoolean())
 				{
 					this.setHeadType(HeadType.BLASTER);
 					EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
@@ -316,6 +347,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 				}
 				else
 				{
+					this.setHeadType(HeadType.SLASHER);
 					EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
 					head.setOwner(this.segments.get(11));
 					head.setHeadType(HeadType.BLASTER);
@@ -330,6 +362,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 				bone1.setIndex(i + 1);
 				bone1.setVariant(this.level.random.nextInt(1, 3));
 				bone1.setPos(this.position());
+				bone1.setHead(this);
 				this.segments.add(i + 1, bone1);
 				this.level.addFreshEntity(bone1);
 			}
