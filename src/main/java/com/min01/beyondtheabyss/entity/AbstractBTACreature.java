@@ -45,6 +45,34 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 	}
 	
 	@Override
+	protected void registerGoals() 
+	{
+        if(this.getBTAMobType().alwaysHostile)
+        {
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
+        }
+        
+        if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
+        {
+            this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
+        }
+	}
+	
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(ANIMATION_STATE, 0);
+		this.entityData.define(ANIMATION_TICK, 0);
+		this.entityData.define(PREV_ANIMATION_TICK, 0);
+		this.entityData.define(MOVE_STOP_DELAY, 0);
+		this.entityData.define(CAN_LOOK, true);
+		this.entityData.define(CAN_MOVE, true);
+		this.entityData.define(IS_USING_SKILL, false);
+		this.entityData.define(HAS_TARGET, false);
+	}
+	
+	@Override
 	protected boolean shouldDespawnInPeaceful()
 	{
 		return this.getBTAMobType().despawnInPeaceful;
@@ -92,37 +120,9 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 	public abstract EntityPartBuilder<? extends AbstractBTACreature> createBuilder();
 	
 	@Override
-	protected void defineSynchedData()
-	{
-		super.defineSynchedData();
-		this.entityData.define(ANIMATION_STATE, 0);
-		this.entityData.define(ANIMATION_TICK, 0);
-		this.entityData.define(PREV_ANIMATION_TICK, 0);
-		this.entityData.define(MOVE_STOP_DELAY, 0);
-		this.entityData.define(CAN_LOOK, true);
-		this.entityData.define(CAN_MOVE, true);
-		this.entityData.define(IS_USING_SKILL, false);
-		this.entityData.define(HAS_TARGET, false);
-	}
-	
-	@Override
 	protected PathNavigation createNavigation(Level p_21480_)
 	{
 		return new NoSpinGroundPathNavigation(this, p_21480_);
-	}
-	
-	@Override
-	protected void registerGoals() 
-	{
-        if(this.getBTAMobType().alwaysHostile)
-        {
-            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
-        }
-        
-        if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
-        {
-            this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
-        }
 	}
 	
 	@Override

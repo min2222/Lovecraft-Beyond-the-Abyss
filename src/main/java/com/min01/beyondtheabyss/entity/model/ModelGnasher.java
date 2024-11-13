@@ -65,7 +65,7 @@ public class ModelGnasher extends HierarchicalModel<EntityGnasher>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("Gnasher"), netHeadYaw, headPitch);
-		BTAClientUtil.animateWalk(entity, this, GnasherAnimation.GNASHER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
+		BTAClientUtil.animateWalk(this, GnasherAnimation.GNASHER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 		this.animate(entity.biteAnimationState, GnasherAnimation.GNASHER_BITE, ageInTicks);
 	}
 

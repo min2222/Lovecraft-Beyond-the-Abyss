@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.block.BTABlocks;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -25,12 +26,12 @@ public class DeathValleySpineFeature extends Feature<NoneFeatureConfiguration>
 		RandomSource random = p_159749_.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			if(random.nextFloat() <= 0.05F)
+			if(random.nextFloat() <= 0.05F && level.getFluidState(pos.above()).is(FluidTags.WATER) && level.getFluidState(pos.above(2)).is(FluidTags.WATER))
 			{
 				this.placeSpine(level, pos, 3);
 				return true;
 			}
-			if(random.nextFloat() <= 0.025F)
+			if(random.nextFloat() <= 0.025F && level.getFluidState(pos.above()).is(FluidTags.WATER))
 			{
 				this.placeSpine(level, pos, 2);
 				return true;

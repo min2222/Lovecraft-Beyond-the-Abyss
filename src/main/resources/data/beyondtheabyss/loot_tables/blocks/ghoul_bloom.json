@@ -22,7 +22,7 @@
 									"condition": "minecraft:block_state_property",
 									"block": "beyondtheabyss:ghoul_bloom",
 									"properties": {
-										"age": "5"
+										"age": "6"
 									}
 								}
 							]
@@ -39,7 +39,7 @@
 									"condition": "minecraft:block_state_property",
 									"block": "beyondtheabyss:ghoul_bloom",
 									"properties": {
-										"age": "5"
+										"age": "6"
 									}
 								}
 							]

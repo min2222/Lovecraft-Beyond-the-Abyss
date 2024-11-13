@@ -42,26 +42,6 @@ public abstract class MixinEntity
 		}
     }
     
-    /*@Inject(method = "collide", at = @At("RETURN"), cancellable = true)
-    private void collide(Vec3 vec3, CallbackInfoReturnable<Vec3> cir)
-    {
-    	Entity entity = Entity.class.cast(this);
-        AABB aabb = entity.getBoundingBox();
-        List<VoxelShape> list = entity.level.getEntityCollisions(entity, aabb.expandTowards(vec3));
-        if(!list.isEmpty())
-        {
-            Predicate<Entity> predicate = EntitySelector.NO_SPECTATORS.and(entity::canCollideWith);
-            List<Entity> entityList = entity.level.getEntities(entity, aabb.expandTowards(vec3).inflate(1.0E-7D), predicate);
-        	for(Entity collidedEntity : entityList)
-        	{
-        		if(collidedEntity instanceof EntitySubmarine)
-        		{
-        			cir.setReturnValue(cir.getReturnValue().scale(1.5F));
-        		}
-        	}
-        }
-    }*/
-    
     @Inject(method = "setPosRaw", at = @At("TAIL"))
     private void setPosRaw(double x, double y, double z, CallbackInfo ci)
     {

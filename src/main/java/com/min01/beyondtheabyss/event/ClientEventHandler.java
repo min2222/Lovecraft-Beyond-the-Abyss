@@ -49,7 +49,6 @@ import com.min01.beyondtheabyss.entity.renderer.living.PhasmozoaRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentHeadRenderer;
-import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.gui.overlay.OxygenOverlay;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -180,7 +179,6 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
     	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
     	event.registerEntityRenderer(BTAEntities.SUBMARINE.get(), SubmarineRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.SUBMARINE_PART.get(), NoneRenderer<SubmarinePart>::new);
     	
     	//projectile
     	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);

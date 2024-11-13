@@ -165,7 +165,7 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("root2"), netHeadYaw, headPitch);
-		BTAClientUtil.animateWalk(entity, this, GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
+		BTAClientUtil.animateWalk(this, GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 		this.animate(entity.biteRightAnimationState, GhidruthAnimation.GHIDRUTH_BITE_RIGHT, ageInTicks);
 		this.animate(entity.biteLeftAnimationState, GhidruthAnimation.GHIDRUTH_BITE_LEFT, ageInTicks);
 		this.animate(entity.tailSwingRightAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);

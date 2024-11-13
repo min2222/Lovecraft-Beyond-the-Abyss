@@ -55,6 +55,6 @@ public class DivingSetItem extends AbstractDivingSetItem
 	@Override
 	public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) 
 	{
-		return "beyondtheabyss:textures/models/armor/diver_set.png";
+		return "beyondtheabyss:textures/armor/diver_set.png";
 	}
 }

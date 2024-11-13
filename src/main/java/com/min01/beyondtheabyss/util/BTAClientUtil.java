@@ -216,7 +216,7 @@ public class BTAClientUtil
 		head.xRot += Math.toRadians(headPitch);
 	}
 	
-	public static void animateWalk(LivingEntity entity, HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 
+	public static void animateWalk(HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 
 	{
 		long i = (long)(limbSwing * 50.0F * p_268138_);
 		float f = Math.min(limbSwingAmount * p_268165_, 1.0F);

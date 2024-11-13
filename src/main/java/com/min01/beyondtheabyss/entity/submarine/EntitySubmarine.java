@@ -7,9 +7,9 @@ import java.util.UUID;
 import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
-import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.IPartBuilder;
 import com.min01.beyondtheabyss.entity.IPosArray;
-import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -32,17 +32,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 
-public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray
+//TODO collision
+public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray, IPartBuilder
 {
-    public SubmarineHitBox hitbox = new SubmarineHitBox(this);
-	
 	public static final EntityDataAccessor<Optional<UUID>> CONTROLLING_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT1_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT2_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT3_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT4_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Optional<UUID>> HATCH = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Optional<UUID>> DETECTOR = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<BlockPos> PREV_POS = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BLOCK_POS);
 	
@@ -52,9 +49,12 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     
     public Vec3[] posArray = new Vec3[13];
     
+	public final EntityPartBuilder<EntitySubmarine> partBuilder;
+    
 	public EntitySubmarine(EntityType<? extends LivingEntity> p_19870_, Level p_19871_)
 	{
 		super(p_19870_, p_19871_);
+		this.partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
 	}
 	
 	@Override
@@ -66,8 +66,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 		this.entityData.define(SEAT2_PLAYER, Optional.empty());
 		this.entityData.define(SEAT3_PLAYER, Optional.empty());
 		this.entityData.define(SEAT4_PLAYER, Optional.empty());
-		this.entityData.define(HATCH, Optional.empty());
-		this.entityData.define(DETECTOR, Optional.empty());
 		this.entityData.define(HATCH_OPENED, false);
 		this.entityData.define(PREV_POS, BlockPos.ZERO);
 	}
@@ -101,33 +99,15 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	}
 	
 	@Override
-	public boolean showVehicleHealth() 
+	public EntityPartBuilder<?> getPartBuilder() 
 	{
-		return false;
+		return this.partBuilder;
 	}
 	
 	@Override
-	public void onAddedToWorld()
+	public boolean showVehicleHealth() 
 	{
-		super.onAddedToWorld();
-		if(this.getHatch() == null)
-		{
-			SubmarinePart hatch = new SubmarinePart(BTAEntities.SUBMARINE_PART.get(), this.level);
-			hatch.setPartType(SubmarinePartType.HATCH);
-			hatch.setPos(this.position());
-			hatch.setOwner(this);
-			this.level.addFreshEntity(hatch);
-			this.setHatch(hatch);
-		}
-		if(this.getDetector() == null)
-		{
-			SubmarinePart detector = new SubmarinePart(BTAEntities.SUBMARINE_PART.get(), this.level);
-			detector.setPartType(SubmarinePartType.DETECTOR);
-			detector.setPos(this.position());
-			detector.setOwner(this);
-			this.level.addFreshEntity(detector);
-			this.setDetector(detector);
-		}
+		return false;
 	}
 	
 	@Override
@@ -232,16 +212,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 		{
 			p_21145_.putUUID("Seat4UUID", this.getSeat4Player().getUUID());
 		}
-		
-		if(this.getHatch() != null)
-		{
-			p_21145_.putUUID("HatchUUID", this.getHatch().getUUID());
-		}
-		
-		if(this.getDetector() != null)
-		{
-			p_21145_.putUUID("DetectorUUID", this.getDetector().getUUID());
-		}
 	}
 	
 	@Override
@@ -271,16 +241,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 		if(p_21096_.hasUUID("Seat4UUID")) 
 		{
 			this.entityData.set(SEAT4_PLAYER, Optional.of(p_21096_.getUUID("Seat4UUID")));
-		}
-		
-		if(p_21096_.hasUUID("HatchUUID")) 
-		{
-			this.entityData.set(HATCH, Optional.of(p_21096_.getUUID("HatchUUID")));
-		}
-		
-		if(p_21096_.hasUUID("DetectorUUID")) 
-		{
-			this.entityData.set(DETECTOR, Optional.of(p_21096_.getUUID("DetectorUUID")));
 		}
 	}
 	
@@ -400,34 +360,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 		return this.entityData.get(HATCH_OPENED);
 	}
 	
-	public void setDetector(SubmarinePart part)
-	{
-		this.entityData.set(DETECTOR, Optional.of(part.getUUID()));
-	}
-	
-	public SubmarinePart getDetector()
-	{
-		if(this.entityData.get(DETECTOR).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(DETECTOR).get());
-		}
-		return null;
-	}
-	
-	public void setHatch(SubmarinePart part)
-	{
-		this.entityData.set(HATCH, Optional.of(part.getUUID()));
-	}
-	
-	public SubmarinePart getHatch()
-	{
-		if(this.entityData.get(HATCH).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(HATCH).get());
-		}
-		return null;
-	}
-	
 	public Player getControllingPlayer()
 	{
 		if(this.entityData.get(CONTROLLING_PLAYER).isPresent()) 
@@ -526,28 +458,29 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	@Override
 	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
 	{
-		return this.hitbox.getHitbox().getBox(bounds);
+		return this.partBuilder.hitbox.getBox(bounds);
 	}
 
 	@Override
 	public EntityBounds getBounds() 
 	{
-		return this.hitbox.getHitbox();
+		return this.partBuilder.hitbox;
 	}
 
 	@Override
 	public void onSetPos(double x, double y, double z) 
 	{
-        if(this.hitbox != null)
-        {
-        	this.hitbox.updatePosition();
-        }
+		if(this.partBuilder != null)
+		{
+			this.partBuilder.tick(1.0F);
+		}
 	}
 	
 	@Override
 	public InteractionResult interact(Entity entity, InteractionHand hand, String part)
 	{
-		if(entity instanceof Player player)
+		//TODO
+		/*if(entity instanceof Player player)
 		{
 			player.startRiding(this);
 			if(part == "controllerSeat")
@@ -571,14 +504,8 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 				this.setSeatPlayer(4, player);
 			}
 			return InteractionResult.SUCCESS;
-		}
+		}*/
 		return IMultipart.super.interact(entity, hand, part);
-	}
-	
-	@Override
-	public boolean isPickable() 
-	{
-		return true;
 	}
 
 	@Override

@@ -30,6 +30,23 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
 	}
+    
+    @Override
+    protected void registerGoals() 
+    {
+    	super.registerGoals();
+    	if(this.isSwimable())
+    	{
+            this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20)
+            {
+            	@Override
+            	public boolean canUse() 
+            	{
+            		return AbstractDeepAbyssMonster.this.canRandomSwim() && super.canUse();
+            	}
+            });
+    	}
+    }
 	
 	@Override
 	public MobType getMobType() 
@@ -67,11 +84,11 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 		return false;
 	}
 	
-	public void handleAirSupply(int p_30344_) 
+	public void handleAirSupply(int supply) 
 	{
 		if(this.isAlive() && !this.isInWaterOrBubble() && !this.canBreathOutsideWater())
 		{
-			this.setAirSupply(p_30344_ - 1);
+			this.setAirSupply(supply - 1);
 			if(this.getAirSupply() == -20) 
 			{
 				this.setAirSupply(0);
@@ -88,8 +105,7 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 	public void baseTick() 
 	{
 		super.baseTick();
-		int i = this.getAirSupply();
-		this.handleAirSupply(i);
+		this.handleAirSupply(this.getAirSupply());
 	}
 	
 	@Override
@@ -125,23 +141,6 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
     	else
     	{
     		super.travel(p_27490_);
-    	}
-    }
-    
-    @Override
-    protected void registerGoals() 
-    {
-    	super.registerGoals();
-    	if(this.isSwimable())
-    	{
-            this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20)
-            {
-            	@Override
-            	public boolean canUse() 
-            	{
-            		return AbstractDeepAbyssMonster.this.canRandomSwim() && super.canUse();
-            	}
-            });
     	}
     }
 	

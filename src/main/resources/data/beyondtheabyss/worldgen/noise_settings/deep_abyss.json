@@ -59,7 +59,7 @@
 		},
 		"continents": "minecraft:overworld/continents",
 		"erosion": "minecraft:overworld/erosion",
-		"depth": "minecraft:overworld_amplified/depth",
+		"depth": "minecraft:overworld/depth",
 		"ridges": "minecraft:overworld/ridges",
 		"initial_density_without_jaggedness": {
 			"type": "minecraft:add",
@@ -255,53 +255,7 @@
 					}
 				}
 			},
-			"argument2": {
-				"type": "minecraft:mul",
-				"argument1": 0.64,
-				"argument2": {
-					"type": "minecraft:interpolated",
-					"argument": {
-						"type": "minecraft:blend_density",
-						"argument": {
-							"type": "minecraft:add",
-							"argument1": 2.5,
-							"argument2": {
-								"type": "minecraft:mul",
-								"argument1": {
-									"type": "minecraft:y_clamped_gradient",
-									"from_y": -650,
-									"to_y": -600,
-									"from_value": 0,
-									"to_value": 1
-								},
-								"argument2": {
-									"type": "minecraft:add",
-									"argument1": -2.5,
-									"argument2": {
-										"type": "minecraft:add",
-										"argument1": 0.9375,
-										"argument2": {
-											"type": "minecraft:mul",
-											"argument1": {
-												"type": "minecraft:y_clamped_gradient",
-												"from_y": -450,
-												"to_y": -400,
-												"from_value": 1,
-												"to_value": 0
-											},
-											"argument2": {
-												"type": "minecraft:add",
-												"argument1": -0.9375,
-												"argument2": "minecraft:nether/base_3d_noise"
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			"argument2": 1
 		},
 		"vein_toggle": {
 			"type": "minecraft:interpolated",

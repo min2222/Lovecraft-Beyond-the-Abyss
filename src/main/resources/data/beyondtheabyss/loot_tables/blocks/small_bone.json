@@ -2,56 +2,45 @@
 	"type": "minecraft:block",
 	"pools": [
 		{
-			"rolls": {
-				"min": 1,
-				"max": 2
-			},
+			"rolls": 1,
+			"bonus_rolls": 0,
 			"entries": [
 				{
-					"type": "minecraft:item",
-					"name": "minecraft:bone"
-				}
-			],
-			"conditions": [
-				{
-					"condition": "minecraft:inverted",
-					"term": {
-						"condition": "minecraft:match_tool",
-						"predicate": {
-							"enchantments": [
+					"type": "minecraft:alternatives",
+					"children": [
+						{
+							"type": "minecraft:item",
+							"name": "beyondtheabyss:small_bone",
+							"conditions": [
 								{
-									"enchantment": "minecraft:silk_touch",
-									"levels": {
-										"min": 1
+									"condition": "minecraft:match_tool",
+									"predicate": {
+										"enchantments": [
+											{
+												"enchantment": "minecraft:silk_touch",
+												"levels": {
+													"min": 1
+												}
+											}
+										]
+									}
+								}
+							]
+						},
+						{
+							"type": "minecraft:item",
+							"name": "minecraft:bone",
+							"functions": [
+								{
+									"function": "minecraft:set_count",
+									"count": {
+										"min": 1,
+										"max": 2
 									}
 								}
 							]
 						}
-					}
-				}
-			]
-		},
-		{
-			"rolls": 1,
-			"entries": [
-				{
-					"type": "minecraft:item",
-					"name": "beyondtheabyss:small_bone"
-				}
-			],
-			"conditions": [
-				{
-					"condition": "minecraft:match_tool",
-					"predicate": {
-						"enchantments": [
-							{
-								"enchantment": "minecraft:silk_touch",
-								"levels": {
-									"min": 1
-								}
-							}
-						]
-					}
+					]
 				}
 			]
 		}

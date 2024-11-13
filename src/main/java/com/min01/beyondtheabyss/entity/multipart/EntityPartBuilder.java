@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.BuildMultiPartPacket;
 import com.min01.beyondtheabyss.network.UpdateMultiPartPacket;
@@ -281,7 +282,14 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 
         if(!entity.hasPose(Pose.SLEEPING)) 
         {
-            rotation.mul(Vector3f.YP.rotationDegrees(180.0F - bodyRot));
+        	if(!(this.entity instanceof EntitySubmarine))
+        	{
+                rotation.mul(Vector3f.YP.rotationDegrees(180.0F - bodyRot));
+        	}
+        	else
+        	{
+                rotation.mul(Vector3f.YP.rotationDegrees(bodyRot));
+        	}
         }
 
         if(entity.deathTime > 0)
