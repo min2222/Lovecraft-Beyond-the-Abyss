@@ -49,11 +49,13 @@
 	},
 	"features": [
 		[
-			"beyondtheabyss:spines",
-			"beyondtheabyss:bones",
-			"beyondtheabyss:bone_spikes",
-			"beyondtheabyss:coral_trees",
-			"beyondtheabyss:fossils"
+			"beyondtheabyss:spine",
+			"beyondtheabyss:bone",
+			"beyondtheabyss:bone_spike",
+			"beyondtheabyss:coral_tree",
+			"beyondtheabyss:fossil",
+			"beyondtheabyss:ghoul_bloom_patch",
+			"beyondtheabyss:toothvine_patch"
 		],
 		[],
 		[],

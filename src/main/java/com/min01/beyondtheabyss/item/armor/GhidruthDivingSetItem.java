@@ -56,6 +56,6 @@ public class GhidruthDivingSetItem extends AbstractDivingSetItem
 	@Override
 	public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) 
 	{
-		return "beyondtheabyss:textures/models/armor/ghidruth_diver_set.png";
+		return "beyondtheabyss:textures/armor/ghidruth_diver_set.png";
 	}
 }

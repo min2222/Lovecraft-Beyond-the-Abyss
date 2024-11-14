@@ -17,6 +17,12 @@
 		},
 		"age=5": {
 			"model": "beyondtheabyss:block/ghoul_bloom_stage5"
+		},
+		"age=6": {
+			"model": "beyondtheabyss:block/ghoul_bloom_stage6"
+		},
+		"age=7": {
+			"model": "beyondtheabyss:block/ghoul_bloom_stage7"
 		}
 	}
 }

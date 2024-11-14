@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.mixin.multipart;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -40,8 +41,15 @@ public abstract class MixinProjectile extends Entity
                 if(part != null)
                 {
                     BTANetwork.sendToServer(new InteractMultiPartPacket(entity.getId(), this.getId(), part, InteractionHand.MAIN_HAND, false, InteractionType.PROJECTILE));
+                    this.onHitEntity(new EntityHitResult(entity));
                 }
             }
         }
     }
+    
+    @Shadow
+	private void onHitEntity(EntityHitResult entityHitResult) 
+	{
+		
+	}
 }

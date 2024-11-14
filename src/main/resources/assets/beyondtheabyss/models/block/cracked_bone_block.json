@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:block/cube_column",
+	"textures": {
+		"end": "beyondtheabyss:block/cracked_bone_block_top",
+		"side": "beyondtheabyss:block/cracked_bone_block_side"
+	}
+}

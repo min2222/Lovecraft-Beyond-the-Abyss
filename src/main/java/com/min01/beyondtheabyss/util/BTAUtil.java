@@ -29,6 +29,25 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
 {
+	//from https://github.com/AlexModGuy/AlexsCaves/blob/main/src/main/java/com/github/alexmodguy/alexscaves/server/misc/ACMath.java
+    public static float smin(float a, float b, float k) 
+    {
+        float h = Math.max(k - Math.abs(a - b), 0.0F) / k;
+        return Math.min(a, b) - h * h * k * (1.0F / 4.0F);
+    }
+    public static float sampleNoise2D(int x, int z, float simplexSampleRate)
+    {
+        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
+    }
+    public static float sampleNoise3D(int x, int y, int z, float simplexSampleRate) 
+    {
+        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
+    }
+    public static float sampleNoise3D(float x, float y, float z, float simplexSampleRate) 
+    {
+        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
+    }
+    
 	public static Vec2 lookAt(Vec3 startPos, Vec3 pos)
 	{
 		Vec3 vec3 = startPos;

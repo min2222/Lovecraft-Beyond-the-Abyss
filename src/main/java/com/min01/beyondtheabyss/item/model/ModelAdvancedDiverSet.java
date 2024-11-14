@@ -128,11 +128,11 @@ public class ModelAdvancedDiverSet<T extends LivingEntity> extends HumanoidModel
 		bone3.addOrReplaceChild("BodyLayer_r7", CubeListBuilder.create().texOffs(10, 34).mirror().addBox(-0.5F, -1.5F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(2.6874F, 0.3F, 5.2905F, 0.0F, -1.4835F, 0.0F));
 
 		partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create().texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F))
-		.texOffs(27, 79).mirror().addBox(-1.9F, 7.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.45F)).mirror(false), PartPose.offset(1.9F, 12.0F, 0.0F));
+		.texOffs(27, 79).mirror().addBox(-2.0F, 7.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.45F)).mirror(false), PartPose.offset(2.0F, 12.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("Left_boots", CubeListBuilder.create().texOffs(17, 23).addBox(-2.0F, 9.0F, -3.0F, 4.0F, 3.0F, 6.0F, new CubeDeformation(0.4F)), PartPose.offset(1.9F, 12.0F, -1.0F));
+		partdefinition.addOrReplaceChild("Left_boots", CubeListBuilder.create().texOffs(17, 23).addBox(-2.0F, 9.0F, -3.0F, 4.0F, 3.0F, 6.0F, new CubeDeformation(0.4F)), PartPose.offset(2.0F, 12.0F, -1.0F));
 
-		partdefinition.addOrReplaceChild("Right_boots", CubeListBuilder.create().texOffs(17, 23).mirror().addBox(-2.0F, 9.0F, -3.0F, 4.0F, 3.0F, 6.0F, new CubeDeformation(0.4F)).mirror(false), PartPose.offset(-1.9F, 12.0F, -1.0F));
+		partdefinition.addOrReplaceChild("Right_boots", CubeListBuilder.create().texOffs(17, 23).mirror().addBox(-2.0F, 9.0F, -3.0F, 4.0F, 3.0F, 6.0F, new CubeDeformation(0.4F)).mirror(false), PartPose.offset(-2.0F, 12.0F, -1.0F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}

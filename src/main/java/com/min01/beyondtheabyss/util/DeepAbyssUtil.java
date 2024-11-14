@@ -1,27 +1,15 @@
 package com.min01.beyondtheabyss.util;
 
-import java.util.List;
-
-import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
-import com.min01.beyondtheabyss.entity.submarine.SubmarinePart;
-import com.min01.beyondtheabyss.entity.submarine.SubmarinePart.SubmarinePartType;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 
 public class DeepAbyssUtil 
-{	
+{
+	//TODO
 	public static boolean isInsideSubmarine(Entity entity)
 	{
-		if(!(entity instanceof EntitySubmarine) && !(entity instanceof SubmarinePart))
-		{
-			List<SubmarinePart> list = entity.level.getEntitiesOfClass(SubmarinePart.class, entity.getBoundingBox().inflate(0.25F), EntitySelector.NO_SPECTATORS);
-			list.removeIf(t -> t.getPartType() != SubmarinePartType.DETECTOR);
-			return !list.isEmpty();
-		}
 		return false;
 	}
 	

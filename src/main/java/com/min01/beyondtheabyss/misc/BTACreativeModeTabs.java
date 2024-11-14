@@ -10,6 +10,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -92,7 +93,7 @@ public class BTACreativeModeTabs
     		{
     			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
     			{
-    				if(item.get() instanceof BlockItem)
+    				if(item.get() instanceof BlockItem && !(item.get() instanceof ItemNameBlockItem))
     				{
     					output.accept(item.get());
     				}

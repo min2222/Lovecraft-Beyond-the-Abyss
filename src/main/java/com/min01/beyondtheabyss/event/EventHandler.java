@@ -14,11 +14,11 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityPhasmozoa;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTADataProvider;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -56,7 +56,7 @@ public class EventHandler
     	event.put(BTAEntities.LATCHER.get(), EntityLatcher.createAttributes().build());
     	event.put(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), EntityAbyssalHermitCrab.createAttributes().build());
     	event.put(BTAEntities.ABYSSAL_BULBRAY.get(), EntityAbyssalBulbray.createAttributes().build());
-    	event.put(BTAEntities.SUBMARINE.get(), LivingEntity.createLivingAttributes().build());
+    	event.put(BTAEntities.SUBMARINE.get(), EntitySubmarine.createLivingAttributes().build());
     	event.put(BTAEntities.PHASMOZOA.get(), EntityPhasmozoa.createAttributes().build());
     	event.put(BTAEntities.AMARUM_GHOST.get(), EntityAmarumGhost.createAttributes().build());
     	event.put(BTAEntities.GNASHER.get(), EntityGnasher.createAttributes().build());

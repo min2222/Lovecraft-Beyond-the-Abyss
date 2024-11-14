@@ -1,0 +1,21 @@
+{
+  "feature": "beyondtheabyss:fossil",
+  "placement": [
+    {
+      "type": "minecraft:noise_threshold_count",
+      "above_noise": 5,
+      "below_noise": 1,
+      "noise_level": -0.2
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

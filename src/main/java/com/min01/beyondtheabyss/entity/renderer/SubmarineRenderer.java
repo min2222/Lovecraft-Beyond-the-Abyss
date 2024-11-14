@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -18,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
+public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implements IModel<EntitySubmarine>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/submarine.png");
 	private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/submarine_layer.png");
@@ -95,6 +96,12 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 			this.model.renderToBuffer(p_114488_, eyeConsumer, p_114490_, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
 		}
 		p_114488_.popPose();
+	}
+	
+	@Override
+	public HierarchicalModel<EntitySubmarine> getModel(EntitySubmarine entity) 
+	{
+		return this.model;
 	}
 
 	@Override

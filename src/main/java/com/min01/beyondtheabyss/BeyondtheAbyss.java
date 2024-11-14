@@ -13,7 +13,6 @@ import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.world.BTAFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
-import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,7 +40,6 @@ public class BeyondtheAbyss
 		BTAEffects.POTIONS.register(bus);
 		BTAEntityDataSerializers.SERIALIZERS.register(bus);
 		BTAParticles.PARTICLES.register(bus);
-		BTAWorldCarvers.CARVERS.register(bus);
 		BTAStructures.STRUCTURE_TYPES.register(bus);
 		BTAStructures.STRUCTURE_PIECE_TYPES.register(bus);
 		BTAFeatures.FEATURES.register(bus);

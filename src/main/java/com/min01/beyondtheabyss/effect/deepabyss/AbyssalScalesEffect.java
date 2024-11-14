@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class AbyssalScalesEffect extends BasicBTAEffect
 {
-	protected final double multiplier;
+	public final double multiplier;
 	   
 	public AbyssalScalesEffect(double multiplier)
 	{

@@ -1,0 +1,7 @@
+{
+	"type": "beyondtheabyss:ruin",
+	"biomes": "#minecraft:is_ocean",
+	"spawn_overrides": {
+	},
+	"step": "surface_structures"
+}

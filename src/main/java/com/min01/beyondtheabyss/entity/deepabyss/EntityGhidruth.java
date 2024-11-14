@@ -23,6 +23,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityGhidruth extends AbstractDeepAbyssMonster
 {
+	public static final EntityDataAccessor<Vec3> DASH_POS = SynchedEntityData.defineId(EntityGhidruth.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Boolean> IS_DASH = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_STUN = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> STUN_TICK = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
+	
 	public AnimationState biteRightAnimationState = new AnimationState();
 	public AnimationState biteLeftAnimationState = new AnimationState();
 	public AnimationState tailSwingRightAnimationState = new AnimationState();
@@ -32,12 +38,6 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	public AnimationState stunAnimationState = new AnimationState();
 	public AnimationState stunLoopAnimationState = new AnimationState();
 	public AnimationState stunEndAnimationState = new AnimationState();
-	
-	public static final EntityDataAccessor<Vec3> DASH_POS = SynchedEntityData.defineId(EntityGhidruth.class, BTAEntityDataSerializers.VEC3.get());
-	public static final EntityDataAccessor<Boolean> IS_DASH = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_STUN = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> STUN_TICK = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.INT);
 
 	public static final float DEFAULT_MOVEMENT_SPEED = 1.0F;
 	
