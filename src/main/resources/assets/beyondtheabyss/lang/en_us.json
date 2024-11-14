@@ -138,6 +138,9 @@
 	"block.beyondtheabyss.compact_rot_soil": "Compact Rot Soil",
 	"block.beyondtheabyss.ghoul_bloom": "Ghoul Bloom",
 	"block.beyondtheabyss.toothvine": "Toothvine",
+	"block.beyondtheabyss.chiseled_bone_block": "Chiseled Bone Block",
+	"block.beyondtheabyss.cracked_bone_block": "Cracked Block",
+	"block.beyondtheabyss.bone_brick_block": "Bone Brick Block",
 	"block.beyondtheabyss.bta_light": "BTA Light",
 	"death.attack.ghidruth_flesh": "%1$s teeth shattered while trying to chew on Ghidruth's flesh",
 	"death.attack.bleeding": "%1$s died from excessive bleeding",
@@ -155,5 +158,7 @@
 	"effect.beyondtheabyss.lungspore": "Lungspore",
 	"effect.beyondtheabyss.lungspore.description": "increase drowning damage and oxygen consuming time.",
 	"effect.beyondtheabyss.disorder": "Disorder",
-	"effect.beyondtheabyss.disorder.description": "make target move to random directions."
+	"effect.beyondtheabyss.disorder.description": "make target move to random directions.",
+	"effect.beyondtheabyss.coordination": "Coordination",
+	"effect.beyondtheabyss.coordination.description": "increase stat depending on number of nearby mobs."
 }

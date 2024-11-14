@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.effect;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.deepabyss.AbyssalScalesEffect;
+import com.min01.beyondtheabyss.effect.deepabyss.CoordinationEffect;
 import com.min01.beyondtheabyss.effect.deepabyss.DisorderEffect;
 
 import net.minecraft.world.effect.MobEffect;
@@ -25,6 +26,7 @@ public class BTAEffects
 	public static final RegistryObject<MobEffect> HALLUCINATION = EFFECTS.register("hallucination", () -> new BasicBTAEffect(MobEffectCategory.HARMFUL, 8109500));
 	public static final RegistryObject<MobEffect> LUNGSPORE = EFFECTS.register("lungspore", () -> new BasicBTAEffect(MobEffectCategory.HARMFUL, 3759198));
 	public static final RegistryObject<MobEffect> DISORDER = EFFECTS.register("disorder", () -> new DisorderEffect());
+	public static final RegistryObject<MobEffect> COORDINATION = EFFECTS.register("coordination", () -> new CoordinationEffect());
 
 	public static final RegistryObject<Potion> DISORDER_POTION = POTIONS.register("disorder", () -> new Potion(new MobEffectInstance(DISORDER.get(), 1)));
 	public static final RegistryObject<Potion> STRONG_DISORDER_POTION = POTIONS.register("strong_disorder", () -> new Potion(new MobEffectInstance(DISORDER.get(), 1, 1)));

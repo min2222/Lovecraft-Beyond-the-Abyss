@@ -3,6 +3,7 @@
 	"pools": [
 		{
 			"rolls": 1,
+			"bonus_rolls": 0,
 			"entries": [
 				{
 					"type": "minecraft:item",
@@ -13,23 +14,28 @@
 							"count": {
 								"min": 0,
 								"max": 2
-							},
-							"add": false
-						}
-					]
-				},
-				{
-					"type": "minecraft:item",
-					"name": "beyondtheabyss:vampire_tooth",
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 0,
-								"max": 2
 							}
 						}
 					]
+				}
+			]
+		},
+		{
+			"rolls": 1,
+			"bonus_rolls": 0,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "beyondtheabyss:vampire_tooth"
+				}
+			],
+			"functions": [
+				{
+					"function": "minecraft:set_count",
+					"count": {
+						"min": 0,
+						"max": 2
+					}
 				}
 			]
 		}

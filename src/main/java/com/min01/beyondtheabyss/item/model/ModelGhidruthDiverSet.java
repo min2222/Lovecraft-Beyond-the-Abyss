@@ -96,17 +96,17 @@ public class ModelGhidruthDiverSet<T extends LivingEntity> extends HumanoidModel
 		.texOffs(64, 48).addBox(-3.0F, 6.0F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.4F)), PartPose.offset(-5.0F, 2.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("LeftFeet", CubeListBuilder.create().texOffs(64, 100).addBox(-2.0F, 8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.3F))
-		.texOffs(64, 75).addBox(-2.0F, 10.0F, -4.6F, 4.0F, 2.0F, 2.0F, new CubeDeformation(0.3F)), PartPose.offset(1.9F, 12.0F, 0.0F));
+		.texOffs(64, 75).addBox(-2.0F, 10.0F, -4.6F, 4.0F, 2.0F, 2.0F, new CubeDeformation(0.3F)), PartPose.offset(2.0F, 12.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("RightFeet", CubeListBuilder.create().texOffs(80, 100).addBox(-2.0F, 8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.3F))
-		.texOffs(64, 75).mirror().addBox(-2.0F, 10.0F, -4.6F, 4.0F, 2.0F, 2.0F, new CubeDeformation(0.3F)).mirror(false), PartPose.offset(-1.9F, 12.0F, 0.0F));
+		.texOffs(64, 75).mirror().addBox(-2.0F, 10.0F, -4.6F, 4.0F, 2.0F, 2.0F, new CubeDeformation(0.3F)).mirror(false), PartPose.offset(-2.0F, 12.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create().texOffs(64, 59).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.3F))
-		.texOffs(64, 53).addBox(-1.9F, 6.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.4F)), PartPose.offset(1.9F, 12.0F, 0.0F));
+		.texOffs(64, 53).addBox(-2.0F, 6.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.4F)), PartPose.offset(2.0F, 12.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create().texOffs(80, 59).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.3F))
 		.texOffs(96, 63).addBox(-6.0F, 1.0F, 0.0F, 8.0F, 8.0F, 0.0F, new CubeDeformation(0.0F))
-		.texOffs(64, 53).mirror().addBox(-2.1F, 6.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.4F)).mirror(false), PartPose.offset(-1.9F, 12.0F, 0.0F));
+		.texOffs(64, 53).mirror().addBox(-2.0F, 6.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.4F)).mirror(false), PartPose.offset(-2.0F, 12.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}

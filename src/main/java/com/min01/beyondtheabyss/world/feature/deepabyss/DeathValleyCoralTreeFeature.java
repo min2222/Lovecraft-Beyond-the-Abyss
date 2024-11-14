@@ -42,13 +42,14 @@ public class DeathValleyCoralTreeFeature extends Feature<NoneFeatureConfiguratio
 		return false;
 	}
 	
+	//TODO add fan corals;
 	public void placeCoral(WorldGenLevel level, RandomSource random, BlockPos pos, BlockState state)
 	{
 		BlockPos initialPos = this.createStem(level, random, pos, state, random.nextInt(3, 6));
-		List<BlockPos> list = this.createCoral(level, random, initialPos, state, random.nextInt(3, 5));
+		List<BlockPos> list = this.createCoral(level, random, initialPos, state, random.nextInt(4, 6));
 		list.forEach(t -> 
 		{
-			this.createCoral(level, random, t, state, random.nextInt(2, 4));
+			this.createCoral(level, random, t, state, random.nextInt(2, 5));
 		});
 	}
 	
