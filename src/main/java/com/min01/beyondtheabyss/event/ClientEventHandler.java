@@ -23,14 +23,18 @@ import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelFallenDiver;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
-import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
+import com.min01.beyondtheabyss.entity.model.ModelMutavore;
+import com.min01.beyondtheabyss.entity.model.ModelMutavoreTentacle;
+import com.min01.beyondtheabyss.entity.model.ModelMutavoreTentacleEdge;
 import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
 import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
+import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
+import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
@@ -45,10 +49,14 @@ import com.min01.beyondtheabyss.entity.renderer.living.FallenDiverRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.MutavoreRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.MutavoreTentacleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.PhasmozoaRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentHeadRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.gui.overlay.OxygenOverlay;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -65,6 +73,7 @@ import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.particle.ShockwaveParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
+import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.model.EntityModel;
@@ -85,6 +94,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -122,6 +132,12 @@ public class ClientEventHandler
         {
         	return FlashlightItem.isOn(p_174585_) ? 1.0F : 0.0F;
         });
+    }
+    
+    @SubscribeEvent
+    public static void onRegisterDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event)
+    {
+    	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "deep_abyss"), new DeepAbyssDimensionSpecialEffects());
     }
     
     @SubscribeEvent
@@ -196,6 +212,10 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.SIAMSERPENT_HEAD.get(), SiamserpentHeadRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SIAMSERPENT_BONE.get(), SiamserpentBoneRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FALLEN_DIVER.get(), FallenDiverRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.SPINE_WORM_HEAD.get(), SpineWormHeadRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.SPINE_WORM_BODY.get(), SpineWormBodyRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.MUTAVORE.get(), MutavoreRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.MUTAVORE_TENTACLE.get(), MutavoreTentacleRenderer::new);
     }
     
     @SubscribeEvent
@@ -211,12 +231,16 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelPhasmozoa.LAYER_LOCATION, ModelPhasmozoa::createBodyLayer);
     	event.registerLayerDefinition(ModelAmarumGhost.LAYER_LOCATION, ModelAmarumGhost::createBodyLayer);
     	event.registerLayerDefinition(ModelGnasher.LAYER_LOCATION, ModelGnasher::createBodyLayer);
-    	event.registerLayerDefinition(ModelGnasherLeader.LAYER_LOCATION, ModelGnasherLeader::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentSlasher.LAYER_LOCATION, ModelSiamserpentSlasher::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentBlaster.LAYER_LOCATION, ModelSiamserpentBlaster::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentBone.LAYER_LOCATION, ModelSiamserpentBone::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentMiddleBone.LAYER_LOCATION, ModelSiamserpentMiddleBone::createBodyLayer);
     	event.registerLayerDefinition(ModelFallenDiver.LAYER_LOCATION, ModelFallenDiver::createBodyLayer);
+    	event.registerLayerDefinition(ModelSpineWormHead.LAYER_LOCATION, ModelSpineWormHead::createBodyLayer);
+    	event.registerLayerDefinition(ModelSpineWormBody.LAYER_LOCATION, ModelSpineWormBody::createBodyLayer);
+    	event.registerLayerDefinition(ModelMutavore.LAYER_LOCATION, ModelMutavore::createBodyLayer);
+    	event.registerLayerDefinition(ModelMutavoreTentacle.LAYER_LOCATION, ModelMutavoreTentacle::createBodyLayer);
+    	event.registerLayerDefinition(ModelMutavoreTentacleEdge.LAYER_LOCATION, ModelMutavoreTentacleEdge::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);

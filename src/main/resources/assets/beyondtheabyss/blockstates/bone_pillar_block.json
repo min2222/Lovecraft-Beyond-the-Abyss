@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"axis=x": {
+			"model": "beyondtheabyss:block/bone_pillar_block",
+			"x": 90,
+			"y": 90
+		},
+		"axis=y": {
+			"model": "beyondtheabyss:block/bone_pillar_block"
+		},
+		"axis=z": {
+			"model": "beyondtheabyss:block/bone_pillar_block",
+			"x": 90
+		}
+	}
+}

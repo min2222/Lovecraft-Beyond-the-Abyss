@@ -30,7 +30,7 @@ public class DeathValleyBoneFeature extends Feature<ListFeatureConfiguration>
 		RandomSource random = p_159749_.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			if(random.nextFloat() <= 0.005F)
+			if(random.nextFloat() <= 0.5F)
 			{
 				ResourceLocation location = p_159749_.config().structures.get(random.nextInt(4));
 				StructureTemplateManager manager = level.getLevel().getStructureManager();

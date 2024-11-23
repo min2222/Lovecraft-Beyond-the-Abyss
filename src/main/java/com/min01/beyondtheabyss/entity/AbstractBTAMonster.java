@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity;
 import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
-import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinGroundPathNavigation;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -105,9 +103,12 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	@Override
 	public void onSetPos(double x, double y, double z) 
 	{
-		if(this.partBuilder != null)
+		if(this.tickCount <= 2)
 		{
-			this.partBuilder.tick(1.0F);
+			if(this.partBuilder != null)
+			{
+				this.partBuilder.tick(1.0F);
+			}
 		}
 	}
 	
@@ -126,15 +127,14 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	public abstract EntityPartBuilder<? extends AbstractBTAMonster> createBuilder();
 	
 	@Override
-	protected PathNavigation createNavigation(Level p_21480_)
-	{
-		return new NoSpinGroundPathNavigation(this, p_21480_);
-	}
-	
-	@Override
 	public void tick() 
 	{
 		super.tick();
+		
+		if(this.partBuilder != null)
+		{
+			this.partBuilder.tick(1.0F);
+		}
 		
 		if(!this.level.isClientSide)
 		{

@@ -17,7 +17,7 @@ public class SpireHollowStructure extends AbstractCaveGenerationStructure
 
     public SpireHollowStructure(StructureSettings settings)
     {
-        super(settings, BTABiomes.SPIRE_HOLLOW);
+        super(settings, BTABiomes.SPIRE_HOLLOW_KEY);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SpireHollowStructure extends AbstractCaveGenerationStructure
     @Override
     public int getGenerateYHeight(WorldgenRandom random, int x, int y) 
     {
-        return -250;
+        return 10;
     }
 
     @Override

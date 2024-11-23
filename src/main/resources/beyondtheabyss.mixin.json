@@ -8,6 +8,7 @@
 		"MixinEntity",
 		"MixinSwimNodeEvaluator",
 		"MixinNoiseBasedAquifer",
+		"MixinOverworldBiomeBuilder",
 		"multipart.MixinArrayVoxelShape",
 		"multipart.MixinVoxelShape",
 		"multipart.MixinShapes",

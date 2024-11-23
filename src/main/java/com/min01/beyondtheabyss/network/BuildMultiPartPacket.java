@@ -62,6 +62,9 @@ public class BuildMultiPartPacket
 					{
 						EntityPartBuilder<?> builder = mob.getPartBuilder();
 						builder.hitbox = builder.buildHitBox();
+						builder.partOffset.clear();
+						builder.parts.clear();
+						builder.partMap.clear();
 						builder.partOffset.putAll(message.partOffset);
 						builder.parts.putAll(message.parts);
 						builder.partMap.putAll(message.partMap);

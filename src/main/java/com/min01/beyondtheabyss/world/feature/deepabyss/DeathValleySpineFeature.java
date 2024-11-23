@@ -26,21 +26,25 @@ public class DeathValleySpineFeature extends Feature<NoneFeatureConfiguration>
 		RandomSource random = p_159749_.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			if(random.nextFloat() <= 0.05F && level.getFluidState(pos.above()).is(FluidTags.WATER) && level.getFluidState(pos.above(2)).is(FluidTags.WATER))
+			switch(random.nextInt(0, 3))
 			{
-				this.placeSpine(level, pos, 3);
-				return true;
-			}
-			if(random.nextFloat() <= 0.025F && level.getFluidState(pos.above()).is(FluidTags.WATER))
-			{
-				this.placeSpine(level, pos, 2);
-				return true;
-			}
-			if(random.nextFloat() <= 0.01F)
-			{
+			case 0:
 				this.placeSpine(level, pos, 1);
-				return true;
+				break;
+			case 1:
+				if(level.getFluidState(pos.above()).is(FluidTags.WATER))
+				{
+					this.placeSpine(level, pos, 2);
+				}
+				break;
+			case 2:
+				if(level.getFluidState(pos.above()).is(FluidTags.WATER) && level.getFluidState(pos.above(2)).is(FluidTags.WATER))
+				{
+					this.placeSpine(level, pos, 3);
+				}
+				break;
 			}
+			return true;
 		}
 		return false;
 	}

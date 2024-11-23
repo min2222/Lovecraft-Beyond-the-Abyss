@@ -5,15 +5,15 @@
 		"y": {
 			"type": "minecraft:uniform",
 			"min_inclusive": {
-				"absolute": -400
+				"absolute": 0
 			},
 			"max_inclusive": {
-				"absolute": -100
+				"absolute": 110
 			}
 		},
-		"yScale": 3.0,
+		"yScale": 1.5,
 		"lava_level": {
-			"absolute": -640
+			"absolute": -64
 		},
 		"replaceable": "#beyondtheabyss:death_valley_replaceables",
 		"vertical_rotation": {

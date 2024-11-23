@@ -44,14 +44,7 @@ public class EntityRunicFish extends AbstractDeepAbyssCreature
     @Override
     public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
     {
-    	EntityPartBuilder<EntityRunicFish> partBuilder = new EntityPartBuilder<EntityRunicFish>(this)
-    	{
-    		@Override
-    		public boolean isInWater() 
-    		{
-    			return true;
-    		}
-    	};
+    	EntityPartBuilder<EntityRunicFish> partBuilder = new EntityPartBuilder<EntityRunicFish>(this);
     	return partBuilder;
     }
     
@@ -77,9 +70,9 @@ public class EntityRunicFish extends AbstractDeepAbyssCreature
     }
     
     @Override
-    public void aiStep() 
+    public void tick() 
     {
-        super.aiStep();
+        super.tick();
         DeepAbyssUtil.fishFlopping(this);
         
         if(this.isPanic())

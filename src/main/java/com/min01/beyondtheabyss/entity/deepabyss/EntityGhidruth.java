@@ -68,7 +68,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     		@Override
     		public Vec3 getOffset()
     		{
-    			return new Vec3(0.0F, 2.5F, 0.0F);
+    			return new Vec3(0.0F, 2.25F, 0.0F);
     		}
     		
     		@Override

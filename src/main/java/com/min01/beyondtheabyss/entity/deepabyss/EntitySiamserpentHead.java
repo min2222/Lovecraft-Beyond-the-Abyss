@@ -85,6 +85,12 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 		EntityPartBuilder<EntitySiamserpentHead> partBuilder = new EntityPartBuilder<EntitySiamserpentHead>(this);
 		return partBuilder;
 	}
+
+	@Override
+	public BTAMobType getBTAMobType() 
+	{
+		return BTAMobType.HOSTILE;
+	}
     
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
@@ -160,7 +166,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
     		this.hurtTime = this.getOwner().hurtTime;
     		this.deathTime = this.getOwner().deathTime;
 
-			WormSegmentController.tick(this.getX(), this.getY(), this.getZ(), this, this.getOwner(), 1.0F, 0.5F);
+			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.5F);
 		}
 		
 		if(this.getHeadType() == HeadType.BLASTER)
@@ -258,7 +264,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		//LocateCommand
-		return pRandom.nextInt(850) == 0 && pPos.getY() >= -180 && pPos.getY() <= -160 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pPos.getY() >= 30 && pPos.getY() <= 80 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
     @Override
@@ -269,12 +275,6 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Abstr
         	super.doPush(p_20971_);
     	}
     }
-
-	@Override
-	public BTAMobType getBTAMobType() 
-	{
-		return BTAMobType.HOSTILE;
-	}
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag p_21484_) 

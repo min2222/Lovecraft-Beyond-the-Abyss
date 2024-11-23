@@ -74,9 +74,9 @@ public class EntityDeepVampire extends AbstractDeepAbyssMonster
     }
     
     @Override
-    public void aiStep() 
+    public void tick() 
     {
-        super.aiStep();
+        super.tick();
         DeepAbyssUtil.fishFlopping(this);
     }
     

@@ -30,6 +30,13 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 public class BTAUtil 
 {
 	//from https://github.com/AlexModGuy/AlexsCaves/blob/main/src/main/java/com/github/alexmodguy/alexscaves/server/misc/ACMath.java
+	
+    public static float canyonStep(float heightScale, int scaleTo)
+    {
+        int clampTo100 = (int) ((heightScale) * scaleTo * scaleTo);
+        return Mth.clamp((float) (Math.round(clampTo100 / (float) scaleTo)) / (float) scaleTo, 0F, 1F);
+    }
+    
     public static float smin(float a, float b, float k) 
     {
         float h = Math.max(k - Math.abs(a - b), 0.0F) / k;
@@ -50,6 +57,18 @@ public class BTAUtil
     {
         return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
     }
+    
+	public static Vec2 lookAt(Vec3 startPos, Vec3 pos, float rotationSpeed, float currentYRot)
+	{
+		Vec3 vec3 = startPos;
+		double d0 = pos.x - vec3.x;
+		double d1 = pos.y - vec3.y;
+		double d2 = pos.z - vec3.z;
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		float xRot = Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI))));
+		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
+	    return new Vec2(xRot, BTAUtil.rotlerp(currentYRot, yRot, rotationSpeed));
+	}
     
 	public static Vec2 lookAt(Vec3 startPos, Vec3 pos)
 	{

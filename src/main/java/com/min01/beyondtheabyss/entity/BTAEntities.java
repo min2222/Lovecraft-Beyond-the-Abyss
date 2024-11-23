@@ -9,10 +9,14 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityFallenDiver;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavoreTentacle;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityPhasmozoa;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
@@ -51,6 +55,10 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntitySiamserpentHead>> SIAMSERPENT_HEAD = registerEntity("siamserpent_head", createBuilder(EntitySiamserpentHead::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
 	public static final RegistryObject<EntityType<EntitySiamserpentBone>> SIAMSERPENT_BONE = registerEntity("siamserpent_bone", createBuilder(EntitySiamserpentBone::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
 	public static final RegistryObject<EntityType<EntityFallenDiver>> FALLEN_DIVER = registerEntity("fallen_diver", createBuilder(EntityFallenDiver::new, MobCategory.WATER_CREATURE).sized(0.6F, 1.95F));
+	public static final RegistryObject<EntityType<EntitySpineWormHead>> SPINE_WORM_HEAD = registerEntity("spine_worm_head", createBuilder(EntitySpineWormHead::new, MobCategory.WATER_CREATURE).sized(0.75F, 0.6875F));
+	public static final RegistryObject<EntityType<EntitySpineWormBody>> SPINE_WORM_BODY = registerEntity("spine_worm_body", createBuilder(EntitySpineWormBody::new, MobCategory.WATER_CREATURE).sized(0.75F, 0.6875F));
+	public static final RegistryObject<EntityType<EntityMutavore>> MUTAVORE = registerEntity("mutavore", createBuilder(EntityMutavore::new, MobCategory.WATER_CREATURE).sized(2.9375F, 2.125F));
+	public static final RegistryObject<EntityType<EntityMutavoreTentacle>> MUTAVORE_TENTACLE = registerEntity("mutavore_tentacle", createBuilder(EntityMutavoreTentacle::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{

@@ -33,11 +33,11 @@ public class DeathValleyCoralTreeFeature extends Feature<NoneFeatureConfiguratio
 		BlockPos pos = p_159749_.origin();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			if(random.nextFloat() <= 0.0035F)
+			if(random.nextFloat() <= 0.1F)
 			{
 				this.placeCoral(level, random, pos, BTABlocks.DEAD_OSTEO_CORAL_BLOCK.get().defaultBlockState());
-				return true;
 			}
+			return true;
 		}
 		return false;
 	}

@@ -30,7 +30,7 @@ public class DeathValleyFossilFeature extends Feature<ListFeatureConfiguration>
 		RandomSource random = p_159749_.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			if(random.nextFloat() <= 0.001F)
+			if(random.nextFloat() <= 0.3F)
 			{
 				ResourceLocation location = p_159749_.config().structures.get(random.nextInt(3));
 				StructureTemplateManager manager = level.getLevel().getStructureManager();

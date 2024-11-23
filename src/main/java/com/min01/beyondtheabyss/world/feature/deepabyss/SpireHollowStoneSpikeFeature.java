@@ -88,13 +88,13 @@ public class SpireHollowStoneSpikeFeature extends Feature<NoneFeatureConfigurati
 				for(int i2 = -k1; i2 <= k1; ++i2)
 				{
 					BlockPos blockpos1 = blockpos.offset(l1, -1, i2);
-					int j2 = -200;
+					int j2 = 100;
 					if(Math.abs(l1) == 1 && Math.abs(i2) == 1) 
 					{
 						j2 = randomsource.nextInt(5);
 					}
 
-					while(blockpos1.getY() > -200) 
+					while(blockpos1.getY() > 100) 
 					{
 						this.setBlock(worldgenlevel, blockpos1, BTABlocks.ABYSSALITH.get().defaultBlockState());
 						blockpos1 = blockpos1.below();

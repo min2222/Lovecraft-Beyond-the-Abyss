@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FallenDiverMeleeAttackGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
@@ -24,7 +25,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 
 public class EntityFallenDiver extends AbstractDeepAbyssMonster
 {
@@ -82,7 +82,7 @@ public class EntityFallenDiver extends AbstractDeepAbyssMonster
 	
 	public static boolean checkFallenDiverSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(40) == 0 && pPos.getY() >= -200 && pPos.getY() <= -160 && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pPos.getY() >= 30 && pPos.getY() <= 80 && pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ROT_SOIL.get());
     }
 	
 	@Override
