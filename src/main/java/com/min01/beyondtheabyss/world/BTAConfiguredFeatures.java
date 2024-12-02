@@ -15,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
@@ -40,11 +39,9 @@ public class BTAConfiguredFeatures
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SPINE = register("spine");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BONE = register("bone");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BONE_SPIKE = register("bone_spike");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> CORAL_TREE = register("coral_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FOSSIL = register("fossil");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> GHOUL_BLOOM_PATCH = register("ghoul_bloom_patch");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TOOTHVINE_PATCH = register("toothvine_patch");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> STONE_SPIKE = register("stone_spike");
 	
 	private static ResourceKey<ConfiguredFeature<?, ?>> register(String p_209839_) 
 	{
@@ -54,13 +51,11 @@ public class BTAConfiguredFeatures
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context)
     {
 		context.register(SPINE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.SPINE, 32)));
-		context.register(BONE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.BONE, 32, BONE_LOCATION)));
+		context.register(BONE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.BONE, 16, BONE_LOCATION)));
 		context.register(BONE_SPIKE, new ConfiguredFeature<>(Feature.SIMPLE_RANDOM_SELECTOR, new SimpleRandomFeatureConfiguration(HolderSet.direct(PlacementUtils.inlinePlaced(BTAFeatures.BONE_SPIKE.get(), new ListFeatureConfiguration(BONE_SPIKE_LOCATION))))));
-		context.register(CORAL_TREE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.CORAL_TREE, 15, 3, 32)));
-		context.register(FOSSIL, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.FOSSIL, 32, FOSSIL_LOCATION)));
+		context.register(FOSSIL, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.FOSSIL, 16, FOSSIL_LOCATION)));
 		context.register(GHOUL_BLOOM_PATCH, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.GHOUL_BLOOM_PATCH, 48)));
 		context.register(TOOTHVINE_PATCH, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.TOOTHVINE_PATCH, 54)));
-		context.register(STONE_SPIKE, new ConfiguredFeature<>(BTAFeatures.STONE_SPIKE.get(), FeatureConfiguration.NONE));
     }
     
     public static RandomPatchConfiguration randomListPatch(RegistryObject<Feature<ListFeatureConfiguration>> feature, int tries, List<ResourceLocation> structures) 

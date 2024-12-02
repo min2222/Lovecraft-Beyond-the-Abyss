@@ -15,6 +15,7 @@ public class BTAEntityDataSerializers
 	public static final DeferredRegister<EntityDataSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, BeyondtheAbyss.MODID);
 	
 	public static final RegistryObject<EntityDataSerializer<Vec3>> VEC3 = SERIALIZERS.register("serializer_vec3", () -> EntityDataSerializer.simple(BTAEntityDataSerializers::writeVec3, BTAEntityDataSerializers::readVec3));
+	public static final RegistryObject<EntityDataSerializer<Double>> DOUBLE = SERIALIZERS.register("serializer_double", () -> EntityDataSerializer.simple((t, u) -> t.writeDouble(u), t -> t.readDouble()));
 	
 	public static ByteBuf writeVec3(FriendlyByteBuf buf, Vec3 vec)
 	{

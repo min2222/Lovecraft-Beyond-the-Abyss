@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.event;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTAAbilityCapability;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.IllusionCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
@@ -81,19 +80,6 @@ public class EventHandlerForge
 				cap.addAbility(BTAAbilities.ABYSSAL_SCALES);
 			});
 		}
-		if(effect == BTAEffects.HALLUCINATION.get())
-		{
-			//TODO
-			/*if(!entity.level.isClientSide)
-			{
-				BTANetwork.sendToAll(new IllusionAddPacket(entity));
-				EntityGhidruth ghidruth = BTAEntities.GHIDRUTH.get().create(entity.level);
-				entity.getCapability(BTACapabilities.ILLUSION).ifPresent(t -> 
-				{
-					t.setIllusion(ghidruth);
-				});
-			}*/
-		}
 	}
 	
     @SubscribeEvent
@@ -111,7 +97,6 @@ public class EventHandlerForge
 		LivingEntity entity = event.getEntity();
         
     	entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(BTAAbilityCapability::update);
-    	entity.getCapability(BTACapabilities.ILLUSION).ifPresent(IllusionCapability::tickIllusion);
 		
 		if(entity.hasEffect(BTAEffects.AIR_SWIM.get()))
 		{

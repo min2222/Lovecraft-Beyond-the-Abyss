@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class WormSegmentController
 {
-	public static void tick(double x, double y, double z, LivingEntity living, LivingEntity owner, float distance, float speed)
+	public static void tick(LivingEntity living, LivingEntity owner, float distance, float speed)
 	{
 		float xz = 0.0F;
 		float yRot = 0.0F;

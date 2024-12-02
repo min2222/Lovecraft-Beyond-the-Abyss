@@ -27,12 +27,12 @@ public class DeathValleyGhoulBloomPatchFeature extends Feature<NoneFeatureConfig
 		RandomSource random = p_159749_.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			if(random.nextFloat() <= 0.05F)
+			if(random.nextBoolean())
 			{
 				this.placeGhoulBloom(level, pos, false);
 				return true;
 			}
-			if(random.nextFloat() <= 0.025F && level.getFluidState(pos.above()).is(FluidTags.WATER))
+			else if(level.getFluidState(pos.above()).is(FluidTags.WATER))
 			{
 				this.placeGhoulBloom(level, pos, true);
 				return true;

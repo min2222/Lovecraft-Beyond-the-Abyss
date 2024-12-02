@@ -28,11 +28,8 @@ public class DeathValleyToothvinePatchFeature extends Feature<NoneFeatureConfigu
 		RandomSource random = p_159749_.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			if(random.nextFloat() <= 0.05F)
-			{
-				this.placeVine(level, pos, random, random.nextInt(2, 8));
-				return true;
-			}
+			this.placeVine(level, pos, random, random.nextInt(2, 8));
+			return true;
 		}
 		return false;
 	}

@@ -21,7 +21,7 @@ public class AdvancedDivingSetItem extends AbstractDivingSetItem
 {
 	public AdvancedDivingSetItem(ArmorItem.Type type)
 	{
-		super(BTAArmorMaterials.ADVANCED_DIVING_SET, type, 1.0F);
+		super(BTAArmorMaterials.ADVANCED_DIVING_SET, type, 0.4F);
 	}
 	
 	@Override

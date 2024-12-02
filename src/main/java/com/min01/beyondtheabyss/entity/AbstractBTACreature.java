@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity;
 import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
-import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinGroundPathNavigation;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -100,9 +98,12 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 	@Override
 	public void onSetPos(double x, double y, double z) 
 	{
-		if(this.partBuilder != null)
+		if(this.tickCount <= 2)
 		{
-			this.partBuilder.tick(1.0F);
+			if(this.partBuilder != null)
+			{
+				this.partBuilder.tick(1.0F);
+			}
 		}
 	}
 	
@@ -121,15 +122,14 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 	public abstract EntityPartBuilder<? extends AbstractBTACreature> createBuilder();
 	
 	@Override
-	protected PathNavigation createNavigation(Level p_21480_)
-	{
-		return new NoSpinGroundPathNavigation(this, p_21480_);
-	}
-	
-	@Override
 	public void tick() 
 	{
 		super.tick();
+		
+		if(this.partBuilder != null)
+		{
+			this.partBuilder.tick(1.0F);
+		}
 		
 		if(!this.level.isClientSide)
 		{

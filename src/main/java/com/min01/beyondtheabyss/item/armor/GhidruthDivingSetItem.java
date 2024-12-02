@@ -21,7 +21,7 @@ public class GhidruthDivingSetItem extends AbstractDivingSetItem
 {
 	public GhidruthDivingSetItem(ArmorItem.Type type)
 	{
-		super(BTAArmorMaterials.GHIDRUTH_DIVING_SET, type, 1.8F);
+		super(BTAArmorMaterials.GHIDRUTH_DIVING_SET, type, 0.7F);
 	}
 	
 	@Override

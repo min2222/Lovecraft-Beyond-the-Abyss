@@ -15,18 +15,26 @@
 		}
 	},
 	"spawners": {
-		"ambient": [],
-		"axolotls": [],
-		"creature": [],
-		"misc": [],
-		"monster": [],
-		"underground_water_creature": [],
+		"ambient": [
+		],
+		"axolotls": [
+		],
+		"creature": [
+		],
+		"misc": [
+		],
+		"monster": [
+		],
+		"underground_water_creature": [
+		],
 		"water_ambient": [
+		],
+		"water_creature": [
 			{
 				"type": "beyondtheabyss:gnasher",
 				"weight": 1,
 				"minCount": 1,
-				"maxCount": 1
+				"maxCount": 2
 			},
 			{
 				"type": "beyondtheabyss:siamserpent_head",
@@ -37,13 +45,13 @@
 			{
 				"type": "beyondtheabyss:fallen_diver",
 				"weight": 1,
-				"minCount": 1,
-				"maxCount": 1
+				"minCount": 2,
+				"maxCount": 3
 			}
-		],
-		"water_creature": []
+		]
 	},
-	"spawn_costs": {},
+	"spawn_costs": {
+	},
 	"carvers": {
 		"air": "beyondtheabyss:death_valley"
 	},
@@ -51,18 +59,23 @@
 		[
 			"beyondtheabyss:spine",
 			"beyondtheabyss:bone",
-			"beyondtheabyss:bone_spike",
-			"beyondtheabyss:coral_tree",
 			"beyondtheabyss:fossil",
 			"beyondtheabyss:ghoul_bloom_patch",
 			"beyondtheabyss:toothvine_patch"
 		],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[]
+		[
+		],
+		[
+		],
+		[
+		],
+		[
+		],
+		[
+		],
+		[
+		],
+		[
+		]
 	]
 }

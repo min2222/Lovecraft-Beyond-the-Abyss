@@ -137,9 +137,9 @@ public class EntityLatcher extends AbstractDeepAbyssMonster
 	}
     
     @Override
-    public void aiStep() 
+    public void tick() 
     {
-    	super.aiStep();
+    	super.tick();
     	DeepAbyssUtil.fishFlopping(this);
         
         if(this.getVehicle() != null)

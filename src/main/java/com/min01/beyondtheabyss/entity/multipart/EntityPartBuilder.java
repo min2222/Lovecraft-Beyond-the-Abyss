@@ -12,7 +12,9 @@ import com.min01.beyondtheabyss.cerbon.EntityPart;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
-import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.BuildMultiPartPacket;
 import com.min01.beyondtheabyss.network.UpdateMultiPartPacket;
@@ -142,14 +144,14 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         EntityBounds.EntityBoundsBuilder builder = EntityBounds.builder();
-        return this.addPart(builder, model.root(), null).overrideCollisionBox(this.getBoundingBox(this.entity.position())).getFactory().create();
+        return this.addPart(builder, this.root(model), null).overrideCollisionBox(this.getBoundingBox(this.entity.position())).getFactory().create();
 	}
 
 	@OnlyIn(Dist.CLIENT)
     public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
     {
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
-        String name = this.getModelPartName(model.root(), part);
+        String name = this.getModelPartName(this.root(model), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
         if(parent != null) 
         {
@@ -169,11 +171,30 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
         return builder2;
     }
+	
+	@OnlyIn(Dist.CLIENT)
+	public ModelPart root(HierarchicalModel<T> model)
+	{
+		if(this.entity instanceof EntityGnasher gnasher)
+		{
+			if(gnasher.isLeader())
+			{
+				return model.root().getChild("LeadGnasher");
+			}
+			else
+			{
+				return model.root().getChild("Gnasher");
+			}
+		}
+		return model.root();
+	}
 
+	//TODO need better system due to spine worm head;
 	@OnlyIn(Dist.CLIENT)
     public AABB getPartSize(ModelPart part, String name)
     {
         AABB box = null;
+        AABB empty = new AABB(Vec3.ZERO, Vec3.ZERO);
         for(ModelPart.Cube cube : part.cubes)
         {
             Vec3 min = (new Vec3((double)cube.minX, (double)cube.minY, (double)cube.minZ)).scale(SCALE * this.getRenderScale());
@@ -189,16 +210,15 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
             }
         }
 
-        AABB box1 = new AABB(Vec3.ZERO, Vec3.ZERO);
         if(box == null) 
         {
-            return box1;
+            return empty;
         }
         else
         {
             Vec3 offset = box.getCenter().multiply(-1.0, -1.0, 1.0);
             this.partOffset.put(name, offset);
-            return box1.inflate(box.getXsize() / 2.0, box.getYsize() / 2.0, box.getZsize() / 2.0);
+            return empty.inflate(box.getXsize() / 2.0, box.getYsize() / 2.0, box.getZsize() / 2.0);
         }
     }
 
@@ -317,8 +337,8 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         {
         	rotation.mul(Axis.ZP.rotationDegrees(180.0F));
         }
-        
-        if(this.isInWater() && !this.entity.isInWater())
+
+        if(this.isInWater() && !this.entity.isInWater() || entity instanceof EntityRunicFish)
         {
         	rotation.mul(Axis.ZP.rotationDegrees(90.0F));
         }
@@ -361,6 +381,9 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     {
 		if(this.entity.level.isClientSide)
 		{
+			this.partOffset.clear();
+			this.parts.clear();
+			this.partMap.clear();
 			this.hitbox = this.buildHitBox();
 			BTANetwork.sendToServer(new BuildMultiPartPacket(this.entity, this.partOffset, this.parts, this.partMap));
 		}

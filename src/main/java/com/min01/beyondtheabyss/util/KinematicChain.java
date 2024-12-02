@@ -10,12 +10,16 @@ import net.minecraft.world.phys.Vec3;
 public class KinematicChain 
 {
 	protected Entity entity;
-	protected Entity target;
-	protected ChainSegment[] segments = new ChainSegment[13];
+	protected Vec3 target;
+	protected Vec3 anchorPos;
+	protected float distance;
+	protected ChainSegment[] segments;
 	
-	public KinematicChain(Entity entity) 
+	public KinematicChain(Entity entity, int length, float distance) 
 	{
 		this.entity = entity;
+		this.distance = distance;
+		this.segments = new ChainSegment[length];
 		this.createSegments();
 	}
 	
@@ -28,12 +32,10 @@ public class KinematicChain
 	
 	public void setupSegments()
 	{
-		for(int i = 0; i < this.segments.length - 1; i++)
+		for(int i = 0; i < this.segments.length; i++)
 		{
 			this.segments[i] = new ChainSegment("segment");
 		}
-		
-		this.segments[this.segments.length - 1] = new ChainSegment("tip");
 	}
 	
 	public void setupParents()
@@ -54,37 +56,33 @@ public class KinematicChain
 	
 	public void tick()
 	{
-		this.segments[0].setPos(this.entity.position().add(BTAUtil.getLookPos(this.entity.getXRot(), this.entity.getYRot(), 0, -1)));
-		
+		if(this.anchorPos != null)
+		{
+			this.segments[0].setRot(this.lookAt(this.segments[0].getPos(), this.anchorPos));
+			this.segments[0].setPos(this.anchorPos);
+		}
 		for(ChainSegment segment : this.segments)
 		{
 			ChainSegment parent = segment.getParent();
 			Vec3 pos = segment.getPos();
+			//this.addParticle(pos, 0, 0, 0, 0, 10);
 			
 			if(parent != null)
 			{
 				segment.setRot(this.lookAt(pos, parent.getPos()));
 				if(segment != this.segments[0])
 				{
-					segment.setPos(this.getLookPos(this.lookAt(parent.getPos(), pos), parent.getPos(), 0, 0, 1.0F));
+					segment.setPos(this.getLookPos(this.lookAt(parent.getPos(), pos), parent.getPos(), 0, 0, this.distance));
 				}
 				
 				parent.setRot(this.lookAt(parent.getPos(), pos));
-				parent.setPos(this.getLookPos(this.lookAt(pos, parent.getPos()), pos, 0, 0, 1.0F));
+				parent.setPos(this.getLookPos(this.lookAt(pos, parent.getPos()), pos, 0, 0, this.distance));
 			}
-		}
-
-		this.followTarget();
-	}
-	
-	public void followTarget()
-	{
-		ChainSegment tip = this.segments[this.segments.length - 1];
-		if(this.target != null)
-		{
-			Vec3 pos = this.target.getEyePosition();
-			tip.setRot(this.lookAt(tip.getPos(), pos));
-			tip.setPos(this.getLookPos(this.lookAt(pos, tip.getPos()), pos, 0, 0, 0.1F));
+			else if(this.target != null)
+			{
+				segment.setRot(this.lookAt(pos, this.target));
+				segment.setPos(this.getLookPos(this.lookAt(this.target, pos), this.target, 0, 0, this.distance));
+			}
 		}
 	}
 	
@@ -145,12 +143,22 @@ public class KinematicChain
 		return this.entity;
 	}
 	
-	public void setTarget(Entity target)
+	public void setAnchorPos(Vec3 target)
+	{
+		this.anchorPos = target;
+	}
+	
+	public Vec3 getAnchorPos()
+	{
+		return this.anchorPos;
+	}
+	
+	public void setTarget(Vec3 target)
 	{
 		this.target = target;
 	}
 	
-	public Entity getTarget()
+	public Vec3 getTarget()
 	{
 		return this.target;
 	}

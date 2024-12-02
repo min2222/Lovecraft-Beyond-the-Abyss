@@ -66,9 +66,11 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     public void tick() 
     {
     	super.tick();
+		this.resetFallDistance();
+		
     	if(this.getOwner() != null)
     	{
-			WormSegmentController.tick(this.getX(), this.getY(), this.getZ(), this, this.getOwner(), 1.0F, 0.5F);
+			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.5F);
     	}
     	else
     	{
@@ -80,12 +82,22 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     		EntitySiamserpentHead head = this.getHead();
     		this.hurtTime = head.hurtTime;
     		this.deathTime = head.deathTime;
-    		if(!head.segments.contains(this) && head.segments.size() > this.getIndex())
+    		if(!head.segments.contains(this) && head.segments.size() >= this.getIndex())
     		{
     			head.segments.add(this.getIndex(), this);
     		}
+    		if(head.segments.isEmpty() && this.getIndex() == 0)
+    		{
+    			head.segments.add(this);
+    		}
     	}
     }
+
+	@Override
+	public BTAMobType getBTAMobType()
+	{
+		return BTAMobType.HOSTILE;
+	}
     
 	@Override
 	public boolean isAlliedTo(Entity p_20355_) 
@@ -186,11 +198,5 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
 	public int getVariant()
 	{
 		return this.entityData.get(VARIANT);
-	}
-
-	@Override
-	public BTAMobType getBTAMobType()
-	{
-		return BTAMobType.HOSTILE;
 	}
 }

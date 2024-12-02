@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -67,7 +66,7 @@ public class DivingSetLayer<T extends LivingEntity, M extends EntityModel<T>, A 
 	private void renderModel(PoseStack poseStack, MultiBufferSource bufferSource, int p_117109_, boolean p_117111_, Model p_117112_, float p_117114_, float p_117115_, float p_117116_, ResourceLocation armorResource)
 	{
 		VertexConsumer consumer = ItemRenderer.getArmorFoilBuffer(bufferSource, RenderType.armorCutoutNoCull(armorResource), false, p_117111_);
-		p_117112_.renderToBuffer(poseStack, consumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, p_117114_, p_117115_, p_117116_, 1.0F);
+		p_117112_.renderToBuffer(poseStack, consumer, p_117109_, OverlayTexture.NO_OVERLAY, p_117114_, p_117115_, p_117116_, 1.0F);
 	}
 	
 	protected HumanoidModel<?> getArmorModelHook(T entity, ItemStack itemStack, EquipmentSlot slot) 

@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.world.structure.deepabyss;
 
-import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTAStructures;
@@ -55,7 +54,7 @@ public class SpireHollowStructurePiece extends AbstractCaveGenerationStructurePi
                 for(int y = 15; y >= 0; y--) 
                 {
                     carve.set(cornerX + x, Mth.clamp(cornerY + y, level.getMinBuildHeight(), level.getMaxBuildHeight()), cornerZ + z);
-                    if(this.inCircle(carve) && !this.checkedGetBlock(level, carve).is(Blocks.BEDROCK) && this.checkedGetBlock(level, carve).is(BTABlocks.ABYSSALITH.get())) 
+                    if(this.inCircle(carve) && !this.checkedGetBlock(level, carve).is(Blocks.BEDROCK)) 
                     {
                         flag = true;
                         this.checkedSetBlock(level, carve, Blocks.WATER.defaultBlockState());
@@ -66,7 +65,7 @@ public class SpireHollowStructurePiece extends AbstractCaveGenerationStructurePi
         }
         if(flag) 
         {
-        	this.replaceBiomes(level, BTABiomes.SPIRE_HOLLOW, 32);
+        	this.replaceBiomes(level, BTABiomes.SPIRE_HOLLOW_KEY, 32);
         }
     }
 

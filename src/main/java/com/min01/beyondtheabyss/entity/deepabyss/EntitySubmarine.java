@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity.submarine;
+package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 import java.util.Optional;

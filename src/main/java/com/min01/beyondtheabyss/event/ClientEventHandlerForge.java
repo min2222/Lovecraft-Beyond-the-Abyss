@@ -1,14 +1,12 @@
 package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.IPartBuilder;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
@@ -20,9 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
@@ -34,8 +29,6 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
@@ -52,38 +45,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.FORGE)
 public class ClientEventHandlerForge 
 {
-    @SubscribeEvent
-    public static void onRenderLevelStage(RenderLevelStageEvent event)
-    {
-    	if(event.getStage() == Stage.AFTER_PARTICLES)
-    	{
-    		PoseStack poseStack = event.getPoseStack();
-    		BTAClientUtil.MC.player.getCapability(BTACapabilities.ILLUSION).ifPresent(cap -> 
-    		{
-        		EntityGhidruth ghidruth = (EntityGhidruth) cap.getIllusion();
-        		if(ghidruth != null)
-        		{
-        			EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(ghidruth);
-        			if(renderer instanceof LivingEntityRenderer)
-        			{
-        	    		poseStack.pushPose();
-            			LivingEntityRenderer<? super LivingEntity, ?> livingRenderer = (LivingEntityRenderer<? super LivingEntity, ?>) renderer;
-                		float partialTick = event.getPartialTick();
-            			float f = Mth.lerp(partialTick, ghidruth.yRotO, ghidruth.getYRot());
-            			double x = Mth.lerp((double)partialTick, ghidruth.xOld, ghidruth.getX());
-            			double y = Mth.lerp((double)partialTick, ghidruth.yOld, ghidruth.getY());
-            			double z = Mth.lerp((double)partialTick, ghidruth.zOld, ghidruth.getZ());
-            			Vec3 lerpPos = new Vec3(x, y, z);	
-            			Vec3 pos = lerpPos.subtract(event.getCamera().getPosition());
-            	        poseStack.translate(pos.x, pos.y, pos.z);
-            			livingRenderer.render(ghidruth, f, partialTick, event.getPoseStack(), BTAClientUtil.MC.renderBuffers().bufferSource(), LightTexture.FULL_BRIGHT);
-                		poseStack.popPose();
-        			}
-        		}
-    		});
-    	}
-    }
-    
     @SubscribeEvent
     public static void onRenderEntity(RenderEntityEvent<?> event)
     {

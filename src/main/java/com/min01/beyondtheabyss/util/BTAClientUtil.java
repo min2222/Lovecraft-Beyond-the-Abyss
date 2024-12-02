@@ -38,12 +38,12 @@ public class BTAClientUtil
     {
         VertexConsumer vertexbuffer = bufferIn.getBuffer(renderType);
         Matrix4f matrix4f = stack.last().pose();
-        float maxX = (float) boundingBox.maxX * 0.425F;
-        float minX = (float) boundingBox.minX * 0.425F;
-        float maxY = (float) boundingBox.maxY * 0.425F;
-        float minY = (float) boundingBox.minY * 0.425F;
-        float maxZ = (float) boundingBox.maxZ * 0.425F;
-        float minZ = (float) boundingBox.minZ * 0.425F;
+        float maxX = (float) boundingBox.maxX * 0.625F;
+        float minX = (float) boundingBox.minX * 0.625F;
+        float maxY = (float) boundingBox.maxY * 0.625F;
+        float minY = (float) boundingBox.minY * 0.625F;
+        float maxZ = (float) boundingBox.maxZ * 0.625F;
+        float minZ = (float) boundingBox.minZ * 0.625F;
 
         float maxU = maxZ - minZ;
         float maxV = maxY - minY;

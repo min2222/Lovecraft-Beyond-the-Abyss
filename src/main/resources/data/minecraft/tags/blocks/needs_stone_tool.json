@@ -11,6 +11,10 @@
 		"beyondtheabyss:spine_bone_base",
 		"beyondtheabyss:bone_piles",
 		"beyondtheabyss:sitting_skeleton",
-		"beyondtheabyss:fallen_skeleton"
+		"beyondtheabyss:fallen_skeleton",
+		"beyondtheabyss:chiseled_bone_block",
+		"beyondtheabyss:cracked_bone_block",
+		"beyondtheabyss:bone_brick_block",
+		"beyondtheabyss:bone_pillar_block"
 	]
 }

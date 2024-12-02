@@ -26,8 +26,6 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdatePosArrayPacket.class, UpdatePosArrayPacket::encode, UpdatePosArrayPacket::new, UpdatePosArrayPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateAltarItemPacket.class, UpdateAltarItemPacket::encode, UpdateAltarItemPacket::new, UpdateAltarItemPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateVehiclePacket.class, UpdateVehiclePacket::encode, UpdateVehiclePacket::new, UpdateVehiclePacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, UpdateIllusionPacket.class, UpdateIllusionPacket::encode, UpdateIllusionPacket::new, UpdateIllusionPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, AddIllusionPacket.class, AddIllusionPacket::encode, AddIllusionPacket::new, AddIllusionPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, BuildMultiPartPacket.class, BuildMultiPartPacket::encode, BuildMultiPartPacket::new, BuildMultiPartPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateMultiPartPacket.class, UpdateMultiPartPacket::encode, UpdateMultiPartPacket::new, UpdateMultiPartPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, InteractMultiPartPacket.class, InteractMultiPartPacket::encode, InteractMultiPartPacket::new, InteractMultiPartPacket.Handler::onMessage);

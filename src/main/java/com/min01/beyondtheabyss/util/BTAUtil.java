@@ -30,6 +30,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 public class BTAUtil 
 {
 	//from https://github.com/AlexModGuy/AlexsCaves/blob/main/src/main/java/com/github/alexmodguy/alexscaves/server/misc/ACMath.java
+
     public static float smin(float a, float b, float k) 
     {
         float h = Math.max(k - Math.abs(a - b), 0.0F) / k;

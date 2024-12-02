@@ -122,19 +122,13 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 	{
 		return this.isLeader() ? EntityDimensions.scalable(1.25F, 1.0F) : super.getDimensions(p_21047_);
 	}
-	
-    @Override
-    public void aiStep() 
-    {
-        super.aiStep();
-        this.refreshDimensions();
-        DeepAbyssUtil.fishFlopping(this);
-    }
     
     @Override
     public void tick() 
     {
     	super.tick();
+        this.refreshDimensions();
+        DeepAbyssUtil.fishFlopping(this);
     	
         if(this.hasFollowers() && this.level.random.nextInt(200) == 1) 
         {
@@ -153,6 +147,11 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 			{
 				this.startFollowing(t);
 			});
+		}
+		
+		if(this.tickCount == 2 && this.isLeader())
+		{
+        	this.partBuilder.rebuildHitbox();
 		}
     }
     
@@ -175,6 +174,9 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
     
     public void setLeader(boolean value)
     {
+		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
+		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
+		this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(15);
     	this.entityData.set(IS_LEADER, value);
     }
     
@@ -277,7 +279,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 	
 	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pRandom.nextInt(350) == 0 && pPos.getY() >= -180 && pPos.getY() <= -160 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pPos.getY() >= 30 && pPos.getY() <= 80 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
 	@SuppressWarnings("deprecation")
@@ -295,7 +297,8 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 	
 	public void spawnAsSwarm()
 	{
-		this.setAsLeader();
+	   	this.setHealth(30);
+	   	this.setLeader(true);
 		for(int i = 0; i <= 5; i++)
 		{
 			EntityGnasher gnasher = new EntityGnasher(BTAEntities.GNASHER.get(), this.level);
@@ -304,14 +307,4 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 			this.level.addFreshEntity(gnasher);
 		}
 	}
-	
-    public void setAsLeader()
-    {
-    	this.setHealth(30);
-		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
-		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
-		this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(15);
-		this.setLeader(true);
-		this.partBuilder.rebuildHitbox();
-    }
 }
