@@ -46,6 +46,10 @@
 		"beyondtheabyss:osteo_coral_fan",
 		"beyondtheabyss:dead_osteo_coral_wall_fan",
 		"beyondtheabyss:osteo_coral_wall_fan",
-		"beyondtheabyss:compact_rot_soil"
+		"beyondtheabyss:compact_rot_soil",
+		"beyondtheabyss:chiseled_bone_block",
+		"beyondtheabyss:cracked_bone_block",
+		"beyondtheabyss:bone_brick_block",
+		"beyondtheabyss:bone_pillar_block"
 	]
 }

@@ -160,15 +160,6 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("ghidruth"), netHeadYaw, headPitch);
 		BTAClientUtil.animateWalk(this, GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
-		this.animate(entity.biteRightAnimationState, GhidruthAnimation.GHIDRUTH_BITE_RIGHT, ageInTicks);
-		this.animate(entity.biteLeftAnimationState, GhidruthAnimation.GHIDRUTH_BITE_LEFT, ageInTicks);
-		this.animate(entity.tailSwingRightAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);
-		this.animate(entity.tailSwingLeftAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_LEFT, ageInTicks);
-		this.animate(entity.dashAnimationState, GhidruthAnimation.GHIDRUTH_CHARGE, ageInTicks);
-		this.animate(entity.dashPrepareAnimationState, GhidruthAnimation.GHIDRUTH_CHARGE_PREPARE, ageInTicks);
-		this.animate(entity.stunAnimationState, GhidruthAnimation.GHIDRUTH_STUNNED, ageInTicks);
-		this.animate(entity.stunLoopAnimationState, GhidruthAnimation.GHIDRUTH_STUN_LOOP, ageInTicks);
-		this.animate(entity.stunEndAnimationState, GhidruthAnimation.GHIDRUTH_STUN_END, ageInTicks);
 		ModelPart ghidruth = this.root.getChild("ghidruth");
 	    ModelPart head = ghidruth.getChild("Head");
 	    head.getChild("right_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;

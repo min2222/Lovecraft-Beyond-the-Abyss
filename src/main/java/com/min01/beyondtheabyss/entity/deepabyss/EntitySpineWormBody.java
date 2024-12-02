@@ -9,7 +9,6 @@ import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.beyondtheabyss.util.WormSegmentController;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +40,6 @@ public class EntitySpineWormBody extends AbstractOwnableDeepAbyssMonster<Abstrac
 		this.setNoGravity(true);
 		this.setCanMove(false);
 		this.setCanLook(false);
-		this.noPhysics = true;
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -83,7 +81,6 @@ public class EntitySpineWormBody extends AbstractOwnableDeepAbyssMonster<Abstrac
 	public void tick()
 	{
 		super.tick();
-		
 		this.resetFallDistance();
     	
     	if(this.getHead() != null)
@@ -99,32 +96,12 @@ public class EntitySpineWormBody extends AbstractOwnableDeepAbyssMonster<Abstrac
     		{
     			head.bodies.add(this);
     		}
-        	
-        	if(this.getIndex() == 0)
-        	{
-        		this.setPos(Vec3.atCenterOf(head.getAttachedPos()));
-        		if(head.getTarget() != null)
-        		{
-        			this.lookAt(Anchor.EYES, head.getTarget().getEyePosition().add(0.0F, head.getTarget().getEyeHeight(), 0.0F));
-        		}
-        	}
-    		else if(this.getOwner() != null)
-        	{
-        		WormSegmentController.tickForward(this, this.getOwner(), 0.6F, 0.5F);
-        	}
-
-        	//TODO worm chain test
-        	/*ChainSegment segment = head.chain.getSegments()[this.getIndex()];
-    		Vec3 pos = segment.getPos();
-    		Vec2 rot = segment.getRot();
-			if(this.tickCount >= 20)
-			{
-				this.setPos(pos);
-			}
-    		this.setXRot(rot.x);
-    		this.setYRot(rot.y);
-    		this.setYHeadRot(rot.y);
-    		this.setYBodyRot(rot.y);*/
+    		if(head.posArray[this.getIndex()] != null && this.getOwner() != null)
+    		{
+    			Vec3 lookPos = BTAUtil.getLookPos(this.getOwner().getRotationVector(), this.getOwner().position(), 0.0F, 0.0F, 0.6F);
+    			this.lookAt(Anchor.FEET, lookPos);
+    			this.setPos(head.posArray[this.getIndex()]);
+    		}
     	}
     	else
     	{

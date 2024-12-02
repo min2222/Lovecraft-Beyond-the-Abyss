@@ -20,7 +20,7 @@ public class GhidruthDivingSetItem extends AbstractDivingSetItem
 {
 	public GhidruthDivingSetItem(EquipmentSlot slot)
 	{
-		super(BTAArmorMaterials.GHIDRUTH_DIVING_SET, slot, 1.8F);
+		super(BTAArmorMaterials.GHIDRUTH_DIVING_SET, slot, 0.7F);
 	}
 	
 	@Override

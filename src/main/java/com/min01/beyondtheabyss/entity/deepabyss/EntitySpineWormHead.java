@@ -8,8 +8,6 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.beyondtheabyss.util.WormChain;
-import com.min01.beyondtheabyss.util.WormSegmentController;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,20 +32,19 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntitySpineWormHead extends AbstractDeepAbyssMonster
 {
+	public static final EntityDataAccessor<Boolean> IS_EXPOSED = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> BODY_LENGTH = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Direction> ATTACHED_DIRECTION = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.DIRECTION);
 	public static final EntityDataAccessor<BlockPos> ATTACHED_POS = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.BLOCK_POS);
 
 	public final List<EntitySpineWormBody> bodies = new ArrayList<>();
 	
-	public final WormChain chain = new WormChain(this, 10);
-	
 	public EntitySpineWormHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.setNoGravity(true);
 		this.setCanMove(false);
-		this.noPhysics = true;
+		this.posArray = new Vec3[10];
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -55,13 +52,15 @@ public class EntitySpineWormHead extends AbstractDeepAbyssMonster
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 30.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.0F)
-        		.add(Attributes.FOLLOW_RANGE, 25.0F);
+        		.add(Attributes.FOLLOW_RANGE, 10.0F)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 100.0F);
     }
     
     @Override
     protected void defineSynchedData() 
     {
     	super.defineSynchedData();
+    	this.entityData.define(IS_EXPOSED, false);
     	this.entityData.define(BODY_LENGTH, 0);
     	this.entityData.define(ATTACHED_DIRECTION, Direction.DOWN);
     	this.entityData.define(ATTACHED_POS, this.blockPosition());
@@ -96,31 +95,64 @@ public class EntitySpineWormHead extends AbstractDeepAbyssMonster
 	public void tick() 
 	{
 		super.tick();
-		
+		this.tickPos();
 		this.resetFallDistance();
 		
-		if(!this.bodies.isEmpty())
+		if(!this.hasTarget())
 		{
-			EntitySpineWormBody body = this.bodies.get(this.bodies.size() - 1);
-    		WormSegmentController.tickForward(this, body, 0.6F, 0.5F);
-    		
-    		if(this.getTarget() != null)
-    		{
-    			float distance = this.distanceTo(this.getTarget());
-    			if(distance > 2.0F)
-    			{
-    				int dist = Mth.floor(distance);
-    				if(this.getBodyLength() < 10 && this.getBodyLength() != dist)
-    				{
-    					this.addBody(this.bodies.size(), this.bodies.get(this.bodies.size() - 1));
-    					this.setBodyLength(this.getBodyLength() + 1);
-    				}
-    			}
-    		}
+			this.setXRot(this.getAttachedDirection().toYRot());
+			this.setDeltaMovement(BTAUtil.fromToVector(this.position(), Vec3.atCenterOf(this.getAttachedPos()), 0.5F));
+			this.setExposed(false);
+			this.setCanLook(false);
 		}
 		
-		this.chain.tick();
-		this.chain.setTargetPos(this.position());
+		//TODO
+		if(this.getTarget() != null)
+		{
+			if(this.distanceTo(this.getTarget()) < 9.0F)
+			{
+				if(this.getAnimationTick() <= 0)
+				{
+					if(!this.isExposed())
+					{
+						this.setDeltaMovement(BTAUtil.fromToVector(this.position(), this.getTarget().position(), 0.5F));
+						this.setExposed(true);
+						this.setAnimationTick(30);
+					}
+					else
+					{
+						this.setDeltaMovement(BTAUtil.fromToVector(this.position(), Vec3.atCenterOf(this.getAttachedPos()), 0.5F));
+						this.setExposed(false);
+						this.setAnimationTick(30);
+					}
+				}
+				this.setCanLook(true);
+			}
+		}
+		
+		Vec3 attachedPos = Vec3.atCenterOf(this.getAttachedPos());
+		if(attachedPos.distanceTo(this.position()) > 6)
+		{
+            Vec3 vec3 = attachedPos.subtract(this.position());
+            float dist = (float) attachedPos.distanceTo(this.position());
+            double length = vec3.length();
+            if(length > dist) 
+            {
+            	double scale = (length / dist) * 0.5D;
+            	this.setDeltaMovement(this.getDeltaMovement().add(vec3.scale(1.0D / length).scale(scale)));
+            }
+		}
+		else
+		{
+            Vec3 vec3 = this.position().subtract(this.position());
+            float dist = (float) attachedPos.distanceTo(this.position());
+            double length = vec3.length();
+            if(length > dist)
+            {
+            	double scale = (length / dist) * 0.5D;
+            	this.setDeltaMovement(this.getDeltaMovement().add(vec3.scale(1.0D / length).scale(scale)));
+            }
+		}
 	}
 	
 	@Override
@@ -130,32 +162,53 @@ public class EntitySpineWormHead extends AbstractDeepAbyssMonster
 		this.setYRot(0.0F);
 		this.setYHeadRot(0.0F);
 		this.setYBodyRot(0.0F);
-
-		EntitySpineWormBody body = new EntitySpineWormBody(BTAEntities.SPINE_WORM_BODY.get(), this.level);
-		body.setIndex(0);
-		body.setPos(Vec3.atCenterOf(this.getAttachedPos()));
-		body.setHead(this);
-		this.bodies.add(0, body);
-		this.level.addFreshEntity(body);
+		this.setXRot(this.getAttachedDirection().toYRot());
+		
+		for(int i = 0; i < 10; i++)
+		{
+			EntitySpineWormBody body = new EntitySpineWormBody(BTAEntities.SPINE_WORM_BODY.get(), this.level);
+			body.setPos(this.position());
+			body.setHead(this);
+			body.setIndex(i);
+			if(!this.bodies.isEmpty())
+			{
+				body.setOwner(this.bodies.get(i - 1));
+			}
+			else
+			{
+				body.setOwner(this);
+			}
+			this.bodies.add(i, body);
+			this.level.addFreshEntity(body);
+		}
 		
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 	
-	public void addBody(int index, EntitySpineWormBody owner)
+	public void tickPos()
 	{
-		Vec3 lookPos = BTAUtil.getLookPos(owner.getRotationVector(), owner.position(), 0.0F, 0.0F, 0.6F);
-		EntitySpineWormBody body = new EntitySpineWormBody(BTAEntities.SPINE_WORM_BODY.get(), this.level);
-		body.setIndex(index);
-		body.setPos(lookPos);
-		body.setOwner(owner);
-		body.setHead(this);
-		body.setXRot(owner.getXRot());
-		body.setYRot(owner.getYRot());
-		body.setYHeadRot(owner.yHeadRot);
-		body.setYBodyRot(owner.yBodyRot);
-		this.bodies.add(index, body);
-		this.level.addFreshEntity(body);
+        Vec3 from = this.position();
+        Vec3 to = Vec3.atCenterOf(this.getAttachedPos());
+        Vec3 pos = to.subtract(from);
+        Vec3 currentSegmentButt = Vec3.ZERO;
+        int segmentCount = 0;
+        while(segmentCount < 10)
+        {
+            double remainingDistance = Math.min(currentSegmentButt.distanceTo(pos), 0.6F);
+            Vec3 linearVec = pos.subtract(currentSegmentButt);
+            Vec3 powVec = new Vec3(this.modifyVecAngle(linearVec.x), this.modifyVecAngle(linearVec.y), this.modifyVecAngle(linearVec.z));
+            Vec3 next = powVec.normalize().scale(remainingDistance).add(currentSegmentButt);
+            this.posArray[segmentCount] = next.add(this.position());
+            currentSegmentButt = next;
+            segmentCount++;
+        }
 	}
+	
+    public double modifyVecAngle(double dimension)
+    {
+        float abs = (float) Math.abs(dimension);
+        return Math.signum(dimension) * Mth.clamp(Math.pow(abs * 2, 0.1) * 2, 0.05 * abs, abs);
+    }
 	
     @Override
     public boolean isInvulnerableTo(DamageSource p_20122_)
@@ -173,6 +226,7 @@ public class EntitySpineWormHead extends AbstractDeepAbyssMonster
     public void addAdditionalSaveData(CompoundTag p_21484_) 
     {
     	super.addAdditionalSaveData(p_21484_);
+    	p_21484_.putBoolean("isExposed", this.isExposed());
     	p_21484_.putInt("BodyLength", this.getBodyLength());
     	p_21484_.putInt("AttachedDirection", this.getAttachedDirection().ordinal());
     	p_21484_.putInt("AttachedPosX", this.getAttachedPos().getX());
@@ -184,6 +238,10 @@ public class EntitySpineWormHead extends AbstractDeepAbyssMonster
     public void readAdditionalSaveData(CompoundTag p_21450_)
     {
     	super.readAdditionalSaveData(p_21450_);
+    	if(p_21450_.contains("isExposed"))
+    	{
+    		this.setExposed(p_21450_.getBoolean("isExposed"));
+    	}
     	if(p_21450_.contains("BodyLength"))
     	{
     		this.setBodyLength(p_21450_.getInt("BodyLength"));
@@ -197,6 +255,16 @@ public class EntitySpineWormHead extends AbstractDeepAbyssMonster
     		this.setAttachedPos(new BlockPos(p_21450_.getInt("AttachedPosX"), p_21450_.getInt("AttachedPosY"), p_21450_.getInt("AttachedPosZ")));
     	}
     }
+    
+	public void setExposed(boolean value)
+	{
+		this.entityData.set(IS_EXPOSED, value);
+	}
+	
+	public boolean isExposed()
+	{
+		return this.entityData.get(IS_EXPOSED);
+	}
     
 	public void setBodyLength(int value)
 	{

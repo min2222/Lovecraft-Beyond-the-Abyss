@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
@@ -39,13 +38,11 @@ public class BTAConfiguredFeatures
 			new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/fossil_3"));
 	
     public static final RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> SPINE = CONFIGURED_FEATURES.register("spine", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.SPINE, 32)));
-    public static final RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> BONE = CONFIGURED_FEATURES.register("bone", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.BONE, 32, BONE_LOCATION)));
+    public static final RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> BONE = CONFIGURED_FEATURES.register("bone", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.BONE, 16, BONE_LOCATION)));
     public static final RegistryObject<ConfiguredFeature<SimpleRandomFeatureConfiguration, ?>> BONE_SPIKE = CONFIGURED_FEATURES.register("bone_spike", () -> new ConfiguredFeature<>(Feature.SIMPLE_RANDOM_SELECTOR, new SimpleRandomFeatureConfiguration(HolderSet.direct(PlacementUtils.inlinePlaced(BTAFeatures.BONE_SPIKE.get(), new ListFeatureConfiguration(BONE_SPIKE_LOCATION))))));
-    public static final RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> CORAL_TREE = CONFIGURED_FEATURES.register("coral_tree", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.CORAL_TREE, 15, 3, 32)));
-    public static final RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> FOSSIL = CONFIGURED_FEATURES.register("fossil", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.FOSSIL, 32, FOSSIL_LOCATION)));
+    public static final RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> FOSSIL = CONFIGURED_FEATURES.register("fossil", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.FOSSIL, 16, FOSSIL_LOCATION)));
     public static final RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> GHOUL_BLOOM_PATCH = CONFIGURED_FEATURES.register("ghoul_bloom_patch", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.GHOUL_BLOOM_PATCH, 48)));
     public static final RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> TOOTHVINE_PATCH = CONFIGURED_FEATURES.register("toothvine_patch", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.TOOTHVINE_PATCH, 54)));
-    public static final RegistryObject<ConfiguredFeature<NoneFeatureConfiguration, ?>> STONE_SPIKE = CONFIGURED_FEATURES.register("stone_spike", () -> new ConfiguredFeature<>(BTAFeatures.STONE_SPIKE.get(), FeatureConfiguration.NONE));
     
     public static RandomPatchConfiguration randomListPatch(RegistryObject<Feature<ListFeatureConfiguration>> feature, int tries, List<ResourceLocation> structures) 
     {

@@ -16,7 +16,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 public class BTACapabilities
 {
 	public static final Capability<BTAAbilityCapability> BTA_ABILITY = CapabilityManager.get(new CapabilityToken<>() {});
-	public static final Capability<IllusionCapability> ILLUSION = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e)
 	{
@@ -36,35 +35,6 @@ public class BTACapabilities
 				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
 				{
 					return BTA_ABILITY.orEmpty(capability, this.inst.cast());
-				}
-
-				@Override
-				public CompoundTag serializeNBT() 
-				{
-					return this.inst.orElseThrow(NullPointerException::new).serializeNBT();
-				}
-
-				@Override
-				public void deserializeNBT(CompoundTag nbt)
-				{
-					this.inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
-				}
-			});
-			
-			e.addCapability(IllusionCapability.ID, new ICapabilitySerializable<CompoundTag>() 
-			{
-				LazyOptional<IllusionCapability> inst = LazyOptional.of(() -> 
-				{
-					IllusionImpl i = new IllusionImpl();
-					i.setEntity(living);
-					return i;
-				});
-
-				@Nonnull
-				@Override
-				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
-				{
-					return ILLUSION.orEmpty(capability, this.inst.cast());
 				}
 
 				@Override

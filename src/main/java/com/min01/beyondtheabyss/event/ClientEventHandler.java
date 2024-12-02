@@ -25,8 +25,6 @@ import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
-import com.min01.beyondtheabyss.entity.model.ModelMutavoreTentacle;
-import com.min01.beyondtheabyss.entity.model.ModelMutavoreTentacleEdge;
 import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
 import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
@@ -50,7 +48,6 @@ import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.MutavoreRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.MutavoreTentacleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.PhasmozoaRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.RunicFishRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentBoneRenderer;
@@ -68,10 +65,7 @@ import com.min01.beyondtheabyss.item.model.ModelFlashlight;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
-import com.min01.beyondtheabyss.item.model.SimpleBakedModelWrapper;
 import com.min01.beyondtheabyss.misc.BTARenderType;
-import com.min01.beyondtheabyss.particle.BTAParticles;
-import com.min01.beyondtheabyss.particle.ShockwaveParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.mojang.datafixers.util.Pair;
@@ -82,17 +76,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.BlockModelRotation;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -159,28 +148,8 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
 	{
-		event.register(BTAParticles.SHOCKWAVE.get(), ShockwaveParticle.Provider::new);
+		
 	}
-    
-	@SubscribeEvent
-	public static void onModelRegisterAdditional(ModelEvent.RegisterAdditional event)
-	{
-		event.register(new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, "ghidruth_scale_harpoon_in_hand"), "inventory"));
-	}
-    
-    @SubscribeEvent
-    public static void onModelBakingCompleted(ModelEvent.BakingCompleted event)
-    {
-    	registerItemModel(event, "ghidruth_scale_harpoon");
-    }
-    
-    public static void registerItemModel(ModelEvent.BakingCompleted event, String model)
-    {
-    	ModelResourceLocation loc = new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, model), "inventory");
-    	ModelResourceLocation modelLoc = new ModelResourceLocation(new ResourceLocation(BeyondtheAbyss.MODID, model + "_in_hand"), "inventory");
-    	BakedModel bakedModel = event.getModelBakery().getModel(modelLoc).bake(event.getModelBakery(), Material::sprite, BlockModelRotation.X0_Y0, new ResourceLocation(BeyondtheAbyss.MODID, model));
-    	event.getModels().replace(loc, new SimpleBakedModelWrapper(event.getModels().get(loc), bakedModel));
-    }
     
 	@SubscribeEvent
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent e)
@@ -215,7 +184,6 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.SPINE_WORM_HEAD.get(), SpineWormHeadRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SPINE_WORM_BODY.get(), SpineWormBodyRenderer::new);
     	event.registerEntityRenderer(BTAEntities.MUTAVORE.get(), MutavoreRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.MUTAVORE_TENTACLE.get(), MutavoreTentacleRenderer::new);
     }
     
     @SubscribeEvent
@@ -239,8 +207,6 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelSpineWormHead.LAYER_LOCATION, ModelSpineWormHead::createBodyLayer);
     	event.registerLayerDefinition(ModelSpineWormBody.LAYER_LOCATION, ModelSpineWormBody::createBodyLayer);
     	event.registerLayerDefinition(ModelMutavore.LAYER_LOCATION, ModelMutavore::createBodyLayer);
-    	event.registerLayerDefinition(ModelMutavoreTentacle.LAYER_LOCATION, ModelMutavoreTentacle::createBodyLayer);
-    	event.registerLayerDefinition(ModelMutavoreTentacleEdge.LAYER_LOCATION, ModelMutavoreTentacleEdge::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);

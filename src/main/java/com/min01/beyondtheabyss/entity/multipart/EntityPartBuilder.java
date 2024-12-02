@@ -12,7 +12,7 @@ import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
-import com.min01.beyondtheabyss.entity.submarine.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.BuildMultiPartPacket;
 import com.min01.beyondtheabyss.network.UpdateMultiPartPacket;

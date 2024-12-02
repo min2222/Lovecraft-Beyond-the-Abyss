@@ -20,7 +20,7 @@ public class AdvancedDivingSetItem extends AbstractDivingSetItem
 {
 	public AdvancedDivingSetItem(EquipmentSlot slot)
 	{
-		super(BTAArmorMaterials.ADVANCED_DIVING_SET, slot, 1.0F);
+		super(BTAArmorMaterials.ADVANCED_DIVING_SET, slot, 0.4F);
 	}
 	
 	@Override

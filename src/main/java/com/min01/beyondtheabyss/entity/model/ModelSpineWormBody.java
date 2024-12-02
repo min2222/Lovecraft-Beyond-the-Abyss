@@ -52,6 +52,12 @@ public class ModelSpineWormBody extends HierarchicalModel<EntitySpineWormBody>
 	{
 		return this.root;
 	}
+	
+	public void setAttributes(float rotX, float rotY)
+	{
+		this.root.xRot = (float)Math.toRadians(rotX);
+		this.root.yRot = (float)Math.toRadians(rotY);
+	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) 
