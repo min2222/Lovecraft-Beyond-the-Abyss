@@ -50,8 +50,22 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		.texOffs(0, 83).addBox(-8.0F, -12.0F, -30.0F, 16.0F, 13.0F, 31.0F, new CubeDeformation(0.0F))
 		.texOffs(94, 119).addBox(-8.0F, 1.0F, -9.0F, 16.0F, 6.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -14.0F, -25.0F));
 
-		head.addOrReplaceChild("jaw", CubeListBuilder.create().texOffs(94, 83).addBox(-7.5F, 0.0F, -31.0F, 15.0F, 5.0F, 31.0F, new CubeDeformation(0.0F))
+		PartDefinition jaw = head.addOrReplaceChild("jaw", CubeListBuilder.create().texOffs(94, 83).addBox(-7.5F, 0.0F, -31.0F, 15.0F, 5.0F, 31.0F, new CubeDeformation(0.0F))
 		.texOffs(140, 253).addBox(-7.5F, -5.0F, -30.5F, 15.0F, 5.0F, 31.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 7.0F, 1.0F));
+
+		PartDefinition tongue = jaw.addOrReplaceChild("tongue", CubeListBuilder.create(), PartPose.offset(0.0F, -3.0F, 18.0F));
+
+		PartDefinition tongue1 = tongue.addOrReplaceChild("tongue1", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -2.0F, -14.0F, 4.0F, 4.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+		PartDefinition tongue2 = tongue1.addOrReplaceChild("tongue2", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -2.0F, -14.0F, 4.0F, 4.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -14.0F));
+
+		PartDefinition tongue3 = tongue2.addOrReplaceChild("tongue3", CubeListBuilder.create().texOffs(314, 0).addBox(-2.0F, -2.0F, -14.0F, 4.0F, 4.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -14.0F));
+
+		tongue3.addOrReplaceChild("upper_jaw", CubeListBuilder.create().texOffs(314, 18).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.1F))
+		.texOffs(334, 30).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, 0.0F, -14.0F));
+
+		tongue3.addOrReplaceChild("tongue_jaw", CubeListBuilder.create().texOffs(330, 18).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.1F))
+		.texOffs(311, 28).addBox(-2.0F, -1.0F, -4.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -14.0F));
 
 		PartDefinition left_head_fin = head.addOrReplaceChild("left_head_fin", CubeListBuilder.create(), PartPose.offset(7.0F, -11.0F, -4.0F));
 
@@ -64,20 +78,6 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		right_head_fin.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(157, 14).mirror().addBox(-23.0F, -2.0F, -1.0F, 24.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-1.0F, 1.0F, 0.0F, 0.2618F, 0.3491F, 0.4363F));
 
 		right_head_fin.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(160, 33).mirror().addBox(-39.0F, -4.0F, 0.0F, 40.0F, 19.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-1.4621F, 2.1942F, 1.5363F, 0.2618F, 0.3491F, 0.4363F));
-
-		PartDefinition tongue = head.addOrReplaceChild("tongue", CubeListBuilder.create(), PartPose.offset(0.0F, 14.0F, 53.0F));
-
-		PartDefinition tongue1 = tongue.addOrReplaceChild("tongue1", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -2.0F, -14.0F, 4.0F, 4.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.0F, -34.0F));
-
-		PartDefinition tongue2 = tongue1.addOrReplaceChild("tongue2", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -2.0F, -14.0F, 4.0F, 4.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -14.0F));
-
-		PartDefinition tongue3 = tongue2.addOrReplaceChild("tongue3", CubeListBuilder.create().texOffs(314, 0).addBox(-2.0F, -2.0F, -14.0F, 4.0F, 4.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -14.0F));
-
-		tongue3.addOrReplaceChild("upper_jaw", CubeListBuilder.create().texOffs(314, 18).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.1F))
-		.texOffs(334, 30).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, 0.0F, -14.0F));
-
-		tongue3.addOrReplaceChild("tongue_jaw", CubeListBuilder.create().texOffs(330, 18).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.1F))
-		.texOffs(311, 28).addBox(-2.0F, -1.0F, -4.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -14.0F));
 
 		mutavore.addOrReplaceChild("left_fin", CubeListBuilder.create().texOffs(90, 157).addBox(0.0F, -2.0F, -5.0F, 19.0F, 5.0F, 10.0F, new CubeDeformation(0.0F))
 		.texOffs(140, 130).addBox(6.0F, 0.0F, -5.0F, 42.0F, 0.0F, 31.0F, new CubeDeformation(0.0F)), PartPose.offset(11.0F, -4.0F, -16.0F));

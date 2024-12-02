@@ -64,7 +64,6 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     public void tick() 
     {
     	super.tick();
-    	
 		this.resetFallDistance();
 		
     	if(this.getOwner() != null)

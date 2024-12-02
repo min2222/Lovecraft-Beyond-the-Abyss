@@ -127,9 +127,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
     public void tick() 
     {
     	super.tick();
-
         this.refreshDimensions();
-        
         DeepAbyssUtil.fishFlopping(this);
     	
         if(this.hasFollowers() && this.level.random.nextInt(200) == 1) 
