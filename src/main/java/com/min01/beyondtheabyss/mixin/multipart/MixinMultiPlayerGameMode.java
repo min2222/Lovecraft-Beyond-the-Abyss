@@ -11,6 +11,7 @@ import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.InteractMultiPartPacket;
 import com.min01.beyondtheabyss.network.InteractMultiPartPacket.InteractionType;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -34,7 +35,7 @@ public class MixinMultiPlayerGameMode
         {
         	this.ensureHasSentCarriedItem();
 
-            Minecraft client = Minecraft.getInstance();
+            Minecraft client = BTAClientUtil.MC;
             Vec3 pos = client.cameraEntity.getEyePosition(client.getFrameTime());
             Vec3 dir = client.cameraEntity.getViewVector(client.getFrameTime());
             double reach = client.gameMode.getPickRange();
@@ -59,7 +60,7 @@ public class MixinMultiPlayerGameMode
         {
             this.ensureHasSentCarriedItem();
 
-            Minecraft client = Minecraft.getInstance();
+            Minecraft client = BTAClientUtil.MC;
             Vec3 pos = client.cameraEntity.getEyePosition(client.getFrameTime());
             Vec3 dir = client.cameraEntity.getViewVector(client.getFrameTime());
             double reach = client.gameMode.getPickRange();

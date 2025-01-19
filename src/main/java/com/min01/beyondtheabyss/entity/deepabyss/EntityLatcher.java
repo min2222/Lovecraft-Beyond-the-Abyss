@@ -37,10 +37,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityLatcher extends AbstractDeepAbyssMonster
 {
-	public AnimationState propelAnimationState = new AnimationState();
-	public AnimationState startLatchAnimationState = new AnimationState();
-	public AnimationState latchAnimationState = new AnimationState();
-	public AnimationState unlatchAnimationState = new AnimationState();
+	public final AnimationState propelAnimationState = new AnimationState();
+	public final AnimationState startLatchAnimationState = new AnimationState();
+	public final AnimationState latchAnimationState = new AnimationState();
+	public final AnimationState unlatchAnimationState = new AnimationState();
 	
 	public EntityLatcher(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{

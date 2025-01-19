@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.world.BTAConfiguredFeatures;
 import com.min01.beyondtheabyss.world.BTAFeatures;
 import com.min01.beyondtheabyss.world.BTAPlacedFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
+import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
@@ -54,6 +55,7 @@ public class BeyondtheAbyss
 		BTAConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
 		BTAPlacedFeatures.PLACED_FEATURES.register(bus);
 		BTABiomes.BIOMES.register(bus);
+		BTAWorldCarvers.WORLD_CARVERS.register(bus);
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");

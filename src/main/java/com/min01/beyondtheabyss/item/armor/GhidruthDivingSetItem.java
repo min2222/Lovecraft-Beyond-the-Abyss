@@ -7,8 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
 import com.min01.beyondtheabyss.misc.BTAArmorMaterials;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -31,7 +31,7 @@ public class GhidruthDivingSetItem extends AbstractDivingSetItem
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) 
 			{
-				ModelGhidruthDiverSet<?> diverModel = new ModelGhidruthDiverSet<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGhidruthDiverSet.LAYER_LOCATION));
+				ModelGhidruthDiverSet<?> diverModel = new ModelGhidruthDiverSet<>(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGhidruthDiverSet.LAYER_LOCATION));
 				diverModel.Head.visible = equipmentSlot == EquipmentSlot.HEAD;
 				diverModel.Body.visible = equipmentSlot == EquipmentSlot.CHEST;
 				diverModel.LeftArm.visible = equipmentSlot == EquipmentSlot.CHEST;

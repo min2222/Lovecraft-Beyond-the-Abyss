@@ -68,6 +68,13 @@ public class BTAItems
 	public static final RegistryObject<Item> GNASHER_TOOTH = ITEMS.register("gnasher_tooth", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	public static final RegistryObject<Item> GHOUL_BLOOM_SEED_POD = ITEMS.register("ghoul_bloom_seed_pod", () -> new ItemNameBlockItem(BTABlocks.GHOUL_BLOOM.get(), new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	public static final RegistryObject<Item> FIBER = ITEMS.register("fiber", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> ABERRANT_FLESH = ITEMS.register("aberrant_flesh", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> CHARGE_BUBL = ITEMS.register("charge_bulb", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> SPLITTING_GEL = ITEMS.register("splitting_gel", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> SPINE_WORM_MANDIBLE = ITEMS.register("spine_worm_mandible", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> SLASHER_SKULL = ITEMS.register("slasher_skull", () -> new CustomRendererItem(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> BLASTER_SKULL = ITEMS.register("blaster_skull", () -> new CustomRendererItem(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
+	public static final RegistryObject<Item> SERPENT_HEART = ITEMS.register("serpent_heart", () -> new CustomRendererItem(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS)));
 	
 	//armors
 	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new DivingSetItem(EquipmentSlot.HEAD));

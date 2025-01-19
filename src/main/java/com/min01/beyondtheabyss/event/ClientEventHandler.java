@@ -26,16 +26,16 @@ import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
 import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
+import com.min01.beyondtheabyss.entity.model.ModelPutridBubble;
 import com.min01.beyondtheabyss.entity.model.ModelRunicFish;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentHead;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
+import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalScalesLayer;
@@ -60,11 +60,14 @@ import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
+import com.min01.beyondtheabyss.item.model.ModelBlasterSkull;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelFlashlight;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
+import com.min01.beyondtheabyss.item.model.ModelSerpentHeart;
+import com.min01.beyondtheabyss.item.model.ModelSlasherSkull;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
@@ -167,6 +170,7 @@ public class ClientEventHandler
     	
     	//projectile
     	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.PUTRID_BUBBLE.get(), PutridBubbleRenderer::new);
     	
     	//living
     	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);
@@ -199,14 +203,13 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelPhasmozoa.LAYER_LOCATION, ModelPhasmozoa::createBodyLayer);
     	event.registerLayerDefinition(ModelAmarumGhost.LAYER_LOCATION, ModelAmarumGhost::createBodyLayer);
     	event.registerLayerDefinition(ModelGnasher.LAYER_LOCATION, ModelGnasher::createBodyLayer);
-    	event.registerLayerDefinition(ModelSiamserpentSlasher.LAYER_LOCATION, ModelSiamserpentSlasher::createBodyLayer);
-    	event.registerLayerDefinition(ModelSiamserpentBlaster.LAYER_LOCATION, ModelSiamserpentBlaster::createBodyLayer);
+    	event.registerLayerDefinition(ModelSiamserpentHead.LAYER_LOCATION, ModelSiamserpentHead::createBodyLayer);
     	event.registerLayerDefinition(ModelSiamserpentBone.LAYER_LOCATION, ModelSiamserpentBone::createBodyLayer);
-    	event.registerLayerDefinition(ModelSiamserpentMiddleBone.LAYER_LOCATION, ModelSiamserpentMiddleBone::createBodyLayer);
     	event.registerLayerDefinition(ModelFallenDiver.LAYER_LOCATION, ModelFallenDiver::createBodyLayer);
     	event.registerLayerDefinition(ModelSpineWormHead.LAYER_LOCATION, ModelSpineWormHead::createBodyLayer);
     	event.registerLayerDefinition(ModelSpineWormBody.LAYER_LOCATION, ModelSpineWormBody::createBodyLayer);
     	event.registerLayerDefinition(ModelMutavore.LAYER_LOCATION, ModelMutavore::createBodyLayer);
+    	event.registerLayerDefinition(ModelPutridBubble.LAYER_LOCATION, ModelPutridBubble::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);
@@ -222,6 +225,9 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelFlashlight.LAYER_LOCATION, ModelFlashlight::createBodyLayer);
+    	event.registerLayerDefinition(ModelSlasherSkull.LAYER_LOCATION, ModelSlasherSkull::createBodyLayer);
+    	event.registerLayerDefinition(ModelBlasterSkull.LAYER_LOCATION, ModelBlasterSkull::createBodyLayer);
+    	event.registerLayerDefinition(ModelSerpentHeart.LAYER_LOCATION, ModelSerpentHeart::createBodyLayer);
     }
     
     @SubscribeEvent

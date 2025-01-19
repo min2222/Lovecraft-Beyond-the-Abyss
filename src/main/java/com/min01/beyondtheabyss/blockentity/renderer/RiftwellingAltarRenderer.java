@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -29,7 +28,7 @@ public class RiftwellingAltarRenderer<T extends BlockEntity> implements BlockEnt
 	
 	public RiftwellingAltarRenderer(BlockEntityRendererProvider.Context p_172550_)
 	{
-		this.altarModel = new ModelRiftwellingAltar(Minecraft.getInstance().getEntityModels().bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
+		this.altarModel = new ModelRiftwellingAltar(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
 	}
 
 	@Override
@@ -38,17 +37,17 @@ public class RiftwellingAltarRenderer<T extends BlockEntity> implements BlockEnt
 		if(p_112307_ instanceof RiftwellingAltarBlockEntity altar)
 		{
 			p_112309_.pushPose();
-			p_112309_.translate(0.5D, 0.5D, 0.5D);
-			p_112309_.scale(-1, -1, 1);
-			p_112309_.translate(0, -1, 0);
+			p_112309_.translate(0.5F, 0.5F, 0.5F);
+			p_112309_.scale(-1.0F, -1.0F, 1.0F);
+			p_112309_.translate(0.0F, -1.0F, 0.0F);
 			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(ALTAR_TEXTURE));
 			this.altarModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			p_112309_.popPose();
 
 			p_112309_.pushPose();
-			p_112309_.translate(0.5D, 0.5D, 0.5D);
-			p_112309_.scale(-1, -1, 1);
-			p_112309_.translate(0, -1, 0);
+			p_112309_.translate(0.5F, 0.5F, 0.5F);
+			p_112309_.scale(-1.0F, -1.0F, 1.0F);
+			p_112309_.translate(0.0F, -1.0F, 0.0F);
 			VertexConsumer layerConsumer = p_112310_.getBuffer(RenderType.eyes(ALTAR_LAYER_TEXTURE));
 			this.altarModel.renderToBuffer(p_112309_, layerConsumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			p_112309_.popPose();

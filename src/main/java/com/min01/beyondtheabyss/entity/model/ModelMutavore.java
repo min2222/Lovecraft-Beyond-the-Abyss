@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.MutavoreAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
@@ -19,6 +20,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
@@ -101,15 +103,15 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 
 		PartDefinition tentaclePos = mutavore.addOrReplaceChild("tentaclePos", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle16", CubeListBuilder.create(), PartPose.offset(7.0F, -30.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle16", CubeListBuilder.create(), PartPose.offset(-7.0F, -30.0F, 107.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle17", CubeListBuilder.create(), PartPose.offset(-7.0F, -30.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle17", CubeListBuilder.create(), PartPose.offset(7.0F, -30.0F, 107.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle18", CubeListBuilder.create(), PartPose.offset(-7.0F, -4.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle18", CubeListBuilder.create(), PartPose.offset(7.0F, -4.0F, 107.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle19", CubeListBuilder.create(), PartPose.offset(7.0F, -4.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle19", CubeListBuilder.create(), PartPose.offset(-7.0F, -4.0F, 107.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle20", CubeListBuilder.create(), PartPose.offset(0.0F, -17.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle20", CubeListBuilder.create(), PartPose.offset(0.0F, -17.0F, 107.0F));
 
 		PartDefinition tentacles = mutavore.addOrReplaceChild("tentacles", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 46.0F, 0.0F, 3.1416F, 0.0F));
 
@@ -196,13 +198,22 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("mutavore"), netHeadYaw, headPitch);
+		this.animate(entity.mouthOpeningAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_OPENING, ageInTicks);
+		this.animate(entity.mouthOpenAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_OPEN, ageInTicks);
+		this.animate(entity.mouthCloseAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_CLOSE, ageInTicks);
+		
 		for(int i = 0; i < 5; i++)
 		{
 			int num0 = 16 + i;
 			int num = i + 1;
 			int num1 = num + 5;
 			int num2 = num1 + 5;
-			Vec3 tentaclePos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"mutavore", "tentaclePos", "tentacle" + num0});
+			
+			Vec3 targetPos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"mutavore", "tentaclePos", "tentacle" + num0});
+			entity.posArray[i + 5] = targetPos;
+			BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, targetPos, i + 5));
+			
+			Vec3 tentaclePos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"mutavore", "tentacles", "tentacle" + num});
 			entity.posArray[i] = tentaclePos;
 			BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tentaclePos, i));
 
@@ -215,31 +226,29 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 			for(int i2 = 0; i2 < segments.length; i2++)
 			{
 				Vec2 rot = segments[i2].getRot();
-				float yRot = i2 > 0 ? tentacles[i2 - 1].yRot : 0.0F;
-				float xRot = i2 > 0 ? tentacles[i2 - 1].xRot : 0.0F;
-				//TODO edge tentacle yRot is inverted;
-				if(i2 < 2)
-				{
-					tentacles[i2].yRot += Math.toRadians(rot.y - Math.toDegrees(yRot));
-					tentacles[i2].xRot += Math.toRadians(rot.x - Math.toDegrees(xRot));
-				}
+				float f = Mth.rotLerp(BTAClientUtil.MC.getFrameTime(), entity.yBodyRotO, entity.yBodyRot);
+				float yBodyRot = 180.0F - f;
+				tentacles[i2].yRot -= Math.toRadians(yBodyRot);
+				tentacles[i2].yRot += Math.toRadians(-rot.y);
+				tentacles[i2].xRot += Math.toRadians(rot.x);
 			}
 		}
 		
 		Vec3 tonguePos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"mutavore", "head", "jaw", "tongue", "tongue1"});
-		entity.posArray[5] = tonguePos;
-		BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tonguePos, 5));
+		entity.posArray[11] = tonguePos;
+		BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tonguePos, 11));
 		ModelPart tongue = this.root.getChild("mutavore").getChild("head").getChild("jaw").getChild("tongue");
 		ModelPart[] tongues = new ModelPart[] {tongue.getChild("tongue1"), tongue.getChild("tongue1").getChild("tongue2"), tongue.getChild("tongue1").getChild("tongue2").getChild("tongue3")};
 		ChainSegment[] segments = entity.tongueChain.getSegments();
-		
+		tongue.visible = entity.isUsingTongue();
 		for(int i = 0; i < segments.length; i++)
 		{
 			Vec2 rot = segments[i].getRot();
-			float yRot = i > 0 ? tongues[i - 1].yRot : 0.0F;
-			float xRot = i > 0 ? tongues[i - 1].xRot : 0.0F;
-			tongues[i].yRot += Math.toRadians(rot.y - Math.toDegrees(yRot));
-			tongues[i].xRot += Math.toRadians(rot.x - Math.toDegrees(xRot));
+			float f = Mth.rotLerp(BTAClientUtil.MC.getFrameTime(), entity.yRotO, entity.getYRot());
+			float yRot = 180.0F - f;
+			tongues[i].yRot -= Math.toRadians(yRot);
+			tongues[i].yRot += Math.toRadians(-rot.y + 180.0F);
+			tongues[i].xRot += Math.toRadians(rot.x);
 		}
 	}
 	

@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.shader.ExtendedPostChain;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -35,7 +36,7 @@ public class MixinLevelRenderer
 	@Unique
 	private void applyBlur(float frameTime)
 	{
-		Minecraft mc = Minecraft.getInstance();
+		Minecraft mc = BTAClientUtil.MC;
 
 		ExtendedPostChain shaderChain = BTAShaders.getBlur();
 		EffectInstance shader = shaderChain.getMainShader();
@@ -52,7 +53,7 @@ public class MixinLevelRenderer
 	@Unique
 	private void applyFog(PoseStack mtx, float frameTime)
 	{
-		Minecraft mc = Minecraft.getInstance();
+		Minecraft mc = BTAClientUtil.MC;
 
 		/*if(!mc.player.level.dimension().location().getPath().equals(BTAWorlds.FOGGY_PLAIN))
 		{

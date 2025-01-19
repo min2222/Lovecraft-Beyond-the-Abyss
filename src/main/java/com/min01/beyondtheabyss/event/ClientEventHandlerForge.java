@@ -14,7 +14,6 @@ import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
@@ -112,7 +111,7 @@ public class ClientEventHandlerForge
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
     {
         Player player = BTAClientUtil.MC.player;
-        float delta = Minecraft.getInstance().getFrameTime();
+        float delta = BTAClientUtil.MC.getFrameTime();
         float ticksExistedDelta = player.tickCount + delta;
         if(player != null && BTAConfig.cameraShakes.get())
         {

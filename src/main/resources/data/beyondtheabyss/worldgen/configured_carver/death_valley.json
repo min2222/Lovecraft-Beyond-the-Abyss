@@ -1,54 +1,48 @@
 {
-	"type": "minecraft:canyon",
+	"type": "beyondtheabyss:death_valley",
 	"config": {
-		"probability": 0.01,
-		"y": {
-			"type": "minecraft:uniform",
-			"min_inclusive": {
-				"absolute": 0
-			},
-			"max_inclusive": {
-				"absolute": 110
-			}
-		},
-		"yScale": 1.5,
 		"lava_level": {
-			"absolute": -64
+			"above_bottom": -64
 		},
+		"probability": 0.05,
 		"replaceable": "#beyondtheabyss:death_valley_replaceables",
-		"vertical_rotation": {
-			"type": "minecraft:uniform",
-			"value": {
-				"min_inclusive": -1.125,
-				"max_exclusive": 1.125
-			}
-		},
 		"shape": {
 			"distance_factor": {
 				"type": "minecraft:uniform",
 				"value": {
-					"min_inclusive": 1.5,
-					"max_exclusive": 2.5
+					"max_exclusive": 3,
+					"min_inclusive": 2.75
+				}
+			},
+			"horizontal_radius_factor": {
+				"type": "minecraft:uniform",
+				"value": {
+					"max_exclusive": 2,
+					"min_inclusive": 1.75
 				}
 			},
 			"thickness": {
 				"type": "minecraft:trapezoid",
 				"value": {
-					"min": 6,
-					"max": 8,
+					"max": 6,
+					"min": 4,
 					"plateau": 2
 				}
 			},
-			"width_smoothness": 5,
-			"horizontal_radius_factor": {
-				"type": "minecraft:uniform",
-				"value": {
-					"min_inclusive": 1.5,
-					"max_exclusive": 2.5
-				}
-			},
-			"vertical_radius_default_factor": 2.5,
-			"vertical_radius_center_factor": 2.5
-		}
+			"vertical_radius_center_factor": 0,
+			"vertical_radius_default_factor": 1,
+			"width_smoothness": 5
+		},
+		"vertical_rotation": {
+			"type": "minecraft:uniform",
+			"value": {
+				"max_exclusive": 0.125,
+				"min_inclusive": -0.125
+			}
+		},
+		"y": {
+			"absolute": 65
+		},
+		"yScale": 5
 	}
 }

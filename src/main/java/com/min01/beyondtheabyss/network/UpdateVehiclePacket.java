@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
@@ -40,7 +39,7 @@ public class UpdateVehiclePacket
 			{
 				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					Minecraft.getInstance().doRunTask(() -> 
+					BTAClientUtil.MC.doRunTask(() -> 
 					{
 						Entity rider = BTAClientUtil.MC.level.getEntity(message.rider);
 						Entity vehicle = BTAClientUtil.MC.level.getEntity(message.vehicle);

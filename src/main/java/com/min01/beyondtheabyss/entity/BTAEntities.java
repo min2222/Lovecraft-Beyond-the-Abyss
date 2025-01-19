@@ -19,6 +19,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
+import com.min01.beyondtheabyss.entity.projectile.EntityPutridBubble;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 
 import net.minecraft.resources.ResourceLocation;
@@ -40,6 +41,7 @@ public class BTAEntities
 
 	//projectile
 	public static final RegistryObject<EntityType<EntityThrownHarpoon>> THROWN_HARPOON = registerEntity("thrown_harpoon", EntityType.Builder.<EntityThrownHarpoon>of(EntityThrownHarpoon::new, MobCategory.MISC).sized(0.5F, 0.5F));
+	public static final RegistryObject<EntityType<EntityPutridBubble>> PUTRID_BUBBLE = registerEntity("putrid_bubble", createBuilder(EntityPutridBubble::new, MobCategory.MISC).sized(0.75F, 0.75F));
 	
 	//living
 	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerEntity("ghidruth", createBuilder(EntityGhidruth::new, MobCategory.WATER_CREATURE).sized(5.2F, 4.5F));

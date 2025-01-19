@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.renderer.IModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -34,6 +35,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
+	
+    public static void renderFlatQuad(PoseStack stack, VertexConsumer consumer, float size, int packedLightIn) 
+    {
+        float minU = 0;
+        float minV = 0;
+        float maxU = 1;
+        float maxV = 1;
+        PoseStack.Pose matrixstack$entry = stack.last();
+        Matrix4f matrix4f = matrixstack$entry.pose();
+        Matrix3f matrix3f = matrixstack$entry.normal();
+        drawVertex(matrix4f, matrix3f, consumer, size, size, 0, minU, minV, 1.0F, packedLightIn);
+        drawVertex(matrix4f, matrix3f, consumer, size, -size, 0, minU, maxV, 1.0F, packedLightIn);
+        drawVertex(matrix4f, matrix3f, consumer, -size, -size, 0, maxU, maxV, 1.0F, packedLightIn);
+        drawVertex(matrix4f, matrix3f, consumer, -size, size, 0, maxU, minV, 1.0F, packedLightIn);
+    }
+    
+    public static void drawVertex(Matrix4f matrix, Matrix3f normals, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, float alpha, int packedLightIn)
+    {
+    	vertexBuilder.vertex(matrix, offsetX, offsetY, offsetZ).color(1, 1, 1, 1 * alpha).uv(textureX, textureY).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLightIn).normal(normals, 0.0F, 1.0F, 0.0F).endVertex();
+    }
 	
     public static void drawBox(AABB boundingBox, PoseStack stack, MultiBufferSource bufferIn, Vec3 rgb, int light, int alpha, RenderType renderType) 
     {

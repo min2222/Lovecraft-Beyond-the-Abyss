@@ -66,6 +66,11 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     	super.tick();
 		this.resetFallDistance();
 		
+		if(this.tickCount == 2)
+		{
+			this.partBuilder.rebuildHitbox();
+		}
+		
     	if(this.getOwner() != null)
     	{
 			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.5F);
