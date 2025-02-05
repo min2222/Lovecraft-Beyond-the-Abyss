@@ -36,16 +36,16 @@ public class GuidingClamItem extends Item
     	setOpen(p_41404_, isDeepOcean);
 	}
 	
-	public static boolean isOpen(ItemStack p_40933_) 
+	public static boolean isOpen(ItemStack stack) 
 	{
-		CompoundTag compoundtag = p_40933_.getTag();
-		return compoundtag != null && compoundtag.getBoolean("Open");
+		CompoundTag tag = stack.getTag();
+		return tag != null && tag.getBoolean("Open");
 	}
 	
-	public static void setOpen(ItemStack p_40885_, boolean p_40886_) 
+	public static void setOpen(ItemStack stack, boolean open) 
 	{
-		CompoundTag compoundtag = p_40885_.getOrCreateTag();
-		compoundtag.putBoolean("Open", p_40886_);
+		CompoundTag tag = stack.getOrCreateTag();
+		tag.putBoolean("Open", open);
 	}
 	
 	@Override

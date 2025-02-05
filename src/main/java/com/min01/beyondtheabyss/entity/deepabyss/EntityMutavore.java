@@ -2,12 +2,10 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavoreShootPutridBubbleGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavoreTongueBiteGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
-import com.min01.beyondtheabyss.util.KinematicChain;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,25 +22,16 @@ import net.minecraft.world.phys.Vec3;
 public class EntityMutavore extends AbstractDeepAbyssMonster
 {
 	public static final EntityDataAccessor<Boolean> IS_USING_TONGUE = SynchedEntityData.defineId(EntityMutavore.class, EntityDataSerializers.BOOLEAN);
-	
-	public final KinematicChain[] chains = new KinematicChain[] { 
-			new KinematicChain(this, 3, 1.75F),
-			new KinematicChain(this, 3, 1.75F),
-			new KinematicChain(this, 3, 1.75F),
-			new KinematicChain(this, 3, 1.75F),
-			new KinematicChain(this, 3, 1.75F)
-	};
-	
-	public final KinematicChain tongueChain = new KinematicChain(this, 3, 0.875F);
-	
+
 	public final AnimationState mouthOpeningAnimationState = new AnimationState();
 	public final AnimationState mouthOpenAnimationState = new AnimationState();
 	public final AnimationState mouthCloseAnimationState = new AnimationState();
+	public final AnimationState swimAnimationState = new AnimationState();
 	
 	public EntityMutavore(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.posArray = new Vec3[13];
+		this.posArray = new Vec3[1];
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -58,7 +47,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     protected void registerGoals()
     {
     	super.registerGoals();
-    	this.goalSelector.addGoal(4, new MutavoreTongueBiteGoal(this));
+    	//this.goalSelector.addGoal(4, new MutavoreTongueBiteGoal(this));
     	this.goalSelector.addGoal(4, new MutavoreShootPutridBubbleGoal(this));
     }
     
@@ -128,32 +117,9 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public void tick()
 	{
 		super.tick();
-		for(int i = 0; i < this.chains.length; i++)
+		if(this.level.isClientSide)
 		{
-			KinematicChain chain = this.chains[i];
-			chain.tick();
-			if(this.posArray[i] != null)
-			{
-				chain.setAnchorPos(this.posArray[i]);
-			}
-			if(this.posArray[i + 5] != null)
-			{
-				chain.setTarget(this.posArray[i + 5]);
-			}
-		}
-		if(this.posArray[11] != null)
-		{
-			this.tongueChain.setAnchorPos(this.posArray[11]);
-		}
-		if(this.posArray[12] != null)
-		{
-			this.tongueChain.tick();
-			this.tongueChain.setTarget(this.posArray[12]);
-		}
-		if(this.getTarget() != null)
-		{
-			this.posArray[12] = this.getTarget().getEyePosition().subtract(0.0F, 0.5F, 0.0F);
-			BTANetwork.sendToAll(new UpdatePosArrayPacket(this, this.getTarget().getEyePosition().subtract(0.0F, 0.5F, 0.0F), 12));
+			BTAClientUtil.animateWhen(this.swimAnimationState, !BTAUtil.isMoving(this), this.tickCount);
 		}
 		if(this.getAnimationState() == 2 && !this.hasTarget())
 		{
@@ -167,6 +133,18 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 			this.setUsingSkill(false);
 			this.setCanMove(true);
 		}
+	}
+	
+	@Override
+	public boolean xRotLerp() 
+	{
+		return true;
+	}
+	
+	@Override
+	public int getBodyRotationSpeed() 
+	{
+		return !this.hasTarget() ? 1 : 5;
 	}
 	
 	public void setUsingTongue(boolean value)

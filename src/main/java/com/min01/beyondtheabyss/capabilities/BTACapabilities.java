@@ -15,17 +15,17 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 public class BTACapabilities
 {
-	public static final Capability<BTAAbilityCapability> BTA_ABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+	public static final Capability<IBTAAbilityCapability> BTA_ABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e)
 	{
 		if(e.getObject() instanceof LivingEntity living) 
 		{
-			e.addCapability(BTAAbilityCapability.ID, new ICapabilitySerializable<CompoundTag>() 
+			e.addCapability(IBTAAbilityCapability.ID, new ICapabilitySerializable<CompoundTag>() 
 			{
-				LazyOptional<BTAAbilityCapability> inst = LazyOptional.of(() -> 
+				LazyOptional<IBTAAbilityCapability> inst = LazyOptional.of(() -> 
 				{
-					BTAAbilityImpl i = new BTAAbilityImpl();
+					BTAAbilityCapabilityImpl i = new BTAAbilityCapabilityImpl();
 					i.setEntity(living);
 					return i;
 				});

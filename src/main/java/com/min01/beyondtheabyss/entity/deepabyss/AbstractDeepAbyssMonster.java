@@ -150,7 +150,15 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 		double d2 = p_20034_.z - vec3.z;
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
 		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
-		this.setXRot(Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)))));
+		if(this.xRotLerp())
+		{
+			float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
+			this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.getBodyRotationSpeed()));
+		}
+		else
+		{
+			this.setXRot(Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)))));
+		}
 		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, (float)this.getBodyRotationSpeed()));
 		this.setYHeadRot(this.getYRot());
 		this.xRotO = this.getXRot();
@@ -158,6 +166,11 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 		this.yHeadRotO = this.yHeadRot;
 		this.yBodyRot = this.yHeadRot;
 		this.yBodyRotO = this.yBodyRot;
+	}
+	
+	public boolean xRotLerp()
+	{
+		return false;
 	}
 	
 	public int getBodyRotationSpeed()

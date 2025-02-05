@@ -4,19 +4,24 @@ import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilityCapability;
-import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl;
-import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbility;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl.BTAAbility;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
+import com.min01.beyondtheabyss.capabilities.IBTAAbilityCapability;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateItemTagPacket;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.StructureBlockEntity;
 import net.minecraft.world.level.entity.LevelEntityGetter;
@@ -51,6 +56,91 @@ public class BTAUtil
     {
         return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
     }
+    
+    public static void startItemAnimation(Entity player, ItemStack stack, String animationName)
+    {
+    	AnimationState animationState = getItemAnimationState(stack, animationName);
+    	animationState.startIfStopped(player.tickCount);
+    	setItemAnimationState(stack, animationState, animationName);
+    	
+    	if(player.level.isClientSide)
+    	{
+            BTANetwork.sendToServer(new UpdateItemTagPacket(player, stack));
+    	}
+    }
+    
+    public static void stopItemAnimation(Entity player, ItemStack stack, String animationName)
+    {
+    	AnimationState animationState = getItemAnimationState(stack, animationName);
+    	animationState.stop();
+    	setItemAnimationState(stack, animationState, animationName);
+    	
+    	if(player.level.isClientSide)
+    	{
+            BTANetwork.sendToServer(new UpdateItemTagPacket(player, stack));
+    	}
+    }
+    
+    public static void startPlayerAnimation(Entity player, String animationName)
+    {
+    	AnimationState animationState = getPlayerAnimationState(player, animationName);
+    	animationState.startIfStopped(player.tickCount);
+    	setPlayerAnimationState(player, animationState, animationName);
+    }
+    
+    public static void stopPlayerAnimation(Entity player, String animationName)
+    {
+    	AnimationState animationState = getPlayerAnimationState(player, animationName);
+    	animationState.stop();
+    	setPlayerAnimationState(player, animationState, animationName);
+    }
+    
+    public static AnimationState getPlayerAnimationState(Entity player, String name)
+    {
+        return readAnimationState(player.getPersistentData(), name);
+    }
+
+    public static void setPlayerAnimationState(Entity player, AnimationState state, String name)
+    {
+        writeAnimationState(player.getPersistentData(), state, name);
+    }
+	
+    public static AnimationState getItemAnimationState(ItemStack stack, String name)
+    {
+        CompoundTag tag = stack.getTag();
+        return tag != null ? readAnimationState(tag, name) : new AnimationState();
+    }
+
+    public static void setItemAnimationState(ItemStack stack, AnimationState state, String name)
+    {
+        CompoundTag tag = stack.getOrCreateTag();
+        writeAnimationState(tag, state, name);
+    }
+	
+	public static void writeAnimationState(CompoundTag tag, AnimationState state, String name)
+	{
+		CompoundTag animTag = tag.getCompound("AnimationState");
+		animTag.putString("Name", name);
+		animTag.putLong("LastTime", state.lastTime);
+		animTag.putLong("AccumulatedTime", state.accumulatedTime);
+		tag.put("AnimationState", animTag);
+	}
+	
+	public static AnimationState readAnimationState(CompoundTag tag, String name)
+	{
+		AnimationState state = new AnimationState();
+		if(tag.contains("AnimationState"))
+		{
+			CompoundTag animTag = tag.getCompound("AnimationState");
+			if(animTag.getString("Name") == name)
+			{
+				state.lastTime = animTag.getLong("LastTime");
+				state.accumulatedTime = animTag.getLong("AccumulatedTime");
+				return state;
+			}
+		}
+		return state;
+	}
     
 	public static Vec3 getSpreadPosition(Level level, Vec3 startPos, double range)
 	{
@@ -164,13 +254,13 @@ public class BTAUtil
 	
 	public static boolean hasAbility(LivingEntity entity, BTAAbility ability)
 	{
-		BTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityImpl());
+		IBTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityCapabilityImpl());
 		return handler.getAbilities().contains(ability);
 	}
 	   
 	public static int getAbilityTickCount(BTAAbility ability, LivingEntity entity)
 	{
-		BTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityImpl());
+		IBTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityCapabilityImpl());
 		return handler.getTickCount(ability);
 	}
 	
@@ -252,9 +342,9 @@ public class BTAUtil
     	return d0 <= getMeleeAttackRangeSqr(owner, target, multiplier);
     }
     
-    public static boolean isMoving(Entity entity) 
+    public static boolean isMoving(LivingEntity entity) 
     {
-    	return entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
+    	return entity.animationSpeed > 1.0E-5F;
     }
 
 	public static Vec3 getLookPos(float xRot, float yRot, float yPos, double distance)

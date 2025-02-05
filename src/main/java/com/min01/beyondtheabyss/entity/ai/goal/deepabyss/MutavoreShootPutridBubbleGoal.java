@@ -33,9 +33,9 @@ public class MutavoreShootPutridBubbleGoal extends AbstractMutavoreSkillGoal
 				{
 					EntityPutridBubble bubble = new EntityPutridBubble(BTAEntities.PUTRID_BUBBLE.get(), this.mob.level);
 					bubble.setOwner(this.mob);
-					if(this.mob.posArray[11] != null)
+					if(this.mob.posArray[0] != null)
 					{
-						Vec3 pos = this.mob.posArray[11].subtract(0.0F, 0.5F, 0.0F);
+						Vec3 pos = this.mob.posArray[0].subtract(0.0F, 0.5F, 0.0F);
 						bubble.setPos(pos.add(this.mob.level.random.nextFloat(), this.mob.level.random.nextFloat(), this.mob.level.random.nextFloat()));
 						bubble.setDeltaMovement(BTAUtil.fromToVector(pos, BTAUtil.getSpreadPosition(this.mob.getTarget(), 6.0F), 0.25F));
 					}

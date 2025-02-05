@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTAAbilityCapability;
+import com.min01.beyondtheabyss.capabilities.IBTAAbilityCapability;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -52,7 +52,7 @@ public class EventHandlerForge
 			MinecraftServer server = serverLevel.getServer();
 			if(level.dimension() == BTAWorlds.DEEP_ABYSS)
 			{
-	        	BTASavedData data = BTASavedData.get(serverLevel, BTAWorlds.DEEP_ABYSS);
+	        	BTASavedData data = BTASavedData.get(serverLevel);
 	        	if(data != null && !data.isUnderwaterBaseGenerated())
 	        	{
 	            	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.NONE).setKeepLiquids(false);
@@ -95,7 +95,7 @@ public class EventHandlerForge
 	{ 	
 		LivingEntity entity = event.getEntity();
         
-    	entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(BTAAbilityCapability::update);
+    	entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(IBTAAbilityCapability::update);
 
 		if(entity.hasEffect(BTAEffects.AIR_SWIM.get()))
 		{

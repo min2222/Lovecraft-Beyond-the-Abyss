@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.capabilities;
 import java.util.List;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbility;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl.BTAAbility;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +12,7 @@ import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 import net.minecraftforge.common.util.INBTSerializable;
 
 @AutoRegisterCapability
-public interface BTAAbilityCapability extends INBTSerializable<CompoundTag>
+public interface IBTAAbilityCapability extends INBTSerializable<CompoundTag>
 {
 	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "bta_ability");
 

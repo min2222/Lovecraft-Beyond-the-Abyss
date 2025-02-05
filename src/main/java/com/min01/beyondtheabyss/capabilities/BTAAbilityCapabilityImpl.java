@@ -16,7 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.PacketDistributor;
 
-public class BTAAbilityImpl implements BTAAbilityCapability
+public class BTAAbilityCapabilityImpl implements IBTAAbilityCapability
 {
 	private LivingEntity entity;
 	private List<BTAAbility> abilities = new ArrayList<>();

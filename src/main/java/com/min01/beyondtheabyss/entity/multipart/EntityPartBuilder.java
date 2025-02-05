@@ -211,7 +211,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 			}
 			else
 			{
-				return model.root().getChild("SiamserpentMiddleBone");
+				return model.root().getChild("SiamserpentMiddlebone");
 			}
 		}
 		return model.root();

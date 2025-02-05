@@ -36,6 +36,22 @@ public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
 	
+	public static Vector3f posVec(float x, float y, float z) 
+	{
+		return new Vector3f((float)(x / 180 * Math.PI), (float)(-y / 180 * Math.PI), (float)(z / 180 * Math.PI));
+	}
+	
+	public static Vector3f degreeVec(double x, double y, double z) 
+	{
+		return new Vector3f((float)(x / 180 * Math.PI), (float)(y / 180 * Math.PI), (float)(z / 180 * Math.PI));
+	}
+	
+	public static float getElapsedSeconds(boolean looping, float lengthInSeconds, long time) 
+	{
+		float f = (float) time / 1000.0F;
+		return looping ? f % lengthInSeconds : f;
+	}
+	
     public static void renderFlatQuad(PoseStack stack, VertexConsumer consumer, float size, int packedLightIn) 
     {
         float minU = 0;
@@ -239,7 +255,9 @@ public class BTAClientUtil
 	
 	public static void animateWalk(HierarchicalModel<? extends Entity> model, AnimationDefinition animation, float limbSwing, float limbSwingAmount, float p_268138_, float p_268165_) 
 	{
-		long i = (long)(limbSwing * 50.0F * p_268138_);
+		//fix invisible (only for 1.19.2);
+		float swing = limbSwing == 0.0F ? 1.0F : limbSwing;
+		long i = (long)(swing * 50.0F * p_268138_);
 		float f = Math.min(limbSwingAmount * p_268165_, 1.0F);
 		KeyframeAnimations.animate(model, animation, i, f, new Vector3f());
 	}

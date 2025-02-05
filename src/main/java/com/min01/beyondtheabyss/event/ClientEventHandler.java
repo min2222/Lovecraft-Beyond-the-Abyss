@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.event;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
@@ -60,21 +59,16 @@ import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
-import com.min01.beyondtheabyss.item.model.ModelBlasterSkull;
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelFlashlight;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
-import com.min01.beyondtheabyss.item.model.ModelSerpentHeart;
-import com.min01.beyondtheabyss.item.model.ModelSlasherSkull;
-import com.min01.beyondtheabyss.misc.BTARenderType;
+import com.min01.beyondtheabyss.item.model.ModelSkeletalRailgunblade;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
-import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -90,7 +84,6 @@ import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -137,15 +130,6 @@ public class ClientEventHandler
     {
     	event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "hallucination", HallucinationOverlay::draw);
     	event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "oxygen", OxygenOverlay::draw);
-    }
-    
-    @SubscribeEvent
-    public static void onRegisterShaders(RegisterShadersEvent event)
-    {
-        for(Pair<ShaderInstance, Consumer<ShaderInstance>> pair : BTARenderType.registerShaders(event.getResourceManager())) 
-        {
-            event.registerShader(pair.getFirst(), pair.getSecond());
-        }
     }
     
 	@SubscribeEvent
@@ -225,9 +209,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelFlashlight.LAYER_LOCATION, ModelFlashlight::createBodyLayer);
-    	event.registerLayerDefinition(ModelSlasherSkull.LAYER_LOCATION, ModelSlasherSkull::createBodyLayer);
-    	event.registerLayerDefinition(ModelBlasterSkull.LAYER_LOCATION, ModelBlasterSkull::createBodyLayer);
-    	event.registerLayerDefinition(ModelSerpentHeart.LAYER_LOCATION, ModelSerpentHeart::createBodyLayer);
+    	event.registerLayerDefinition(ModelSkeletalRailgunblade.LAYER_LOCATION, ModelSkeletalRailgunblade::createBodyLayer);
     }
     
     @SubscribeEvent

@@ -26,13 +26,13 @@ public abstract class AbstractMutavoreSkillGoal extends BasicBTASkillGoal<Entity
 	@Override
 	protected int getSkillUsingTime()
 	{
-		return 5;
+		return 10;
 	}
 	
 	@Override
 	protected int getSkillWarmupTime()
 	{
-		return 5;
+		return 10;
 	}
 	
 	public boolean isMouthOpened()
