@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -36,7 +37,7 @@ public class HarpoonRenderer extends BlockEntityWithoutLevelRenderer
 		{
 	        p_108832_.pushPose();
 	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
-	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, this.getModel(harpoon).renderType(this.getTextureLocation(harpoon)), false, p_108830_.hasFoil());
+	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(this.getTextureLocation(harpoon)), false, p_108830_.hasFoil());
 	        this.getModel(harpoon).renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
 	        p_108832_.popPose();
 		}

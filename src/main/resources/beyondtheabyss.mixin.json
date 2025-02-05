@@ -9,6 +9,7 @@
 		"MixinSwimNodeEvaluator",
 		"MixinNoiseBasedAquifer",
 		"MixinOverworldBiomeBuilder",
+		"MixinBlockAndTintGetter",
 		"multipart.MixinArrayVoxelShape",
 		"multipart.MixinVoxelShape",
 		"multipart.MixinShapes",
@@ -18,6 +19,7 @@
 	"client": [
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
+		"MixinPlayerModel",
 		"multipart.MixinEntityRenderDispatcher",
 		"multipart.MixinMultiPlayerGameMode"
 	],

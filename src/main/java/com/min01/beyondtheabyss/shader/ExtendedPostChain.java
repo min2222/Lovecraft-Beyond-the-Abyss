@@ -3,10 +3,10 @@ package com.min01.beyondtheabyss.shader;
 import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -22,8 +22,8 @@ public class ExtendedPostChain extends PostChain
 	
 	public ExtendedPostChain(String domain, String name) throws JsonSyntaxException, IOException
 	{
-		this(Minecraft.getInstance().getTextureManager(), Minecraft.getInstance().getResourceManager(), Minecraft.getInstance().getMainRenderTarget(), new ResourceLocation(domain, "shaders/post/" + name + ".json"));
-		this.resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
+		this(BTAClientUtil.MC.getTextureManager(), BTAClientUtil.MC.getResourceManager(), BTAClientUtil.MC.getMainRenderTarget(), new ResourceLocation(domain, "shaders/post/" + name + ".json"));
+		this.resize(BTAClientUtil.MC.getWindow().getWidth(), BTAClientUtil.MC.getWindow().getHeight());
 	}
 
 	public EffectInstance getMainShader()
@@ -34,7 +34,7 @@ public class ExtendedPostChain extends PostChain
 	@Override
 	public void process(float frameTime)
 	{
-		Window w = Minecraft.getInstance().getWindow();
+		Window w = BTAClientUtil.MC.getWindow();
 		if(this.screenWidth != w.getWidth() || this.screenHeight != w.getHeight())
 		{
 			this.resize(w.getWidth(), w.getHeight());

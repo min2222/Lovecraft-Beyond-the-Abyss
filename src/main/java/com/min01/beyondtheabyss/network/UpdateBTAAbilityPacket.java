@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbility;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl.BTAAbility;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 

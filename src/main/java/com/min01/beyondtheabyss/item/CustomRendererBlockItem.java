@@ -5,8 +5,8 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.block.deepabyss.AbstractMultiPartSkeletonBlock;
 import com.min01.beyondtheabyss.item.renderer.BTABlockEntityItemRenderer;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,7 +37,7 @@ public class CustomRendererBlockItem extends BlockItem
 			@Override
 			public BlockEntityWithoutLevelRenderer getCustomRenderer() 
 			{
-				return new BTABlockEntityItemRenderer(CustomRendererBlockItem.this.blockEntity.get(), Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				return new BTABlockEntityItemRenderer(CustomRendererBlockItem.this.blockEntity.get(), BTAClientUtil.MC.getBlockEntityRenderDispatcher(), BTAClientUtil.MC.getEntityModels());
 			}
 		});
 	}

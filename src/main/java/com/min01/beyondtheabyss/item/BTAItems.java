@@ -17,6 +17,7 @@ import com.min01.beyondtheabyss.item.deepabyss.OxygenTankItem;
 import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.item.weapon.SacrificialDaggerItem;
+import com.min01.beyondtheabyss.item.weapon.SkeletalRailgunbladeItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -68,6 +69,13 @@ public class BTAItems
 	public static final RegistryObject<Item> GNASHER_TOOTH = ITEMS.register("gnasher_tooth", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GHOUL_BLOOM_SEED_POD = ITEMS.register("ghoul_bloom_seed_pod", () -> new ItemNameBlockItem(BTABlocks.GHOUL_BLOOM.get(), new Item.Properties()));
 	public static final RegistryObject<Item> FIBER = ITEMS.register("fiber", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> ABERRANT_FLESH = ITEMS.register("aberrant_flesh", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> CHARGE_BULB = ITEMS.register("charge_bulb", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SPLITTING_GEL = ITEMS.register("splitting_gel", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SPINE_WORM_MANDIBLE = ITEMS.register("spine_worm_mandible", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SLASHER_BLADE = ITEMS.register("slasher_blade", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> BLASTER_SKULL = ITEMS.register("blaster_skull", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SERPENT_HEART = ITEMS.register("serpent_heart", () -> new Item(new Item.Properties()));
 	
 	//armors
 	public static final RegistryObject<Item> DIVING_HELMET = ITEMS.register("diving_helmet", () -> new DivingSetItem(ArmorItem.Type.HELMET));
@@ -150,11 +158,16 @@ public class BTAItems
 	public static final RegistryObject<Item> CRACKED_BONE_BLOCK = registerBlockItem("cracked_bone_block", () -> BTABlocks.CRACKED_BONE_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_BRICK_BLOCK = registerBlockItem("bone_brick_block", () -> BTABlocks.BONE_BRICK_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_PILLAR_BLOCK = registerBlockItem("bone_pillar_block", () -> BTABlocks.BONE_PILLAR_BLOCK.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_STAIR = registerBlockItem("bone_stairs", () -> BTABlocks.BONE_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_SLAB = registerBlockItem("bone_slab", () -> BTABlocks.BONE_SLAB.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_FENCE = registerBlockItem("bone_fence", () -> BTABlocks.BONE_FENCE.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_LADDER = registerBlockItem("bone_ladder", () -> BTABlocks.BONE_LADDER.get(), new Item.Properties());
 	
 	//weapons
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));
-	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(3550).rarity(RARITY_DEEP_ABYSS)));
+	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(1200).rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", () -> new SacrificialDaggerItem(new Item.Properties().durability(150)));
+	public static final RegistryObject<Item> SKELETAL_RAILGUNBLADE = ITEMS.register("skeletal_railgunblade", () -> new SkeletalRailgunbladeItem(new Item.Properties().durability(1500).rarity(RARITY_DEEP_ABYSS)));
 
 	//tools
 	public static final RegistryObject<Item> FLASHLIGHT = ITEMS.register("flashlight", () -> new FlashlightItem());

@@ -7,8 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.min01.beyondtheabyss.item.model.ModelDiverSet;
 import com.min01.beyondtheabyss.misc.BTAArmorMaterials;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,7 +32,7 @@ public class DivingSetItem extends AbstractDivingSetItem
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) 
 			{
-				ModelDiverSet<?> diverModel = new ModelDiverSet<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelDiverSet.LAYER_LOCATION));
+				ModelDiverSet<?> diverModel = new ModelDiverSet<>(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelDiverSet.LAYER_LOCATION));
 				diverModel.Head.visible = equipmentSlot == EquipmentSlot.HEAD;
 				diverModel.Body.visible = equipmentSlot == EquipmentSlot.CHEST;
 				diverModel.LeftArm.visible = equipmentSlot == EquipmentSlot.CHEST;

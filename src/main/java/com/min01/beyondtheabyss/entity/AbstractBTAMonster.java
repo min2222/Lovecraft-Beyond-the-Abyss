@@ -178,7 +178,7 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	}
 	
 	@Override
-	public void setIsUsingSkill(boolean value) 
+	public void setUsingSkill(boolean value) 
 	{
 		this.entityData.set(IS_USING_SKILL, value);
 	}

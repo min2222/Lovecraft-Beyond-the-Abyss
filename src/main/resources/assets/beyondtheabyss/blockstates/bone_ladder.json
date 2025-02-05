@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "beyondtheabyss:block/bone_ladder",
+			"y": 90
+		},
+		"facing=north": {
+			"model": "beyondtheabyss:block/bone_ladder"
+		},
+		"facing=south": {
+			"model": "beyondtheabyss:block/bone_ladder",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "beyondtheabyss:block/bone_ladder",
+			"y": 270
+		}
+	}
+}

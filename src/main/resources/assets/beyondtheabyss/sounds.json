@@ -70,5 +70,21 @@
 				"stream": true
 			}
 		]
+	},
+	"railgunblade_blade_to_gun": {
+		"sounds": [
+			{
+				"name": "beyondtheabyss:item/railgunblade_blade_to_gun",
+				"stream": true
+			}
+		]
+	},
+	"railgunblade_gun_to_blade": {
+		"sounds": [
+			{
+				"name": "beyondtheabyss:item/railgunblade_gun_to_blade",
+				"stream": true
+			}
+		]
 	}
 }

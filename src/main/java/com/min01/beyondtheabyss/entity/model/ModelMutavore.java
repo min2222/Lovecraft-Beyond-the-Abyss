@@ -1,14 +1,17 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.MutavoreAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.util.KinematicChain.ChainSegment;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.animation.AnimationChannel;
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +22,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class ModelMutavore extends HierarchicalModel<EntityMutavore>
@@ -101,15 +103,15 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 
 		PartDefinition tentaclePos = mutavore.addOrReplaceChild("tentaclePos", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle16", CubeListBuilder.create(), PartPose.offset(7.0F, -30.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle16", CubeListBuilder.create(), PartPose.offset(-7.0F, -30.0F, 107.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle17", CubeListBuilder.create(), PartPose.offset(-7.0F, -30.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle17", CubeListBuilder.create(), PartPose.offset(7.0F, -30.0F, 107.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle18", CubeListBuilder.create(), PartPose.offset(-7.0F, -4.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle18", CubeListBuilder.create(), PartPose.offset(7.0F, -4.0F, 107.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle19", CubeListBuilder.create(), PartPose.offset(7.0F, -4.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle19", CubeListBuilder.create(), PartPose.offset(-7.0F, -4.0F, 107.0F));
 
-		tentaclePos.addOrReplaceChild("tentacle20", CubeListBuilder.create(), PartPose.offset(0.0F, -17.0F, 23.0F));
+		tentaclePos.addOrReplaceChild("tentacle20", CubeListBuilder.create(), PartPose.offset(0.0F, -17.0F, 107.0F));
 
 		PartDefinition tentacles = mutavore.addOrReplaceChild("tentacles", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 46.0F, 0.0F, 3.1416F, 0.0F));
 
@@ -194,53 +196,106 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 	@Override
 	public void setupAnim(EntityMutavore entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
+		//FIXME swim animation is not playing;
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("mutavore"), netHeadYaw, headPitch);
-		for(int i = 0; i < 5; i++)
-		{
-			int num0 = 16 + i;
-			int num = i + 1;
-			int num1 = num + 5;
-			int num2 = num1 + 5;
-			Vec3 tentaclePos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"mutavore", "tentaclePos", "tentacle" + num0});
-			entity.posArray[i] = tentaclePos;
-			BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tentaclePos, i));
-
-			ChainSegment[] segments = entity.chains[i].getSegments();
-			ModelPart tentacle = this.root.getChild("mutavore").getChild("tentacles");
-			ModelPart firstTentacle = tentacle.getChild("tentacle" + num);
-			ModelPart secondTentacle = firstTentacle.getChild("tentacle" + num1);
-			ModelPart thirdTentacle = secondTentacle.getChild("tentacle" + num2);
-			ModelPart[] tentacles = new ModelPart[] {firstTentacle, secondTentacle, thirdTentacle};
-			for(int i2 = 0; i2 < segments.length; i2++)
-			{
-				Vec2 rot = segments[i2].getRot();
-				float yRot = i2 > 0 ? tentacles[i2 - 1].yRot : 0.0F;
-				float xRot = i2 > 0 ? tentacles[i2 - 1].xRot : 0.0F;
-				//TODO edge tentacle yRot is inverted;
-				if(i2 < 2)
-				{
-					tentacles[i2].yRot += Math.toRadians(rot.y - Math.toDegrees(yRot));
-					tentacles[i2].xRot += Math.toRadians(rot.x - Math.toDegrees(xRot));
-				}
-			}
-		}
+		this.animateWalk(this.mutavoreSwim(BTAClientUtil.getElapsedSeconds(false, 0.0F, entity.swimAnimationState.getAccumulatedTime()) / 60.0F), limbSwing, limbSwingAmount, 1.0F, 5.5F);
+		this.animate(entity.mouthOpeningAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_OPENING, ageInTicks);
+		this.animate(entity.mouthOpenAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_OPEN, ageInTicks);
+		this.animate(entity.mouthCloseAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_CLOSE, ageInTicks);
+		entity.swimAnimationState.updateTime(ageInTicks, 1.0F);
 		
 		Vec3 tonguePos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"mutavore", "head", "jaw", "tongue", "tongue1"});
-		entity.posArray[5] = tonguePos;
-		BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tonguePos, 5));
-		ModelPart tongue = this.root.getChild("mutavore").getChild("head").getChild("jaw").getChild("tongue");
-		ModelPart[] tongues = new ModelPart[] {tongue.getChild("tongue1"), tongue.getChild("tongue1").getChild("tongue2"), tongue.getChild("tongue1").getChild("tongue2").getChild("tongue3")};
-		ChainSegment[] segments = entity.tongueChain.getSegments();
-		
-		for(int i = 0; i < segments.length; i++)
-		{
-			Vec2 rot = segments[i].getRot();
-			float yRot = i > 0 ? tongues[i - 1].yRot : 0.0F;
-			float xRot = i > 0 ? tongues[i - 1].xRot : 0.0F;
-			tongues[i].yRot += Math.toRadians(rot.y - Math.toDegrees(yRot));
-			tongues[i].xRot += Math.toRadians(rot.x - Math.toDegrees(xRot));
-		}
+		entity.posArray[0] = tonguePos;
+		BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tonguePos, 0));
+	}
+	
+	public AnimationDefinition mutavoreSwim(float elapsedSeconds)
+	{
+		AnimationDefinition anim = AnimationDefinition.Builder.withLength(0.0F)
+				.addAnimation("mutavore", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30 + elapsedSeconds * 100) * 2, -4 + Math.sin(elapsedSeconds * 50) * 2, 0.0F), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("mutavore", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+					new Keyframe(0.0F, BTAClientUtil.posVec(0.0F, (float) (-Math.sin(elapsedSeconds * 100) * 2), 0.0F), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30 + elapsedSeconds * 100) * 0.5, -4 + Math.sin(-30 + elapsedSeconds * 50) * 5, 0.0F), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(3 + Math.sin(-60 + elapsedSeconds * 100) * 5, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("left_head_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-20 + Math.sin(elapsedSeconds * 100) * 10, Math.sin(60 + elapsedSeconds * 100) * 5, Math.sin(60 + elapsedSeconds * 100) * 5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("right_head_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-20 + Math.sin(elapsedSeconds * 100) * 10, -Math.sin(60 + elapsedSeconds * 100) * 5, -Math.sin(60 + elapsedSeconds * 100) * 5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("left_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(20 - Math.sin(elapsedSeconds * 100) * 30, -Math.sin(60 + elapsedSeconds * 100) * 10, -Math.sin(60 + elapsedSeconds * 100) * 10), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("right_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(20 - Math.sin(elapsedSeconds * 100) * 30, Math.sin(60 + elapsedSeconds * 100) * 10, Math.sin(60 + elapsedSeconds * 100) * 10), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("left_small_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(20 - Math.sin(30 + elapsedSeconds * 100) * 30, -Math.sin(90 + elapsedSeconds * 100) * 10, -Math.sin(90 + elapsedSeconds * 100) * 10), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("right_small_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(20 - Math.sin(30 + elapsedSeconds * 100) * 30, Math.sin(90 + elapsedSeconds * 100) * 10, Math.sin(90 + elapsedSeconds * 100) * 10), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("mutate1", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30 + elapsedSeconds * 100) * 3, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("mutate2", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30 + elapsedSeconds * 100) * 3, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle2", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-10 - Math.sin(-30 + elapsedSeconds * 100) * 5, 5 + Math.sin(-30 + elapsedSeconds * 100) * 2.5, Math.sin(-30 + elapsedSeconds * 100) * 2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle7", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-90+elapsedSeconds*100)*5, 5-Math.sin(-90+elapsedSeconds*100)*2.5, Math.sin(-90+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle12", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-120+elapsedSeconds*100)*5, 5-Math.sin(-120+elapsedSeconds*100)*2.5, Math.sin(-120+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle1", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-10-Math.sin(-30+elapsedSeconds*100)*5, -5-Math.sin(-30+elapsedSeconds*100)*2.5, Math.sin(-30+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle6", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-90+elapsedSeconds*100)*5, -5-Math.sin(-90+elapsedSeconds*100)*2.5, Math.sin(-90+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle11", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-120+elapsedSeconds*100)*5, -5-Math.sin(-120+elapsedSeconds*100)*2.5, Math.sin(-120+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle3", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30+elapsedSeconds*100)*5, 5+Math.sin(-30+elapsedSeconds*100)*2.5, Math.sin(-30+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle8", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(10+Math.sin(-90+elapsedSeconds*100)*5, 5+Math.sin(-90+elapsedSeconds*100)*2.5, Math.sin(-90+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle13", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-120+elapsedSeconds*100)*5, 5+Math.sin(-120+elapsedSeconds*100)*2.5, Math.sin(-120+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle4", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30+elapsedSeconds*100)*5, -5-Math.sin(-30+elapsedSeconds*100)*2.5, Math.sin(-30+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle9", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-60+elapsedSeconds*100)*5, -5-Math.sin(-60+elapsedSeconds*100)*2.5, Math.sin(-60+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle14", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-120+elapsedSeconds*100)*5, -5-Math.sin(-120+elapsedSeconds*100)*2.5, Math.sin(-120+elapsedSeconds*100)*2.5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle5", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-30+elapsedSeconds*100)*2, 2+Math.sin(-30+elapsedSeconds*100)*2, Math.sin(-90+elapsedSeconds*100)*2), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle10", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-60+elapsedSeconds*100)*5, Math.sin(-90+elapsedSeconds*100)*5, Math.sin(-120+elapsedSeconds*100)*5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.addAnimation("tentacle15", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-90+elapsedSeconds*100)*5, Math.sin(-120+elapsedSeconds*100)*5, Math.sin(-150+elapsedSeconds*100)*5), AnimationChannel.Interpolations.LINEAR)
+				))
+				.build();
+		return anim;
 	}
 	
 	@Override

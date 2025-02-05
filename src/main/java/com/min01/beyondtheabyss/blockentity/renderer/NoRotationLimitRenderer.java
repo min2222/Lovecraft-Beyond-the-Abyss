@@ -54,9 +54,9 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 		if(blockState.is(BTABlocks.FANG_SKULL.get()))
 		{
 			p_112309_.pushPose();
-			p_112309_.translate(0.5D, 0.5D, 0.5D);
-			p_112309_.scale(-1, -1, 1);
-			p_112309_.translate(0, -1, 0);
+			p_112309_.translate(0.5F, 0.5F, 0.5F);
+			p_112309_.scale(-1.0F, -1.0F, 1.0F);
+			p_112309_.translate(0.0F, -1.0F, 0.0F);
 			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(FANG_SKULL_TEXTURE));
 			this.fangSkullModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
@@ -65,9 +65,9 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 		else if(blockState.is(BTABlocks.LARGE_SKULL.get()))
 		{
 			p_112309_.pushPose();
-			p_112309_.translate(0.5D, 0.5D, 0.5D);
-			p_112309_.scale(-1, -1, 1);
-			p_112309_.translate(0, -1, 0);
+			p_112309_.translate(0.5F, 0.5F, 0.5F);
+			p_112309_.scale(-1.0F, -1.0F, 1.0F);
+			p_112309_.translate(0.0F, -1.0F, 0.0F);
 			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(LARGE_SKULL_TEXTURE));
 			this.largeSkullModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
@@ -76,9 +76,9 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 		else if(blockState.is(BTABlocks.BONE_PILES.get()))
 		{
 			p_112309_.pushPose();
-			p_112309_.translate(0.5D, 0.5D, 0.5D);
-			p_112309_.scale(-1, -1, 1);
-			p_112309_.translate(0, -1, 0);
+			p_112309_.translate(0.5F, 0.5F, 0.5F);
+			p_112309_.scale(-1.0F, -1.0F, 1.0F);
+			p_112309_.translate(0.0F, -1.0F, 0.0F);
 			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(BONE_PILES_TEXTURE));
 			this.bonePilesModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
@@ -89,9 +89,9 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 			if(blockState.getValue(AbstractMultiPartSkeletonBlock.SKELETON_PART) == SkeletonPart.LOWER)
 			{
 				p_112309_.pushPose();
-				p_112309_.translate(0.5D, 0.5D, 0.5D);
-				p_112309_.scale(-1, -1, 1);
-				p_112309_.translate(0, -1, 0);
+				p_112309_.translate(0.5F, 0.5F, 0.5F);
+				p_112309_.scale(-1.0F, -1.0F, 1.0F);
+				p_112309_.translate(0.0F, -1.0F, 0.0F);
 				this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 				VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(SITTING_SKELETON_TEXTURE));
 				this.sittingSkeletonModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
@@ -103,9 +103,9 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
 			if(blockState.getValue(AbstractMultiPartSkeletonBlock.SKELETON_PART) == SkeletonPart.LOWER)
 			{
 				p_112309_.pushPose();
-				p_112309_.translate(0.5D, 0.5D, 0.5D);
-				p_112309_.scale(-1, -1, 1);
-				p_112309_.translate(0, -1, 0);
+				p_112309_.translate(0.5F, 0.5F, 0.5F);
+				p_112309_.scale(-1.0F, -1.0F, 1.0F);
+				p_112309_.translate(0.0F, -1.0F, 0.0F);
 				this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
 				VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(FALLEN_SKELETON_TEXTURE));
 				this.fallenSkeletonModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);

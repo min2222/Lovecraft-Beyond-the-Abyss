@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -47,7 +46,7 @@ public class UpdateAltarItemPacket
 			{
 				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					Minecraft.getInstance().doRunTask(() -> 
+					BTAClientUtil.MC.doRunTask(() -> 
 					{
 						Entity entity = BTAClientUtil.MC.level.getEntity(message.entityId);
 						if(entity.level.getBlockEntity(message.pos) instanceof RiftwellingAltarBlockEntity altar)

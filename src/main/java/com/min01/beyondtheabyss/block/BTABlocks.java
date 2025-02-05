@@ -32,6 +32,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CoralBlock;
 import net.minecraft.world.level.block.CoralFanBlock;
 import net.minecraft.world.level.block.CoralWallFanBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -50,8 +52,6 @@ public class BTABlocks
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BeyondtheAbyss.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BeyondtheAbyss.MODID);
 
-    public static final RegistryObject<Block> BTA_LIGHT = BLOCKS.register("bta_light", () -> new BTALightBlock());
-    
     public static final RegistryObject<Block> RIFTWELLING_ALTAR = BLOCKS.register("riftwelling_altar", () -> new RiftwellingAltarBlock());
     public static final RegistryObject<Block> ABYSSALITH = BLOCKS.register("abyssalith", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
     public static final RegistryObject<Block> DEEP_ABYSSALITH = BLOCKS.register("deep_abyssalith", () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)));
@@ -113,6 +113,11 @@ public class BTABlocks
     public static final RegistryObject<Block> CRACKED_BONE_BLOCK = BLOCKS.register("cracked_bone_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     public static final RegistryObject<Block> BONE_BRICK_BLOCK = BLOCKS.register("bone_brick_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     public static final RegistryObject<Block> BONE_PILLAR_BLOCK = BLOCKS.register("bone_pillar_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
+    
+    public static final RegistryObject<Block> BONE_STAIRS = BLOCKS.register("bone_stairs", () -> new StairBlock(() -> Blocks.BONE_BLOCK.defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
+    public static final RegistryObject<Block> BONE_SLAB = BLOCKS.register("bone_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
+    public static final RegistryObject<Block> BONE_FENCE = BLOCKS.register("bone_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
+    public static final RegistryObject<Block> BONE_LADDER = BLOCKS.register("bone_ladder", () ->  new LadderBlock(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.BONE_BLOCK).noOcclusion()));
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 

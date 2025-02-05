@@ -39,7 +39,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 
-	public AnimationState biteAnimationState = new AnimationState();
+	public final AnimationState biteAnimationState = new AnimationState();
 
 	@Nullable
 	private EntityGnasher leader;

@@ -23,8 +23,8 @@ import net.minecraft.world.level.block.Blocks;
 
 public class EntityDeepVampire extends AbstractDeepAbyssMonster
 {
-	public AnimationState biteRightAnimationState = new AnimationState();
-	public AnimationState biteLeftAnimationState = new AnimationState();
+	public final AnimationState biteRightAnimationState = new AnimationState();
+	public final AnimationState biteLeftAnimationState = new AnimationState();
 	
 	public EntityDeepVampire(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{

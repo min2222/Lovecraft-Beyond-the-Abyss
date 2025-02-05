@@ -58,30 +58,25 @@ public class KinematicChain
 	{
 		if(this.anchorPos != null)
 		{
-			this.segments[0].setRot(this.lookAt(this.segments[0].getPos(), this.anchorPos));
 			this.segments[0].setPos(this.anchorPos);
 		}
 		for(ChainSegment segment : this.segments)
 		{
 			ChainSegment parent = segment.getParent();
 			Vec3 pos = segment.getPos();
-			//this.addParticle(pos, 0, 0, 0, 0, 10);
 			
 			if(parent != null)
 			{
 				segment.setRot(this.lookAt(pos, parent.getPos()));
-				if(segment != this.segments[0])
-				{
-					segment.setPos(this.getLookPos(this.lookAt(parent.getPos(), pos), parent.getPos(), 0, 0, this.distance));
-				}
+				segment.setPos(this.getLookPos(segment.getRot(), parent.getPos(), 0, 0, -this.distance));
 				
 				parent.setRot(this.lookAt(parent.getPos(), pos));
-				parent.setPos(this.getLookPos(this.lookAt(pos, parent.getPos()), pos, 0, 0, this.distance));
+				parent.setPos(this.getLookPos(parent.getRot(), pos, 0, 0, this.distance));
 			}
 			else if(this.target != null)
 			{
 				segment.setRot(this.lookAt(pos, this.target));
-				segment.setPos(this.getLookPos(this.lookAt(this.target, pos), this.target, 0, 0, this.distance));
+				segment.setPos(this.getLookPos(segment.getRot(), this.target, 0, 0, -this.distance));
 			}
 		}
 	}

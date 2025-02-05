@@ -47,6 +47,13 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.GNASHER_TOOTH.get());
 				output.accept(BTAItems.GHOUL_BLOOM_SEED_POD.get());
 				output.accept(BTAItems.FIBER.get());
+				output.accept(BTAItems.ABERRANT_FLESH.get());
+				output.accept(BTAItems.CHARGE_BULB.get());
+				output.accept(BTAItems.SPLITTING_GEL.get());
+				output.accept(BTAItems.SPINE_WORM_MANDIBLE.get());
+				output.accept(BTAItems.SLASHER_BLADE.get());
+				output.accept(BTAItems.BLASTER_SKULL.get());
+				output.accept(BTAItems.SERPENT_HEART.get());
     		}).build());
     
     public static final RegistryObject<CreativeModeTab> ABYSS_ARMORS = CREATIVE_MODE_TAB.register("abyss_armors", () -> CreativeModeTab.builder()
@@ -108,6 +115,7 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.RUSTY_HARPOON.get());
 				output.accept(BTAItems.GHIDRUTH_SCALE_HARPOON.get());
 				output.accept(BTAItems.SACRIFICIAL_DAGGER.get());
+				output.accept(BTAItems.SKELETAL_RAILGUNBLADE.get());
     		}).build());
     
     public static final RegistryObject<CreativeModeTab> ABYSS_TOOLS = CREATIVE_MODE_TAB.register("abyss_tools", () -> CreativeModeTab.builder()

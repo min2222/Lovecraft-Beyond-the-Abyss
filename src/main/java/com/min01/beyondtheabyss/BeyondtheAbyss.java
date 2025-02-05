@@ -14,6 +14,7 @@ import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTAFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
+import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
@@ -46,6 +47,7 @@ public class BeyondtheAbyss
 		BTAFeatures.FEATURES.register(bus);
 		BTACreativeModeTabs.CREATIVE_MODE_TAB.register(bus);
 		BTABiomes.BIOMES.register(bus);
+		BTAWorldCarvers.WORLD_CARVERS.register(bus);
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");

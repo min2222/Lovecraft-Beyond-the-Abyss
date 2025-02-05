@@ -14,6 +14,9 @@ import com.min01.beyondtheabyss.cerbon.MutableBox;
 import com.min01.beyondtheabyss.cerbon.QuaternionD;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.BuildMultiPartPacket;
@@ -184,6 +187,28 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 			else
 			{
 				return model.root().getChild("Gnasher");
+			}
+		}
+		if(this.entity instanceof EntitySiamserpentHead head)
+		{
+			if(head.getHeadType() == HeadType.SLASHER)
+			{
+				return model.root().getChild("SiamserpentSlasher");
+			}
+			else
+			{
+				return model.root().getChild("SiamserpentBlaster");
+			}
+		}
+		if(this.entity instanceof EntitySiamserpentBone bone)
+		{
+			if(bone.getVariant() == 0 || bone.getVariant() == 1)
+			{
+				return model.root().getChild("SiamserpentBone");
+			}
+			else
+			{
+				return model.root().getChild("SiamserpentMiddleBone");
 			}
 		}
 		return model.root();

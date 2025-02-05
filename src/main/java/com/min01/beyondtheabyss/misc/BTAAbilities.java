@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.misc;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilityImpl.BTAAbility;
+import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl.BTAAbility;
 
 public class BTAAbilities
 {

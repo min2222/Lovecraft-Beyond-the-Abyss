@@ -36,9 +36,6 @@ public class BTATags
 	public static class BTABlocks
 	{
 		public static final TagKey<Block> DEATH_VALLEY_REPLACEABLES = create("death_valley_replaceables");
-		public static final TagKey<Block> ABYSS_CORALS = create("abyss_corals");
-		public static final TagKey<Block> ABYSS_CORAL_BLOCKS = create("abyss_coral_blocks");
-		public static final TagKey<Block> ABYSS_WALL_CORALS = create("abyss_wall_corals");
 		
 		private static TagKey<Block> create(String p_203849_) 
 		{

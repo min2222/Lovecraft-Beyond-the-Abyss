@@ -96,25 +96,16 @@ public class ModelGnasher extends HierarchicalModel<EntityGnasher>
 	public void setupAnim(EntityGnasher entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
+		BTAClientUtil.animateHead(this.root, netHeadYaw, headPitch);
 		this.root.getChild("LeadGnasher").visible = entity.isLeader();
-		this.root.getChild("LeadGnasher").getAllParts().forEach(t -> 
-		{
-			t.visible = entity.isLeader();
-		});
 		this.root.getChild("Gnasher").visible = !entity.isLeader();
-		this.root.getChild("Gnasher").getAllParts().forEach(t -> 
-		{
-			t.visible = !entity.isLeader();
-		});
 		if(entity.isLeader())
 		{
-			BTAClientUtil.animateHead(this.root.getChild("LeadGnasher"), netHeadYaw, headPitch);
-			this.animateWalk(GnasherLeaderAnimation.GNASHER_LEADER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
+			this.animateWalk( GnasherLeaderAnimation.GNASHER_LEADER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 			this.animate(entity.biteAnimationState, GnasherLeaderAnimation.GNASHER_LEADER_BITE, ageInTicks);
 		}
 		else
 		{
-			BTAClientUtil.animateHead(this.root.getChild("Gnasher"), netHeadYaw, headPitch);
 			this.animateWalk(GnasherAnimation.GNASHER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 			this.animate(entity.biteAnimationState, GnasherAnimation.GNASHER_BITE, ageInTicks);
 		}

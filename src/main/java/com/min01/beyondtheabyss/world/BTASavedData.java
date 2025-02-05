@@ -1,7 +1,6 @@
 package com.min01.beyondtheabyss.world;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -13,17 +12,12 @@ public class BTASavedData extends SavedData
 	
 	private boolean isUnderwaterBaseGenerated;
 	
-    public static BTASavedData get(Level level, ResourceKey<Level> dimension)
+    public static BTASavedData get(Level level)
     {
-        if(level instanceof ServerLevel) 
+        if(level instanceof ServerLevel serverLevel) 
         {
-            ServerLevel serverLevel = level.getServer().getLevel(dimension);
             DimensionDataStorage storage = serverLevel.getDataStorage();
             BTASavedData data = storage.computeIfAbsent(BTASavedData::load, BTASavedData::new, NAME);
-            if(data != null)
-            {
-                data.setDirty();
-            }
             return data;
         }
         return null;
@@ -37,10 +31,10 @@ public class BTASavedData extends SavedData
     }
 	
 	@Override
-	public CompoundTag save(CompoundTag p_77763_)
+	public CompoundTag save(CompoundTag nbt)
 	{
-		p_77763_.putBoolean("isUnderwaterBaseGenerated", this.isUnderwaterBaseGenerated);
-		return p_77763_;
+		nbt.putBoolean("isUnderwaterBaseGenerated", this.isUnderwaterBaseGenerated);
+		return nbt;
 	}
 
 	public boolean isUnderwaterBaseGenerated() 
@@ -51,5 +45,6 @@ public class BTASavedData extends SavedData
 	public void setUnderwaterBaseGenerated(boolean isUnderwaterBaseGenerated)
 	{
 		this.isUnderwaterBaseGenerated = isUnderwaterBaseGenerated;
+		this.setDirty();
 	}
 }
