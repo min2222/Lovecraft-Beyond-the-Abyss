@@ -117,6 +117,6 @@ public class ThrownHarpoonRenderer extends EntityRenderer<EntityThrownHarpoon>
 	@Override
 	public ResourceLocation getTextureLocation(EntityThrownHarpoon harpoon)
 	{
-		return !harpoon.isReinforced() ? new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/rusty_harpoon.png") : new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_harpoon.png");
+		return !harpoon.isReinforced() ? new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/rusty_harpoon.png") : new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_scale_harpoon.png");
 	}
 }

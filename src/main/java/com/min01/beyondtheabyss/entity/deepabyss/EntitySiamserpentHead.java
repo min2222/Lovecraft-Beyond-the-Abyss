@@ -188,6 +188,22 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 		return 1;
 	}
 	
+	@Override
+	public boolean useSubRoot() 
+	{
+		return true;
+	}
+	
+	@Override
+	public String subRoot() 
+	{
+		if(this.getHeadType() == HeadType.SLASHER)
+		{
+			return "SiamserpentSlasher";
+		}
+		return "SiamserpentBlaster";
+	}
+	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		//LocateCommand

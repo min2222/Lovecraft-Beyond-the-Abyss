@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.event;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.IPartBuilder;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
@@ -47,7 +47,7 @@ public class ClientEventHandlerForge
     public static void onRenderEntity(RenderEntityEvent<?> event)
     {
     	LivingEntity living = event.getEntity();
-    	if(living instanceof IPartBuilder partBuilder)
+    	if(living instanceof IMultipart partBuilder)
     	{
     		EntityPartBuilder<?> builder = partBuilder.getPartBuilder();
     		HierarchicalModel<?> model = BTAClientUtil.getModelFromEntity(living);

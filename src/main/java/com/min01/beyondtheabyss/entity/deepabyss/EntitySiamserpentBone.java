@@ -95,6 +95,22 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     		}
     	}
     }
+    
+    @Override
+    public boolean useSubRoot() 
+    {
+    	return true;
+    }
+    
+    @Override
+    public String subRoot()
+    {
+		if(this.getVariant() == 0 || this.getVariant() == 1)
+		{
+			return "SiamserpentBone";
+		}
+		return "SiamserpentMiddlebone";
+    }
 
 	@Override
 	public BTAMobType getBTAMobType()

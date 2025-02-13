@@ -92,6 +92,8 @@ public class ModelSkeletalRailgunblade extends HierarchicalItemModel
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animate(BTAUtil.getItemAnimationState(stack, SkeletalRailgunbladeItem.RAILGUNBLADE_OPEN), SkeletalRailgunbladeAnimation.RAILGUNBLADE_OPEN, ageInTicks);
 		this.animate(BTAUtil.getItemAnimationState(stack, SkeletalRailgunbladeItem.RAILGUNBLADE_CLOSE), SkeletalRailgunbladeAnimation.RAILGUNBLADE_CLOSE, ageInTicks);
+		this.animate(BTAUtil.getItemAnimationState(stack, SkeletalRailgunbladeItem.RAILGUNBLADE_OPENED), SkeletalRailgunbladeAnimation.RAILGUNBLADE_OPENED, ageInTicks);
+		this.animate(BTAUtil.getItemAnimationState(stack, SkeletalRailgunbladeItem.RAILGUNBLADE_CLOSED), SkeletalRailgunbladeAnimation.RAILGUNBLADE_CLOSED, ageInTicks);
 		this.EnergyRay.visible = false;
 	}
 	

@@ -191,6 +191,22 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 		return BTAMobType.HOSTILE;
 	}
 	
+	@Override
+	public boolean useSubRoot()
+	{
+		return true;
+	}
+	
+	@Override
+	public String subRoot()
+	{
+		if(this.isLeader())
+		{
+			return "LeadGnasher";
+		}
+		return "Gnasher";
+	}
+	
 	public int getMaxSchoolSize() 
 	{
 		return super.getMaxSpawnClusterSize();

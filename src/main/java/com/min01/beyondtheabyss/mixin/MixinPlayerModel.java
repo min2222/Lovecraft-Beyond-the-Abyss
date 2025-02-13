@@ -11,7 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.animation.KeyframePlayerAnimations;
+import com.min01.beyondtheabyss.animation.PlayerAnimation;
+import com.min01.beyondtheabyss.item.weapon.SkeletalRailgunbladeItem;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.client.animation.AnimationDefinition;
@@ -53,7 +56,11 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     @Inject(at = @At("TAIL"), method = "setupAnim", cancellable = true)
     private void setupAnimTail(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {
-    	//this.animate(BTAUtil.getPlayerAnimationState(entity, RaybladeItem.RAYBLADE_DRAW_RIGHT), PlayerAnimation.RaybladeAnimation.RAYBLADE_DRAW_RIGHT, ageInTicks);
+    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalRailgunbladeItem.RAILGUNBLADE_OPEN), PlayerAnimation.RailgunbladeAnimation.RAILGUNBLADE_OPEN, ageInTicks);
+    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalRailgunbladeItem.RAILGUNBLADE_CLOSE), PlayerAnimation.RailgunbladeAnimation.RAILGUNBLADE_CLOSE, ageInTicks);
+    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalRailgunbladeItem.RAILGUNBLADE_BRING_OUT), PlayerAnimation.RailgunbladeAnimation.RAILGUNBLADE_BRING_OUT, ageInTicks);
+    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalRailgunbladeItem.RAILGUNBLADE_PUT_DOWN), PlayerAnimation.RailgunbladeAnimation.RAILGUNBLADE_PUT_DOWN, ageInTicks);
+    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalRailgunbladeItem.RAILGUNBLADE_SWING), PlayerAnimation.RailgunbladeAnimation.RAILGUNBLADE_SWING, ageInTicks);
     }
     
 	@Override

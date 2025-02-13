@@ -1,6 +1,0 @@
-{
-	"parent": "minecraft:block/cube_all",
-	"textures": {
-		"all": "beyondtheabyss:block/red_metal_lantern"
-	}
-}

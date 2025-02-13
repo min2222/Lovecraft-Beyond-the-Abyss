@@ -15,10 +15,10 @@ public class BTABlockEntityItemRenderer extends BlockEntityWithoutLevelRenderer
 	private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 	private final BlockEntity blockEntity;
 	   
-	public BTABlockEntityItemRenderer(BlockEntity blockentity, BlockEntityRenderDispatcher p_172550_, EntityModelSet p_172551_)
+	public BTABlockEntityItemRenderer(BlockEntity blockentity, BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet)
 	{
-		super(p_172550_, p_172551_);
-		this.blockEntityRenderDispatcher = p_172550_;
+		super(dispatcher, modelSet);
+		this.blockEntityRenderDispatcher = dispatcher;
 		this.blockEntity = blockentity;
 	}
 	

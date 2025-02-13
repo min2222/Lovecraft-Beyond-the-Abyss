@@ -119,9 +119,9 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext p_152019_)
     {
-    	LevelAccessor levelaccessor = p_152019_.getLevel();
-    	BlockPos blockpos = p_152019_.getClickedPos();
-    	return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(levelaccessor.getFluidState(blockpos).getType() == Fluids.WATER));
+    	LevelAccessor level = p_152019_.getLevel();
+    	BlockPos pos = p_152019_.getClickedPos();
+    	return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(pos).getType() == Fluids.WATER));
     }
     
     @Override

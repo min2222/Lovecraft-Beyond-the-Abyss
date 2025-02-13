@@ -1,7 +1,7 @@
 {
 	"render_type": "cutout",
     "textures": {
-        "particle": "beyondtheabyss:block/bone_ladder",
+		"particle": "beyondtheabyss:block/small_bone",
         "texture": "beyondtheabyss:block/bone_ladder"
     },
     "elements": [

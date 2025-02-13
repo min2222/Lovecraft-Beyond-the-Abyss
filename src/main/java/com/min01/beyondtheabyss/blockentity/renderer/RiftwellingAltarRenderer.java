@@ -17,52 +17,48 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class RiftwellingAltarRenderer<T extends BlockEntity> implements BlockEntityRenderer<T>
+public class RiftwellingAltarRenderer implements BlockEntityRenderer<RiftwellingAltarBlockEntity>
 {
-    private static final ResourceLocation ALTAR_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar.png");
-    private static final ResourceLocation ALTAR_LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar_layer.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar.png");
+    private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar_layer.png");
     
-	private final ModelRiftwellingAltar altarModel;
+	private final ModelRiftwellingAltar model;
 	
 	public RiftwellingAltarRenderer(BlockEntityRendererProvider.Context p_172550_)
 	{
-		this.altarModel = new ModelRiftwellingAltar(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
+		this.model = new ModelRiftwellingAltar(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
 	}
 
 	@Override
-	public void render(T p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
+	public void render(RiftwellingAltarBlockEntity p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
 	{
-		if(p_112307_ instanceof RiftwellingAltarBlockEntity altar)
-		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(ALTAR_TEXTURE));
-			this.altarModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-			p_112309_.popPose();
+		p_112309_.pushPose();
+		p_112309_.translate(0.5F, 0.5F, 0.5F);
+		p_112309_.scale(-1.0F, -1.0F, 1.0F);
+		p_112309_.translate(0.0F, -1.0F, 0.0F);
+		VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+		this.model.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		p_112309_.popPose();
 
+		p_112309_.pushPose();
+		p_112309_.translate(0.5F, 0.5F, 0.5F);
+		p_112309_.scale(-1.0F, -1.0F, 1.0F);
+		p_112309_.translate(0.0F, -1.0F, 0.0F);
+		VertexConsumer eyeConsumer = p_112310_.getBuffer(RenderType.eyes(LAYER_TEXTURE));
+		this.model.renderToBuffer(p_112309_, eyeConsumer, p_112311_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		p_112309_.popPose();
+		
+		if(!p_112307_.getItem().isEmpty())
+		{
+			float tick = BTAClientUtil.MC.player.tickCount + p_112308_;
 			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			VertexConsumer layerConsumer = p_112310_.getBuffer(RenderType.eyes(ALTAR_LAYER_TEXTURE));
-			this.altarModel.renderToBuffer(p_112309_, layerConsumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			p_112309_.scale(0.5F, 0.5F, 0.5F);
+			p_112309_.translate(1.0F, 3.0F, 1.0F);
+			p_112309_.translate(0, 0.05F * Mth.sin(tick / 15), 0);
+			p_112309_.mulPose(Vector3f.YP.rotationDegrees(tick));
+			BTAClientUtil.MC.getItemRenderer().renderStatic(p_112307_.getItem(), ItemTransforms.TransformType.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, p_112309_, p_112310_, 0);
 			p_112309_.popPose();
-			
-			if(!altar.getItem().isEmpty())
-			{
-				float tick = BTAClientUtil.MC.player.tickCount + p_112308_;
-				p_112309_.pushPose();
-				p_112309_.scale(0.5F, 0.5F, 0.5F);
-				p_112309_.translate(1.0F, 3.0F, 1.0F);
-				p_112309_.translate(0, 0.05F * Mth.sin(tick / 15), 0);
-				p_112309_.mulPose(Vector3f.YP.rotationDegrees(tick));
-				BTAClientUtil.MC.getItemRenderer().renderStatic(altar.getItem(), ItemTransforms.TransformType.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, p_112309_, p_112310_, 0);
-				p_112309_.popPose();
-			}
 		}
 	}
 }

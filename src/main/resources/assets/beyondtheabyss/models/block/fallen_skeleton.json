@@ -1,5 +1,5 @@
 {
 	"textures": {
-		"particle": "minecraft:block/bone_block_side"
+		"particle": "beyondtheabyss:block/small_bone"
 	}
 }

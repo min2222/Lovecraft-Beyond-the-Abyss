@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.entity.IPartBuilder;
+import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder.Part;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
@@ -58,7 +58,7 @@ public class BuildMultiPartPacket
 				{
 					ServerLevel serverLevel = player.getLevel();
 					Entity entity = serverLevel.getEntity(message.entityUUID);
-					if(entity instanceof IPartBuilder mob) 
+					if(entity instanceof IMultipart mob) 
 					{
 						EntityPartBuilder<?> builder = mob.getPartBuilder();
 						builder.hitbox = builder.buildHitBox();

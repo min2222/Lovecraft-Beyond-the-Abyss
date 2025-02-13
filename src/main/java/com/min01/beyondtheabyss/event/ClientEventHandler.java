@@ -5,12 +5,18 @@ import java.util.Objects;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.block.model.ModelBoneLever;
+import com.min01.beyondtheabyss.block.model.ModelBoneLeverOn;
 import com.min01.beyondtheabyss.block.model.ModelBonePiles;
+import com.min01.beyondtheabyss.block.model.ModelBoneTorch;
+import com.min01.beyondtheabyss.block.model.ModelBoneWallTorch;
+import com.min01.beyondtheabyss.block.model.ModelChainTrap;
 import com.min01.beyondtheabyss.block.model.ModelFallenSkeleton;
 import com.min01.beyondtheabyss.block.model.ModelFangSkull;
 import com.min01.beyondtheabyss.block.model.ModelLargeSkull;
 import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
 import com.min01.beyondtheabyss.block.model.ModelSittingSkeleton;
+import com.min01.beyondtheabyss.blockentity.renderer.ChainTrapRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
@@ -18,6 +24,8 @@ import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.model.ModelAmarumGhost;
+import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
+import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelFallenDiver;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
@@ -32,6 +40,7 @@ import com.min01.beyondtheabyss.entity.model.ModelSiamserpentHead;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
+import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
@@ -101,6 +110,7 @@ public class ClientEventHandler
     {
         BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
         BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
+        BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
         ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
@@ -151,6 +161,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
     	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
     	event.registerEntityRenderer(BTAEntities.SUBMARINE.get(), SubmarineRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.CHAIN_TRAP_MAW.get(), ChainTrapMawRenderer::new);
     	
     	//projectile
     	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);
@@ -177,6 +188,7 @@ public class ClientEventHandler
     @SubscribeEvent
     public static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
+    	//entities
     	event.registerLayerDefinition(ModelGhidruth.LAYER_LOCATION, ModelGhidruth::createBodyLayer);
     	event.registerLayerDefinition(ModelDeepVampire.LAYER_LOCATION, ModelDeepVampire::createBodyLayer);
     	event.registerLayerDefinition(ModelRunicFish.LAYER_LOCATION, ModelRunicFish::createBodyLayer);
@@ -194,18 +206,28 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelSpineWormBody.LAYER_LOCATION, ModelSpineWormBody::createBodyLayer);
     	event.registerLayerDefinition(ModelMutavore.LAYER_LOCATION, ModelMutavore::createBodyLayer);
     	event.registerLayerDefinition(ModelPutridBubble.LAYER_LOCATION, ModelPutridBubble::createBodyLayer);
+    	event.registerLayerDefinition(ModelChainTrapMaw.LAYER_LOCATION, ModelChainTrapMaw::createBodyLayer);
+    	event.registerLayerDefinition(ModelChainTrapChain.LAYER_LOCATION, ModelChainTrapChain::createBodyLayer);
     	
+    	//armors
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthDiverSet.LAYER_LOCATION, ModelGhidruthDiverSet::createBodyLayer);
     	
+    	//blocks
     	event.registerLayerDefinition(ModelRiftwellingAltar.LAYER_LOCATION, ModelRiftwellingAltar::createBodyLayer);
     	event.registerLayerDefinition(ModelFangSkull.LAYER_LOCATION, ModelFangSkull::createBodyLayer);
     	event.registerLayerDefinition(ModelLargeSkull.LAYER_LOCATION, ModelLargeSkull::createBodyLayer);
     	event.registerLayerDefinition(ModelBonePiles.LAYER_LOCATION, ModelBonePiles::createBodyLayer);
     	event.registerLayerDefinition(ModelSittingSkeleton.LAYER_LOCATION, ModelSittingSkeleton::createBodyLayer);
     	event.registerLayerDefinition(ModelFallenSkeleton.LAYER_LOCATION, ModelFallenSkeleton::createBodyLayer);
+    	event.registerLayerDefinition(ModelBoneTorch.LAYER_LOCATION, ModelBoneTorch::createBodyLayer);
+    	event.registerLayerDefinition(ModelBoneWallTorch.LAYER_LOCATION, ModelBoneWallTorch::createBodyLayer);
+    	event.registerLayerDefinition(ModelBoneLever.LAYER_LOCATION, ModelBoneLever::createBodyLayer);
+    	event.registerLayerDefinition(ModelBoneLeverOn.LAYER_LOCATION, ModelBoneLeverOn::createBodyLayer);
+    	event.registerLayerDefinition(ModelChainTrap.LAYER_LOCATION, ModelChainTrap::createBodyLayer);
     	
+    	//items
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelFlashlight.LAYER_LOCATION, ModelFlashlight::createBodyLayer);

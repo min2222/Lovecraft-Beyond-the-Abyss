@@ -3,45 +3,95 @@
 		{
 			"apply": {
 				"model": "beyondtheabyss:block/bone_fence_post"
-			}
-		},
-		{
-			"apply": {
-				"model": "beyondtheabyss:block/bone_fence_side",
-				"uvlock": true
 			},
 			"when": {
-				"north": "true"
+				"connected": "false"
 			}
 		},
 		{
 			"apply": {
 				"model": "beyondtheabyss:block/bone_fence_side",
-				"uvlock": true,
+				"y": -90
+			},
+			"when": {
+				"north": "true",
+				"connected": "false"
+			}
+		},
+		{
+			"apply": {
+				"model": "beyondtheabyss:block/bone_fence_side"
+			},
+			"when": {
+				"east": "true",
+				"connected": "false"
+			}
+		},
+		{
+			"apply": {
+				"model": "beyondtheabyss:block/bone_fence_side",
 				"y": 90
 			},
 			"when": {
-				"east": "true"
+				"south": "true",
+				"connected": "false"
 			}
 		},
 		{
 			"apply": {
 				"model": "beyondtheabyss:block/bone_fence_side",
-				"uvlock": true,
 				"y": 180
 			},
 			"when": {
-				"south": "true"
+				"west": "true",
+				"connected": "false"
 			}
 		},
 		{
 			"apply": {
-				"model": "beyondtheabyss:block/bone_fence_side",
-				"uvlock": true,
-				"y": 270
+				"model": "beyondtheabyss:block/bone_fence_post_connected"
 			},
 			"when": {
-				"west": "true"
+				"connected": "true"
+			}
+		},
+		{
+			"apply": {
+				"model": "beyondtheabyss:block/bone_fence_side_connected",
+				"y": -90
+			},
+			"when": {
+				"north": "true",
+				"connected": "true"
+			}
+		},
+		{
+			"apply": {
+				"model": "beyondtheabyss:block/bone_fence_side_connected"
+			},
+			"when": {
+				"east": "true",
+				"connected": "true"
+			}
+		},
+		{
+			"apply": {
+				"model": "beyondtheabyss:block/bone_fence_side_connected",
+				"y": 90
+			},
+			"when": {
+				"south": "true",
+				"connected": "true"
+			}
+		},
+		{
+			"apply": {
+				"model": "beyondtheabyss:block/bone_fence_side_connected",
+				"y": 180
+			},
+			"when": {
+				"west": "true",
+				"connected": "true"
 			}
 		}
 	]

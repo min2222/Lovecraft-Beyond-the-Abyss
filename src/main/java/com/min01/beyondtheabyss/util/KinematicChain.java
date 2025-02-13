@@ -26,7 +26,6 @@ public class KinematicChain
 	public void createSegments()
 	{
 		this.setupSegments();
-		this.setupParents();
 		this.setupPos();
 	}
 	
@@ -34,15 +33,7 @@ public class KinematicChain
 	{
 		for(int i = 0; i < this.segments.length; i++)
 		{
-			this.segments[i] = new ChainSegment("segment");
-		}
-	}
-	
-	public void setupParents()
-	{
-		for(int i = 0; i < this.segments.length - 1; i++)
-		{
-			this.segments[i].setParent(this.segments[i + 1]);
+			this.segments[i] = new ChainSegment();
 		}
 	}
 	
@@ -54,43 +45,41 @@ public class KinematicChain
 		}
 	}
 	
-	public void tick()
+	public void tick() 
 	{
+		if(this.target != null)
+		{
+			ChainSegment tip = this.getTipSegment();
+			tip.setRot(this.lookAt(tip.getPos(), this.target));
+			tip.setPos(this.getLookPos(tip.getRot(), tip.getPos(), 0.0F, 0.0F, this.distance));
+		}
+		
 		if(this.anchorPos != null)
 		{
 			this.segments[0].setPos(this.anchorPos);
 		}
-		for(ChainSegment segment : this.segments)
+		
+		for(int i = 2; i < this.segments.length; i++)
 		{
-			ChainSegment parent = segment.getParent();
-			Vec3 pos = segment.getPos();
-			
-			if(parent != null)
-			{
-				segment.setRot(this.lookAt(pos, parent.getPos()));
-				segment.setPos(this.getLookPos(segment.getRot(), parent.getPos(), 0, 0, -this.distance));
-				
-				parent.setRot(this.lookAt(parent.getPos(), pos));
-				parent.setPos(this.getLookPos(parent.getRot(), pos, 0, 0, this.distance));
-			}
-			else if(this.target != null)
-			{
-				segment.setRot(this.lookAt(pos, this.target));
-				segment.setPos(this.getLookPos(segment.getRot(), this.target, 0, 0, -this.distance));
-			}
+			int index = i - 1;
+			ChainSegment current = this.segments[this.segments.length - i];
+			ChainSegment next = this.segments[this.segments.length - index];
+			current.setRot(this.lookAt(current.getPos(), next.getPos()));
+			current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -this.distance));
 		}
-	}
-	
-	public Vec2 lookAt(Vec3 startPos, Vec3 pos)
-	{
-		Vec3 vec3 = startPos;
-		double d0 = pos.x - vec3.x;
-		double d1 = pos.y - vec3.y;
-		double d2 = pos.z - vec3.z;
-		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		float xRot = Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI))));
-		float yRot = Mth.wrapDegrees((float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F);
-	    return new Vec2(xRot, yRot);
+		
+		for(int i = 0; i < this.segments.length - 1; i++)
+		{
+			ChainSegment current = this.segments[i];
+			ChainSegment next = this.segments[i + 1];
+			current.setRot(this.lookAt(current.getPos(), next.getPos()));
+			next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, this.distance));
+		}
+		
+		/*for(ChainSegment segment : this.segments)
+		{
+			this.addParticle(segment.getPos(), 0, 0, 0, 1, 3);
+		}*/
 	}
 	
 	public void addParticle(Vec3 pos, double deltaX, double deltaY, double deltaZ, double speed, int count)
@@ -106,6 +95,18 @@ public class KinematicChain
             double d8 = level.random.nextGaussian() * speed;
 			level.addAlwaysVisibleParticle(ParticleTypes.BUBBLE, pos.x + d1, pos.y + d3, pos.z + d5, d6, d7, d8);
 		}
+	}
+	
+	public Vec2 lookAt(Vec3 startPos, Vec3 pos)
+	{
+		Vec3 vec3 = startPos;
+		double d0 = pos.x - vec3.x;
+		double d1 = pos.y - vec3.y;
+		double d2 = pos.z - vec3.z;
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		float xRot = Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI))));
+		float yRot = Mth.wrapDegrees((float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F);
+	    return new Vec2(xRot, yRot);
 	}
 	
 	//net.minecraft.commands.arguments.coordinates.LocalCoordinates;
@@ -158,17 +159,15 @@ public class KinematicChain
 		return this.target;
 	}
 	
+	public ChainSegment getTipSegment()
+	{
+		return this.segments[this.segments.length - 1];
+	}
+	
 	public static class ChainSegment
 	{
 		protected Vec3 position = Vec3.ZERO;
 		protected Vec2 rotation = Vec2.ZERO;
-		protected String name;
-		protected ChainSegment parent;
-		
-		public ChainSegment(String name)
-		{
-			this.name = name;
-		}
 		
 		public void setRot(Vec2 rot)
 		{
@@ -188,21 +187,6 @@ public class KinematicChain
 		public Vec3 getPos()
 		{
 			return this.position;
-		}
-		
-		public String getName()
-		{
-			return this.name;
-		}
-		
-		public void setParent(ChainSegment parent)
-		{
-			this.parent = parent;
-		}
-		
-		public ChainSegment getParent()
-		{
-			return this.parent;
 		}
 	}
 }

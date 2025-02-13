@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl.BTAAbility;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -55,29 +55,32 @@ public class UpdateBTAAbilityPacket
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				Entity entity = BTAClientUtil.MC.level.getEntity(message.entityId);
-				if(entity instanceof Player)
+				BTAUtil.getClientLevel(level -> 
 				{
-					entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(cap -> 
+					Entity entity = level.getEntity(message.entityId);
+					if(entity instanceof Player)
 					{
-						BTAAbility ability = message.ability;
-						int tickCount = message.tickCount;
-						switch(message.type)
+						entity.getCapability(BTACapabilities.BTA_ABILITY).ifPresent(cap -> 
 						{
-						case ADD:
-							cap.addAbility(ability);
-							break;
-						case REMOVE:
-							cap.removeAbility(ability);
-							break;
-						case TICK:
-							cap.setTickCount(ability, tickCount);
-							break;
-						default:
-							break;
-						}
-					});
-				}
+							BTAAbility ability = message.ability;
+							int tickCount = message.tickCount;
+							switch(message.type)
+							{
+							case ADD:
+								cap.addAbility(ability);
+								break;
+							case REMOVE:
+								cap.removeAbility(ability);
+								break;
+							case TICK:
+								cap.setTickCount(ability, tickCount);
+								break;
+							default:
+								break;
+							}
+						});
+					}
+				});
 			});
 
 			ctx.get().setPacketHandled(true);

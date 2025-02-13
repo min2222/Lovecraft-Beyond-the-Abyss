@@ -29,7 +29,10 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, BuildMultiPartPacket.class, BuildMultiPartPacket::encode, BuildMultiPartPacket::new, BuildMultiPartPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateMultiPartPacket.class, UpdateMultiPartPacket::encode, UpdateMultiPartPacket::new, UpdateMultiPartPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, InteractMultiPartPacket.class, InteractMultiPartPacket::encode, InteractMultiPartPacket::new, InteractMultiPartPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, UpdateItemTagPacket.class, UpdateItemTagPacket::encode, UpdateItemTagPacket::new, UpdateItemTagPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationPacket.class, UpdatePlayerAnimationPacket::encode, UpdatePlayerAnimationPacket::new, UpdatePlayerAnimationPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateItemAnimationPacket.class, UpdateItemAnimationPacket::encode, UpdateItemAnimationPacket::new, UpdateItemAnimationPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationTickPacket.class, UpdatePlayerAnimationTickPacket::encode, UpdatePlayerAnimationTickPacket::new, UpdatePlayerAnimationTickPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateItemAnimationTickPacket.class, UpdateItemAnimationTickPacket::encode, UpdateItemAnimationTickPacket::new, UpdateItemAnimationTickPacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 

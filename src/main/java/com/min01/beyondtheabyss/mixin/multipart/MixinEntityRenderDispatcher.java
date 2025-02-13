@@ -27,12 +27,12 @@ public class MixinEntityRenderDispatcher
     private static void drawOrientedBoxes(PoseStack matrix, VertexConsumer vertices, Entity entity, float tickDelta, CallbackInfo ci) 
     {
         AABB box = entity.getBoundingBox();
-        if(box instanceof final CompoundOrientedBox compoundOrientedBox)
+        if(box instanceof CompoundOrientedBox compoundOrientedBox)
         {
             matrix.pushPose();
             matrix.translate(-entity.getX(), -entity.getY(), -entity.getZ());
 
-            for(final OrientedBox orientedBox : compoundOrientedBox) 
+            for(OrientedBox orientedBox : compoundOrientedBox) 
             {
                 matrix.pushPose();
                 final Vec3 center = orientedBox.getCenter();
