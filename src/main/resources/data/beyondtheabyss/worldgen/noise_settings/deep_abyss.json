@@ -3,7 +3,6 @@
 	"disable_mob_generation": false,
 	"aquifers_enabled": false,
 	"ore_veins_enabled": true,
-	"legacy_random_source": true,
 	"default_block": {
 		"Name": "beyondtheabyss:abyssalith"
 	},
@@ -13,6 +12,7 @@
 			"level": "15"
 		}
 	},
+	"legacy_random_source": true,
 	"noise": {
 		"min_y": -64,
 		"height": 400,
@@ -73,7 +73,7 @@
 									"argument1": -2.5,
 									"argument2": {
 										"type": "minecraft:add",
-										"argument1": 0.9375,
+										"argument1": 1.2,
 										"argument2": {
 											"type": "minecraft:mul",
 											"argument1": {
@@ -86,7 +86,7 @@
 											"argument2": {
 												"type": "minecraft:add",
 												"argument1": -2.5,
-												"argument2": "minecraft:overworld/continents"
+												"argument2": "minecraft:overworld/erosion"
 											}
 										}
 									}
@@ -186,7 +186,7 @@
 								"add_stone_depth": true
 							},
 							"then_run": {
-								"type": "minecraft:block",
+								"type": "beyondtheabyss:death_valley",
 								"result_state": {
 									"Name": "beyondtheabyss:rot_soil"
 								}

@@ -1,10 +1,6 @@
 package com.min01.beyondtheabyss.block.deepabyss;
 
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -21,30 +17,6 @@ public class RotSoilBlock extends Block
 		this.registerDefaultState(this.stateDefinition.any().setValue(SOIL_TYPE, SoilType.VARIANT_1));
 	}
 	
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext p_49820_)
-	{
-		return this.randomizeSoil(this.defaultBlockState());
-	}
-	
-	public BlockState randomizeSoil(BlockState state)
-	{
-		List<SoilType> list = Arrays.asList(SoilType.VARIANT_1, SoilType.VARIANT_2, SoilType.VARIANT_3, SoilType.VARIANT_4);
-		int random = (int) Math.floor(Math.random() * list.size());
-		if(Math.random() <= 0.01F)
-		{
-			return state.setValue(SOIL_TYPE, SoilType.SKULL);
-		}
-		else if(Math.random() <= 0.05F)
-		{
-			return state.setValue(SOIL_TYPE, SoilType.FISH);
-		}
-		else
-		{
-			return state.setValue(SOIL_TYPE, list.get(random));
-		}
-	}
-	
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
     {
@@ -57,8 +29,12 @@ public class RotSoilBlock extends Block
 		VARIANT_2("variant_2"),
 		VARIANT_3("variant_3"),
 		VARIANT_4("variant_4"),
-		SKULL("skull"),
-		FISH("fish");
+		VARIANT_5("variant_5"),
+		VARIANT_6("variant_6"),
+		VARIANT_7("variant_7"),
+		VARIANT_8("variant_8"),
+		VARIANT_9("variant_9"),
+		VARIANT_10("variant_10");
 		
 		private final String name;
 		

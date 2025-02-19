@@ -11,11 +11,12 @@ import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.world.BTABiomes;
+import com.min01.beyondtheabyss.world.BTAChunkGenerators;
 import com.min01.beyondtheabyss.world.BTAConfiguredFeatures;
 import com.min01.beyondtheabyss.world.BTAFeatures;
 import com.min01.beyondtheabyss.world.BTAPlacedFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
-import com.min01.beyondtheabyss.world.BTAWorldCarvers;
+import com.min01.beyondtheabyss.world.BTASurfaceRules;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -56,7 +57,8 @@ public class BeyondtheAbyss
 		BTAConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
 		BTAPlacedFeatures.PLACED_FEATURES.register(bus);
 		BTABiomes.BIOMES.register(bus);
-		BTAWorldCarvers.WORLD_CARVERS.register(bus);
+		BTAChunkGenerators.CHUNK_GENERATORS.register(bus);
+		BTASurfaceRules.RULE_SOURCES.register(bus);
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");

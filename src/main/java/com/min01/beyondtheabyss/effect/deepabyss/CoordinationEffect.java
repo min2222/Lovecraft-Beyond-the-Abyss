@@ -26,9 +26,9 @@ public class CoordinationEffect extends BasicBTAEffect
 	@Override
 	public void applyEffectTick(LivingEntity p_19467_, int p_19468_)
 	{
-		List<LivingEntity> list = p_19467_.level.getEntitiesOfClass(LivingEntity.class, p_19467_.getBoundingBox().inflate(p_19468_));
+		List<LivingEntity> list = p_19467_.level.getEntitiesOfClass(LivingEntity.class, p_19467_.getBoundingBox().inflate(p_19468_ * 4));
 		list.removeIf(t -> t == p_19467_ || t.isAlliedTo(p_19467_) || !t.isAlive());
-		this.multiplier = Math.min(list.size(), p_19468_);
+		this.multiplier = Math.min(list.size(), p_19468_ * 2);
 		if(p_19467_.hasEffect(this))
 		{
 			this.addAttributeModifiers(p_19467_, p_19467_.getAttributes(), p_19468_);

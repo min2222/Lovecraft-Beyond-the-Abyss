@@ -12,11 +12,23 @@
 		"soil_type=variant_4": {
 			"model": "beyondtheabyss:block/rot_soil_4"
 		},
-		"soil_type=skull": {
-			"model": "beyondtheabyss:block/rot_soil_skull"
+		"soil_type=variant_5": {
+			"model": "beyondtheabyss:block/rot_soil_5"
 		},
-		"soil_type=fish": {
-			"model": "beyondtheabyss:block/rot_soil_fish"
+		"soil_type=variant_6": {
+			"model": "beyondtheabyss:block/rot_soil_6"
+		},
+		"soil_type=variant_7": {
+			"model": "beyondtheabyss:block/rot_soil_7"
+		},
+		"soil_type=variant_8": {
+			"model": "beyondtheabyss:block/rot_soil_8"
+		},
+		"soil_type=variant_9": {
+			"model": "beyondtheabyss:block/rot_soil_9"
+		},
+		"soil_type=variant_10": {
+			"model": "beyondtheabyss:block/rot_soil_10"
 		}
 	}
 }

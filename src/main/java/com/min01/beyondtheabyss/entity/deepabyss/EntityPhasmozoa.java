@@ -95,6 +95,12 @@ public class EntityPhasmozoa extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
+	public boolean rotateHead()
+	{
+		return false;
+	}
+	
+	@Override
 	public boolean isPickable() 
 	{
 		return super.isPickable() && !this.isSpectre();

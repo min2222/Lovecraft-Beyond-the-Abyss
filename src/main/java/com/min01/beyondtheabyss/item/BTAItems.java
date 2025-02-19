@@ -18,7 +18,7 @@ import com.min01.beyondtheabyss.item.deepabyss.OxygenTankItem;
 import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.item.weapon.SacrificialDaggerItem;
-import com.min01.beyondtheabyss.item.weapon.SkeletalRailgunbladeItem;
+import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
 
 import net.minecraft.ChatFormatting;
@@ -161,7 +161,7 @@ public class BTAItems
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));
 	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(1200).rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", () -> new SacrificialDaggerItem(new Item.Properties().durability(150)));
-	public static final RegistryObject<Item> SKELETAL_RAILGUNBLADE = ITEMS.register("skeletal_railgunblade", () -> new SkeletalRailgunbladeItem(new Item.Properties().durability(1500).rarity(RARITY_DEEP_ABYSS)));
+	public static final RegistryObject<Item> SKELETAL_GUNBLADE = ITEMS.register("skeletal_gunblade", () -> new SkeletalGunbladeItem(new Item.Properties().durability(1500).rarity(RARITY_DEEP_ABYSS)));
 	
 	//tools
 	public static final RegistryObject<Item> FLASHLIGHT = ITEMS.register("flashlight", () -> new FlashlightItem());

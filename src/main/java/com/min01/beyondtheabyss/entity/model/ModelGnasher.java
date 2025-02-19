@@ -96,7 +96,8 @@ public class ModelGnasher extends HierarchicalModel<EntityGnasher>
 	public void setupAnim(EntityGnasher entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("LeadGnasher"), netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("Gnasher"), netHeadYaw, headPitch);
 		this.root.getChild("LeadGnasher").visible = entity.isLeader();
 		this.root.getChild("Gnasher").visible = !entity.isLeader();
 		if(entity.isLeader())

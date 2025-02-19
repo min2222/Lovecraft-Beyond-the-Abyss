@@ -1,7 +1,7 @@
 {
 	"type": "beyondtheabyss:deep_abyss",
 	"generator": {
-		"type": "minecraft:noise",
+		"type": "beyondtheabyss:deep_abyss",
 		"settings": "beyondtheabyss:deep_abyss",
 		"biome_source": {
 			"type": "minecraft:multi_noise",

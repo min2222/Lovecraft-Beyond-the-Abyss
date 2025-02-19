@@ -197,6 +197,12 @@ public class EntityAmarumGhost extends AbstractDeepAbyssMonster
     	return this.entityData.get(IS_CONTACTED);
     }
     
+	@Override
+	public boolean rotateHead()
+	{
+		return false;
+	}
+    
     @Override
     public int getMaxSpawnClusterSize() 
     {

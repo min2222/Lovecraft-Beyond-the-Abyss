@@ -1,6 +1,8 @@
 {
-	"parent": "minecraft:block/cube_all",
+	"parent": "minecraft:block/cube_bottom_top",
 	"textures": {
-		"all": "beyondtheabyss:block/compact_rot_soil"
+		"bottom": "beyondtheabyss:block/compact_rot_soil_bottom",
+		"side": "beyondtheabyss:block/compact_rot_soil_side",
+		"top": "beyondtheabyss:block/compact_rot_soil_top"
 	}
 }

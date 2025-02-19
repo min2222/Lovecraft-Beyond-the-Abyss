@@ -175,8 +175,9 @@ dependencies {
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:4599099")
     implementation fg.deobf("curse.maven:assets-protector-1032813:5566492")
+    
+    runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:4599099")
     
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}"))

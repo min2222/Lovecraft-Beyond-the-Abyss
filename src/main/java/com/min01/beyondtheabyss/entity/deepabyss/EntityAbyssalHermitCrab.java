@@ -62,7 +62,7 @@ public class EntityAbyssalHermitCrab extends AbstractDeepAbyssCreature
     }
 	
 	@Override
-	public float getInsideWaterSpeed() 
+	public float insideWaterSpeed() 
 	{
 		return 0.25F;
 	}
@@ -83,5 +83,11 @@ public class EntityAbyssalHermitCrab extends AbstractDeepAbyssCreature
 	public boolean canBreathOutsideWater()
 	{
 		return true;
+	}
+	
+	@Override
+	public boolean rotateHead()
+	{
+		return false;
 	}
 }

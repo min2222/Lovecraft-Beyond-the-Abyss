@@ -130,7 +130,7 @@ public class ModelSubmarine extends HierarchicalModel<EntitySubmarine>
 	public void setupAnim(EntitySubmarine entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root, netHeadYaw + 180.0F, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("submarine"), netHeadYaw, headPitch);
 	}
 
 	@Override

@@ -49,36 +49,39 @@ public class EntityDeepAbyssPortal extends Entity
 			}
 		}
 		
-		List<Entity> list = this.level.getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(6.0F));
-		list.removeIf(t -> t instanceof EntityDeepAbyssPortal);
-		list.forEach(entity -> 
+		if(this.tickCount >= 25)
 		{
-			if(entity.isEyeInFluidType(Fluids.WATER.getFluidType()) && entity.distanceTo(this) > 2.0F)
+			List<Entity> list = this.level.getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(6.0F));
+			list.removeIf(t -> t instanceof EntityDeepAbyssPortal || t instanceof EntityBTACameraShake);
+			list.forEach(entity -> 
 			{
-				entity.setDeltaMovement(BTAUtil.moveToEntity(entity.position(), this.position(), entity, this, 15.0F));
-			}
-			
-			if(entity.distanceTo(this) <= 2.0F)
-			{
-		        boolean isAbyss = entity.level.dimension() == BTAWorlds.DEEP_ABYSS;
-		        if(!entity.level.isClientSide) 
-		        {
-		            MinecraftServer server = entity.level.getServer();
-		            ServerLevel serverLevel = server.getLevel(BTAWorlds.DEEP_ABYSS);
-		            if(!isAbyss && serverLevel != null && !(entity instanceof EntityBTACameraShake))
-		            {
-		            	if(entity instanceof ServerPlayer serverPlayer)
-		            	{
-		                    BTAUtil.teleportEntityToDimension(serverPlayer, serverLevel, new BlockPos(entity.getX(), 70, entity.getZ()));
-		            	}
-		            	else
-		            	{
-		                    BTAUtil.teleportEntityToDimension(entity, serverLevel, new BlockPos(entity.getX(), 70, entity.getZ()));
-		            	}
-		            }
-		        }
-			}
-		});
+				if(entity.isEyeInFluidType(Fluids.WATER.getFluidType()) && entity.distanceTo(this) > 2.0F)
+				{
+					entity.setDeltaMovement(BTAUtil.moveToEntity(entity.position(), this.position(), entity, this, 15.0F));
+				}
+				
+				if(entity.distanceTo(this) <= 2.0F)
+				{
+			        boolean isAbyss = entity.level.dimension() == BTAWorlds.DEEP_ABYSS;
+			        if(!entity.level.isClientSide) 
+			        {
+			            MinecraftServer server = entity.level.getServer();
+			            ServerLevel serverLevel = server.getLevel(BTAWorlds.DEEP_ABYSS);
+			            if(!isAbyss && serverLevel != null)
+			            {
+			            	if(entity instanceof ServerPlayer serverPlayer)
+			            	{
+			                    BTAUtil.teleportEntityToDimension(serverPlayer, serverLevel, new BlockPos(entity.getX(), 70, entity.getZ()));
+			            	}
+			            	else
+			            	{
+			                    BTAUtil.teleportEntityToDimension(entity, serverLevel, new BlockPos(entity.getX(), 70, entity.getZ()));
+			            	}
+			            }
+			        }
+				}
+			});
+		}
 	}
 	
 	@Override

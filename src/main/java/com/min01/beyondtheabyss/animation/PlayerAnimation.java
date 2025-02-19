@@ -7,9 +7,9 @@ import net.minecraft.client.animation.KeyframeAnimations;
 
 public class PlayerAnimation 
 {
-	public static class RailgunbladeAnimation
+	public static class GunbladeAnimation
 	{
-		public static final AnimationDefinition RAILGUNBLADE_SWING = AnimationDefinition.Builder.withLength(0.9167F)
+		public static final AnimationDefinition GUNBLADE_SWING = AnimationDefinition.Builder.withLength(0.9167F)
 				.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.4167F, KeyframeAnimations.degreeVec(0.0F, 22.5F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -185,7 +185,7 @@ public class PlayerAnimation
 				))
 				.build();
 
-			public static final AnimationDefinition RAILGUNBLADE_CHARGE = AnimationDefinition.Builder.withLength(3.0F)
+			public static final AnimationDefinition GUNBLADE_CHARGE = AnimationDefinition.Builder.withLength(3.0F)
 				.addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(-75.0224F, 20.7115F, 5.9869F), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.125F, KeyframeAnimations.degreeVec(-75.0224F, 20.7115F, 5.9869F), AnimationChannel.Interpolations.LINEAR),
@@ -476,7 +476,7 @@ public class PlayerAnimation
 				))
 				.build();
 
-			public static final AnimationDefinition RAILGUNBLADE_BRING_OUT = AnimationDefinition.Builder.withLength(0.5F)
+			public static final AnimationDefinition GUNBLADE_BRING_OUT = AnimationDefinition.Builder.withLength(0.5F)
 				.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 				))
@@ -575,7 +575,7 @@ public class PlayerAnimation
 				))
 				.build();
 
-			public static final AnimationDefinition RAILGUNBLADE_PUT_DOWN = AnimationDefinition.Builder.withLength(0.5F)
+			public static final AnimationDefinition GUNBLADE_PUT_DOWN = AnimationDefinition.Builder.withLength(0.5F)
 				.addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(-80.02F, 20.71F, 5.99F), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.0417F, KeyframeAnimations.degreeVec(-81.28F, 19.96F, 5.77F), AnimationChannel.Interpolations.LINEAR),
@@ -650,7 +650,7 @@ public class PlayerAnimation
 				))
 				.build();
 
-			public static final AnimationDefinition RAILGUNBLADE_OPEN = AnimationDefinition.Builder.withLength(1.0F)
+			public static final AnimationDefinition GUNBLADE_OPEN = AnimationDefinition.Builder.withLength(1.0F)
 				.addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(-80.02F, 20.71F, 5.99F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(1.0F, KeyframeAnimations.degreeVec(-52.8935F, 5.0006F, -6.754F), AnimationChannel.Interpolations.CATMULLROM)
@@ -679,7 +679,7 @@ public class PlayerAnimation
 				))
 				.build();
 
-			public static final AnimationDefinition RAILGUNBLADE_CLOSE = AnimationDefinition.Builder.withLength(1.0F)
+			public static final AnimationDefinition GUNBLADE_CLOSE = AnimationDefinition.Builder.withLength(1.0F)
 				.addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(-52.8935F, 5.0006F, -6.754F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.9583F, KeyframeAnimations.degreeVec(-80.02F, 20.71F, 5.99F), AnimationChannel.Interpolations.CATMULLROM)

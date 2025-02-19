@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.deepabyss.ChainTrapBlock;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityChainTrapMaw;
+import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.Tags;
 
 public class ChainTrapBlockEntity extends BlockEntity
 {
@@ -38,8 +40,8 @@ public class ChainTrapBlockEntity extends BlockEntity
 		boolean isOpened = state.getValue(ChainTrapBlock.OPENED);
 		if(isOpened)
 		{
-			List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, new AABB(-4, 0, -4, 4, 4, 4).move(trap.worldPosition));
-			list.removeIf(t -> t instanceof Player player && player.getAbilities().instabuild);
+			List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, new AABB(-10, 0, -10, 10, 10, 10).move(trap.worldPosition));
+			list.removeIf(t -> (t instanceof Player player && player.getAbilities().instabuild) || t.getType().is(Tags.EntityTypes.BOSSES) || t.getType().is(BTATags.BTAEntity.MINI_BOSS));
 			list.forEach(t -> 
 			{
 				if(!trap.chainedEntities.contains(t.getUUID()))
@@ -48,6 +50,7 @@ public class ChainTrapBlockEntity extends BlockEntity
 					maw.setPos(Vec3.atBottomCenterOf(pos));
 					maw.setChainPos(Vec3.atBottomCenterOf(pos));
 					maw.setTarget(t);
+					maw.setChainLength(Math.max((int) Math.floor(maw.position().distanceTo(t.getEyePosition())), 5));
 					level.addFreshEntity(maw);
 					if(!trap.chains.contains(maw.getUUID()))
 					{

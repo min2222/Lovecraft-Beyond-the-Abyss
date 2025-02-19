@@ -31,7 +31,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 
-//TODO collision
+//FIXME when player's aabb is colliding with overrideBox (normal aabb of entity) obb is not colliding;
 public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray
 {
 	public static final EntityDataAccessor<Optional<UUID>> CONTROLLING_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -54,6 +54,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	{
 		super(p_19870_, p_19871_);
 		this.partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
+		this.noCulling = true;
 	}
 	
 	@Override

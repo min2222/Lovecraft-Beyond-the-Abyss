@@ -30,4 +30,7 @@ public class BTAEffects
 
 	public static final RegistryObject<Potion> DISORDER_POTION = POTIONS.register("disorder", () -> new Potion(new MobEffectInstance(DISORDER.get(), 1)));
 	public static final RegistryObject<Potion> STRONG_DISORDER_POTION = POTIONS.register("strong_disorder", () -> new Potion(new MobEffectInstance(DISORDER.get(), 1, 1)));
+	
+	public static final RegistryObject<Potion> COORDINATION_POTION = POTIONS.register("coordination", () -> new Potion(new MobEffectInstance(COORDINATION.get(), 3600)));
+	public static final RegistryObject<Potion> STRONG_COORDINATION_POTION = POTIONS.register("strong_coordination", () -> new Potion(new MobEffectInstance(COORDINATION.get(), 1800, 1)));
 }

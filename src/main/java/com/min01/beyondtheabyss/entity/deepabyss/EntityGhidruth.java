@@ -113,7 +113,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	}
 
     @Override
-    public int getBodyRotationSpeed() 
+    public int maxTurnY() 
     {
     	return !this.hasTarget() ? 2 : 6;
     }
@@ -122,5 +122,11 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     public BTAMobType getBTAMobType()
     {
     	return BTAMobType.BOSS;
+    }
+    
+    @Override
+    public int getSwimRadius()
+    {
+    	return 20;
     }
 }

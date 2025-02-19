@@ -5,7 +5,7 @@ import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilityCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.weapon.SkeletalRailgunbladeItem;
+import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -129,10 +129,10 @@ public class EventHandlerForge
 	{
 		Player player = event.player;
 		BTAUtil.updatePlayerTick(player);
-		AnimationState bringOutState = BTAUtil.getPlayerAnimationState(player, SkeletalRailgunbladeItem.RAILGUNBLADE_BRING_OUT);
-		if(!player.getItemInHand(InteractionHand.MAIN_HAND).is(BTAItems.SKELETAL_RAILGUNBLADE.get()) && bringOutState.isStarted())
+		AnimationState bringOutState = BTAUtil.getPlayerAnimationState(player, SkeletalGunbladeItem.GUNBLADE_BRING_OUT);
+		if(!player.getItemInHand(InteractionHand.MAIN_HAND).is(BTAItems.SKELETAL_GUNBLADE.get()) && bringOutState.isStarted())
 		{
-			BTAUtil.startPlayerAnimation(player, SkeletalRailgunbladeItem.RAILGUNBLADE_PUT_DOWN);
+			BTAUtil.startPlayerAnimation(player, SkeletalGunbladeItem.GUNBLADE_PUT_DOWN);
 		}
 		for(ItemStack stack : player.getInventory().items)
 		{

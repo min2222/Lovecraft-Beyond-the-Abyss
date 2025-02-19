@@ -207,6 +207,8 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		Vec3 tonguePos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"mutavore", "head", "jaw", "tongue", "tongue1"});
 		entity.posArray[0] = tonguePos;
 		BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tonguePos, 0));
+		
+		entity.swimAnimationState.updateTime(ageInTicks, 1.0F);
 	}
 	
 	public AnimationDefinition mutavoreSwim(float elapsedSeconds)
