@@ -20,12 +20,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractBTACreature extends PathfinderMob implements IMultipart, IAnimatable, IPosArray, IPartBuilder
+public abstract class AbstractBTACreature extends PathfinderMob implements IMultipart, IAnimatable, IPosArray
 {
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> PREV_ANIMATION_TICK = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> MOVE_STOP_DELAY = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> CAN_LOOK = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_USING_SKILL = SynchedEntityData.defineId(AbstractBTACreature.class, EntityDataSerializers.BOOLEAN);
@@ -63,8 +61,6 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 		super.defineSynchedData();
 		this.entityData.define(ANIMATION_STATE, 0);
 		this.entityData.define(ANIMATION_TICK, 0);
-		this.entityData.define(PREV_ANIMATION_TICK, 0);
-		this.entityData.define(MOVE_STOP_DELAY, 0);
 		this.entityData.define(CAN_LOOK, true);
 		this.entityData.define(CAN_MOVE, true);
 		this.entityData.define(IS_USING_SKILL, false);
@@ -204,28 +200,6 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
     public boolean canMove()
     {
     	return this.entityData.get(CAN_MOVE);
-    }
-    
-    public void setMoveStopDelay(int value)
-    {
-        this.entityData.set(MOVE_STOP_DELAY, value);
-    }
-
-    @Override
-    public int getMoveStopDelay()
-    {
-        return this.entityData.get(MOVE_STOP_DELAY);
-    }
-    
-    public void setPrevAnimationTick(int value)
-    {
-        this.entityData.set(PREV_ANIMATION_TICK, value);
-    }
-
-    @Override
-    public int getPrevAnimationTick()
-    {
-        return this.entityData.get(PREV_ANIMATION_TICK);
     }
     
     @Override

@@ -4,7 +4,7 @@
 	"render_type": "cutout",
 	"textures": {
 		"0": "beyondtheabyss:block/jaw_bone",
-		"particle": "minecraft:block/bone_block_side"
+		"particle": "beyondtheabyss:block/small_bone"
 	},
 	"elements": [
 		{

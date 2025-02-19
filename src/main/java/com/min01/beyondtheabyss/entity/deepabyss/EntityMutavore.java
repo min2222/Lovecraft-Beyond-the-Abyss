@@ -119,7 +119,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 		super.tick();
 		if(this.level.isClientSide)
 		{
-			BTAClientUtil.animateWhen(this.swimAnimationState, !BTAUtil.isMoving(this), this.tickCount);
+			BTAClientUtil.animateWhen(this.swimAnimationState, BTAUtil.isMoving(this), this.tickCount);
 		}
 		if(this.getAnimationState() == 2 && !this.hasTarget())
 		{
@@ -136,13 +136,13 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public boolean xRotLerp()
+	public int maxTurnX()
 	{
-		return true;
+		return !this.hasTarget() ? 65 : 45;
 	}
 	
 	@Override
-	public int getBodyRotationSpeed() 
+	public int maxTurnY() 
 	{
 		return !this.hasTarget() ? 1 : 5;
 	}

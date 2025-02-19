@@ -3,10 +3,10 @@
 	"downfall": 0.5,
 	"has_precipitation": false,
 	"effects": {
-		"sky_color": 6704177,
-		"fog_color": 6704177,
-		"water_color": 6704177,
-		"water_fog_color": 6704177,
+		"sky_color": 0,
+		"fog_color": 0,
+		"water_color": 0,
+		"water_fog_color": 0,
 		"mood_sound": {
 			"sound": "minecraft:ambient.cave",
 			"tick_delay": 6000,
@@ -53,7 +53,6 @@
 	"spawn_costs": {
 	},
 	"carvers": {
-		"air": "beyondtheabyss:death_valley"
 	},
 	"features": [
 		[

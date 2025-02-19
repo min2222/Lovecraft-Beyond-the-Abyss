@@ -3,10 +3,8 @@ package com.min01.beyondtheabyss.event;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.IPartBuilder;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
@@ -15,17 +13,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.FogType;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -44,18 +37,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.FORGE)
 public class ClientEventHandlerForge 
 {
-    @SubscribeEvent
-    public static void onRenderEntity(RenderEntityEvent<?> event)
-    {
-    	LivingEntity living = event.getEntity();
-    	if(living instanceof IPartBuilder partBuilder)
-    	{
-    		EntityPartBuilder<?> builder = partBuilder.getPartBuilder();
-    		HierarchicalModel<?> model = BTAClientUtil.getModelFromEntity(living);
-    		builder.clientTick(model);
-    	}
-    }
-    
     //test
     //@SubscribeEvent
     public static void onRenderGuiOverlayEvent(RenderGuiOverlayEvent event)
@@ -179,27 +160,6 @@ public class ClientEventHandlerForge
             if(level.dimension() == BTAWorlds.DEEP_ABYSS)
             {
             	level.effects = new DeepAbyssDimensionSpecialEffects();
-            }
-        }
-    }
-    
-    @SubscribeEvent
-    public static void onComputeFogColor(ViewportEvent.ComputeFogColor event)
-    {
-    	ClientLevel level = BTAClientUtil.MC.level;
-    	Entity entity = event.getCamera().getEntity();
-        if(level.dimension() == BTAWorlds.DEEP_ABYSS)
-        {
-        	FogType fogType = event.getCamera().getFluidInCamera();
-            if(fogType == FogType.WATER)
-            {
-            	if(level.getBiome(entity.blockPosition()).is(new ResourceLocation(BeyondtheAbyss.MODID, "death_valley")))
-            	{
-                	Vec3 color = Vec3.fromRGB24(6704177);
-                    event.setRed((float) color.x);
-                    event.setGreen((float) color.y);
-                    event.setBlue((float) color.z);
-            	}
             }
         }
     }

@@ -6,7 +6,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 
 public class DisorderEffect extends BasicBTAEffect
@@ -28,10 +28,10 @@ public class DisorderEffect extends BasicBTAEffect
 		if(p_19464_ instanceof PathfinderMob mob)
 		{
 			mob.setTarget(null);
-	        Vec3 vec = LandRandomPos.getPosAway(mob, 16 + p_19465_, 7 + p_19465_, p_19462_.position());
-	        if(vec != null)
+	        Vec3 vec3 = DefaultRandomPos.getPosAway(mob, 16 + p_19465_, 7 + p_19465_, p_19462_.position());
+	        if(vec3 != null)
 	        {
-	            mob.getNavigation().moveTo(vec.x, vec.y, vec.z, 1.0F + p_19465_);
+	            mob.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F + p_19465_);
 	        }
 		}
 	}

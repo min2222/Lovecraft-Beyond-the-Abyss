@@ -2,12 +2,17 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.util.WormSegmentController;
+import com.min01.beyondtheabyss.misc.WormSegmentController;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -23,16 +28,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec2;
 
 public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<EntitySiamserpentBone>
 {
@@ -40,6 +46,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Optional<UUID>> OTHER_UUID = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.OPTIONAL_UUID);
 	
 	public final List<EntitySiamserpentBone> segments = new ArrayList<>();
 	
@@ -53,7 +60,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 60.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 1.2F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.7F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
     
@@ -65,6 +72,7 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
     	this.entityData.define(IS_DISABLED, false);
     	this.entityData.define(IS_DORMANT, false);
     	this.entityData.define(BEAM_LENGTH, 0.0F);
+    	this.entityData.define(OTHER_UUID, Optional.empty());
     }
     
 	@Override
@@ -146,19 +154,13 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
     		this.hurtTime = this.getOwner().hurtTime;
     		this.deathTime = this.getOwner().deathTime;
 
-			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.5F);
+			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.35F);
 		}
 	}
 	
 	public boolean shouldInvertRotation()
 	{
 		return this.isDormant() || this.isDisabled();
-	}
-	
-	@Override
-	public LookControl getSwimmingLookControl() 
-	{
-		return new LookControl(this);
 	}
 	
 	@Override
@@ -190,6 +192,34 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 		return 1;
 	}
 	
+	@Override
+	public boolean useSubRoot() 
+	{
+		return true;
+	}
+	
+	@Override
+	public String subRoot() 
+	{
+		if(this.getHeadType() == HeadType.SLASHER)
+		{
+			return "SiamserpentSlasher";
+		}
+		return "SiamserpentBlaster";
+	}
+	
+	@Override
+	public boolean rotateHead() 
+	{
+		return true;
+	}
+	
+	@Override
+	public Vec2 headRotation(LivingEntity living, Vec2 original)
+	{
+		return this.shouldInvertRotation() ? new Vec2(-original.x, original.y + 180.0F) : original;
+	}
+	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		//LocateCommand
@@ -212,6 +242,10 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 		p_21484_.putInt("HeadType", this.getHeadType().ordinal());
 		p_21484_.putBoolean("isDormant", this.isDormant());
 		p_21484_.putBoolean("isDisabled", this.isDisabled());
+		if(this.entityData.get(OTHER_UUID).isPresent())
+		{
+			p_21484_.putUUID("OtherHead", this.entityData.get(OTHER_UUID).get());
+		}
 	}
 	
 	@Override
@@ -229,6 +263,24 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 		if(p_21450_.contains("isDisabled"))
 		{
 			this.setDisabled(p_21450_.getBoolean("isDisabled"));
+		}
+		if(p_21450_.hasUUID("OtherHead")) 
+		{
+			this.entityData.set(OTHER_UUID, Optional.of(p_21450_.getUUID("OtherHead")));
+		}
+	}
+	
+	@Override
+	public void die(DamageSource p_21192_)
+	{
+		super.die(p_21192_);
+		this.segments.forEach(t -> 
+		{
+			t.die(p_21192_);
+		});
+		if(this.getOtherHead() != null)
+		{
+			this.getOtherHead().die(p_21192_);
 		}
 	}
 	
@@ -288,13 +340,29 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 					head.setOwner(this.segments.get(i));
 					head.setHeadType(type);
 					head.setPos(this.position());
+					this.setOtherHead(head);
 					this.level.addFreshEntity(head);
 				}
 			}
 		}
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
+
+	public void setOtherHead(EntitySiamserpentHead head)
+	{
+		this.entityData.set(OTHER_UUID, Optional.of(head.getUUID()));
+	}
 	
+	@Nullable
+	public EntitySiamserpentHead getOtherHead() 
+	{
+		if(this.entityData.get(OTHER_UUID).isPresent()) 
+		{
+			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(OTHER_UUID).get());
+		}
+		return null;
+	}
+
 	public void setBeamLength(float value)
 	{
 		this.entityData.set(BEAM_LENGTH, value);

@@ -25,15 +25,9 @@ public class BTAConfiguredFeatures
 			new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/bone_2"), 
 			new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/bone_3"),
 			new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/bone_4"));
-	
-	public static final List<ResourceLocation> FOSSIL_LOCATION = List.of(
-			new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/fossil_1"), 
-			new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/fossil_2"), 
-			new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/fossil_3"));
 
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SPINE = register("spine");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BONE = register("bone");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> FOSSIL = register("fossil");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> GHOUL_BLOOM_PATCH = register("ghoul_bloom_patch");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TOOTHVINE_PATCH = register("toothvine_patch");
 	
@@ -46,7 +40,6 @@ public class BTAConfiguredFeatures
     {
 		context.register(SPINE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.SPINE, 32)));
 		context.register(BONE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.BONE, 16, BONE_LOCATION)));
-		context.register(FOSSIL, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.FOSSIL, 16, FOSSIL_LOCATION)));
 		context.register(GHOUL_BLOOM_PATCH, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.GHOUL_BLOOM_PATCH, 48)));
 		context.register(TOOTHVINE_PATCH, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.TOOTHVINE_PATCH, 54)));
     }

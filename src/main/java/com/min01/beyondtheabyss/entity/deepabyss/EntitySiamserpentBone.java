@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.WormSegmentController;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.beyondtheabyss.util.WormSegmentController;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,11 +20,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec2;
 
 public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<AbstractDeepAbyssMonster>
 {
@@ -70,7 +72,7 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
 		
     	if(this.getOwner() != null)
     	{
-			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.5F);
+			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.35F);
     	}
     	else
     	{
@@ -92,11 +94,39 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
     		}
     	}
     }
+    
+    @Override
+    public boolean useSubRoot() 
+    {
+    	return true;
+    }
+    
+    @Override
+    public String subRoot()
+    {
+		if(this.getVariant() == 0 || this.getVariant() == 1)
+		{
+			return "SiamserpentBone";
+		}
+		return "SiamserpentMiddlebone";
+    }
+    
+	@Override
+	public boolean rotateHead() 
+	{
+		return true;
+	}
 
 	@Override
 	public BTAMobType getBTAMobType()
 	{
 		return BTAMobType.HOSTILE;
+	}
+	
+	@Override
+	public Vec2 headRotation(LivingEntity living, Vec2 original)
+	{
+		return this.shouldInvertRotation() ? new Vec2(-original.x, original.y + 180.0F) : original;
 	}
     
 	@Override

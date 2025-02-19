@@ -91,26 +91,29 @@ public abstract class MixinEntity implements IDynamicLight
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void tickTail(CallbackInfo ci) 
 	{
-		if(this.isRemoved()) 
+		if(this.level.isClientSide)
 		{
-			this.setDynamicLightEnabled(false);
-		}
-		else
-		{
-			if(Entity.class.cast(this) instanceof Player player)
+			if(this.isRemoved()) 
 			{
-				ItemStack mainHandStack = player.getMainHandItem();
-				ItemStack offHandStack = player.getOffhandItem();
-				boolean flag1 = !mainHandStack.isEmpty() && mainHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(mainHandStack);
-				boolean flag2 = !offHandStack.isEmpty() && offHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(offHandStack);
-				if(flag1 || flag2)
+				this.setDynamicLightEnabled(false);
+			}
+			else
+			{
+				if(Entity.class.cast(this) instanceof Player player)
 				{
-					this.dynamicLightTick();
-					BTADynamicLights.updateTracking(this);
-				}
-				else
-				{
-					this.setDynamicLightEnabled(false);
+					ItemStack mainHandStack = player.getMainHandItem();
+					ItemStack offHandStack = player.getOffhandItem();
+					boolean flag1 = !mainHandStack.isEmpty() && mainHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(mainHandStack);
+					boolean flag2 = !offHandStack.isEmpty() && offHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(offHandStack);
+					if(flag1 || flag2)
+					{
+						this.dynamicLightTick();
+						BTADynamicLights.updateTracking(this);
+					}
+					else
+					{
+						this.setDynamicLightEnabled(false);
+					}
 				}
 			}
 		}
@@ -119,7 +122,7 @@ public abstract class MixinEntity implements IDynamicLight
 	@Inject(method = "remove", at = @At("TAIL"))
 	private void remove(CallbackInfo ci) 
 	{
-		if(this.level.isClientSide())
+		if(this.level.isClientSide)
 		{
 			this.setDynamicLightEnabled(false);
 		}
@@ -167,7 +170,15 @@ public abstract class MixinEntity implements IDynamicLight
 	@Override
 	public boolean shouldUpdateDynamicLight()
 	{
-		return true;
+		if(Entity.class.cast(this) instanceof Player player)
+		{
+			ItemStack mainHandStack = player.getMainHandItem();
+			ItemStack offHandStack = player.getOffhandItem();
+			boolean flag1 = !mainHandStack.isEmpty() && mainHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(mainHandStack);
+			boolean flag2 = !offHandStack.isEmpty() && offHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(offHandStack);
+			return flag1 || flag2;
+		}
+		return false;
 	}
 
 	@Override

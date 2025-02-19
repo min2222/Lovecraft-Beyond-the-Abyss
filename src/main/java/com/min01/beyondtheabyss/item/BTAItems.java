@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
+import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.armor.AdvancedDivingSetItem;
@@ -17,7 +18,7 @@ import com.min01.beyondtheabyss.item.deepabyss.OxygenTankItem;
 import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.item.weapon.SacrificialDaggerItem;
-import com.min01.beyondtheabyss.item.weapon.SkeletalRailgunbladeItem;
+import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -131,22 +132,13 @@ public class BTAItems
 	public static final RegistryObject<Item> METAL_BRICK_SLAB = registerBlockItem("metal_brick_slab", () -> BTABlocks.METAL_BRICK_SLAB.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_TILE_SLAB = registerBlockItem("metal_tile_slab", () -> BTABlocks.METAL_TILE_SLAB.get(), new Item.Properties());
 	public static final RegistryObject<Item> METAL_PLATE_SLAB = registerBlockItem("metal_plate_slab", () -> BTABlocks.METAL_PLATE_SLAB.get(), new Item.Properties());
-	public static final RegistryObject<Item> BLUE_METAL_LANTERN = registerBlockItem("blue_metal_lantern", () -> BTABlocks.BLUE_METAL_LANTERN.get(), new Item.Properties());
-	public static final RegistryObject<Item> GREEN_METAL_LANTERN = registerBlockItem("green_metal_lantern", () -> BTABlocks.GREEN_METAL_LANTERN.get(), new Item.Properties());
-	public static final RegistryObject<Item> PINK_METAL_LANTERN = registerBlockItem("pink_metal_lantern", () -> BTABlocks.PINK_METAL_LANTERN.get(), new Item.Properties());
-	public static final RegistryObject<Item> RED_METAL_LANTERN = registerBlockItem("red_metal_lantern", () -> BTABlocks.RED_METAL_LANTERN.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_WINDOW = registerBlockItem("metal_window", () -> BTABlocks.METAL_WINDOW.get(), new Item.Properties());
 	public static final RegistryObject<Item> BLANK_RUNE_STONE = registerBlockItem("blank_rune_stone", () -> BTABlocks.BLANK_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> SOUL_RUNE_STONE = registerBlockItem("soul_rune_stone", () -> BTABlocks.SOUL_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> CROSS_RUNE_STONE = registerBlockItem("cross_rune_stone", () -> BTABlocks.CROSS_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> WORD_RUNE_STONE = registerBlockItem("word_rune_stone", () -> BTABlocks.WORD_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> VISION_RUNE_STONE = registerBlockItem("vision_rune_stone", () -> BTABlocks.VISION_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> ENERGY_RUNE_STONE = registerBlockItem("energy_rune_stone", () -> BTABlocks.ENERGY_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> SPIKE_RUNE_STONE = registerBlockItem("spike_rune_stone", () -> BTABlocks.SPIKE_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> BLUE_METAL_CRATE = registerBlockItem("blue_metal_crate", () -> BTABlocks.BLUE_METAL_CRATE.get(), new Item.Properties());
-	public static final RegistryObject<Item> GREEN_METAL_CRATE = registerBlockItem("green_metal_crate", () -> BTABlocks.GREEN_METAL_CRATE.get(), new Item.Properties());
-	public static final RegistryObject<Item> PINK_METAL_CRATE = registerBlockItem("pink_metal_crate", () -> BTABlocks.PINK_METAL_CRATE.get(), new Item.Properties());
-	public static final RegistryObject<Item> RED_METAL_CRATE = registerBlockItem("red_metal_crate", () -> BTABlocks.RED_METAL_CRATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> WATER_RUNE_STONE = registerBlockItem("water_rune_stone", () -> BTABlocks.WATER_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> WAVE_RUNE_STONE = registerBlockItem("wave_rune_stone", () -> BTABlocks.WAVE_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> CONDUIT_RUNE_STONE = registerBlockItem("conduit_rune_stone", () -> BTABlocks.CONDUIT_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> GUARDIAN_RUNE_STONE = registerBlockItem("guardian_rune_stone", () -> BTABlocks.GUARDIAN_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> PEACE_RUNE_STONE = registerBlockItem("peace_rune_stone", () -> BTABlocks.PEACE_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_BLOCK = registerBlockItem("dead_osteo_coral_block", () -> BTABlocks.DEAD_OSTEO_CORAL_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> OSTEO_CORAL_BLOCK = registerBlockItem("osteo_coral_block", () -> BTABlocks.OSTEO_CORAL_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_FAN = ITEMS.register("dead_osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.DEAD_OSTEO_CORAL_FAN.get(), BTABlocks.DEAD_OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()), Direction.DOWN));
@@ -158,16 +150,18 @@ public class BTAItems
 	public static final RegistryObject<Item> CRACKED_BONE_BLOCK = registerBlockItem("cracked_bone_block", () -> BTABlocks.CRACKED_BONE_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_BRICK_BLOCK = registerBlockItem("bone_brick_block", () -> BTABlocks.BONE_BRICK_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_PILLAR_BLOCK = registerBlockItem("bone_pillar_block", () -> BTABlocks.BONE_PILLAR_BLOCK.get(), new Item.Properties());
-	public static final RegistryObject<Item> BONE_STAIR = registerBlockItem("bone_stairs", () -> BTABlocks.BONE_STAIRS.get(), new Item.Properties());
-	public static final RegistryObject<Item> BONE_SLAB = registerBlockItem("bone_slab", () -> BTABlocks.BONE_SLAB.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_FENCE = registerBlockItem("bone_fence", () -> BTABlocks.BONE_FENCE.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_FENCE_GATE = registerBlockItem("bone_fence_gate", () -> BTABlocks.BONE_FENCE_GATE.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_LADDER = registerBlockItem("bone_ladder", () -> BTABlocks.BONE_LADDER.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_TORCH = ITEMS.register("bone_torch", () -> new StandingAndWallBlockItem(BTABlocks.BONE_TORCH.get(), BTABlocks.BONE_WALL_TORCH.get(), new Item.Properties(), Direction.DOWN));
+	public static final RegistryObject<Item> BONE_LEVER = registerBlockItem("bone_lever", () -> BTABlocks.BONE_LEVER.get(), new Item.Properties());
+	public static final RegistryObject<Item> CHAIN_TRAP = registerCustomRendererBlockItem("chain_trap", () -> BTABlocks.CHAIN_TRAP.get(), () -> new ChainTrapBlockEntity(BlockPos.ZERO, BTABlocks.CHAIN_TRAP.get().defaultBlockState()), new Item.Properties());
 	
 	//weapons
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));
 	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(1200).rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", () -> new SacrificialDaggerItem(new Item.Properties().durability(150)));
-	public static final RegistryObject<Item> SKELETAL_RAILGUNBLADE = ITEMS.register("skeletal_railgunblade", () -> new SkeletalRailgunbladeItem(new Item.Properties().durability(1500).rarity(RARITY_DEEP_ABYSS)));
+	public static final RegistryObject<Item> SKELETAL_GUNBLADE = ITEMS.register("skeletal_gunblade", () -> new SkeletalGunbladeItem(new Item.Properties().durability(1500).rarity(RARITY_DEEP_ABYSS)));
 
 	//tools
 	public static final RegistryObject<Item> FLASHLIGHT = ITEMS.register("flashlight", () -> new FlashlightItem());

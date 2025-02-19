@@ -20,7 +20,6 @@ public class BTAPlacedFeatures
 {
 	public static final ResourceKey<PlacedFeature> SPINE = register("spine");
 	public static final ResourceKey<PlacedFeature> BONE = register("bone");
-	public static final ResourceKey<PlacedFeature> FOSSIL = register("fossil");
 	public static final ResourceKey<PlacedFeature> GHOUL_BLOOM_PATCH = register("ghoul_bloom_patch");
 	public static final ResourceKey<PlacedFeature> TOOTHVINE_PATCH = register("toothvine_patch");
 	
@@ -34,7 +33,6 @@ public class BTAPlacedFeatures
 		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
 		context.register(SPINE, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.SPINE), List.of(CountPlacement.of(5), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE, BiomeFilter.biome())));
 		context.register(BONE, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.BONE), List.copyOf(List.of(CountPlacement.of(1), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE, BiomeFilter.biome()))));
-		context.register(FOSSIL, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.FOSSIL), List.copyOf(List.of(CountPlacement.of(1), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE, BiomeFilter.biome()))));
 		context.register(GHOUL_BLOOM_PATCH, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.GHOUL_BLOOM_PATCH), List.copyOf(List.of(CountPlacement.of(5), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE, BiomeFilter.biome()))));
 		context.register(TOOTHVINE_PATCH, new PlacedFeature(features.getOrThrow(BTAConfiguredFeatures.TOOTHVINE_PATCH), List.copyOf(List.of(CountPlacement.of(10), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE, BiomeFilter.biome()))));
 	}

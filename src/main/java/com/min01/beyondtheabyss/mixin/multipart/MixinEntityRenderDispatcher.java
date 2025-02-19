@@ -6,11 +6,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
+import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.cerbon.OrientedBox;
-import com.min01.beyondtheabyss.event.RenderEntityEvent;
+import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -18,7 +21,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
 
 @Mixin(EntityRenderDispatcher.class)
 public class MixinEntityRenderDispatcher
@@ -27,15 +29,15 @@ public class MixinEntityRenderDispatcher
     private static void drawOrientedBoxes(PoseStack matrix, VertexConsumer vertices, Entity entity, float tickDelta, CallbackInfo ci) 
     {
         AABB box = entity.getBoundingBox();
-        if(box instanceof final CompoundOrientedBox compoundOrientedBox)
+        if(box instanceof CompoundOrientedBox compoundOrientedBox)
         {
             matrix.pushPose();
             matrix.translate(-entity.getX(), -entity.getY(), -entity.getZ());
 
-            for(final OrientedBox orientedBox : compoundOrientedBox) 
+            for(OrientedBox orientedBox : compoundOrientedBox) 
             {
                 matrix.pushPose();
-                final Vec3 center = orientedBox.getCenter();
+                Vec3 center = orientedBox.getCenter();
                 matrix.translate(center.x, center.y, center.z);
                 matrix.mulPose(orientedBox.getRotation().toFloatQuat());
                 LevelRenderer.renderLineBox(matrix, vertices, orientedBox.getExtents(), 0, 0, 1, 1);
@@ -52,7 +54,12 @@ public class MixinEntityRenderDispatcher
     {
     	if(p_114385_ instanceof LivingEntity living)
     	{
-    		MinecraftForge.EVENT_BUS.post(new RenderEntityEvent<>(living));
+          	if(living instanceof IMultipart partBuilder)
+        	{
+        		EntityPartBuilder<?> builder = partBuilder.getPartBuilder();
+        		HierarchicalModel<?> model = BTAClientUtil.getModelFromEntity(living);
+        		builder.clientTick(model);
+        	}
     	}
     }
 }

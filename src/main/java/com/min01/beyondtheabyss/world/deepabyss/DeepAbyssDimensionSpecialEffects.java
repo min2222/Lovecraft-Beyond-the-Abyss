@@ -7,7 +7,7 @@ public class DeepAbyssDimensionSpecialEffects extends DimensionSpecialEffects
 {
 	public DeepAbyssDimensionSpecialEffects()
 	{
-		super(1000.0F, true, DimensionSpecialEffects.SkyType.NONE, false, false);
+		super(Float.NaN, true, DimensionSpecialEffects.SkyType.NONE, false, false);
 	}
 
 	@Override

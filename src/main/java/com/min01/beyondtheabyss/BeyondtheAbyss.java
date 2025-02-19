@@ -12,11 +12,13 @@ import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.world.BTABiomes;
+import com.min01.beyondtheabyss.world.BTAChunkGenerators;
 import com.min01.beyondtheabyss.world.BTAFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
-import com.min01.beyondtheabyss.world.BTAWorldCarvers;
+import com.min01.beyondtheabyss.world.BTASurfaceRules;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -47,10 +49,12 @@ public class BeyondtheAbyss
 		BTAFeatures.FEATURES.register(bus);
 		BTACreativeModeTabs.CREATIVE_MODE_TAB.register(bus);
 		BTABiomes.BIOMES.register(bus);
-		BTAWorldCarvers.WORLD_CARVERS.register(bus);
+		BTAChunkGenerators.CHUNK_GENERATORS.register(bus);
+		BTASurfaceRules.RULE_SOURCES.register(bus);
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::attachEntityCapability);
+		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::attachItemStackCapability);
 	}
 }

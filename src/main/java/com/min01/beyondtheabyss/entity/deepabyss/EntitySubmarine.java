@@ -7,7 +7,6 @@ import java.util.UUID;
 import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
 import com.min01.beyondtheabyss.cerbon.EntityBounds;
 import com.min01.beyondtheabyss.cerbon.IMultipart;
-import com.min01.beyondtheabyss.entity.IPartBuilder;
 import com.min01.beyondtheabyss.entity.IPosArray;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -33,8 +32,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 
-//TODO collision
-public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray, IPartBuilder
+//FIXME when player's aabb is colliding with overrideBox (normal aabb of entity) obb is not colliding;
+public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray
 {
 	public static final EntityDataAccessor<Optional<UUID>> CONTROLLING_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> SEAT1_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -56,6 +55,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	{
 		super(p_19870_, p_19871_);
 		this.partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
+		this.noCulling = true;
 	}
 	
 	@Override

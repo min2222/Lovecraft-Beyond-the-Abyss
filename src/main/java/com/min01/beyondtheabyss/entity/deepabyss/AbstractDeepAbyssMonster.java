@@ -1,6 +1,9 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
+import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.BTASwimmingGoal;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -12,8 +15,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
-import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
@@ -22,24 +23,26 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
+public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster implements IDeepAbyssMob
 {
 	public AbstractDeepAbyssMonster(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+		this.moveControl = this.getSwimmingMoveControl();
+		this.lookControl = this.getSwimmingLookControl();
 	}
     
     @Override
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 20)
+        this.goalSelector.addGoal(4, new BTASwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED))
         {
         	@Override
         	public boolean canUse() 
         	{
-        		return AbstractDeepAbyssMonster.this.canRandomSwim() && super.canUse() && AbstractDeepAbyssMonster.this.isSwimable();
+        		return super.canUse() && AbstractDeepAbyssMonster.this.isSwimable();
         	}
         });
     }
@@ -104,17 +107,6 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 		this.handleAirSupply(this.getAirSupply());
 	}
 	
-	@Override
-	public void tick()
-	{
-		super.tick();
-		if(this.isSwimable())
-		{
-			this.moveControl = this.getSwimmingMoveControl();
-			this.lookControl = this.getSwimmingLookControl();
-		}
-	}
-	
 	public LookControl getSwimmingLookControl()
 	{
 		return new SmoothSwimmingLookControl(this, 10);
@@ -122,7 +114,7 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 	
 	public MoveControl getSwimmingMoveControl()
 	{
-		return new SmoothSwimmingMoveControl(this, 85, this.getBodyRotationSpeed(), this.getInsideWaterSpeed(), 0.1F, false);
+		return new BTASwimmingMoveControl(this, 0.1F, false);
 	}
     
     @Override
@@ -149,16 +141,9 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 		double d2 = p_20034_.z - vec3.z;
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
 		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
-		if(this.xRotLerp())
-		{
-			float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
-			this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.getBodyRotationSpeed()));
-		}
-		else
-		{
-			this.setXRot(Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)))));
-		}
-		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, (float)this.getBodyRotationSpeed()));
+		float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
+		this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.maxTurnX()));
+		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, (float)this.maxTurnY()));
 		this.setYHeadRot(this.getYRot());
 		this.xRotO = this.getXRot();
 		this.yRotO = this.getYRot();
@@ -167,24 +152,10 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster
 		this.yBodyRotO = this.yBodyRot;
 	}
 	
-	public boolean xRotLerp()
+	@Override
+	public boolean canSwim()
 	{
-		return false;
-	}
-	
-	public int getBodyRotationSpeed()
-	{
-		return 10;
-	}
-	
-	public float getInsideWaterSpeed()
-	{
-		return 0.05F;
-	}
-	
-	public boolean canRandomSwim()
-	{
-		return !this.isUsingSkill() || this.getTarget() == null;
+		return !this.isUsingSkill() || this.getTarget() == null && this.getNavigation().isDone();
 	}
 	
 	public boolean canBreathOutsideWater()

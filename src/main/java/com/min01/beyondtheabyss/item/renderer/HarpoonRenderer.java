@@ -50,6 +50,6 @@ public class HarpoonRenderer extends BlockEntityWithoutLevelRenderer
 	
 	public ResourceLocation getTextureLocation(HarpoonItem item)
 	{
-		return item == BTAItems.RUSTY_HARPOON.get() ? new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/rusty_harpoon.png") : new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_harpoon.png");
+		return item == BTAItems.RUSTY_HARPOON.get() ? new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/rusty_harpoon.png") : new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_scale_harpoon.png");
 	}
 }

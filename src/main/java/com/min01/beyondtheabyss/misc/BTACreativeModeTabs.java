@@ -115,7 +115,7 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.RUSTY_HARPOON.get());
 				output.accept(BTAItems.GHIDRUTH_SCALE_HARPOON.get());
 				output.accept(BTAItems.SACRIFICIAL_DAGGER.get());
-				output.accept(BTAItems.SKELETAL_RAILGUNBLADE.get());
+				output.accept(BTAItems.SKELETAL_GUNBLADE.get());
     		}).build());
     
     public static final RegistryObject<CreativeModeTab> ABYSS_TOOLS = CREATIVE_MODE_TAB.register("abyss_tools", () -> CreativeModeTab.builder()

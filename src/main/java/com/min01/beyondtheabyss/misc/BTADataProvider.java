@@ -17,7 +17,7 @@ public class BTADataProvider extends DatapackBuiltinEntriesProvider
 {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
 			.add(Registries.PLACED_FEATURE, BTAPlacedFeatures::bootstrap)
-			.add(Registries.CONFIGURED_FEATURE, (context) -> BTAConfiguredFeatures.bootstrap(context));
+			.add(Registries.CONFIGURED_FEATURE, BTAConfiguredFeatures::bootstrap);
     
 	public BTADataProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) 
 	{

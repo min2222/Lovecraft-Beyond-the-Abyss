@@ -4,7 +4,7 @@
 	"render_type": "cutout",
 	"textures": {
 		"1": "beyondtheabyss:block/rib",
-		"particle": "minecraft:block/bone_block_side"
+		"particle": "beyondtheabyss:block/small_bone"
 	},
 	"elements": [
 		{

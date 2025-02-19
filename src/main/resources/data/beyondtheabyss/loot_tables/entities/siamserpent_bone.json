@@ -1,0 +1,30 @@
+{
+	"type": "minecraft:entity",
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "beyondtheabyss:serpent_heart",
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": 1
+						}
+					],
+					"conditions": [
+						{
+							"condition": "minecraft:entity_properties",
+							"entity": "this",
+							"predicate": {
+								"type": "beyondtheabyss:siamserpent_bone",
+								"nbt": "{Index:5}"
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

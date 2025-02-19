@@ -12,16 +12,13 @@
 		"MixinBlockAndTintGetter",
 		"multipart.MixinArrayVoxelShape",
 		"multipart.MixinVoxelShape",
-		"multipart.MixinShapes",
-		"multipart.MixinProjectile",
-		"multipart.ProjectileInvoker"
+		"multipart.MixinShapes"
 	],
 	"client": [
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
 		"MixinPlayerModel",
-		"multipart.MixinEntityRenderDispatcher",
-		"multipart.MixinMultiPlayerGameMode"
+		"multipart.MixinEntityRenderDispatcher"
 	],
 	"server": [],
 	"injectors": {

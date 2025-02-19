@@ -111,6 +111,12 @@ public class EntityFallenDiver extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
+	public boolean rotateHead()
+	{
+		return false;
+	}
+	
+	@Override
 	public void updateSwimming() 
 	{
 		if(!this.level.isClientSide) 

@@ -1,13 +1,14 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
+import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateBTAAbilityPacket;
 import com.min01.beyondtheabyss.network.UpdateBTAAbilityPacket.PacketType;
-import com.min01.beyondtheabyss.network.BTANetwork;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -56,13 +57,14 @@ public class BTAAbilityCapabilityImpl implements IBTAAbilityCapability
 	@Override
 	public void update() 
 	{
-		this.abilities.forEach(t -> 
+		for(Iterator<BTAAbility> itr = this.abilities.iterator(); itr.hasNext();)
 		{
-			if(t == BTAAbilities.ABYSSAL_SCALES)
+			BTAAbility ability = itr.next();
+			if(ability == BTAAbilities.ABYSSAL_SCALES)
 			{
 				this.updateAbyssalScale(this.entity);
 			}
-		});
+		}
 	}
 	
 	public void updateAbyssalScale(LivingEntity entity)
@@ -101,24 +103,26 @@ public class BTAAbilityCapabilityImpl implements IBTAAbilityCapability
 	@Override
 	public void setTickCount(BTAAbility ability, int tickCount) 
 	{
-		this.abilities.forEach(t -> 
+		for(Iterator<BTAAbility> itr = this.abilities.iterator(); itr.hasNext();)
 		{
-			if(t == ability)
+			BTAAbility next = itr.next();
+			if(next == ability)
 			{
-				t.setTickcount(tickCount);
+				next.setTickcount(tickCount);
 				this.sendUpdatePacket(PacketType.TICK);
 			}
-		});
+		}
 	}
 
 	@Override
 	public int getTickCount(BTAAbility ability)
 	{
-		for(BTAAbility ab : this.abilities)
+		for(Iterator<BTAAbility> itr = this.abilities.iterator(); itr.hasNext();)
 		{
-			if(ab == ability)
+			BTAAbility next = itr.next();
+			if(next == ability)
 			{
-				return ab.getTickcount();
+				return next.getTickcount();
 			}
 		}
 		return 0;

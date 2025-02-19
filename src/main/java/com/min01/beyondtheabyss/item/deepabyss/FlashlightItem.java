@@ -30,7 +30,7 @@ public class FlashlightItem extends Item
 		ItemStack stack = p_41433_.getItemInHand(p_41434_);
 		boolean isOn = isOn(stack);
 		setOn(stack, !isOn);
-		return InteractionResultHolder.success(stack);
+		return InteractionResultHolder.consume(stack);
 	}
 	
 	@Override

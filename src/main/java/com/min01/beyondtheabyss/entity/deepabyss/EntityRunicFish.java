@@ -44,7 +44,14 @@ public class EntityRunicFish extends AbstractDeepAbyssCreature
     @Override
     public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
     {
-    	EntityPartBuilder<EntityRunicFish> partBuilder = new EntityPartBuilder<EntityRunicFish>(this);
+    	EntityPartBuilder<EntityRunicFish> partBuilder = new EntityPartBuilder<EntityRunicFish>(this)
+    	{
+    		@Override
+    		public boolean isInWater() 
+    		{
+    			return true;
+    		}
+    	};
     	return partBuilder;
     }
     
@@ -122,9 +129,9 @@ public class EntityRunicFish extends AbstractDeepAbyssCreature
 	}
 	
 	@Override
-	public float getInsideWaterSpeed() 
+	public float insideWaterSpeed() 
 	{
-		return this.isPanic() ? 0.1F : super.getInsideWaterSpeed();
+		return this.isPanic() ? 0.1F : super.insideWaterSpeed();
 	}
     
     @Override

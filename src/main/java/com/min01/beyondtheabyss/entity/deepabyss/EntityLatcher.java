@@ -152,7 +152,7 @@ public class EntityLatcher extends AbstractDeepAbyssMonster
     }
     
     @Override
-    public int getBodyRotationSpeed() 
+    public int maxTurnY() 
     {
     	return 40;
     }

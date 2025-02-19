@@ -1,16 +1,18 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Optional;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.DeepAbyssFollowFlockLeaderGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
@@ -21,6 +23,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -30,20 +33,23 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.Vec3;
 
-public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
+public class EntityGnasher extends AbstractDeepAbyssMonster
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
-
+	public static final EntityDataAccessor<Boolean> IS_DISPERSE = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Optional<UUID>> LEADER_UUID = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.OPTIONAL_UUID);
+	
 	public final AnimationState biteAnimationState = new AnimationState();
-
-	@Nullable
-	private EntityGnasher leader;
-	private int schoolSize = 1;
+	
+	public final List<EntityGnasher> list = new ArrayList<>();
 	
 	public EntityGnasher(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -78,7 +84,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 	protected void registerGoals() 
 	{
 		super.registerGoals();
-		this.goalSelector.addGoal(5, new DeepAbyssFollowFlockLeaderGoal(this));
 		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
 	}
 	
@@ -87,6 +92,8 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 	{
 		super.defineSynchedData();
 		this.entityData.define(IS_LEADER, false);
+		this.entityData.define(IS_DISPERSE, false);
+		this.entityData.define(LEADER_UUID, Optional.empty());
 	}
 	
 	@Override
@@ -110,7 +117,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
             }
         }
 	}
-
+	
 	@Override
 	public void stopAllAnimationStates() 
 	{
@@ -129,30 +136,63 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
     	super.tick();
         this.refreshDimensions();
         DeepAbyssUtil.fishFlopping(this);
-    	
-        if(this.hasFollowers() && this.level.random.nextInt(200) == 1) 
-        {
-        	List<? extends EntityGnasher> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
-        	if(list.size() <= 1) 
-        	{
-        		this.schoolSize = 1;
-        	}
-        }
-        
-		if(!this.isLeader() && !this.isFollower())
-		{
-			List<EntityGnasher> list = this.level.getEntitiesOfClass(EntityGnasher.class, this.getBoundingBox().inflate(15));
-			list.removeIf(t -> !t.isLeader() || t == this);
-			list.forEach(t -> 
-			{
-				this.startFollowing(t);
-			});
-		}
-		
 		if(this.tickCount == 2 && this.isLeader())
 		{
         	this.partBuilder.rebuildHitbox();
 		}
+		
+		if(this.isDisperse() && this.getNavigation().isDone())
+		{
+			this.setDisperse(false);
+		}
+
+		if(!this.isLeader())
+		{
+			EntityGnasher leader = this.getLeader();
+			if(leader != null)
+			{
+				if(!leader.list.contains(this))
+				{
+					leader.list.add(this);
+				}
+				if(leader.getNavigation().getPath() != null && !this.isDisperse())
+				{
+					BlockPos pos = leader.getNavigation().getPath().getTarget();
+					Path path = this.getNavigation().createPath(pos, 1);
+					this.getNavigation().moveTo(path, 0.8F);
+				}
+				if(leader.getTarget() != null)
+				{
+					this.setTarget(leader.getTarget());
+				}
+			}
+		}
+    }
+    
+    @Override
+    public boolean hurt(DamageSource p_21016_, float p_21017_) 
+    {
+    	if(this.isLeader() && !this.isDisperse() && p_21016_.getDirectEntity() != null)
+    	{
+	        this.list.forEach(t -> 
+	        {
+	    		t.setDisperse(true);
+				t.setTarget(null);
+		        Vec3 vec3 = DefaultRandomPos.getPosAway(t, 16, 7, p_21016_.getDirectEntity().position());
+		        if(vec3 != null)
+		        {
+		        	t.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
+		        }
+	        });
+    		this.setDisperse(true);
+			this.setTarget(null);
+	        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, p_21016_.getDirectEntity().position());
+	        if(vec3 != null)
+	        {
+	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
+	        }
+    	}
+    	return super.hurt(p_21016_, p_21017_);
     }
     
     @Override
@@ -160,6 +200,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
     {
     	super.addAdditionalSaveData(p_21484_);
     	p_21484_.putBoolean("isLeader", this.isLeader());
+    	p_21484_.putBoolean("isDisperse", this.isDisperse());
     }
     
     @Override
@@ -168,11 +209,30 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
     	super.readAdditionalSaveData(p_21450_);
     	if(p_21450_.contains("isLeader"))
     	{
-    		this.setLeader(p_21450_.getBoolean("isLeader"));
+    		this.setAsLeader(p_21450_.getBoolean("isLeader"));
+    	}
+    	if(p_21450_.contains("isDisperse"))
+    	{
+    		this.setDisperse(p_21450_.getBoolean("isDisperse"));
     	}
     }
     
-    public void setLeader(boolean value)
+	public void setLeader(EntityGnasher leader)
+	{
+		this.entityData.set(LEADER_UUID, Optional.of(leader.getUUID()));
+	}
+	
+	@Nullable
+	public EntityGnasher getLeader() 
+	{
+		if(this.entityData.get(LEADER_UUID).isPresent()) 
+		{
+			return (EntityGnasher) BTAUtil.getEntityByUUID(this.level, this.entityData.get(LEADER_UUID).get());
+		}
+		return null;
+	}
+    
+    public void setAsLeader(boolean value)
     {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
 		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
@@ -184,6 +244,16 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
     {
     	return this.entityData.get(IS_LEADER);
     }
+    
+    public void setDisperse(boolean value)
+    {
+    	this.entityData.set(IS_DISPERSE, value);
+    }
+    
+    public boolean isDisperse()
+    {
+    	return this.entityData.get(IS_DISPERSE);
+    }
 
 	@Override
 	public BTAMobType getBTAMobType() 
@@ -191,90 +261,38 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 		return BTAMobType.HOSTILE;
 	}
 	
-	public int getMaxSchoolSize() 
+	@Override
+	public boolean useSubRoot()
 	{
-		return super.getMaxSpawnClusterSize();
-	}
-	
-	private void addFollower()
-	{
-		++this.schoolSize;
-	}
-
-	private void removeFollower() 
-	{
-		--this.schoolSize;
-	}
-	
-	public EntityGnasher startFollowing(EntityGnasher p_27526_)
-	{
-		this.leader = p_27526_;
-		p_27526_.addFollower();
-		return p_27526_;
+		return true;
 	}
 	
 	@Override
-	public boolean canRandomSwim()
+	public String subRoot()
 	{
-		return !this.isFollower();
-	}
-
-	@Override
-	public boolean isFollower() 
-	{
-		return this.leader != null && this.leader.isAlive();
-	}
-
-	@Override
-	public boolean hasFollowers() 
-	{
-		return this.schoolSize > 1;
-	}
-
-	@Override
-	public boolean canBeFollowed() 
-	{
-		return this.hasFollowers() && this.schoolSize < this.getMaxSchoolSize();
-	}
-
-	@Override
-	public boolean inRangeOfLeader() 
-	{
-		return this.distanceToSqr(this.leader) <= 121.0D;
-	}
-
-	@Override
-	public void addFollowers(Stream<? extends AbstractDeepAbyssMonster> p_27534_)
-	{
-		p_27534_.limit((long)(this.getMaxSchoolSize() - this.schoolSize)).filter((p_27538_) -> 
+		if(this.isLeader())
 		{
-			return p_27538_ != this;
-		}).forEach((p_27536_) -> 
-		{
-			((EntityGnasher) p_27536_).startFollowing(this);
-		});
-	}
-
-	@Override
-	public void pathToLeader() 
-	{
-		if(this.isFollower()) 
-		{
-			this.getNavigation().moveTo(this.leader, 1.0D);
+			return "LeadGnasher";
 		}
+		return "Gnasher";
 	}
-
+	
 	@Override
-	public void stopFollowing() 
+	public boolean rotateHead() 
 	{
-		this.leader.removeFollower();
-		this.leader = null;
+		return true;
 	}
 	
 	@Override
 	public int getMaxSpawnClusterSize() 
 	{
 		return 1;
+	}
+	
+	@Override
+	public boolean canSwim() 
+	{
+		return super.canSwim() && !this.isDisperse() && this.getLeader() == null;
 	}
 	
 	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
@@ -291,20 +309,20 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IFlocking
 		{
 			this.spawnAsSwarm();
 		}
-
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 	
 	public void spawnAsSwarm()
 	{
-	   	this.setHealth(30);
-	   	this.setLeader(true);
-		for(int i = 0; i <= 5; i++)
+    	this.setHealth(30);
+		this.setAsLeader(true);
+		for(int i = 0; i < 5; i++) 
 		{
-			EntityGnasher gnasher = new EntityGnasher(BTAEntities.GNASHER.get(), this.level);
-			gnasher.setPos(this.position());
-			gnasher.startFollowing(this);
-			this.level.addFreshEntity(gnasher);
+			EntityGnasher entity = new EntityGnasher(BTAEntities.GNASHER.get(), this.level);
+			entity.setPos(this.position());
+			entity.setLeader(this);
+			this.list.add(entity);
+			this.level.addFreshEntity(entity);
 		}
 	}
 }

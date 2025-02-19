@@ -196,18 +196,18 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 	@Override
 	public void setupAnim(EntityMutavore entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
-		//FIXME swim animation is not playing;
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("mutavore"), netHeadYaw, headPitch);
 		this.animateWalk(this.mutavoreSwim(BTAClientUtil.getElapsedSeconds(false, 0.0F, entity.swimAnimationState.getAccumulatedTime()) / 60.0F), limbSwing, limbSwingAmount, 1.0F, 5.5F);
 		this.animate(entity.mouthOpeningAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_OPENING, ageInTicks);
 		this.animate(entity.mouthOpenAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_OPEN, ageInTicks);
 		this.animate(entity.mouthCloseAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_CLOSE, ageInTicks);
-		entity.swimAnimationState.updateTime(ageInTicks, 1.0F);
 		
 		Vec3 tonguePos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"mutavore", "head", "jaw", "tongue", "tongue1"});
 		entity.posArray[0] = tonguePos;
 		BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tonguePos, 0));
+		
+		entity.swimAnimationState.updateTime(ageInTicks, 1.0F);
 	}
 	
 	public AnimationDefinition mutavoreSwim(float elapsedSeconds)

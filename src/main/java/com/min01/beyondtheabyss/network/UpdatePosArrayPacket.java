@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.entity.IPosArray;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -56,11 +55,14 @@ public class UpdatePosArrayPacket
 				}
 				else
 				{
-					Entity entity = BTAUtil.getEntityByUUID(BTAClientUtil.MC.level, message.entityUUID);
-					if(entity instanceof IPosArray mob) 
+					BTAUtil.getClientLevel(level -> 
 					{
-						mob.getPosArray()[message.array] = message.pos;
-					}
+						Entity entity = BTAUtil.getEntityByUUID(level, message.entityUUID);
+						if(entity instanceof IPosArray mob) 
+						{
+							mob.getPosArray()[message.array] = message.pos;
+						}
+					});
 				}
 			});
 			ctx.get().setPacketHandled(true);
