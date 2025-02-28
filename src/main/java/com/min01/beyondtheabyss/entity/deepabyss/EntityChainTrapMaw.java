@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity.misc;
+package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.Optional;
 import java.util.UUID;

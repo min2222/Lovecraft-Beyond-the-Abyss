@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.misc.EntityChainTrapMaw;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityChainTrapMaw;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 

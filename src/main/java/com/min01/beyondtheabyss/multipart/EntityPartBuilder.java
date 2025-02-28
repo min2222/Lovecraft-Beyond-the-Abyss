@@ -1,16 +1,10 @@
-package com.min01.beyondtheabyss.entity.multipart;
+package com.min01.beyondtheabyss.multipart;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.cerbon.EntityBounds;
-import com.min01.beyondtheabyss.cerbon.EntityPart;
-import com.min01.beyondtheabyss.cerbon.IMultipart;
-import com.min01.beyondtheabyss.cerbon.MutableBox;
-import com.min01.beyondtheabyss.cerbon.QuaternionD;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -37,7 +31,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	public final T entity;
 	public EntityBounds hitbox = EntityBounds.builder()
 	        .add(ROOT).setBounds(0.0, 0.0, 0.0).build()
-	        .overrideCollisionBox(new AABB(Vec3.ZERO, new Vec3(1, 1, 1)))
 	        .getFactory().create();
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
@@ -70,12 +63,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         if(this.isInWater() && !this.entity.isInWater())
         {
         	root.setPivotY(-0.5F);
-        }
-        
-        MutableBox overrideBox = this.hitbox.getOverrideBox();
-        if(overrideBox != null) 
-        {
-        	overrideBox.setBox(this.getBoundingBox(new Vec3(posX, posY, posZ)));
         }
 	}
 	
@@ -138,7 +125,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         EntityBounds.EntityBoundsBuilder builder = EntityBounds.builder();
-        return this.addPart(builder, this.root(model), null).overrideCollisionBox(this.getBoundingBox(this.entity.position())).getFactory().create();
+        return this.addPart(builder, this.root(model), null).getFactory().create();
 	}
 
     public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
@@ -208,11 +195,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 
     public String getModelPartName(ModelPart root, ModelPart target) 
     {
-        if(target != root)
-        {
-        	return String.valueOf(target.hashCode());
-        }
-        return ROOT;
+        return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
     }
 
     public Vec2 defaultHeadRotation(LivingEntity entity, float partialTick)
@@ -287,14 +270,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 
         if(!entity.hasPose(Pose.SLEEPING)) 
         {
-        	if(!(this.entity instanceof EntitySubmarine))
-        	{
-                rotation.mul(Vector3f.YP.rotationDegrees(180.0F - bodyRot));
-        	}
-        	else
-        	{
-                rotation.mul(Vector3f.YP.rotationDegrees(bodyRot));
-        	}
+            rotation.mul(Vector3f.YP.rotationDegrees(180.0F - bodyRot));
         }
 
         if(entity.deathTime > 0)
@@ -395,11 +371,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	{
 		return false;
 	}
-	
-    public AABB getBoundingBox(Vec3 pos) 
-    {
-    	return this.entity.getDimensions(this.entity.getPose()).makeBoundingBox(pos);
-    }
     
     public static class Part
     {

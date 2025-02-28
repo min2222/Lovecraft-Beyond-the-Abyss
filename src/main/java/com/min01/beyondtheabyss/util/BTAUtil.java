@@ -13,11 +13,10 @@ import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.IPlayerAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
-import com.min01.beyondtheabyss.misc.BTASimplexNoise;
+import com.min01.beyondtheabyss.multipart.EntityBounds;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -28,8 +27,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.StructureBlockEntity;
 import net.minecraft.world.level.entity.LevelEntityGetter;
@@ -43,42 +42,13 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
-{
-	//from https://github.com/AlexModGuy/AlexsCaves/blob/main/src/main/java/com/github/alexmodguy/alexscaves/server/misc/ACMath.java
-
-    public static float smin(float a, float b, float k) 
+{   
+    public static String getMultiPart(EntityBounds bounds, Player player)
     {
-        float h = Math.max(k - Math.abs(a - b), 0.0F) / k;
-        return Math.min(a, b) - h * h * k * (1.0F / 4.0F);
-    }
-
-    public static float sampleNoise2D(int x, int z, float simplexSampleRate)
-    {
-        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
-    }
-
-    public static float sampleNoise3D(int x, int y, int z, float simplexSampleRate) 
-    {
-        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
-    }
-
-    public static float sampleNoise3D(float x, float y, float z, float simplexSampleRate) 
-    {
-        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
-    }
-    
-	public static BlockPos getGroundPos(BlockGetter pLevel, double pX, double startY, double pZ, int belowY)
-    {
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, startY, pZ);
-        do
-        {
-        	blockpos$mutable.move(Direction.DOWN);
-        }
-        while((pLevel.getBlockState(blockpos$mutable).isAir() || pLevel.getBlockState(blockpos$mutable).getMaterial().isLiquid() || !pLevel.getBlockState(blockpos$mutable).isCollisionShapeFullBlock(pLevel, blockpos$mutable)) && blockpos$mutable.getY() > pLevel.getMinBuildHeight());
-
-        BlockPos pos = blockpos$mutable.below().below(belowY);
-
-        return pos;
+        Vec3 pos = player.getEyePosition(1.0F);
+        Vec3 dir = player.getViewVector(1.0F);
+        double reach = player.getReachDistance();
+    	return bounds.raycast(pos, pos.add(dir.scale(reach)));
     }
     
 	public static void getClientLevel(Consumer<Level> consumer)
@@ -262,6 +232,12 @@ public class BTAUtil
 			}
 		}
 		return state;
+	}
+	
+	public static Vec3 getRandomPosition(Entity entity, int range)
+	{
+    	Vec3 vec3 = entity.position().add(Mth.randomBetweenInclusive(entity.level.random, -range, range), Mth.randomBetweenInclusive(entity.level.random, -range, range), Mth.randomBetweenInclusive(entity.level.random, -range, range));
+        return vec3;
 	}
     
 	public static Vec3 getSpreadPosition(Level level, Vec3 startPos, double range)

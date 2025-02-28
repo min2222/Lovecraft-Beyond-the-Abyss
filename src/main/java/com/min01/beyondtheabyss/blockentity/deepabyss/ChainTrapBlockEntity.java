@@ -8,7 +8,7 @@ import java.util.UUID;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.deepabyss.ChainTrapBlock;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.misc.EntityChainTrapMaw;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityChainTrapMaw;
 import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.util.BTAUtil;
 

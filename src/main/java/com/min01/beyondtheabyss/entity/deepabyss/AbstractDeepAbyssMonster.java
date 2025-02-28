@@ -156,7 +156,7 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster implem
 	@Override
 	public boolean canSwim()
 	{
-		return !this.isUsingSkill() || this.getTarget() == null && this.getNavigation().isDone();
+		return (!this.isUsingSkill() || this.getTarget() == null) && this.getNavigation().isDone();
 	}
 	
 	public boolean canBreathOutsideWater()

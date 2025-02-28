@@ -10,8 +10,8 @@ import javax.annotation.Nullable;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
@@ -155,15 +155,25 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 				{
 					leader.list.add(this);
 				}
-				if(leader.getNavigation().getPath() != null && !this.isDisperse())
-				{
-					BlockPos pos = leader.getNavigation().getPath().getTarget();
-					Path path = this.getNavigation().createPath(pos, 1);
-					this.getNavigation().moveTo(path, 0.8F);
-				}
-				if(leader.getTarget() != null)
-				{
-					this.setTarget(leader.getTarget());
+				if(!this.isDisperse())
+				{			
+					if(this.distanceTo(leader) > 2.5F)
+					{
+						this.getNavigation().moveTo(leader, 0.8F);
+					}
+					else
+					{
+						if(leader.getNavigation().getPath() != null)
+						{
+							BlockPos pos = leader.getNavigation().getPath().getTarget();
+							Path path = this.getNavigation().createPath(pos, 1);
+							this.getNavigation().moveTo(path, 0.8F);
+						}
+						if(leader.getTarget() != null)
+						{
+							this.setTarget(leader.getTarget());
+						}
+					}
 				}
 			}
 		}

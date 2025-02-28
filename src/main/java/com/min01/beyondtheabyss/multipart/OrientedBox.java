@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.cerbon;
+package com.min01.beyondtheabyss.multipart;
 
 import org.jetbrains.annotations.Nullable;
 

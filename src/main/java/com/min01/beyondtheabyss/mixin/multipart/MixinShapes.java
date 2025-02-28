@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
+import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
 
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -17,9 +17,9 @@ public class MixinShapes
     @Inject(method = "create(Lnet/minecraft/world/phys/AABB;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("HEAD"), cancellable = true)
     private static void create(AABB box, CallbackInfoReturnable<VoxelShape> cir) 
     {
-        if(box instanceof CompoundOrientedBox ob)
+        if(box instanceof CompoundOrientedBox orientedBox)
         {
-            cir.setReturnValue(ob.toVoxelShape());
+        	cir.setReturnValue(orientedBox.convertToVoxelShape());
         }
     }
 }

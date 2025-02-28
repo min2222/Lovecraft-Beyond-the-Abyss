@@ -19,7 +19,7 @@ public interface IDeepAbyssMob
 	
 	default int getSwimRadius()
 	{
-		return 8;
+		return 12;
 	}
 	
 	boolean canSwim();

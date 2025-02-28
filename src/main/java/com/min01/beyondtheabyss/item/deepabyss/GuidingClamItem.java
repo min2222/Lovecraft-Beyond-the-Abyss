@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
-import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;

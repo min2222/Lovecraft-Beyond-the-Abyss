@@ -4,8 +4,8 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
-import com.min01.beyondtheabyss.network.UpdateAltarItemPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateAltarItemPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -36,6 +36,7 @@ import net.minecraftforge.network.PacketDistributor;
 public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	
 	public RiftwellingAltarBlock() 
 	{
 		super(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).lightLevel(value -> 15).noLootTable().isValidSpawn((p_61031_, p_61032_, p_61033_, p_61034_) -> false).noOcclusion());
@@ -121,7 +122,7 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
     {
     	LevelAccessor level = p_152019_.getLevel();
     	BlockPos pos = p_152019_.getClickedPos();
-    	return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(pos).getType() == Fluids.WATER));
+    	return this.defaultBlockState().setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
     }
     
     @Override

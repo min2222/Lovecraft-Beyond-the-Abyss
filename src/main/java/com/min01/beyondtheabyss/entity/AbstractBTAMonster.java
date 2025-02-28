@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.entity;
 
-import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
-import com.min01.beyondtheabyss.cerbon.EntityBounds;
-import com.min01.beyondtheabyss.cerbon.IMultipart;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
+import com.min01.beyondtheabyss.multipart.EntityBounds;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.multipart.IMultipart;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;

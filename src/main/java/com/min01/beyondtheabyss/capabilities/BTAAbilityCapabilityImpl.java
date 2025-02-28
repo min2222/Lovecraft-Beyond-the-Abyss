@@ -13,7 +13,6 @@ import com.min01.beyondtheabyss.network.UpdateBTAAbilityPacket.PacketType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -103,24 +102,26 @@ public class BTAAbilityCapabilityImpl implements IBTAAbilityCapability
 	@Override
 	public void setTickCount(BTAAbility ability, int tickCount) 
 	{
-		this.abilities.forEach(t -> 
+		for(Iterator<BTAAbility> itr = this.abilities.iterator(); itr.hasNext();)
 		{
-			if(t == ability)
+			BTAAbility next = itr.next();
+			if(next == ability)
 			{
-				t.setTickcount(tickCount);
+				next.setTickcount(tickCount);
 				this.sendUpdatePacket(PacketType.TICK);
 			}
-		});
+		}
 	}
 
 	@Override
 	public int getTickCount(BTAAbility ability)
 	{
-		for(BTAAbility ab : this.abilities)
+		for(Iterator<BTAAbility> itr = this.abilities.iterator(); itr.hasNext();)
 		{
-			if(ab == ability)
+			BTAAbility next = itr.next();
+			if(next == ability)
 			{
-				return ab.getTickcount();
+				return next.getTickcount();
 			}
 		}
 		return 0;
@@ -185,7 +186,7 @@ public class BTAAbilityCapabilityImpl implements IBTAAbilityCapability
 	
 	private void sendUpdatePacket(PacketType type) 
 	{
-		if(this.entity instanceof ServerPlayer)
+		if(!this.entity.level.isClientSide)
 		{
 			this.abilities.forEach(t -> 
 			{

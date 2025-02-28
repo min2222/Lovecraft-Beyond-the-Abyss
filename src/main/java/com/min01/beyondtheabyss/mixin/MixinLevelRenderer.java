@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.min01.beyondtheabyss.misc.BTADynamicLights;
-import com.min01.beyondtheabyss.misc.LevelRendererAccessor;
+import com.min01.beyondtheabyss.lights.DynamicLights;
+import com.min01.beyondtheabyss.lights.LevelRendererAccessor;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.shader.ExtendedPostChain;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
@@ -48,7 +48,7 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	private void renderLevelHead(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
 	{
 		BTAClientUtil.MC.getProfiler().incrementCounter("dynamic_lighting");
-	    BTADynamicLights.get().updateAll(LevelRenderer.class.cast(this));
+	    DynamicLights.get().updateAll(LevelRenderer.class.cast(this));
 	}
 	
 	@Inject(at = @At("TAIL"), method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", cancellable = true)
@@ -56,7 +56,7 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	{
 		if(!level.getBlockState(pos).isSolidRender(level, pos))
 		{
-			cir.setReturnValue(BTADynamicLights.get().getLightmapWithDynamicLight(pos, cir.getReturnValue()));
+			cir.setReturnValue(DynamicLights.get().getLightmapWithDynamicLight(pos, cir.getReturnValue()));
 		}
 	}
 	

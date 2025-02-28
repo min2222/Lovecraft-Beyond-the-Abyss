@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.SiamserpentAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
@@ -59,8 +60,9 @@ public class ModelSiamserpentHead extends HierarchicalModel<EntitySiamserpentHea
 
 		Jaw.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(65, 48).mirror().addBox(0.0F, 0.0F, -7.5F, 0.0F, 7.0F, 18.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(7.0F, 3.0F, -13.25F, 0.0F, 0.0F, -0.6109F));
 
-		SiamserpentBlaster.addOrReplaceChild("RayofEnergy", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 6.0F, new CubeDeformation(-6.0F))
-		.texOffs(0, 13).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -5.0F, -12.5F));
+		SiamserpentBlaster.addOrReplaceChild("InnerRay", CubeListBuilder.create().texOffs(0, 13).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -5.0F, 2.5F));
+
+		SiamserpentBlaster.addOrReplaceChild("RayofEnergy", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0F, -3.0F, -6.0F, 6.0F, 6.0F, 6.0F, new CubeDeformation(-6.0F)), PartPose.offset(0.0F, -5.0F, 3.5F));
 
 		return LayerDefinition.create(meshdefinition, 256, 256);
 	}
@@ -73,8 +75,14 @@ public class ModelSiamserpentHead extends HierarchicalModel<EntitySiamserpentHea
 		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBlaster"), entity.shouldInvertRotation() ? netHeadYaw + 180.0F : netHeadYaw, entity.shouldInvertRotation() ? -headPitch : headPitch);
 		this.root.getChild("SiamserpentSlasher").visible = entity.getHeadType() == HeadType.SLASHER;
 		this.root.getChild("SiamserpentBlaster").visible = entity.getHeadType() == HeadType.BLASTER;
-		this.root.getChild("SiamserpentBlaster").getChild("RayofEnergy").visible = entity.getAnimationState() == 1;
+		this.root.getChild("SiamserpentBlaster").getChild("RayofEnergy").visible = false;
+		this.root.getChild("SiamserpentBlaster").getChild("InnerRay").visible = false;
 		this.root.getChild("SiamserpentBlaster").getChild("RayofEnergy").zScale += entity.getBeamLength();
+		this.root.getChild("SiamserpentBlaster").getChild("InnerRay").zScale += entity.getBeamLength() + (entity.getBeamLength() / 2.0F);
+		this.animate(entity.chargeAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_CHARGE, ageInTicks);
+		this.animate(entity.shootStartAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_START, ageInTicks);
+		this.animate(entity.shootLoopAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_LOOP, ageInTicks);
+		this.animate(entity.shootEndAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_END, ageInTicks);
 	}
 
 	@Override

@@ -1,7 +1,8 @@
-package com.min01.beyondtheabyss.entity.misc;
+package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 
+import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 

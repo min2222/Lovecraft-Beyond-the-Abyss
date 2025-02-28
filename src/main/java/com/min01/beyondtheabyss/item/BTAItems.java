@@ -174,18 +174,18 @@ public class BTAItems
 		return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties().tab(DeepAbyssTabs.ABYSS_MOBS)));
 	}
 	
-	public static RegistryObject<Item> registerNoRotationLimitBlockItem(String name, Supplier<Block> block, Item.Properties propertie)
+	public static RegistryObject<Item> registerNoRotationLimitBlockItem(String name, Supplier<Block> block, Item.Properties properties)
 	{
-		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), propertie.tab(DeepAbyssTabs.ABYSS_BLOCKS), () -> new NoRotationLimitBlockEntity(BlockPos.ZERO, block.get().defaultBlockState())));
+		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), properties.tab(DeepAbyssTabs.ABYSS_BLOCKS), () -> new NoRotationLimitBlockEntity(BlockPos.ZERO, block.get().defaultBlockState())));
 	}
 	
-	public static RegistryObject<Item> registerCustomRendererBlockItem(String name, Supplier<Block> block, Supplier<BlockEntity> blockEntity, Item.Properties propertie)
+	public static RegistryObject<Item> registerCustomRendererBlockItem(String name, Supplier<Block> block, Supplier<BlockEntity> blockEntity, Item.Properties properties)
 	{
-		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), propertie.tab(DeepAbyssTabs.ABYSS_BLOCKS), blockEntity));
+		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), properties.tab(DeepAbyssTabs.ABYSS_BLOCKS), blockEntity));
 	}
 	
-	public static RegistryObject<Item> registerBlockItem(String name, Supplier<Block> block, Item.Properties propertie)
+	public static RegistryObject<Item> registerBlockItem(String name, Supplier<Block> block, Item.Properties properties)
 	{
-		return ITEMS.register(name, () -> new BlockItem(block.get(), propertie.tab(DeepAbyssTabs.ABYSS_BLOCKS)));
+		return ITEMS.register(name, () -> new BlockItem(block.get(), properties.tab(DeepAbyssTabs.ABYSS_BLOCKS)));
 	}
 }

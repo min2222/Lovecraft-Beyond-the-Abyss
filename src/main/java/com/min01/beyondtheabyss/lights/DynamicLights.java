@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.misc;
+package com.min01.beyondtheabyss.lights;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.min01.beyondtheabyss.entity.IDynamicLight;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -18,9 +17,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 
 //https://github.com/txnimc/SodiumDynamicLights/blob/main/src/main/java/toni/sodiumdynamiclights/SodiumDynamicLights.java
-public class BTADynamicLights
+public class DynamicLights
 {
-	public static final BTADynamicLights INSTANCE = new BTADynamicLights();
+	public static final DynamicLights INSTANCE = new DynamicLights();
 	private final Set<IDynamicLight> dynamicLightSources = new HashSet<>();
 	private final ReentrantReadWriteLock lightSourcesLock = new ReentrantReadWriteLock();
 	private static final double MAX_RADIUS = 7.75;
@@ -28,7 +27,7 @@ public class BTADynamicLights
 	private long lastUpdate = System.currentTimeMillis();
 	public int lastUpdateCount = 0;
 	
-	public static BTADynamicLights get()
+	public static DynamicLights get()
 	{
 		return INSTANCE;
 	}
@@ -195,6 +194,24 @@ public class BTADynamicLights
 				lightSource.scheduleTrackedChunksRebuild(BTAClientUtil.MC.levelRenderer);
 				break;
 			}
+		}
+		this.lightSourcesLock.writeLock().unlock();
+	}
+	
+	public void clearLightSources() 
+	{
+		this.lightSourcesLock.writeLock().lock();
+		var dynamicLightSources = this.dynamicLightSources.iterator();
+		IDynamicLight it;
+		while(dynamicLightSources.hasNext()) 
+		{
+			it = dynamicLightSources.next();
+			dynamicLightSources.remove();
+			if(it.getLuminance() > 0)
+			{
+				it.resetDynamicLight();
+			}
+			it.scheduleTrackedChunksRebuild(BTAClientUtil.MC.levelRenderer);
 		}
 		this.lightSourcesLock.writeLock().unlock();
 	}

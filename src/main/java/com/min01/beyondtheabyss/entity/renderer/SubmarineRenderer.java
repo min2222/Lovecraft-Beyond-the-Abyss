@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -34,57 +35,34 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implement
 	public void render(EntitySubmarine p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_)
 	{
 		p_114488_.pushPose();
-		p_114488_.scale(-1.0F, -1.0F, 1.0F);
-		p_114488_.translate(0, -1.5F, 0);
 		float f = Mth.rotLerp(p_114487_, p_114485_.yBodyRotO, p_114485_.yBodyRot);
 		float f1 = Mth.rotLerp(p_114487_, p_114485_.yHeadRotO, p_114485_.yHeadRot);
 		float f2 = f1 - f;
         float f6 = Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot());
+        p_114488_.mulPose(Vector3f.YP.rotationDegrees(180.0F - f));
+		p_114488_.scale(-1.0F, -1.0F, 1.0F);
+		p_114488_.translate(0, -1.5F, 0);
 		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
 		this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
 		this.model.renderToBuffer(p_114488_, consumer, p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		Vec3 rotation = Vec3.ZERO;
-		Vec3 detectorPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine"});
-		Vec3 topPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "top"});
-		Vec3 leftWallPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "l_wall"});
-		Vec3 rightWallPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "r_wall"});
-		Vec3 hatchPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "hatch"});
-		Vec3 frontPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "front"});
-		Vec3 backPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "back"});
-		Vec3 bottomPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "bottom"});
-		Vec3 seat4Pos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat4"});
-		Vec3 seat3Pos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat3"});
-		Vec3 seat2Pos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat2"});
-		Vec3 seat1Pos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat1"});
-		Vec3 controllerPos = BTAClientUtil.getWorldPositionOfMultiPart(p_114485_, this.model.root(), rotation, new String[] {"submarine", "controller"});
-		p_114485_.posArray[12] = detectorPos;
-		p_114485_.posArray[11] = topPos;
-		p_114485_.posArray[10] = leftWallPos;
-		p_114485_.posArray[9] = rightWallPos;
-		p_114485_.posArray[8] = hatchPos;
-		p_114485_.posArray[7] = frontPos;
-		p_114485_.posArray[6] = backPos;
-		p_114485_.posArray[5] = bottomPos;
+		Vec3 rotation = new Vec3(0.0F, p_114485_.yBodyRot, 0.0F);
+		Vec3 seat4Pos = BTAClientUtil.getWorldPosition(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat4"});
+		Vec3 seat3Pos = BTAClientUtil.getWorldPosition(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat3"});
+		Vec3 seat2Pos = BTAClientUtil.getWorldPosition(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat2"});
+		Vec3 seat1Pos = BTAClientUtil.getWorldPosition(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat1"});
+		Vec3 controllerPos = BTAClientUtil.getWorldPosition(p_114485_, this.model.root(), rotation, new String[] {"submarine", "controller"});
 		p_114485_.posArray[4] = seat4Pos;
 		p_114485_.posArray[3] = seat3Pos;
 		p_114485_.posArray[2] = seat2Pos;
 		p_114485_.posArray[1] = seat1Pos;
 		p_114485_.posArray[0] = controllerPos;
-	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, detectorPos, 12));
-	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, topPos, 11));
-	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, leftWallPos, 10));
-	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, rightWallPos, 9));
-	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, hatchPos, 8));
-	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, frontPos, 7));
-	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, backPos, 6));
-	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, bottomPos, 5));
 	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, seat4Pos, 4));
 	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, seat3Pos, 3));
 	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, seat2Pos, 2));
 	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, seat1Pos, 1));
 	    BTANetwork.sendToServer(new UpdatePosArrayPacket(p_114485_, controllerPos, 0));
 
-		if(p_114485_.getControllingPlayer() != null)
+		if(p_114485_.getFirstPassenger() != null)
 		{
 	        float strength = 0.5F + Mth.clamp(((float) Math.cos((p_114485_.glowingTicks + p_114487_) * 0.1F)) - 0.5F, -0.5F, 0.5F);
 

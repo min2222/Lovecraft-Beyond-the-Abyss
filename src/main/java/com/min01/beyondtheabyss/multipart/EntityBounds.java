@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.cerbon;
+package com.min01.beyondtheabyss.multipart;
 
 import java.util.List;
 import java.util.Map;
@@ -18,15 +18,9 @@ public final class EntityBounds {
     private CompoundOrientedBox cache;
     public final Map<String, EntityPart> partMap;
     private @Nullable
-    final MutableBox overrideBox;
 
-    EntityBounds(final Map<String, EntityPart> partMap, @Nullable AABB overrideBox) {
+    EntityBounds(final Map<String, EntityPart> partMap) {
         this.partMap = partMap;
-        this.overrideBox = new MutableBox(overrideBox);
-    }
-
-    public @Nullable MutableBox getOverrideBox() {
-        return overrideBox;
     }
 
     public boolean hasPart(final String name) {
@@ -76,7 +70,7 @@ public final class EntityBounds {
             for(final EntityPart value : partMap.values())
                 parts.add(value.getBox());
 
-            cache = new CompoundOrientedBox(bounds, parts, overrideBox);
+            cache = new CompoundOrientedBox(bounds, parts);
         }
         return cache.withBounds(bounds);
     }
@@ -97,7 +91,6 @@ public final class EntityBounds {
 
     public static final class EntityBoundsBuilder {
         private final Map<String, EntityPartInfo> partInfos = new Object2ObjectLinkedOpenHashMap<>();
-        private AABB overrideBox = null;
 
         EntityBoundsBuilder() {}
 
@@ -106,11 +99,6 @@ public final class EntityBounds {
                 throw new RuntimeException("Unknown part: " + info.parent + ", did you register a child before a parent");
 
             partInfos.put(info.name, info);
-            return this;
-        }
-
-        public EntityBoundsBuilder overrideCollisionBox(AABB box) {
-            this.overrideBox = box;
             return this;
         }
 
@@ -140,7 +128,7 @@ public final class EntityBounds {
                     entityPart.setPivotZ(info.pz);
                     partMap.put(entry.getKey(), entityPart);
                 }
-                return new EntityBounds(partMap, overrideBox);
+                return new EntityBounds(partMap);
             };
         }
     }

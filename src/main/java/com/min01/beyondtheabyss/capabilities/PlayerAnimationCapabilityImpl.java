@@ -102,7 +102,7 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	
 	private void sendUpdatePacket() 
 	{
-		if(this.entity instanceof ServerPlayer)
+		if(!this.entity.level.isClientSide)
 		{
 			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdatePlayerAnimationPacket(this.entity.getUUID(), this));
 		}

@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.renderer.living;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentHead;
+import com.min01.beyondtheabyss.entity.renderer.layer.SiamserpentHeadLayer;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -20,6 +21,7 @@ public class SiamserpentHeadRenderer extends MobRenderer<EntitySiamserpentHead, 
 	public SiamserpentHeadRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelSiamserpentHead(p_174304_.bakeLayer(ModelSiamserpentHead.LAYER_LOCATION)), 0.0F);
+		this.addLayer(new SiamserpentHeadLayer(this, this.model));
 	}
 	
 	@Override

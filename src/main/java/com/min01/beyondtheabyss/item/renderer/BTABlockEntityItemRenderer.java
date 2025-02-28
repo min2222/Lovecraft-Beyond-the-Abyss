@@ -15,11 +15,11 @@ public class BTABlockEntityItemRenderer extends BlockEntityWithoutLevelRenderer
 	private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 	private final BlockEntity blockEntity;
 	   
-	public BTABlockEntityItemRenderer(BlockEntity blockentity, BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet)
+	public BTABlockEntityItemRenderer(BlockEntity blockEntity, BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet)
 	{
 		super(dispatcher, modelSet);
 		this.blockEntityRenderDispatcher = dispatcher;
-		this.blockEntity = blockentity;
+		this.blockEntity = blockEntity;
 	}
 	
 	@Override

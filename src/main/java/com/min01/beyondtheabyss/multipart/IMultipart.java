@@ -1,10 +1,5 @@
-package com.min01.beyondtheabyss.cerbon;
+package com.min01.beyondtheabyss.multipart;
 
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
-
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
@@ -38,9 +33,4 @@ public interface IMultipart
 	}
 
 	EntityPartBuilder<?> getPartBuilder();
-    
-    default InteractionResult interact(Entity entity, InteractionHand hand, String part) 
-    {
-        return InteractionResult.PASS;
-    }
 }

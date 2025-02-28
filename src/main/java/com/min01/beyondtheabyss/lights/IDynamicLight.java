@@ -1,9 +1,7 @@
-package com.min01.beyondtheabyss.entity;
+package com.min01.beyondtheabyss.lights;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-
-import com.min01.beyondtheabyss.misc.BTADynamicLights;
 
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.world.level.Level;
@@ -21,7 +19,7 @@ public interface IDynamicLight
 
 	default boolean isDynamicLightEnabled()
 	{
-		return BTADynamicLights.get().containsLightSource(this);
+		return DynamicLights.get().containsLightSource(this);
 	}
 	
 	@ApiStatus.Internal
@@ -30,11 +28,11 @@ public interface IDynamicLight
 		this.resetDynamicLight();
 		if(enabled)
 		{
-			BTADynamicLights.get().addLightSource(this);
+			DynamicLights.get().addLightSource(this);
 		}
 		else
 		{
-			BTADynamicLights.get().removeLightSource(this);
+			DynamicLights.get().removeLightSource(this);
 		}
 	}
 

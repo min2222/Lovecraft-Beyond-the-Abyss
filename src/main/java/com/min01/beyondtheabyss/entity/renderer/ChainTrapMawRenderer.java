@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.misc.EntityChainTrapMaw;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;

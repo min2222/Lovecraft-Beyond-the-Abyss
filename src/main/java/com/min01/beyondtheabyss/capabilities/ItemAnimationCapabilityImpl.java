@@ -114,7 +114,7 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	{
 		if(this.entity == null)
 			return;
-		if(this.entity instanceof ServerPlayer)
+		if(!this.entity.level.isClientSide)
 		{
 			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdateItemAnimationPacket(this.entity.getUUID(), this.stack, this));
 		}

@@ -4,6 +4,8 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityChainTrapMaw;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFallenDiver;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
@@ -18,8 +20,6 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
-import com.min01.beyondtheabyss.entity.misc.EntityChainTrapMaw;
-import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.projectile.EntityPutridBubble;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 

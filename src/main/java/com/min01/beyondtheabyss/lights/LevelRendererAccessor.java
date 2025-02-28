@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.misc;
+package com.min01.beyondtheabyss.lights;
 
 public interface LevelRendererAccessor
 {
