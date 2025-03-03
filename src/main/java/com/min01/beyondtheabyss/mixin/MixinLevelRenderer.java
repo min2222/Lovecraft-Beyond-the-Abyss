@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.lights.DynamicLights;
 import com.min01.beyondtheabyss.lights.LevelRendererAccessor;
 import com.min01.beyondtheabyss.shader.BTAShaders;
@@ -24,14 +25,19 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 @Mixin(LevelRenderer.class)
 public abstract class MixinLevelRenderer implements LevelRendererAccessor
 {
 	private static final Matrix4f PROJECTION_INVERSE = new Matrix4f();
 	private static final Matrix4f VIEW_INVERSE = new Matrix4f();
+    private static final Matrix4f INVERSE_MAT = new Matrix4f();
 	
 	@Invoker("setSectionDirty")
 	@Override
@@ -42,7 +48,23 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	{
 		//this.applyFog(mtx, frameTime);
 		//this.applyBlur(frameTime);
-	}        
+		Entity camEntity = BTAClientUtil.MC.cameraEntity;
+		if(camEntity != null && camEntity.isAlive())
+		{
+			double x = Mth.lerp((double)frameTime, camEntity.xOld, camEntity.getX());
+			double y = Mth.lerp((double)frameTime, camEntity.yOld, camEntity.getY());
+			double z = Mth.lerp((double)frameTime, camEntity.zOld, camEntity.getZ());
+			Vec3 camPos = camera.getPosition();
+			Vec3 playerPos = new Vec3(x, y, z);
+			Vec3 pos = playerPos.subtract(camPos);
+			mtx.pushPose();
+			//for city;
+			//mtx.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+			mtx.translate(pos.x, pos.y, pos.z);
+			//this.applyMist(mtx, frameTime);
+			mtx.popPose();
+		}
+	}
 	
 	@Inject(at = @At(value = "HEAD"), method = "renderLevel")
 	private void renderLevelHead(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
@@ -81,12 +103,7 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	private void applyFog(PoseStack mtx, float frameTime)
 	{
 		Minecraft mc = BTAClientUtil.MC;
-
-		/*if(!mc.player.level.dimension().location().getPath().equals(BTAWorlds.FOGGY_PLAIN))
-		{
-			return;
-		}*/
-
+		
 		ExtendedPostChain shaderChain = BTAShaders.getFog();
 		EffectInstance shader = shaderChain.getMainShader();
 
@@ -106,4 +123,33 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 			mc.getMainRenderTarget().bindWrite(false);
 		}
 	}
+	
+	@Unique
+	private void applyMist(PoseStack mtx, float frameTime)
+	{
+		Minecraft mc = BTAClientUtil.MC;
+
+		ExtendedPostChain shaderChain = BTAShaders.getMist();
+		EffectInstance shader = shaderChain.getMainShader();
+
+		if(shader != null)
+		{
+			shader.safeGetUniform("iResolution").set(mc.getWindow().getWidth(), mc.getWindow().getHeight());
+			shader.setSampler("ImageSampler", () -> mc.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
+			shader.safeGetUniform("InverseTransformMatrix").set(this.getInverseTransformMatrix(INVERSE_MAT, mtx.last().pose()));
+			shader.safeGetUniform("iTime").set((((float) (mc.level.getGameTime() % 2400000)) + frameTime) / 20.0F);
+			shaderChain.process(frameTime);
+			mc.getMainRenderTarget().bindWrite(false);
+		}
+	}
+	
+	@Unique
+	private Matrix4f getInverseTransformMatrix(Matrix4f outMat, Matrix4f modelView)
+    {
+        outMat.setIdentity();
+        outMat.multiply(RenderSystem.getProjectionMatrix());
+        outMat.multiply(modelView);
+        outMat.invert();
+        return outMat;
+    }
 }

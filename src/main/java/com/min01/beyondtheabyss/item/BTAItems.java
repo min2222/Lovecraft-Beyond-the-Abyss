@@ -60,6 +60,7 @@ public class BTAItems
 	public static final RegistryObject<Item> FALLEN_DIVER_SPAWN_EGG = registerSpawnEgg("fallen_diver_spawn_egg", () -> BTAEntities.FALLEN_DIVER.get(), 9934743, 10647659);
 	public static final RegistryObject<Item> SPINE_WORM_SPAWN_EGG = registerSpawnEgg("spine_worm_spawn_egg", () -> BTAEntities.SPINE_WORM_HEAD.get(), 8352870, 6502445);
 	public static final RegistryObject<Item> MUTAVORE_SPAWN_EGG = registerSpawnEgg("mutavore_spawn_egg", () -> BTAEntities.MUTAVORE.get(), 5847096, 15259304);
+	public static final RegistryObject<Item> GLOOMFISH_SPAWN_EGG = registerSpawnEgg("gloomfish_spawn_egg", () -> BTAEntities.GLOOMFISH.get(), 526088, 12060438);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().tab(DeepAbyssTabs.ABYSS_MATERIALS).rarity(RARITY_DEEP_ABYSS)));
