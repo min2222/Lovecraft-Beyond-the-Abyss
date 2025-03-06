@@ -13,7 +13,7 @@ public class WormChain
         Vec3 direction = owner.getLookAngle().normalize().scale(distance);
         Vec3 targetPos = owner.position().subtract(direction);
 
-        living.teleportTo(targetPos.x, targetPos.y, targetPos.z);
+        living.setPos(targetPos);
 
         float prevYRot = living.getYRot();
         float prevXRot = living.getXRot();

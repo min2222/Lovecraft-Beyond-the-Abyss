@@ -23,6 +23,7 @@ public class BTASounds
 	public static final RegistryObject<SoundEvent> ABYSS_PORTAL_OPENING = registerSound("abyss_portal_opening");
 	public static final RegistryObject<SoundEvent> GUNBLADE_BLADE_TO_GUN = registerSound("gunblade_blade_to_gun");
 	public static final RegistryObject<SoundEvent> GUNBLADE_GUN_TO_BLADE = registerSound("gunblade_gun_to_blade");
+	public static final RegistryObject<SoundEvent> GUNBLADE_SWING = registerSound("gunblade_swing");
 	public static final RegistryObject<SoundEvent> SIAMSERPENT_AMBIENT = registerSound("siamserpent_ambient");
 	public static final RegistryObject<SoundEvent> SIAMSERPENT_HURT = registerSound("siamserpent_hurt");
 	public static final RegistryObject<SoundEvent> SIAMSERPENT_DEATH = registerSound("siamserpent_death");

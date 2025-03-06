@@ -11,6 +11,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityFallenDiver;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityKormosHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityPhasmozoa;
@@ -78,6 +79,9 @@ public class EventHandler
     	event.put(BTAEntities.SPINE_WORM_BODY.get(), EntitySpineWormBody.createAttributes().build());
     	event.put(BTAEntities.MUTAVORE.get(), EntityMutavore.createAttributes().build());
     	event.put(BTAEntities.GLOOMFISH.get(), EntityGloomfish.createAttributes().build());
+    	event.put(BTAEntities.KORMOS_HEAD.get(), EntityKormosHead.createAttributes().build());
+    	event.put(BTAEntities.KORMOS_BODY.get(), EntityKormosHead.createAttributes().build());
+    	event.put(BTAEntities.KORMOS_TAIL.get(), EntityKormosHead.createAttributes().build());
     }
     
     @SubscribeEvent

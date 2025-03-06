@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class GhoulBloomBlock extends BushBlock implements SimpleWaterloggedBlock, BonemealableBlock
 {
+	//TODO extends DoublePlantBlock;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
 	

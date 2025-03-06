@@ -22,6 +22,8 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 //TODO server compatibility;
 public class EntityPartBuilder<T extends LivingEntity & IMultipart>
@@ -160,42 +162,63 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 		}
 		return model.root();
 	}
-
-	//TODO need better system due to spine worm head;
+	
     public AABB getPartSize(ModelPart part, String name)
     {
+    	VoxelShape shape = Shapes.empty();
         AABB box = null;
         AABB empty = new AABB(Vec3.ZERO, Vec3.ZERO);
         for(ModelPart.Cube cube : part.cubes)
         {
-            Vec3 min = (new Vec3((double)cube.minX, (double)cube.minY, (double)cube.minZ)).scale(SCALE * this.getRenderScale());
-            Vec3 max = (new Vec3((double)cube.maxX, (double)cube.maxY, (double)cube.maxZ)).scale(SCALE * this.getRenderScale());
+            Vec3 min = new Vec3(cube.minX, cube.minY, cube.minZ).scale(SCALE * this.getRenderScale());
+            Vec3 max = new Vec3(cube.maxX, cube.maxY, cube.maxZ).scale(SCALE * this.getRenderScale());
             AABB cubeBox = new AABB(min, max);
-            if(box == null)
+            if(box == null || shape.isEmpty())
             {
                 box = cubeBox;
+                shape = Shapes.create(cubeBox);
             }
             else
             {
-                box = box.minmax(cubeBox);
+            	VoxelShape boxShape = Shapes.create(box);
+            	VoxelShape cubeBoxShape = Shapes.create(cubeBox);
+            	AABB aabb = Shapes.or(boxShape, cubeBoxShape).bounds();
+                box = aabb;
             }
         }
-
-        if(box == null) 
+        
+        if(box != null && (box.minX == 0.0 || box.minY == 0.0 || box.minZ == 0.0 || box.maxX == 0.0 || box.maxY == 0.0 || box.maxZ == 0.0))
+        {
+        	double minX = box.minX == 0.0 ? -0.01F / 2 : box.minX;
+        	double maxX = box.maxX == 0.0 ? 0.01F / 2 : box.maxX;
+        	
+        	double minY = box.minY == 0.0 ? -0.01F / 2 : box.minY;
+        	double maxY = box.maxY == 0.0 ? 0.01F / 2 : box.maxY;
+        	
+        	double minZ = box.minZ == 0.0 ? -0.01F / 2 : box.minZ;
+        	double maxZ = box.maxZ == 0.0 ? 0.01F / 2 : box.maxZ;
+        	
+        	box = new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+            Vec3 offset = box.getCenter().multiply(-1.0F, -1.0F, 1.0F);
+            this.partOffset.put(name, offset);
+            return new AABB(-box.getXsize() / 2.0F, -box.getYsize() / 2.0F, -box.getZsize() / 2.0F, box.getXsize() / 2.0F, box.getYsize() / 2.0F, box.getZsize() / 2.0F);
+        }
+        
+        if(box == null || shape.isEmpty()) 
         {
             return empty;
         }
         else
         {
-            Vec3 offset = box.getCenter().multiply(-1.0, -1.0, 1.0);
+            Vec3 offset = box.getCenter().multiply(-1.0F, -1.0F, 1.0F);
             this.partOffset.put(name, offset);
-            return empty.inflate(box.getXsize() / 2.0, box.getYsize() / 2.0, box.getZsize() / 2.0);
+            return new AABB(-box.getXsize() / 2.0F, -box.getYsize() / 2.0F, -box.getZsize() / 2.0F, box.getXsize() / 2.0F, box.getYsize() / 2.0F, box.getZsize() / 2.0F);
         }
     }
 
     public String getModelPartName(ModelPart root, ModelPart target) 
     {
-        return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
+    	return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
     }
 
     public Vec2 defaultHeadRotation(LivingEntity entity, float partialTick)

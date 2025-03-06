@@ -45,6 +45,9 @@ import net.minecraft.world.phys.Vec3;
 public class EntityGloomfish extends AbstractDeepAbyssCreature
 {
 	public static final EntityDataAccessor<Optional<UUID>> LEADER_UUID = SynchedEntityData.defineId(EntityGloomfish.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGloomfish.class, EntityDataSerializers.BOOLEAN);
+
+	public static final Vec3 BOUND_SIZE = new Vec3(8, 8, 8);
 	
 	public Bounds bounds;
 	public final Collection<Boid.Obstacle> obstacles = new ArrayList<Boid.Obstacle>();
@@ -67,6 +70,7 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
     {
     	super.defineSynchedData();
     	this.entityData.define(LEADER_UUID, Optional.empty());
+    	this.entityData.define(IS_LEADER, false);
     }
 
 	@Override
@@ -95,6 +99,30 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
 		super.tick();
 		DeepAbyssUtil.fishFlopping(this);
 		
+		if(this.isLeader() && this.isInWater())
+		{
+			if(this.tickCount % 60 == 0)
+			{
+				this.recreateBounds();
+			}
+			for(Entry<EntityGloomfish, Boid> entry : this.boids.entrySet())
+			{
+				EntityGloomfish fish = entry.getKey();
+				Boid boid = entry.getValue();
+				Vec3 direction = boid.direction;
+				boid.update(this.boids.values(), this.obstacles, true, true, true, 2.5F, 0.25F);
+				if(this.bounds != null)
+				{
+					boid.bounds = this.bounds;
+				}
+				fish.setDeltaMovement(direction);
+				fish.setYRot(-(float)(Mth.atan2(direction.x, direction.z) * (double)(180.0F / (float)Math.PI)));
+				fish.setYHeadRot(fish.getYRot());
+				fish.setYBodyRot(fish.getYRot());
+				fish.setXRot(-(float)(Mth.atan2(direction.y, direction.horizontalDistance()) * (double)(180.0F / (float)Math.PI)));
+			}
+		}
+		
 		if(this.bounds != null)
 		{	
 			for(int x = (int)this.bounds.minX(); x < this.bounds.maxX(); x++) 
@@ -113,32 +141,22 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
 			}
 		}
 		
-		if(this.getLeader() == null && this.isInWater())
+		if(this.getLeader() != null && !this.level.isClientSide)
 		{
-			if(this.tickCount % 100 == 0)
+			EntityGloomfish leader = this.getLeader();
+			if(!leader.boids.containsKey(this))
 			{
-				this.recreateBounds();
-			}
-			
-			for(Entry<EntityGloomfish, Boid> entry : this.boids.entrySet())
-			{
-				EntityGloomfish fish = entry.getKey();
-				Boid boid = entry.getValue();
-				Vec3 pos = boid.position;
-				Vec3 direction = boid.direction;
-				boid.update(this.boids.values(), this.obstacles, true, true, true, 2.5F, 0.25F);
-				fish.moveTo(pos);
-				fish.setYRot(-(float)(Mth.atan2(direction.x, direction.z) * (double)(180.0F / (float)Math.PI)));
-				fish.setYHeadRot(fish.getYRot());
-				fish.setYBodyRot(fish.getYRot());
-				fish.setXRot(-(float)(Mth.atan2(direction.y, direction.horizontalDistance()) * (double)(180.0F / (float)Math.PI)));
+				Bounds bounds = Bounds.fromCenter(leader.position(), BOUND_SIZE);
+				Vec3 pos = new Vec3(bounds.minX() + Math.random() * bounds.size.x, bounds.minY() + Math.random() * bounds.size.y, bounds.minZ() + Math.random() * bounds.size.z);
+				leader.boids.put(this, new Boid(pos, bounds));
 			}
 		}
 	}
 	
     public void recreateBounds() 
     {
-        int radius = 12;
+        Level world = this.level;
+        int radius = 8;
         
         for(int i = 0; i < 10; i++)
         {
@@ -147,11 +165,12 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
         	if(hitResult instanceof BlockHitResult blockHit)
         	{
                 BlockPos targetPos = blockHit.getBlockPos();
-                BlockState blockState = this.level.getBlockState(targetPos);
+                BlockState blockState = world.getBlockState(targetPos);
+                BlockState blockState2 = world.getBlockState(targetPos.above());
                 
-                if(blockState.is(Blocks.WATER))
+                if(blockState.is(Blocks.WATER) && blockState2.is(Blocks.WATER))
                 {
-            		this.bounds = Bounds.fromCenter(pos, new Vec3(8, 8, 8));
+    				this.bounds = Bounds.fromCenter(pos, BOUND_SIZE);
                 	break;
                 }
         	}
@@ -162,6 +181,7 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
     public void addAdditionalSaveData(CompoundTag p_21484_)
     {
     	super.addAdditionalSaveData(p_21484_);
+    	p_21484_.putBoolean("isLeader", this.isLeader());
 		if(this.entityData.get(LEADER_UUID).isPresent())
 		{
 			p_21484_.putUUID("Leader", this.entityData.get(LEADER_UUID).get());
@@ -172,6 +192,10 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
     public void readAdditionalSaveData(CompoundTag p_21450_) 
     {
     	super.readAdditionalSaveData(p_21450_);
+    	if(p_21450_.contains("isLeader"))
+    	{
+    		this.setLeader(p_21450_.getBoolean("isLeader"));
+    	}
 		if(p_21450_.hasUUID("Leader")) 
 		{
 			this.entityData.set(LEADER_UUID, Optional.of(p_21450_.getUUID("Leader")));
@@ -187,32 +211,36 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
 	{
-		if(p_21436_ == MobSpawnType.NATURAL)
-		{
-			this.bounds = Bounds.fromCenter(this.position(), new Vec3(8, 8, 8));
-			Vec3 pos = new Vec3(this.bounds.minX() + Math.random() * this.bounds.size.x, this.bounds.minY() + Math.random() * this.bounds.size.y, this.bounds.minZ() + Math.random() * this.bounds.size.z);
-			Boid boid = new Boid(pos, this.bounds);
-			boid.velocity = new Vec3(Math.random(), Math.random(), Math.random());
-			this.boids.put(this, boid);
-			this.createBoid();
-		}
+		this.setLeader(true);
+		Bounds bounds = Bounds.fromCenter(this.position(), BOUND_SIZE);
+		Vec3 pos = new Vec3(bounds.minX() + Math.random() * bounds.size.x, bounds.minY() + Math.random() * bounds.size.y, bounds.minZ() + Math.random() * bounds.size.z);
+		this.boids.put(this, new Boid(pos, bounds));
+		this.bounds = bounds;
+		this.createBoid(pos, bounds);
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 	
-	public void createBoid()
+	public void createBoid(Vec3 pos, Bounds bounds)
 	{
 		for(int i = 0; i < 9; i++)
 		{
 			EntityGloomfish fish = new EntityGloomfish(BTAEntities.GLOOMFISH.get(), this.level);
-			Vec3 pos = new Vec3(this.bounds.minX() + Math.random() * this.bounds.size.x, this.bounds.minY() + Math.random() * this.bounds.size.y, this.bounds.minZ() + Math.random() * this.bounds.size.z);
-			Boid boid = new Boid(pos, this.bounds);
-			boid.velocity = new Vec3(Math.random(), Math.random(), Math.random());
-			fish.setPos(pos);
+			fish.setPos(this.position());
 			fish.setLeader(this);
-			this.boids.put(fish, boid);
+			this.boids.put(fish, new Boid(pos, bounds));
 			this.level.addFreshEntity(fish);
 		}
 	}
+	
+    public void setLeader(boolean value)
+    {
+    	this.entityData.set(IS_LEADER, value);
+    }
+	
+    public boolean isLeader()
+    {
+    	return this.entityData.get(IS_LEADER);
+    }
 	
 	public void setLeader(EntityGloomfish leader)
 	{

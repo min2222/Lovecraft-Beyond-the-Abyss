@@ -87,6 +87,14 @@
 			}
 		]
 	},
+	"gunblade_swing": {
+		"sounds": [
+			{
+				"name": "beyondtheabyss:item/gunblade_swing",
+				"stream": true
+			}
+		]
+	},
 	"siamserpent_ambient": {
 		"sounds": [
 			"beyondtheabyss:entity/siamserpent_ambient1",

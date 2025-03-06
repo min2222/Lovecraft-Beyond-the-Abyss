@@ -20,6 +20,7 @@ public class Boid
 	{
 		this.position = position;
 		this.bounds = bounds;
+		this.velocity = new Vec3(Math.random(), Math.random(), Math.random());
 	}
 
 	public void update(Collection<Boid> boids, Collection<Boid.Obstacle> obstacles, boolean avoidance, boolean alignment, boolean cohesion, float flockRadius, float maxVelocity) 

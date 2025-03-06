@@ -76,6 +76,20 @@ public class BTAUtil
     	});
     }
     
+    public static int getPlayerAnimationTick(LivingEntity player)
+    {
+        IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
+        return cap.getAnimationTick();
+    }
+
+    public static void setPlayerAnimationTick(LivingEntity player, int tick)
+    {
+    	player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
+    	{
+    		t.setAnimationTick(tick);
+    	});
+    }
+    
     public static int getItemAnimationTick(ItemStack stack)
     {
         IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
@@ -196,7 +210,7 @@ public class BTAUtil
 		for(int i = 0; i < list.size(); ++i)
 		{
 			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name") == animationName)
+			if(compoundTag.getString("Name").equals(animationName))
 			{
 				flag = true;
 				break;
@@ -210,7 +224,7 @@ public class BTAUtil
 		for(int i = 0; i < list.size(); ++i)
 		{
 			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name") == animationName)
+			if(compoundTag.getString("Name").equals(animationName))
 			{
 				return compoundTag;
 			}
@@ -224,7 +238,7 @@ public class BTAUtil
 		for(int i = 0; i < list.size(); ++i)
 		{
 			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name") == animationName)
+			if(compoundTag.getString("Name").equals(animationName))
 			{
 				state.lastTime = compoundTag.getLong("LastTime");
 				state.accumulatedTime = compoundTag.getLong("AccumulatedTime");

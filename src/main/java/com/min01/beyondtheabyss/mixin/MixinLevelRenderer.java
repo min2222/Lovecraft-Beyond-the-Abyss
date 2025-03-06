@@ -35,8 +35,6 @@ import net.minecraft.world.phys.Vec3;
 @Mixin(LevelRenderer.class)
 public abstract class MixinLevelRenderer implements LevelRendererAccessor
 {
-	private static final Matrix4f PROJECTION_INVERSE = new Matrix4f();
-	private static final Matrix4f VIEW_INVERSE = new Matrix4f();
     private static final Matrix4f INVERSE_MAT = new Matrix4f();
 	
 	@Invoker("setSectionDirty")
@@ -46,8 +44,6 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	@Inject(at = @At(value = "TAIL"), method = "renderLevel")
 	private void renderLevel(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
 	{
-		//this.applyFog(mtx, frameTime);
-		//this.applyBlur(frameTime);
 		Entity camEntity = BTAClientUtil.MC.cameraEntity;
 		if(camEntity != null && camEntity.isAlive())
 		{
@@ -61,7 +57,7 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 			//for city;
 			//mtx.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 			mtx.translate(pos.x, pos.y, pos.z);
-			//this.applyMist(mtx, frameTime);
+			this.applyMist(mtx, frameTime);
 			mtx.popPose();
 		}
 	}
@@ -79,48 +75,6 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 		if(!level.getBlockState(pos).isSolidRender(level, pos))
 		{
 			cir.setReturnValue(DynamicLights.get().getLightmapWithDynamicLight(pos, cir.getReturnValue()));
-		}
-	}
-	
-	@Unique
-	private void applyBlur(float frameTime)
-	{
-		Minecraft mc = BTAClientUtil.MC;
-
-		ExtendedPostChain shaderChain = BTAShaders.getBlur();
-		EffectInstance shader = shaderChain.getMainShader();
-
-		if(shader != null)
-		{
-			shader.safeGetUniform("BlurStrength").set(0.01F);
-
-			shaderChain.process(frameTime);
-			mc.getMainRenderTarget().bindWrite(false);
-		}
-	}
-	
-	@Unique
-	private void applyFog(PoseStack mtx, float frameTime)
-	{
-		Minecraft mc = BTAClientUtil.MC;
-		
-		ExtendedPostChain shaderChain = BTAShaders.getFog();
-		EffectInstance shader = shaderChain.getMainShader();
-
-		if(shader != null)
-		{
-			PROJECTION_INVERSE.load(RenderSystem.getProjectionMatrix());
-			PROJECTION_INVERSE.invert();
-
-			VIEW_INVERSE.load(mtx.last().pose());
-			VIEW_INVERSE.invert();
-
-			shader.safeGetUniform("ProjInverseMat").set(PROJECTION_INVERSE);
-			shader.safeGetUniform("ViewInverseMat").set(VIEW_INVERSE);
-			shader.safeGetUniform("Darkness").set(0.5F);
-
-			shaderChain.process(frameTime);
-			mc.getMainRenderTarget().bindWrite(false);
 		}
 	}
 	

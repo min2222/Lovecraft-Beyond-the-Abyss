@@ -212,8 +212,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	@Override
 	public boolean canBeCollidedWith()
 	{
-		//TODO stuck while inside submarine
-		return false;
+		return true;
 	}
 
 	@Override

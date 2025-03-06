@@ -53,15 +53,16 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
         this.erosionNoise = new SimplexNoise(RandomSource.create());
 	}
     
-    @Override
-    public void buildSurface(WorldGenRegion p_224232_, StructureManager p_224233_, RandomState p_224234_, ChunkAccess p_224235_)
-    {
-    	super.buildSurface(p_224232_, p_224233_, p_224234_, p_224235_);
-        this.modifyTerrain(p_224235_);
+	@Override
+	public void buildSurface(WorldGenRegion region, StructureManager structureManager, RandomState random, ChunkAccess chunkAccess) 
+	{
+	    super.buildSurface(region, structureManager, random, chunkAccess);
+        this.makeDeathValley(chunkAccess);
+        this.makeSpireHollow(chunkAccess);
     }
     
     //ChatGPT ahh;
-    private void modifyTerrain(ChunkAccess chunk) 
+    private void makeDeathValley(ChunkAccess chunk) 
     {
         ChunkPos chunkPos = chunk.getPos();
         
@@ -98,6 +99,47 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
                     {
                         mutablePos.set(worldX, y, worldZ);
                         if(chunk.getBlockState(mutablePos).is(BTATags.BTABlocks.DEATH_VALLEY_REPLACEABLES)) 
+                        {
+                            chunk.setBlockState(mutablePos, Blocks.WATER.defaultBlockState(), false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private void makeSpireHollow(ChunkAccess chunk) 
+    {
+        ChunkPos chunkPos = chunk.getPos();
+        
+        int baseMinHeight = 30;
+        int maxHeight = 150;
+        
+        MutableBlockPos mutablePos = new MutableBlockPos();
+        for(int x = 0; x < 16; x++) 
+        {
+            for(int z = 0; z < 16; z++)
+            {
+                int worldX = chunkPos.getBlockX(x);
+                int worldZ = chunkPos.getBlockZ(z);
+
+                int minHeight = baseMinHeight;
+
+                int currentHeight = chunk.getHeight(Types.OCEAN_FLOOR, worldX, worldZ);
+                double baseHeight = minHeight;
+
+                double plainsNoise = this.erosionNoise.getValue(worldX * 0.005, worldZ * 0.005) * 5; 
+                minHeight += plainsNoise;
+
+                int modifiedHeight = (int) Math.round(baseHeight);
+                modifiedHeight = Math.min(maxHeight, Math.max(minHeight, modifiedHeight));
+
+                if(currentHeight > modifiedHeight) 
+                {
+                    for(int y = modifiedHeight + 1; y < 150; y++) 
+                    {
+                        mutablePos.set(worldX, y, worldZ);
+                        if(chunk.getBlockState(mutablePos).is(BTATags.BTABlocks.SPIRE_HOLLOW_REPLACEABLES)) 
                         {
                             chunk.setBlockState(mutablePos, Blocks.WATER.defaultBlockState(), false);
                         }

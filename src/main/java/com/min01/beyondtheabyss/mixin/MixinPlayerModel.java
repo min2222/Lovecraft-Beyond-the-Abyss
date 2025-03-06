@@ -32,7 +32,7 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
 	private static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
     
     @Inject(at = @At("HEAD"), method = "setupAnim", cancellable = true)
-    private void setupAnim(T p_103395_, float p_103396_, float p_103397_, float p_103398_, float p_103399_, float p_103400_, CallbackInfo ci)
+    private void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {	
     	if(this.modelMap.isEmpty())
     	{
@@ -61,6 +61,7 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_BRING_OUT), PlayerAnimation.GunbladeAnimation.GUNBLADE_BRING_OUT, ageInTicks);
     	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_PUT_DOWN), PlayerAnimation.GunbladeAnimation.GUNBLADE_PUT_DOWN, ageInTicks);
     	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_SWING), PlayerAnimation.GunbladeAnimation.GUNBLADE_SWING, ageInTicks);
+    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT), PlayerAnimation.GunbladeAnimation.GUNBLADE_SHOOT_LIGHT, ageInTicks);
     }
     
 	@Override
