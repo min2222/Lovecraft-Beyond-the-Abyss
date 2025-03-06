@@ -1,8 +1,8 @@
 {
 	"replace": false,
 	"values": [
-		"beyondtheabyss:deep_abyssalith",
 		"beyondtheabyss:abyssalith",
+		"beyondtheabyss:deep_abyssalith",
 		"beyondtheabyss:small_bone",
 		"beyondtheabyss:jaw_bone",
 		"beyondtheabyss:rib",

@@ -6,15 +6,17 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.misc.WormSegmentController;
+import com.min01.beyondtheabyss.misc.WormChain;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -72,7 +74,7 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
 		
     	if(this.getOwner() != null)
     	{
-			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.35F);
+			WormChain.tick(this, this.getOwner(), 1.0F, 0.35F);
     	}
     	else
     	{
@@ -127,6 +129,18 @@ public class EntitySiamserpentBone extends AbstractOwnableDeepAbyssMonster<Abstr
 	public Vec2 headRotation(LivingEntity living, Vec2 original)
 	{
 		return this.shouldInvertRotation() ? new Vec2(-original.x, original.y + 180.0F) : original;
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource p_33034_) 
+	{
+		return BTASounds.SIAMSERPENT_HURT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return BTASounds.SIAMSERPENT_DEATH.get();
 	}
     
 	@Override

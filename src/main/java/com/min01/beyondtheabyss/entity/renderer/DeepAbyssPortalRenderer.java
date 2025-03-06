@@ -4,7 +4,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.misc.EntityDeepAbyssPortal;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

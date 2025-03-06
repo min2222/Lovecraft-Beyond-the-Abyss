@@ -38,12 +38,12 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 		if(!p_49505_.isClientSide)
 		{
 			SkeletonPart skeletonPart = p_49507_.getValue(SKELETON_PART);
-			BlockPos blockpos = p_49506_.relative(this.getNeighbourDirection(skeletonPart, p_49507_.getValue(FACING)));
-			BlockState blockstate = p_49505_.getBlockState(blockpos);
-			if(blockstate.is(this))
+			BlockPos blockPos = p_49506_.relative(this.getNeighbourDirection(skeletonPart, p_49507_.getValue(FACING)));
+			BlockState blockState = p_49505_.getBlockState(blockPos);
+			if(blockState.is(this))
 			{
-				p_49505_.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-				p_49505_.levelEvent(p_49508_, 2001, blockpos, Block.getId(blockstate));
+				p_49505_.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 35);
+				p_49505_.levelEvent(p_49508_, 2001, blockPos, Block.getId(blockState));
 			}
 		}
 
@@ -63,11 +63,11 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 		if(!p_49499_.isClientSide)
 		{
 			Direction direction = this.getPartDirection(p_49501_);
-			BlockPos blockpos = p_49500_.relative(direction);
-			boolean flag = p_49499_.isEmptyBlock(blockpos) || p_49499_.getBlockState(blockpos).liquid();
+			BlockPos blockPos = p_49500_.relative(direction);
+			boolean flag = p_49499_.isEmptyBlock(blockPos) || p_49499_.getBlockState(blockPos).liquid();
 			if(flag)
 			{
-				p_49499_.setBlock(blockpos, p_49501_.setValue(SKELETON_PART, SkeletonPart.UPPER), 3);
+				p_49499_.setBlock(blockPos, p_49501_.setValue(SKELETON_PART, SkeletonPart.UPPER), 3);
 				p_49499_.blockUpdated(p_49500_, Blocks.AIR);
 				p_49501_.updateNeighbourShapes(p_49499_, p_49500_, 3);
 			}

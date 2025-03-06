@@ -29,7 +29,11 @@ import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelFallenDiver;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
+import com.min01.beyondtheabyss.entity.model.ModelGloomfish;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
+import com.min01.beyondtheabyss.entity.model.ModelKormosBody;
+import com.min01.beyondtheabyss.entity.model.ModelKormosHead;
+import com.min01.beyondtheabyss.entity.model.ModelKormosTail;
 import com.min01.beyondtheabyss.entity.model.ModelLatcher;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
 import com.min01.beyondtheabyss.entity.model.ModelPhasmozoa;
@@ -53,7 +57,11 @@ import com.min01.beyondtheabyss.entity.renderer.living.AmarumGhostRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.FallenDiverRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.GloomfishRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.KormosBodyRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.KormosHeadRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.KormosTailRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.LatcherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.MutavoreRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.PhasmozoaRenderer;
@@ -149,9 +157,9 @@ public class ClientEventHandler
 	}
     
 	@SubscribeEvent
-	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent e)
+	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event)
 	{
-		e.registerReloadListener(new BTAShaders());
+		event.registerReloadListener(new BTAShaders());
 	}
 	
     @SubscribeEvent
@@ -183,6 +191,10 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.SPINE_WORM_HEAD.get(), SpineWormHeadRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SPINE_WORM_BODY.get(), SpineWormBodyRenderer::new);
     	event.registerEntityRenderer(BTAEntities.MUTAVORE.get(), MutavoreRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.GLOOMFISH.get(), GloomfishRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.KORMOS_HEAD.get(), KormosHeadRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.KORMOS_BODY.get(), KormosBodyRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.KORMOS_TAIL.get(), KormosTailRenderer::new);
     }
     
     @SubscribeEvent
@@ -208,6 +220,10 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelPutridBubble.LAYER_LOCATION, ModelPutridBubble::createBodyLayer);
     	event.registerLayerDefinition(ModelChainTrapMaw.LAYER_LOCATION, ModelChainTrapMaw::createBodyLayer);
     	event.registerLayerDefinition(ModelChainTrapChain.LAYER_LOCATION, ModelChainTrapChain::createBodyLayer);
+    	event.registerLayerDefinition(ModelGloomfish.LAYER_LOCATION, ModelGloomfish::createBodyLayer);
+    	event.registerLayerDefinition(ModelKormosHead.LAYER_LOCATION, ModelKormosHead::createBodyLayer);
+    	event.registerLayerDefinition(ModelKormosBody.LAYER_LOCATION, ModelKormosBody::createBodyLayer);
+    	event.registerLayerDefinition(ModelKormosTail.LAYER_LOCATION, ModelKormosTail::createBodyLayer);
 
     	//armors
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);

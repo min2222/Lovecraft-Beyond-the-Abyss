@@ -2,8 +2,8 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;

@@ -35,7 +35,7 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 		if(p_108830_.getItem() == BTAItems.SKELETAL_GUNBLADE.get())
 		{
 	        p_108832_.pushPose();
-	        p_108832_.translate(0.2F, -0.05F, 0.25F);
+	        p_108832_.translate(0.5F, 0.6F, 0.3F);
 	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
 	        p_108832_.translate(0.0F, -1.0F, 0.0F);
 	        VertexConsumer eyeConsumer = p_108833_.getBuffer(BTARenderType.eyesFix(GUNBLADE_LAYER));

@@ -9,11 +9,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.IDynamicLight;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
-import com.min01.beyondtheabyss.misc.BTADynamicLights;
+import com.min01.beyondtheabyss.lights.DynamicLights;
+import com.min01.beyondtheabyss.lights.IDynamicLight;
+import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -87,7 +87,6 @@ public abstract class MixinEntity implements IDynamicLight
 	@Unique
 	private LongOpenHashSet trackedLitChunkPos = new LongOpenHashSet();
 
-	//FIXME light doesn't disappear even after entity is removed (restarting game is work) (currently flashlight is work fine without issue)
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void tickTail(CallbackInfo ci) 
 	{
@@ -108,7 +107,7 @@ public abstract class MixinEntity implements IDynamicLight
 					if(flag1 || flag2)
 					{
 						this.dynamicLightTick();
-						BTADynamicLights.updateTracking(this);
+						DynamicLights.updateTracking(this);
 					}
 					else
 					{
@@ -225,8 +224,8 @@ public abstract class MixinEntity implements IDynamicLight
 				var entityChunkPos = this.chunkPosition();
 				var chunkPos = new BlockPos.MutableBlockPos(entityChunkPos.x, SectionPos.blockToSectionCoord(this.getEyeY()), entityChunkPos.z);
 
-				BTADynamicLights.scheduleChunkRebuild(renderer, chunkPos);
-				BTADynamicLights.updateTrackedChunks(chunkPos, this.trackedLitChunkPos, newPos);
+				DynamicLights.scheduleChunkRebuild(renderer, chunkPos);
+				DynamicLights.updateTrackedChunks(chunkPos, this.trackedLitChunkPos, newPos);
 
 				var directionX = (this.getOnPos().getX() & 15) >= 8 ? Direction.EAST : Direction.WEST;
 				var directionY = ((int) Mth.floor(this.getEyeY()) & 15) >= 8 ? Direction.UP : Direction.DOWN;
@@ -250,8 +249,8 @@ public abstract class MixinEntity implements IDynamicLight
 						chunkPos.move(directionZ.getOpposite());
 						chunkPos.move(directionY);
 					}
-					BTADynamicLights.scheduleChunkRebuild(renderer, chunkPos);
-					BTADynamicLights.updateTrackedChunks(chunkPos, this.trackedLitChunkPos, newPos);
+					DynamicLights.scheduleChunkRebuild(renderer, chunkPos);
+					DynamicLights.updateTrackedChunks(chunkPos, this.trackedLitChunkPos, newPos);
 				}
 			}
 
@@ -269,7 +268,7 @@ public abstract class MixinEntity implements IDynamicLight
 		{
 			for(long pos : this.trackedLitChunkPos)
 			{
-				BTADynamicLights.scheduleChunkRebuild(renderer, pos);
+				DynamicLights.scheduleChunkRebuild(renderer, pos);
 			}
 		}
 	}

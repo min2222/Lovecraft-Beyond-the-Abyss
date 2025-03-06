@@ -9,9 +9,11 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.misc.WormSegmentController;
+import com.min01.beyondtheabyss.misc.WormChain;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -20,12 +22,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,10 +39,14 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 
 public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<EntitySiamserpentBone>
 {
@@ -49,6 +57,11 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	public static final EntityDataAccessor<Optional<UUID>> OTHER_UUID = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.OPTIONAL_UUID);
 	
 	public final List<EntitySiamserpentBone> segments = new ArrayList<>();
+	
+	public final AnimationState chargeAnimationState = new AnimationState();
+	public final AnimationState shootStartAnimationState = new AnimationState();
+	public final AnimationState shootLoopAnimationState = new AnimationState();
+	public final AnimationState shootEndAnimationState = new AnimationState();
 	
 	public EntitySiamserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -103,11 +116,25 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
         		case 1:
         		{
         			this.stopAllAnimationStates();
+        			this.chargeAnimationState.start(this.tickCount);
         			break;
         		}
         		case 2:
         		{
         			this.stopAllAnimationStates();
+        			this.shootStartAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 3:
+        		{
+        			this.stopAllAnimationStates();
+        			this.shootLoopAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 4:
+        		{
+        			this.stopAllAnimationStates();
+        			this.shootEndAnimationState.start(this.tickCount);
         			break;
         		}
             }
@@ -117,14 +144,17 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	@Override
 	public void stopAllAnimationStates() 
 	{
-		
+		this.chargeAnimationState.stop();
+		this.shootStartAnimationState.stop();
+		this.shootLoopAnimationState.stop();
+		this.shootEndAnimationState.stop();
 	}
 	
 	@Override
 	protected void registerGoals() 
 	{
 		super.registerGoals();
-		//this.goalSelector.addGoal(4, new SiamserpentBlasterBeamGoal(this));
+		this.goalSelector.addGoal(4, new SiamserpentBlasterBeamGoal(this));
 	}
 	
 	@Override
@@ -154,13 +184,73 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
     		this.hurtTime = this.getOwner().hurtTime;
     		this.deathTime = this.getOwner().deathTime;
 
-			WormSegmentController.tick(this, this.getOwner(), 1.0F, 0.35F);
+			WormChain.tick(this, this.getOwner(), 1.0F, 0.35F);
+		}
+		
+		if(this.getAnimationTick() <= 0)
+		{
+			if(this.getAnimationState() == 3)
+			{
+				this.setAnimationState(4);
+				this.setAnimationTick(5);
+			}
+		}
+		else
+		{
+			if(this.getAnimationState() == 3)
+			{
+				List<LivingEntity> arrayList = new ArrayList<>();
+	        	Vec3 startPos = BTAUtil.getLookPos(this.getRotationVector(), this.getEyePosition(), 0.0F, -0.25F, 0.5F);
+				Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), startPos, 0.0F, 0.0F, 100.0F);
+				HitResult hitResult = level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+	        	Vec3 hitPos = hitResult.getLocation();
+	            Vec3 targetPos = hitPos.subtract(startPos);
+	            Vec3 normalizedPos = targetPos.normalize();
+	            float dist = (float) startPos.distanceTo(hitPos);
+				this.setBeamLength(dist);
+	            for(int i = 1; i < dist; ++i)
+	            {
+	            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
+	            	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(1.5F));
+	            	list.removeIf(t -> t == this || t.isAlliedTo(this));
+	            	list.forEach(t -> 
+	            	{
+	            		if(!arrayList.contains(t))
+	            		{
+	            			arrayList.add(t);
+	            		}
+	            	});
+	            }
+	            
+	            arrayList.forEach(t -> 
+	            {
+	            	t.hurt(this.damageSources().mobAttack(this), 0.5F);
+	            });
+			}
 		}
 	}
 	
 	public boolean shouldInvertRotation()
 	{
 		return this.isDormant() || this.isDisabled();
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() 
+	{
+		return BTASounds.SIAMSERPENT_AMBIENT.get();
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource p_33034_) 
+	{
+		return BTASounds.SIAMSERPENT_HURT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return BTASounds.SIAMSERPENT_DEATH.get();
 	}
 	
 	@Override

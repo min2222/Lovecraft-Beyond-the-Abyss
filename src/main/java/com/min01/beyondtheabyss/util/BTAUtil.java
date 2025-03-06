@@ -13,7 +13,7 @@ import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.IPlayerAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
-import com.min01.beyondtheabyss.misc.BTASimplexNoise;
+import com.min01.beyondtheabyss.multipart.EntityBounds;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -28,6 +28,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -43,30 +44,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
-{
-	//from https://github.com/AlexModGuy/AlexsCaves/blob/main/src/main/java/com/github/alexmodguy/alexscaves/server/misc/ACMath.java
-
-    public static float smin(float a, float b, float k) 
-    {
-        float h = Math.max(k - Math.abs(a - b), 0.0F) / k;
-        return Math.min(a, b) - h * h * k * (1.0F / 4.0F);
-    }
-    
-    public static float sampleNoise2D(int x, int z, float simplexSampleRate)
-    {
-        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
-    }
-    
-    public static float sampleNoise3D(int x, int y, int z, float simplexSampleRate) 
-    {
-        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
-    }
-    
-    public static float sampleNoise3D(float x, float y, float z, float simplexSampleRate) 
-    {
-        return (float) ((BTASimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
-    }
-    
+{    
 	@SuppressWarnings("deprecation")
 	public static BlockPos getGroundPos(BlockGetter pLevel, double pX, double startY, double pZ, int belowY)
     {
@@ -79,6 +57,14 @@ public class BTAUtil
         BlockPos pos = blockpos$mutable.below().below(belowY);
         return pos;
     }
+	
+	public static String getMultiPart(EntityBounds bounds, Player player)
+	{
+        Vec3 pos = player.getEyePosition(1.0F);
+        Vec3 dir = player.getViewVector(1.0F);
+        double reach = player.getBlockReach();
+    	return bounds.raycast(pos, pos.add(dir.scale(reach)));
+	}
 	
 	public static void getClientLevel(Consumer<Level> consumer)
 	{
@@ -105,11 +91,26 @@ public class BTAUtil
     	});
     }
     
+    public static int getPlayerAnimationTick(LivingEntity player)
+    {
+        IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
+        return cap.getAnimationTick();
+    }
+
+    public static void setPlayerAnimationTick(LivingEntity player, int tick)
+    {
+    	player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
+    	{
+    		t.setAnimationTick(tick);
+    	});
+    }
+    
     public static int getItemAnimationTick(ItemStack stack)
     {
         IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
         return cap.getAnimationTick();
     }
+    
     public static void setItemAnimationTick(ItemStack stack, int tick)
     {
     	stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
@@ -224,7 +225,7 @@ public class BTAUtil
 		for(int i = 0; i < list.size(); ++i)
 		{
 			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name") == animationName)
+			if(compoundTag.getString("Name").equals(animationName))
 			{
 				flag = true;
 				break;
@@ -238,7 +239,7 @@ public class BTAUtil
 		for(int i = 0; i < list.size(); ++i)
 		{
 			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name") == animationName)
+			if(compoundTag.getString("Name").equals(animationName))
 			{
 				return compoundTag;
 			}
@@ -252,7 +253,7 @@ public class BTAUtil
 		for(int i = 0; i < list.size(); ++i)
 		{
 			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name") == animationName)
+			if(compoundTag.getString("Name").equals(animationName))
 			{
 				state.lastTime = compoundTag.getLong("LastTime");
 				state.accumulatedTime = compoundTag.getLong("AccumulatedTime");
@@ -260,6 +261,12 @@ public class BTAUtil
 			}
 		}
 		return state;
+	}
+	
+	public static Vec3 getRandomPosition(Entity entity, int range)
+	{
+    	Vec3 vec3 = entity.position().add(Mth.randomBetweenInclusive(entity.level.random, -range, range), Mth.randomBetweenInclusive(entity.level.random, -range, range), Mth.randomBetweenInclusive(entity.level.random, -range, range));
+        return vec3;
 	}
     
 	public static Vec3 getSpreadPosition(Level level, Vec3 startPos, double range)

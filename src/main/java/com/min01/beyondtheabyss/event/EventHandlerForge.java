@@ -129,12 +129,8 @@ public class EventHandlerForge
 	public static void onPlayerTick(PlayerTickEvent event)
 	{
 		Player player = event.player;
+		int tick = BTAUtil.getPlayerAnimationTick(player);
 		BTAUtil.updatePlayerTick(player);
-		AnimationState bringOutState = BTAUtil.getPlayerAnimationState(player, SkeletalGunbladeItem.GUNBLADE_BRING_OUT);
-		if(!player.getItemInHand(InteractionHand.MAIN_HAND).is(BTAItems.SKELETAL_GUNBLADE.get()) && bringOutState.isStarted())
-		{
-			BTAUtil.startPlayerAnimation(player, SkeletalGunbladeItem.GUNBLADE_PUT_DOWN);
-		}
 		for(ItemStack stack : player.getInventory().items)
 		{
 			BTAUtil.updateItemTick(player, stack);
@@ -146,6 +142,20 @@ public class EventHandlerForge
 		for(ItemStack stack : player.getInventory().offhand)
 		{
 			BTAUtil.updateItemTick(player, stack);
+		}
+		AnimationState putDownState = BTAUtil.getPlayerAnimationState(player, SkeletalGunbladeItem.GUNBLADE_PUT_DOWN);
+		AnimationState bringOutState = BTAUtil.getPlayerAnimationState(player, SkeletalGunbladeItem.GUNBLADE_BRING_OUT);
+		if(!player.getItemInHand(InteractionHand.MAIN_HAND).is(BTAItems.SKELETAL_GUNBLADE.get()) && !putDownState.isStarted() && bringOutState.isStarted())
+		{
+			BTAUtil.startPlayerAnimation(player, SkeletalGunbladeItem.GUNBLADE_PUT_DOWN);
+			BTAUtil.setPlayerAnimationTick(player, 20);
+		}
+		if(tick <= 0)
+		{
+			if(putDownState.isStarted())
+			{
+				BTAUtil.stopAllPlayerAnimations(player);
+			}
 		}
 	}
     

@@ -20,12 +20,11 @@ public class Boid
 	{
 		this.position = position;
 		this.bounds = bounds;
+		this.velocity = new Vec3(Math.random(), Math.random(), Math.random());
 	}
 
-	public void update(Collection<Boid> boids, Collection<Boid.Obstacle> obstacles, boolean avoidance, boolean alignment, boolean cohesion) 
+	public void update(Collection<Boid> boids, Collection<Boid.Obstacle> obstacles, boolean avoidance, boolean alignment, boolean cohesion, float flockRadius, float maxVelocity) 
 	{
-		double flockRadius = 2.5;
-		double maxVelocity = 0.3;
 		Collection<Boid> flock = this.getInRange(boids, this.position, flockRadius);
 		
 		Vec3 acceleration = Vec3.ZERO;
@@ -176,16 +175,16 @@ public class Boid
 	{
 		public Vec3 origin;
 		public Vec3 size;
-
-		public Bounds(Vec3 origin, Vec3 size)
+		
+		public Bounds(Vec3 pos, Vec3 size)
 		{
-			this.origin = origin;
+			this.origin = pos;
 			this.size = size;
 		}
-
-		public static Bounds fromCenter(Vec3 location, Vec3 size)
+		
+		public static Bounds fromCenter(Vec3 pos, Vec3 size)
 		{
-			return new Bounds(location.add(size.scale(-0.5)), size);
+			return new Bounds(pos.add(size.scale(-0.5)), size);
 		}
 
 		public double minX()

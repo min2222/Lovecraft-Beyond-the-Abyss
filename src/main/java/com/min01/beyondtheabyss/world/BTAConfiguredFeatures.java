@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraftforge.registries.RegistryObject;
@@ -30,6 +31,7 @@ public class BTAConfiguredFeatures
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BONE = register("bone");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> GHOUL_BLOOM_PATCH = register("ghoul_bloom_patch");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TOOTHVINE_PATCH = register("toothvine_patch");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ABYSSALITH_SPIKE = register("abyssalith_spike");
 	
 	private static ResourceKey<ConfiguredFeature<?, ?>> register(String p_209839_) 
 	{
@@ -42,6 +44,7 @@ public class BTAConfiguredFeatures
 		context.register(BONE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomListPatch(BTAFeatures.BONE, 16, BONE_LOCATION)));
 		context.register(GHOUL_BLOOM_PATCH, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.GHOUL_BLOOM_PATCH, 48)));
 		context.register(TOOTHVINE_PATCH, new ConfiguredFeature<>(Feature.RANDOM_PATCH, randomPatch(BTAFeatures.TOOTHVINE_PATCH, 54)));
+		context.register(ABYSSALITH_SPIKE, new ConfiguredFeature<>(BTAFeatures.ABYSSALITH_SPIKE.get(), FeatureConfiguration.NONE));
     }
     
     public static RandomPatchConfiguration randomListPatch(RegistryObject<Feature<ListFeatureConfiguration>> feature, int tries, List<ResourceLocation> structures) 

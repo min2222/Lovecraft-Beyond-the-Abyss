@@ -1,17 +1,16 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-import com.min01.beyondtheabyss.cerbon.CompoundOrientedBox;
-import com.min01.beyondtheabyss.cerbon.EntityBounds;
-import com.min01.beyondtheabyss.cerbon.IMultipart;
 import com.min01.beyondtheabyss.entity.IPosArray;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
+import com.min01.beyondtheabyss.multipart.EntityBounds;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.multipart.IMultipart;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,22 +31,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 
-//FIXME when player's aabb is colliding with overrideBox (normal aabb of entity) obb is not colliding;
 public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray
 {
-	public static final EntityDataAccessor<Optional<UUID>> CONTROLLING_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Optional<UUID>> SEAT1_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Optional<UUID>> SEAT2_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Optional<UUID>> SEAT3_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Optional<UUID>> SEAT4_PLAYER = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<BlockPos> PREV_POS = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BLOCK_POS);
 	
-    public float brightness;
+    public float brightness;	
     public float brightnessOld;
     public int glowingTicks;
     
-    public Vec3[] posArray = new Vec3[13];
+    public Vec3[] posArray = new Vec3[5];
     
 	public final EntityPartBuilder<EntitySubmarine> partBuilder;
     
@@ -62,28 +54,17 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	protected void defineSynchedData()
 	{
 		super.defineSynchedData();
-		this.entityData.define(CONTROLLING_PLAYER, Optional.empty());
-		this.entityData.define(SEAT1_PLAYER, Optional.empty());
-		this.entityData.define(SEAT2_PLAYER, Optional.empty());
-		this.entityData.define(SEAT3_PLAYER, Optional.empty());
-		this.entityData.define(SEAT4_PLAYER, Optional.empty());
 		this.entityData.define(HATCH_OPENED, false);
-		this.entityData.define(PREV_POS, BlockPos.ZERO);
 	}
 	
 	@Override
 	public void travel(Vec3 p_21280_) 
 	{
-		if(this.getControllingPlayer() != null)
+		if(this.getFirstPassenger() != null && this.getFirstPassenger() instanceof Player player)
 		{
-			Player player = this.getControllingPlayer();
 			Vec3 travelVector = new Vec3(player.xxa, player.yya, player.zza);
 	        if(player.zza != 0 || player.xxa != 0)
 	        {
-	        	this.setXRot(player.getXRot());
-	        	this.setYRot(player.getYRot());
-	            this.setYHeadRot(player.getYHeadRot());
-	            this.setYBodyRot(player.yBodyRot);
 	        }
 	        super.travel(travelVector);
 		}
@@ -112,137 +93,29 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	}
 	
 	@Override
-	public void positionRider(Entity p_20312_, Entity.MoveFunction function) 
+	public void positionRider(Entity p_20312_, MoveFunction fuction) 
 	{
-		if(this.getControllingPlayer() != null)
+		if(this.posArray[0] != null)
 		{
-			if(this.posArray[0] != null)
-			{
-		    	this.getControllingPlayer().setPos(this.position().add(this.posArray[0]));
-			}
-	    	
-	    	if(this.getControllingPlayer().isShiftKeyDown())
-	    	{
-	    		this.getControllingPlayer().stopRiding();
-	    		this.removeSeatPlayer(0);
-	    	}
+	    	p_20312_.setPos(this.posArray[0]);
 		}
-		
-		if(this.getSeat1Player() != null)
-		{
-			if(this.posArray[1] != null)
-			{
-		    	this.getSeat1Player().setPos(this.position().add(this.posArray[1]));
-			}
-	    	
-	    	if(this.getSeat1Player().isShiftKeyDown())
-	    	{
-	    		this.getSeat1Player().stopRiding();
-	    		this.removeSeatPlayer(1);
-	    	}
-		}
-		
-		if(this.getSeat2Player() != null)
-		{
-			if(this.posArray[2] != null)
-			{
-		    	this.getSeat2Player().setPos(this.position().add(this.posArray[2]));
-			}
-	    	
-	    	if(this.getSeat2Player().isShiftKeyDown())
-	    	{
-	    		this.getSeat2Player().stopRiding();
-	    		this.removeSeatPlayer(2);
-	    	}
-		}
-		
-		if(this.getSeat3Player() != null)
-		{
-			if(this.posArray[3] != null)
-			{
-		    	this.getSeat3Player().setPos(this.position().add(this.posArray[3]));
-			}
-	    	
-	    	if(this.getSeat3Player().isShiftKeyDown())
-	    	{
-	    		this.getSeat3Player().stopRiding();
-	    		this.removeSeatPlayer(3);
-	    	}
-		}
-		
-		if(this.getSeat4Player() != null)
-		{
-			if(this.posArray[4] != null)
-			{
-		    	this.getSeat4Player().setPos(this.position().add(this.posArray[4]));
-			}
-	    	
-	    	if(this.getSeat4Player().isShiftKeyDown())
-	    	{
-	    		this.getSeat4Player().stopRiding();
-	    		this.removeSeatPlayer(4);
-	    	}
-		}
+    	
+    	if(p_20312_.isShiftKeyDown())
+    	{
+    		p_20312_.stopRiding();
+    	}
 	}
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag p_21145_) 
 	{
 		super.addAdditionalSaveData(p_21145_);
-		if(this.getControllingPlayer() != null)
-		{
-			p_21145_.putUUID("ControllerUUID", this.getControllingPlayer().getUUID());
-		}
-		
-		if(this.getSeat1Player() != null)
-		{
-			p_21145_.putUUID("Seat1UUID", this.getSeat1Player().getUUID());
-		}
-		
-		if(this.getSeat2Player() != null)
-		{
-			p_21145_.putUUID("Seat2UUID", this.getSeat2Player().getUUID());
-		}
-		
-		if(this.getSeat3Player() != null)
-		{
-			p_21145_.putUUID("Seat3UUID", this.getSeat3Player().getUUID());
-		}
-		
-		if(this.getSeat4Player() != null)
-		{
-			p_21145_.putUUID("Seat4UUID", this.getSeat4Player().getUUID());
-		}
 	}
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag p_21096_) 
 	{
 		super.readAdditionalSaveData(p_21096_);
-		if(p_21096_.hasUUID("ControllerUUID")) 
-		{
-			this.entityData.set(CONTROLLING_PLAYER, Optional.of(p_21096_.getUUID("ControllerUUID")));
-		}
-		
-		if(p_21096_.hasUUID("Seat1UUID")) 
-		{
-			this.entityData.set(SEAT1_PLAYER, Optional.of(p_21096_.getUUID("Seat1UUID")));
-		}
-		
-		if(p_21096_.hasUUID("Seat2UUID"))
-		{
-			this.entityData.set(SEAT2_PLAYER, Optional.of(p_21096_.getUUID("Seat2UUID")));
-		}
-		
-		if(p_21096_.hasUUID("Seat3UUID")) 
-		{
-			this.entityData.set(SEAT3_PLAYER, Optional.of(p_21096_.getUUID("Seat3UUID")));
-		}
-		
-		if(p_21096_.hasUUID("Seat4UUID")) 
-		{
-			this.entityData.set(SEAT4_PLAYER, Optional.of(p_21096_.getUUID("Seat4UUID")));
-		}
 	}
 	
     @Override
@@ -250,30 +123,16 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     {
     	super.tick();
     	
-    	this.refreshDimensions();
-    	
         if(this.level.isClientSide) 
         {
             ++this.glowingTicks;
             this.brightness += (0.0F - this.brightness) * 0.8F;
         }
         
-    	if(this.isInWater())
-    	{
-    		/*BlockPos prevPos = this.getPrevPos();
-        	Vec3 lightPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, 8.0F);
-        	HitResult result = this.level.clip(new ClipContext(this.position().add(0, 1.5F, 0), this.position().add(0, 1.5F, 0).add(lightPos), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-            if(result instanceof BlockHitResult blockHit)
-            {
-                BlockPos blockPos = blockHit.getBlockPos().relative(blockHit.getDirection());
-                if(blockPos != prevPos && this.level.getFluidState(blockPos).is(Fluids.WATER))
-                {
-                	this.level.setBlockAndUpdate(prevPos, Blocks.WATER.defaultBlockState());
-                	this.setPrevPos(blockPos);
-                	this.level.setBlockAndUpdate(blockPos, BTABlocks.BTA_LIGHT.get().defaultBlockState());
-                }
-            }*/
-    	}
+		if(this.partBuilder != null)
+		{
+			this.partBuilder.tick(1.0F);
+		}
     }
     
     @Override
@@ -341,114 +200,15 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     	return super.hurt(p_21016_, p_21017_);
     }
     
-	public void setPrevPos(BlockPos value)
-	{
-		this.entityData.set(PREV_POS, value);
-	}
-	
-	public BlockPos getPrevPos()
-	{
-		return this.entityData.get(PREV_POS);
-	}
-	
-	public void setHatchOpened(boolean value)
-	{
-		this.entityData.set(HATCH_OPENED, value);
-	}
-	
-	public boolean hatchOpened()
-	{
-		return this.entityData.get(HATCH_OPENED);
-	}
-	
-	public Player getControllingPlayer()
-	{
-		if(this.entityData.get(CONTROLLING_PLAYER).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(CONTROLLING_PLAYER).get());
-		}
-		return null;
-	}
-	
-	public Player getSeat1Player()
-	{
-		if(this.entityData.get(SEAT1_PLAYER).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(SEAT1_PLAYER).get());
-		}
-		return null;
-	}
-	
-	public Player getSeat2Player()
-	{
-		if(this.entityData.get(SEAT2_PLAYER).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(SEAT2_PLAYER).get());
-		}
-		return null;
-	}
-	
-	public Player getSeat3Player()
-	{
-		if(this.entityData.get(SEAT3_PLAYER).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(SEAT3_PLAYER).get());
-		}
-		return null;
-	}
-	
-	public Player getSeat4Player()
-	{
-		if(this.entityData.get(SEAT4_PLAYER).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(SEAT4_PLAYER).get());
-		}
-		return null;
-	}
-	
-	public void removeSeatPlayer(int seatId)
-	{
-		switch(seatId)
-		{
-		case 0:
-			this.entityData.set(CONTROLLING_PLAYER, Optional.empty());
-			break;
-		case 1:
-			this.entityData.set(SEAT1_PLAYER, Optional.empty());
-			break;
-		case 2:
-			this.entityData.set(SEAT2_PLAYER, Optional.empty());
-			break;
-		case 3:
-			this.entityData.set(SEAT3_PLAYER, Optional.empty());
-			break;
-		case 4:
-			this.entityData.set(SEAT4_PLAYER, Optional.empty());
-			break;
-		}
-	}
-	
-	public void setSeatPlayer(int seatId, Player player)
-	{
-		switch(seatId)
-		{
-		case 0:
-			this.entityData.set(CONTROLLING_PLAYER, Optional.of(player.getUUID()));
-			break;
-		case 1:
-			this.entityData.set(SEAT1_PLAYER, Optional.of(player.getUUID()));
-			break;
-		case 2:
-			this.entityData.set(SEAT2_PLAYER, Optional.of(player.getUUID()));
-			break;
-		case 3:
-			this.entityData.set(SEAT3_PLAYER, Optional.of(player.getUUID()));
-			break;
-		case 4:
-			this.entityData.set(SEAT4_PLAYER, Optional.of(player.getUUID()));
-			break;
-		}
-	}
+    @Override
+    protected void tickDeath()
+    {
+    	if(!this.level.isClientSide) 
+        {
+        	this.level.broadcastEntityEvent(this, (byte)60);
+            this.remove(Entity.RemovalReason.KILLED);
+        }
+    }
 	
 	@Override
 	public boolean canBeCollidedWith()
@@ -471,42 +231,26 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	@Override
 	public void onSetPos(double x, double y, double z) 
 	{
-		if(this.partBuilder != null)
+		if(this.tickCount <= 2)
 		{
-			this.partBuilder.tick(1.0F);
+			if(this.partBuilder != null)
+			{
+				this.partBuilder.tick(1.0F);
+			}
 		}
 	}
 	
 	@Override
-	public InteractionResult interact(Entity entity, InteractionHand hand, String part)
+	public InteractionResult interact(Player player, InteractionHand hand) 
 	{
-		//TODO
-		/*if(entity instanceof Player player)
-		{
+        String part = BTAUtil.getMultiPart(this.getBounds(), player);
+        if(part != null)
+        {
 			player.startRiding(this);
-			if(part == "controllerSeat")
-			{
-				this.setSeatPlayer(0, player);
-			}
-			else if(part == "seat1")
-			{
-				this.setSeatPlayer(1, player);
-			}
-			else if(part == "seat2")
-			{
-				this.setSeatPlayer(2, player);
-			}
-			else if(part == "seat3")
-			{
-				this.setSeatPlayer(3, player);
-			}
-			else if(part == "seat4")
-			{
-				this.setSeatPlayer(4, player);
-			}
+	    	BTANetwork.sendToAll(new UpdateVehiclePacket(player, this));
 			return InteractionResult.SUCCESS;
-		}*/
-		return IMultipart.super.interact(entity, hand, part);
+        }
+		return super.interact(player, hand);
 	}
 
 	@Override
@@ -531,5 +275,15 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	public HumanoidArm getMainArm()
 	{
 		return HumanoidArm.RIGHT;
+	}
+
+	public void setHatchOpened(boolean value)
+	{
+		this.entityData.set(HATCH_OPENED, value);
+	}
+	
+	public boolean hatchOpened()
+	{
+		return this.entityData.get(HATCH_OPENED);
 	}
 }

@@ -13,7 +13,6 @@ import com.min01.beyondtheabyss.network.UpdateBTAAbilityPacket.PacketType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -187,7 +186,7 @@ public class BTAAbilityCapabilityImpl implements IBTAAbilityCapability
 	
 	private void sendUpdatePacket(PacketType type) 
 	{
-		if(this.entity instanceof ServerPlayer)
+		if(!this.entity.level.isClientSide)
 		{
 			this.abilities.forEach(t -> 
 			{

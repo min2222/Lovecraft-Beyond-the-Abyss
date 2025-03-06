@@ -57,7 +57,7 @@ public class ThrownHarpoonRenderer extends EntityRenderer<EntityThrownHarpoon>
 	{
 		p_115464_.pushPose();
 		Vec3 vec3 = p_115466_.getRopeHoldPosition(p_115463_);
-		double d0 = (double)(Mth.lerp(p_115463_, p_115462_.yRotO, p_115462_.getYRot()) * ((float)Math.PI / 180F)) + (Math.PI / 2D);
+		double d0 = (double)(Mth.lerp(p_115463_, p_115462_.yRotO, p_115462_.getYRot()) * ((float)Math.PI / 180.0F)) + (Math.PI / 2.0D);
 		Vec3 vec31 = p_115462_.getLeashOffset( p_115463_);
 		double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
 		double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;

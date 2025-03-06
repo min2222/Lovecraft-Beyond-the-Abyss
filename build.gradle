@@ -173,7 +173,7 @@ dependencies {
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation fg.deobf("curse.maven:assets-protector-1032813:5566488")
+    implementation fg.deobf("curse.maven:assets-protector-1032813:6237647")
     
     runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:5589681")
     

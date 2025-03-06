@@ -3,9 +3,9 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FallenDiverMeleeAttackGoal;
-import com.min01.beyondtheabyss.entity.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

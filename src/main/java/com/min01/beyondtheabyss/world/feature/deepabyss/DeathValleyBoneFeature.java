@@ -35,7 +35,7 @@ public class DeathValleyBoneFeature extends Feature<ListFeatureConfiguration>
 				ResourceLocation location = p_159749_.config().structures.get(random.nextInt(4));
 				StructureTemplateManager manager = level.getLevel().getStructureManager();
 				StructureTemplate template = manager.getOrCreate(location);
-		    	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.values()[random.nextInt(2)]).setRotation(Rotation.getRandom(random)).setKeepLiquids(false);
+		    	StructurePlaceSettings settings = (new StructurePlaceSettings()).setMirror(Mirror.values()[random.nextInt(2)]).setRotation(Rotation.getRandom(random));
 		    	template.placeInWorld(level, pos, pos, settings, random, 3);
 				return true;
 			}

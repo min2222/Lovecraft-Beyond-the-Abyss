@@ -60,6 +60,8 @@ public class BTAItems
 	public static final RegistryObject<Item> FALLEN_DIVER_SPAWN_EGG = registerSpawnEgg("fallen_diver_spawn_egg", () -> BTAEntities.FALLEN_DIVER.get(), 9934743, 10647659);
 	public static final RegistryObject<Item> SPINE_WORM_SPAWN_EGG = registerSpawnEgg("spine_worm_spawn_egg", () -> BTAEntities.SPINE_WORM_HEAD.get(), 8352870, 6502445);
 	public static final RegistryObject<Item> MUTAVORE_SPAWN_EGG = registerSpawnEgg("mutavore_spawn_egg", () -> BTAEntities.MUTAVORE.get(), 5847096, 15259304);
+	public static final RegistryObject<Item> GLOOMFISH_SPAWN_EGG = registerSpawnEgg("gloomfish_spawn_egg", () -> BTAEntities.GLOOMFISH.get(), 526088, 12060438);
+	public static final RegistryObject<Item> KORMOS_SPAWN_EGG = registerSpawnEgg("kormos_spawn_egg", () -> BTAEntities.KORMOS_HEAD.get(), 9338740, 4605533);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
@@ -174,18 +176,18 @@ public class BTAItems
 		return ITEMS.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties()));
 	}
 	
-	public static RegistryObject<Item> registerNoRotationLimitBlockItem(String name, Supplier<Block> block, Item.Properties propertie)
+	public static RegistryObject<Item> registerNoRotationLimitBlockItem(String name, Supplier<Block> block, Item.Properties properties)
 	{
-		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), propertie, () -> new NoRotationLimitBlockEntity(BlockPos.ZERO, block.get().defaultBlockState())));
+		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), properties, () -> new NoRotationLimitBlockEntity(BlockPos.ZERO, block.get().defaultBlockState())));
 	}
 	
-	public static RegistryObject<Item> registerCustomRendererBlockItem(String name, Supplier<Block> block, Supplier<BlockEntity> blockEntity, Item.Properties propertie)
+	public static RegistryObject<Item> registerCustomRendererBlockItem(String name, Supplier<Block> block, Supplier<BlockEntity> blockEntity, Item.Properties properties)
 	{
-		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), propertie, blockEntity));
+		return ITEMS.register(name, () -> new CustomRendererBlockItem(block.get(), properties, blockEntity));
 	}
 	
-	public static RegistryObject<Item> registerBlockItem(String name, Supplier<Block> block, Item.Properties propertie)
+	public static RegistryObject<Item> registerBlockItem(String name, Supplier<Block> block, Item.Properties properties)
 	{
-		return ITEMS.register(name, () -> new BlockItem(block.get(), propertie));
+		return ITEMS.register(name, () -> new BlockItem(block.get(), properties));
 	}
 }
