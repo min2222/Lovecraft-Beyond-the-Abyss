@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFallenDiver;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
@@ -82,6 +83,7 @@ public class EventHandler
     	event.put(BTAEntities.KORMOS_HEAD.get(), EntityKormosHead.createAttributes().build());
     	event.put(BTAEntities.KORMOS_BODY.get(), EntityKormosHead.createAttributes().build());
     	event.put(BTAEntities.KORMOS_TAIL.get(), EntityKormosHead.createAttributes().build());
+    	event.put(BTAEntities.CORPSE_ANGLER.get(), EntityCorpseAngler.createAttributes().build());
     }
     
     @SubscribeEvent

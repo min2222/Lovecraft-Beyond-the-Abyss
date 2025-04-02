@@ -17,9 +17,10 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 
-public class FixedPathFinder extends PathFinder
+//https://github.com/BobMowzie/MowziesMobs/blob/master/src/main/java/com/bobmowzie/mowziesmobs/server/ai/MMPathFinder.java
+public class BTAPathFinder extends PathFinder
 {
-    public FixedPathFinder(NodeEvaluator processor, int maxVisitedNodes) 
+    public BTAPathFinder(NodeEvaluator processor, int maxVisitedNodes) 
     {
         super(processor, maxVisitedNodes);
     }

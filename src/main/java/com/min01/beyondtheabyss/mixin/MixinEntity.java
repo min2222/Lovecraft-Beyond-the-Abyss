@@ -16,7 +16,6 @@ import com.min01.beyondtheabyss.lights.IDynamicLight;
 import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -312,10 +311,6 @@ public abstract class MixinEntity implements IDynamicLight
     		{
     			cir.setReturnValue(true);
     		}
-    		else if(DeepAbyssUtil.isInsideSubmarine(living))
-    		{
-    			cir.setReturnValue(false);
-    		}
     	}
     }
     
@@ -327,10 +322,6 @@ public abstract class MixinEntity implements IDynamicLight
     		if(living.hasEffect(BTAEffects.AIR_SWIM.get()))
     		{
     			cir.setReturnValue(ForgeMod.WATER_TYPE.get());
-    		}
-    		else if(DeepAbyssUtil.isInsideSubmarine(living))
-    		{
-    			cir.setReturnValue(ForgeMod.EMPTY_TYPE.get());
     		}
     	}
     }

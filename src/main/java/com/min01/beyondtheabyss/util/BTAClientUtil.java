@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.util;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.renderer.IModel;
-import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
@@ -22,14 +21,12 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -39,19 +36,7 @@ public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
 	
-	public static void renderWormSegment(PoseStack stack, MultiBufferSource source, int packedLight, ModelPart part, LivingEntity entity, Worm worm, float partialTicks, ResourceLocation texture)
-	{
-		stack.pushPose();
-		Vec3 pos = worm.position().subtract(entity.position());
-		Vec2 rot = worm.getRot(partialTicks);
-		stack.scale(-1.0F, -1.0F, 1.0F);
-		stack.translate(-pos.x, -pos.y, pos.z);
-		animateHead(part, rot.y + 180.0F, rot.x);
-		part.render(stack, source.getBuffer(RenderType.entityCutoutNoCull(texture)), packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.popPose();
-	}
-	
-	public static Vector3f posVec(float x, float y, float z) 
+	public static Vector3f posVec(double x, double y, double z) 
 	{
 		return new Vector3f((float)(x / 180 * Math.PI), (float)(-y / 180 * Math.PI), (float)(z / 180 * Math.PI));
 	}

@@ -57,18 +57,18 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         root.setOffY(posY + renderOffset.y);
         root.setOffZ(posZ + renderOffset.z);
 		
-		this.partTick(partialTick);
+		this.partTick();
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
         root.rotate(rotation);
 
         if(this.isInWater() && !this.entity.isInWater())
         {
-        	root.setPivotY(-0.5F);
+        	root.setPivotY(-this.getWaterOffset());
         }
 	}
 	
-	public void partTick(float partialTick)
+	public void partTick()
 	{
 		for(Part part : this.partMap.values())
 		{
@@ -386,13 +386,18 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	
 	public Vec3 getOffset()
 	{
-        float waterOffset = this.isInWater() && !this.entity.isInWater() ? -0.5F : 0.0F;
+        float waterOffset = this.isInWater() && !this.entity.isInWater() ? -this.getWaterOffset() : 0.0F;
 		return new Vec3(0.0F, 1.5F + waterOffset, 0.0F);
 	}
 	
 	public boolean isInWater()
 	{
 		return false;
+	}
+	
+	public float getWaterOffset()
+	{
+		return 0.5F;
 	}
     
     public static class Part

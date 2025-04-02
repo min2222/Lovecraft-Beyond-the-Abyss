@@ -18,7 +18,7 @@ public class BTAEffects
 	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, BeyondtheAbyss.MODID);
 	public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, BeyondtheAbyss.MODID);
 	
-	public static final RegistryObject<MobEffect> ABYSSAL_SCALES = EFFECTS.register("abyssal_scales", () -> new AbyssalScalesEffect(4));
+	public static final RegistryObject<MobEffect> ABYSSAL_SCALES = EFFECTS.register("abyssal_scales", () -> new AbyssalScalesEffect());
 	
 	public static final RegistryObject<MobEffect> AIR_SWIM = EFFECTS.register("air_swim", () -> new BasicBTAEffect(MobEffectCategory.BENEFICIAL, 3407871));
 	public static final RegistryObject<MobEffect> BLEEDING = EFFECTS.register("bleeding", () -> new BleedingEffect());

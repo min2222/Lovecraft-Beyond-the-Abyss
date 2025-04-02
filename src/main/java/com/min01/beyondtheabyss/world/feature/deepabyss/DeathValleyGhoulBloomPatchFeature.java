@@ -44,12 +44,13 @@ public class DeathValleyGhoulBloomPatchFeature extends Feature<NoneFeatureConfig
 	{
 		if(!isTall)
 		{
-			level.setBlock(pos, BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.AGE, 5), 2);
+			level.setBlock(pos, BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.GROWN, true), 2);
 		}
 		else
 		{
-			level.setBlock(pos, BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.AGE, 6), 2);
-			level.setBlock(pos.above(), BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.AGE, 7), 2);
+			//TODO
+			//level.setBlock(pos, BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.AGE, 6), 2);
+			//level.setBlock(pos.above(), BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.AGE, 7), 2);
 		}
 	}
 }

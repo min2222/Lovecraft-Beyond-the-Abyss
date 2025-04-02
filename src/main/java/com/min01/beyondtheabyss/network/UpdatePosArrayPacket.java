@@ -45,10 +45,24 @@ public class UpdatePosArrayPacket
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
-				if(entity instanceof IPosArray mob) 
+				if(ctx.get().getDirection().getReceptionSide().isClient())
 				{
-					mob.getPosArray()[message.array] = message.pos;
+					BTAUtil.getClientLevel(t -> 
+					{
+						Entity entity = BTAUtil.getEntityByUUID(t, message.entityUUID);
+						if(entity instanceof IPosArray mob) 
+						{
+							mob.getPosArray()[message.array] = message.pos;
+						}
+					});
+				}
+				else
+				{
+					Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
+					if(entity instanceof IPosArray mob) 
+					{
+						mob.getPosArray()[message.array] = message.pos;
+					}
 				}
 			});
 			ctx.get().setPacketHandled(true);

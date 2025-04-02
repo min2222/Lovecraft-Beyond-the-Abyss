@@ -98,19 +98,18 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     {
     	return BTASounds.GHIDRUTH_AMBIENT.get();
     }
-    
-    @Override
-    public void tick()
-    {
-    	super.tick();
-    	//TODO
-    }
 	
 	@Override
 	protected float getSoundVolume() 
 	{
 		return 0.45F;
 	}
+	
+    @Override
+    public int maxTurnX() 
+    {
+    	return !this.hasTarget() ? 2 : 6;
+    }
 
     @Override
     public int maxTurnY() 

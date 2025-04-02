@@ -3,6 +3,8 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavoreShootPutridBubbleGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.WormChain;
+import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -17,7 +19,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class EntityMutavore extends AbstractDeepAbyssMonster
 {
@@ -28,10 +29,29 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public final AnimationState mouthCloseAnimationState = new AnimationState();
 	public final AnimationState swimAnimationState = new AnimationState();
 	
+	public final Worm worm1 = new Worm();
+	public final Worm worm6 = new Worm();
+	public final Worm worm11 = new Worm();
+	
+	public final Worm worm2 = new Worm();
+	public final Worm worm7 = new Worm();
+	public final Worm worm12 = new Worm();
+	
+	public final Worm worm3 = new Worm();
+	public final Worm worm8 = new Worm();
+	public final Worm worm13 = new Worm();
+	
+	public final Worm worm4 = new Worm();
+	public final Worm worm9 = new Worm();
+	public final Worm worm14 = new Worm();
+	
+	public final Worm worm5 = new Worm();
+	public final Worm worm10 = new Worm();
+	public final Worm worm15 = new Worm();
+	
 	public EntityMutavore(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.posArray = new Vec3[1];
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -116,6 +136,44 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	@Override
 	public void tick()
 	{
+		this.worm1.setOldPosAndRot();
+		this.worm2.setOldPosAndRot();
+		this.worm3.setOldPosAndRot();
+		this.worm4.setOldPosAndRot();
+		this.worm5.setOldPosAndRot();
+		this.worm6.setOldPosAndRot();
+		this.worm7.setOldPosAndRot();
+		this.worm8.setOldPosAndRot();
+		this.worm9.setOldPosAndRot();
+		this.worm10.setOldPosAndRot();
+		this.worm11.setOldPosAndRot();
+		this.worm12.setOldPosAndRot();
+		this.worm13.setOldPosAndRot();
+		this.worm14.setOldPosAndRot();
+		this.worm15.setOldPosAndRot();
+		
+		float speed = 0.35F;
+    	
+    	WormChain.tick(this.worm1, this, 0.0F, speed);
+    	WormChain.tick(this.worm2, this.worm1, 0.0F, speed);
+    	WormChain.tick(this.worm3, this.worm2, 0.0F, speed);
+    	
+    	WormChain.tick(this.worm4, this, 0.0F, speed);
+    	WormChain.tick(this.worm5, this.worm4, 0.0F, speed);
+    	WormChain.tick(this.worm6, this.worm5, 0.0F, speed);
+    	
+    	WormChain.tick(this.worm7, this, 0.0F, speed);
+    	WormChain.tick(this.worm8, this.worm7, 0.0F, speed);
+    	WormChain.tick(this.worm9, this.worm8, 0.0F, speed);
+    	
+    	WormChain.tick(this.worm10, this, 0.0F, speed);
+    	WormChain.tick(this.worm11, this.worm10, 0.0F, speed);
+    	WormChain.tick(this.worm12, this.worm11, 0.0F, speed);
+    	
+    	WormChain.tick(this.worm13, this, 0.0F, speed);
+    	WormChain.tick(this.worm14, this.worm13, 0.0F, speed);
+    	WormChain.tick(this.worm15, this.worm14, 0.0F, speed);
+    	
 		super.tick();
 		if(this.level.isClientSide)
 		{
@@ -138,13 +196,13 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	@Override
 	public int maxTurnX() 
 	{
-		return !this.hasTarget() ? 65 : 45;
+		return !this.hasTarget() ? 55 : 75;
 	}
 	
 	@Override
 	public int maxTurnY() 
 	{
-		return !this.hasTarget() ? 1 : 5;
+		return !this.hasTarget() ? 3 : 5;
 	}
 	
 	public void setUsingTongue(boolean value)

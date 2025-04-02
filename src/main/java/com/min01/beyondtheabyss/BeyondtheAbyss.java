@@ -11,9 +11,7 @@ import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.world.BTAChunkGenerators;
-import com.min01.beyondtheabyss.world.BTAConfiguredFeatures;
 import com.min01.beyondtheabyss.world.BTAFeatures;
-import com.min01.beyondtheabyss.world.BTAPlacedFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTASurfaceRules;
 
@@ -53,8 +51,6 @@ public class BeyondtheAbyss
 		BTAStructures.STRUCTURE_TYPES.register(bus);
 		BTAStructures.STRUCTURE_PIECE_TYPES.register(bus);
 		BTAFeatures.FEATURES.register(bus);
-		BTAConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
-		BTAPlacedFeatures.PLACED_FEATURES.register(bus);
 		BTAChunkGenerators.CHUNK_GENERATORS.register(bus);
 		BTASurfaceRules.RULE_SOURCES.register(bus);
 		

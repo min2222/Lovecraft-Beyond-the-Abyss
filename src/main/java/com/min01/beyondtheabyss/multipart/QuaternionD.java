@@ -3,115 +3,132 @@ package com.min01.beyondtheabyss.multipart;
 import com.mojang.math.Quaternion;
 import net.minecraft.world.phys.Vec3;
 
-public final class QuaternionD {
+public final class QuaternionD
+{
     public static final QuaternionD IDENTITY = new QuaternionD(0, 0, 0, 1);
     private final double x;
     private final double y;
     private final double z;
     private final double w;
 
-    public QuaternionD(final double x, final double y, final double z, final double w) {
+    public QuaternionD(double x, double y, double z, double w)
+    {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public QuaternionD(final Vec3 axis, double rotationAngle, final boolean degrees) {
+    public QuaternionD(Vec3 axis, double rotationAngle, boolean degrees)
+    {
         if(degrees)
+        {
             rotationAngle *= 0.017453292F;
-
-        final double f = Math.sin(rotationAngle / 2.0);
-        x = axis.x * f;
-        y = axis.y * f;
-        z = axis.z * f;
-        w = Math.cos(rotationAngle / 2.0);
+        }
+        double f = Math.sin(rotationAngle / 2.0);
+        this.x = axis.x * f;
+        this.y = axis.y * f;
+        this.z = axis.z * f;
+        this.w = Math.cos(rotationAngle / 2.0);
     }
 
-    public QuaternionD(double pitch, double yaw, double roll, final boolean degrees) {
-        if(degrees) {
+    public QuaternionD(double pitch, double yaw, double roll, boolean degrees)
+    {
+        if(degrees)
+        {
             pitch *= 0.017453292F;
             yaw *= 0.017453292F;
             roll *= 0.017453292F;
         }
-
-        final double f = Math.sin(0.5F * pitch);
-        final double g = Math.cos(0.5F * pitch);
-        final double h = Math.sin(0.5F * yaw);
-        final double i = Math.cos(0.5F * yaw);
-        final double j = Math.sin(0.5F * roll);
-        final double k = Math.cos(0.5F * roll);
-        x = f * i * k + g * h * j;
-        y = g * h * k - f * i * j;
-        z = f * h * k + g * i * j;
-        w = g * i * k - f * h * j;
+        double f = Math.sin(0.5F * pitch);
+        double g = Math.cos(0.5F * pitch);
+        double h = Math.sin(0.5F * yaw);
+        double i = Math.cos(0.5F * yaw);
+        double j = Math.sin(0.5F * roll);
+        double k = Math.cos(0.5F * roll);
+        this.x = f * i * k + g * h * j;
+        this.y = g * h * k - f * i * j;
+        this.z = f * h * k + g * i * j;
+        this.w = g * i * k - f * h * j;
     }
 
-    public double getX() {
-        return x;
+    public double getX() 
+    {
+        return this.x;
     }
 
-    public double getY() {
-        return y;
+    public double getY() 
+    {
+        return this.y;
     }
 
-    public double getZ() {
-        return z;
+    public double getZ()
+    {
+        return this.z;
     }
 
-    public double getW() {
-        return w;
+    public double getW()
+    {
+        return this.w;
     }
 
-    public QuaternionD hamiltonProduct(final QuaternionD other) {
-        final double f = getX();
-        final double g = getY();
-        final double h = getZ();
-        final double i = getW();
-        final double j = other.getX();
-        final double k = other.getY();
-        final double l = other.getZ();
-        final double m = other.getW();
+    public QuaternionD hamiltonProduct(QuaternionD other) 
+    {
+        double f = this.getX();
+        double g = this.getY();
+        double h = this.getZ();
+        double i = this.getW();
+        double j = other.getX();
+        double k = other.getY();
+        double l = other.getZ();
+        double m = other.getW();
         return new QuaternionD(i * j + f * m + g * l - h * k, i * k - f * l + g * m + h * j, i * l + f * k - g * j + h * m, i * m - f * j - g * k - h * l);
     }
 
-    public Quaternion toFloatQuat() {
-        return new Quaternion((float) x, (float) y, (float) z, (float) w);
+    public Quaternion toFloatQuat() 
+    {
+        return new Quaternion((float) this.x, (float) this.y, (float) this.z, (float) this.w);
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o)
+    {
         if(this == o)
+        {
             return true;
-
-        if(o == null || getClass() != o.getClass())
+        }
+        if(o == null || this.getClass() != o.getClass())
+        {
             return false;
-
-        final QuaternionD that = (QuaternionD) o;
-
-        if(Double.compare(that.x, x) != 0)
+        }
+        QuaternionD that = (QuaternionD) o;
+        if(Double.compare(that.x, this.x) != 0)
+        {
             return false;
-
-        if(Double.compare(that.y, y) != 0)
+        }
+        if(Double.compare(that.y, this.y) != 0)
+        {
             return false;
-
-        if(Double.compare(that.z, z) != 0)
+        }
+        if(Double.compare(that.z, this.z) != 0)
+        {
             return false;
-
-        return Double.compare(that.w, w) == 0;
+        }
+        return Double.compare(that.w, this.w) == 0;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode() 
+    {
         int result;
         long temp;
-        temp = Double.doubleToLongBits(x);
+        temp = Double.doubleToLongBits(this.x);
         result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y);
+        temp = Double.doubleToLongBits(this.y);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(z);
+        temp = Double.doubleToLongBits(this.z);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(w);
+        temp = Double.doubleToLongBits(this.w);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }

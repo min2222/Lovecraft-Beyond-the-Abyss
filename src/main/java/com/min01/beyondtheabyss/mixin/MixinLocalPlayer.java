@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -31,10 +30,6 @@ public class MixinLocalPlayer
 		if(stack.is(BTAItems.DIVING_HELMET.get()))
 		{
 			cir.setReturnValue(cir.getReturnValue() + 0.5F);
-		}
-		if(DeepAbyssUtil.isInsideSubmarine(player))
-		{
-			cir.setReturnValue(cir.getReturnValue() + 1.5F);
 		}
 	}
 }

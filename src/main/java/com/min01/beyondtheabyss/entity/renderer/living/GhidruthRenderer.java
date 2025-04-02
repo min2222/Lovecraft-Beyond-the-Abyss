@@ -4,7 +4,6 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -17,12 +16,6 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 		super(p_174304_, new ModelGhidruth(p_174304_.bakeLayer(ModelGhidruth.LAYER_LOCATION)), 0.5F);
 		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_layer.png")));
 		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_dash_eye_layer.png")));
-	}
-	
-	@Override
-	protected void scale(EntityGhidruth p_115314_, PoseStack p_115315_, float p_115316_)
-	{
-		p_115315_.scale(1.5F, 1.5F, 1.5F);
 	}
 
 	@Override

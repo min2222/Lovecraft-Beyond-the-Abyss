@@ -51,6 +51,12 @@ public class EntityRunicFish extends AbstractDeepAbyssCreature
     		{
     			return true;
     		}
+    		
+    		@Override
+    		public float getWaterOffset() 
+    		{
+    			return 0.0F;
+    		}
     	};
     	return partBuilder;
     }

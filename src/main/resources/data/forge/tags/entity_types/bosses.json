@@ -1,6 +1,9 @@
 {
 	"replace": false,
 	"values": [
-		"beyondtheabyss:ghidruth"
+		"beyondtheabyss:ghidruth",
+		"beyondtheabyss:kormos_head",
+		"beyondtheabyss:kormos_body",
+		"beyondtheabyss:kormos_tail"
 	]
 }

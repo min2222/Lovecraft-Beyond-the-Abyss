@@ -76,8 +76,8 @@ public class ModelKormosBody extends HierarchicalModel<EntityKormosBody>
 		BTAClientUtil.animateHead(this.back_body, netHeadYaw, headPitch);
 		this.neck.visible = entity.getIndex() == 0;
 		this.front_body.visible = entity.getIndex() == 1;
-		this.body.visible = entity.getIndex() > 1 && entity.getIndex() != 14;
-		this.back_body.visible = entity.getIndex() == 14;
+		this.body.visible = entity.getIndex() > 1 && entity.getIndex() != entity.getChainLength() - 4;
+		this.back_body.visible = entity.getIndex() == entity.getChainLength() - 4;
 	}
 	
 	@Override

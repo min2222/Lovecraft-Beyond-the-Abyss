@@ -1,14 +1,20 @@
 package com.min01.beyondtheabyss.event;
 
+import java.util.Map;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilityCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.IBoid;
+import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
 import com.min01.beyondtheabyss.misc.BTALootTables;
+import com.min01.beyondtheabyss.misc.Boid;
 import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTASavedData;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
@@ -36,6 +42,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -95,8 +102,9 @@ public class EventHandlerForge
         }
     }
     
+	@SuppressWarnings("unchecked")
 	@SubscribeEvent
-	public static void onLivingTick(LivingTickEvent event)
+	public static <T extends LivingEntity & IDeepAbyssMob & IBoid<T>> void onLivingTick(LivingTickEvent event)
 	{ 	
 		LivingEntity entity = event.getEntity();
         
@@ -106,6 +114,32 @@ public class EventHandlerForge
 		{
 			entity.setOnGround(false);
 			entity.resetFallDistance();
+		}
+		
+		if(entity instanceof IBoid<?> boid)
+		{
+			T fish = (T) entity;
+			DeepAbyssUtil.loadBoid(fish);
+			if(boid.isLeader() && entity.isInWater() && boid.getBoidBounds() != null)
+			{
+				if(entity.tickCount % 60 == 0)
+				{
+					DeepAbyssUtil.recreateBounds(fish, 8);
+				}
+				DeepAbyssUtil.tickBoid(fish, boid.getBoidBounds(), (Map<T, Boid>) boid.getBoid());
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@SubscribeEvent
+	public static <T extends LivingEntity & IDeepAbyssMob & IBoid<T>> void onLivingDeath(LivingDeathEvent event)
+	{
+		LivingEntity entity = event.getEntity();
+		if(entity instanceof IBoid<?>)
+		{
+			T fish = (T) entity;
+			DeepAbyssUtil.transferLeader(fish);
 		}
 	}
 	

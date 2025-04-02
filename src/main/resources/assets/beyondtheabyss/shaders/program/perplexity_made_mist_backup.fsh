@@ -35,7 +35,7 @@ void main() {
 	vec3 rd = dir;
 	
 	vec3 fogColor = vec3(0.7, 0.75, 0.8);
-	float fogDensity = 0.1F;
+	float fogDensity = 0.025F;
     
     vec3 col = texture(DiffuseSampler, texCoord).xyz;
 

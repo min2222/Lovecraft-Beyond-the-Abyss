@@ -50,14 +50,15 @@ public class EntityKormosHead extends AbstractKormosPart
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
 	{
 		AbstractKormosPart prev = this;
-		for(int i = 0; i < 18; i++)
+		for(int i = 0; i < this.getChainLength(); i++)
 		{
-			if(i < 17)
+			if(i < this.getChainLength() - 1)
 			{
 				EntityKormosBody body = new EntityKormosBody(BTAEntities.KORMOS_BODY.get(), this.level);
 				body.setPos(this.position());
 				body.setOwner(prev);
 				body.setIndex(i);
+				body.setHead(this);
 				prev = body;
 				this.level.addFreshEntity(body);
 			}
@@ -66,6 +67,8 @@ public class EntityKormosHead extends AbstractKormosPart
 				EntityKormosTail tail = new EntityKormosTail(BTAEntities.KORMOS_TAIL.get(), this.level);
 				tail.setPos(this.position());
 				tail.setOwner(prev);
+				tail.setIndex(i);
+				tail.setHead(this);
 				this.level.addFreshEntity(tail);
 			}
 		}

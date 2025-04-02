@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.world.deepabyss;
+package com.min01.beyondtheabyss.world.effects;
 
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.world.phys.Vec3;

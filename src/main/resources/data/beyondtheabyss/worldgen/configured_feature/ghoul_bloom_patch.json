@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:random_patch",
+	"config": {
+		"feature": {
+			"feature": {
+				"type": "beyondtheabyss:ghoul_bloom_patch",
+				"config": {
+				}
+			},
+			"placement": [
+				{
+					"type": "minecraft:block_predicate_filter",
+					"predicate": {
+						"type": "minecraft:matching_blocks",
+						"blocks": [
+							"minecraft:air",
+							"minecraft:water"
+						]
+					}
+				}
+			]
+		},
+		"tries": 48,
+		"xz_spread": 7,
+		"y_spread": 3
+	}
+}

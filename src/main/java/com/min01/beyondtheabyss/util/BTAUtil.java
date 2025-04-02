@@ -24,6 +24,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,6 +35,7 @@ import net.minecraft.world.level.block.entity.StructureBlockEntity;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LogicalSidedProvider;
@@ -42,7 +44,20 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
-{   
+{
+    public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
+    
+    public static float smin(float a, float b, float k) 
+    {
+        float h = Math.max(k - Math.abs(a - b), 0.0F) / k;
+        return Math.min(a, b) - h * h * k * (1.0F / 4.0F);
+    }
+    
+    public static float sampleNoise3D(int x, int y, int z, float simplexSampleRate) 
+    {
+        return (float) ((SIMPLEX_NOISE.getValue((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
+    }
+    
     public static String getMultiPart(EntityBounds bounds, Player player)
     {
         Vec3 pos = player.getEyePosition(1.0F);
@@ -256,17 +271,25 @@ public class BTAUtil
     
 	public static Vec3 getSpreadPosition(Level level, Vec3 startPos, double range)
 	{
-        double x = (double) startPos.x + (level.random.nextDouble() - level.random.nextDouble()) * (double)range + 0.5D;
-        double y = (double) startPos.y + (level.random.nextDouble() - level.random.nextDouble()) * (double)range + 0.5D;
-        double z = (double) startPos.z + (level.random.nextDouble() - level.random.nextDouble()) * (double)range + 0.5D;
+        double x = startPos.x + (level.random.nextDouble() - level.random.nextDouble()) * range + 0.5D;
+        double y = startPos.y + (level.random.nextDouble() - level.random.nextDouble()) * range + 0.5D;
+        double z = startPos.z + (level.random.nextDouble() - level.random.nextDouble()) * range + 0.5D;
+        return new Vec3(x, y, z);
+	}
+	
+	public static Vec3 getSpreadPosition(Entity entity, Vec3 range)
+	{
+        double x = entity.getX() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * range.x + 0.5D;
+        double y = entity.getY() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * range.y + 0.5D;
+        double z = entity.getZ() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * range.z + 0.5D;
         return new Vec3(x, y, z);
 	}
 	
 	public static Vec3 getSpreadPosition(Entity entity, double range)
 	{
-        double x = (double) entity.getX() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * (double)range + 0.5D;
-        double y = (double) entity.getY() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * (double)range + 0.5D;
-        double z = (double) entity.getZ() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * (double)range + 0.5D;
+        double x = entity.getX() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * range + 0.5D;
+        double y = entity.getY() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * range + 0.5D;
+        double z = entity.getZ() + (entity.level.random.nextDouble() - entity.level.random.nextDouble()) * range + 0.5D;
         return new Vec3(x, y, z);
 	}
 	

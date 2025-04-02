@@ -2,10 +2,9 @@ package com.min01.beyondtheabyss.entity.ai.navigation;
 
 import java.util.Objects;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,11 +15,12 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 
-public class FixedPathNavigation extends GroundPathNavigation
+//https://github.com/BobMowzie/MowziesMobs/blob/master/src/main/java/com/bobmowzie/mowziesmobs/server/ai/MMPathNavigateGround.java
+public class BTAGroundPathNavigation extends GroundPathNavigation
 {
     protected static final float EPSILON = 1.0E-8F;
     
-    public FixedPathNavigation(AbstractBTAMonster entity, Level world) 
+    public BTAGroundPathNavigation(Mob entity, Level world) 
     {
         super(entity, world);
     }
@@ -30,7 +30,7 @@ public class FixedPathNavigation extends GroundPathNavigation
     {
         this.nodeEvaluator = new WalkNodeEvaluator();
         this.nodeEvaluator.setCanPassDoors(true);
-        return new FixedPathFinder(this.nodeEvaluator, maxVisitedNodes);
+        return new BTAPathFinder(this.nodeEvaluator, maxVisitedNodes);
     }
 
     @Override

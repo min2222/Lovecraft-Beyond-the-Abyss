@@ -1,28 +1,10 @@
 {
 	"variants": {
-		"age=0": {
-			"model": "beyondtheabyss:block/ghoul_bloom_stage0"
+		"grown=false": {
+			"model": "beyondtheabyss:block/ghoul_bloom_sprout"
 		},
-		"age=1": {
-			"model": "beyondtheabyss:block/ghoul_bloom_stage1"
-		},
-		"age=2": {
-			"model": "beyondtheabyss:block/ghoul_bloom_stage2"
-		},
-		"age=3": {
-			"model": "beyondtheabyss:block/ghoul_bloom_stage3"
-		},
-		"age=4": {
-			"model": "beyondtheabyss:block/ghoul_bloom_stage4"
-		},
-		"age=5": {
-			"model": "beyondtheabyss:block/ghoul_bloom_stage5"
-		},
-		"age=6": {
-			"model": "beyondtheabyss:block/ghoul_bloom_stage6"
-		},
-		"age=7": {
-			"model": "beyondtheabyss:block/ghoul_bloom_stage7"
+		"grown=true": {
+			"model": "beyondtheabyss:block/ghoul_bloom"
 		}
 	}
 }

@@ -1,15 +1,13 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.misc.WormChain;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractKormosPart extends AbstractOwnableDeepAbyssMonster<AbstractKormosPart>
+public abstract class AbstractKormosPart extends AbstractWormPart<AbstractKormosPart>
 {
 	public AbstractKormosPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -28,18 +26,34 @@ public abstract class AbstractKormosPart extends AbstractOwnableDeepAbyssMonster
 		return 0.8F;
 	}
 	
-	public boolean isHead()
+	@Override
+	public int getChainLength() 
 	{
-		return false;
+		return 20;
 	}
 	
 	@Override
-	protected void registerGoals() 
+	public float getChainSpeed() 
 	{
-		if(this.isHead())
+		return 0.35F;
+	}
+	
+	@Override
+	public float getSegmentDistance(int index) 
+	{
+		if(index == 0)
 		{
-			super.registerGoals();
+			return 3.0F;
 		}
+		else if(index == 1)
+		{
+			return 4.0F;
+		}
+		else if(index == this.getChainLength())
+		{
+			return 6.55F;
+		}
+		return 5.0F;
 	}
 	
 	@Override
@@ -50,28 +64,4 @@ public abstract class AbstractKormosPart extends AbstractOwnableDeepAbyssMonster
 			super.doPush(p_21294_);
 		}
 	}
-	
-	@Override
-	public void tick() 
-	{
-		super.tick();
-		
-		if(this.getOwner() != null)
-		{
-    		this.hurtTime = this.getOwner().hurtTime;
-    		this.deathTime = this.getOwner().deathTime;
-			WormChain.tick(this, this.getOwner(), this.getSegmentDistance(), 0.35F);
-		}
-	}
-	
-	public float getSegmentDistance()
-	{
-		return 5.0F;
-	}
-    
-    @Override
-    public boolean isInvulnerableTo(DamageSource p_20122_)
-    {
-    	return super.isInvulnerableTo(p_20122_) || p_20122_ == DamageSource.IN_WALL || p_20122_.isFall();
-    }
 }

@@ -221,15 +221,15 @@ public class Boid
 		{
 			if(loc.x <  this.minX() || this.maxX() < loc.x)
 			{
-				 return false;
+				return false;
 			}
 			if(loc.y <  this.minY() || this.maxY() < loc.y)
 			{
-				 return false;
+				return false;
 			}
 			if(loc.z <  this.minZ() || this.maxZ() < loc.z)
 			{
-				 return false;
+				return false;
 			}
 			return true;
 		}

@@ -49,6 +49,7 @@ public class EntityChainTrapMaw extends Entity
 		}
 		else
 		{
+			this.chain.setOldPosAndRot();
 			if(this.getChainPos() != Vec3.ZERO)
 			{
 				this.chain.setAnchorPos(this.getChainPos());

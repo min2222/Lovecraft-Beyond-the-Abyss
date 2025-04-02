@@ -1,6 +1,9 @@
 package com.min01.beyondtheabyss.world.chunk;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import com.min01.beyondtheabyss.misc.BTATags;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -9,7 +12,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -22,12 +24,11 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.synth.NormalNoise.NoiseParameters;
-import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 
 public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
 {
-    private final SimplexNoise erosionNoise;
-    
+	public final AtomicReference<ChunkPos> chunkPos = new AtomicReference<>();
+	
 	public static final Codec<DeepAbyssChunkGenerator> CODEC = RecordCodecBuilder.create((p_224323_) ->
 	{
 		return commonCodec(p_224323_).and(p_224323_.group(RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter((p_188716_) ->
@@ -50,19 +51,18 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
 		{
 			return fluidStatus;
 		};
-        this.erosionNoise = new SimplexNoise(RandomSource.create());
 	}
     
 	@Override
 	public void buildSurface(WorldGenRegion region, StructureManager structureManager, RandomState random, ChunkAccess chunkAccess) 
 	{
 	    super.buildSurface(region, structureManager, random, chunkAccess);
-        this.makeDeathValley(chunkAccess);
-        this.makeSpireHollow(chunkAccess);
+	    this.makeDeathValley(chunkAccess);
+	    this.makeSpireHollowPlain(chunkAccess);
     }
     
     //ChatGPT ahh;
-    private void makeDeathValley(ChunkAccess chunk) 
+    public void makeDeathValley(ChunkAccess chunk) 
     {
         ChunkPos chunkPos = chunk.getPos();
         
@@ -83,11 +83,11 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
                 
                 double distance = Math.sqrt(worldX * worldX + worldZ * worldZ);
                 double canyonRadius = 150;
-                double erosion = this.erosionNoise.getValue(worldX * 0.01, worldZ * 0.01) * 150;
+                double erosion = BTAUtil.SIMPLEX_NOISE.getValue(worldX * 0.01, worldZ * 0.01) * 150;
                 double heightVariation = Math.sin(distance / canyonRadius * Math.PI);
                 double baseHeight = minHeight + erosion;
 
-                double plainsNoise = this.erosionNoise.getValue(worldX * 0.005, worldZ * 0.005) * 5; 
+                double plainsNoise = BTAUtil.SIMPLEX_NOISE.getValue(worldX * 0.005, worldZ * 0.005) * 5; 
                 minHeight += plainsNoise;
 
                 int modifiedHeight = (int) Math.round(baseHeight + heightVariation);
@@ -108,7 +108,7 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
         }
     }
     
-    private void makeSpireHollow(ChunkAccess chunk) 
+    public void makeSpireHollowPlain(ChunkAccess chunk) 
     {
         ChunkPos chunkPos = chunk.getPos();
         
@@ -126,13 +126,12 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
                 int minHeight = baseMinHeight;
 
                 int currentHeight = chunk.getHeight(Types.OCEAN_FLOOR, worldX, worldZ);
-                double baseHeight = minHeight;
-
-                double plainsNoise = this.erosionNoise.getValue(worldX * 0.005, worldZ * 0.005) * 5; 
+                
+                double plainsNoise = BTAUtil.SIMPLEX_NOISE.getValue(worldX * 0.005, worldZ * 0.005) * 5; 
                 minHeight += plainsNoise;
 
-                int modifiedHeight = (int) Math.round(baseHeight);
-                modifiedHeight = Math.min(maxHeight, Math.max(minHeight, modifiedHeight));
+                int modifiedHeight = (int) Math.round(minHeight);
+                modifiedHeight = Math.min(maxHeight, Math.max(baseMinHeight, modifiedHeight));
 
                 if(currentHeight > modifiedHeight) 
                 {
