@@ -3,25 +3,24 @@ package com.min01.beyondtheabyss.event;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.world.BTAWorlds;
-import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
@@ -29,7 +28,6 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
-import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -73,24 +71,6 @@ public class ClientEventHandlerForge
     	}
     }
     
-	//FIXME
-    //@SubscribeEvent
-    public static void onRenderPlayer(RenderPlayerEvent event)
-    {
-    	Player player = event.getEntity();
-    	float partialTick = event.getPartialTick();
-    	if(player.getVehicle() != null && player.getVehicle() instanceof EntitySubmarine submarine)
-    	{
-    		PoseStack poseStack = event.getPoseStack();
-    		float f = Mth.rotLerp(partialTick, submarine.yBodyRotO, submarine.yBodyRot);
-    		float f1 = Mth.rotLerp(partialTick, submarine.yHeadRotO, submarine.yHeadRot);
-    		float f2 = f1 - f;
-            float f6 = Mth.lerp(partialTick, submarine.xRotO, submarine.getXRot());
-            poseStack.mulPose(Axis.YP.rotationDegrees(f2));
-            poseStack.mulPose(Axis.XP.rotationDegrees(f6));
-    	}
-    }
-    
     @SubscribeEvent
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
     {
@@ -130,6 +110,16 @@ public class ClientEventHandlerForge
 	}
 	
     @SubscribeEvent
+    public static void onRenderLivingPost(RenderLivingEvent.Post<LivingEntity, HierarchicalModel<LivingEntity>> event) 
+    {
+    	if(event.getEntity() instanceof IMultipart partBuilder)
+    	{
+    		EntityPartBuilder<?> builder = partBuilder.getPartBuilder();
+    		builder.clientTick(event.getRenderer().getModel(), event.getPartialTick());
+    	}
+    }
+	
+    @SubscribeEvent
     public static void onClientTick(ClientTickEvent event) 
     {
         ClientLevel level = BTAClientUtil.MC.level;
@@ -149,18 +139,6 @@ public class ClientEventHandlerForge
             		BTAClientUtil.MC.gameRenderer.shutdownEffect();
             	}
         	}
-        }
-    }
-    
-    @SubscribeEvent
-    public static void onLevelLoad(LevelEvent.Load event) 
-    {
-        if(event.getLevel() instanceof ClientLevel level)
-        {
-            if(level.dimension() == BTAWorlds.DEEP_ABYSS)
-            {
-            	level.effects = new DeepAbyssDimensionSpecialEffects();
-            }
         }
     }
 }

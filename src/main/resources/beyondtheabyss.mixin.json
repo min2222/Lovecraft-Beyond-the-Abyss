@@ -5,8 +5,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"MixinEntity",
-		"MixinSwimNodeEvaluator",
-		"multipart.MixinShapes"
+		"MixinSwimNodeEvaluator"
 	],
 	"client": [
 		"MixinLevelRenderer",

@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.GloomfishAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -57,6 +58,7 @@ public class ModelGloomfish extends HierarchicalModel<EntityGloomfish>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("gloomfish"), netHeadYaw, headPitch);
+		this.animateWalk(GloomfishAnimation.GLOOMFISH_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 	}
 	
 	@Override

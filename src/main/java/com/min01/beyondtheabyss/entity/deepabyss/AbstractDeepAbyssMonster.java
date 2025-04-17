@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
 import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.BTASwimmingGoal;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -15,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
@@ -37,14 +37,17 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster implem
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(4, new BTASwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED))
-        {
-        	@Override
-        	public boolean canUse() 
-        	{
-        		return super.canUse() && AbstractDeepAbyssMonster.this.isSwimable();
-        	}
-        });
+    	if(this.isSwimable())
+     	{
+             this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 40)
+             {
+             	@Override
+             	public boolean canUse() 
+             	{
+             		return super.canUse() && AbstractDeepAbyssMonster.this.canSwim();
+             	}
+             });
+     	}
     }
 	
 	@Override

@@ -3,15 +3,11 @@ package com.min01.beyondtheabyss.util;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.renderer.IModel;
-import com.min01.beyondtheabyss.misc.WormChain.Worm;
+import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
@@ -21,51 +17,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
-	
-	public static void renderWormSegment(PoseStack stack, MultiBufferSource source, int packedLight, ModelPart part, LivingEntity entity, Worm worm, float partialTicks, ResourceLocation texture)
-	{
-		stack.pushPose();
-		Vec3 pos = worm.position().subtract(entity.position());
-		Vec2 rot = worm.getRot(partialTicks);
-		stack.scale(-1.0F, -1.0F, 1.0F);
-		stack.translate(-pos.x, -pos.y, pos.z);
-		animateHead(part, rot.y + 180.0F, rot.x);
-		part.render(stack, source.getBuffer(RenderType.entityCutoutNoCull(texture)), packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.popPose();
-	}
-	
-	public static Vector3f posVec(float x, float y, float z) 
-	{
-		return new Vector3f((float)(x / 180 * Math.PI), (float)(-y / 180 * Math.PI), (float)(z / 180 * Math.PI));
-	}
-	
-	public static Vector3f degreeVec(double x, double y, double z) 
-	{
-		return new Vector3f((float)(x / 180 * Math.PI), (float)(y / 180 * Math.PI), (float)(z / 180 * Math.PI));
-	}
-	
-	public static float getElapsedSeconds(boolean looping, float lengthInSeconds, long time) 
-	{
-		float f = (float) time / 1000.0F;
-		return looping ? f % lengthInSeconds : f;
-	}
 	
     public static void renderFlatQuad(PoseStack stack, VertexConsumer consumer, float size, int packedLightIn) 
     {
@@ -157,54 +116,11 @@ public class BTAClientUtil
 		{
 			return (HierarchicalModel<T>) livingRenderer.getModel();
 		}
-		else if(renderer instanceof IModel model)
+		if(renderer instanceof SubmarineRenderer submarine)
 		{
-			return model.getModel(entity);
+ 			return (HierarchicalModel<T>) submarine.model;
 		}
 		return null;
-	}
-	
-	public static void setupRotations(AbstractBTAMonster p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) 
-	{
-		if(p_115317_.isFullyFrozen())
-		{
-			p_115320_ += (float)(Math.cos((double)p_115317_.tickCount * 3.25D) * Math.PI * (double)0.4F);
-		}
-
-		if(!p_115317_.hasPose(Pose.SLEEPING)) 
-		{
-			p_115318_.mulPose(Axis.YP.rotationDegrees(180.0F - p_115320_));
-		}
-
-		if(p_115317_.deathTime > 0)
-		{
-			float f = ((float)p_115317_.deathTime + p_115321_ - 1.0F) / 20.0F * 1.6F;
-			f = Mth.sqrt(f);
-			if(f > 1.0F) 
-			{
-				f = 1.0F;
-			}
-
-			p_115318_.mulPose(Axis.ZP.rotationDegrees(f * 90.0F));
-		} 
-		else if(p_115317_.isAutoSpinAttack()) 
-		{
-			p_115318_.mulPose(Axis.XP.rotationDegrees(-90.0F - p_115317_.getXRot()));
-			p_115318_.mulPose(Axis.YP.rotationDegrees(((float)p_115317_.tickCount + p_115321_) * -75.0F));
-		} 
-		else if(p_115317_.hasPose(Pose.SLEEPING))
-		{
-			Direction direction = p_115317_.getBedOrientation();
-			float f1 = direction != null ? p_115317_.partBuilder.sleepDirectionToRotation(direction) : p_115320_;
-			p_115318_.mulPose(Axis.YP.rotationDegrees(f1));
-			p_115318_.mulPose(Axis.ZP.rotationDegrees(90.0F));
-			p_115318_.mulPose(Axis.YP.rotationDegrees(270.0F));
-		}
-		else if(LivingEntityRenderer.isEntityUpsideDown(p_115317_)) 
-		{
-			p_115318_.translate(0.0D, (double)(p_115317_.getBbHeight() + 0.1F), 0.0D);
-			p_115318_.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		}
 	}
 	
 	//https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/animate/client/util/ModelPartUtils.java#L57
@@ -250,18 +166,6 @@ public class BTAClientUtil
         vector4f.mul(matrix4f);
         return new Vec3(vector4f.x(), vector4f.y(), vector4f.z());
     }
-	
-	public static void animateWhen(AnimationState state, boolean flag, int tick) 
-	{
-		if(flag) 
-		{
-			state.startIfStopped(tick);
-		}
-		else
-		{
-			state.stop();
-        }
-	}
 	
 	public static void animateHead(ModelPart head, float netHeadYaw, float headPitch)
 	{

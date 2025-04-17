@@ -23,13 +23,13 @@ public class Boid
 		this.velocity = new Vec3(Math.random(), Math.random(), Math.random());
 	}
 
-	public void update(Collection<Boid> boids, Collection<Boid.Obstacle> obstacles, boolean avoidance, boolean alignment, boolean cohesion, float flockRadius, float maxVelocity) 
+	public void update(boolean isWater, Collection<Boid> boids, Collection<Boid.Obstacle> obstacles, boolean avoidance, boolean alignment, boolean cohesion, float flockRadius, float maxVelocity) 
 	{
 		Collection<Boid> flock = this.getInRange(boids, this.position, flockRadius);
 		
 		Vec3 acceleration = Vec3.ZERO;
 		
-		acceleration = acceleration.add(this.stayInBounds());
+		acceleration = acceleration.add(this.stayInBounds(isWater));
 
 		if(avoidance)
 		{
@@ -66,7 +66,7 @@ public class Boid
 		this.position = this.position.add(this.velocity);
 	}
 
-	private Vec3 stayInBounds() 
+	private Vec3 stayInBounds(boolean isWater) 
 	{
 		Vec3 acceleration = Vec3.ZERO;
 		double magnitude = 0.025;
@@ -78,13 +78,13 @@ public class Boid
 	    {
 	        acceleration = new Vec3(-magnitude, acceleration.y, acceleration.z);
 	    }
-	    if(this.position.y < this.bounds.minY())
+	    if(this.position.y < this.bounds.minY() && isWater)
 	    {
 	        acceleration = new Vec3(acceleration.x, magnitude, acceleration.z);
 	    }
-	    if(this.position.y > this.bounds.maxY())
+	    if(this.position.y > this.bounds.maxY() || !isWater)
 	    {
-	        acceleration = new Vec3(acceleration.x, -magnitude, acceleration.z);
+	        acceleration = new Vec3(acceleration.x, !isWater ? -0.5 : -magnitude, acceleration.z);
 	    }
 	    if(this.position.z < this.bounds.minZ()) 
 	    {
@@ -221,15 +221,15 @@ public class Boid
 		{
 			if(loc.x <  this.minX() || this.maxX() < loc.x)
 			{
-				 return false;
+				return false;
 			}
 			if(loc.y <  this.minY() || this.maxY() < loc.y)
 			{
-				 return false;
+				return false;
 			}
 			if(loc.z <  this.minZ() || this.maxZ() < loc.z)
 			{
-				 return false;
+				return false;
 			}
 			return true;
 		}

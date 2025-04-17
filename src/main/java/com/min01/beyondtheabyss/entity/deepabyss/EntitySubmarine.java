@@ -7,8 +7,6 @@ import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
@@ -19,6 +17,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -34,6 +33,9 @@ import net.minecraftforge.fluids.FluidType;
 public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray
 {
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
+	
+	public final AnimationState openHatchAnimationState = new AnimationState();
+	public final AnimationState closeHatchAnimationState = new AnimationState();
 	
     public float brightness;	
     public float brightnessOld;
@@ -63,9 +65,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 		if(this.getFirstPassenger() != null && this.getFirstPassenger() instanceof Player player)
 		{
 			Vec3 travelVector = new Vec3(player.xxa, player.yya, player.zza);
-	        if(player.zza != 0 || player.xxa != 0)
-	        {
-	        }
 	        super.travel(travelVector);
 		}
 		else
@@ -93,7 +92,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	}
 	
 	@Override
-	public void positionRider(Entity p_20312_, MoveFunction fuction) 
+	public void positionRider(Entity p_20312_, MoveFunction function) 
 	{
 		if(this.posArray[0] != null)
 		{
@@ -186,8 +185,8 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity p_20123_) 
     {
-    	Vec3 dismountPos = BTAUtil.getLookPos(this.getXRot(), this.getYRot(), 0, 0);
-    	return this.position().add(0, dismountPos.y + 1.8F, 0);
+    	Vec3 dismountPos = BTAUtil.getLookPos(this.getRotationVector(), p_20123_.position(), 0.0F, 1.8F, 1.5F);
+    	return dismountPos;
     }
     
     @Override
@@ -214,6 +213,12 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	public boolean canBeCollidedWith()
 	{
 		return true;
+	}
+	
+	@Override
+	public List<String> getCollidePart()
+	{
+		return List.of("bottom", "r_wall", "l_wall", "back", "hatch", "top", "front");
 	}
 
 	@Override
@@ -246,8 +251,26 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
         String part = BTAUtil.getMultiPart(this.getBounds(), player);
         if(part != null)
         {
-			player.startRiding(this);
-	    	BTANetwork.sendToAll(new UpdateVehiclePacket(player, this));
+        	if(part.equals("controller") && this.getFirstPassenger() == null)
+        	{
+    			player.startRiding(this);
+        	}
+        	//TODO proper animation tick so only close/open when animation is finished;
+        	if(part.equals("hatch") || part.equals("valve"))
+        	{
+    			if(!this.hatchOpened() && !this.openHatchAnimationState.isStarted())
+    			{
+        			this.closeHatchAnimationState.stop();
+        			this.openHatchAnimationState.start(this.tickCount);
+        			this.setHatchOpened(true);
+    			}
+        		else if(this.openHatchAnimationState.isStarted())
+        		{
+    				this.openHatchAnimationState.stop();
+    				this.closeHatchAnimationState.start(this.tickCount);
+        			this.setHatchOpened(false);
+        		}
+        	}
 			return InteractionResult.SUCCESS;
         }
 		return super.interact(player, hand);

@@ -9,55 +9,61 @@
 				{
 					"biome": "beyondtheabyss:death_valley",
 					"parameters": {
-						"temperature": [
+						"weirdness": [
 							-1,
-							-0.45
-						],
-						"humidity": [
-							-1,
-							-0.35
+							1
 						],
 						"continentalness": [
-							0.03,
-							1
+							-1.05,
+							-0.455
 						],
 						"erosion": [
 							-1,
-							-0.375
+							1
 						],
-						"weirdness": [
-							-0.05,
-							0.05
+						"temperature": [
+							-0.15,
+							0.2
 						],
-						"depth": 1.0,
-						"offset": 0.0
+						"humidity": [
+							-1,
+							1
+						],
+						"depth": [
+							0,
+							0
+						],
+						"offset": 0
 					}
 				},
 				{
 					"biome": "beyondtheabyss:spire_hollow",
 					"parameters": {
-						"temperature": [
+						"weirdness": [
 							-1,
-							-0.35
-						],
-						"humidity": [
-							-1,
-							-0.25
+							1
 						],
 						"continentalness": [
-							0.02,
-							1
+							-0.455,
+							-0.19
 						],
 						"erosion": [
 							-1,
-							-0.575
+							1
 						],
-						"weirdness": [
-							-0.03,
-							0.03
+						"temperature": [
+							-0.15,
+							0.2
 						],
-						"depth": 1.0,
-						"offset": 0.0
+						"humidity": [
+							-1,
+							1
+						],
+						"depth": [
+							0,
+							0
+						],
+						"offset": 0
 					}
 				}
 			]

@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 //https://github.com/txnimc/SodiumDynamicLights/blob/main/src/main/java/toni/sodiumdynamiclights/DynamicLightSource.java
 public interface IDynamicLight 
@@ -44,7 +46,9 @@ public interface IDynamicLight
 
 	boolean shouldUpdateDynamicLight();
 
+ 	@OnlyIn(Dist.CLIENT)
 	boolean updateDynamicLight(@NotNull LevelRenderer renderer);
 
+ 	@OnlyIn(Dist.CLIENT)
 	void scheduleTrackedChunksRebuild(@NotNull LevelRenderer renderer);
 }

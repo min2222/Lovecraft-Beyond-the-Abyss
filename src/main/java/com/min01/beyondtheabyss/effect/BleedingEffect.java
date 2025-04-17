@@ -13,6 +13,6 @@ public class BleedingEffect extends BasicBTAEffect
 	@Override
 	public void applyEffectTick(LivingEntity p_19467_, int p_19468_) 
 	{
-		//TODO
+		
 	}
 }

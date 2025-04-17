@@ -32,27 +32,46 @@
 		"water_creature": [
 			{
 				"type": "beyondtheabyss:gnasher",
-				"weight": 1,
+				"weight": 10,
 				"minCount": 1,
 				"maxCount": 2
 			},
 			{
 				"type": "beyondtheabyss:siamserpent_head",
-				"weight": 1,
+				"weight": 10,
 				"minCount": 1,
 				"maxCount": 1
 			},
 			{
 				"type": "beyondtheabyss:fallen_diver",
-				"weight": 1,
+				"weight": 10,
 				"minCount": 2,
 				"maxCount": 3
+			},
+			{
+				"type": "beyondtheabyss:spine_worm",
+				"weight": 10,
+				"minCount": 1,
+				"maxCount": 1
+			},
+			{
+				"type": "beyondtheabyss:gloomfish",
+				"weight": 10,
+				"minCount": 1,
+				"maxCount": 2
+			},
+			{
+				"type": "beyondtheabyss:corpse_angler",
+				"weight": 10,
+				"minCount": 1,
+				"maxCount": 1
 			}
 		]
 	},
 	"spawn_costs": {
 	},
 	"carvers": {
+		"air": "beyondtheabyss:death_valley"
 	},
 	"features": [
 		[

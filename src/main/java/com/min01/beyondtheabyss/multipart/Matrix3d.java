@@ -2,7 +2,8 @@ package com.min01.beyondtheabyss.multipart;
 
 import net.minecraft.world.phys.Vec3;
 
-public final class Matrix3d {
+public class Matrix3d 
+{
     public static final Matrix3d IDENTITY = new Matrix3d(QuaternionD.IDENTITY);
     public static final Vec3[] IDENTITY_BASIS = IDENTITY.getBasis();
     public final double m00;
@@ -15,7 +16,8 @@ public final class Matrix3d {
     public final double m21;
     public final double m22;
 
-    public Matrix3d(final double m00, final double m01, final double m02, final double m10, final double m11, final double m12, final double m20, final double m21, final double m22) {
+    public Matrix3d(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) 
+    {
         this.m00 = m00;
         this.m01 = m01;
         this.m02 = m02;
@@ -27,79 +29,88 @@ public final class Matrix3d {
         this.m22 = m22;
     }
 
-    public Matrix3d(final QuaternionD quaternion) {
-        final double x = quaternion.getX();
-        final double y = quaternion.getY();
-        final double z = quaternion.getZ();
-        final double w = quaternion.getW();
-        final double x2 = 2.0F * x * x;
-        final double y2 = 2.0F * y * y;
-        final double z2 = 2.0F * z * z;
-        m00 = 1.0F - y2 - z2;
-        m11 = 1.0F - z2 - x2;
-        m22 = 1.0F - x2 - y2;
-        final double xy = x * y;
-        final double yz = y * z;
-        final double zx = z * x;
-        final double xw = x * w;
-        final double yw = y * w;
-        final double zw = z * w;
-        m10 = 2.0F * (xy + zw);
-        m01 = 2.0F * (xy - zw);
-        m20 = 2.0F * (zx - yw);
-        m02 = 2.0F * (zx + yw);
-        m21 = 2.0F * (yz + xw);
-        m12 = 2.0F * (yz - xw);
+    public Matrix3d(QuaternionD quaternion)
+    {
+        double x = quaternion.getX();
+        double y = quaternion.getY();
+        double z = quaternion.getZ();
+        double w = quaternion.getW();
+        double x2 = 2.0F * x * x;
+        double y2 = 2.0F * y * y;
+        double z2 = 2.0F * z * z;
+        this.m00 = 1.0F - y2 - z2;
+        this.m11 = 1.0F - z2 - x2;
+        this.m22 = 1.0F - x2 - y2;
+        double xy = x * y;
+        double yz = y * z;
+        double zx = z * x;
+        double xw = x * w;
+        double yw = y * w;
+        double zw = z * w;
+        this.m10 = 2.0F * (xy + zw);
+        this.m01 = 2.0F * (xy - zw);
+        this.m20 = 2.0F * (zx - yw);
+        this.m02 = 2.0F * (zx + yw);
+        this.m21 = 2.0F * (yz + xw);
+        this.m12 = 2.0F * (yz - xw);
     }
 
-    public Matrix3d multiply(final Matrix3d other) {
-        final double a00 = m00 * other.m00 + m01 * other.m10 + m02 * other.m20;
-        final double a01 = m00 * other.m01 + m01 * other.m11 + m02 * other.m21;
-        final double a02 = m00 * other.m02 + m01 * other.m12 + m02 * other.m22;
-        final double a10 = m10 * other.m00 + m11 * other.m10 + m12 * other.m20;
-        final double a11 = m10 * other.m01 + m11 * other.m11 + m12 * other.m21;
-        final double a12 = m10 * other.m02 + m11 * other.m12 + m12 * other.m22;
-        final double a20 = m20 * other.m00 + m21 * other.m10 + m22 * other.m20;
-        final double a21 = m20 * other.m01 + m21 * other.m11 + m22 * other.m21;
-        final double a22 = m20 * other.m02 + m21 * other.m12 + m22 * other.m22;
+    public Matrix3d multiply(Matrix3d other)
+    {
+        double a00 = this.m00 * other.m00 + this.m01 * other.m10 + this.m02 * other.m20;
+        double a01 = this.m00 * other.m01 + this.m01 * other.m11 + this.m02 * other.m21;
+        double a02 = this.m00 * other.m02 + this.m01 * other.m12 + this.m02 * other.m22;
+        double a10 = this.m10 * other.m00 + this.m11 * other.m10 + this.m12 * other.m20;
+        double a11 = this.m10 * other.m01 + this.m11 * other.m11 + this.m12 * other.m21;
+        double a12 = this.m10 * other.m02 + this.m11 * other.m12 + this.m12 * other.m22;
+        double a20 = this.m20 * other.m00 + this.m21 * other.m10 + this.m22 * other.m20;
+        double a21 = this.m20 * other.m01 + this.m21 * other.m11 + this.m22 * other.m21;
+        double a22 = this.m20 * other.m02 + this.m21 * other.m12 + this.m22 * other.m22;
         return new Matrix3d(a00, a01, a02, a10, a11, a12, a20, a21, a22);
     }
 
-    public Matrix3d invert() {
-        final double m00 = this.m00;
-        final double m01 = m10;
-        final double m02 = m20;
-        final double m10 = this.m01;
-        final double m11 = this.m11;
-        final double m12 = m21;
-        final double m20 = this.m02;
-        final double m21 = this.m12;
-        final double m22 = this.m22;
+    public Matrix3d invert() 
+    {
+        double m00 = this.m00;
+        double m01 = this.m10;
+        double m02 = this.m20;
+        double m10 = this.m01;
+        double m11 = this.m11;
+        double m12 = this.m21;
+        double m20 = this.m02;
+        double m21 = this.m12;
+        double m22 = this.m22;
         return new Matrix3d(m00, m01, m02, m10, m11, m12, m20, m21, m22);
     }
 
-    public Vec3[] getBasis() {
-        return new Vec3[]{new Vec3(m00, m10, m20), new Vec3(m01, m11, m21), new Vec3(m02, m12, m22)};
+    public Vec3[] getBasis()
+    {
+        return new Vec3[]{new Vec3(this.m00, this.m10, this.m20), new Vec3(this.m01, this.m11, this.m21), new Vec3(this.m02, this.m12, this.m22)};
     }
 
-    public Vec3 transform(final Vec3 v) {
-        return new Vec3(m00 * v.x + m01 * v.y + m02 * v.z, m10 * v.x + m11 * v.y + m12 * v.z, m20 * v.x + m21 * v.y + m22 * v.z);
+    public Vec3 transform(Vec3 v) 
+    {
+        return new Vec3(this.m00 * v.x + this.m01 * v.y + this.m02 * v.z, this.m10 * v.x + this.m11 * v.y + this.m12 * v.z, this.m20 * v.x + this.m21 * v.y + this.m22 * v.z);
     }
 
-    public Vec3 transform(final double x, final double y, final double z) {
-        return new Vec3(m00 * x + m01 * y + m02 * z, m10 * x + m11 * y + m12 * z, m20 * x + m21 * y + m22 * z);
+    public Vec3 transform(double x, double y, double z) 
+    {
+        return new Vec3(this.m00 * x + this.m01 * y + this.m02 * z, this.m10 * x + this.m11 * y + this.m12 * z, this.m20 * x + this.m21 * y + this.m22 * z);
     }
 
-    public double transformX(final double x, final double y, final double z) {
-        return m00 * x + m01 * y + m02 * z;
+    public double transformX(double x, double y, double z) 
+    {
+        return this.m00 * x + this.m01 * y + this.m02 * z;
     }
 
-    public double transformY(final double x, final double y, final double z) {
-        return m10 * x + m11 * y + m12 * z;
+    public double transformY(double x, double y, double z)
+    {
+        return this.m10 * x + this.m11 * y + this.m12 * z;
     }
 
-    public double transformZ(final double x, final double y, final double z) {
-        return m20 * x + m21 * y + m22 * z;
+    public double transformZ(double x, double y, double z)
+    {
+        return this.m20 * x + this.m21 * y + this.m22 * z;
     }
 }
 

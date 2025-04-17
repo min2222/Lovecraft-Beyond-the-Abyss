@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 
 import org.joml.Quaternionf;
 
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdatePartPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.math.Axis;
 
@@ -25,8 +27,9 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-//TODO server compatibility;
 public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 {
 	public static final String ROOT = "root";
@@ -38,7 +41,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
 	public final Map<String, Part> partMap = new HashMap<>();
-	public boolean rebuild;
 
 	public EntityPartBuilder(T entity)
 	{
@@ -48,9 +50,9 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	
 	public void tick(float partialTick)
 	{
-        double posX = Mth.lerp((double)partialTick, this.entity.xOld, this.entity.getX());
-        double posY = Mth.lerp((double)partialTick, this.entity.yOld, this.entity.getY());
-        double posZ = Mth.lerp((double)partialTick, this.entity.zOld, this.entity.getZ());
+        double posX = Mth.lerp(partialTick, this.entity.xOld, this.entity.getX());
+        double posY = Mth.lerp(partialTick, this.entity.yOld, this.entity.getY());
+        double posZ = Mth.lerp(partialTick, this.entity.zOld, this.entity.getZ());
 
         EntityPart root = this.hitbox.getPart(ROOT);
         
@@ -59,18 +61,18 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         root.setOffY(posY + renderOffset.y);
         root.setOffZ(posZ + renderOffset.z);
         
-		this.partTick(partialTick);
+		this.partTick();
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
         root.rotate(rotation);
 
         if(this.isInWater() && !this.entity.isInWater())
         {
-        	root.setPivotY(-0.5F);
+        	root.setPivotY(-this.getWaterOffset());
         }
 	}
 	
-	public void partTick(float partialTick)
+	public void partTick()
 	{
 		for(Part part : this.partMap.values())
 		{
@@ -85,6 +87,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	            pivot = offset;
 	            partPos = partPos.add(offset);
 	        }
+
 	        if(this.parts.containsKey(name)) 
 	        {
 	            String parent = this.parts.get(name);
@@ -96,6 +99,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	        
 	        if(entityPart == null)
 	        	return;
+
 	        entityPart.setX(partPos.x);
 	        entityPart.setY(partPos.y);
 	        entityPart.setZ(partPos.z);
@@ -106,8 +110,9 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
             entityPart.setRotation(new QuaternionD((double)rotation.x, (double)rotation.y, (double)rotation.z, (double)rotation.w));
 		}
 	}
-	
-	public void clientTick(HierarchicalModel<?> model)
+
+    @OnlyIn(Dist.CLIENT)
+	public void clientTick(HierarchicalModel<?> model, float partialTicks)
 	{
 		for(ModelPart part : model.root().getAllParts().toList())
 		{
@@ -116,10 +121,12 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 			if(p != null)
 			{
 				p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+				BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
 			}
 		}
 	}
 
+    @OnlyIn(Dist.CLIENT)
 	public EntityBounds buildHitBox()
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
@@ -127,11 +134,13 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         return this.addPart(builder, this.root(model), null).getFactory().create();
 	}
 
+    @OnlyIn(Dist.CLIENT)
     public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
     {
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         String name = this.getModelPartName(this.root(model), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
+        partInfo.setCollide(this.entity.getCollidePart().contains(name));
         if(parent != null) 
         {
             partInfo.setParent(parent);
@@ -150,7 +159,8 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
         return builder2;
     }
-	
+
+    @OnlyIn(Dist.CLIENT)
 	public ModelPart root(HierarchicalModel<T> model)
 	{
 		if(this.entity.useSubRoot())
@@ -160,6 +170,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 		return model.root();
 	}
 
+    @OnlyIn(Dist.CLIENT)
     public AABB getPartSize(ModelPart part, String name)
     {
     	VoxelShape shape = Shapes.empty();
@@ -213,9 +224,10 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public String getModelPartName(ModelPart root, ModelPart target) 
     {
-        return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
+    	return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
     }
 
     public Vec2 defaultHeadRotation(LivingEntity entity, float partialTick)
@@ -321,19 +333,19 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         {
         	rotation.mul(Axis.ZP.rotationDegrees(180.0F));
         }
-
+        
         if(this.isInWater() && !this.entity.isInWater())
         {
         	rotation.mul(Axis.ZP.rotationDegrees(90.0F));
         }
-
+    	
         if(entity instanceof IMultipart multipart && multipart.rotateHead())
         {
             Vec2 headRot = this.defaultHeadRotation(entity, partialTick);
         	rotation.mul(Axis.YP.rotationDegrees(headRot.y));
         	rotation.mul(Axis.XP.rotationDegrees(-headRot.x));
         }
-        
+
         return new QuaternionD((double)rotation.x, (double)rotation.y, (double)rotation.z, (double)rotation.w);
     }
     
@@ -364,16 +376,29 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         		return !(entity instanceof Player) || ((Player)entity).isModelPartShown(PlayerModelPart.CAPE);
         	}
         }
-
         return false;
     }
     
-    public void rebuildHitbox()
+    public void setupHitbox(Map<String, Vec3> partOffset, Map<String, String> parts, Map<String, Part> partMap, EntityBounds hitbox)
     {
 		this.partOffset.clear();
 		this.parts.clear();
 		this.partMap.clear();
-		this.hitbox = this.buildHitBox();
+		this.partOffset.putAll(partOffset);
+		this.parts.putAll(parts);
+		this.partMap.putAll(partMap);
+		this.hitbox = hitbox.copy();
+    }
+    
+    public void rebuildHitbox()
+    {
+    	if(this.entity.level.isClientSide)
+    	{
+    		this.partOffset.clear();
+    		this.parts.clear();
+    		this.partMap.clear();
+    		this.hitbox = this.buildHitBox();
+    	}
     }
 	
 	public float getRenderScale()
@@ -383,13 +408,18 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	
 	public Vec3 getOffset()
 	{
-        float waterOffset = this.isInWater() && !this.entity.isInWater() ? -0.5F : 0.0F;
+        float waterOffset = this.isInWater() && !this.entity.isInWater() ? -this.getWaterOffset() : 0.0F;
 		return new Vec3(0.0F, 1.5F + waterOffset, 0.0F);
 	}
 	
 	public boolean isInWater()
 	{
 		return false;
+	}
+	
+	public float getWaterOffset()
+	{
+		return 0.5F;
 	}
     
     public static class Part

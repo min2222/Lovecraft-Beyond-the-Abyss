@@ -11,7 +11,6 @@ import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -23,14 +22,10 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -48,7 +43,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<EntitySiamserpentBone>
+public class EntitySiamserpentHead extends AbstractSiamserpentPart
 {
 	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
@@ -162,31 +157,12 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	{
 		super.tick();
 		
-		this.resetFallDistance();
-		this.setCanLook(!this.isDormant() && !this.isDisabled());
-		this.setCanMove(!this.isDormant() && !this.isDisabled());
-		
 		if(this.tickCount == 2)
 		{
 			this.partBuilder.rebuildHitbox();
 		}
-
-		if(this.getOwner() == null)
-		{
-			if(this.isDormant() || this.isDisabled())
-			{
-				this.discard();
-			}
-		}
-		else
-		{
-    		this.setDormant(true);
-    		this.hurtTime = this.getOwner().hurtTime;
-    		this.deathTime = this.getOwner().deathTime;
-
-			WormChain.tick(this, this.getOwner(), 1.0F, 0.35F);
-		}
 		
+		//blaster laser
 		if(this.getAnimationTick() <= 0)
 		{
 			if(this.getAnimationState() == 3)
@@ -230,6 +206,12 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 		}
 	}
 	
+	@Override
+	public boolean isHead() 
+	{
+		return this.getOwner() == null;
+	}
+	
 	public boolean shouldInvertRotation()
 	{
 		return this.isDormant() || this.isDisabled();
@@ -252,29 +234,6 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	{
 		return BTASounds.SIAMSERPENT_DEATH.get();
 	}
-	
-	@Override
-	public boolean isAlliedTo(Entity p_20355_) 
-	{
-		return p_20355_ == this.getOwner() || this.segments.contains(p_20355_) || super.isAlliedTo(p_20355_);
-	}
-	
-	@Override
-	public boolean hurt(DamageSource p_21016_, float p_21017_) 
-	{
-		if(!this.isInvulnerableTo(p_21016_) && this.getOwner() != null)
-		{
-    		this.getOwner().hurt(p_21016_, p_21017_);
-			return false;
-		}
-		return super.hurt(p_21016_, p_21017_);
-	}
-	
-    @Override
-    public boolean isInvulnerableTo(DamageSource p_20122_)
-    {
-    	return super.isInvulnerableTo(p_20122_) || p_20122_.is(DamageTypes.IN_WALL) || p_20122_.is(DamageTypeTags.IS_FALL);
-    }
 	
 	@Override
 	public int getMaxSpawnClusterSize()
@@ -312,17 +271,9 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
+		//TODO spawn in only nearby of giant fossil structure;
 		//LocateCommand
-		return pPos.getY() >= 30 && pPos.getY() <= 80 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
-    }
-	
-    @Override
-    protected void doPush(Entity p_20971_) 
-    {
-    	if(!(p_20971_ instanceof EntitySiamserpentHead) && !(p_20971_ instanceof EntitySiamserpentBone))
-    	{
-        	super.doPush(p_20971_);
-    	}
+		return pPos.getY() >= 10 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
 	@Override
@@ -429,7 +380,10 @@ public class EntitySiamserpentHead extends AbstractOwnableDeepAbyssMonster<Entit
 					EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
 					head.setOwner(this.segments.get(i));
 					head.setHeadType(type);
+					head.setIndex(i + 1);
 					head.setPos(this.position());
+					head.setDormant(true);
+					head.setHead(this);
 					this.setOtherHead(head);
 					this.level.addFreshEntity(head);
 				}

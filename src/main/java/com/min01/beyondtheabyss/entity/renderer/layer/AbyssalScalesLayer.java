@@ -27,14 +27,13 @@ public class AbyssalScalesLayer<T extends LivingEntity, M extends EntityModel<T>
     {
     	if(BTAUtil.hasAbility(entitylivingbaseIn, BTAAbilities.ABYSSAL_SCALES))
     	{
-            VertexConsumer VertexConsumer = bufferIn.getBuffer(RenderType.entityCutout(this.getTexture(entitylivingbaseIn)));
-            this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexConsumer = bufferIn.getBuffer(RenderType.entityTranslucent(this.getTexture(entitylivingbaseIn)));
+            this.getParentModel().renderToBuffer(matrixStackIn, vertexConsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
     	}
     }
     
 	public ResourceLocation getTexture(LivingEntity living)
 	{
-		ResourceLocation location = new ResourceLocation(String.format("%s:textures/entity/abyssal_scale%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickCount(BTAAbilities.ABYSSAL_SCALES, living)));
-		return location;
+ 		return new ResourceLocation(String.format("%s:textures/entity/abyssal_scale%d.png", BeyondtheAbyss.MODID, BTAUtil.getAbilityTickCount(BTAAbilities.ABYSSAL_SCALES, living)));
 	}
 }

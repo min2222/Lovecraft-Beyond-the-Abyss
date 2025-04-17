@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.SubmarineAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -94,16 +95,17 @@ public class ModelSubmarine extends HierarchicalModel<EntitySubmarine>
 		.texOffs(0, 48).addBox(-13.5F, -23.3636F, -8.8182F, 2.0F, 2.0F, 18.0F, new CubeDeformation(0.0F))
 		.texOffs(172, 0).addBox(-21.5F, -21.3636F, -8.8182F, 43.0F, 42.0F, 18.0F, new CubeDeformation(0.01F))
 		.texOffs(152, 80).addBox(-13.5F, -23.3636F, -10.8182F, 2.0F, 28.0F, 2.0F, new CubeDeformation(0.0F))
-		.texOffs(101, 178).addBox(-5.5F, -25.3636F, 58.1818F, 11.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(-13.5F, 6.6364F, -10.8182F, 2.0F, 14.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(232, 89).addBox(-23.5F, 4.6364F, -10.8182F, 47.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(8, 0).addBox(11.5F, 6.6364F, -10.8182F, 2.0F, 14.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 128).addBox(-23.5F, 4.6364F, -8.8182F, 2.0F, 2.0F, 18.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -2.6364F, -44.1818F));
 
-		submarine.addOrReplaceChild("hatch", CubeListBuilder.create().texOffs(34, 0).addBox(-5.5F, -6.875F, -5.5F, 11.0F, 0.0F, 11.0F, new CubeDeformation(0.0F))
-		.texOffs(13, 13).addBox(-1.5F, -6.875F, -1.5F, 3.0F, 4.0F, 3.0F, new CubeDeformation(0.0F))
-		.texOffs(80, 182).addBox(-10.5F, -3.875F, -10.5F, 21.0F, 8.0F, 21.0F, new CubeDeformation(0.0F))
-		.texOffs(80, 157).addBox(-4.5F, 4.125F, -1.0F, 9.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -30.125F, 3.5F));
+		PartDefinition hatch = submarine.addOrReplaceChild("hatch", CubeListBuilder.create().texOffs(13, 13).addBox(-1.5F, -10.875F, -12.375F, 3.0F, 4.0F, 3.0F, new CubeDeformation(0.0F))
+		.texOffs(80, 182).addBox(-10.5F, -7.875F, -21.375F, 21.0F, 8.0F, 21.0F, new CubeDeformation(0.0F))
+		.texOffs(80, 157).addBox(-4.5F, 0.125F, -11.875F, 9.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
+		.texOffs(101, 178).addBox(-5.5F, -1.875F, -0.375F, 11.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -26.125F, 14.375F));
+
+		hatch.addOrReplaceChild("valve", CubeListBuilder.create().texOffs(34, 0).addBox(-5.5F, 0.0F, -5.5F, 11.0F, 0.0F, 11.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.875F, -10.875F));
 
 		submarine.addOrReplaceChild("l_wall", CubeListBuilder.create().texOffs(0, 157).addBox(-2.55F, -22.95F, -34.95F, 5.0F, 46.0F, 70.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 80).addBox(-2.55F, -15.95F, -10.95F, 10.0F, 23.0F, 25.0F, new CubeDeformation(0.0F)), PartPose.offset(23.05F, -3.05F, -0.05F));
@@ -131,6 +133,9 @@ public class ModelSubmarine extends HierarchicalModel<EntitySubmarine>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("submarine"), netHeadYaw, headPitch);
+		this.animateWalk(SubmarineAnimation.SUBMARINE_TURBINE_SPIN, limbSwing, limbSwingAmount, 2.5F, 2.5F);
+		this.animate(entity.openHatchAnimationState, SubmarineAnimation.SUBMARINE_OPEN_HATCH, ageInTicks);
+		this.animate(entity.closeHatchAnimationState, SubmarineAnimation.SUBMARINE_CLOSE_HATCH, ageInTicks);
 	}
 
 	@Override

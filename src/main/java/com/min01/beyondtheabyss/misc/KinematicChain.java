@@ -14,6 +14,7 @@ public class KinematicChain
 	protected Vec3 anchorPos;
 	protected float distance;
 	protected ChainSegment[] segments;
+	protected Vec2 initialRot = Vec2.ZERO;
 	
 	public KinematicChain(Entity entity, int length, float distance) 
 	{
@@ -33,7 +34,7 @@ public class KinematicChain
 	{
 		for(int i = 0; i < this.segments.length; i++)
 		{
-			this.segments[i] = new ChainSegment();
+			this.segments[i] = new ChainSegment(this.initialRot);
 		}
 	}
 	
@@ -42,6 +43,75 @@ public class KinematicChain
 		for(ChainSegment segment : this.segments)
 		{
 			segment.setPos(this.entity.position());
+		}
+	}
+	
+	public void setOldPosAndRot()
+	{
+		for(ChainSegment segment : this.segments)
+		{
+			segment.setOldPos(segment.position);
+			segment.setOldRot(segment.rotation);
+		}
+	}
+	
+	public void tickBobbit()
+	{
+		if(this.target != null)
+		{
+			if(!this.target.equals(Vec3.ZERO))
+			{
+				ChainSegment tip = this.getTipSegment();
+				if(tip.getPos().distanceTo(this.target) > 0.5F)
+				{
+					tip.setRot(this.lookAt(tip.getPos(), this.target));
+					tip.setPos(this.getLookPos(tip.getRot(), tip.getPos(), 0.0F, 0.0F, this.distance));
+				}
+				
+				for(int i = 2; i < this.segments.length; i++)
+				{
+					int index = i - 1;
+					ChainSegment current = this.segments[this.segments.length - i];
+					ChainSegment next = this.segments[this.segments.length - index];
+					current.setRot(this.lookAt(current.getPos(), next.getPos()));
+					current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -this.distance));
+				}
+				
+				for(int i = 0; i < this.segments.length - 1; i++)
+				{
+					ChainSegment current = this.segments[i];
+					ChainSegment next = this.segments[i + 1];
+					current.setRot(this.lookAt(current.getPos(), next.getPos()));
+					next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, this.distance));
+				}
+			}
+			else if(this.anchorPos != null)
+			{
+				ChainSegment tip = this.getTipSegment();
+				if(tip.getPos().distanceTo(this.anchorPos) > 0.5F)
+				{
+					for(int i = 1; i < this.segments.length; i++)
+					{
+						ChainSegment current = this.segments[i];
+						ChainSegment next = this.segments[i - 1];
+						Vec2 rot = this.lookAt(current.getPos(), next.getPos());
+						current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, this.distance));
+					}
+				}
+				else
+				{
+					for(ChainSegment segment : this.segments)
+					{
+						segment.setRot(this.initialRot);
+						segment.setPos(this.anchorPos);
+					}
+				}
+			}
+		}
+		
+		if(this.anchorPos != null)
+		{
+			this.segments[0].setPos(this.anchorPos);
 		}
 	}
 	
@@ -127,6 +197,16 @@ public class KinematicChain
 		return new Vec3(vec3.x + d0, vec3.y + d1, vec3.z + d2);
 	}
 	
+	public void setInitialRot(Vec2 rot)
+	{
+		this.initialRot = rot;
+	}
+	
+	public Vec2 getInitialRot()
+	{
+		return this.initialRot;
+	}
+	
 	public ChainSegment[] getSegments()
 	{
 		return this.segments;
@@ -165,7 +245,26 @@ public class KinematicChain
 	public static class ChainSegment
 	{
 		protected Vec3 position = Vec3.ZERO;
+		protected Vec3 oldPosition = Vec3.ZERO;
 		protected Vec2 rotation = Vec2.ZERO;
+		protected Vec2 oldRotation = Vec2.ZERO;
+		
+		public ChainSegment(Vec2 initialRot) 
+		{
+			this.rotation = initialRot;
+		}
+		
+    	public Vec3 position(float partialTicks)
+    	{
+    		return this.oldPosition.lerp(this.position, partialTicks);
+    	}
+    	
+    	public Vec2 getRot(float partialTick)
+    	{
+            float xRot = Mth.lerp(partialTick, this.oldRotation.x, this.rotation.x);
+            float yRot = Mth.rotLerp(partialTick, this.oldRotation.y, this.rotation.y);
+    		return new Vec2(xRot, yRot);
+    	}
 		
 		public void setRot(Vec2 rot)
 		{
@@ -177,6 +276,16 @@ public class KinematicChain
 			return this.rotation;
 		}
 		
+		public void setOldRot(Vec2 rot)
+		{
+			this.oldRotation = rot;
+		}
+		
+		public Vec2 getOldRot()
+		{
+			return this.oldRotation;
+		}
+		
 		public void setPos(Vec3 pos)
 		{
 			this.position = pos;
@@ -185,6 +294,16 @@ public class KinematicChain
 		public Vec3 getPos()
 		{
 			return this.position;
+		}
+		
+		public void setOldPos(Vec3 pos)
+		{
+			this.oldPosition = pos;
+		}
+		
+		public Vec3 getOldPos()
+		{
+			return this.oldPosition;
 		}
 	}
 }

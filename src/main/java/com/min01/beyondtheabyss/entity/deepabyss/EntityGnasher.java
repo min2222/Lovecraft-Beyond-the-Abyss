@@ -1,16 +1,21 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.IBoid;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.Boid;
+import com.min01.beyondtheabyss.misc.Boid.Bounds;
+import com.min01.beyondtheabyss.misc.Boid.Obstacle;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -20,7 +25,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -33,23 +37,23 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGnasher extends AbstractDeepAbyssMonster
+public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<EntityGnasher>
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DISPERSE = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Optional<UUID>> LEADER_UUID = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.OPTIONAL_UUID);
 	
-	public final AnimationState biteAnimationState = new AnimationState();
+	public Bounds bounds;
+	public final Collection<Boid.Obstacle> obstacles = new ArrayList<Boid.Obstacle>();
+	public final Map<EntityGnasher, Boid> boids = new HashMap<>();
 	
-	public final List<EntityGnasher> list = new ArrayList<>();
+	public final AnimationState biteAnimationState = new AnimationState();
 	
 	public EntityGnasher(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -145,38 +149,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 		{
 			this.setDisperse(false);
 		}
-
-		if(!this.isLeader())
-		{
-			EntityGnasher leader = this.getLeader();
-			if(leader != null)
-			{
-				if(!leader.list.contains(this))
-				{
-					leader.list.add(this);
-				}
-				if(!this.isDisperse())
-				{			
-					if(this.distanceTo(leader) > 2.5F)
-					{
-						this.getNavigation().moveTo(leader, 0.8F);
-					}
-					else
-					{
-						if(leader.getNavigation().getPath() != null)
-						{
-							BlockPos pos = leader.getNavigation().getPath().getTarget();
-							Path path = this.getNavigation().createPath(pos, 1);
-							this.getNavigation().moveTo(path, 0.8F);
-						}
-						if(leader.getTarget() != null)
-						{
-							this.setTarget(leader.getTarget());
-						}
-					}
-				}
-			}
-		}
     }
     
     @Override
@@ -184,7 +156,8 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
     {
     	if(this.isLeader() && !this.isDisperse() && p_21016_.getDirectEntity() != null)
     	{
-	        this.list.forEach(t -> 
+    		//TODO
+	        /*this.list.forEach(t -> 
 	        {
 	    		t.setDisperse(true);
 				t.setTarget(null);
@@ -200,71 +173,11 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	        if(vec3 != null)
 	        {
 	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
-	        }
+	        }*/
     	}
     	return super.hurt(p_21016_, p_21017_);
     }
     
-    @Override
-    public void addAdditionalSaveData(CompoundTag p_21484_)
-    {
-    	super.addAdditionalSaveData(p_21484_);
-    	p_21484_.putBoolean("isLeader", this.isLeader());
-    	p_21484_.putBoolean("isDisperse", this.isDisperse());
-    }
-    
-    @Override
-    public void readAdditionalSaveData(CompoundTag p_21450_)
-    {
-    	super.readAdditionalSaveData(p_21450_);
-    	if(p_21450_.contains("isLeader"))
-    	{
-    		this.setAsLeader(p_21450_.getBoolean("isLeader"));
-    	}
-    	if(p_21450_.contains("isDisperse"))
-    	{
-    		this.setDisperse(p_21450_.getBoolean("isDisperse"));
-    	}
-    }
-    
-	public void setLeader(EntityGnasher leader)
-	{
-		this.entityData.set(LEADER_UUID, Optional.of(leader.getUUID()));
-	}
-	
-	@Nullable
-	public EntityGnasher getLeader() 
-	{
-		if(this.entityData.get(LEADER_UUID).isPresent()) 
-		{
-			return (EntityGnasher) BTAUtil.getEntityByUUID(this.level, this.entityData.get(LEADER_UUID).get());
-		}
-		return null;
-	}
-    
-    public void setAsLeader(boolean value)
-    {
-		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
-		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
-		this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(15);
-    	this.entityData.set(IS_LEADER, value);
-    }
-    
-    public boolean isLeader()
-    {
-    	return this.entityData.get(IS_LEADER);
-    }
-    
-    public void setDisperse(boolean value)
-    {
-    	this.entityData.set(IS_DISPERSE, value);
-    }
-    
-    public boolean isDisperse()
-    {
-    	return this.entityData.get(IS_DISPERSE);
-    }
-
 	@Override
 	public BTAMobType getBTAMobType() 
 	{
@@ -294,20 +207,34 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public int getMaxSpawnClusterSize() 
-	{
-		return 1;
-	}
-	
-	@Override
 	public boolean canSwim() 
 	{
-		return super.canSwim() && !this.isDisperse() && this.getLeader() == null;
+		return false;
 	}
 	
-	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    @Override
+    public void addAdditionalSaveData(CompoundTag p_21484_)
     {
-		return pPos.getY() >= 30 && pPos.getY() <= 80 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+    	super.addAdditionalSaveData(p_21484_);
+    	p_21484_.putBoolean("isLeader", this.isLeader());
+		if(this.entityData.get(LEADER_UUID).isPresent())
+		{
+			p_21484_.putUUID("Leader", this.entityData.get(LEADER_UUID).get());
+		}
+    }
+    
+    @Override
+    public void readAdditionalSaveData(CompoundTag p_21450_) 
+    {
+    	super.readAdditionalSaveData(p_21450_);
+    	if(p_21450_.contains("isLeader"))
+    	{
+    		this.setLeader(p_21450_.getBoolean("isLeader"));
+    	}
+		if(p_21450_.hasUUID("Leader")) 
+		{
+			this.entityData.set(LEADER_UUID, Optional.of(p_21450_.getUUID("Leader")));
+		}
     }
 	
 	@SuppressWarnings("deprecation")
@@ -317,22 +244,93 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	{
 		if(p_21436_ == MobSpawnType.NATURAL)
 		{
-			this.spawnAsSwarm();
+	    	this.setHealth(30);
+			DeepAbyssUtil.spawnWithBoid(this, 5);
 		}
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 	
-	public void spawnAsSwarm()
+	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+		return pPos.getY() >= 10 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+    }
+	
+	@Override
+	public Vec3 getBoundSize()
 	{
-    	this.setHealth(30);
-		this.setAsLeader(true);
-		for(int i = 0; i < 5; i++) 
+		return new Vec3(8, 8, 8);
+	}
+	
+	@Override
+	public Map<EntityGnasher, Boid> getBoid() 
+	{
+		return this.boids;
+	}
+	
+	@Override
+	public Collection<Obstacle> getObstacle() 
+	{
+		return this.obstacles;
+	}
+	
+	@Override
+	public Bounds getBoidBounds() 
+	{
+		return this.bounds;
+	}
+    
+	@Override
+	public void setBound(Bounds bounds)
+	{
+		this.bounds = bounds;
+	}
+	
+	@Override
+    public void setLeader(boolean value)
+    {
+		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
+		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
+		this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(15);
+    	this.entityData.set(IS_LEADER, value);
+    }
+
+	@Override
+    public boolean isLeader()
+    {
+    	return this.entityData.get(IS_LEADER);
+    }
+	
+	@Override
+	public void setLeader(EntityGnasher leader)
+	{
+		if(leader == null) 
 		{
-			EntityGnasher entity = new EntityGnasher(BTAEntities.GNASHER.get(), this.level);
-			entity.setPos(this.position());
-			entity.setLeader(this);
-			this.list.add(entity);
-			this.level.addFreshEntity(entity);
+			this.entityData.set(LEADER_UUID, Optional.empty());
+		}
+		else
+		{
+			this.entityData.set(LEADER_UUID, Optional.of(leader.getUUID()));
 		}
 	}
+	
+	@Nullable
+	@Override
+	public EntityGnasher getLeader() 
+	{
+		if(this.entityData.get(LEADER_UUID).isPresent()) 
+		{
+			return (EntityGnasher) BTAUtil.getEntityByUUID(this.level, this.entityData.get(LEADER_UUID).get());
+		}
+		return null;
+	}
+    
+    public void setDisperse(boolean value)
+    {
+    	this.entityData.set(IS_DISPERSE, value);
+    }
+    
+    public boolean isDisperse()
+    {
+    	return this.entityData.get(IS_DISPERSE);
+    }
 }

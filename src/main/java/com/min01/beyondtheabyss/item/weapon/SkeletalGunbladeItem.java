@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,6 +35,8 @@ public class SkeletalGunbladeItem extends SwordItem
     public static final String GUNBLADE_SHOOT_LIGHT = "GunbladeShootLight";
     public static final String GUN_MODE = "GunMode";
     public static final String IS_SELECTED = "isSelected";
+    public int tickCount;
+    
 	public SkeletalGunbladeItem(Item.Properties properties) 
 	{
 		super(Tiers.DIAMOND, 0, 0.0F, properties);
@@ -48,14 +51,14 @@ public class SkeletalGunbladeItem extends SwordItem
 		{
 			if(isGunMode)
 			{
-	        	BTAUtil.startItemAnimation(stack, GUNBLADE_CLOSE, p_41433_.tickCount);
+	        	BTAUtil.startItemAnimation(stack, GUNBLADE_CLOSE, this.tickCount);
 				BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_CLOSE);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 			}
 			else
 			{
-	        	BTAUtil.startItemAnimation(stack, GUNBLADE_OPEN, p_41433_.tickCount);
+	        	BTAUtil.startItemAnimation(stack, GUNBLADE_OPEN, this.tickCount);
 				BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_OPEN);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
@@ -76,10 +79,16 @@ public class SkeletalGunbladeItem extends SwordItem
 	@Override
 	public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) 
 	{
+		this.tickCount++;
+ 		if(p_41406_ instanceof Player player)
+ 		{
+ 			BTAUtil.updateItemTick(player, p_41404_);
+ 		}
 		AnimationState bringOutState = BTAUtil.getPlayerAnimationState(p_41406_, GUNBLADE_BRING_OUT);
 		if(p_41408_ && !bringOutState.isStarted() && !isSelected(p_41404_))
 		{
-			BTAUtil.startPlayerAnimation(p_41406_, GUNBLADE_BRING_OUT);
+			//FIXME
+			//BTAUtil.startPlayerAnimation(p_41406_, GUNBLADE_BRING_OUT);
 		}
 		setSelected(p_41404_, p_41408_);
 		super.inventoryTick(p_41404_, p_41405_, p_41406_, p_41407_, p_41408_);
@@ -97,6 +106,18 @@ public class SkeletalGunbladeItem extends SwordItem
 		}
 		return true;
 	}
+	
+
+ 	@Override
+ 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) 
+ 	{
+ 		this.tickCount++;
+ 		if(entity.getOwner() instanceof LivingEntity living)
+ 		{
+ 			BTAUtil.updateItemTick(living, stack);
+ 		}
+ 		return super.onEntityItemUpdate(stack, entity);
+ 	}
 	
 	public static boolean isSelected(ItemStack stack) 
 	{

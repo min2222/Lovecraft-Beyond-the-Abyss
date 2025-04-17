@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
 import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.BTASwimmingGoal;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.level.Level;
@@ -37,14 +37,17 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature impl
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(4, new BTASwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED))
-        {
-        	@Override
-        	public boolean canUse() 
-        	{
-        		return super.canUse() && AbstractDeepAbyssCreature.this.isSwimable();
-        	}
-        });
+     	if(this.isSwimable())
+     	{
+             this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 40)
+             {
+             	@Override
+             	public boolean canUse() 
+             	{
+             		return super.canUse() && AbstractDeepAbyssCreature.this.canSwim();
+             	}
+             });
+     	}
     }
 	
 	@Override
@@ -141,7 +144,8 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature impl
 		double d2 = p_20034_.z - vec3.z;
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
 		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
-		this.setXRot(Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)))));
+		float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
+ 		this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.maxTurnX()));
 		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, (float)this.maxTurnY()));
 		this.setYHeadRot(this.getYRot());
 		this.xRotO = this.getXRot();

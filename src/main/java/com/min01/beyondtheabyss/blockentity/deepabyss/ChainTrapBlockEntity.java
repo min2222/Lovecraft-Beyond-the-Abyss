@@ -40,7 +40,7 @@ public class ChainTrapBlockEntity extends BlockEntity
 		boolean isOpened = state.getValue(ChainTrapBlock.OPENED);
 		if(isOpened)
 		{
-			List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, new AABB(-10, 0, -10, 10, 10, 10).move(trap.worldPosition));
+ 			List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, new AABB(-2.5F, 0, -2.5F, 2.5F, 2.5F, 2.5F).move(trap.worldPosition));
 			list.removeIf(t -> (t instanceof Player player && player.getAbilities().instabuild) || t.getType().is(Tags.EntityTypes.BOSSES) || t.getType().is(BTATags.BTAEntity.MINI_BOSS));
 			list.forEach(t -> 
 			{

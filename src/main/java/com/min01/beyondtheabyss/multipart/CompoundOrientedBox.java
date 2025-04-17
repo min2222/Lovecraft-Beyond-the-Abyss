@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.multipart;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -14,12 +13,10 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CompoundOrientedBox extends AABB implements Iterable<OrientedBox> 
 {
-    private final Collection<OrientedBox> boxes;
+    public final Collection<OrientedBox> boxes;
 
     public CompoundOrientedBox(AABB bounds, Collection<OrientedBox> boxes)
     {
@@ -30,38 +27,6 @@ public class CompoundOrientedBox extends AABB implements Iterable<OrientedBox>
     {
         super(minX, minY, minZ, maxX, maxY, maxZ);
         this.boxes = boxes;
-    }
-    
-    //ChatGPT ahh;
-    public VoxelShape convertToVoxelShape() 
-    {
-        VoxelShape voxelShape = Shapes.empty();
-        
-        for(OrientedBox box : this.boxes) 
-        {
-            AABB boundingBox = box.getExtents();
-            List<BlockPos> occupiedVoxels = new ArrayList<>();
-            
-            for(double x = boundingBox.minX; x <= boundingBox.maxX; x++) 
-            {
-                for(double y = boundingBox.minY; y <= boundingBox.maxY; y++)
-                {
-                    for(double z = boundingBox.minZ; z <= boundingBox.maxZ; z++)
-                    {
-                        if(box.contains(x, y, z)) 
-                        {
-                            occupiedVoxels.add(BlockPos.containing(x, y, z));
-                        }
-                    }
-                }
-            }
-            
-            for(BlockPos pos : occupiedVoxels) 
-            {
-                voxelShape = Shapes.or(voxelShape, Shapes.box(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1));
-            }
-        }
-        return voxelShape;
     }
 
     @Override

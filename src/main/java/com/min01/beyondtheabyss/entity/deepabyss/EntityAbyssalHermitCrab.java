@@ -53,7 +53,6 @@ public class EntityAbyssalHermitCrab extends AbstractDeepAbyssCreature
 		return pRandom.nextInt(40) == 0 && pPos.getY() >= -400 && pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ABYSSALITH.get()) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 
-    //TODO add custom crab attack goal
     @Override
     protected void registerGoals() 
     {

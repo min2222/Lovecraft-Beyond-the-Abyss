@@ -26,6 +26,7 @@ import com.min01.beyondtheabyss.entity.model.ModelAbyssalHermitCrab;
 import com.min01.beyondtheabyss.entity.model.ModelAmarumGhost;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
+import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelFallenDiver;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
@@ -54,6 +55,7 @@ import com.min01.beyondtheabyss.entity.renderer.layer.AbyssalScalesLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.AbyssalBulbrayRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.AbyssalHermitCrabRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.AmarumGhostRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.FallenDiverRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
@@ -83,7 +85,8 @@ import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
 import com.min01.beyondtheabyss.shader.BTAShaders;
-import com.min01.beyondtheabyss.world.deepabyss.DeepAbyssDimensionSpecialEffects;
+import com.min01.beyondtheabyss.world.effects.DeepAbyssDimensionSpecialEffects;
+import com.min01.beyondtheabyss.world.effects.MirroredCityDimensionSpecialEffects;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -141,6 +144,7 @@ public class ClientEventHandler
     public static void onRegisterDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event)
     {
     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "deep_abyss"), new DeepAbyssDimensionSpecialEffects());
+     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "mirrored_city"), new MirroredCityDimensionSpecialEffects());
     }
     
     @SubscribeEvent
@@ -195,6 +199,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.KORMOS_HEAD.get(), KormosHeadRenderer::new);
     	event.registerEntityRenderer(BTAEntities.KORMOS_BODY.get(), KormosBodyRenderer::new);
     	event.registerEntityRenderer(BTAEntities.KORMOS_TAIL.get(), KormosTailRenderer::new);
+     	event.registerEntityRenderer(BTAEntities.CORPSE_ANGLER.get(), CorpseAnglerRenderer::new);
     }
     
     @SubscribeEvent
@@ -224,6 +229,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelKormosHead.LAYER_LOCATION, ModelKormosHead::createBodyLayer);
     	event.registerLayerDefinition(ModelKormosBody.LAYER_LOCATION, ModelKormosBody::createBodyLayer);
     	event.registerLayerDefinition(ModelKormosTail.LAYER_LOCATION, ModelKormosTail::createBodyLayer);
+     	event.registerLayerDefinition(ModelCorpseAngler.LAYER_LOCATION, ModelCorpseAngler::createBodyLayer);
 
     	//armors
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
@@ -263,16 +269,16 @@ public class ClientEventHandler
 		renderers.values().stream()
 		.filter(LivingEntityRenderer.class::isInstance)
 		.map(LivingEntityRenderer.class::cast)
-		.forEach(ClientEventHandler::addLayer);
+		.forEach(ClientEventHandler::addLayers);
 		
 		event.getSkins().forEach(renderer -> 
 		{
 			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
-			addLayer(Objects.requireNonNull(skin));
+			addLayers(Objects.requireNonNull(skin));
 		});
 	}
 	
-	private static <T extends LivingEntity, M extends EntityModel<T>> void addLayer(LivingEntityRenderer<T, M> renderer)
+	private static <T extends LivingEntity, M extends EntityModel<T>> void addLayers(LivingEntityRenderer<T, M> renderer)
 	{
 		renderer.addLayer(new AbyssalScalesLayer<>(renderer));
 	}
