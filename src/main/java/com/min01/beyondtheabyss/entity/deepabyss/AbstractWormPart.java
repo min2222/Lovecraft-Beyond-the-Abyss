@@ -25,6 +25,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.OPTIONAL_UUID);
 	public Worm[] worms;
+	
 	public AbstractWormPart(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
@@ -57,6 +58,10 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		{
     		this.hurtTime = this.getOwner().hurtTime;
     		this.deathTime = this.getOwner().deathTime;
+		}
+		else if(!this.isHead())
+		{
+			this.discard();
 		}
 		
 		if(this.isHead())

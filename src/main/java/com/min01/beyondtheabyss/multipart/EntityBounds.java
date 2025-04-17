@@ -24,12 +24,12 @@ public class EntityBounds
 
     public boolean hasPart(String name) 
     {
-        return partMap.get(name) != null;
+        return this.partMap.get(name) != null;
     }
 
     public EntityPart getPart(String name)
     {
-        return partMap.get(name);
+        return this.partMap.get(name);
     }
     
     @Nullable
@@ -114,7 +114,8 @@ public class EntityBounds
         {
             //defensive copy
             Map<String, EntityPartInfo> copy = new Object2ObjectLinkedOpenHashMap<>(this.partInfos);
-            return () -> {
+            return () -> 
+            {
                 Map<String, EntityPart> partMap = new Object2ObjectOpenHashMap<>();
                 for(Map.Entry<String, EntityPartInfo> entry : copy.entrySet())
                 {
@@ -123,6 +124,7 @@ public class EntityBounds
                     entityPart.setPivotX(info.px);
                     entityPart.setPivotY(info.py);
                     entityPart.setPivotZ(info.pz);
+                    entityPart.setCollide(info.collide);
                     partMap.put(entry.getKey(), entityPart);
                 }
                 return new EntityBounds(partMap);
@@ -139,6 +141,7 @@ public class EntityBounds
         double x, y, z;
         double px, py, pz;
         AABB bounds;
+        boolean collide;
 
         EntityPartInfoBuilder(EntityBoundsBuilder builder, String name) 
         {
@@ -179,15 +182,26 @@ public class EntityBounds
         	this.bounds = new AABB(-xLength / 2, -yLength / 2, -zLength / 2, xLength / 2, yLength / 2, zLength / 2);
             return this;
         }
+        
+        public EntityPartInfoBuilder setCollide(boolean collide)
+        {
+            this.collide = collide;
+            return this;
+        }
 
         public EntityBoundsBuilder build() 
         {
-            return this.builder.addInfo(new EntityPartInfo(this.parent, this.name, this.x, this.y, this.z, this.px, this.py, this.pz, this.bounds));
+            return this.builder.addInfo(new EntityPartInfo(this.parent, this.name, this.x, this.y, this.z, this.px, this.py, this.pz, this.bounds, this.collide));
         }
     }
 
-    private record EntityPartInfo(@Nullable String parent, String name, double x, double y, double z, double px, double py, double pz, AABB bounds) 
+    private record EntityPartInfo(@Nullable String parent, String name, double x, double y, double z, double px, double py, double pz, AABB bounds, boolean collide) 
     {
     	
     }
+
+	public EntityBounds copy()
+	{
+		return new EntityBounds(this.partMap);
+	}
 }

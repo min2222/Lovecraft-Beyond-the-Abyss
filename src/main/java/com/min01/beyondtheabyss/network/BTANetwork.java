@@ -30,6 +30,8 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdateItemAnimationPacket.class, UpdateItemAnimationPacket::encode, UpdateItemAnimationPacket::new, UpdateItemAnimationPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationTickPacket.class, UpdatePlayerAnimationTickPacket::encode, UpdatePlayerAnimationTickPacket::new, UpdatePlayerAnimationTickPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateItemAnimationTickPacket.class, UpdateItemAnimationTickPacket::encode, UpdateItemAnimationTickPacket::new, UpdateItemAnimationTickPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, BuildMultipartPacket.class, BuildMultipartPacket::encode, BuildMultipartPacket::new, BuildMultipartPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdatePartPacket.class, UpdatePartPacket::encode, UpdatePartPacket::new, UpdatePartPacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 

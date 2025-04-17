@@ -10,7 +10,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -20,11 +19,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implements IModel<EntitySubmarine>
+public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/submarine.png");
 	private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/submarine_layer.png");
-	private final ModelSubmarine model;
+	public final ModelSubmarine model;
 	public SubmarineRenderer(Context p_174008_)
 	{
 		super(p_174008_);
@@ -43,7 +42,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implement
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0, -1.5F, 0);
 		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
-		this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
+		this.model.setupAnim(p_114485_, 0, 0, p_114485_.tickCount + BTAClientUtil.MC.getFrameTime(), f2, f6);
 		this.model.renderToBuffer(p_114488_, consumer, p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		Vec3 rotation = new Vec3(0.0F, p_114485_.yBodyRot, 0.0F);
 		Vec3 seat4Pos = BTAClientUtil.getWorldPosition(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat4"});
@@ -73,13 +72,8 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implement
 			this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
 			this.model.renderToBuffer(p_114488_, eyeConsumer, p_114490_, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
 		}
+		p_114485_.getPartBuilder().clientTick(this.model, p_114487_);
 		p_114488_.popPose();
-	}
-	
-	@Override
-	public HierarchicalModel<EntitySubmarine> getModel(EntitySubmarine entity) 
-	{
-		return this.model;
 	}
 
 	@Override

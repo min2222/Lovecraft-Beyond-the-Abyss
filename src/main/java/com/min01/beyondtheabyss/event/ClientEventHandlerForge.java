@@ -5,16 +5,21 @@ import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
@@ -100,6 +105,16 @@ public class ClientEventHandlerForge
 			HallucinationOverlay.reset();
 		}
 	}
+	
+    @SubscribeEvent
+    public static void onRenderLivingPost(RenderLivingEvent.Post<LivingEntity, HierarchicalModel<LivingEntity>> event) 
+    {
+    	if(event.getEntity() instanceof IMultipart partBuilder)
+    	{
+    		EntityPartBuilder<?> builder = partBuilder.getPartBuilder();
+    		builder.clientTick(event.getRenderer().getModel(), event.getPartialTick());
+    	}
+    }
 	
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent event) 

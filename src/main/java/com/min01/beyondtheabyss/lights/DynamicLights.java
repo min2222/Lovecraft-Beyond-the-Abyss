@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 //https://github.com/txnimc/SodiumDynamicLights/blob/main/src/main/java/toni/sodiumdynamiclights/SodiumDynamicLights.java
 public class DynamicLights
@@ -92,6 +94,7 @@ public class DynamicLights
 		scheduleChunkRebuild(renderer, BlockPos.getX(chunkPos), BlockPos.getY(chunkPos), BlockPos.getZ(chunkPos));
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	public static void scheduleChunkRebuild(@NotNull LevelRenderer renderer, int x, int y, int z)
 	{
 		if(BTAClientUtil.MC.level != null)
@@ -179,7 +182,8 @@ public class DynamicLights
 		this.dynamicLightSources.add(lightSource);
 		this.lightSourcesLock.writeLock().unlock();
 	}
-	
+
+	@OnlyIn(Dist.CLIENT)
 	public void removeLightSource(@NotNull IDynamicLight lightSource) 
 	{
 		this.lightSourcesLock.writeLock().lock();
@@ -198,6 +202,7 @@ public class DynamicLights
 		this.lightSourcesLock.writeLock().unlock();
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	public void clearLightSources() 
 	{
 		this.lightSourcesLock.writeLock().lock();

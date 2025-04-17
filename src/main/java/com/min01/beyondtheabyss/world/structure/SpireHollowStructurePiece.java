@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.world.structure;
 
-import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTAStructures;
@@ -51,7 +50,7 @@ public class SpireHollowStructurePiece extends AbstractCaveGenerationStructurePi
                 for(int y = 15; y >= 0; y--) 
                 {
                     carve.set(cornerX + x, Mth.clamp(cornerY + y, level.getMinBuildHeight(), level.getMaxBuildHeight()), cornerZ + z);
-                    if(this.inCircle(carve) && this.checkedGetBlock(level, carve).is(BTATags.BTABlocks.SPIRE_HOLLOW_REPLACEABLES)) 
+                    if(this.inCircle(carve) && !this.checkedGetBlock(level, carve).is(Blocks.WATER)) 
                     {
                     	flag = true;
                         this.checkedSetBlock(level, carve, Blocks.WATER.defaultBlockState());

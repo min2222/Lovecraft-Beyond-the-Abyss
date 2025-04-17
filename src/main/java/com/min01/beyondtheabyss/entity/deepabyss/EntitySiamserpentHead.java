@@ -22,7 +22,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -274,7 +273,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
     {
 		//TODO spawn in only nearby of giant fossil structure;
 		//LocateCommand
-		return pPos.getY() >= 30 && pPos.getY() <= 80 && pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pPos.getY() >= 10 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
 	@Override

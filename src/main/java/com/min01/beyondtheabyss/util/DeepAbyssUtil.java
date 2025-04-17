@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.min01.beyondtheabyss.entity.IBoid;
 import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.misc.Boid;
 import com.min01.beyondtheabyss.misc.Boid.Bounds;
 
@@ -15,6 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -26,6 +28,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class DeepAbyssUtil 
 {
+	public static boolean isInsideSubmarine(Entity entity)
+	{
+		List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox());
+		return !list.isEmpty() && !list.get(0).hatchOpened();
+	}
+	
 	public static <T extends LivingEntity & IBoid<T>> void transferLeader(T entity) 
 	{
 		if(!entity.level.isClientSide)
@@ -92,7 +100,7 @@ public class DeepAbyssUtil
 			{
 				Boid boid = entry.getValue();
 				Vec3 direction = boid.direction;
-				boid.update(boids.values(), entity.getObstacle(), true, true, true, 2.5F, 0.25F);
+				boid.update(fish.level.getBlockState(fish.blockPosition().above()).is(Blocks.WATER), boids.values(), entity.getObstacle(), true, true, true, 2.5F, 0.25F);
 				boid.bounds = bounds;
 				if(fish.rotLerp())
 				{
@@ -133,7 +141,7 @@ public class DeepAbyssUtil
 					for(int z = -1; z < 1; z++)
 					{
 						BlockPos pos = fish.blockPosition().offset(x, y, z);
-						if(entity.level.getBlockState(pos).isCollisionShapeFullBlock(entity.level, pos) || entity.level.getBlockState(pos).isAir()) 
+						if(!entity.level.getBlockState(pos).is(Blocks.WATER)) 
 						{
 							entity.getObstacle().add(new Boid.Obstacle(Vec3.atCenterOf(pos), 5, 0.1F));
 							mutable.set(pos);
@@ -160,29 +168,11 @@ public class DeepAbyssUtil
                 if(blockState.is(Blocks.WATER))
                 {
                 	Vec3 size = entity.getBoundSize();
-                    Bounds newBound = Bounds.fromCenter(Vec3.atCenterOf(targetPos), size);
-                    if(isBoundInWater(world, newBound)) 
-                    {
-                        entity.setBound(newBound);
-                        break;
-                    }
+                    entity.setBound(Bounds.fromCenter(Vec3.atCenterOf(targetPos), size));
+                    break;
                 }
         	}
         }
-    }
-    
-    public static boolean isBoundInWater(Level world, Bounds bound) 
-    {
-        BlockPos min = new BlockPos(Mth.floor(bound.minX()), Mth.floor(bound.minY()), Mth.floor(bound.minZ()));
-        BlockPos max = new BlockPos(Mth.ceil(bound.maxX()), Mth.ceil(bound.maxY()), Mth.ceil(bound.maxZ()));
-        for(BlockPos pos : BlockPos.betweenClosed(min, max)) 
-        {
-            if (!world.getBlockState(pos).is(Blocks.WATER)) 
-            {
-                return false;
-            }
-        }
-        return true;
     }
     
 	public static <T extends LivingEntity & IBoid<T>> void spawnWithBoid(T entity, int schoolSize)

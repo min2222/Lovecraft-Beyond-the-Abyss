@@ -1,15 +1,13 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.animation.MutavoreAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.animation.AnimationChannel;
-import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,6 +20,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 
 public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 {
@@ -173,49 +172,9 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		BTAClientUtil.animateHead(this.bone21, rot14.y - netHeadYaw - yBodyRot, rot14.x - headPitch);
 		BTAClientUtil.animateHead(this.bone22, rot15.y - netHeadYaw - yBodyRot, rot15.x - headPitch);
 		
-		BTAClientUtil.animateWalk(this, this.mutavoreSwim(BTAClientUtil.getElapsedSeconds(false, 0.0F, entity.swimAnimationState.getAccumulatedTime()) / 60.0F), limbSwing, limbSwingAmount, 1.0F, 5.5F);
-		this.animate(entity.mouthOpeningAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_OPENING, ageInTicks);
-		this.animate(entity.mouthOpenAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_OPEN, ageInTicks);
-		this.animate(entity.mouthCloseAnimationState, MutavoreAnimation.MUTAVORE_MOUTH_CLOSE, ageInTicks);
-		
-		entity.swimAnimationState.updateTime(ageInTicks, 1.0F);
-	}
-	
-	public AnimationDefinition mutavoreSwim(float elapsedSeconds)
-	{
-		AnimationDefinition anim = AnimationDefinition.Builder.withLength(0.0F)
-				.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30 + elapsedSeconds * 100) * 0.5, -4 + Math.sin(-30 + elapsedSeconds * 50) * 5, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(3 + Math.sin(-60 + elapsedSeconds * 100) * 5, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("left_head_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(-20 + Math.sin(elapsedSeconds * 100) * 10, Math.sin(60 + elapsedSeconds * 100) * 5, Math.sin(60 + elapsedSeconds * 100) * 5), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("right_head_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(-20 + Math.sin(elapsedSeconds * 100) * 10, -Math.sin(60 + elapsedSeconds * 100) * 5, -Math.sin(60 + elapsedSeconds * 100) * 5), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("left_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(20 - Math.sin(elapsedSeconds * 100) * 30, -Math.sin(60 + elapsedSeconds * 100) * 10, -Math.sin(60 + elapsedSeconds * 100) * 10), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("right_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(20 - Math.sin(elapsedSeconds * 100) * 30, Math.sin(60 + elapsedSeconds * 100) * 10, Math.sin(60 + elapsedSeconds * 100) * 10), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("left_small_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(20 - Math.sin(30 + elapsedSeconds * 100) * 30, -Math.sin(90 + elapsedSeconds * 100) * 10, -Math.sin(90 + elapsedSeconds * 100) * 10), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("right_small_fin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(20 - Math.sin(30 + elapsedSeconds * 100) * 30, Math.sin(90 + elapsedSeconds * 100) * 10, Math.sin(90 + elapsedSeconds * 100) * 10), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("mutate1", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30 + elapsedSeconds * 100) * 3, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("mutate2", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(-30 + elapsedSeconds * 100) * 3, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.build();
-		return anim;
+		Vec3 tonguePos = BTAClientUtil.getWorldPosition(entity, this.root, new Vec3(0.0F, entity.yBodyRot, 0.0F), new String[] {"bone4", "bone23", "bone24"});
+		entity.posArray[0] = tonguePos;
+		BTANetwork.sendToServer(new UpdatePosArrayPacket(entity, tonguePos, 0));
 	}
 	
 	@Override

@@ -159,6 +159,7 @@ public class BTAItems
 	public static final RegistryObject<Item> BONE_TORCH = ITEMS.register("bone_torch", () -> new StandingAndWallBlockItem(BTABlocks.BONE_TORCH.get(), BTABlocks.BONE_WALL_TORCH.get(), new Item.Properties().tab(DeepAbyssTabs.ABYSS_BLOCKS)));
 	public static final RegistryObject<Item> BONE_LEVER = registerBlockItem("bone_lever", () -> BTABlocks.BONE_LEVER.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHAIN_TRAP = registerCustomRendererBlockItem("chain_trap", () -> BTABlocks.CHAIN_TRAP.get(), () -> new ChainTrapBlockEntity(BlockPos.ZERO, BTABlocks.CHAIN_TRAP.get().defaultBlockState()), new Item.Properties());
+	public static final RegistryObject<Item> TOOTHVINE = registerBlockItem("toothvine", () -> BTABlocks.TOOTHVINE.get(), new Item.Properties());
 	
 	//weapons
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));

@@ -16,12 +16,14 @@ public class OrientedBox
     private Matrix3d inverse;
     private Vec3[] vertices;
     private Vec3[] basis;
+    public boolean collide;
 
-    public OrientedBox(AABB box) 
+    public OrientedBox(AABB box, boolean collide) 
     {
     	this.center = box.getCenter();
     	this.halfExtents = new Vec3(box.getXsize() / 2, box.getYsize() / 2, box.getZsize() / 2);
     	this.rotation = QuaternionD.IDENTITY;
+    	this.collide = collide;
     }
 
     public OrientedBox(Vec3 center, Vec3 halfExtents, QuaternionD rotation)
@@ -79,7 +81,7 @@ public class OrientedBox
     {
         if(this.basis == null) 
         {
-        	this.basis = this.matrix.getBasis();
+        	this.basis = this.getMatrix().getBasis();
         }
         return this.basis;
     }
@@ -99,7 +101,7 @@ public class OrientedBox
         {
             return this;
         }
-        Matrix3d matrix = getMatrix();
+        Matrix3d matrix = this.getMatrix();
         double transX = matrix.transformX(x, y, z);
         double transY = matrix.transformY(x, y, z);
         double transZ = matrix.transformZ(x, y, z);
@@ -133,7 +135,7 @@ public class OrientedBox
         return new OrientedBox(this.center.add(x, y, z), this.halfExtents, this.rotation, this.matrix, this.inverse, this.basis);
     }
 
-    private void computeVertices() 
+    public void computeVertices() 
     {
         AABB box = this.getExtents();
         Vec3[] vertices = getVertices(box);
@@ -170,7 +172,7 @@ public class OrientedBox
 
     public boolean intersects(AABB other) 
     {
-        return intersects(getVertices(other));
+        return this.intersects(getVertices(other));
     }
 
     public boolean intersects(Vec3[] otherVertices)
@@ -210,7 +212,7 @@ public class OrientedBox
         return true;
     }
 
-    private static Vec3 cross(Vec3 first, Vec3 second)
+    public static Vec3 cross(Vec3 first, Vec3 second)
     {
         return new Vec3(first.y * second.z - first.z * second.y, first.z * second.x - first.x * second.z, first.x * second.y - first.y * second.x);
     }
@@ -320,7 +322,8 @@ public class OrientedBox
     public double getMax(Direction.Axis axis) 
     {
         Matrix3d matrix = this.getMatrix();
-        return switch(axis) {
+        return switch(axis) 
+        {
             case X -> Math.max(matrix.m00, Math.max(matrix.m01, matrix.m02)) * this.halfExtents.x + this.center.x;
             case Y -> Math.max(matrix.m10, Math.max(matrix.m11, matrix.m12)) * this.halfExtents.y + this.center.y;
             case Z -> Math.max(matrix.m20, Math.max(matrix.m21, matrix.m22)) * this.halfExtents.z + this.center.z;
@@ -330,7 +333,8 @@ public class OrientedBox
     public double getMin(Direction.Axis axis)
     {
         Matrix3d matrix = this.getMatrix();
-        return switch(axis) {
+        return switch(axis) 
+        {
             case X -> Math.min(matrix.m00, Math.min(matrix.m01, matrix.m02)) * this.halfExtents.x + this.center.x;
             case Y -> Math.min(matrix.m10, Math.min(matrix.m11, matrix.m12)) * this.halfExtents.y + this.center.y;
             case Z -> Math.min(matrix.m20, Math.min(matrix.m21, matrix.m22)) * this.halfExtents.z + this.center.z;
@@ -339,10 +343,10 @@ public class OrientedBox
 
     public OrientedBox expand(double x, double y, double z)
     {
-        if(x==0 && y==0 && z==0)
+        if(x == 0 && y == 0 && z == 0)
         {
             return this;
         }
-        return new OrientedBox(this.center, this.halfExtents.add(x / 2,y / 2,z / 2), this.rotation, this.matrix, this.inverse, this.basis);
+        return new OrientedBox(this.center, this.halfExtents.add(x / 2, y / 2, z / 2), this.rotation, this.matrix, this.inverse, this.basis);
     }
 }

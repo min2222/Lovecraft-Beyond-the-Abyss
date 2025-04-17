@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdatePartPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -24,8 +26,9 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-//TODO server compatibility;
 public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 {
 	public static final String ROOT = "root";
@@ -46,9 +49,9 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	
 	public void tick(float partialTick)
 	{
-        double posX = Mth.lerp((double)partialTick, this.entity.xOld, this.entity.getX());
-        double posY = Mth.lerp((double)partialTick, this.entity.yOld, this.entity.getY());
-        double posZ = Mth.lerp((double)partialTick, this.entity.zOld, this.entity.getZ());
+        double posX = Mth.lerp(partialTick, this.entity.xOld, this.entity.getX());
+        double posY = Mth.lerp(partialTick, this.entity.yOld, this.entity.getY());
+        double posZ = Mth.lerp(partialTick, this.entity.zOld, this.entity.getZ());
 
         EntityPart root = this.hitbox.getPart(ROOT);
         
@@ -56,7 +59,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         root.setOffX(posX + renderOffset.x);
         root.setOffY(posY + renderOffset.y);
         root.setOffZ(posZ + renderOffset.z);
-		
+        
 		this.partTick();
         
         QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
@@ -109,8 +112,9 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	        entityPart.setRotation(new QuaternionD((double)rotation.i(), (double)rotation.j(), (double)rotation.k(), (double)rotation.r()));
 		}
 	}
-	
-	public void clientTick(HierarchicalModel<?> model)
+
+    @OnlyIn(Dist.CLIENT)
+	public void clientTick(HierarchicalModel<?> model, float partialTicks)
 	{
 		for(ModelPart part : model.root().getAllParts().toList())
 		{
@@ -119,10 +123,12 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 			if(p != null)
 			{
 				p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+				BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
 			}
 		}
 	}
 
+    @OnlyIn(Dist.CLIENT)
 	public EntityBounds buildHitBox()
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
@@ -130,11 +136,13 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         return this.addPart(builder, this.root(model), null).getFactory().create();
 	}
 
+    @OnlyIn(Dist.CLIENT)
     public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
     {
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         String name = this.getModelPartName(this.root(model), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
+        partInfo.setCollide(this.entity.getCollidePart().contains(name));
         if(parent != null) 
         {
             partInfo.setParent(parent);
@@ -153,7 +161,8 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
         return builder2;
     }
-	
+
+    @OnlyIn(Dist.CLIENT)
 	public ModelPart root(HierarchicalModel<T> model)
 	{
 		if(this.entity.useSubRoot())
@@ -162,7 +171,8 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 		}
 		return model.root();
 	}
-	
+
+    @OnlyIn(Dist.CLIENT)
     public AABB getPartSize(ModelPart part, String name)
     {
     	VoxelShape shape = Shapes.empty();
@@ -216,6 +226,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public String getModelPartName(ModelPart root, ModelPart target) 
     {
     	return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
@@ -367,16 +378,29 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         		return !(entity instanceof Player) || ((Player)entity).isModelPartShown(PlayerModelPart.CAPE);
         	}
         }
-
         return false;
     }
     
-    public void rebuildHitbox()
+    public void setupHitbox(Map<String, Vec3> partOffset, Map<String, String> parts, Map<String, Part> partMap, EntityBounds hitbox)
     {
 		this.partOffset.clear();
 		this.parts.clear();
 		this.partMap.clear();
-		this.hitbox = this.buildHitBox();
+		this.partOffset.putAll(partOffset);
+		this.parts.putAll(parts);
+		this.partMap.putAll(partMap);
+		this.hitbox = hitbox.copy();
+    }
+    
+    public void rebuildHitbox()
+    {
+    	if(this.entity.level.isClientSide)
+    	{
+    		this.partOffset.clear();
+    		this.parts.clear();
+    		this.partMap.clear();
+    		this.hitbox = this.buildHitBox();
+    	}
     }
 	
 	public float getRenderScale()

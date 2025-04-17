@@ -1,14 +1,12 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.CorpseAnglerAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.animation.AnimationChannel;
-import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -69,61 +67,12 @@ public class ModelCorpseAngler extends HierarchicalModel<EntityCorpseAngler>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("hook_angler"), netHeadYaw, headPitch);
-		BTAClientUtil.animateWalk(this, this.corpseAnglerSwim(BTAClientUtil.getElapsedSeconds(false, 0.0F, entity.swimAnimationState.getAccumulatedTime()) / 60.0F), limbSwing, limbSwingAmount, 2.5F, 2.5F);
-		this.animate(entity.idleAnimationState, this.corpseAnglerIdle(BTAClientUtil.getElapsedSeconds(false, 0.0F, entity.idleAnimationState.getAccumulatedTime()) / 60.0F), ageInTicks);
-		
-		entity.idleAnimationState.updateTime(ageInTicks, 1.0F);
-		entity.swimAnimationState.updateTime(ageInTicks, 1.0F);
-	}
-	
-	public AnimationDefinition corpseAnglerSwim(float elapsedSeconds)
-	{
-		AnimationDefinition anim = AnimationDefinition.Builder.withLength(0.0F)
-				.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(0.0F, Math.sin(30 + elapsedSeconds * 100) * 7, -Math.sin(-30 + elapsedSeconds * 100) * 4), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(15 + Math.sin(elapsedSeconds * 200) * 3, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("hook", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-30 + elapsedSeconds * 200) * 4, Math.sin(-30 + elapsedSeconds * 100) * 7, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("leftfin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(10 + Math.sin(elapsedSeconds * 100) * 25, 0.0F, Math.sin(60 + elapsedSeconds * 100) * 15), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("rightfin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(10 - Math.sin(elapsedSeconds * 100) * 25, 0.0F, Math.sin(60 + elapsedSeconds * 100) * 15), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(0.0F, Math.sin(elapsedSeconds * 100) * 14, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.build();
-		return anim;
-	}
-	
-	public AnimationDefinition corpseAnglerIdle(float elapsedSeconds)
-	{
-		AnimationDefinition anim = AnimationDefinition.Builder.withLength(0.0F)
-				.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(Math.sin(elapsedSeconds * 100) * -1, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION, 
-						new Keyframe(0.0F, BTAClientUtil.posVec(0.0F, Math.sin(-30 + elapsedSeconds * 100) * 1, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(15 + Math.sin(-60 + elapsedSeconds * 100) * 3, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("hook", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(-Math.sin(-70 + elapsedSeconds * 100) * 4, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("leftfin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(10 - Math.sin(elapsedSeconds * 100) * 25, 0.0F, -Math.sin(60 + elapsedSeconds * 100) * 15), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("rightfin", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, BTAClientUtil.degreeVec(10 - Math.sin(elapsedSeconds * 100) * 25, 0.0F, Math.sin(60 + elapsedSeconds * 100) * 15), AnimationChannel.Interpolations.LINEAR)
-				))
-				.build();
-		return anim;
+		BTAClientUtil.animateWalk(this, CorpseAnglerAnimation.CORPSE_ANGLER_SWIM, limbSwing, limbSwingAmount, 2.5F, 2.5F);
+		this.animate(entity.idleAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_IDLE, ageInTicks);
+		this.animate(entity.openMouthAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_OPEN_MOUTH, ageInTicks);
+		this.animate(entity.closeMouthAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_CLOSE_MOUTH, ageInTicks);
+		this.animate(entity.burrowAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_BURROW, ageInTicks);
+		this.animate(entity.unburrowAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_UNBURROW, ageInTicks);
 	}
 	
 	@Override

@@ -98,5 +98,8 @@ public class EventHandler
     	event.register(BTAEntities.GNASHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGnasher::checkGnasherSpawnRules, Operation.AND);
     	event.register(BTAEntities.SIAMSERPENT_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntitySiamserpentHead::checkSiamserpentSpawnRules, Operation.AND);
     	event.register(BTAEntities.FALLEN_DIVER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityFallenDiver::checkFallenDiverSpawnRules, Operation.AND);
+    	event.register(BTAEntities.SPINE_WORM_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR, EntitySpineWormHead::checkSpineWormSpawnRules, Operation.AND);
+    	event.register(BTAEntities.GLOOMFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGloomfish::checkGloomfishSpawnRules, Operation.AND);
+    	event.register(BTAEntities.CORPSE_ANGLER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR, EntityCorpseAngler::checkCorpseAnglerSpawnRules, Operation.AND);
     }
 }

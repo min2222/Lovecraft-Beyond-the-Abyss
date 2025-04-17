@@ -269,16 +269,16 @@ public class ClientEventHandler
 		renderers.values().stream()
 		.filter(LivingEntityRenderer.class::isInstance)
 		.map(LivingEntityRenderer.class::cast)
-		.forEach(ClientEventHandler::addLayer);
+		.forEach(ClientEventHandler::addLayers);
 		
 		event.getSkins().forEach(renderer -> 
 		{
 			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
-			addLayer(Objects.requireNonNull(skin));
+			addLayers(Objects.requireNonNull(skin));
 		});
 	}
 	
-	private static <T extends LivingEntity, M extends EntityModel<T>> void addLayer(LivingEntityRenderer<T, M> renderer)
+	private static <T extends LivingEntity, M extends EntityModel<T>> void addLayers(LivingEntityRenderer<T, M> renderer)
 	{
 		renderer.addLayer(new AbyssalScalesLayer<>(renderer));
 	}

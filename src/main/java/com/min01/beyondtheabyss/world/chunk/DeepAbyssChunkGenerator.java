@@ -1,24 +1,16 @@
 package com.min01.beyondtheabyss.world.chunk;
 
-import java.util.concurrent.atomic.AtomicReference;
-
-import com.min01.beyondtheabyss.misc.BTATags;
-import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -27,8 +19,6 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise.NoiseParameters;
 
 public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
 {
-	public final AtomicReference<ChunkPos> chunkPos = new AtomicReference<>();
-	
 	public static final Codec<DeepAbyssChunkGenerator> CODEC = RecordCodecBuilder.create((p_224323_) ->
 	{
 		return commonCodec(p_224323_).and(p_224323_.group(RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter((p_188716_) ->
@@ -57,94 +47,5 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
 	public void buildSurface(WorldGenRegion region, StructureManager structureManager, RandomState random, ChunkAccess chunkAccess) 
 	{
 	    super.buildSurface(region, structureManager, random, chunkAccess);
-	    this.makeDeathValley(chunkAccess);
-	    this.makeSpireHollowPlain(chunkAccess);
-    }
-    
-    //ChatGPT ahh;
-    public void makeDeathValley(ChunkAccess chunk) 
-    {
-        ChunkPos chunkPos = chunk.getPos();
-        
-        int baseMinHeight = 30;
-        int maxHeight = 150;
-        
-        MutableBlockPos mutablePos = new MutableBlockPos();
-        for(int x = 0; x < 16; x++) 
-        {
-            for(int z = 0; z < 16; z++)
-            {
-                int worldX = chunkPos.getBlockX(x);
-                int worldZ = chunkPos.getBlockZ(z);
-
-                int minHeight = baseMinHeight;
-
-                int currentHeight = chunk.getHeight(Types.OCEAN_FLOOR, worldX, worldZ);
-                
-                double distance = Math.sqrt(worldX * worldX + worldZ * worldZ);
-                double canyonRadius = 150;
-                double erosion = BTAUtil.SIMPLEX_NOISE.getValue(worldX * 0.01, worldZ * 0.01) * 150;
-                double heightVariation = Math.sin(distance / canyonRadius * Math.PI);
-                double baseHeight = minHeight + erosion;
-
-                double plainsNoise = BTAUtil.SIMPLEX_NOISE.getValue(worldX * 0.005, worldZ * 0.005) * 5; 
-                minHeight += plainsNoise;
-
-                int modifiedHeight = (int) Math.round(baseHeight + heightVariation);
-                modifiedHeight = Math.min(maxHeight, Math.max(minHeight, modifiedHeight));
-
-                if(currentHeight > modifiedHeight) 
-                {
-                    for(int y = modifiedHeight + 1; y < 150; y++) 
-                    {
-                        mutablePos.set(worldX, y, worldZ);
-                        if(chunk.getBlockState(mutablePos).is(BTATags.BTABlocks.DEATH_VALLEY_REPLACEABLES)) 
-                        {
-                            chunk.setBlockState(mutablePos, Blocks.WATER.defaultBlockState(), false);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    public void makeSpireHollowPlain(ChunkAccess chunk) 
-    {
-        ChunkPos chunkPos = chunk.getPos();
-        
-        int baseMinHeight = 30;
-        int maxHeight = 150;
-        
-        MutableBlockPos mutablePos = new MutableBlockPos();
-        for(int x = 0; x < 16; x++) 
-        {
-            for(int z = 0; z < 16; z++)
-            {
-                int worldX = chunkPos.getBlockX(x);
-                int worldZ = chunkPos.getBlockZ(z);
-
-                int minHeight = baseMinHeight;
-
-                int currentHeight = chunk.getHeight(Types.OCEAN_FLOOR, worldX, worldZ);
-                
-                double plainsNoise = BTAUtil.SIMPLEX_NOISE.getValue(worldX * 0.005, worldZ * 0.005) * 5; 
-                minHeight += plainsNoise;
-
-                int modifiedHeight = (int) Math.round(minHeight);
-                modifiedHeight = Math.min(maxHeight, Math.max(baseMinHeight, modifiedHeight));
-
-                if(currentHeight > modifiedHeight) 
-                {
-                    for(int y = modifiedHeight + 1; y < 150; y++) 
-                    {
-                        mutablePos.set(worldX, y, worldZ);
-                        if(chunk.getBlockState(mutablePos).is(BTATags.BTABlocks.SPIRE_HOLLOW_REPLACEABLES)) 
-                        {
-                            chunk.setBlockState(mutablePos, Blocks.WATER.defaultBlockState(), false);
-                        }
-                    }
-                }
-            }
-        }
     }
 }

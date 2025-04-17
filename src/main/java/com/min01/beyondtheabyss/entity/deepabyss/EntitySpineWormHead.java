@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -16,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,8 +29,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fluids.FluidType;
 
 public class EntitySpineWormHead extends AbstractSpineWormPart
 {
@@ -154,6 +158,12 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	}
 	
 	@Override
+	public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) 
+	{
+		return true;
+	}
+	
+	@Override
 	public void positionRider(Entity p_20312_) 
 	{
 		if(p_20312_ == this.getTarget())
@@ -185,6 +195,11 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
+	
+	public static boolean checkSpineWormSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+		return pPos.getY() >= 0 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ROT_SOIL.get()) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+    }
     
     @Override
     public void addAdditionalSaveData(CompoundTag p_21484_) 

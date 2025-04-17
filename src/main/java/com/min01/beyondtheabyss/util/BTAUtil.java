@@ -17,6 +17,7 @@ import com.min01.beyondtheabyss.multipart.EntityBounds;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +31,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.StructureBlockEntity;
 import net.minecraft.world.level.entity.LevelEntityGetter;
@@ -46,6 +48,23 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 public class BTAUtil 
 {
     public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
+    
+	public static void animateWhen(AnimationState state, boolean flag, int tick) 
+	{
+		if(flag) 
+		{
+			state.startIfStopped(tick);
+		}
+		else
+		{
+			state.stop();
+        }
+	}
+    
+    public static boolean isCollisionShapeFullBlock(Level level, BlockPos pos)
+    {
+    	return level.getBlockState(pos).isCollisionShapeFullBlock(level, pos);
+    }
     
     public static float smin(float a, float b, float k) 
     {
@@ -489,4 +508,18 @@ public class BTAUtil
 		float f2 = Mth.cos(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
 		return new Vec3(f, f1, f2).scale(distance);
 	}
+	
+	public static Vec3 getGroundPosAbove(BlockGetter pLevel, double pX, double startY, double pZ)
+    {
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, startY, pZ);
+        do
+        {
+        	blockpos$mutable.move(Direction.DOWN);
+        } 
+        while((pLevel.getBlockState(blockpos$mutable).isAir() || pLevel.getBlockState(blockpos$mutable).getMaterial().isLiquid() || !pLevel.getBlockState(blockpos$mutable).isCollisionShapeFullBlock(pLevel, blockpos$mutable)) && blockpos$mutable.getY() > pLevel.getMinBuildHeight());
+
+        BlockPos blockpos = blockpos$mutable.above();
+
+        return Vec3.atCenterOf(blockpos);
+    }
 }

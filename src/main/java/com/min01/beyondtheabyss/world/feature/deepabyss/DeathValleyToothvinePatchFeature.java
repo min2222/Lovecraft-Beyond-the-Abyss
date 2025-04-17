@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.world.feature.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.block.deepabyss.ToothvineBlock;
-import com.min01.beyondtheabyss.block.deepabyss.ToothvineBlock.VineState;
+import com.min01.beyondtheabyss.block.deepabyss.ToothvinePlantBlock;
+import com.min01.beyondtheabyss.block.deepabyss.ToothvinePlantBlock.VineState;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
@@ -33,26 +33,26 @@ public class DeathValleyToothvinePatchFeature extends Feature<NoneFeatureConfigu
 		}
 		return false;
 	}
-	
+
 	public void placeVine(WorldGenLevel level, BlockPos pos, RandomSource random, int length)
 	{
-		level.setBlock(pos, BTABlocks.TOOTHVINE.get().defaultBlockState().setValue(ToothvineBlock.VINE_STATE, VineState.BASE), 2);
+		level.setBlock(pos, BTABlocks.TOOTHVINE_PLANT.get().defaultBlockState().setValue(ToothvinePlantBlock.VINE_STATE, VineState.BASE), 2);
 		for(int i = 0; i < length; i++)
 		{
 			if(level.getFluidState(pos.above(i + 1)).is(FluidTags.WATER))
 			{
 				if(i == length - 1)
 				{
-					level.setBlock(pos.above(length), BTABlocks.TOOTHVINE.get().defaultBlockState().setValue(ToothvineBlock.VINE_STATE, VineState.TIP), 2);
+					level.setBlock(pos.above(length), BTABlocks.TOOTHVINE.get().defaultBlockState(), 2);
 				}
 				else
 				{
-					level.setBlock(pos.above(i + 1), BTABlocks.TOOTHVINE.get().defaultBlockState().setValue(ToothvineBlock.VINE_STATE, random.nextBoolean() ? VineState.VARIANT_1 : VineState.VARIANT_2), 2);
+					level.setBlock(pos.above(i + 1), BTABlocks.TOOTHVINE_PLANT.get().defaultBlockState().setValue(ToothvinePlantBlock.VINE_STATE, random.nextBoolean() ? VineState.VARIANT_1 : VineState.VARIANT_2), 2);
 				}
 			}
 			else
 			{
-				level.setBlock(pos.above(i), BTABlocks.TOOTHVINE.get().defaultBlockState().setValue(ToothvineBlock.VINE_STATE, VineState.TIP), 2);
+				level.setBlock(pos.above(i), BTABlocks.TOOTHVINE.get().defaultBlockState(), 2);
 				break;
 			}
 		}

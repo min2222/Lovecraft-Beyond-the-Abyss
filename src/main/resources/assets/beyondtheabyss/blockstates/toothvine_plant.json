@@ -1,0 +1,13 @@
+{
+	"variants": {
+		"state=base": {
+			"model": "beyondtheabyss:block/toothvine_base"
+		},
+		"state=variant_1": {
+			"model": "beyondtheabyss:block/toothvine_1"
+		},
+		"state=variant_2": {
+			"model": "beyondtheabyss:block/toothvine_2"
+		}
+	}
+}

@@ -6,8 +6,6 @@ import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class EntityMutavore extends AbstractDeepAbyssMonster
 {
@@ -27,7 +26,6 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public final AnimationState mouthOpeningAnimationState = new AnimationState();
 	public final AnimationState mouthOpenAnimationState = new AnimationState();
 	public final AnimationState mouthCloseAnimationState = new AnimationState();
-	public final AnimationState swimAnimationState = new AnimationState();
 	
 	public final Worm worm1 = new Worm();
 	public final Worm worm6 = new Worm();
@@ -52,6 +50,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public EntityMutavore(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.posArray = new Vec3[1];
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -136,6 +135,8 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	@Override
 	public void tick()
 	{
+		super.tick();
+		
 		this.worm1.setOldPosAndRot();
 		this.worm2.setOldPosAndRot();
 		this.worm3.setOldPosAndRot();
@@ -174,11 +175,6 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     	WormChain.tick(this.worm14, this.worm13, 0.0F, speed);
     	WormChain.tick(this.worm15, this.worm14, 0.0F, speed);
     	
-		super.tick();
-		if(this.level.isClientSide)
-		{
-			BTAClientUtil.animateWhen(this.swimAnimationState, BTAUtil.isMoving(this), this.tickCount);
-		}
 		if(this.getAnimationState() == 2 && !this.hasTarget())
 		{
 			this.setAnimationState(3);

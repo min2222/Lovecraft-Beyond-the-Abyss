@@ -62,6 +62,13 @@ public class GhoulBloomBlock extends SeagrassBlock
 	@Override
 	public void performBonemeal(ServerLevel p_222423_, RandomSource p_222424_, BlockPos p_222425_, BlockState p_222426_) 
 	{
-		//TODO tall ghoul bloom;
+		if(!p_222426_.getValue(GROWN))
+		{
+			p_222423_.setBlock(p_222425_, p_222426_.setValue(GROWN, true), 2);
+		}
+		else
+		{
+			//TODO tall ghoul bloom;
+		}
 	}
 }

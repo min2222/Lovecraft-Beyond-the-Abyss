@@ -9,10 +9,13 @@ import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.IBoid;
 import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.misc.Boid;
+import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.multipart.IMultipart;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.BuildMultipartPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTASavedData;
@@ -21,16 +24,13 @@ import com.min01.beyondtheabyss.world.BTAWorlds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -74,6 +74,16 @@ public class EventHandlerForge
 	            	BTAUtil.placeStructure(server, serverLevel, settings, location2, entity.blockPosition().offset(12, -3, -12));
 	            	data.setUnderwaterBaseGenerated(true);
 	        	}
+			}
+		}
+		
+		//FIXME in server, isClientSide always return false;
+		if(entity.level.isClientSide)
+		{
+			if(entity instanceof IMultipart multipart)
+			{
+				EntityPartBuilder<?> partBuilder = multipart.getPartBuilder();
+	    		BTANetwork.sendToServer(new BuildMultipartPacket(partBuilder.entity, partBuilder.partOffset, partBuilder.parts, partBuilder.partMap));
 			}
 		}
 	}
@@ -162,34 +172,7 @@ public class EventHandlerForge
 	public static void onPlayerTick(PlayerTickEvent event)
 	{
 		Player player = event.player;
-		int tick = BTAUtil.getPlayerAnimationTick(player);
 		BTAUtil.updatePlayerTick(player);
-		for(ItemStack stack : player.getInventory().items)
-		{
-			BTAUtil.updateItemTick(player, stack);
-		}
-		for(ItemStack stack : player.getInventory().armor)
-		{
-			BTAUtil.updateItemTick(player, stack);
-		}
-		for(ItemStack stack : player.getInventory().offhand)
-		{
-			BTAUtil.updateItemTick(player, stack);
-		}
-		AnimationState putDownState = BTAUtil.getPlayerAnimationState(player, SkeletalGunbladeItem.GUNBLADE_PUT_DOWN);
-		AnimationState bringOutState = BTAUtil.getPlayerAnimationState(player, SkeletalGunbladeItem.GUNBLADE_BRING_OUT);
-		if(!player.getItemInHand(InteractionHand.MAIN_HAND).is(BTAItems.SKELETAL_GUNBLADE.get()) && !putDownState.isStarted() && bringOutState.isStarted())
-		{
-			BTAUtil.startPlayerAnimation(player, SkeletalGunbladeItem.GUNBLADE_PUT_DOWN);
-			BTAUtil.setPlayerAnimationTick(player, 20);
-		}
-		if(tick <= 0)
-		{
-			if(putDownState.isStarted())
-			{
-				BTAUtil.stopAllPlayerAnimations(player);
-			}
-		}
 	}
     
     @SubscribeEvent

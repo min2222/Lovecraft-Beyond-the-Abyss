@@ -19,10 +19,12 @@ import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -33,6 +35,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<EntityGloomfish>
@@ -42,7 +45,7 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<
 
 	public Bounds bounds;
 	public final Collection<Boid.Obstacle> obstacles = new ArrayList<Boid.Obstacle>();
-	public final Map<EntityGloomfish, Boid> boids = new HashMap<EntityGloomfish, Boid>();
+	public final Map<EntityGloomfish, Boid> boids = new HashMap<>();
 	
 	public EntityGloomfish(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -131,9 +134,17 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
 	{
-		DeepAbyssUtil.spawnWithBoid(this, 9);
+		if(p_21436_ == MobSpawnType.NATURAL)
+		{
+			DeepAbyssUtil.spawnWithBoid(this, 9);
+		}
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
+	
+	public static boolean checkGloomfishSpawnRules(EntityType<? extends AbstractDeepAbyssCreature> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+		return pPos.getY() >= 10 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+    }
 	
 	@Override
 	public Vec3 getBoundSize()
