@@ -40,15 +40,6 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	}
 	
 	@Override
-	protected void registerGoals() 
-	{
-		if(this.isHead())
-		{
-			super.registerGoals();
-		}
-	}
-	
-	@Override
 	public void tick() 
 	{
 		super.tick();
@@ -186,6 +177,12 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	public boolean isHead()
 	{
 		return false;
+	}
+	
+	@Override
+	public boolean canSwim() 
+	{
+		return super.canSwim() && this.isHead();
 	}
 	
 	public void setHead(T p_37263_)

@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.BuildMultipartPacket;
 import com.min01.beyondtheabyss.network.UpdatePartPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.math.Quaternion;
@@ -44,31 +45,72 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	public EntityPartBuilder(T entity)
 	{
 		this.entity = entity;
-		this.rebuildHitbox();
+		if(!this.entity.useSubRoot() && this.entity.level.isClientSide)
+		{
+    		this.hitbox = this.buildHitbox();
+		}
 	}
 	
 	public void tick(float partialTick)
 	{
-        double posX = Mth.lerp(partialTick, this.entity.xOld, this.entity.getX());
-        double posY = Mth.lerp(partialTick, this.entity.yOld, this.entity.getY());
-        double posZ = Mth.lerp(partialTick, this.entity.zOld, this.entity.getZ());
+		if(this.entity.level.isClientSide)
+		{
+			Vec3 pos = this.entity.position();
+	        double posX = pos.x;
+	        double posY = pos.y;
+	        double posZ = pos.z;
 
-        EntityPart root = this.hitbox.getPart(ROOT);
-        
-        Vec3 renderOffset = this.getOffset();
-        root.setOffX(posX + renderOffset.x);
-        root.setOffY(posY + renderOffset.y);
-        root.setOffZ(posZ + renderOffset.z);
-        
-		this.partTick();
-        
-        QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
-        root.rotate(rotation);
+	        EntityPart root = this.hitbox.getPart(ROOT);
+	        
+	        Vec3 renderOffset = this.getOffset();
+	        root.setOffX(posX + renderOffset.x);
+	        root.setOffY(posY + renderOffset.y);
+	        root.setOffZ(posZ + renderOffset.z);
+	        
+			this.clientTick(BTAClientUtil.getModelFromEntity(this.entity));
+			this.partTick();
+	        
+	        QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
+	        root.rotate(rotation);
 
-        if(this.isInWater() && !this.entity.isInWater())
-        {
-        	root.setPivotY(-this.getWaterOffset());
-        }
+	        if(this.isInWater() && !this.entity.isInWater())
+	        {
+	        	root.setPivotY(-this.getWaterOffset());
+	        }
+	        
+	        if(this.entity.tickCount == 2)
+	        {
+	        	if(this.entity.useSubRoot())
+	        	{
+		    		this.hitbox = this.buildHitbox();
+	        	}
+	    		BTANetwork.sendToServer(new BuildMultipartPacket(this.entity, this.partOffset, this.parts, this.partMap, this.hitbox.getPartMap()));
+	        }
+		}
+		else
+		{
+			Vec3 pos = this.entity.position();
+	        double posX = pos.x;
+	        double posY = pos.y;
+	        double posZ = pos.z;
+
+	        EntityPart root = this.hitbox.getPart(ROOT);
+	        
+	        Vec3 renderOffset = this.getOffset();
+	        root.setOffX(posX + renderOffset.x);
+	        root.setOffY(posY + renderOffset.y);
+	        root.setOffZ(posZ + renderOffset.z);
+	        
+			this.partTick();
+	        
+	        QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
+	        root.rotate(rotation);
+
+	        if(this.isInWater() && !this.entity.isInWater())
+	        {
+	        	root.setPivotY(-this.getWaterOffset());
+	        }
+		}
 	}
 	
 	public void partTick()
@@ -114,7 +156,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	}
 
     @OnlyIn(Dist.CLIENT)
-	public void clientTick(HierarchicalModel<?> model, float partialTicks)
+	public void clientTick(HierarchicalModel<?> model)
 	{
 		for(ModelPart part : model.root().getAllParts().toList())
 		{
@@ -129,7 +171,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	}
 
     @OnlyIn(Dist.CLIENT)
-	public EntityBounds buildHitBox()
+	public EntityBounds buildHitbox()
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         EntityBounds.EntityBoundsBuilder builder = EntityBounds.builder();
@@ -383,24 +425,10 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     
     public void setupHitbox(Map<String, Vec3> partOffset, Map<String, String> parts, Map<String, Part> partMap, EntityBounds hitbox)
     {
-		this.partOffset.clear();
-		this.parts.clear();
-		this.partMap.clear();
 		this.partOffset.putAll(partOffset);
 		this.parts.putAll(parts);
 		this.partMap.putAll(partMap);
-		this.hitbox = hitbox.copy();
-    }
-    
-    public void rebuildHitbox()
-    {
-    	if(this.entity.level.isClientSide)
-    	{
-    		this.partOffset.clear();
-    		this.parts.clear();
-    		this.partMap.clear();
-    		this.hitbox = this.buildHitBox();
-    	}
+		this.hitbox = hitbox;
     }
 	
 	public float getRenderScale()

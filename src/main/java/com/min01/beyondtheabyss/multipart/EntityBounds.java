@@ -15,7 +15,6 @@ public class EntityBounds
 {
     private CompoundOrientedBox cache;
     private final Map<String, EntityPart> partMap;
-    private @Nullable
 
     EntityBounds(Map<String, EntityPart> partMap)
     {
@@ -30,6 +29,11 @@ public class EntityBounds
     public EntityPart getPart(String name)
     {
         return this.partMap.get(name);
+    }
+    
+    public Map<String, EntityPart> getPartMap()
+    {
+    	return this.partMap;
     }
     
     @Nullable
@@ -60,7 +64,7 @@ public class EntityBounds
                 value.setChanged(false);
             }
         }
-        if(changed) 
+        if(changed)
         {
             List<OrientedBox> parts = new ObjectArrayList<>(this.partMap.size());
             for(EntityPart value : this.partMap.values())
@@ -199,9 +203,9 @@ public class EntityBounds
     {
     	
     }
-
-	public EntityBounds copy()
-	{
-		return new EntityBounds(this.partMap);
-	}
+    
+    public static EntityBounds create(Map<String, EntityPart> partMap)
+    {
+    	return new EntityBounds(partMap);
+    }
 }

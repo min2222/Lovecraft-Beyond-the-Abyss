@@ -9,6 +9,8 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFallenDiver;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityFishBait;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
@@ -45,6 +47,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityBTACameraShake>> BTA_CAMERA_SHAKE = registerEntity("bta_camera_shake", createBuilder(EntityBTACameraShake::new, MobCategory.MISC));
 	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = registerEntity("submarine", createBuilder(EntitySubmarine::new, MobCategory.MISC).sized(6.0F, 6.0F));
 	public static final RegistryObject<EntityType<EntityChainTrapMaw>> CHAIN_TRAP_MAW = registerEntity("chain_trap_maw", createBuilder(EntityChainTrapMaw::new, MobCategory.MISC).sized(0.25F, 0.25F));
+	public static final RegistryObject<EntityType<EntityFishBait>> FISH_BAIT = registerEntity("fish_bait", createBuilder(EntityFishBait::new, MobCategory.MISC).sized(0.5F, 0.4F));
 
 	//projectile
 	public static final RegistryObject<EntityType<EntityThrownHarpoon>> THROWN_HARPOON = registerEntity("thrown_harpoon", EntityType.Builder.<EntityThrownHarpoon>of(EntityThrownHarpoon::new, MobCategory.MISC).sized(0.5F, 0.5F));
@@ -71,6 +74,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityKormosBody>> KORMOS_BODY = registerEntity("kormos_body", createBuilder(EntityKormosBody::new, MobCategory.WATER_CREATURE).sized(5.0F, 4.125F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
 	public static final RegistryObject<EntityType<EntityKormosTail>> KORMOS_TAIL = registerEntity("kormos_tail", createBuilder(EntityKormosTail::new, MobCategory.WATER_CREATURE).sized(5.0F, 4.125F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
 	public static final RegistryObject<EntityType<EntityCorpseAngler>> CORPSE_ANGLER = registerEntity("corpse_angler", createBuilder(EntityCorpseAngler::new, MobCategory.WATER_CREATURE).sized(3.0F, 4.75F));
+	public static final RegistryObject<EntityType<EntityFulgastra>> FULGASTRA = registerEntity("fulgastra", createBuilder(EntityFulgastra::new, MobCategory.WATER_CREATURE).sized(4.875F, 1.5625F));
 	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{

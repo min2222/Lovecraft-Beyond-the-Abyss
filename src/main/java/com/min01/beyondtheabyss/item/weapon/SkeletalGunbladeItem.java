@@ -12,10 +12,8 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,17 +24,12 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class SkeletalGunbladeItem extends SwordItem
 {
+    public static final String GUN_MODE = "GunMode";
+    public static final String IS_SELECTED = "isSelected";
     public static final String GUNBLADE_OPEN = "GunbladeOpen";
     public static final String GUNBLADE_CLOSE = "GunbladeClose";
     public static final String GUNBLADE_OPENED = "GunbladeOpened";
     public static final String GUNBLADE_CLOSED = "GunbladeClosed";
-    public static final String GUNBLADE_BRING_OUT = "GunbladeBringOut";
-    public static final String GUNBLADE_PUT_DOWN = "GunbladePutDown";
-    public static final String GUNBLADE_SWING = "GunbladeSwing";
-    public static final String GUNBLADE_SHOOT_LIGHT = "GunbladeShootLight";
-    public static final String GUN_MODE = "GunMode";
-    public static final String IS_SELECTED = "isSelected";
-    public int tickCount;
     
 	public SkeletalGunbladeItem(Item.Properties properties) 
 	{
@@ -52,15 +45,17 @@ public class SkeletalGunbladeItem extends SwordItem
 		{
 			if(isGunMode)
 			{
-	        	BTAUtil.startItemAnimation(stack, GUNBLADE_CLOSE, this.tickCount);
-				BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_CLOSE);
+				BTAUtil.stopItemAnimation(stack, GUNBLADE_OPEN);
+				BTAUtil.startItemAnimation(p_41433_.tickCount, stack, GUNBLADE_CLOSE);
+				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_CLOSE);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 			}
 			else
 			{
-	        	BTAUtil.startItemAnimation(stack, GUNBLADE_OPEN, this.tickCount);
-				BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_OPEN);
+				BTAUtil.stopItemAnimation(stack, GUNBLADE_CLOSE);
+				BTAUtil.startItemAnimation(p_41433_.tickCount, stack, GUNBLADE_OPEN);
+				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_OPEN);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 			}
@@ -70,29 +65,17 @@ public class SkeletalGunbladeItem extends SwordItem
 		{
 			if(isGunMode)
 			{
-				BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_SHOOT_LIGHT);
+				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_SHOOT_LIGHT);
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 10);
 			}
 		}
-		return super.use(p_41432_, p_41433_, p_41434_);
+		return InteractionResultHolder.consume(stack);
 	}
 	
 	@Override
 	public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) 
 	{
-		this.tickCount++;
-		if(p_41406_ instanceof Player player)
-		{
-			BTAUtil.updateItemTick(player, p_41404_);
-		}
-		AnimationState bringOutState = BTAUtil.getPlayerAnimationState(p_41406_, GUNBLADE_BRING_OUT);
-		if(p_41408_ && !bringOutState.isStarted() && !isSelected(p_41404_))
-		{
-			//FIXME
-			//BTAUtil.startPlayerAnimation(p_41406_, GUNBLADE_BRING_OUT);
-		}
 		setSelected(p_41404_, p_41408_);
-		super.inventoryTick(p_41404_, p_41405_, p_41406_, p_41407_, p_41408_);
 	}
 	
 	@Override
@@ -101,22 +84,11 @@ public class SkeletalGunbladeItem extends SwordItem
 		boolean isGunMode = isGunMode(stack);
 		if(!isGunMode)
 		{
-			BTAUtil.startPlayerAnimation(entity, GUNBLADE_SWING);
+			//BTAUtil.startPlayerAnimation(entity, GUNBLADE_SWING);
 			//TODO play with correct timing
 			//entity.playSound(BTASounds.GUNBLADE_SWING.get());
 		}
 		return true;
-	}
-	
-	@Override
-	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) 
-	{
-		this.tickCount++;
-		if(entity.getThrowingEntity() instanceof LivingEntity living)
-		{
-			BTAUtil.updateItemTick(living, stack);
-		}
-		return super.onEntityItemUpdate(stack, entity);
 	}
 	
 	public static boolean isSelected(ItemStack stack) 

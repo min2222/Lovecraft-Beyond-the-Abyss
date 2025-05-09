@@ -3,30 +3,25 @@ package com.min01.beyondtheabyss.event;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
-import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -74,47 +69,50 @@ public class ClientEventHandlerForge
         Player player = BTAClientUtil.MC.player;
         float delta = BTAClientUtil.MC.getFrameTime();
         float ticksExistedDelta = player.tickCount + delta;
-        if(player != null && BTAConfig.cameraShakes.get())
+        if(player != null)
         {
-            float shakeAmplitude = 0.0F;
-            for(EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0F))) 
-            {
-                if(cameraShake.distanceTo(player) < cameraShake.getRadius())
+        	if(BTAConfig.cameraShakes.get())
+        	{
+                float shakeAmplitude = 0.0F;
+                for(EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0F))) 
                 {
-                    shakeAmplitude += cameraShake.getShakeAmount(player, delta);
+                    if(cameraShake.distanceTo(player) < cameraShake.getRadius())
+                    {
+                        shakeAmplitude += cameraShake.getShakeAmount(player, delta);
+                    }
                 }
-            }
-            if(shakeAmplitude > 1.0F)
+                if(shakeAmplitude > 1.0F)
+                {
+                    shakeAmplitude = 1.0F;
+                }
+                event.setPitch((float)(event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3.0F + 2.0F) * 25.0));
+                event.setYaw((float)(event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5.0F + 1.0F) * 25.0));
+                event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
+        	}
+        	
+            if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine && event.getCamera().isDetached())
             {
-                shakeAmplitude = 1.0F;
+                event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
             }
-            event.setPitch((float)(event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3.0F + 2.0F) * 25.0));
-            event.setYaw((float)(event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5.0F + 1.0F) * 25.0));
-            event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
         }
     }
     
 	@SubscribeEvent
-	public static void onMobEffectAdded(MobEffectEvent.Added event)
+	public static void onRenderPlayer(RenderPlayerEvent.Pre event)
 	{
-		MobEffectInstance instance = event.getEffectInstance();
-		MobEffect effect = instance.getEffect();
-		if(effect == BTAEffects.HALLUCINATION.get())
-		{
-			HallucinationOverlay.ADD = true;
-			HallucinationOverlay.reset();
-		}
+		Player player = event.getEntity();
+        if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine submarine)
+        {
+        	float partialTicks = event.getPartialTick();
+        	PoseStack stack = event.getPoseStack();
+    		float yBodyRot = Mth.rotLerp(partialTicks, submarine.yBodyRotO, submarine.yBodyRot);
+    		float yHeadRot = Mth.rotLerp(partialTicks, submarine.yHeadRotO, submarine.yHeadRot);
+    		float yRot = yHeadRot - yBodyRot;
+            //float xRot = Mth.lerp(partialTicks, submarine.xRotO, submarine.getXRot());
+            stack.mulPose(Vector3f.YP.rotationDegrees(yRot));
+            //stack.mulPose(Vector3f.XP.rotationDegrees(xRot));
+        }
 	}
-	
-    @SubscribeEvent
-    public static void onRenderLivingPost(RenderLivingEvent.Post<LivingEntity, HierarchicalModel<LivingEntity>> event) 
-    {
-    	if(event.getEntity() instanceof IMultipart partBuilder)
-    	{
-    		EntityPartBuilder<?> builder = partBuilder.getPartBuilder();
-    		builder.clientTick(event.getRenderer().getModel(), event.getPartialTick());
-    	}
-    }
 	
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent event) 

@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.common.collect.ImmutableList;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.lights.DynamicLights;
 import com.min01.beyondtheabyss.lights.IDynamicLight;
@@ -53,30 +53,6 @@ import net.minecraftforge.fluids.FluidType;
 @Mixin(Entity.class)
 public abstract class MixinEntity implements IDynamicLight
 {
-	@Shadow
-	public Level level;
-
-	@Shadow
-	public abstract double getX();
-
-	@Shadow
-	public abstract double getEyeY();
-
-	@Shadow
-	public abstract double getZ();
-
-	@Shadow
-	public abstract double getY();
-
-	@Shadow
-	public abstract BlockPos getOnPos();
-
-	@Shadow
-	public abstract boolean isRemoved();
-
-	@Shadow
-	public abstract ChunkPos chunkPosition();
-
 	@Unique
 	protected int luminance = 0;
 	
@@ -101,29 +77,22 @@ public abstract class MixinEntity implements IDynamicLight
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void tickTail(CallbackInfo ci) 
 	{
-		if(this.level.isClientSide)
+		if(Entity.class.cast(this).level.isClientSide)
 		{
-			if(this.isRemoved()) 
+			if(Entity.class.cast(this).isRemoved()) 
 			{
 				this.setDynamicLightEnabled(false);
 			}
 			else
 			{
-				if(Entity.class.cast(this) instanceof Player player)
+				if(this.shouldUpdateDynamicLight())
 				{
-					ItemStack mainHandStack = player.getMainHandItem();
-					ItemStack offHandStack = player.getOffhandItem();
-					boolean flag1 = !mainHandStack.isEmpty() && mainHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(mainHandStack);
-					boolean flag2 = !offHandStack.isEmpty() && offHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(offHandStack);
-					if(flag1 || flag2)
-					{
-						this.dynamicLightTick();
-						DynamicLights.updateTracking(this);
-					}
-					else
-					{
-						this.setDynamicLightEnabled(false);
-					}
+					this.dynamicLightTick();
+					DynamicLights.updateTracking(this);
+				}
+				else
+				{
+					this.setDynamicLightEnabled(false);
 				}
 			}
 		}
@@ -132,7 +101,7 @@ public abstract class MixinEntity implements IDynamicLight
 	@Inject(method = "remove", at = @At("TAIL"))
 	private void remove(CallbackInfo ci) 
 	{
-		if(this.level.isClientSide)
+		if(Entity.class.cast(this).level.isClientSide)
 		{
 			this.setDynamicLightEnabled(false);
 		}
@@ -159,16 +128,25 @@ public abstract class MixinEntity implements IDynamicLight
 	@Unique
 	public Vec3 getLightPos()
 	{
-		Entity entity = Entity.class.cast(this);
-    	Vec3 lightPos = BTAUtil.getLookPos(entity.getXRot(), entity.getYRot(), 0, 8.0F);
-    	HitResult result = entity.level.clip(new ClipContext(entity.getEyePosition(), entity.getEyePosition().add(lightPos), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
-    	return result.getLocation();
+		if(Entity.class.cast(this) instanceof Player player)
+		{
+	    	Vec3 lightPos = BTAUtil.getLookPos(player.getRotationVector(), player.getEyePosition(), 0.0F, 0.0F, 8.0F);
+	    	HitResult result = player.level.clip(new ClipContext(player.getEyePosition(), lightPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+	    	return result.getLocation();
+		}
+		if(Entity.class.cast(this) instanceof EntitySubmarine submarine)
+		{
+	    	Vec3 lightPos = BTAUtil.getLookPos(submarine.getRotationVector(), submarine.position(), 0.0F, 2.0F, 6.0F);
+	    	HitResult result = submarine.level.clip(new ClipContext(submarine.position(), lightPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, submarine));
+	    	return result.getLocation();
+		}
+		return Vec3.ZERO;
 	}
 
 	@Override
 	public Level getDynamicLightLevel() 
 	{
-		return this.level;
+		return Entity.class.cast(this).level;
 	}
 
 	@Override
@@ -187,6 +165,10 @@ public abstract class MixinEntity implements IDynamicLight
 			boolean flag1 = !mainHandStack.isEmpty() && mainHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(mainHandStack);
 			boolean flag2 = !offHandStack.isEmpty() && offHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(offHandStack);
 			return flag1 || flag2;
+		}
+		if(Entity.class.cast(this) instanceof EntitySubmarine submarine)
+		{
+			return submarine.getFirstPassenger() != null;
 		}
 		return false;
 	}
@@ -216,32 +198,32 @@ public abstract class MixinEntity implements IDynamicLight
 		{
 			return false;
 		}
-		double deltaX = this.getX() - this.prevX;
-		double deltaY = this.getY() - this.prevY;
-		double deltaZ = this.getZ() - this.prevZ;
+		double deltaX = Entity.class.cast(this).getX() - this.prevX;
+		double deltaY = Entity.class.cast(this).getY() - this.prevY;
+		double deltaZ = Entity.class.cast(this).getZ() - this.prevZ;
 
 		int luminance = this.getLuminance();
 
 		if(Math.abs(deltaX) > 0.1D || Math.abs(deltaY) > 0.1D || Math.abs(deltaZ) > 0.1D || luminance != this.lastLuminance) 
 		{
-			this.prevX = this.getX();
-			this.prevY = this.getY();
-			this.prevZ = this.getZ();
+			this.prevX = Entity.class.cast(this).getX();
+			this.prevY = Entity.class.cast(this).getY();
+			this.prevZ = Entity.class.cast(this).getZ();
 			this.lastLuminance = luminance;
 
-			var newPos = new LongOpenHashSet();
+			LongOpenHashSet newPos = new LongOpenHashSet();
 
 			if(luminance > 0) 
 			{
-				var entityChunkPos = this.chunkPosition();
-				var chunkPos = new BlockPos.MutableBlockPos(entityChunkPos.x, SectionPos.blockToSectionCoord(this.getEyeY()), entityChunkPos.z);
+				ChunkPos entityChunkPos = Entity.class.cast(this).chunkPosition();
+				BlockPos.MutableBlockPos chunkPos = new BlockPos.MutableBlockPos(entityChunkPos.x, SectionPos.blockToSectionCoord(Entity.class.cast(this).getEyeY()), entityChunkPos.z);
 
 				DynamicLights.scheduleChunkRebuild(renderer, chunkPos);
 				DynamicLights.updateTrackedChunks(chunkPos, this.trackedLitChunkPos, newPos);
 
-				var directionX = (this.getOnPos().getX() & 15) >= 8 ? Direction.EAST : Direction.WEST;
-				var directionY = ((int) Mth.floor(this.getEyeY()) & 15) >= 8 ? Direction.UP : Direction.DOWN;
-				var directionZ = (this.getOnPos().getZ() & 15) >= 8 ? Direction.SOUTH : Direction.NORTH;
+				Direction directionX = (Entity.class.cast(this).getOnPos().getX() & 15) >= 8 ? Direction.EAST : Direction.WEST;
+				Direction directionY = ((int) Mth.floor(Entity.class.cast(this).getEyeY()) & 15) >= 8 ? Direction.UP : Direction.DOWN;
+				Direction directionZ = (Entity.class.cast(this).getOnPos().getZ() & 15) >= 8 ? Direction.SOUTH : Direction.NORTH;
 
 				for(int i = 0; i < 7; i++) 
 				{
@@ -277,7 +259,7 @@ public abstract class MixinEntity implements IDynamicLight
 	@OnlyIn(Dist.CLIENT)
 	public void scheduleTrackedChunksRebuild(@NotNull LevelRenderer renderer)
 	{
-		if(BTAClientUtil.MC.level == this.level)
+		if(BTAClientUtil.MC.level == Entity.class.cast(this).level)
 		{
 			for(long pos : this.trackedLitChunkPos)
 			{
@@ -306,15 +288,6 @@ public abstract class MixinEntity implements IDynamicLight
 				item.setDeltaMovement(item.getDeltaMovement().subtract(0, 0.01F, 0));
 			}
 		}
-    }
-    
-    @Inject(method = "setPosRaw", at = @At("TAIL"))
-    private void setPosRaw(double x, double y, double z, CallbackInfo ci)
-    {
-        if(Entity.class.cast(this) instanceof IMultipart multipart)
-        {
-        	multipart.onSetPos(x, y, z);
-        }
     }
 
     @Inject(method = "isInWater", at = @At("TAIL"), cancellable = true)
@@ -349,7 +322,7 @@ public abstract class MixinEntity implements IDynamicLight
     	}
     }
 
-    @Inject(method = "collide", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "collide", at = @At("RETURN"), cancellable = true)
     private void collide(Vec3 p_20273_, CallbackInfoReturnable<Vec3> cir)
     {
     	Entity entity = Entity.class.cast(this);
@@ -392,12 +365,12 @@ public abstract class MixinEntity implements IDynamicLight
         } 
         else 
         {
-        	Predicate<Entity> predicate = p_186451_ == null ? EntitySelector.CAN_BE_COLLIDED_WITH : EntitySelector.NO_SPECTATORS.and(p_186451_::canCollideWith);
+        	Predicate<Entity> predicate = p_186451_ == null ? EntitySelector.NO_SPECTATORS.and(t -> t instanceof IMultipart multipart && !multipart.getCollidePart().isEmpty()) : EntitySelector.NO_SPECTATORS.and(t -> t instanceof IMultipart multipart && !multipart.getCollidePart().isEmpty() && !p_186451_.isPassengerOfSameVehicle(t));
         	List<Entity> list = level.getEntities(p_186451_, p_186452_.inflate(1.0E-7D), predicate);
         	if(list.isEmpty())
         	{
         		return List.of();
-        	} 
+        	}
         	else
         	{
         		ImmutableList.Builder<OrientedBox> builder = ImmutableList.builderWithExpectedSize(list.size());
@@ -406,10 +379,6 @@ public abstract class MixinEntity implements IDynamicLight
         			if(entity.getBoundingBox() instanceof CompoundOrientedBox compoundBox)
         			{
         				builder.addAll(compoundBox.boxes.stream().filter(t -> t.collide).toList());
-        			}
-        			else
-        			{
-        				return List.of();
         			}
         		}
         		return builder.build();

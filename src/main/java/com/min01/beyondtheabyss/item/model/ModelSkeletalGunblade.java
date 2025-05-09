@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.item.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.item.animation.SkeletalGunbladeAnimation;
 import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -90,10 +89,10 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 	public void setupAnim(ItemStack stack, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animate(BTAUtil.getItemAnimationState(stack, SkeletalGunbladeItem.GUNBLADE_OPEN), SkeletalGunbladeAnimation.GUNBLADE_OPEN, ageInTicks);
-		this.animate(BTAUtil.getItemAnimationState(stack, SkeletalGunbladeItem.GUNBLADE_CLOSE), SkeletalGunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
-		this.animate(BTAUtil.getItemAnimationState(stack, SkeletalGunbladeItem.GUNBLADE_OPENED), SkeletalGunbladeAnimation.GUNBLADE_OPENED, ageInTicks);
-		this.animate(BTAUtil.getItemAnimationState(stack, SkeletalGunbladeItem.GUNBLADE_CLOSED), SkeletalGunbladeAnimation.GUNBLADE_CLOSED, ageInTicks);
+		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_OPEN, SkeletalGunbladeAnimation.GUNBLADE_OPEN, ageInTicks);
+		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_CLOSE, SkeletalGunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
+		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_OPENED, SkeletalGunbladeAnimation.GUNBLADE_OPENED, ageInTicks);
+		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_CLOSED, SkeletalGunbladeAnimation.GUNBLADE_CLOSED, ageInTicks);
 		this.EnergyRay.visible = false;
 	}
 	

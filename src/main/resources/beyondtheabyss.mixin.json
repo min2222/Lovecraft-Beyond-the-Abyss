@@ -5,16 +5,17 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"MixinEntity",
-		"MixinSwimNodeEvaluator"
+		"MixinSwimNodeEvaluator",
+		"MixinItemStack"
 	],
 	"client": [
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
 		"MixinPlayerModel",
+		"MixinEntityRenderDispatcher",
 		"lights.MixinEntityRenderer",
 		"lights.MixinClientLevel",
-		"lights.MixinMinecraft",
-		"multipart.MixinEntityRenderDispatcher"
+		"lights.MixinMinecraft"
 	],
 	"server": [],
 	"injectors": {

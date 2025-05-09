@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -142,7 +143,11 @@ public class BTAClientUtil
         PoseStack poseStack = new PoseStack();
         if(translateToEntity)
         {
-        	poseStack.translate(entity.getX(), entity.getY(), entity.getZ());
+            float partialTick = MC.getFrameTime();
+            double x = Mth.lerp((double)partialTick, entity.xOld, entity.getX());
+            double y = Mth.lerp((double)partialTick, entity.yOld, entity.getY());
+            double z = Mth.lerp((double)partialTick, entity.zOld, entity.getZ());
+        	poseStack.translate(x, y, z);
         }
         poseStack.mulPose(new Quaternion((float)rotation.x, (float)-rotation.y + 180.0F, (float)rotation.z, true));
         poseStack.scale(-1.0F, -1.0F, 1.0F);

@@ -32,7 +32,7 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	@Override
 	public void renderByItem(ItemStack p_108830_, TransformType p_108831_, PoseStack p_108832_, MultiBufferSource p_108833_, int p_108834_, int p_108835_)
 	{
-		if(p_108830_.getItem() instanceof SkeletalGunbladeItem gunblade)
+		if(p_108830_.getItem() instanceof SkeletalGunbladeItem)
 		{
 	        p_108832_.pushPose();
 	        p_108832_.translate(0.5F, 0.6F, 0.3F);
@@ -40,7 +40,7 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	        p_108832_.translate(0.0F, -1.0F, 0.0F);
 	        VertexConsumer eyeConsumer = p_108833_.getBuffer(BTARenderType.eyesFix(GUNBLADE_LAYER));
 	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(GUNBLADE_TEXTURE), false, p_108830_.hasFoil());
-			this.modelGunblade.setupAnim(p_108830_, 0, 0, gunblade.tickCount + BTAClientUtil.MC.getFrameTime(), 0, 0);
+			this.modelGunblade.setupAnim(p_108830_, 0, 0, BTAClientUtil.MC.player.tickCount + BTAClientUtil.MC.getFrameTime(), 0, 0);
 	        this.modelGunblade.renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
 	        this.modelGunblade.renderToBuffer(p_108832_, eyeConsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
 	        p_108832_.popPose();

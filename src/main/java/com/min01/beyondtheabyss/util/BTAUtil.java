@@ -9,17 +9,13 @@ import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl.BTAAbility;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilityCapability;
-import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
-import com.min01.beyondtheabyss.capabilities.IPlayerAnimationCapability;
-import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
-import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
+import com.min01.beyondtheabyss.item.animation.IAnimatableItemStack;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -48,6 +44,60 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 public class BTAUtil 
 {
     public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
+    
+    public static void startItemAnimation(int tickCount, ItemStack stack, String name)
+    {
+    	AnimationState state = getAnimation(stack, name);
+    	state.startIfStopped(tickCount);
+    	saveAnimationTime(stack.getOrCreateTag(), name, state);
+    }
+    
+    public static void stopItemAnimation(ItemStack stack, String name)
+    {
+    	AnimationState state = getAnimation(stack, name);
+    	state.stop();
+    	saveAnimationTime(stack.getOrCreateTag(), name, state);
+    }
+    
+    public static void saveAnimationTime(CompoundTag tag, String name, AnimationState state)
+    {
+        CompoundTag animationsTag;
+        if(tag.contains("Animations", 10))
+        {
+            animationsTag = tag.getCompound("Animations");
+        }
+        else
+        {
+            animationsTag = new CompoundTag();
+            tag.put("Animations", animationsTag);
+        }
+        CompoundTag timeTag = new CompoundTag();
+        timeTag.putLong("LastTime", state.lastTime);
+        timeTag.putLong("AccumulatedTime", state.accumulatedTime);
+        animationsTag.put(name, timeTag);
+    }
+    
+    public static void setAnimationTime(AnimationState state, String name, ItemStack stack)
+    {
+        CompoundTag tag = stack.getOrCreateTag();
+        if(tag.contains("Animations", 10)) 
+        {
+            CompoundTag animationsTag = tag.getCompound("Animations");
+            if(animationsTag.contains(name, 10))
+            {
+                CompoundTag timeTag = animationsTag.getCompound(name);
+                state.lastTime = timeTag.getLong("LastTime");
+                state.accumulatedTime = timeTag.getLong("AccumulatedTime");
+            }
+        }
+    }
+    
+    public static AnimationState getAnimation(ItemStack stack, String name)
+    {
+    	AnimationState state = ((IAnimatableItemStack) (Object) stack).getAnimationState(name);
+    	setAnimationTime(state, name, stack);
+    	return state;
+    }
     
 	public static void animateWhen(AnimationState state, boolean flag, int tick) 
 	{
@@ -91,195 +141,6 @@ public class BTAUtil
 		{
 			consumer.accept(level);
 		});
-	}
-    
-    public static void updatePlayerTick(LivingEntity player)
-    {
-    	player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
-    	{
-    		t.update();
-    	});
-    }
-    
-    public static void updateItemTick(LivingEntity player, ItemStack stack)
-    {
-    	stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
-    	{
-    		t.update();
-    		t.setEntity(player);
-    	});
-    }
-    
-    public static int getPlayerAnimationTick(LivingEntity player)
-    {
-        IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-        return cap.getAnimationTick();
-    }
-
-    public static void setPlayerAnimationTick(LivingEntity player, int tick)
-    {
-    	player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
-    	{
-    		t.setAnimationTick(tick);
-    	});
-    }
-    
-    public static int getItemAnimationTick(ItemStack stack)
-    {
-        IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-        return cap.getAnimationTick();
-    }
-
-    public static void setItemAnimationTick(ItemStack stack, int tick)
-    {
-    	stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
-    	{
-    		t.setAnimationTick(tick);
-    	});
-    }
-    
-    public static void startItemAnimation(ItemStack stack, String animationName, int tickCount)
-    {
-    	stopAllItemAnimations(stack);
-    	AnimationState animationState = getItemAnimationState(stack, animationName);
-    	animationState.startIfStopped(tickCount);
-    	setItemAnimationState(stack, animationState, animationName);
-    }
-    
-    public static void stopAllItemAnimations(ItemStack stack)
-    {
-    	stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
-    	{
-    		ListTag list = t.getTag().getLeft();
-    		for(int i = 0; i < list.size(); ++i)
-    		{
-    			CompoundTag compoundTag = list.getCompound(i);
-    	    	AnimationState animationState = getItemAnimationState(stack, compoundTag.getString("Name"));
-    	    	animationState.stop();
-    	    	setItemAnimationState(stack, animationState, compoundTag.getString("Name"));
-    		}
-    	});
-    }
-    
-    public static void stopItemAnimation(ItemStack stack, String animationName)
-    {
-    	AnimationState animationState = getItemAnimationState(stack, animationName);
-    	animationState.stop();
-    	setItemAnimationState(stack, animationState, animationName);
-    }
-    
-    public static void startPlayerAnimation(Entity player, String animationName)
-    {
-    	stopAllPlayerAnimations(player);
-    	AnimationState animationState = getPlayerAnimationState(player, animationName);
-    	animationState.startIfStopped(player.tickCount);
-    	setPlayerAnimationState(player, animationState, animationName);
-    }
-    
-    public static void stopAllPlayerAnimations(Entity player)
-    {
-    	player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
-    	{
-    		ListTag list = t.getTag().getLeft();
-    		for(int i = 0; i < list.size(); ++i)
-    		{
-    			CompoundTag compoundTag = list.getCompound(i);
-    	    	AnimationState animationState = getPlayerAnimationState(player, compoundTag.getString("Name"));
-    	    	animationState.stop();
-    	    	setPlayerAnimationState(player, animationState, compoundTag.getString("Name"));
-    		}
-    	});
-    }
-    
-    public static void stopPlayerAnimation(Entity player, String animationName)
-    {
-    	AnimationState animationState = getPlayerAnimationState(player, animationName);
-    	animationState.stop();
-    	setPlayerAnimationState(player, animationState, animationName);
-    }
-    
-    public static AnimationState getPlayerAnimationState(Entity player, String animationName)
-    {
-        IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-        return cap.getAnimationState(animationName);
-    }
-
-    public static void setPlayerAnimationState(Entity player, AnimationState state, String animationName)
-    {
-    	player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
-    	{
-    		t.setAnimationState(state, animationName);
-    	});
-    }
-	
-    public static AnimationState getItemAnimationState(ItemStack stack, String animationName)
-    {
-        IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-        return cap.getAnimationState(animationName);
-    }
-
-    public static void setItemAnimationState(ItemStack stack, AnimationState state, String animationName)
-    {
-    	stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
-    	{
-    		t.setAnimationState(state, animationName);
-    	});
-    }
-	
-	public static void writeAnimationState(ListTag list, AnimationState state, String animationName)
-	{
-		CompoundTag compoundTag = getAnimationTag(list, animationName);
-		compoundTag.putString("Name", animationName);
-		compoundTag.putLong("LastTime", state.lastTime);
-		compoundTag.putLong("AccumulatedTime", state.accumulatedTime);
-		if(!hasAnimation(list, animationName))
-		{
-			list.add(compoundTag);
-		}
-	}
-	
-	public static boolean hasAnimation(ListTag list, String animationName)
-	{
-		boolean flag = false;
-		for(int i = 0; i < list.size(); ++i)
-		{
-			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name").equals(animationName))
-			{
-				flag = true;
-				break;
-			}
-		}
-		return flag;
-	}
-	
-	public static CompoundTag getAnimationTag(ListTag list, String animationName)
-	{
-		for(int i = 0; i < list.size(); ++i)
-		{
-			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name").equals(animationName))
-			{
-				return compoundTag;
-			}
-		}
-		return new CompoundTag();
-	}
-	
-	public static AnimationState readAnimationState(ListTag list, String animationName)
-	{
-		AnimationState state = new AnimationState();
-		for(int i = 0; i < list.size(); ++i)
-		{
-			CompoundTag compoundTag = list.getCompound(i);
-			if(compoundTag.getString("Name").equals(animationName))
-			{
-				state.lastTime = compoundTag.getLong("LastTime");
-				state.accumulatedTime = compoundTag.getLong("AccumulatedTime");
-				return state;
-			}
-		}
-		return state;
 	}
 	
 	public static Vec3 getRandomPosition(Entity entity, int range)

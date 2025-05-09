@@ -1,9 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,8 +11,6 @@ import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.IBoid;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.Boid;
-import com.min01.beyondtheabyss.misc.Boid.Bounds;
-import com.min01.beyondtheabyss.misc.Boid.Obstacle;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -38,14 +34,14 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<EntityGloomfish>
+public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid
 {
 	public static final EntityDataAccessor<Optional<UUID>> LEADER_UUID = SynchedEntityData.defineId(EntityGloomfish.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGloomfish.class, EntityDataSerializers.BOOLEAN);
 
-	public Bounds bounds;
-	public final Collection<Boid.Obstacle> obstacles = new ArrayList<Boid.Obstacle>();
-	public final Map<EntityGloomfish, Boid> boids = new HashMap<>();
+	public Boid boid;
+	public final List<Boid> boids = new ArrayList<>();
+	public final List<Boid.Obstacle> obstacles = new ArrayList<>();
 	
 	public EntityGloomfish(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -65,6 +61,13 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<
     	super.defineSynchedData();
     	this.entityData.define(LEADER_UUID, Optional.empty());
     	this.entityData.define(IS_LEADER, false);
+    }
+    
+    @Override
+    public void onAddedToWorld() 
+    {
+    	super.onAddedToWorld();
+    	this.boid = new Boid(this, new Vec3(8, 8, 8));
     }
 
 	@Override
@@ -98,6 +101,29 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<
 	{
 		super.tick();
 		DeepAbyssUtil.fishFlopping(this);
+		for(int x = -1; x < 1; x++) 
+		{
+			for(int y = -1; y < 5; y++)
+			{
+				for(int z = -1; z < 1; z++)
+				{
+					BlockPos pos = this.blockPosition().offset(x, y, z);
+					if(this.level.getBlockState(pos).isCollisionShapeFullBlock(this.level, pos) || this.level.getBlockState(pos).isAir()) 
+					{
+						this.obstacles.add(new Boid.Obstacle(Vec3.atCenterOf(pos), 5, 0.1F));
+					}
+				}
+			}
+		}
+		List<EntityGloomfish> list = this.level.getEntitiesOfClass(EntityGloomfish.class, this.getBoundingBox().inflate(5.0F));
+		list.forEach(t -> 
+		{
+			if(!this.boids.contains(t.boid))
+			{
+				this.boids.add(t.boid);
+			}
+		});
+		this.boid.update(this.boids, this.obstacles, true, true, true, 5.0F, 0.5F);
 	}
 	
     @Override
@@ -126,19 +152,29 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<
     }
 	
 	@Override
-	public boolean canSwim() 
-	{
-		return false;
-	}
-	
-	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
 	{
-		if(p_21436_ == MobSpawnType.NATURAL)
+		super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		if(p_21437_ == null)
 		{
-			DeepAbyssUtil.spawnWithBoid(this, 9);
+			p_21437_ = new GloomfishSpawnGroupData(this);
+		} 
+		else
+		{
+			this.setLeader(((GloomfishSpawnGroupData)p_21437_).leader);
 		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return p_21437_;
+	}
+	
+	public static class GloomfishSpawnGroupData implements SpawnGroupData 
+	{
+		public final EntityGloomfish leader;
+
+		public GloomfishSpawnGroupData(EntityGloomfish gloomfish)
+		{
+			gloomfish.setLeader(true);
+			this.leader = gloomfish;
+		}
 	}
 	
 	public static boolean checkGloomfishSpawnRules(EntityType<? extends AbstractDeepAbyssCreature> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
@@ -146,49 +182,16 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<
 		return pPos.getY() >= 10 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
-	@Override
-	public Vec3 getBoundSize()
-	{
-		return new Vec3(8, 8, 8);
-	}
-	
-	@Override
-	public Map<EntityGloomfish, Boid> getBoid() 
-	{
-		return this.boids;
-	}
-	
-	@Override
-	public Collection<Obstacle> getObstacle() 
-	{
-		return this.obstacles;
-	}
-	
-	@Override
-	public Bounds getBoidBounds() 
-	{
-		return this.bounds;
-	}
-    
-	@Override
-	public void setBound(Bounds bounds)
-	{
-		this.bounds = bounds;
-	}
-	
-	@Override
     public void setLeader(boolean value)
     {
     	this.entityData.set(IS_LEADER, value);
     }
 
-	@Override
     public boolean isLeader()
     {
     	return this.entityData.get(IS_LEADER);
     }
 	
-	@Override
 	public void setLeader(EntityGloomfish leader)
 	{
 		if(leader == null) 
@@ -202,7 +205,6 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<
 	}
 	
 	@Nullable
-	@Override
 	public EntityGloomfish getLeader() 
 	{
 		if(this.entityData.get(LEADER_UUID).isPresent()) 
@@ -210,5 +212,11 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid<
 			return (EntityGloomfish) BTAUtil.getEntityByUUID(this.level, this.entityData.get(LEADER_UUID).get());
 		}
 		return null;
+	}
+
+	@Override
+	public Vec3 getBoidDirection()
+	{
+		return this.boid.direction;
 	}
 }

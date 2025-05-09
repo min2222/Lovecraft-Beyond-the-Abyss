@@ -97,18 +97,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	}
 	
 	@Override
-	public void onSetPos(double x, double y, double z) 
-	{
-		if(this.tickCount <= 2)
-		{
-			if(this.partBuilder != null)
-			{
-				this.partBuilder.tick(1.0F);
-			}
-		}
-	}
-	
-	@Override
 	public Vec3[] getPosArray() 
 	{
 		return this.posArray;

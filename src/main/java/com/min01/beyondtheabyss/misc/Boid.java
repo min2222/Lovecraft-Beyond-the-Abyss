@@ -3,12 +3,16 @@ package com.min01.beyondtheabyss.misc;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 //https://github.com/TheCymaera/minecraft-boids/tree/master
 public class Boid
 {
+	public final Entity entity;
 	public Bounds bounds;
+	public Vec3 boundsSize;
 	public Vec3 position;
 	public Vec3 velocity = Vec3.ZERO;
 
@@ -16,20 +20,28 @@ public class Boid
 	// this will give us a non-zero vector for rendering.
 	public Vec3 direction = new Vec3(1, 0, 0);
 
-	public Boid(Vec3 position, Bounds bounds)
+	public Boid(Entity entity, Vec3 boundsSize)
 	{
-		this.position = position;
-		this.bounds = bounds;
+		this.entity = entity;
+		this.bounds = Bounds.fromCenter(entity.position(), boundsSize);
+		this.boundsSize = boundsSize;
+		this.position = new Vec3(this.bounds.minX() + Math.random() * this.bounds.size.x, this.bounds.minY() + Math.random() * this.bounds.size.y, this.bounds.minZ() + Math.random() * this.bounds.size.z);
 		this.velocity = new Vec3(Math.random(), Math.random(), Math.random());
 	}
 
-	public void update(boolean isWater, Collection<Boid> boids, Collection<Boid.Obstacle> obstacles, boolean avoidance, boolean alignment, boolean cohesion, float flockRadius, float maxVelocity) 
+	public void update(Collection<Boid> boids, Collection<Boid.Obstacle> obstacles, boolean avoidance, boolean alignment, boolean cohesion, float flockRadius, float maxVelocity) 
 	{
+		if(this.entity.tickCount % 60 == 0)
+		{
+			this.bounds = Bounds.fromCenter(this.entity.position(), this.boundsSize);
+			this.position = new Vec3(this.bounds.minX() + Math.random() * this.bounds.size.x, this.bounds.minY() + Math.random() * this.bounds.size.y, this.bounds.minZ() + Math.random() * this.bounds.size.z);
+		}
+		
 		Collection<Boid> flock = this.getInRange(boids, this.position, flockRadius);
 		
 		Vec3 acceleration = Vec3.ZERO;
 		
-		acceleration = acceleration.add(this.stayInBounds(isWater));
+		acceleration = acceleration.add(this.stayInBounds(this.entity.level.getBlockState(this.entity.blockPosition().above()).is(Blocks.WATER)));
 
 		if(avoidance)
 		{
@@ -63,6 +75,7 @@ public class Boid
 			}
 			this.direction = this.velocity;
 		}
+		
 		this.position = this.position.add(this.velocity);
 	}
 

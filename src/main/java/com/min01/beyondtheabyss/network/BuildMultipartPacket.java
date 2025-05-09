@@ -2,11 +2,11 @@ package com.min01.beyondtheabyss.network;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
+import com.min01.beyondtheabyss.multipart.EntityPart;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder.Part;
 import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -23,21 +23,24 @@ public class BuildMultipartPacket
 	public final Map<String, Vec3> partOffset;
 	public final Map<String, String> parts;
 	public final Map<String, Part> partMap;
+	public final Map<String, EntityPart> map;
 
-	public BuildMultipartPacket(Entity entity, Map<String, Vec3> partOffset, Map<String, String> parts, Map<String, Part> partMap) 
+	public BuildMultipartPacket(Entity entity, Map<String, Vec3> partOffset, Map<String, String> parts, Map<String, Part> partMap, Map<String, EntityPart> map) 
 	{
 		this.entityUUID = entity.getUUID();
 		this.partOffset = partOffset;
 		this.parts = parts;
 		this.partMap = partMap;
+		this.map = map;
 	}
 
 	public BuildMultipartPacket(FriendlyByteBuf buf)
 	{
-		this.entityUUID = buf.readUUID();
-		this.partOffset = buf.readMap(t -> t.readUtf(), t -> BTAEntityDataSerializers.readVec3(buf));
-		this.parts = buf.readMap(t -> t.readUtf(), t -> t.readUtf());
-		this.partMap = buf.readMap(t -> t.readUtf(), t -> Part.read(buf));
+	    this.entityUUID = buf.readUUID();
+	    this.partOffset = buf.readMap(t -> t.readUtf(), t -> BTAEntityDataSerializers.readVec3(t));
+	    this.parts = buf.readMap(t -> t.readUtf(), t -> t.readUtf());
+	    this.partMap = buf.readMap(t -> t.readUtf(), t -> Part.read(t));
+	    this.map = buf.readMap(t -> t.readUtf(), t -> EntityPart.read(t));
 	}
 
 	public void encode(FriendlyByteBuf buf)
@@ -46,6 +49,7 @@ public class BuildMultipartPacket
 		buf.writeMap(this.partOffset, (t, u) -> t.writeUtf(u), (t, u) -> BTAEntityDataSerializers.writeVec3(t, u));
 		buf.writeMap(this.parts, (t, u) -> t.writeUtf(u), (t, u) -> t.writeUtf(u));
 		buf.writeMap(this.partMap, (t, u) -> t.writeUtf(u), (t, u) -> Part.write(t, u));
+		buf.writeMap(this.map, (t, u) -> t.writeUtf(u), (t, u) -> EntityPart.write(t, u));
 	}
 
 	public static class Handler 
@@ -54,21 +58,12 @@ public class BuildMultipartPacket
 		{
 			ctx.get().enqueueWork(() ->
 			{
-				AtomicReference<EntityBounds> hitbox = new AtomicReference<EntityBounds>();
-				BTAUtil.getClientLevel(t -> 
-				{
-					Entity entity = BTAUtil.getEntityByUUID(t, message.entityUUID);
-					if(entity instanceof IMultipart multipart) 
-					{
-						hitbox.set(multipart.getPartBuilder().hitbox.copy());
-					}
-				});
 				if(ctx.get().getDirection().getReceptionSide().isServer())
 				{
 					Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
-					if(entity instanceof IMultipart multipart) 
+					if(entity instanceof IMultipart multipart)
 					{
-						multipart.getPartBuilder().setupHitbox(message.partOffset, message.parts, message.partMap, hitbox.get());
+						multipart.getPartBuilder().setupHitbox(message.partOffset, message.parts, message.partMap, EntityBounds.create(message.map));
 					}
 				}
 			});

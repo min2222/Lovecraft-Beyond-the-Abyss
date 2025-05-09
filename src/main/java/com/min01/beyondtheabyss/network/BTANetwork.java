@@ -26,10 +26,6 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdatePosArrayPacket.class, UpdatePosArrayPacket::encode, UpdatePosArrayPacket::new, UpdatePosArrayPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateAltarItemPacket.class, UpdateAltarItemPacket::encode, UpdateAltarItemPacket::new, UpdateAltarItemPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateVehiclePacket.class, UpdateVehiclePacket::encode, UpdateVehiclePacket::new, UpdateVehiclePacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationPacket.class, UpdatePlayerAnimationPacket::encode, UpdatePlayerAnimationPacket::new, UpdatePlayerAnimationPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, UpdateItemAnimationPacket.class, UpdateItemAnimationPacket::encode, UpdateItemAnimationPacket::new, UpdateItemAnimationPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationTickPacket.class, UpdatePlayerAnimationTickPacket::encode, UpdatePlayerAnimationTickPacket::new, UpdatePlayerAnimationTickPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, UpdateItemAnimationTickPacket.class, UpdateItemAnimationTickPacket::encode, UpdateItemAnimationTickPacket::new, UpdateItemAnimationTickPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, BuildMultipartPacket.class, BuildMultipartPacket::encode, BuildMultipartPacket::new, BuildMultipartPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdatePartPacket.class, UpdatePartPacket::encode, UpdatePartPacket::new, UpdatePartPacket.Handler::onMessage);
 	}

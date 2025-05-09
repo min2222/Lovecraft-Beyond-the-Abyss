@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.block.deepabyss.AbstractMultiPartSkeletonBlock;
+import com.min01.beyondtheabyss.block.deepabyss.BiocrafterBlock;
 import com.min01.beyondtheabyss.item.renderer.BTABlockEntityItemRenderer;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
@@ -45,7 +46,7 @@ public class CustomRendererBlockItem extends BlockItem
 	@Override
 	protected boolean placeBlock(BlockPlaceContext p_40561_, BlockState p_40562_)
 	{
-		if(p_40562_.getBlock() instanceof AbstractMultiPartSkeletonBlock)
+		if(p_40562_.getBlock() instanceof AbstractMultiPartSkeletonBlock || p_40562_.getBlock() instanceof BiocrafterBlock)
 		{
 			return p_40561_.getLevel().setBlock(p_40561_.getClickedPos(), p_40562_, 26);
 		}
@@ -61,6 +62,15 @@ public class CustomRendererBlockItem extends BlockItem
 		{
 			Direction direction = skeleton.getPartDirection(skeleton.getStateForPlacement(p_40577_));
 			BlockPos blockpos = pos.relative(direction);
+			boolean flag = !level.isEmptyBlock(blockpos) && !level.getBlockState(blockpos).getMaterial().isLiquid();
+			if(flag)
+			{
+				return InteractionResult.FAIL;
+			}
+		}
+		if(this.getBlock() instanceof BiocrafterBlock)
+		{
+			BlockPos blockpos = pos.relative(Direction.UP);
 			boolean flag = !level.isEmptyBlock(blockpos) && !level.getBlockState(blockpos).getMaterial().isLiquid();
 			if(flag)
 			{

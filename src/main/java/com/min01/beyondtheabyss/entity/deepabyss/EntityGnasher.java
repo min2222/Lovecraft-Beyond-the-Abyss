@@ -1,9 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,8 +12,6 @@ import com.min01.beyondtheabyss.entity.IBoid;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.Boid;
-import com.min01.beyondtheabyss.misc.Boid.Bounds;
-import com.min01.beyondtheabyss.misc.Boid.Obstacle;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -37,23 +33,23 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<EntityGnasher>
+public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DISPERSE = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Optional<UUID>> LEADER_UUID = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.OPTIONAL_UUID);
 	
-	public Bounds bounds;
-	public final Collection<Boid.Obstacle> obstacles = new ArrayList<Boid.Obstacle>();
-	public final Map<EntityGnasher, Boid> boids = new HashMap<>();
-	
 	public final AnimationState biteAnimationState = new AnimationState();
+	
+	public Boid boid;
+	public final List<Boid> boids = new ArrayList<>();
 	
 	public EntityGnasher(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -100,6 +96,13 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
 		this.entityData.define(LEADER_UUID, Optional.empty());
 	}
 	
+    @Override
+    public void onAddedToWorld() 
+    {
+    	super.onAddedToWorld();
+    	this.boid = new Boid(this, new Vec3(8, 8, 8));
+    }
+	
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
 	{
@@ -140,15 +143,35 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
     	super.tick();
         this.refreshDimensions();
         DeepAbyssUtil.fishFlopping(this);
-		if(this.tickCount == 2 && this.isLeader())
-		{
-        	this.partBuilder.rebuildHitbox();
-		}
 		
 		if(this.isDisperse() && this.getNavigation().isDone())
 		{
 			this.setDisperse(false);
 		}
+		
+		if(this.getLeader() != null)
+		{
+			EntityGnasher leader = this.getLeader();
+			if(leader.isDisperse() && !this.isDisperse() && leader.getLastHurtByMob() != null)
+			{
+	    		this.setDisperse(true);
+				this.setTarget(null);
+		        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, leader.getLastHurtByMob().position());
+		        if(vec3 != null)
+		        {
+		        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
+		        }
+			}
+		}
+		List<EntityGnasher> list = this.level.getEntitiesOfClass(EntityGnasher.class, this.getBoundingBox().inflate(5.0F));
+		list.forEach(t -> 
+		{
+			if(!this.boids.contains(t.boid))
+			{
+				this.boids.add(t.boid);
+			}
+		});
+		this.boid.update(this.boids, List.of(), false, true, true, 5.0F, 0.25F);
     }
     
     @Override
@@ -156,24 +179,13 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
     {
     	if(this.isLeader() && !this.isDisperse() && p_21016_.getDirectEntity() != null)
     	{
-    		//TODO
-	        /*this.list.forEach(t -> 
-	        {
-	    		t.setDisperse(true);
-				t.setTarget(null);
-		        Vec3 vec3 = DefaultRandomPos.getPosAway(t, 16, 7, p_21016_.getDirectEntity().position());
-		        if(vec3 != null)
-		        {
-		        	t.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
-		        }
-	        });
     		this.setDisperse(true);
 			this.setTarget(null);
 	        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, p_21016_.getDirectEntity().position());
 	        if(vec3 != null)
 	        {
 	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
-	        }*/
+	        }
     	}
     	return super.hurt(p_21016_, p_21017_);
     }
@@ -182,12 +194,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.HOSTILE;
-	}
-	
-	@Override
-	public boolean useSubRoot()
-	{
-		return true;
 	}
 	
 	@Override
@@ -204,12 +210,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
 	public boolean rotateHead() 
 	{
 		return true;
-	}
-	
-	@Override
-	public boolean canSwim() 
-	{
-		return false;
 	}
 	
     @Override
@@ -241,12 +241,29 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, @Nullable SpawnGroupData p_21437_, @Nullable CompoundTag p_21438_) 
 	{
-		if(p_21436_ == MobSpawnType.NATURAL)
+		//FIXME spawn egg only spawns leader;
+		super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		if(p_21437_ == null)
 		{
-	    	this.setHealth(30);
-			DeepAbyssUtil.spawnWithBoid(this, 5);
+			p_21437_ = new GnasherSpawnGroupData(this);
 		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		else
+		{
+			this.setLeader(((GnasherSpawnGroupData)p_21437_).leader);
+		}
+		return p_21437_;
+	}
+	
+	public static class GnasherSpawnGroupData implements SpawnGroupData 
+	{
+		public final EntityGnasher leader;
+
+		public GnasherSpawnGroupData(EntityGnasher gnasher)
+		{
+			gnasher.setHealth(30);
+			gnasher.setLeader(true);
+			this.leader = gnasher;
+		}
 	}
 	
 	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
@@ -254,37 +271,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
 		return pPos.getY() >= 10 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
-	@Override
-	public Vec3 getBoundSize()
-	{
-		return new Vec3(8, 8, 8);
-	}
-	
-	@Override
-	public Map<EntityGnasher, Boid> getBoid() 
-	{
-		return this.boids;
-	}
-	
-	@Override
-	public Collection<Obstacle> getObstacle() 
-	{
-		return this.obstacles;
-	}
-	
-	@Override
-	public Bounds getBoidBounds() 
-	{
-		return this.bounds;
-	}
-    
-	@Override
-	public void setBound(Bounds bounds)
-	{
-		this.bounds = bounds;
-	}
-	
-	@Override
     public void setLeader(boolean value)
     {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
@@ -293,13 +279,11 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
     	this.entityData.set(IS_LEADER, value);
     }
 
-	@Override
     public boolean isLeader()
     {
     	return this.entityData.get(IS_LEADER);
     }
 	
-	@Override
 	public void setLeader(EntityGnasher leader)
 	{
 		if(leader == null) 
@@ -313,7 +297,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
 	}
 	
 	@Nullable
-	@Override
 	public EntityGnasher getLeader() 
 	{
 		if(this.entityData.get(LEADER_UUID).isPresent()) 
@@ -332,4 +315,16 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid<Ent
     {
     	return this.entityData.get(IS_DISPERSE);
     }
+
+	@Override
+	public Vec3 getBoidDirection()
+	{
+		return this.boid.direction;
+	}
+	
+	@Override
+	public boolean canSwim() 
+	{
+		return !this.isDisperse();
+	}
 }
