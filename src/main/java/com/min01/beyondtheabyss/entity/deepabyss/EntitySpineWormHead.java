@@ -54,7 +54,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 30.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.0F)
-        		.add(Attributes.FOLLOW_RANGE, 10.0F)
+        		.add(Attributes.FOLLOW_RANGE, 30.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 100.0F);
     }
     

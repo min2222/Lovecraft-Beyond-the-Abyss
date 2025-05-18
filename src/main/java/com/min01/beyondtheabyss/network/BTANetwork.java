@@ -28,6 +28,7 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdateVehiclePacket.class, UpdateVehiclePacket::encode, UpdateVehiclePacket::new, UpdateVehiclePacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, BuildMultipartPacket.class, BuildMultipartPacket::encode, BuildMultipartPacket::new, BuildMultipartPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdatePartPacket.class, UpdatePartPacket::encode, UpdatePartPacket::new, UpdatePartPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateItemTickCountPacket.class, UpdateItemTickCountPacket::encode, UpdateItemTickCountPacket::new, UpdateItemTickCountPacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 

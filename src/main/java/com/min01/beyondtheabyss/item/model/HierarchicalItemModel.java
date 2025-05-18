@@ -52,11 +52,11 @@ public abstract class HierarchicalItemModel extends Model
 
 	protected void animate(ItemStack stack, String name, AnimationDefinition p_233387_, float p_233388_, float p_233389_) 
 	{
-		AnimationState state = BTAUtil.getAnimation(stack, name);
+		AnimationState state = BTAUtil.getItemAnimation(stack, name);
 		state.updateTime(p_233388_, p_233389_);	
 		state.ifStarted((p_233392_) ->
 		{
-	    	BTAUtil.saveAnimationTime(stack.getOrCreateTag(), name, p_233392_);
+			BTAUtil.writeAnimationTime(stack.getOrCreateTag(), name, p_233392_);
 			KeyframeItemAnimations.animate(this, p_233387_, p_233392_.getAccumulatedTime(), 1.0F, ANIMATION_VECTOR_CACHE);
 		});
 	}

@@ -31,14 +31,13 @@ public class ModelFlashlight extends Model
 	{
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		partdefinition.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 0).addBox(-10.0F, -11.0F, 7.0F, 4.0F, 4.0F, 7.0F, new CubeDeformation(0.01F))
+		
+		partdefinition.addOrReplaceChild("diving flashlight", CubeListBuilder.create().texOffs(0, 0).addBox(-10.0F, -11.0F, 7.0F, 4.0F, 4.0F, 7.0F, new CubeDeformation(0.01F))
 		.texOffs(0, 12).addBox(-10.5F, -11.5F, 5.0F, 5.0F, 5.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(16, 0).addBox(-10.5F, -11.5F, 5.35F, 5.0F, 5.0F, 0.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 20).addBox(-8.5F, -13.0F, 8.0F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(-8.5F, -13.0F, 12.0F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(12, 19).addBox(-8.5F, -13.0F, 9.0F, 1.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))
-		.texOffs(15, 12).addBox(-9.5F, -10.5F, 1.0F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
+		.texOffs(12, 19).addBox(-8.5F, -13.0F, 9.0F, 1.0F, 1.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
 
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}

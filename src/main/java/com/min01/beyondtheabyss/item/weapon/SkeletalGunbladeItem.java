@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.item.weapon;
 
 import java.util.function.Consumer;
 
+import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.item.renderer.BTAItemRenderer;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.tabs.DeepAbyssTabs;
@@ -22,7 +23,7 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class SkeletalGunbladeItem extends SwordItem
+public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 {
     public static final String GUN_MODE = "GunMode";
     public static final String IS_SELECTED = "isSelected";
@@ -46,7 +47,7 @@ public class SkeletalGunbladeItem extends SwordItem
 			if(isGunMode)
 			{
 				BTAUtil.stopItemAnimation(stack, GUNBLADE_OPEN);
-				BTAUtil.startItemAnimation(p_41433_.tickCount, stack, GUNBLADE_CLOSE);
+				BTAUtil.startItemAnimation(stack, GUNBLADE_CLOSE);
 				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_CLOSE);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
@@ -54,7 +55,7 @@ public class SkeletalGunbladeItem extends SwordItem
 			else
 			{
 				BTAUtil.stopItemAnimation(stack, GUNBLADE_CLOSE);
-				BTAUtil.startItemAnimation(p_41433_.tickCount, stack, GUNBLADE_OPEN);
+				BTAUtil.startItemAnimation(stack, GUNBLADE_OPEN);
 				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_OPEN);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
@@ -76,6 +77,12 @@ public class SkeletalGunbladeItem extends SwordItem
 	public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) 
 	{
 		setSelected(p_41404_, p_41408_);
+	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) 
+	{
+		return newStack.getItem() != this;
 	}
 	
 	@Override

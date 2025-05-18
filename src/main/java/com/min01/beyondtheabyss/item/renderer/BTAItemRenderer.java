@@ -5,6 +5,7 @@ import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
 import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -40,7 +41,7 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	        p_108832_.translate(0.0F, -1.0F, 0.0F);
 	        VertexConsumer eyeConsumer = p_108833_.getBuffer(BTARenderType.eyesFix(GUNBLADE_LAYER));
 	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(GUNBLADE_TEXTURE), false, p_108830_.hasFoil());
-			this.modelGunblade.setupAnim(p_108830_, 0, 0, BTAClientUtil.MC.player.tickCount + BTAClientUtil.MC.getFrameTime(), 0, 0);
+			this.modelGunblade.setupAnim(p_108830_, 0, 0, BTAUtil.getTickCount(p_108830_) + BTAClientUtil.MC.getFrameTime(), 0, 0);
 	        this.modelGunblade.renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
 	        this.modelGunblade.renderToBuffer(p_108832_, eyeConsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
 	        p_108832_.popPose();

@@ -9,7 +9,8 @@ import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl.BTAAbility;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilityCapability;
-import com.min01.beyondtheabyss.item.animation.IAnimatableItemStack;
+import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
+import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -45,21 +46,45 @@ public class BTAUtil
 {
     public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
     
-    public static void startItemAnimation(int tickCount, ItemStack stack, String name)
+    public static AnimationState getItemAnimation(ItemStack stack, String name)
     {
-    	AnimationState state = getAnimation(stack, name);
-    	state.startIfStopped(tickCount);
-    	saveAnimationTime(stack.getOrCreateTag(), name, state);
+    	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
+    	{
+    		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+    		return cap.getAnimationState(name);
+    	}
+    	return new AnimationState();
+    }
+    
+    public static void startItemAnimation(ItemStack stack, String name)
+    {
+    	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
+    	{
+    		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+    		cap.startItemAnimation(name);
+    	}
     }
     
     public static void stopItemAnimation(ItemStack stack, String name)
     {
-    	AnimationState state = getAnimation(stack, name);
-    	state.stop();
-    	saveAnimationTime(stack.getOrCreateTag(), name, state);
+    	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
+    	{
+    		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+    		cap.stopItemAnimation(name);
+    	}
     }
     
-    public static void saveAnimationTime(CompoundTag tag, String name, AnimationState state)
+    public static int getTickCount(ItemStack stack)
+    {
+    	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
+    	{
+    		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+    		return cap.getTickCount();
+    	}
+    	return 0;
+    }
+    
+    public static void writeAnimationTime(CompoundTag tag, String name, AnimationState state)
     {
         CompoundTag animationsTag;
         if(tag.contains("Animations", 10))
@@ -77,9 +102,8 @@ public class BTAUtil
         animationsTag.put(name, timeTag);
     }
     
-    public static void setAnimationTime(AnimationState state, String name, ItemStack stack)
+    public static void readAnimationTime(CompoundTag tag, String name, AnimationState state)
     {
-        CompoundTag tag = stack.getOrCreateTag();
         if(tag.contains("Animations", 10)) 
         {
             CompoundTag animationsTag = tag.getCompound("Animations");
@@ -90,13 +114,6 @@ public class BTAUtil
                 state.accumulatedTime = timeTag.getLong("AccumulatedTime");
             }
         }
-    }
-    
-    public static AnimationState getAnimation(ItemStack stack, String name)
-    {
-    	AnimationState state = ((IAnimatableItemStack) (Object) stack).getAnimationState(name);
-    	setAnimationTime(state, name, stack);
-    	return state;
     }
     
 	public static void animateWhen(AnimationState state, boolean flag, int tick) 

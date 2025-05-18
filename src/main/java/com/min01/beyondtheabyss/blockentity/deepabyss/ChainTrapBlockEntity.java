@@ -44,7 +44,7 @@ public class ChainTrapBlockEntity extends BlockEntity
 		{
 			if(trap.chains.size() < 4)
 			{
-				List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, trap.getAABB(2.5F, state).move(trap.worldPosition), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
+				List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, trap.getAABB(0.5F, state).move(trap.worldPosition), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
 				list.removeIf(t -> t.getType().is(Tags.EntityTypes.BOSSES) || t.getType().is(BTATags.BTAEntity.MINI_BOSS));
 				list.forEach(t -> 
 				{
