@@ -1,8 +1,0 @@
-{
-	"parent": "minecraft:block/inner_stairs",
-	"textures": {
-		"bottom": "beyondtheabyss:block/metal_tile",
-		"side": "beyondtheabyss:block/metal_tile",
-		"top": "beyondtheabyss:block/metal_tile"
-	}
-}

@@ -7,20 +7,15 @@ import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
-import com.min01.beyondtheabyss.blockentity.deepabyss.CrabTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.armor.AdvancedDivingSetItem;
 import com.min01.beyondtheabyss.item.armor.DivingSetItem;
 import com.min01.beyondtheabyss.item.armor.GhidruthDivingSetItem;
-import com.min01.beyondtheabyss.item.deepabyss.FishBaitItem;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
-import com.min01.beyondtheabyss.item.deepabyss.OxygenTankItem;
-import com.min01.beyondtheabyss.item.deepabyss.RunicFishItem;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
-import com.min01.beyondtheabyss.item.weapon.SacrificialDaggerItem;
 import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 
 import net.minecraft.ChatFormatting;
@@ -51,28 +46,15 @@ public class BTAItems
 	//spawn eggs
 	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = registerSpawnEgg("ghidruth_spawn_egg", () -> BTAEntities.GHIDRUTH.get(), 862018, 10239048);
 	//public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg("forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
-	public static final RegistryObject<Item> DEEP_VAMPIRE_SPAWN_EGG = registerSpawnEgg("deep_vampire_spawn_egg", () -> BTAEntities.DEEP_VAMPIRE.get(), 1510154, 5058091);
-	public static final RegistryObject<Item> RUNIC_FISH_SPAWN_EGG = registerSpawnEgg("runic_fish_spawn_egg", () -> BTAEntities.RUNIC_FISH.get(), 2438966, 2263443);
-	public static final RegistryObject<Item> LATCHER_SPAWN_EGG = registerSpawnEgg("latcher_spawn_egg", () -> BTAEntities.LATCHER.get(), 3617604, 1841189);
-	public static final RegistryObject<Item> ABYSSAL_HERMIT_CRAB_SPAWN_EGG = registerSpawnEgg("abyssal_hermit_crab_spawn_egg", () -> BTAEntities.ABYSSAL_HERMIT_CRAB.get(), 4999486, 2698020);
-	public static final RegistryObject<Item> ABYSSAL_BULBRAY_SPAWN_EGG = registerSpawnEgg("abyssal_bulbray_spawn_egg", () -> BTAEntities.ABYSSAL_BULBRAY.get(), 2432294, 2499894);
-	public static final RegistryObject<Item> PHASMOZOA_SPAWN_EGG = registerSpawnEgg("phasmozoa_spawn_egg", () -> BTAEntities.PHASMOZOA.get(), 4686944, 8876197);
-	public static final RegistryObject<Item> AMARUM_GHOST_SPAWN_EGG = registerSpawnEgg("amarum_ghost_spawn_egg", () -> BTAEntities.AMARUM_GHOST.get(), 930103, 5756886);
 	public static final RegistryObject<Item> GNASHER_SPAWN_EGG = registerSpawnEgg("gnasher_spawn_egg", () -> BTAEntities.GNASHER.get(), 1318679, 3019282);
 	public static final RegistryObject<Item> SIAMSERPENT_SPAWN_EGG = registerSpawnEgg("siamserpent_spawn_egg", () -> BTAEntities.SIAMSERPENT_HEAD.get(), 7035974, 9537638);
-	public static final RegistryObject<Item> FALLEN_DIVER_SPAWN_EGG = registerSpawnEgg("fallen_diver_spawn_egg", () -> BTAEntities.FALLEN_DIVER.get(), 9934743, 10647659);
 	public static final RegistryObject<Item> SPINE_WORM_SPAWN_EGG = registerSpawnEgg("spine_worm_spawn_egg", () -> BTAEntities.SPINE_WORM_HEAD.get(), 8352870, 6502445);
-	public static final RegistryObject<Item> MUTAVORE_SPAWN_EGG = registerSpawnEgg("mutavore_spawn_egg", () -> BTAEntities.MUTAVORE.get(), 5847096, 15259304);
 	public static final RegistryObject<Item> GLOOMFISH_SPAWN_EGG = registerSpawnEgg("gloomfish_spawn_egg", () -> BTAEntities.GLOOMFISH.get(), 526088, 12060438);
 	public static final RegistryObject<Item> KORMOS_SPAWN_EGG = registerSpawnEgg("kormos_spawn_egg", () -> BTAEntities.KORMOS_HEAD.get(), 9338740, 4605533);
-	public static final RegistryObject<Item> CORPSE_ANGLER_SPAWN_EGG = registerSpawnEgg("corpse_angler_spawn_egg", () -> BTAEntities.CORPSE_ANGLER.get(), 6239541, 1864119);
 	public static final RegistryObject<Item> FULGASTRA_SPAWN_EGG = registerSpawnEgg("fulgastra_spawn_egg", () -> BTAEntities.FULGASTRA.get(), 4596012, 46834);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
-	public static final RegistryObject<Item> OXYGEN_TANK = ITEMS.register("oxygen_tank", () -> new OxygenTankItem());
-	public static final RegistryObject<Item> VAMPIRE_MEMBRANE = ITEMS.register("vampire_membrane", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> VAMPIRE_TOOTH = ITEMS.register("vampire_tooth", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GNASHER_EYE = ITEMS.register("gnasher_eye", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GNASHER_TOOTH = ITEMS.register("gnasher_tooth", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GHOUL_BLOOM_SEED_POD = ITEMS.register("ghoul_bloom_seed_pod", () -> new ItemNameBlockItem(BTABlocks.GHOUL_BLOOM.get(), new Item.Properties()));
@@ -108,9 +90,6 @@ public class BTAItems
 	//foods
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.5F).build(), true));
 	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = ITEMS.register("cooked_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(9).saturationMod(1.0F).build(), false));
-	public static final RegistryObject<Item> RUNIC_FISH = ITEMS.register("runic_fish", () -> new RunicFishItem(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).alwaysEat().fast().build()));
-	public static final RegistryObject<Item> RAW_LATCHER_TAIL = ITEMS.register("raw_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).fast().build()));
-	public static final RegistryObject<Item> COOKED_LATCHER_TAIL = ITEMS.register("cooked_latcher_tail", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).fast().build()));
 	public static final RegistryObject<Item> RAW_GNASHER = ITEMS.register("raw_gnasher", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build()));
 	public static final RegistryObject<Item> COOKED_GNASHER = ITEMS.register("cooked_gnasher", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build()));
 	
@@ -130,15 +109,6 @@ public class BTAItems
 	public static final RegistryObject<Item> BONE_PILES = registerNoRotationLimitBlockItem("bone_piles", () -> BTABlocks.BONE_PILES.get(), new Item.Properties());
 	public static final RegistryObject<Item> SITTING_SKELETON = registerNoRotationLimitBlockItem("sitting_skeleton", () -> BTABlocks.SITTING_SKELETON.get(), new Item.Properties());
 	public static final RegistryObject<Item> FALLEN_SKELETON = registerNoRotationLimitBlockItem("fallen_skeleton", () -> BTABlocks.FALLEN_SKELETON.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_BRICK = registerBlockItem("metal_brick", () -> BTABlocks.METAL_BRICK.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_TILE = registerBlockItem("metal_tile", () -> BTABlocks.METAL_TILE.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_PLATE = registerBlockItem("metal_plate", () -> BTABlocks.METAL_PLATE.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_BRICK_STAIRS = registerBlockItem("metal_brick_stairs", () -> BTABlocks.METAL_BRICK_STAIRS.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_TILE_STAIRS = registerBlockItem("metal_tile_stairs", () -> BTABlocks.METAL_TILE_STAIRS.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_PLATE_STAIRS = registerBlockItem("metal_plate_stairs", () -> BTABlocks.METAL_PLATE_STAIRS.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_BRICK_SLAB = registerBlockItem("metal_brick_slab", () -> BTABlocks.METAL_BRICK_SLAB.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_TILE_SLAB = registerBlockItem("metal_tile_slab", () -> BTABlocks.METAL_TILE_SLAB.get(), new Item.Properties());
-	public static final RegistryObject<Item> METAL_PLATE_SLAB = registerBlockItem("metal_plate_slab", () -> BTABlocks.METAL_PLATE_SLAB.get(), new Item.Properties());
 	public static final RegistryObject<Item> BLANK_RUNE_STONE = registerBlockItem("blank_rune_stone", () -> BTABlocks.BLANK_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> SOUL_RUNE_STONE = registerBlockItem("soul_rune_stone", () -> BTABlocks.SOUL_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> WATER_RUNE_STONE = registerBlockItem("water_rune_stone", () -> BTABlocks.WATER_RUNE_STONE.get(), new Item.Properties());
@@ -146,11 +116,6 @@ public class BTAItems
 	public static final RegistryObject<Item> CONDUIT_RUNE_STONE = registerBlockItem("conduit_rune_stone", () -> BTABlocks.CONDUIT_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> GUARDIAN_RUNE_STONE = registerBlockItem("guardian_rune_stone", () -> BTABlocks.GUARDIAN_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> PEACE_RUNE_STONE = registerBlockItem("peace_rune_stone", () -> BTABlocks.PEACE_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_BLOCK = registerBlockItem("dead_osteo_coral_block", () -> BTABlocks.DEAD_OSTEO_CORAL_BLOCK.get(), new Item.Properties());
-	public static final RegistryObject<Item> OSTEO_CORAL_BLOCK = registerBlockItem("osteo_coral_block", () -> BTABlocks.OSTEO_CORAL_BLOCK.get(), new Item.Properties());
-	public static final RegistryObject<Item> DEAD_OSTEO_CORAL_FAN = ITEMS.register("dead_osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.DEAD_OSTEO_CORAL_FAN.get(), BTABlocks.DEAD_OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()), Direction.DOWN));
-	public static final RegistryObject<Item> OSTEO_CORAL_FAN = ITEMS.register("osteo_coral_fan", () -> new StandingAndWallBlockItem(BTABlocks.OSTEO_CORAL_FAN.get(), BTABlocks.OSTEO_CORAL_WALL_FAN.get(), (new Item.Properties()), Direction.DOWN));
-	public static final RegistryObject<Item> WHALEFALL = registerBlockItem("whalefall", () -> BTABlocks.WHALEFALL.get(), new Item.Properties());
 	public static final RegistryObject<Item> ROT_SOIL = registerBlockItem("rot_soil", () -> BTABlocks.ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> COMPACT_ROT_SOIL = registerBlockItem("compact_rot_soil", () -> BTABlocks.COMPACT_ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHISELED_BONE_BLOCK = registerBlockItem("chiseled_bone_block", () -> BTABlocks.CHISELED_BONE_BLOCK.get(), new Item.Properties());
@@ -164,21 +129,17 @@ public class BTAItems
 	public static final RegistryObject<Item> BONE_LEVER = registerBlockItem("bone_lever", () -> BTABlocks.BONE_LEVER.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHAIN_TRAP = registerCustomRendererBlockItem("chain_trap", () -> BTABlocks.CHAIN_TRAP.get(), () -> new ChainTrapBlockEntity(BlockPos.ZERO, BTABlocks.CHAIN_TRAP.get().defaultBlockState()), new Item.Properties());
  	public static final RegistryObject<Item> TOOTHVINE = registerBlockItem("toothvine", () -> BTABlocks.TOOTHVINE.get(), new Item.Properties());
-	public static final RegistryObject<Item> CRAB_TRAP = registerCustomRendererBlockItem("crab_trap", () -> BTABlocks.CRAB_TRAP.get(), () -> new CrabTrapBlockEntity(BlockPos.ZERO, BTABlocks.CRAB_TRAP.get().defaultBlockState()), new Item.Properties());
 	public static final RegistryObject<Item> BIOCRAFTER = registerCustomRendererBlockItem("biocrafter", () -> BTABlocks.BIOCRAFTER.get(), () -> new BiocrafterBlockEntity(BlockPos.ZERO, BTABlocks.BIOCRAFTER.get().defaultBlockState()), new Item.Properties());
 	
 	//weapons
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));
 	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(1200).rarity(RARITY_DEEP_ABYSS)));
-	public static final RegistryObject<Item> SACRIFICIAL_DAGGER = ITEMS.register("sacrificial_dagger", () -> new SacrificialDaggerItem(new Item.Properties().durability(150)));
 	public static final RegistryObject<Item> SKELETAL_GUNBLADE = ITEMS.register("skeletal_gunblade", () -> new SkeletalGunbladeItem(new Item.Properties().durability(1500).rarity(RARITY_DEEP_ABYSS)));
 
 	//tools
 	public static final RegistryObject<Item> FLASHLIGHT = ITEMS.register("flashlight", () -> new FlashlightItem());
-	public static final RegistryObject<Item> FISH_BAIT = ITEMS.register("fish_bait", () -> new FishBaitItem());
 	
 	//accessories
-	public static final RegistryObject<Item> HEMATHORN_AMULET = ITEMS.register("hemathorn_amulet", () -> new Item(new Item.Properties().stacksTo(1)));
 	
 	public static RegistryObject<Item> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{

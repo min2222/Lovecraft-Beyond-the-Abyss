@@ -3,21 +3,11 @@ package com.min01.beyondtheabyss.event;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalBulbray;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityAbyssalHermitCrab;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityAmarumGhost;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepVampire;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityFallenDiver;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityKormosHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityLatcher;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityPhasmozoa;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityRunicFish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
@@ -47,14 +37,11 @@ public class EventHandler
 	@SubscribeEvent
 	public static void onFMLCommonSetup(FMLCommonSetupEvent event)
 	{
-		ItemStack water = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
 		ItemStack awkward = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD);
-		ItemStack healing = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING);
 		ItemStack disorder = PotionUtils.setPotion(new ItemStack(Items.POTION), BTAEffects.DISORDER_POTION.get());
 		ItemStack strongDisorder = PotionUtils.setPotion(new ItemStack(Items.POTION), BTAEffects.STRONG_DISORDER_POTION.get());
 		ItemStack coordination = PotionUtils.setPotion(new ItemStack(Items.POTION), BTAEffects.COORDINATION_POTION.get());
 		ItemStack strongCoordination = PotionUtils.setPotion(new ItemStack(Items.POTION), BTAEffects.STRONG_COORDINATION_POTION.get());
-		BrewingRecipeRegistry.addRecipe(Ingredient.of(water), Ingredient.of(BTAItems.VAMPIRE_MEMBRANE.get()), healing);
 		BrewingRecipeRegistry.addRecipe(Ingredient.of(awkward), Ingredient.of(BTAItems.GNASHER_EYE.get()), disorder);
 		BrewingRecipeRegistry.addRecipe(Ingredient.of(disorder), Ingredient.of(Items.GLOWSTONE_DUST), strongDisorder);
 		BrewingRecipeRegistry.addRecipe(Ingredient.of(disorder), Ingredient.of(Items.GLISTERING_MELON_SLICE), coordination);
@@ -65,43 +52,25 @@ public class EventHandler
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) 
     {
     	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
-    	event.put(BTAEntities.DEEP_VAMPIRE.get(), EntityDeepVampire.createAttributes().build());
-    	event.put(BTAEntities.RUNIC_FISH.get(), EntityRunicFish.createAttributes().build());
-    	event.put(BTAEntities.LATCHER.get(), EntityLatcher.createAttributes().build());
-    	event.put(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), EntityAbyssalHermitCrab.createAttributes().build());
-    	event.put(BTAEntities.ABYSSAL_BULBRAY.get(), EntityAbyssalBulbray.createAttributes().build());
     	event.put(BTAEntities.SUBMARINE.get(), EntitySubmarine.createLivingAttributes().build());
-    	event.put(BTAEntities.PHASMOZOA.get(), EntityPhasmozoa.createAttributes().build());
-    	event.put(BTAEntities.AMARUM_GHOST.get(), EntityAmarumGhost.createAttributes().build());
     	event.put(BTAEntities.GNASHER.get(), EntityGnasher.createAttributes().build());
     	event.put(BTAEntities.SIAMSERPENT_HEAD.get(), EntitySiamserpentHead.createAttributes().build());
     	event.put(BTAEntities.SIAMSERPENT_BONE.get(), EntitySiamserpentBone.createAttributes().build());
-    	event.put(BTAEntities.FALLEN_DIVER.get(), EntityFallenDiver.createAttributes().build());
     	event.put(BTAEntities.SPINE_WORM_HEAD.get(), EntitySpineWormHead.createAttributes().build());
     	event.put(BTAEntities.SPINE_WORM_BODY.get(), EntitySpineWormBody.createAttributes().build());
-    	event.put(BTAEntities.MUTAVORE.get(), EntityMutavore.createAttributes().build());
     	event.put(BTAEntities.GLOOMFISH.get(), EntityGloomfish.createAttributes().build());
     	event.put(BTAEntities.KORMOS_HEAD.get(), EntityKormosHead.createAttributes().build());
     	event.put(BTAEntities.KORMOS_BODY.get(), EntityKormosHead.createAttributes().build());
     	event.put(BTAEntities.KORMOS_TAIL.get(), EntityKormosHead.createAttributes().build());
-     	event.put(BTAEntities.CORPSE_ANGLER.get(), EntityCorpseAngler.createAttributes().build());
     	event.put(BTAEntities.FULGASTRA.get(), EntityFulgastra.createAttributes().build());
     }
     
     @SubscribeEvent
     public static void onSpawnPlacementRegister(SpawnPlacementRegisterEvent event)
     {
-    	event.register(BTAEntities.DEEP_VAMPIRE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDeepVampire::checkDeepVampireSpawnRules, Operation.AND);
-    	event.register(BTAEntities.RUNIC_FISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityRunicFish::checkRunicFishSpawnRules, Operation.AND);
-    	event.register(BTAEntities.LATCHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityLatcher::checkLatcherSpawnRules, Operation.AND);
-    	event.register(BTAEntities.ABYSSAL_HERMIT_CRAB.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalHermitCrab::checkHermitCrabSpawnRules, Operation.AND);
-    	event.register(BTAEntities.ABYSSAL_BULBRAY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAbyssalBulbray::checkBulbraySpawnRules, Operation.AND);
-    	event.register(BTAEntities.AMARUM_GHOST.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAmarumGhost::checkAmarumGhostSpawnRules, Operation.AND);
     	event.register(BTAEntities.GNASHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGnasher::checkGnasherSpawnRules, Operation.AND);
     	event.register(BTAEntities.SIAMSERPENT_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntitySiamserpentHead::checkSiamserpentSpawnRules, Operation.AND);
-    	event.register(BTAEntities.FALLEN_DIVER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityFallenDiver::checkFallenDiverSpawnRules, Operation.AND);
     	event.register(BTAEntities.SPINE_WORM_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR, EntitySpineWormHead::checkSpineWormSpawnRules, Operation.AND);
      	event.register(BTAEntities.GLOOMFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGloomfish::checkGloomfishSpawnRules, Operation.AND);
-     	event.register(BTAEntities.CORPSE_ANGLER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR, EntityCorpseAngler::checkCorpseAnglerSpawnRules, Operation.AND);
     }
 }

@@ -8,7 +8,6 @@ import com.min01.beyondtheabyss.block.deepabyss.BonePilesBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BoneTorchBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BoneWallTorchBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ChainTrapBlock;
-import com.min01.beyondtheabyss.block.deepabyss.CrabTrapBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FallenSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FangSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FishBoneBlock;
@@ -25,32 +24,20 @@ import com.min01.beyondtheabyss.block.deepabyss.SpineBoneMiddleBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneTipBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvineBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvinePlantBlock;
-import com.min01.beyondtheabyss.block.deepabyss.WhalefallBlock;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
-import com.min01.beyondtheabyss.blockentity.deepabyss.CrabTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 
-import net.minecraft.world.level.block.BaseCoralFanBlock;
-import net.minecraft.world.level.block.BaseCoralWallFanBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CoralBlock;
-import net.minecraft.world.level.block.CoralFanBlock;
-import net.minecraft.world.level.block.CoralWallFanBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -77,16 +64,6 @@ public class BTABlocks
     public static final RegistryObject<Block> SITTING_SKELETON = BLOCKS.register("sitting_skeleton", () -> new SittingSkeletonBlock());
     public static final RegistryObject<Block> FALLEN_SKELETON = BLOCKS.register("fallen_skeleton", () -> new FallenSkeletonBlock());
     
-    public static final RegistryObject<Block> METAL_BRICK = BLOCKS.register("metal_brick", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
-    public static final RegistryObject<Block> METAL_TILE = BLOCKS.register("metal_tile", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
-    public static final RegistryObject<Block> METAL_PLATE = BLOCKS.register("metal_plate", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
-    public static final RegistryObject<Block> METAL_BRICK_STAIRS = BLOCKS.register("metal_brick_stairs", () -> new StairBlock(() -> METAL_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(METAL_BRICK.get())));
-    public static final RegistryObject<Block> METAL_TILE_STAIRS = BLOCKS.register("metal_tile_stairs", () -> new StairBlock(() -> METAL_TILE.get().defaultBlockState(), BlockBehaviour.Properties.copy(METAL_TILE.get())));
-    public static final RegistryObject<Block> METAL_PLATE_STAIRS = BLOCKS.register("metal_plate_stairs", () -> new StairBlock(() -> METAL_PLATE.get().defaultBlockState(), BlockBehaviour.Properties.copy(METAL_PLATE.get())));
-    public static final RegistryObject<Block> METAL_BRICK_SLAB = BLOCKS.register("metal_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
-    public static final RegistryObject<Block> METAL_TILE_SLAB = BLOCKS.register("metal_tile_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
-    public static final RegistryObject<Block> METAL_PLATE_SLAB = BLOCKS.register("metal_plate_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
-    
     public static final RegistryObject<Block> BLANK_RUNE_STONE = BLOCKS.register("blank_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     public static final RegistryObject<Block> SOUL_RUNE_STONE = BLOCKS.register("soul_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     public static final RegistryObject<Block> WATER_RUNE_STONE = BLOCKS.register("water_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
@@ -95,14 +72,6 @@ public class BTABlocks
     public static final RegistryObject<Block> GUARDIAN_RUNE_STONE = BLOCKS.register("guardian_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     public static final RegistryObject<Block> PEACE_RUNE_STONE = BLOCKS.register("peace_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     
-    public static final RegistryObject<Block> DEAD_OSTEO_CORAL_BLOCK = BLOCKS.register("dead_osteo_coral_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
-    public static final RegistryObject<Block> OSTEO_CORAL_BLOCK = BLOCKS.register("osteo_coral_block", () -> new CoralBlock(DEAD_OSTEO_CORAL_BLOCK.get(), BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F).sound(SoundType.CORAL_BLOCK)));
-    public static final RegistryObject<Block> DEAD_OSTEO_CORAL_FAN = BLOCKS.register("dead_osteo_coral_fan", () -> new BaseCoralFanBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().noCollission().instabreak()));
-    public static final RegistryObject<Block> OSTEO_CORAL_FAN = BLOCKS.register("osteo_coral_fan", () -> new CoralFanBlock(DEAD_OSTEO_CORAL_FAN.get(), BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).noCollission().instabreak().sound(SoundType.WET_GRASS).pushReaction(PushReaction.DESTROY)));
-    public static final RegistryObject<Block> DEAD_OSTEO_CORAL_WALL_FAN = BLOCKS.register("dead_osteo_coral_wall_fan", () -> new BaseCoralWallFanBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().noCollission().instabreak().lootFrom(() -> DEAD_OSTEO_CORAL_FAN.get())));
-    public static final RegistryObject<Block> OSTEO_CORAL_WALL_FAN = BLOCKS.register("osteo_coral_wall_fan", () -> new CoralWallFanBlock(DEAD_OSTEO_CORAL_WALL_FAN.get(), BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).noCollission().instabreak().sound(SoundType.WET_GRASS).lootFrom(() -> OSTEO_CORAL_FAN.get()).pushReaction(PushReaction.DESTROY)));
-
-    public static final RegistryObject<Block> WHALEFALL = BLOCKS.register("whalefall", () -> new WhalefallBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)));
     public static final RegistryObject<Block> ROT_SOIL = BLOCKS.register("rot_soil", () -> new RotSoilBlock());
     public static final RegistryObject<Block> COMPACT_ROT_SOIL = BLOCKS.register("compact_rot_soil", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
     public static final RegistryObject<Block> GHOUL_BLOOM = BLOCKS.register("ghoul_bloom", () -> new GhoulBloomBlock());
@@ -127,7 +96,6 @@ public class BTABlocks
     }).sound(SoundType.BONE_BLOCK).lootFrom(BONE_TORCH)));
     public static final RegistryObject<Block> BONE_LEVER = BLOCKS.register("bone_lever", () -> new BoneLeverBlock(BlockBehaviour.Properties.of().noCollission().strength(0.5F).sound(SoundType.BONE_BLOCK)));
     public static final RegistryObject<Block> CHAIN_TRAP = BLOCKS.register("chain_trap", () -> new ChainTrapBlock());
-    public static final RegistryObject<Block> CRAB_TRAP = BLOCKS.register("crab_trap", () -> new CrabTrapBlock());
     public static final RegistryObject<Block> BIOCRAFTER = BLOCKS.register("biocrafter", () -> new BiocrafterBlock());
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
@@ -142,6 +110,5 @@ public class BTABlocks
     		BTABlocks.BONE_WALL_TORCH.get(),
     		BTABlocks.BONE_LEVER.get()).build(null));
     public static final RegistryObject<BlockEntityType<ChainTrapBlockEntity>> CHAIN_TRAP_BLOCK_ENTITY = BLOCK_ENTITIES.register("chain_trap", () -> BlockEntityType.Builder.of(ChainTrapBlockEntity::new, BTABlocks.CHAIN_TRAP.get()).build(null));
-    public static final RegistryObject<BlockEntityType<CrabTrapBlockEntity>> CRAB_TRAP_BLOCK_ENTITY = BLOCK_ENTITIES.register("crab_trap", () -> BlockEntityType.Builder.of(CrabTrapBlockEntity::new, BTABlocks.CRAB_TRAP.get()).build(null));
     public static final RegistryObject<BlockEntityType<BiocrafterBlockEntity>> BIOCRAFTER_BLOCK_ENTITY = BLOCK_ENTITIES.register("biocrafter", () -> BlockEntityType.Builder.of(BiocrafterBlockEntity::new, BTABlocks.BIOCRAFTER.get()).build(null));
 }

@@ -1,15 +1,6 @@
 {
 	"replace": false,
 	"values": [
-		"beyondtheabyss:metal_brick",
-		"beyondtheabyss:metal_tile",
-		"beyondtheabyss:metal_plate",
-		"beyondtheabyss:metal_brick_stairs",
-		"beyondtheabyss:metal_tile_stairs",
-		"beyondtheabyss:metal_plate_stairs",
-		"beyondtheabyss:metal_brick_slab",
-		"beyondtheabyss:metal_tile_slab",
-		"beyondtheabyss:metal_plate_slab",
 		"beyondtheabyss:chain_trap"
 	]
 }

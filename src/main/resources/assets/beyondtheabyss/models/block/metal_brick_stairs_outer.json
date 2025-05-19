@@ -1,8 +1,0 @@
-{
-	"parent": "minecraft:block/outer_stairs",
-	"textures": {
-		"bottom": "beyondtheabyss:block/metal_brick",
-		"side": "beyondtheabyss:block/metal_brick",
-		"top": "beyondtheabyss:block/metal_brick"
-	}
-}

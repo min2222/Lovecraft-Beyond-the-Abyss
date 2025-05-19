@@ -24,7 +24,7 @@ public class ModelFlashlight extends Model
 	public ModelFlashlight(ModelPart root) 
 	{
 		super(RenderType::entityTranslucent);
-		this.root = root.getChild("root");
+		this.root = root.getChild("diving flashlight");
 	}
 
 	public static LayerDefinition createBodyLayer() 

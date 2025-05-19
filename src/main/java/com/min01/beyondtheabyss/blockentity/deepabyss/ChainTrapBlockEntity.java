@@ -92,7 +92,7 @@ public class ChainTrapBlockEntity extends BlockEntity
 	
 	public AABB getAABB(float size, BlockState state)
 	{
-		float ySize = 2.5F;
+		float ySize = 3.5F;
 		switch(state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE))
 		{
 		case CEILING:

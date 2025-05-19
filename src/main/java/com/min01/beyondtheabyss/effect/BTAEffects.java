@@ -1,7 +1,6 @@
 package com.min01.beyondtheabyss.effect;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.effect.deepabyss.AbyssalScalesEffect;
 import com.min01.beyondtheabyss.effect.deepabyss.CoordinationEffect;
 import com.min01.beyondtheabyss.effect.deepabyss.DisorderEffect;
 
@@ -18,13 +17,7 @@ public class BTAEffects
 	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, BeyondtheAbyss.MODID);
 	public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, BeyondtheAbyss.MODID);
 	
-	public static final RegistryObject<MobEffect> ABYSSAL_SCALES = EFFECTS.register("abyssal_scales", () -> new AbyssalScalesEffect());
-	
 	public static final RegistryObject<MobEffect> AIR_SWIM = EFFECTS.register("air_swim", () -> new BasicBTAEffect(MobEffectCategory.BENEFICIAL, 3407871));
-	public static final RegistryObject<MobEffect> BLEEDING = EFFECTS.register("bleeding", () -> new BleedingEffect());
-	public static final RegistryObject<MobEffect> BLACK_BLEEDING = EFFECTS.register("black_bleeding", () -> new BasicBTAEffect(MobEffectCategory.HARMFUL, 3997955));
-	public static final RegistryObject<MobEffect> HALLUCINATION = EFFECTS.register("hallucination", () -> new BasicBTAEffect(MobEffectCategory.HARMFUL, 8109500));
-	public static final RegistryObject<MobEffect> LUNGSPORE = EFFECTS.register("lungspore", () -> new BasicBTAEffect(MobEffectCategory.HARMFUL, 3759198));
 	public static final RegistryObject<MobEffect> DISORDER = EFFECTS.register("disorder", () -> new DisorderEffect());
 	public static final RegistryObject<MobEffect> COORDINATION = EFFECTS.register("coordination", () -> new CoordinationEffect());
 	

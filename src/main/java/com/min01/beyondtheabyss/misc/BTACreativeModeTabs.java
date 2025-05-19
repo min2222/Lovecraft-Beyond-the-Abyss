@@ -36,13 +36,10 @@ public class BTACreativeModeTabs
     
     public static final RegistryObject<CreativeModeTab> ABYSS_MATERIALS = CREATIVE_MODE_TAB.register("abyss_materials", () -> CreativeModeTab.builder()
     		.title(Component.translatable("itemGroup.abyss_materials"))
-    		.icon(() -> new ItemStack(BTAItems.OXYGEN_TANK.get()))
+    		.icon(() -> new ItemStack(BTAItems.GHIDRUTH_SCALE.get()))
     		.displayItems((enabledFeatures, output) -> 
     		{
 				output.accept(BTAItems.GHIDRUTH_SCALE.get());
-				output.accept(BTAItems.OXYGEN_TANK.get());
-				output.accept(BTAItems.VAMPIRE_MEMBRANE.get());
-				output.accept(BTAItems.VAMPIRE_TOOTH.get());
 				output.accept(BTAItems.GNASHER_EYE.get());
 				output.accept(BTAItems.GNASHER_TOOTH.get());
 				output.accept(BTAItems.GHOUL_BLOOM_SEED_POD.get());
@@ -81,7 +78,7 @@ public class BTACreativeModeTabs
     
     public static final RegistryObject<CreativeModeTab> ABYSS_FOODS = CREATIVE_MODE_TAB.register("abyss_foods", () -> CreativeModeTab.builder()
     		.title(Component.translatable("itemGroup.abyss_foods"))
-    		.icon(() -> new ItemStack(BTAItems.RUNIC_FISH.get()))
+    		.icon(() -> new ItemStack(BTAItems.RAW_GHIDRUTH_FLESH.get()))
     		.displayItems((enabledFeatures, output) -> 
     		{
     			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
@@ -114,7 +111,6 @@ public class BTACreativeModeTabs
     		{
 				output.accept(BTAItems.RUSTY_HARPOON.get());
 				output.accept(BTAItems.GHIDRUTH_SCALE_HARPOON.get());
-				output.accept(BTAItems.SACRIFICIAL_DAGGER.get());
 				output.accept(BTAItems.SKELETAL_GUNBLADE.get());
     		}).build());
     
@@ -124,14 +120,12 @@ public class BTACreativeModeTabs
     		.displayItems((enabledFeatures, output) -> 
     		{
 				output.accept(BTAItems.FLASHLIGHT.get());
-				output.accept(BTAItems.FISH_BAIT.get());
     		}).build());
     
-    public static final RegistryObject<CreativeModeTab> ABYSS_ACCESSORIES = CREATIVE_MODE_TAB.register("abyss_accessories", () -> CreativeModeTab.builder()
+    /*public static final RegistryObject<CreativeModeTab> ABYSS_ACCESSORIES = CREATIVE_MODE_TAB.register("abyss_accessories", () -> CreativeModeTab.builder()
     		.title(Component.translatable("itemGroup.abyss_accessories"))
     		.icon(() -> new ItemStack(BTAItems.HEMATHORN_AMULET.get()))
     		.displayItems((enabledFeatures, output) -> 
     		{
-				output.accept(BTAItems.HEMATHORN_AMULET.get());
-    		}).build());
+    		}).build());*/
 }

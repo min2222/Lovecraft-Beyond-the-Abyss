@@ -5,10 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl;
-import com.min01.beyondtheabyss.capabilities.BTAAbilityCapabilityImpl.BTAAbility;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.IBTAAbilityCapability;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
@@ -284,18 +281,6 @@ public class BTAUtil
 		}
 		
 		return f1;
-	}
-	
-	public static boolean hasAbility(LivingEntity entity, BTAAbility ability)
-	{
-		IBTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityCapabilityImpl());
-		return handler.getAbilities().contains(ability);
-	}
-	   
-	public static int getAbilityTickCount(BTAAbility ability, LivingEntity entity)
-	{
-		IBTAAbilityCapability handler = entity.getCapability(BTACapabilities.BTA_ABILITY).orElse(new BTAAbilityCapabilityImpl());
-		return handler.getTickCount(ability);
 	}
 	
 	public static Vec3 moveToEntity(Vec3 from, Vec3 to, Entity mover, Entity target, float multiplier)

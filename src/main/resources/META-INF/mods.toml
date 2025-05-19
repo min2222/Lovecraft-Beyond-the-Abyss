@@ -57,7 +57,7 @@ description=''''''
 [[dependencies.beyondtheabyss]]
     modId="curios"
     mandatory=true
-    versionRange="[5.9.1+1.20.1,)"
+    versionRange="[5.14.1+1.20.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.beyondtheabyss]]

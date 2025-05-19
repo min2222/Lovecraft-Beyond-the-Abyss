@@ -9,9 +9,6 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 public class BTASavedData extends SavedData
 {
 	public static final String NAME = "bta_data";
-	
-	private boolean isUnderwaterBaseGenerated;
-	
     public static BTASavedData get(Level level)
     {
         if(level instanceof ServerLevel serverLevel) 
@@ -26,25 +23,12 @@ public class BTASavedData extends SavedData
     public static BTASavedData load(CompoundTag nbt) 
     {
     	BTASavedData data = new BTASavedData();
-        data.isUnderwaterBaseGenerated = nbt.getBoolean("isUnderwaterBaseGenerated");
         return data;
     }
 	
 	@Override
 	public CompoundTag save(CompoundTag nbt)
 	{
-		nbt.putBoolean("isUnderwaterBaseGenerated", this.isUnderwaterBaseGenerated);
 		return nbt;
-	}
-
-	public boolean isUnderwaterBaseGenerated() 
-	{
-		return this.isUnderwaterBaseGenerated;
-	}
-
-	public void setUnderwaterBaseGenerated(boolean isUnderwaterBaseGenerated)
-	{
-		this.isUnderwaterBaseGenerated = isUnderwaterBaseGenerated;
-		this.setDirty();
 	}
 }
