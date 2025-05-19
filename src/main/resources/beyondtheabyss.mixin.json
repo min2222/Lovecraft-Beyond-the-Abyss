@@ -11,10 +11,10 @@
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
 		"MixinPlayerModel",
+		"MixinEntityRenderDispatcher",
 		"lights.MixinEntityRenderer",
 		"lights.MixinClientLevel",
-		"lights.MixinMinecraft",
-		"multipart.MixinEntityRenderDispatcher"
+		"lights.MixinMinecraft"
 	],
 	"server": [],
 	"injectors": {

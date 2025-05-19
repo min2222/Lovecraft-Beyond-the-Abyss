@@ -1,41 +1,39 @@
 package com.min01.beyondtheabyss.capabilities;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateItemAnimationPacket;
-import com.min01.beyondtheabyss.network.UpdateItemAnimationTickPacket;
+import com.min01.beyondtheabyss.network.UpdateItemTickCountPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
 public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 {
-    public static final String ANIMATION_TICK = "AnimationTick";
-	private ListTag animations = new ListTag();
-	private CompoundTag compoundTag = new CompoundTag();
-	private LivingEntity entity;
 	private ItemStack stack;
+	private Entity entity;
+	private int tickCount;
 	
 	@Override
-	public CompoundTag serializeNBT()
+	public CompoundTag serializeNBT() 
 	{
-		CompoundTag tag = new CompoundTag();
-		tag.put("Animations", this.animations);
-		tag.put("Tag", this.compoundTag);
-		return tag;
+		CompoundTag nbt = new CompoundTag();
+		nbt.putInt("TickCount", this.tickCount);
+		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		this.compoundTag = nbt.getCompound("Tag");
-		this.animations = nbt.getList("Animations", 10);
+		this.tickCount = nbt.getInt("TickCount");
+	}
+	
+	@Override
+	public void setEntity(Entity entity) 
+	{
+		this.entity = entity;
 	}
 	
 	@Override
@@ -43,79 +41,50 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	{
 		this.stack = stack;
 	}
-	
-	@Override
-	public void setEntity(LivingEntity entity) 
-	{
-		this.entity = entity;
-	}
 
 	@Override
 	public void update() 
 	{
-    	int tick = this.getAnimationTick();
-    	if(tick > 0)
-    	{
-    		this.setAnimationTick(tick - 1);
-    	}
+		this.tickCount++;
+		if(this.entity != null && !this.entity.level.isClientSide)
+		{
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdateItemTickCountPacket(this.entity.getUUID(), this.stack, this.tickCount));
+		}
 	}
 
 	@Override
-    public int getAnimationTick()
-    {
-    	return this.compoundTag.getInt(ANIMATION_TICK);
-    }
+	public void startItemAnimation(String name) 
+	{
+		AnimationState state = this.getAnimationState(name);
+		state.startIfStopped(this.tickCount);
+		BTAUtil.writeAnimationTime(this.stack.getOrCreateTag(), name, state);
+	}
 
 	@Override
-    public void setAnimationTick(int tick)
-    {
-        this.compoundTag.putInt(ANIMATION_TICK, tick);
-		this.sendTickUpdatePacket();
-    }
-	
-	@Override
-	public AnimationState getAnimationState(String name) 
+	public void stopItemAnimation(String name) 
 	{
-        return BTAUtil.readAnimationState(this.animations, name);
+		AnimationState state = this.getAnimationState(name);
+		state.stop();
+		BTAUtil.writeAnimationTime(this.stack.getOrCreateTag(), name, state);
 	}
 	
 	@Override
-	public void setAnimationState(AnimationState state, String name)
+	public AnimationState getAnimationState(String name)
 	{
-		BTAUtil.writeAnimationState(this.animations, state, name);
-		this.sendUpdatePacket();
+		AnimationState state = new AnimationState();
+		BTAUtil.readAnimationTime(this.stack.getOrCreateTag(), name, state);
+		return state;
 	}
 	
 	@Override
-	public Pair<ListTag, CompoundTag> getTag()
+	public void setTickCount(int tickCount) 
 	{
-		return Pair.of(this.animations, this.compoundTag);
+		this.tickCount = tickCount;
 	}
 	
 	@Override
-	public void setTag(Pair<ListTag, CompoundTag> pair)
+	public int getTickCount() 
 	{
-		this.animations = pair.getLeft();
-		this.compoundTag = pair.getRight();
-	}
-	
-	private void sendTickUpdatePacket() 
-	{
-		if(this.entity == null)
-			return;
-		if(!this.entity.level.isClientSide)
-		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdateItemAnimationTickPacket(this.entity.getUUID(), this.stack, this));
-		}
-	}
-	
-	private void sendUpdatePacket() 
-	{
-		if(this.entity == null)
-			return;
-		if(!this.entity.level.isClientSide)
-		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdateItemAnimationPacket(this.entity.getUUID(), this.stack, this));
-		}
+		return this.tickCount;
 	}
 }

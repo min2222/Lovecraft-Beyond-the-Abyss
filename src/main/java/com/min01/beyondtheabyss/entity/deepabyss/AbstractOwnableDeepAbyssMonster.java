@@ -53,7 +53,14 @@ public abstract class AbstractOwnableDeepAbyssMonster<T extends AbstractDeepAbys
 	
 	public void setOwner(T owner)
 	{
-		this.entityData.set(OWNER_UUID, Optional.of(owner.getUUID()));
+		if(owner == null)
+		{
+			this.entityData.set(OWNER_UUID, Optional.empty());
+		}
+		else
+		{
+			this.entityData.set(OWNER_UUID, Optional.of(owner.getUUID()));
+		}
 	}
 	
 	@Nullable

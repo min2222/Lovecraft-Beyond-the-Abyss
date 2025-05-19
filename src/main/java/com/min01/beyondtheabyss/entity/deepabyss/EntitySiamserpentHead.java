@@ -2,10 +2,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
@@ -48,10 +44,9 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_HEAD = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_INVERT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Optional<UUID>> OTHER_UUID = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.OPTIONAL_UUID);
-	
-	public final List<EntitySiamserpentBone> segments = new ArrayList<>();
 	
 	public final AnimationState chargeAnimationState = new AnimationState();
 	public final AnimationState shootStartAnimationState = new AnimationState();
@@ -79,8 +74,9 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
     	this.entityData.define(HEAD_TYPE, 0);
     	this.entityData.define(IS_DISABLED, false);
     	this.entityData.define(IS_DORMANT, false);
+    	this.entityData.define(IS_HEAD, false);
+    	this.entityData.define(IS_INVERT, false);
     	this.entityData.define(BEAM_LENGTH, 0.0F);
-    	this.entityData.define(OTHER_UUID, Optional.empty());
     }
     
 	@Override
@@ -156,10 +152,12 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public void tick() 
 	{
 		super.tick();
-		
-		if(this.tickCount == 2)
+		if(this.isHead())
 		{
-			this.partBuilder.rebuildHitbox();
+			if(this.getHealth() <= this.getMaxHealth() / 2)
+			{
+				//TODO swap owner;
+			}
 		}
 		
 		//blaster laser
@@ -197,7 +195,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	            		}
 	            	});
 	            }
-	            
 	            arrayList.forEach(t -> 
 	            {
 	            	t.hurt(this.damageSources().mobAttack(this), 0.5F);
@@ -209,12 +206,12 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public boolean isHead() 
 	{
-		return this.getOwner() == null;
+		return this.entityData.get(IS_HEAD);
 	}
 	
-	public boolean shouldInvertRotation()
+	public void setHead(boolean value)
 	{
-		return this.isDormant() || this.isDisabled();
+		this.entityData.set(IS_HEAD, value);
 	}
 	
 	@Override
@@ -242,12 +239,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	public boolean useSubRoot() 
-	{
-		return true;
-	}
-	
-	@Override
 	public String subRoot() 
 	{
 		if(this.getHeadType() == HeadType.SLASHER)
@@ -266,7 +257,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public Vec2 headRotation(LivingEntity living, Vec2 original)
 	{
-		return this.shouldInvertRotation() ? new Vec2(-original.x, original.y + 180.0F) : original;
+		return this.isInvert() ? new Vec2(-original.x, original.y + 180.0F) : original;
 	}
 	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
@@ -283,10 +274,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		p_21484_.putInt("HeadType", this.getHeadType().ordinal());
 		p_21484_.putBoolean("isDormant", this.isDormant());
 		p_21484_.putBoolean("isDisabled", this.isDisabled());
-		if(this.entityData.get(OTHER_UUID).isPresent())
-		{
-			p_21484_.putUUID("OtherHead", this.entityData.get(OTHER_UUID).get());
-		}
+		p_21484_.putBoolean("isHead", this.isHead());
+		p_21484_.putBoolean("isInvert", this.isInvert());
 	}
 	
 	@Override
@@ -305,23 +294,13 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		{
 			this.setDisabled(p_21450_.getBoolean("isDisabled"));
 		}
-		if(p_21450_.hasUUID("OtherHead")) 
+		if(p_21450_.contains("isHead"))
 		{
-			this.entityData.set(OTHER_UUID, Optional.of(p_21450_.getUUID("OtherHead")));
+			this.setHead(p_21450_.getBoolean("isHead"));
 		}
-	}
-	
-	@Override
-	public void die(DamageSource p_21192_)
-	{
-		super.die(p_21192_);
-		this.segments.forEach(t -> 
+		if(p_21450_.contains("isInvert"))
 		{
-			t.die(p_21192_);
-		});
-		if(this.getOtherHead() != null)
-		{
-			this.getOtherHead().die(p_21192_);
+			this.setInvert(p_21450_.getBoolean("isInvert"));
 		}
 	}
 	
@@ -329,6 +308,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
 	{
+		this.setHead(true);
+		AbstractSiamserpentPart prev = this;
 		EntitySiamserpentBone bone = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
 		bone.setOwner(this);
 		bone.setIndex(0);
@@ -344,67 +325,52 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		}
 		bone.setPos(this.position());
 		bone.setHead(this);
-		this.segments.add(0, bone);
+		prev = bone;
 		this.level.addFreshEntity(bone);
-		
 		for(int i = 0; i < 12; i++)
 		{
 			if(i < 10)
 			{
 				EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
-				bone2.setOwner(this.segments.get(i));
+				bone2.setOwner(prev);
 				bone2.setIndex(i + 1);
 				bone2.setVariant(2);
 				bone2.setPos(this.position());
 				bone2.setHead(this);
-				this.segments.add(i + 1, bone2);
+				prev = bone2;
 				this.level.addFreshEntity(bone2);
 			}
 			else
 			{
 				if(i == 10)
 				{
-					int variant = this.segments.get(0).getVariant() == 0 ? 1 : 0;
+					int variant = this.getHeadType() == HeadType.SLASHER ? 1 : 0;
 					EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
-					bone2.setOwner(this.segments.get(i));
+					bone2.setOwner(prev);
 					bone2.setIndex(i + 1);
 					bone2.setVariant(variant);
 					bone2.setPos(this.position());
 					bone2.setHead(this);
-					this.segments.add(i + 1, bone2);
+					prev = bone2;
 					this.level.addFreshEntity(bone2);
 				}
 				if(i == 11)
 				{
 					HeadType type = this.getHeadType() == HeadType.SLASHER ? HeadType.BLASTER : HeadType.SLASHER;
 					EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
-					head.setOwner(this.segments.get(i));
+					head.setOwner(prev);
 					head.setHeadType(type);
 					head.setIndex(i + 1);
 					head.setPos(this.position());
 					head.setDormant(true);
 					head.setHead(this);
-					this.setOtherHead(head);
+					head.setInvert(true);
+					this.setHead(head);
 					this.level.addFreshEntity(head);
 				}
 			}
 		}
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
-	}
-
-	public void setOtherHead(EntitySiamserpentHead head)
-	{
-		this.entityData.set(OTHER_UUID, Optional.of(head.getUUID()));
-	}
-	
-	@Nullable
-	public EntitySiamserpentHead getOtherHead() 
-	{
-		if(this.entityData.get(OTHER_UUID).isPresent()) 
-		{
-			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(OTHER_UUID).get());
-		}
-		return null;
 	}
 
 	public void setBeamLength(float value)
@@ -415,6 +381,16 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public float getBeamLength()
 	{
 		return this.entityData.get(BEAM_LENGTH);
+	}
+	
+	public void setInvert(boolean value)
+	{
+		this.entityData.set(IS_INVERT, value);
+	}
+	
+	public boolean isInvert()
+	{
+		return this.entityData.get(IS_INVERT);
 	}
 	
 	public void setDormant(boolean value)

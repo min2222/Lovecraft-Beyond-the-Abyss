@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.joml.Vector3f;
 
 import com.min01.beyondtheabyss.item.animation.KeyframeItemAnimations;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -45,16 +46,18 @@ public abstract class HierarchicalItemModel extends Model
 		});
 	}
 
-	protected void animate(AnimationState p_233382_, AnimationDefinition p_233383_, float p_233384_)
+	protected void animate(ItemStack stack, String name, AnimationDefinition p_233383_, float p_233384_)
 	{
-		this.animate(p_233382_, p_233383_, p_233384_, 1.0F);
+		this.animate(stack, name, p_233383_, p_233384_, 1.0F);
 	}
 
-	protected void animate(AnimationState p_233386_, AnimationDefinition p_233387_, float p_233388_, float p_233389_) 
+	protected void animate(ItemStack stack, String name, AnimationDefinition p_233387_, float p_233388_, float p_233389_) 
 	{
-		p_233386_.updateTime(p_233388_, p_233389_);
-		p_233386_.ifStarted((p_233392_) ->
+		AnimationState state = BTAUtil.getItemAnimation(stack, name);
+		state.updateTime(p_233388_, p_233389_);	
+		state.ifStarted((p_233392_) ->
 		{
+			BTAUtil.writeAnimationTime(stack.getOrCreateTag(), name, p_233392_);
 			KeyframeItemAnimations.animate(this, p_233387_, p_233392_.getAccumulatedTime(), 1.0F, ANIMATION_VECTOR_CACHE);
 		});
 	}

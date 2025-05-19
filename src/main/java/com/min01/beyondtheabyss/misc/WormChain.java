@@ -7,7 +7,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class WormChain 
 {
-	///ChatGPT ahh; (origin by deepspace mod)
+	//ChatGPT ahh; (origin by deepspace mod)
     public static void tick(LivingEntity living, LivingEntity owner, float distance, float speed)
     {
         Vec3 direction = owner.getLookAngle().normalize().scale(distance);

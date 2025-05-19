@@ -72,7 +72,6 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 			this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
 			this.model.renderToBuffer(p_114488_, eyeConsumer, p_114490_, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
 		}
-		p_114485_.getPartBuilder().clientTick(this.model, p_114487_);
 		p_114488_.popPose();
 	}
 

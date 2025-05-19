@@ -124,6 +124,7 @@ public class BTACreativeModeTabs
     		.displayItems((enabledFeatures, output) -> 
     		{
 				output.accept(BTAItems.FLASHLIGHT.get());
+				output.accept(BTAItems.FISH_BAIT.get());
     		}).build());
     
     public static final RegistryObject<CreativeModeTab> ABYSS_ACCESSORIES = CREATIVE_MODE_TAB.register("abyss_accessories", () -> CreativeModeTab.builder()

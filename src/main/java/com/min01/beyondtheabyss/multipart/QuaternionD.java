@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.multipart;
 
 import org.joml.Quaternionf;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 
 public final class QuaternionD
@@ -71,6 +72,19 @@ public final class QuaternionD
     public double getW()
     {
         return this.w;
+    }
+    
+    public void write(FriendlyByteBuf buf)
+    {
+        buf.writeDouble(this.x);
+        buf.writeDouble(this.y);
+        buf.writeDouble(this.z);
+        buf.writeDouble(this.w);
+    }
+
+    public static QuaternionD read(FriendlyByteBuf buf) 
+    {
+        return new QuaternionD(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble());
     }
 
     public QuaternionD hamiltonProduct(QuaternionD other) 

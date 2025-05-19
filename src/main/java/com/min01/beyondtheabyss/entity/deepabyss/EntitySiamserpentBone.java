@@ -51,22 +51,6 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 	}
     
     @Override
-    public void tick() 
-    {
-    	super.tick();
-		if(this.tickCount == 2)
-		{
-			this.partBuilder.rebuildHitbox();
-		}
-    }
-    
-    @Override
-    public boolean useSubRoot() 
-    {
-    	return true;
-    }
-    
-    @Override
     public String subRoot()
     {
 		if(this.getVariant() == 0 || this.getVariant() == 1)

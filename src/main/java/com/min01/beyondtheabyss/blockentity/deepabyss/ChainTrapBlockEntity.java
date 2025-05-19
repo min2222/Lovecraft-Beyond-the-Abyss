@@ -16,9 +16,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -40,25 +42,28 @@ public class ChainTrapBlockEntity extends BlockEntity
 		boolean isOpened = state.getValue(ChainTrapBlock.OPENED);
 		if(isOpened)
 		{
- 			List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, new AABB(-2.5F, 0, -2.5F, 2.5F, 2.5F, 2.5F).move(trap.worldPosition));
-			list.removeIf(t -> (t instanceof Player player && player.getAbilities().instabuild) || t.getType().is(Tags.EntityTypes.BOSSES) || t.getType().is(BTATags.BTAEntity.MINI_BOSS));
-			list.forEach(t -> 
+			if(trap.chains.size() < 4)
 			{
-				if(!trap.chainedEntities.contains(t.getUUID()))
+				List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, trap.getAABB(0.5F, state).move(trap.worldPosition), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
+				list.removeIf(t -> t.getType().is(Tags.EntityTypes.BOSSES) || t.getType().is(BTATags.BTAEntity.MINI_BOSS));
+				list.forEach(t -> 
 				{
-					EntityChainTrapMaw maw = new EntityChainTrapMaw(BTAEntities.CHAIN_TRAP_MAW.get(), level);
-					maw.setPos(Vec3.atBottomCenterOf(pos));
-					maw.setChainPos(Vec3.atBottomCenterOf(pos));
-					maw.setTarget(t);
-					maw.setChainLength(Math.max((int) Math.floor(maw.position().distanceTo(t.getEyePosition())), 5));
-					level.addFreshEntity(maw);
-					if(!trap.chains.contains(maw.getUUID()))
+					if(!trap.chainedEntities.contains(t.getUUID()))
 					{
-						trap.chains.add(maw.getUUID());
+						EntityChainTrapMaw maw = new EntityChainTrapMaw(BTAEntities.CHAIN_TRAP_MAW.get(), level);
+						maw.setPos(Vec3.atCenterOf(pos));
+						maw.setChainPos(Vec3.atBottomCenterOf(pos));
+						maw.setTarget(t);
+						maw.setChainLength(Math.max((int) Math.floor(maw.position().distanceTo(t.getEyePosition())), 5));
+						level.addFreshEntity(maw);
+						if(!trap.chains.contains(maw.getUUID()))
+						{
+							trap.chains.add(maw.getUUID());
+						}
+						trap.chainedEntities.add(t.getUUID());
 					}
-					trap.chainedEntities.add(t.getUUID());
-				}
-			});
+				});
+			}
 		}
 		else
 		{
@@ -82,6 +87,34 @@ public class ChainTrapBlockEntity extends BlockEntity
 			{
 				itr.remove();
 			}
+		}
+	}
+	
+	public AABB getAABB(float size, BlockState state)
+	{
+		float ySize = 2.5F;
+		switch(state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE))
+		{
+		case CEILING:
+			return new AABB(-size, -ySize, -size, size, 0, size);
+		case FLOOR:
+			return new AABB(-size, 0, -size, size, ySize, size);
+		case WALL:
+			switch(state.getValue(HorizontalDirectionalBlock.FACING))
+			{
+			case EAST:
+				return new AABB(0, -size, -size, ySize, size, size);
+			case NORTH:
+				return new AABB(-size, -size, -ySize, size, size, 0);
+			case SOUTH:
+				return new AABB(-size, -size, 0, size, size, ySize);
+			case WEST:
+				return new AABB(-ySize, -size, -size, 0, size, size);
+			default:
+				return new AABB(-size, 0, -size, size, ySize, size);
+			}
+		default:
+			return new AABB(-size, 0, -size, size, ySize, size);
 		}
 	}
 	

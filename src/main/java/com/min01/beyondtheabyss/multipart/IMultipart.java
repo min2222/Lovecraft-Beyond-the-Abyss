@@ -12,16 +12,14 @@ public interface IMultipart
 
     CompoundOrientedBox getCompoundBoundingBox(AABB bounds);
 
-    void onSetPos(double x, double y, double z);
-    
-    default boolean useSubRoot() 
-    {
-    	return false;
-    }
-    
     default String subRoot()
     {
     	return "";
+    }
+    
+    default boolean useSubRoot()
+    {
+    	return !this.subRoot().equals("");
     }
     
 	default boolean rotateHead()

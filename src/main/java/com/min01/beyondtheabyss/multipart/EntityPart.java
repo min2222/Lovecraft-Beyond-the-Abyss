@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.multipart;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.AABB;
 
 /**
@@ -170,5 +171,91 @@ public final class EntityPart
             orientedBox = this.parent.transformChild(orientedBox);
         }
         return orientedBox.transform(this.x, this.y, this.z, this.px, this.py, this.pz, this.rotation);
+    }
+    
+    public static EntityPart read(FriendlyByteBuf buf) 
+    {
+        boolean hasParent = buf.readBoolean();
+        EntityPart parent = hasParent ? read(buf) : null;
+        
+        double minX = buf.readDouble();
+        double minY = buf.readDouble();
+        double minZ = buf.readDouble();
+        double maxX = buf.readDouble();
+        double maxY = buf.readDouble();
+        double maxZ = buf.readDouble();
+        AABB box = new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+        
+        double offX = buf.readDouble();
+        double offY = buf.readDouble();
+        double offZ = buf.readDouble();
+        
+        double x = buf.readDouble();
+        double y = buf.readDouble();
+        double z = buf.readDouble();
+        
+        double px = buf.readDouble();
+        double py = buf.readDouble();
+        double pz = buf.readDouble();
+        
+        double qx = buf.readDouble();
+        double qy = buf.readDouble();
+        double qz = buf.readDouble();
+        double qw = buf.readDouble();
+        QuaternionD rotation = new QuaternionD(qx, qy, qz, qw);
+        
+        boolean collide = buf.readBoolean();
+        boolean isChanged = buf.readBoolean();
+        
+        EntityPart part = new EntityPart(parent, box, false, offX, offY, offZ);
+        part.setX(x - offX);
+        part.setY(y - offY);
+        part.setZ(z - offZ);
+        part.setPivotX(px);
+        part.setPivotY(py);
+        part.setPivotZ(pz);
+        part.setRotation(rotation);
+        part.setCollide(collide);
+        part.setChanged(isChanged);
+        return part;
+    }
+
+    public static void write(FriendlyByteBuf buf, EntityPart part) 
+    {
+        boolean hasParent = part.parent != null;
+        buf.writeBoolean(hasParent);
+        if(hasParent)
+        {
+            write(buf, part.parent);
+        }
+        
+        AABB box = part.box;
+        buf.writeDouble(box.minX);
+        buf.writeDouble(box.minY);
+        buf.writeDouble(box.minZ);
+        buf.writeDouble(box.maxX);
+        buf.writeDouble(box.maxY);
+        buf.writeDouble(box.maxZ);
+        
+        buf.writeDouble(part.offX);
+        buf.writeDouble(part.offY);
+        buf.writeDouble(part.offZ);
+        
+        buf.writeDouble(part.x);
+        buf.writeDouble(part.y);
+        buf.writeDouble(part.z);
+        
+        buf.writeDouble(part.px);
+        buf.writeDouble(part.py);
+        buf.writeDouble(part.pz);
+        
+        QuaternionD rotation = part.rotation;
+        buf.writeDouble(rotation.getX());
+        buf.writeDouble(rotation.getY());
+        buf.writeDouble(rotation.getZ());
+        buf.writeDouble(rotation.getW());
+        
+        buf.writeBoolean(part.collide);
+        buf.writeBoolean(part.changed);
     }
 }

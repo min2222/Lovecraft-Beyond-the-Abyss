@@ -9,7 +9,6 @@ import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -29,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray
 {
@@ -59,18 +59,79 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 		this.entityData.define(HATCH_OPENED, false);
 	}
 	
+    @Override
+    public void tick() 
+    {
+    	super.tick();
+        if(this.level.isClientSide) 
+        {
+            ++this.glowingTicks;
+            this.brightness += (0.0F - this.brightness) * 0.8F;
+        }
+        
+		if(this.partBuilder != null)
+		{
+			this.partBuilder.tick(1.0F);
+		}
+    }
+    
+    @Override
+    public void travel(Vec3 vec3) 
+    {
+    	if(this.getFirstPassenger() instanceof Player player)
+    	{
+    		if(this.isInWater())
+    		{
+            	Vec3 motion = vec3;
+            	boolean jumping = ObfuscationReflectionHelper.getPrivateValue(LivingEntity.class, player, "f_20899_");
+                if(player.zza != 0 || player.xxa != 0)
+                {
+                	if(!this.level.isClientSide)
+                	{
+                    	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 5));
+                    	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 5));
+                    	this.setYHeadRot(this.getYRot());
+                    	this.setYBodyRot(this.getYRot());
+                	}
+                	Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), Vec3.ZERO, 0.0F, 0.0F, 2.5F);
+                	motion = motion.add(lookPos);
+                }
+            	if(jumping)
+            	{
+            		motion = motion.add(0, 1.5F, 0);
+            	}
+            	this.setDeltaMovement(motion.scale(0.1F));
+            	super.travel(motion);
+    		}
+    	}
+    	else
+    	{
+        	super.travel(vec3);
+    	}
+    }
+    
+    @Override
+    public Vec3 getFluidFallingAdjustedMovement(double p_20995_, boolean p_20996_, Vec3 p_20997_)
+    {
+    	Vec3 motion = super.getFluidFallingAdjustedMovement(p_20995_, p_20996_, p_20997_);
+    	return new Vec3(motion.x, 0.0F, motion.z);
+    }
+	
 	@Override
-	public void travel(Vec3 p_21280_) 
+	public void positionRider(Entity p_20312_, MoveFunction fuction) 
 	{
-		if(this.getFirstPassenger() != null && this.getFirstPassenger() instanceof Player player)
-		{
-			Vec3 travelVector = new Vec3(player.xxa, player.yya, player.zza);
-	        super.travel(travelVector);
-		}
-		else
-		{
-			super.travel(p_21280_);
-		}
+        if(!this.touchingUnloadedChunk()) 
+        {
+	    	if(this.posArray[0] != null)
+	    	{
+	    		Vec3 pos = this.posArray[0].subtract(0, 0.25F, 0);
+	    		fuction.accept(p_20312_, pos.x, pos.y, pos.z);
+	    	}
+        }
+        else
+        {
+            super.positionRider(p_20312_);
+        }
 	}
 	
 	@Override
@@ -90,49 +151,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	{
 		return false;
 	}
-	
-	@Override
-	public void positionRider(Entity p_20312_, MoveFunction function) 
-	{
-		if(this.posArray[0] != null)
-		{
-	    	p_20312_.setPos(this.posArray[0]);
-		}
-    	
-    	if(p_20312_.isShiftKeyDown())
-    	{
-    		p_20312_.stopRiding();
-    	}
-	}
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag p_21145_) 
-	{
-		super.addAdditionalSaveData(p_21145_);
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag p_21096_) 
-	{
-		super.readAdditionalSaveData(p_21096_);
-	}
-	
-    @Override
-    public void tick() 
-    {
-    	super.tick();
-    	
-        if(this.level.isClientSide) 
-        {
-            ++this.glowingTicks;
-            this.brightness += (0.0F - this.brightness) * 0.8F;
-        }
-        
-		if(this.partBuilder != null)
-		{
-			this.partBuilder.tick(1.0F);
-		}
-    }
     
     @Override
     protected Entity.MovementEmission getMovementEmission() 
@@ -185,8 +203,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity p_20123_) 
     {
-    	Vec3 dismountPos = BTAUtil.getLookPos(this.getRotationVector(), p_20123_.position(), 0.0F, 1.8F, 1.5F);
-    	return dismountPos;
+    	return new Vec3(this.getX(), this.getBoundingBox().minY + 2.0F, this.getZ());
     }
     
     @Override
@@ -210,12 +227,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     }
 	
 	@Override
-	public boolean canBeCollidedWith()
-	{
-		return true;
-	}
-	
-	@Override
 	public List<String> getCollidePart()
 	{
 		return List.of("bottom", "r_wall", "l_wall", "back", "hatch", "top", "front");
@@ -231,18 +242,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	public EntityBounds getBounds() 
 	{
 		return this.partBuilder.hitbox;
-	}
-
-	@Override
-	public void onSetPos(double x, double y, double z) 
-	{
-		if(this.tickCount <= 2)
-		{
-			if(this.partBuilder != null)
-			{
-				this.partBuilder.tick(1.0F);
-			}
-		}
 	}
 	
 	@Override

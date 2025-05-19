@@ -1,23 +1,14 @@
 package com.min01.beyondtheabyss.event;
 
-import java.util.Map;
-
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IBTAAbilityCapability;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.IBoid;
-import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTAAbilities;
 import com.min01.beyondtheabyss.misc.BTALootTables;
-import com.min01.beyondtheabyss.misc.Boid;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.multipart.IMultipart;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.BuildMultipartPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTASavedData;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
@@ -32,6 +23,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -43,7 +35,6 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -77,16 +68,6 @@ public class EventHandlerForge
 	        	}
 			}
 		}
-		
-		//FIXME in server, isClientSide always return false;
- 		if(entity.level.isClientSide)
- 		{
- 			if(entity instanceof IMultipart multipart)
- 			{
- 				EntityPartBuilder<?> partBuilder = multipart.getPartBuilder();
- 	    		BTANetwork.sendToServer(new BuildMultipartPacket(partBuilder.entity, partBuilder.partOffset, partBuilder.parts, partBuilder.partMap));
- 			}
- 		}
 	}
 	
 	@SubscribeEvent
@@ -104,6 +85,22 @@ public class EventHandlerForge
 		}
 	}
 	
+	@SubscribeEvent
+	public static void onPlayerTick(PlayerTickEvent event)
+	{
+		for(ItemStack stack : event.player.getAllSlots())
+		{
+			if(stack.getItem() instanceof IAnimatableItem)
+			{
+				stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
+				{
+					t.setEntity(event.player);
+					t.update();
+				});
+			}
+		}
+	}
+	
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event)
     {
@@ -113,9 +110,8 @@ public class EventHandlerForge
         }
     }
 
- 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
-	public static <T extends LivingEntity & IDeepAbyssMob & IBoid<T>> void onLivingTick(LivingTickEvent event)
+	public static void onLivingTick(LivingTickEvent event)
 	{ 	
 		LivingEntity entity = event.getEntity();
         
@@ -126,32 +122,6 @@ public class EventHandlerForge
 			entity.setOnGround(false);
 			entity.resetFallDistance();
 		}
-		
- 		if(entity instanceof IBoid<?> boid)
- 		{
- 			T fish = (T) entity;
- 			DeepAbyssUtil.loadBoid(fish);
- 			if(boid.isLeader() && entity.isInWater() && boid.getBoidBounds() != null)
- 			{
- 				if(entity.tickCount % 60 == 0)
- 				{
- 					DeepAbyssUtil.recreateBounds(fish, 8);
- 				}
- 				DeepAbyssUtil.tickBoid(fish, boid.getBoidBounds(), (Map<T, Boid>) boid.getBoid());
- 			}
- 		}
- 	}
- 	
- 	@SuppressWarnings("unchecked")
- 	@SubscribeEvent
- 	public static <T extends LivingEntity & IDeepAbyssMob & IBoid<T>> void onLivingDeath(LivingDeathEvent event)
- 	{
- 		LivingEntity entity = event.getEntity();
- 		if(entity instanceof IBoid<?>)
- 		{
- 			T fish = (T) entity;
- 			DeepAbyssUtil.transferLeader(fish);
- 		}
 	}
 	
 	@SubscribeEvent
@@ -167,13 +137,6 @@ public class EventHandlerForge
 				event.setAmount(event.getAmount() + (effect.getAmplifier() * 0.5F));
 			}
 		}
-	}
-	
-	@SubscribeEvent
-	public static void onPlayerTick(PlayerTickEvent event)
-	{
-		Player player = event.player;
-		BTAUtil.updatePlayerTick(player);
 	}
     
     @SubscribeEvent

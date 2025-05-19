@@ -1,12 +1,14 @@
 package com.min01.beyondtheabyss.block;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.block.deepabyss.BiocrafterBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BoneFenceBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BoneLeverBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BonePilesBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BoneTorchBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BoneWallTorchBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ChainTrapBlock;
+import com.min01.beyondtheabyss.block.deepabyss.CrabTrapBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FallenSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FangSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FishBoneBlock;
@@ -25,7 +27,9 @@ import com.min01.beyondtheabyss.block.deepabyss.ToothvineBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvinePlantBlock;
 import com.min01.beyondtheabyss.block.deepabyss.WhalefallBlock;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
+import com.min01.beyondtheabyss.blockentity.deepabyss.CrabTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 
 import net.minecraft.world.level.block.BaseCoralFanBlock;
@@ -123,6 +127,8 @@ public class BTABlocks
     }).sound(SoundType.BONE_BLOCK).lootFrom(BONE_TORCH)));
     public static final RegistryObject<Block> BONE_LEVER = BLOCKS.register("bone_lever", () -> new BoneLeverBlock(BlockBehaviour.Properties.of().noCollission().strength(0.5F).sound(SoundType.BONE_BLOCK)));
     public static final RegistryObject<Block> CHAIN_TRAP = BLOCKS.register("chain_trap", () -> new ChainTrapBlock());
+    public static final RegistryObject<Block> CRAB_TRAP = BLOCKS.register("crab_trap", () -> new CrabTrapBlock());
+    public static final RegistryObject<Block> BIOCRAFTER = BLOCKS.register("biocrafter", () -> new BiocrafterBlock());
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 
@@ -136,4 +142,6 @@ public class BTABlocks
     		BTABlocks.BONE_WALL_TORCH.get(),
     		BTABlocks.BONE_LEVER.get()).build(null));
     public static final RegistryObject<BlockEntityType<ChainTrapBlockEntity>> CHAIN_TRAP_BLOCK_ENTITY = BLOCK_ENTITIES.register("chain_trap", () -> BlockEntityType.Builder.of(ChainTrapBlockEntity::new, BTABlocks.CHAIN_TRAP.get()).build(null));
+    public static final RegistryObject<BlockEntityType<CrabTrapBlockEntity>> CRAB_TRAP_BLOCK_ENTITY = BLOCK_ENTITIES.register("crab_trap", () -> BlockEntityType.Builder.of(CrabTrapBlockEntity::new, BTABlocks.CRAB_TRAP.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BiocrafterBlockEntity>> BIOCRAFTER_BLOCK_ENTITY = BLOCK_ENTITIES.register("biocrafter", () -> BlockEntityType.Builder.of(BiocrafterBlockEntity::new, BTABlocks.BIOCRAFTER.get()).build(null));
 }

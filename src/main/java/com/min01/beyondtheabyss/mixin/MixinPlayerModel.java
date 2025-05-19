@@ -12,10 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.animation.KeyframePlayerAnimations;
-import com.min01.beyondtheabyss.animation.PlayerAnimation;
-import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.PlayerModel;
@@ -56,12 +53,7 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     @Inject(at = @At("TAIL"), method = "setupAnim", cancellable = true)
     private void setupAnimTail(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {
-      	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_OPEN), PlayerAnimation.GunbladeAnimation.GUNBLADE_OPEN, ageInTicks);
-    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_CLOSE), PlayerAnimation.GunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
-    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_BRING_OUT), PlayerAnimation.GunbladeAnimation.GUNBLADE_BRING_OUT, ageInTicks);
-    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_PUT_DOWN), PlayerAnimation.GunbladeAnimation.GUNBLADE_PUT_DOWN, ageInTicks);
-    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_SWING), PlayerAnimation.GunbladeAnimation.GUNBLADE_SWING, ageInTicks);
-    	this.animate(BTAUtil.getPlayerAnimationState(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT), PlayerAnimation.GunbladeAnimation.GUNBLADE_SHOOT_LIGHT, ageInTicks);
+    	//TODO
     }
     
 	@Override

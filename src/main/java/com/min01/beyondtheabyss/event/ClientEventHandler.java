@@ -5,18 +5,22 @@ import java.util.Objects;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.block.model.ModelBiocrafter;
 import com.min01.beyondtheabyss.block.model.ModelBoneLever;
 import com.min01.beyondtheabyss.block.model.ModelBoneLeverOn;
 import com.min01.beyondtheabyss.block.model.ModelBonePiles;
 import com.min01.beyondtheabyss.block.model.ModelBoneTorch;
 import com.min01.beyondtheabyss.block.model.ModelBoneWallTorch;
 import com.min01.beyondtheabyss.block.model.ModelChainTrap;
+import com.min01.beyondtheabyss.block.model.ModelCrabTrap;
 import com.min01.beyondtheabyss.block.model.ModelFallenSkeleton;
 import com.min01.beyondtheabyss.block.model.ModelFangSkull;
 import com.min01.beyondtheabyss.block.model.ModelLargeSkull;
 import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
 import com.min01.beyondtheabyss.block.model.ModelSittingSkeleton;
+import com.min01.beyondtheabyss.blockentity.renderer.BiocrafterRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.ChainTrapRenderer;
+import com.min01.beyondtheabyss.blockentity.renderer.CrabTrapRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
@@ -29,6 +33,8 @@ import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
 import com.min01.beyondtheabyss.entity.model.ModelDeepVampire;
 import com.min01.beyondtheabyss.entity.model.ModelFallenDiver;
+import com.min01.beyondtheabyss.entity.model.ModelFishBait;
+import com.min01.beyondtheabyss.entity.model.ModelFulgastra;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGloomfish;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
@@ -47,6 +53,7 @@ import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
+import com.min01.beyondtheabyss.entity.renderer.FishBaitRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
@@ -58,6 +65,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.AmarumGhostRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.DeepVampireRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.FallenDiverRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.FulgastraRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GloomfishRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
@@ -72,7 +80,6 @@ import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
-import com.min01.beyondtheabyss.gui.overlay.HallucinationOverlay;
 import com.min01.beyondtheabyss.gui.overlay.OxygenOverlay;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
@@ -122,6 +129,8 @@ public class ClientEventHandler
         BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
         BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
         BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
+        BlockEntityRenderers.register(BTABlocks.CRAB_TRAP_BLOCK_ENTITY.get(), CrabTrapRenderer::new);
+        BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
         ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
@@ -150,7 +159,6 @@ public class ClientEventHandler
     @SubscribeEvent
     public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event)
     {
-    	event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "hallucination", HallucinationOverlay::draw);
     	event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "oxygen", OxygenOverlay::draw);
     }
     
@@ -174,6 +182,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
     	event.registerEntityRenderer(BTAEntities.SUBMARINE.get(), SubmarineRenderer::new);
     	event.registerEntityRenderer(BTAEntities.CHAIN_TRAP_MAW.get(), ChainTrapMawRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.FISH_BAIT.get(), FishBaitRenderer::new);
     	
     	//projectile
     	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);
@@ -200,6 +209,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.KORMOS_BODY.get(), KormosBodyRenderer::new);
     	event.registerEntityRenderer(BTAEntities.KORMOS_TAIL.get(), KormosTailRenderer::new);
      	event.registerEntityRenderer(BTAEntities.CORPSE_ANGLER.get(), CorpseAnglerRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.FULGASTRA.get(), FulgastraRenderer::new);
     }
     
     @SubscribeEvent
@@ -230,6 +240,8 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelKormosBody.LAYER_LOCATION, ModelKormosBody::createBodyLayer);
     	event.registerLayerDefinition(ModelKormosTail.LAYER_LOCATION, ModelKormosTail::createBodyLayer);
      	event.registerLayerDefinition(ModelCorpseAngler.LAYER_LOCATION, ModelCorpseAngler::createBodyLayer);
+    	event.registerLayerDefinition(ModelFishBait.LAYER_LOCATION, ModelFishBait::createBodyLayer);
+    	event.registerLayerDefinition(ModelFulgastra.LAYER_LOCATION, ModelFulgastra::createBodyLayer);
 
     	//armors
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
@@ -248,6 +260,8 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelBoneLever.LAYER_LOCATION, ModelBoneLever::createBodyLayer);
     	event.registerLayerDefinition(ModelBoneLeverOn.LAYER_LOCATION, ModelBoneLeverOn::createBodyLayer);
     	event.registerLayerDefinition(ModelChainTrap.LAYER_LOCATION, ModelChainTrap::createBodyLayer);
+    	event.registerLayerDefinition(ModelCrabTrap.LAYER_LOCATION, ModelCrabTrap::createBodyLayer);
+    	event.registerLayerDefinition(ModelBiocrafter.LAYER_LOCATION, ModelBiocrafter::createBodyLayer);
 
     	//items
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);

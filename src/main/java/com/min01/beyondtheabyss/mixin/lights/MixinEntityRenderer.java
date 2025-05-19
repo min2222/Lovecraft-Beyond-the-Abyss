@@ -20,10 +20,6 @@ public class MixinEntityRenderer<T extends Entity>
 	{
 		int vanilla = cir.getReturnValueI();
 		int entityLuminance = ((IDynamicLight) entity).getLuminance();
-		if(entityLuminance >= 15)
-		{
-			cir.setReturnValue(entityLuminance);
-		}
 
 		int posLuminance = (int) DynamicLights.get().getDynamicLightLevel(pos);
 

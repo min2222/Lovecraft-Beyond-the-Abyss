@@ -22,12 +22,6 @@ public class EntityKormosBody extends AbstractKormosPart
 	}
 	
 	@Override
-	public boolean useSubRoot() 
-	{
-		return true;
-	}
-	
-	@Override
 	public String subRoot()
 	{
 		if(this.getIndex() == 0)
@@ -43,15 +37,5 @@ public class EntityKormosBody extends AbstractKormosPart
 			return "back_body";
 		}
 		return "body";
-	}
-	
-	@Override
-	public void tick() 
-	{
-		super.tick();
-		if(this.tickCount == 2)
-		{
-			this.partBuilder.rebuildHitbox();
-		}
 	}
 }

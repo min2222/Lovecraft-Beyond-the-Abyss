@@ -5,12 +5,15 @@ import java.util.function.Supplier;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
+import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
+import com.min01.beyondtheabyss.blockentity.deepabyss.CrabTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.armor.AdvancedDivingSetItem;
 import com.min01.beyondtheabyss.item.armor.DivingSetItem;
 import com.min01.beyondtheabyss.item.armor.GhidruthDivingSetItem;
+import com.min01.beyondtheabyss.item.deepabyss.FishBaitItem;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
@@ -62,7 +65,8 @@ public class BTAItems
 	public static final RegistryObject<Item> MUTAVORE_SPAWN_EGG = registerSpawnEgg("mutavore_spawn_egg", () -> BTAEntities.MUTAVORE.get(), 5847096, 15259304);
 	public static final RegistryObject<Item> GLOOMFISH_SPAWN_EGG = registerSpawnEgg("gloomfish_spawn_egg", () -> BTAEntities.GLOOMFISH.get(), 526088, 12060438);
 	public static final RegistryObject<Item> KORMOS_SPAWN_EGG = registerSpawnEgg("kormos_spawn_egg", () -> BTAEntities.KORMOS_HEAD.get(), 9338740, 4605533);
- 	public static final RegistryObject<Item> CORPSE_ANGLER = registerSpawnEgg("corpse_angler_spawn_egg", () -> BTAEntities.CORPSE_ANGLER.get(), 6239541, 1864119);
+	public static final RegistryObject<Item> CORPSE_ANGLER_SPAWN_EGG = registerSpawnEgg("corpse_angler_spawn_egg", () -> BTAEntities.CORPSE_ANGLER.get(), 6239541, 1864119);
+	public static final RegistryObject<Item> FULGASTRA_SPAWN_EGG = registerSpawnEgg("fulgastra_spawn_egg", () -> BTAEntities.FULGASTRA.get(), 4596012, 46834);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
@@ -160,6 +164,8 @@ public class BTAItems
 	public static final RegistryObject<Item> BONE_LEVER = registerBlockItem("bone_lever", () -> BTABlocks.BONE_LEVER.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHAIN_TRAP = registerCustomRendererBlockItem("chain_trap", () -> BTABlocks.CHAIN_TRAP.get(), () -> new ChainTrapBlockEntity(BlockPos.ZERO, BTABlocks.CHAIN_TRAP.get().defaultBlockState()), new Item.Properties());
  	public static final RegistryObject<Item> TOOTHVINE = registerBlockItem("toothvine", () -> BTABlocks.TOOTHVINE.get(), new Item.Properties());
+	public static final RegistryObject<Item> CRAB_TRAP = registerCustomRendererBlockItem("crab_trap", () -> BTABlocks.CRAB_TRAP.get(), () -> new CrabTrapBlockEntity(BlockPos.ZERO, BTABlocks.CRAB_TRAP.get().defaultBlockState()), new Item.Properties());
+	public static final RegistryObject<Item> BIOCRAFTER = registerCustomRendererBlockItem("biocrafter", () -> BTABlocks.BIOCRAFTER.get(), () -> new BiocrafterBlockEntity(BlockPos.ZERO, BTABlocks.BIOCRAFTER.get().defaultBlockState()), new Item.Properties());
 	
 	//weapons
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));
@@ -169,6 +175,7 @@ public class BTAItems
 
 	//tools
 	public static final RegistryObject<Item> FLASHLIGHT = ITEMS.register("flashlight", () -> new FlashlightItem());
+	public static final RegistryObject<Item> FISH_BAIT = ITEMS.register("fish_bait", () -> new FishBaitItem());
 	
 	//accessories
 	public static final RegistryObject<Item> HEMATHORN_AMULET = ITEMS.register("hemathorn_amulet", () -> new Item(new Item.Properties().stacksTo(1)));
