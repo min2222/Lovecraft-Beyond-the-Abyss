@@ -36,6 +36,7 @@ public class SiamserpentBlasterBeamGoal extends BasicBTASkillGoal<EntitySiamserp
 		super.stop();
 		this.mob.setAnimationState(3);
 		this.mob.setAnimationTick(80);
+		this.mob.setCanLook(false);
 	}
 
 	@Override

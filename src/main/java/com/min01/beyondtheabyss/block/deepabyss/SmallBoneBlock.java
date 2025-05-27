@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -56,6 +57,12 @@ public class SmallBoneBlock extends RotatedPillarBlock implements SimpleWaterlog
     	BlockPos pos = p_152019_.getClickedPos();
     	return super.getStateForPlacement(p_152019_).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
     }
+    
+	@Override
+	public boolean isPathfindable(BlockState p_154341_, BlockGetter p_154342_, BlockPos p_154343_, PathComputationType p_154344_) 
+	{
+		return false;
+	}
     
     @Override
     public FluidState getFluidState(BlockState p_152045_)

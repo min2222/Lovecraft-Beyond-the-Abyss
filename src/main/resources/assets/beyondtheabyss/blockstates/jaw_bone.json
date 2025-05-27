@@ -1,19 +1,38 @@
 {
 	"variants": {
-		"facing=east": {
+		"facing=east,up=false": {
 			"model": "beyondtheabyss:block/jaw_bone",
 			"y": 90
 		},
-		"facing=north": {
+		"facing=north,up=false": {
 			"model": "beyondtheabyss:block/jaw_bone"
 		},
-		"facing=south": {
+		"facing=south,up=false": {
 			"model": "beyondtheabyss:block/jaw_bone",
 			"y": 180
 		},
-		"facing=west": {
+		"facing=west,up=false": {
 			"model": "beyondtheabyss:block/jaw_bone",
 			"y": 270
+		},
+		"facing=east,up=true": {
+			"model": "beyondtheabyss:block/jaw_bone",
+			"x": 180,
+			"y": -90
+		},
+		"facing=north,up=true": {
+			"model": "beyondtheabyss:block/jaw_bone",
+			"x": 180,
+			"y": -180
+		},
+		"facing=south,up=true": {
+			"model": "beyondtheabyss:block/jaw_bone",
+			"x": 180
+		},
+		"facing=west,up=true": {
+			"model": "beyondtheabyss:block/jaw_bone",
+			"x": 180,
+			"y": -270
 		}
 	}
 }

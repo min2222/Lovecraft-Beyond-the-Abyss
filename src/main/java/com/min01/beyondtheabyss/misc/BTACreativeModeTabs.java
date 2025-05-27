@@ -20,9 +20,9 @@ public class BTACreativeModeTabs
 {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BeyondtheAbyss.MODID);
     
-    public static final RegistryObject<CreativeModeTab> ABYSS_MOBS = CREATIVE_MODE_TAB.register("abyss_mobs", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_mobs"))
-    		.icon(() -> new ItemStack(BTAItems.GHIDRUTH_SPAWN_EGG.get()))
+    public static final RegistryObject<CreativeModeTab> DEEP_ABYSS = CREATIVE_MODE_TAB.register("deep_abyss", () -> CreativeModeTab.builder()
+    		.title(Component.translatable("itemGroup.deep_abyss"))
+    		.icon(() -> new ItemStack(BTAItems.HEART_OF_FORNEUS.get()))
     		.displayItems((enabledFeatures, output) -> 
     		{
     			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
@@ -31,14 +31,13 @@ public class BTACreativeModeTabs
     				{
     					output.accept(item.get());
     				}
+    				if(item.get() instanceof BasicBTAFoodItem)
+    				{
+    					output.accept(item.get());
+    				}
     			}
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> ABYSS_MATERIALS = CREATIVE_MODE_TAB.register("abyss_materials", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_materials"))
-    		.icon(() -> new ItemStack(BTAItems.GHIDRUTH_SCALE.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
+				output.accept(BTAItems.GUIDING_CLAM.get());
+				output.accept(BTAItems.HEART_OF_FORNEUS.get());
 				output.accept(BTAItems.GHIDRUTH_SCALE.get());
 				output.accept(BTAItems.GNASHER_EYE.get());
 				output.accept(BTAItems.GNASHER_TOOTH.get());
@@ -51,81 +50,20 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.SLASHER_BLADE.get());
 				output.accept(BTAItems.BLASTER_SKULL.get());
 				output.accept(BTAItems.SERPENT_HEART.get());
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> ABYSS_ARMORS = CREATIVE_MODE_TAB.register("abyss_armors", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_armors"))
-    		.icon(() -> new ItemStack(BTAItems.DIVING_HELMET.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
+				output.accept(BTAItems.RUSTY_HARPOON.get());
+				output.accept(BTAItems.GHIDRUTH_SCALE_HARPOON.get());
+				output.accept(BTAItems.SKELETAL_GUNBLADE.get());
+				output.accept(BTAItems.FLASHLIGHT.get());
     			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
     			{
     				if(item.get() instanceof ArmorItem)
     				{
     					output.accept(item.get());
     				}
-    			}
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> ABYSS_MISC = CREATIVE_MODE_TAB.register("abyss_misc", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_misc"))
-    		.icon(() -> new ItemStack(BTAItems.HEART_OF_FORNEUS.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-				output.accept(BTAItems.GUIDING_CLAM.get());
-				output.accept(BTAItems.HEART_OF_FORNEUS.get());
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> ABYSS_FOODS = CREATIVE_MODE_TAB.register("abyss_foods", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_foods"))
-    		.icon(() -> new ItemStack(BTAItems.RAW_GHIDRUTH_FLESH.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-    			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
-    			{
-    				if(item.get() instanceof BasicBTAFoodItem)
-    				{
-    					output.accept(item.get());
-    				}
-    			}
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> ABYSS_BLOCKS = CREATIVE_MODE_TAB.register("abyss_blocks", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_blocks"))
-    		.icon(() -> new ItemStack(BTAItems.ABYSSALITH.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-    			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
-    			{
     				if(item.get() instanceof BlockItem && !(item.get() instanceof ItemNameBlockItem))
     				{
     					output.accept(item.get());
     				}
     			}
     		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> ABYSS_WEAPONS = CREATIVE_MODE_TAB.register("abyss_weapons", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_weapons"))
-    		.icon(() -> new ItemStack(BTAItems.RUSTY_HARPOON.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-				output.accept(BTAItems.RUSTY_HARPOON.get());
-				output.accept(BTAItems.GHIDRUTH_SCALE_HARPOON.get());
-				output.accept(BTAItems.SKELETAL_GUNBLADE.get());
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> ABYSS_TOOLS = CREATIVE_MODE_TAB.register("abyss_tools", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_tools"))
-    		.icon(() -> new ItemStack(BTAItems.FLASHLIGHT.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-				output.accept(BTAItems.FLASHLIGHT.get());
-    		}).build());
-    
-    /*public static final RegistryObject<CreativeModeTab> ABYSS_ACCESSORIES = CREATIVE_MODE_TAB.register("abyss_accessories", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.abyss_accessories"))
-    		.icon(() -> new ItemStack(BTAItems.HEMATHORN_AMULET.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-    		}).build());*/
 }

@@ -24,6 +24,6 @@ public class SpineWormHeadRenderer extends MobRenderer<EntitySpineWormHead, Mode
 	@Override
 	public ResourceLocation getTextureLocation(EntitySpineWormHead p_115812_) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/spine_worm.png");
+		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/spine_worm_head.png");
 	}
 }

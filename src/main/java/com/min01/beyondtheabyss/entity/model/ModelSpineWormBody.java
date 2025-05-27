@@ -34,17 +34,25 @@ public class ModelSpineWormBody extends HierarchicalModel<EntitySpineWormBody>
 
 		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 21).addBox(-6.0F, -4.8F, -6.0F, 12.0F, 11.0F, 12.0F, new CubeDeformation(0.0F))
-		.texOffs(28, 44).addBox(-4.5F, -5.8F, -4.5F, 9.0F, 10.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -6.0F, 0.0F, 1.5708F, 0.0F, 0.0F));
+		root.addOrReplaceChild("segment", CubeListBuilder.create().texOffs(64, 0).addBox(-7.0F, 2.0F, -5.0F, 14.0F, 2.0F, 10.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 20).addBox(-9.5F, -4.0F, -6.5F, 19.0F, 6.0F, 13.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 39).addBox(-9.5F, -4.0F, -6.5F, 19.0F, 6.0F, 13.0F, new CubeDeformation(0.25F))
+		.texOffs(64, 27).addBox(-1.0F, -3.0F, 6.5F, 2.0F, 5.0F, 4.0F, new CubeDeformation(0.0F))
+		.texOffs(64, 21).addBox(-21.5F, -4.0F, 3.5F, 12.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+		.texOffs(64, 21).mirror().addBox(9.5F, -4.0F, 3.5F, 12.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false)
+		.texOffs(0, 0).addBox(-8.0F, 4.0F, -8.0F, 16.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 58).addBox(-8.0F, -8.0F, -8.0F, 16.0F, 3.0F, 16.0F, new CubeDeformation(0.0F))
+		.texOffs(64, 12).addBox(-6.5F, -5.0F, -4.0F, 13.0F, 1.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -8.0F, 0.0F));
 
-		return LayerDefinition.create(meshdefinition, 64, 128);
+		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
 	@Override
 	public void setupAnim(EntitySpineWormBody entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("body"), netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("segment"), netHeadYaw, headPitch + 90.0F);
+		this.root.visible = entity.getHead() != null && entity.distanceTo(entity.getHead()) >= 0.5F;
 	}
 	
 	@Override

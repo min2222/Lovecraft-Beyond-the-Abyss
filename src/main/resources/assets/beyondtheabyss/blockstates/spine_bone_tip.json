@@ -1,7 +1,29 @@
 {
 	"variants": {
-		"": {
+		"facing=east": {
+			"model": "beyondtheabyss:block/spine_bone_tip",
+			"x": 90,
+			"y": -90
+		},
+		"facing=north": {
+			"model": "beyondtheabyss:block/spine_bone_tip",
+			"x": -90
+		},
+		"facing=south": {
+			"model": "beyondtheabyss:block/spine_bone_tip",
+			"x": 90
+		},
+		"facing=west": {
+			"model": "beyondtheabyss:block/spine_bone_tip",
+			"x": 90,
+			"y": 90
+		},
+		"facing=down": {
 			"model": "beyondtheabyss:block/spine_bone_tip"
+		},
+		"facing=up": {
+			"model": "beyondtheabyss:block/spine_bone_tip",
+			"x": 180
 		}
 	}
 }

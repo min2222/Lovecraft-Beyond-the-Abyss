@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "beyondtheabyss:block/toothvine_1"
+		"layer0": "beyondtheabyss:block/toothvine_tip"
 	}
 }

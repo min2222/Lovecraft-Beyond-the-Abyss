@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
+import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -98,7 +99,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		super.tick();
 		if(this.chain == null)
 		{
-			this.chain = new KinematicChain(this, 12, 0.6F);
+			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
 			this.chain.setInitialRot(new Vec2(this.getAttachedDirection().toYRot(), 0.0F));
 		}
 		else
@@ -121,13 +122,14 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 			
 			if(this.posArray[0] != null && this.canExtend())
 			{
-				if(Math.sqrt(this.posArray[0].distanceTo(this.position())) <= 1.5F)
+				if(this.posArray[0].distanceTo(this.position()) <= 1.0F)
 				{
 					this.chain.setTarget(Vec3.ZERO);
 					this.setCooldown(100);
 					if(this.getTarget() != null)
 					{
 						this.getTarget().startRiding(this);
+						BTANetwork.sendToAll(new UpdateVehiclePacket(this.getTarget(), this));
 					}
 				}
 				else
@@ -164,12 +166,10 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	}
 	
 	@Override
-	public void positionRider(Entity p_20312_, MoveFunction function) 
+	public void positionRider(Entity entity, MoveFunction function) 
 	{
-		if(p_20312_ == this.getTarget())
-		{
-			p_20312_.moveTo(BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 0.0F, 0.2F));
-		}
+		Vec3 pos = BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 0.0F, 0.2F);
+		function.accept(entity, pos.x, pos.y, pos.z);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -183,13 +183,13 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		this.setYBodyRot(0.0F);
 		this.setXRot(this.getAttachedDirection().toYRot());
 		
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < this.getChainLength(); i++)
 		{
 			EntitySpineWormBody body = new EntitySpineWormBody(BTAEntities.SPINE_WORM_BODY.get(), this.level);
 			body.setPos(this.position());
 			body.setHead(this);
 			body.setOwner(prev);
-			body.setIndex(10 - i);
+			body.setIndex(this.getChainLength() - i);
 			prev = body;
 			this.level.addFreshEntity(body);
 		}

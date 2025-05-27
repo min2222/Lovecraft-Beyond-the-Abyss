@@ -34,7 +34,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -71,6 +73,13 @@ public class BTABlocks
     public static final RegistryObject<Block> CONDUIT_RUNE_STONE = BLOCKS.register("conduit_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     public static final RegistryObject<Block> GUARDIAN_RUNE_STONE = BLOCKS.register("guardian_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     public static final RegistryObject<Block> PEACE_RUNE_STONE = BLOCKS.register("peace_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
+    
+    public static final RegistryObject<Block> ORIVINE = BLOCKS.register("orivine", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
+    public static final RegistryObject<Block> ORIVINE_SLAB = BLOCKS.register("orivine_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
+    public static final RegistryObject<Block> ORIVINE_STAIRS = BLOCKS.register("orivine_stairs", () -> new StairBlock(() -> ORIVINE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
+    public static final RegistryObject<Block> ENERGIZED_ORIVINE = BLOCKS.register("energized_orivine", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
+    public static final RegistryObject<Block> ENERGIZED_ORIVINE_SLAB = BLOCKS.register("energized_orivine_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
+    public static final RegistryObject<Block> ENERGIZED_ORIVINE_STAIRS = BLOCKS.register("energized_orivine_stairs", () -> new StairBlock(() -> ORIVINE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     
     public static final RegistryObject<Block> ROT_SOIL = BLOCKS.register("rot_soil", () -> new RotSoilBlock());
     public static final RegistryObject<Block> COMPACT_ROT_SOIL = BLOCKS.register("compact_rot_soil", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));

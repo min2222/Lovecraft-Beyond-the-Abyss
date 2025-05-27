@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -185,6 +186,12 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	public boolean canSwim() 
 	{
 		return super.canSwim() && this.isHead();
+	}
+	
+	@Override
+	public boolean isAlliedTo(Entity p_20355_)
+	{
+		return super.isAlliedTo(p_20355_) || p_20355_ == this.getHead() || (p_20355_ instanceof AbstractWormPart<?> worm && worm.getHead() == this.getHead());
 	}
 	
 	public void setHead(T p_37263_)

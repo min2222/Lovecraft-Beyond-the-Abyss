@@ -165,6 +165,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		{
 			if(this.getAnimationState() == 3)
 			{
+				this.setCanLook(true);
 				this.setAnimationState(4);
 				this.setAnimationTick(5);
 			}
@@ -174,8 +175,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			if(this.getAnimationState() == 3)
 			{
 				List<LivingEntity> arrayList = new ArrayList<>();
-	        	Vec3 startPos = BTAUtil.getLookPos(this.getRotationVector(), this.getEyePosition(), 0.0F, -0.25F, 0.5F);
-				Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), startPos, 0.0F, 0.0F, 100.0F);
+	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.getEyePosition(), 0.0F, -0.25F, 0.5F);
+				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), startPos, 0.0F, 0.0F, 100.0F);
 				HitResult hitResult = level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 	        	Vec3 hitPos = hitResult.getLocation();
 	            Vec3 targetPos = hitPos.subtract(startPos);
@@ -185,8 +186,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	            for(int i = 1; i < dist; ++i)
 	            {
 	            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
-	            	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(1.5F));
-	            	list.removeIf(t -> t == this || t.isAlliedTo(this));
+	            	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != this && !t.isAlliedTo(this));
 	            	list.forEach(t -> 
 	            	{
 	            		if(!arrayList.contains(t))

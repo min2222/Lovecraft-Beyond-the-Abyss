@@ -133,7 +133,6 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 			}
 			if(this.getBTAMobType().lookTarget && this.canLook())
 			{
-				//this.getLookControl().setLookAt(this.getTarget(), 30.0F, 30.0F);
 				this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
 			}
 		}

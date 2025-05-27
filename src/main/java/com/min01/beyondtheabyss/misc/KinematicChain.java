@@ -62,7 +62,7 @@ public class KinematicChain
 			if(!this.target.equals(Vec3.ZERO))
 			{
 				ChainSegment tip = this.getTipSegment();
-				if(tip.getPos().distanceTo(this.target) > 0.5F)
+				if(tip.getPos().distanceTo(this.target) > 2.0F)
 				{
 					tip.setRot(this.lookAt(tip.getPos(), this.target));
 					tip.setPos(this.getLookPos(tip.getRot(), tip.getPos(), 0.0F, 0.0F, this.distance));
@@ -88,7 +88,7 @@ public class KinematicChain
 			else if(this.anchorPos != null)
 			{
 				ChainSegment tip = this.getTipSegment();
-				if(tip.getPos().distanceTo(this.anchorPos) > 0.5F)
+				if(tip.getPos().distanceTo(this.anchorPos) > 2.0F)
 				{
 					for(int i = 1; i < this.segments.length; i++)
 					{
@@ -120,7 +120,7 @@ public class KinematicChain
 		if(this.target != null)
 		{
 			ChainSegment tip = this.getTipSegment();
-			if(tip.getPos().distanceTo(this.target) > 0.5F)
+			if(tip.getPos().distanceTo(this.target) > 2.0F)
 			{
 				tip.setRot(this.lookAt(tip.getPos(), this.target));
 				tip.setPos(this.getLookPos(tip.getRot(), tip.getPos(), 0.0F, 0.0F, this.distance));

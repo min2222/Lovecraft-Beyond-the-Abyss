@@ -30,7 +30,7 @@ public abstract class AbstractSpineWormPart extends AbstractWormPart<AbstractSpi
 	@Override
 	public int getChainLength() 
 	{
-		return 12;
+		return 20;
 	}
 	
 	@Override

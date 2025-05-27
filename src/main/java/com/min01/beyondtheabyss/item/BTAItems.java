@@ -48,7 +48,7 @@ public class BTAItems
 	//public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg("forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
 	public static final RegistryObject<Item> GNASHER_SPAWN_EGG = registerSpawnEgg("gnasher_spawn_egg", () -> BTAEntities.GNASHER.get(), 1318679, 3019282);
 	public static final RegistryObject<Item> SIAMSERPENT_SPAWN_EGG = registerSpawnEgg("siamserpent_spawn_egg", () -> BTAEntities.SIAMSERPENT_HEAD.get(), 7035974, 9537638);
-	public static final RegistryObject<Item> SPINE_WORM_SPAWN_EGG = registerSpawnEgg("spine_worm_spawn_egg", () -> BTAEntities.SPINE_WORM_HEAD.get(), 8352870, 6502445);
+	public static final RegistryObject<Item> SPINE_WORM_SPAWN_EGG = registerSpawnEgg("spine_worm_spawn_egg", () -> BTAEntities.SPINE_WORM_HEAD.get(), 4068636, 15131359);
 	public static final RegistryObject<Item> GLOOMFISH_SPAWN_EGG = registerSpawnEgg("gloomfish_spawn_egg", () -> BTAEntities.GLOOMFISH.get(), 526088, 12060438);
 	public static final RegistryObject<Item> KORMOS_SPAWN_EGG = registerSpawnEgg("kormos_spawn_egg", () -> BTAEntities.KORMOS_HEAD.get(), 9338740, 4605533);
 	public static final RegistryObject<Item> FULGASTRA_SPAWN_EGG = registerSpawnEgg("fulgastra_spawn_egg", () -> BTAEntities.FULGASTRA.get(), 4596012, 46834);
@@ -116,6 +116,12 @@ public class BTAItems
 	public static final RegistryObject<Item> CONDUIT_RUNE_STONE = registerBlockItem("conduit_rune_stone", () -> BTABlocks.CONDUIT_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> GUARDIAN_RUNE_STONE = registerBlockItem("guardian_rune_stone", () -> BTABlocks.GUARDIAN_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> PEACE_RUNE_STONE = registerBlockItem("peace_rune_stone", () -> BTABlocks.PEACE_RUNE_STONE.get(), new Item.Properties());
+	public static final RegistryObject<Item> ORIVINE = registerBlockItem("orivine", () -> BTABlocks.ORIVINE.get(), new Item.Properties());
+	public static final RegistryObject<Item> ORIVINE_SLAB = registerBlockItem("orivine_slab", () -> BTABlocks.ORIVINE_SLAB.get(), new Item.Properties());
+	public static final RegistryObject<Item> ORIVINE_STAIRS = registerBlockItem("orivine_stairs", () -> BTABlocks.ORIVINE_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> ENERGIZED_ORIVINE = registerBlockItem("energized_orivine", () -> BTABlocks.ENERGIZED_ORIVINE.get(), new Item.Properties());
+	public static final RegistryObject<Item> ENERGIZED_ORIVINE_SLAB = registerBlockItem("energized_orivine_slab", () -> BTABlocks.ENERGIZED_ORIVINE_SLAB.get(), new Item.Properties());
+	public static final RegistryObject<Item> ENERGIZED_ORIVINE_STAIRS = registerBlockItem("energized_orivine_stairs", () -> BTABlocks.ENERGIZED_ORIVINE_STAIRS.get(), new Item.Properties());
 	public static final RegistryObject<Item> ROT_SOIL = registerBlockItem("rot_soil", () -> BTABlocks.ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> COMPACT_ROT_SOIL = registerBlockItem("compact_rot_soil", () -> BTABlocks.COMPACT_ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHISELED_BONE_BLOCK = registerBlockItem("chiseled_bone_block", () -> BTABlocks.CHISELED_BONE_BLOCK.get(), new Item.Properties());

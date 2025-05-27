@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/slab",
+	"textures": {
+		"bottom": "beyondtheabyss:block/energized_orivine",
+		"side": "beyondtheabyss:block/energized_orivine",
+		"top": "beyondtheabyss:block/energized_orivine"
+	}
+}
