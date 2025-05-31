@@ -122,6 +122,7 @@ public class BTAItems
 	public static final RegistryObject<Item> ENERGIZED_ORIVINE = registerBlockItem("energized_orivine", () -> BTABlocks.ENERGIZED_ORIVINE.get(), new Item.Properties());
 	public static final RegistryObject<Item> ENERGIZED_ORIVINE_SLAB = registerBlockItem("energized_orivine_slab", () -> BTABlocks.ENERGIZED_ORIVINE_SLAB.get(), new Item.Properties());
 	public static final RegistryObject<Item> ENERGIZED_ORIVINE_STAIRS = registerBlockItem("energized_orivine_stairs", () -> BTABlocks.ENERGIZED_ORIVINE_STAIRS.get(), new Item.Properties());
+	public static final RegistryObject<Item> ORIVINE_PILLAR = registerBlockItem("orivine_pillar", () -> BTABlocks.ORIVINE_PILLAR.get(), new Item.Properties());
 	public static final RegistryObject<Item> ROT_SOIL = registerBlockItem("rot_soil", () -> BTABlocks.ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> COMPACT_ROT_SOIL = registerBlockItem("compact_rot_soil", () -> BTABlocks.COMPACT_ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHISELED_BONE_BLOCK = registerBlockItem("chiseled_bone_block", () -> BTABlocks.CHISELED_BONE_BLOCK.get(), new Item.Properties());

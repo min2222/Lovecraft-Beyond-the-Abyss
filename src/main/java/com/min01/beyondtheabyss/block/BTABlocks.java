@@ -80,7 +80,8 @@ public class BTABlocks
     public static final RegistryObject<Block> ENERGIZED_ORIVINE = BLOCKS.register("energized_orivine", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     public static final RegistryObject<Block> ENERGIZED_ORIVINE_SLAB = BLOCKS.register("energized_orivine_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
     public static final RegistryObject<Block> ENERGIZED_ORIVINE_STAIRS = BLOCKS.register("energized_orivine_stairs", () -> new StairBlock(() -> ORIVINE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    
+    public static final RegistryObject<Block> ORIVINE_PILLAR = BLOCKS.register("orivine_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
+    		
     public static final RegistryObject<Block> ROT_SOIL = BLOCKS.register("rot_soil", () -> new RotSoilBlock());
     public static final RegistryObject<Block> COMPACT_ROT_SOIL = BLOCKS.register("compact_rot_soil", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
     public static final RegistryObject<Block> GHOUL_BLOOM = BLOCKS.register("ghoul_bloom", () -> new GhoulBloomBlock());
@@ -90,7 +91,7 @@ public class BTABlocks
     public static final RegistryObject<Block> CHISELED_BONE_BLOCK = BLOCKS.register("chiseled_bone_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     public static final RegistryObject<Block> CRACKED_BONE_BLOCK = BLOCKS.register("cracked_bone_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     public static final RegistryObject<Block> BONE_BRICK_BLOCK = BLOCKS.register("bone_brick_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
-    public static final RegistryObject<Block> BONE_PILLAR_BLOCK = BLOCKS.register("bone_pillar_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
+    public static final RegistryObject<Block> BONE_PILLAR_BLOCK = BLOCKS.register("bone_pillar_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));;
     
     public static final RegistryObject<Block> BONE_FENCE = BLOCKS.register("bone_fence", () -> new BoneFenceBlock(BlockBehaviour.Properties.of().strength(2.0F, 3.0F).sound(SoundType.BONE_BLOCK)));
     public static final RegistryObject<Block> BONE_FENCE_GATE = BLOCKS.register("bone_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.of().strength(2.0F, 3.0F).sound(SoundType.BONE_BLOCK), WoodType.OAK));

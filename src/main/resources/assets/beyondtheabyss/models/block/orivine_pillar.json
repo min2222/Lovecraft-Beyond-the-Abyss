@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:block/cube_column",
+	"textures": {
+		"end": "beyondtheabyss:block/orivine_pillar_top",
+		"side": "beyondtheabyss:block/orivine_pillar_side"
+	}
+}
