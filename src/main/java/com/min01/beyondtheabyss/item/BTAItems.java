@@ -60,7 +60,7 @@ public class BTAItems
 	public static final RegistryObject<Item> GHOUL_BLOOM_SEED_POD = ITEMS.register("ghoul_bloom_seed_pod", () -> new ItemNameBlockItem(BTABlocks.GHOUL_BLOOM.get(), new Item.Properties()));
 	public static final RegistryObject<Item> FIBER = ITEMS.register("fiber", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ABERRANT_FLESH = ITEMS.register("aberrant_flesh", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> CHARGE_BULB = ITEMS.register("charge_bulb", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> CHARGE_CORE = ITEMS.register("charge_core", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> SPLITTING_GEL = ITEMS.register("splitting_gel", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> SPINE_WORM_MANDIBLE = ITEMS.register("spine_worm_mandible", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> SLASHER_BLADE = ITEMS.register("slasher_blade", () -> new Item(new Item.Properties()));

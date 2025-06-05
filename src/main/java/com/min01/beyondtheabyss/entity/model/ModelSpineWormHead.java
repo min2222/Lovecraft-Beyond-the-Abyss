@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.SpinewormAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -79,6 +80,7 @@ public class ModelSpineWormHead extends HierarchicalModel<EntitySpineWormHead>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("head"), netHeadYaw, headPitch + 90.0F);
+		this.animate(entity.idleAnimationState, SpinewormAnimation.SPINEWORM_IDLE, ageInTicks);
 	}
 	
 	@Override

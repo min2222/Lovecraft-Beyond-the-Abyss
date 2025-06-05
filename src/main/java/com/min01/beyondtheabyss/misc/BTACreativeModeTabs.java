@@ -44,7 +44,7 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.GHOUL_BLOOM_SEED_POD.get());
 				output.accept(BTAItems.FIBER.get());
 				output.accept(BTAItems.ABERRANT_FLESH.get());
-				output.accept(BTAItems.CHARGE_BULB.get());
+				output.accept(BTAItems.CHARGE_CORE.get());
 				output.accept(BTAItems.SPLITTING_GEL.get());
 				output.accept(BTAItems.SPINE_WORM_MANDIBLE.get());
 				output.accept(BTAItems.SLASHER_BLADE.get());

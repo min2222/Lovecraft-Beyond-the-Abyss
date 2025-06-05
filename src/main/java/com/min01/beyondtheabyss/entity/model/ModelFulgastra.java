@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.FulgastraAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -170,6 +171,7 @@ public class ModelFulgastra extends HierarchicalModel<EntityFulgastra>
 	public void setupAnim(EntityFulgastra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
+		this.animateWalk(FulgastraAnimation.FULGASTRA_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 	}
 	
 	@Override

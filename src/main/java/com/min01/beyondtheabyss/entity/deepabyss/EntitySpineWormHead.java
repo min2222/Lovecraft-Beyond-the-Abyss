@@ -20,6 +20,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -41,6 +42,8 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	public static final EntityDataAccessor<BlockPos> ATTACHED_POS = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.BLOCK_POS);
 	public static final EntityDataAccessor<Integer> COOLDOWN = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.INT);
 	public KinematicChain chain;
+	
+	public final AnimationState idleAnimationState = new AnimationState();
 	
 	public EntitySpineWormHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -97,6 +100,10 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	public void tick()
 	{
 		super.tick();
+		if(this.level.isClientSide)
+		{
+			this.idleAnimationState.animateWhen(this.getAnimationState() == 0 && !BTAUtil.isMoving(this), this.tickCount);
+		}
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));

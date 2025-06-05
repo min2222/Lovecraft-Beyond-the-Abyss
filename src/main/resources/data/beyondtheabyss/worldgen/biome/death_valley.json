@@ -43,12 +43,6 @@
 				"maxCount": 1
 			},
 			{
-				"type": "beyondtheabyss:fallen_diver",
-				"weight": 10,
-				"minCount": 2,
-				"maxCount": 3
-			},
-			{
 				"type": "beyondtheabyss:spine_worm",
 				"weight": 10,
 				"minCount": 1,

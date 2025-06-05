@@ -13,7 +13,7 @@ public class RotSoilBlock extends Block
 	public static final EnumProperty<SoilType> SOIL_TYPE = EnumProperty.create("soil_type", SoilType.class);
 	public RotSoilBlock()
 	{
-		super(BlockBehaviour.Properties.copy(Blocks.COARSE_DIRT).randomTicks());
+		super(BlockBehaviour.Properties.copy(Blocks.COARSE_DIRT));
 		this.registerDefaultState(this.stateDefinition.any().setValue(SOIL_TYPE, SoilType.VARIANT_1));
 	}
 	

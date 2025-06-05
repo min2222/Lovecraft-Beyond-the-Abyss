@@ -3,10 +3,12 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -22,6 +24,7 @@ import net.minecraftforge.network.NetworkHooks;
 public class EntityChainTrapMaw extends Entity
 {
 	public static final EntityDataAccessor<Vec3> CHAIN_POS = SynchedEntityData.defineId(EntityChainTrapMaw.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<BlockPos> TRAP_POS = SynchedEntityData.defineId(EntityChainTrapMaw.class, EntityDataSerializers.BLOCK_POS);
 	public static final EntityDataAccessor<Optional<UUID>> TARGET_UUID = SynchedEntityData.defineId(EntityChainTrapMaw.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Integer> CHAIN_LENGTH = SynchedEntityData.defineId(EntityChainTrapMaw.class, EntityDataSerializers.INT);
 	public KinematicChain chain;
@@ -36,6 +39,7 @@ public class EntityChainTrapMaw extends Entity
 	protected void defineSynchedData() 
 	{
 		this.entityData.define(CHAIN_POS, Vec3.ZERO);
+		this.entityData.define(TRAP_POS, BlockPos.ZERO);
 		this.entityData.define(TARGET_UUID, Optional.empty());
 		this.entityData.define(CHAIN_LENGTH, 5);
 	}
@@ -44,6 +48,10 @@ public class EntityChainTrapMaw extends Entity
 	public void tick() 
 	{
 		super.tick();
+		if(!this.level.getBlockState(this.getTrapPos()).is(BTABlocks.CHAIN_TRAP.get()))
+		{
+			this.discard();
+		}
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength(), 0.925F);
@@ -60,17 +68,14 @@ public class EntityChainTrapMaw extends Entity
 				Entity target = this.getTarget();
 				Vec3 pos = this.chain.getTipSegment().getPos();
 				this.chain.setTarget(target.getEyePosition());
-				if(this.tickCount >= 5)
+				this.chain.tick();
+				if(this.tickCount >= 2)
 				{
 					this.moveTo(pos);
 				}
-				if(pos.distanceTo(target.position()) <= 1.0F)
+				if(this.distanceTo(target) <= 1.0F)
 				{
 					this.getTarget().setDeltaMovement(BTAUtil.fromToVector(target.position(), pos, 0.1F));
-				}
-				else
-				{
-					this.chain.tick();
 				}
 			}
 			else
@@ -124,6 +129,16 @@ public class EntityChainTrapMaw extends Entity
 	public Vec3 getChainPos()
 	{
 		return this.entityData.get(CHAIN_POS);
+	}
+	
+	public void setTrapPos(BlockPos pos)
+	{
+		this.entityData.set(TRAP_POS, pos);
+	}
+	
+	public BlockPos getTrapPos()
+	{
+		return this.entityData.get(TRAP_POS);
 	}
 
 	@Override

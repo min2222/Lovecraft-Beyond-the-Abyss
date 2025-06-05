@@ -54,6 +54,7 @@ public class ChainTrapBlockEntity extends BlockEntity
 						maw.setChainPos(Vec3.atBottomCenterOf(pos));
 						maw.setTarget(t);
 						maw.setChainLength(Math.max((int) Math.floor(maw.position().distanceTo(t.getEyePosition())), 5));
+						maw.setTrapPos(pos);
 						level.addFreshEntity(maw);
 						if(!trap.chains.contains(maw.getUUID()))
 						{
