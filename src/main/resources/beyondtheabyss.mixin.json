@@ -5,13 +5,17 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"MixinEntity",
-		"MixinSwimNodeEvaluator"
+		"MixinSwimNodeEvaluator",
+		"gravity.MixinBlockStateBase"
 	],
 	"client": [
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
 		"MixinPlayerModel",
 		"MixinEntityRenderDispatcher",
+		"gravity.MixinBlock",
+		"gravity.MixinBlockRenderDispatcher",
+		"gravity.MixinBlockEntityRenderDispatcher",
 		"lights.MixinEntityRenderer",
 		"lights.MixinClientLevel",
 		"lights.MixinMinecraft"

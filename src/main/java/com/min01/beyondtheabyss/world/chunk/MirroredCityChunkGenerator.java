@@ -61,7 +61,6 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 	{
 	    int chunkX = chunk.getPos().x;
 	    int chunkZ = chunk.getPos().z;
-
 	    String fileName = "r." + (chunkX >> 5) + "." + (chunkZ >> 5) + ".mca";
         File regionDir = new File(FMLPaths.CONFIGDIR.get().toFile(), "beyondtheabyss/region");
         File regionFile = new File(regionDir, fileName);
@@ -74,17 +73,22 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 	            CompoundTag nbt = NbtIo.read(input);
 	            ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
 	            ProtoChunk cityChunk = ChunkSerializer.read(world.getLevel(), world.getLevel().getPoiManager(), chunkPos, nbt);
-	            for (int i = 0; i < chunk.getSections().length; i++) {
+	            for(int i = 0; i < chunk.getSections().length; i++)
+	            {
 	                LevelChunkSection from = cityChunk.getSections()[i];
 	                LevelChunkSection to = chunk.getSections()[i];
-	                if (from != null && to != null) {
-	                    for (int y = 0; y < 16; y++) {
+	                if(from != null && to != null) 
+	                {
+	                    for(int y = 0; y < 16; y++) 
+	                    {
 	                        int worldY = i * 16 + y;
-
-	                        for (int z = 0; z < 16; z++) {
-	                            for (int x = 0; x < 16; x++) {
+	                        for(int z = 0; z < 16; z++)
+	                        {
+	                            for(int x = 0; x < 16; x++)
+	                            {
 	                            	boolean flag = from.getBlockState(x, y, z).isAir() ? worldY < 200 : true;
-	                                if (flag) {
+	                                if(flag) 
+	                                {
 	                                    to.setBlockState(x, y, z, from.getBlockState(x, y, z), false);
 	                                }
 	                            }
@@ -97,41 +101,39 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 	            int maxChunkHeight = chunk.getSections().length * 16;
 	            int minY = world.getMinBuildHeight();
 	            int maxY = world.getMaxBuildHeight();
-	            int offsetY = 50;
-
-	            for (int sectionIndex = 0; sectionIndex < chunk.getSections().length; sectionIndex++) {
+	            int offsetY = 10;
+	            for(int sectionIndex = 0; sectionIndex < chunk.getSections().length; sectionIndex++) 
+	            {
 	                LevelChunkSection from = cityChunk.getSections()[sectionIndex];
-	                if (from == null) continue;
-
-	                for (int y = 0; y < 16; y++) {
+	                if(from == null) 
+	                	continue;
+	                for(int y = 0; y < 16; y++) 
+	                {
 	                    int worldY = sectionIndex * 16 + y;
-
-	                    if (worldY < minY || worldY > maxY) continue;
-
+	                    if(worldY < minY || worldY > maxY) 
+	                    	continue;
 	                    int newWorldY = offsetY + (maxY - worldY);
-	                    if (newWorldY < 0 || newWorldY >= maxChunkHeight) continue;
-
+	                    if(newWorldY < 0 || newWorldY >= maxChunkHeight) 
+	                    	continue;
 	                    int newSectionIndex = newWorldY / 16;
 	                    int newY = newWorldY % 16;
-
 	                    LevelChunkSection to = chunk.getSections()[newSectionIndex];
-	                    if (to == null) continue;
-
-	                    for (int z = 0; z < 16; z++) {
-	                        for (int x = 0; x < 16; x++) {
+	                    if(to == null) 
+	                    	continue;
+	                    for(int z = 0; z < 16; z++) 
+	                    {
+	                        for(int x = 0; x < 16; x++)
+	                        {
 	                            BlockState state = from.getBlockState(x, y, z);
 	                            boolean isAir = state.isAir();
-
-	                            if (isAir && newWorldY < 300) continue;
-	                            
+	                            if(isAir && newWorldY < 300) 
+	                            	continue;
 	                            to.setBlockState(x, newY, z, state, false);
 	                        }
 	                    }
-
 	                    to.recalcBlockCounts();
 	                }
 	            }
-
 	        }
 	    } 
 	    catch(Exception e)
