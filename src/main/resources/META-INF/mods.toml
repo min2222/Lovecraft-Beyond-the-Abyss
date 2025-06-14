@@ -66,6 +66,12 @@ description=''''''
     versionRange="[1.0.0,)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.beyondtheabyss]]
+    modId="gravityapi"
+    mandatory=true
+    versionRange="[1.0.0,)"
+    ordering="NONE"
+    side="BOTH"
 # Here's another dependency
 [[dependencies.beyondtheabyss]]
     modId="minecraft"

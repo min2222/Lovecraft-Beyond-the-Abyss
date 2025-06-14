@@ -25,7 +25,10 @@ import com.min01.beyondtheabyss.multipart.OrientedBox;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
+import com.min01.beyondtheabyss.util.MirroredCityUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
+import com.min01.gravityapi.api.GravityChangerAPI;
+import com.min01.gravityapi.capabilities.GravityCapabilityImpl;
 
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -81,7 +84,7 @@ public abstract class MixinEntity implements IDynamicLight
 		{
 			if(Entity.class.cast(this).isRemoved()) 
 			{
-				this.setDynamicLightEnabled(false);
+				this.setBTADynamicLightEnabled(false);
 			}
 			else
 			{
@@ -92,9 +95,14 @@ public abstract class MixinEntity implements IDynamicLight
 				}
 				else
 				{
-					this.setDynamicLightEnabled(false);
+					this.setBTADynamicLightEnabled(false);
 				}
 			}
+		}
+		if(MirroredCityUtil.isUpsideDown(Entity.class.cast(this)))
+		{
+			GravityCapabilityImpl cap = GravityChangerAPI.getGravityComponent(Entity.class.cast(this));
+			cap.applyGravityDirectionEffect(Direction.UP, null, Double.MAX_VALUE);
 		}
 	}
 
@@ -103,7 +111,7 @@ public abstract class MixinEntity implements IDynamicLight
 	{
 		if(Entity.class.cast(this).level.isClientSide)
 		{
-			this.setDynamicLightEnabled(false);
+			this.setBTADynamicLightEnabled(false);
 		}
 	}
 

@@ -5,14 +5,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Holder;
-import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.RandomState;
 
 public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
 {
@@ -39,10 +35,4 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
 			};
 		});
 	}
-    
-	@Override
-	public void buildSurface(WorldGenRegion region, StructureManager structureManager, RandomState random, ChunkAccess chunkAccess) 
-	{
-	    super.buildSurface(region, structureManager, random, chunkAccess);
-    }
 }

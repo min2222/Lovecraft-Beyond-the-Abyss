@@ -25,7 +25,7 @@ public interface IDynamicLight
 	}
 	
 	@ApiStatus.Internal
-	default void setDynamicLightEnabled(boolean enabled) 
+	default void setBTADynamicLightEnabled(boolean enabled) 
 	{
 		this.resetDynamicLight();
 		if(enabled)

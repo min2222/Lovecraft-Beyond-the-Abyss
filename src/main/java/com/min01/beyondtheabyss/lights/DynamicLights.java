@@ -76,11 +76,11 @@ public class DynamicLights
 		int luminance = lightSource.getLuminance();
 		if(!enabled && luminance > 0)
 		{
-			lightSource.setDynamicLightEnabled(true);
+			lightSource.setBTADynamicLightEnabled(true);
 		} 
 		else if(enabled && luminance < 1)
 		{
-			lightSource.setDynamicLightEnabled(false);
+			lightSource.setBTADynamicLightEnabled(false);
 		}
 	}
 	

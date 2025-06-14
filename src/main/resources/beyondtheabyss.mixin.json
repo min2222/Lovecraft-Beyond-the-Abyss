@@ -16,7 +16,8 @@
 		"lights.MixinClientLevel",
 		"lights.MixinMinecraft"
 	],
-	"server": [],
+	"server": [
+	],
 	"injectors": {
 		"defaultRequire": 1
 	},

@@ -25,7 +25,7 @@ public abstract class MixinClientLevel
 		if(entity != null) 
 		{
 			var dls = (IDynamicLight) entity;
-			dls.setDynamicLightEnabled(false);
+			dls.setBTADynamicLightEnabled(false);
 		}
 	}
 }
