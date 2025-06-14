@@ -6,244 +6,223 @@ function initializeCoreMod() {
                 'name': 'me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer'
             },
             'transformer': function(classNode) {
-				var Opcodes = Java.type("org.objectweb.asm.Opcodes");
-				var InsnList = Java.type("org.objectweb.asm.tree.InsnList");
-				var VarInsnNode = Java.type("org.objectweb.asm.tree.VarInsnNode");
-				var MethodInsnNode = Java.type("org.objectweb.asm.tree.MethodInsnNode");
-				var FieldInsnNode = Java.type("org.objectweb.asm.tree.FieldInsnNode");
-				var JumpInsnNode = Java.type("org.objectweb.asm.tree.JumpInsnNode");
-				var LabelNode = Java.type("org.objectweb.asm.tree.LabelNode");
-				var InsnNode = Java.type("org.objectweb.asm.tree.InsnNode");
-				var LdcInsnNode = Java.type("org.objectweb.asm.tree.LdcInsnNode");
-				var asmapi = Java.type("net.minecraftforge.coremod.api.ASMAPI");
+                var Opcodes = Java.type("org.objectweb.asm.Opcodes");
+                var InsnList = Java.type("org.objectweb.asm.tree.InsnList");
+                var VarInsnNode = Java.type("org.objectweb.asm.tree.VarInsnNode");
+                var MethodInsnNode = Java.type("org.objectweb.asm.tree.MethodInsnNode");
+                var FieldInsnNode = Java.type("org.objectweb.asm.tree.FieldInsnNode");
+                var JumpInsnNode = Java.type("org.objectweb.asm.tree.JumpInsnNode");
+                var LabelNode = Java.type("org.objectweb.asm.tree.LabelNode");
+                var InsnNode = Java.type("org.objectweb.asm.tree.InsnNode");
+                var LdcInsnNode = Java.type("org.objectweb.asm.tree.LdcInsnNode");
+                var TypeInsnNode = Java.type("org.objectweb.asm.tree.TypeInsnNode");
 
-				asmapi.log("INFO", "Patching Embeddium BlockRenderer");
+                var asmapi = Java.type("net.minecraftforge.coremod.api.ASMAPI");
+                asmapi.log("INFO", "Patching Embeddium BlockRenderer");
 
-				var methods = classNode.methods;
-				for (var i = 0; i < methods.size(); i++) {
-				    var method = methods.get(i);
-				    // Patch for writeGeometry
-				    if (method.name === "writeGeometry" && method.desc === "(Lme/jellysquid/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderContext;Lme/jellysquid/mods/sodium/client/render/chunk/compile/buffers/ChunkModelBuilder;Lnet/minecraft/world/phys/Vec3;Lme/jellysquid/mods/sodium/client/render/chunk/terrain/material/Material;Lme/jellysquid/mods/sodium/client/model/quad/BakedQuadView;[ILme/jellysquid/mods/sodium/client/model/light/data/QuadLightData;)V") {
-				        asmapi.log("INFO", "Found writeGeometry method");
-				        
-				        // Find the instruction sequence after setting the z coordinate (after L11)
-				        var instructions = method.instructions;
-				        var iterator = instructions.iterator();
-				        var targetNode = null;
-				        
-				        while (iterator.hasNext()) {
-				            var node = iterator.next();
-				            // Look for the putfield instruction that sets the z coordinate
-				            if (node.getOpcode() === Opcodes.PUTFIELD && 
-				                node.name === "z" && 
-				                node.owner === "me/jellysquid/mods/sodium/client/render/chunk/vertex/format/ChunkVertexEncoder$Vertex") {
-				                targetNode = node;
-				                break;
-				            }
-				        }
-				        
-				        if (targetNode) {
-				            asmapi.log("INFO", "Found z coordinate setting, inserting upside-down check");
-				            
-				            var newInstructions = new InsnList();
-				            
-				            // Create labels for the if statement
-				            var skipLabel = new LabelNode();
-				            
-				            // Load context (arg1) to get pos()
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 1)); // ctx
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEVIRTUAL,
-				                "me/jellysquid/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderContext",
-				                "pos",
-				                "()Lnet/minecraft/core/BlockPos;",
-				                false
-				            ));
-				            
-				            // Load Minecraft level
-				            newInstructions.add(new FieldInsnNode(
-				                Opcodes.GETSTATIC,
-				                "com/min01/beyondtheabyss/util/BTAClientUtil",
-				                "MC",
-				                "Lnet/minecraft/client/Minecraft;"
-				            ));
-				            newInstructions.add(new FieldInsnNode(
-				                Opcodes.GETFIELD,
-				                "net/minecraft/client/Minecraft",
-				                asmapi.mapField("f_91074_"), // level field
-				                "Lnet/minecraft/client/multiplayer/ClientLevel;"
-				            ));
-				            
-				            // Call isBlockUpsideDown
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKESTATIC,
-				                "com/min01/beyondtheabyss/util/MirroredCityUtil",
-				                "isBlockUpsideDown",
-				                "(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/Level;)Z",
-				                false
-				            ));
-				            
-				            // If false, jump to skipLabel
-				            newInstructions.add(new JumpInsnNode(Opcodes.IFEQ, skipLabel));
-				            
-				            // Inside if block - modify x and y coordinates
-				            // Modify x coordinate (1.0 - quad.getX(srcIndex))
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 13)); // out
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 1));  // ctx
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEVIRTUAL,
-				                "me/jellysquid/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderContext",
-				                "origin",
-				                "()Lorg/joml/Vector3fc;",
-				                false
-				            ));
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEINTERFACE,
-				                "org/joml/Vector3fc",
-				                "x",
-				                "()F",
-				                true
-				            ));
-				            newInstructions.add(new LdcInsnNode(1.0));
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 5));  // quad
-				            newInstructions.add(new VarInsnNode(Opcodes.ILOAD, 12)); // srcIndex
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEINTERFACE,
-				                "me/jellysquid/mods/sodium/client/model/quad/BakedQuadView",
-				                "getX",
-				                "(I)F",
-				                true
-				            ));
-				            newInstructions.add(new InsnNode(Opcodes.FSUB));
-				            newInstructions.add(new InsnNode(Opcodes.FADD));
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 3));  // offset
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEVIRTUAL,
-				                "net/minecraft/world/phys/Vec3",
-				                asmapi.mapMethod("m_7096_"),
-				                "()D",
-				                false
-				            ));
-				            newInstructions.add(new InsnNode(Opcodes.D2F));
-				            newInstructions.add(new InsnNode(Opcodes.FADD));
-				            newInstructions.add(new FieldInsnNode(
-				                Opcodes.PUTFIELD,
-				                "me/jellysquid/mods/sodium/client/render/chunk/vertex/format/ChunkVertexEncoder$Vertex",
-				                "x",
-				                "F"
-				            ));
-				            
-				            // Modify y coordinate (1.0 - quad.getY(srcIndex))
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 13)); // out
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 1));  // ctx
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEVIRTUAL,
-				                "me/jellysquid/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderContext",
-				                "origin",
-				                "()Lorg/joml/Vector3fc;",
-				                false
-				            ));
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEINTERFACE,
-				                "org/joml/Vector3fc",
-				                "y",
-				                "()F",
-				                true
-				            ));
-				            newInstructions.add(new LdcInsnNode(1.0));
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 5));  // quad
-				            newInstructions.add(new VarInsnNode(Opcodes.ILOAD, 12)); // srcIndex
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEINTERFACE,
-				                "me/jellysquid/mods/sodium/client/model/quad/BakedQuadView",
-				                "getY",
-				                "(I)F",
-				                true
-				            ));
-				            newInstructions.add(new InsnNode(Opcodes.FSUB));
-				            newInstructions.add(new InsnNode(Opcodes.FADD));
-				            newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 3));  // offset
-				            newInstructions.add(new MethodInsnNode(
-				                Opcodes.INVOKEVIRTUAL,
-				                "net/minecraft/world/phys/Vec3",
-				                asmapi.mapMethod("m_7098_"),
-				                "()D",
-				                false
-				            ));
-				            newInstructions.add(new InsnNode(Opcodes.D2F));
-				            newInstructions.add(new InsnNode(Opcodes.FADD));
-				            newInstructions.add(new FieldInsnNode(
-				                Opcodes.PUTFIELD,
-				                "me/jellysquid/mods/sodium/client/render/chunk/vertex/format/ChunkVertexEncoder$Vertex",
-				                "y",
-				                "F"
-				            ));
-				            
-				            // Skip label
-				            newInstructions.add(skipLabel);
-				            
-				            // Insert the new instructions after setting the z coordinate
-				            method.instructions.insert(targetNode, newInstructions);
-				            asmapi.log("INFO", "Injected writeGeometry upside-down patch");
-				        } else {
-				            asmapi.log("INFO", "Could not find target location in writeGeometry");
-				        }
-				    }
+                var methods = classNode.methods;
+                for (var i = 0; i < methods.size(); i++) {
+                    var method = methods.get(i);
+                    if (method.name === "writeGeometry") {
+                        // Find the instruction after the Z assignment (original L11)
+                        var targetIndex = -1;
+                        for (var j = 0; j < method.instructions.size(); j++) {
+                            var insn = method.instructions.get(j);
+
+                            // Find the putfield for .z (last original coordinate assignment)
+                            if (insn.getOpcode && insn.getOpcode() === Opcodes.PUTFIELD) {
+                                if (insn instanceof FieldInsnNode && insn.name === "z") {
+                                    targetIndex = j + 1;
+                                    break;
+                                }
+                            }
+                        }
+                        if (targetIndex === -1) {
+                            asmapi.log("WARN", "Couldn't find .z putfield; patch not applied!");
+                            continue;
+                        }
+
+                        // Prepare our label nodes for branching
+                        var labelIfNotUpsideDown = new LabelNode();
+
+                        // Build the injected instructions (see your modified bytecode L12–L15)
+                        var inject = new InsnList();
+
+                        // Call MirroredCityUtil.isBlockUpsideDown(ctx.pos(), Minecraft.getInstance().level)
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 1)); // ctx
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEVIRTUAL,
+                            "me/jellysquid/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderContext",
+                            "pos",
+                            "()Lnet/minecraft/core/BlockPos;",
+                            false
+                        ));
+                        inject.add(new FieldInsnNode(
+                            Opcodes.GETSTATIC,
+                            "com/min01/beyondtheabyss/util/BTAClientUtil",
+                            "MC",
+                            "Lnet/minecraft/client/Minecraft;"
+                        ));
+                        inject.add(new FieldInsnNode(
+                            Opcodes.GETFIELD,
+                            "net/minecraft/client/Minecraft",
+                            asmapi.mapField("f_91073_"),
+                            "Lnet/minecraft/client/multiplayer/ClientLevel;"
+                        ));
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKESTATIC,
+                            "com/min01/beyondtheabyss/util/MirroredCityUtil",
+                            "isBlockUpsideDown",
+                            "(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/Level;)Z",
+                            false
+                        ));
+                        inject.add(new JumpInsnNode(Opcodes.IFEQ, labelIfNotUpsideDown));
+
+                        // -- If upside down: recalculate X
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 13)); // out
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 1)); // ctx
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEVIRTUAL,
+                            "me/jellysquid/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderContext",
+                            "origin",
+                            "()Lorg/joml/Vector3fc;",
+                            false
+                        ));
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEINTERFACE,
+                            "org/joml/Vector3fc",
+                            "x",
+                            "()F",
+                            true
+                        ));
+                        inject.add(new InsnNode(Opcodes.FCONST_1));
+                        inject.add(new InsnNode(Opcodes.FADD));
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 5)); // quad
+                        inject.add(new VarInsnNode(Opcodes.ILOAD, 12)); // srcIndex
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEINTERFACE,
+                            "me/jellysquid/mods/sodium/client/model/quad/BakedQuadView",
+                            "getX",
+                            "(I)F",
+                            true
+                        ));
+                        inject.add(new InsnNode(Opcodes.FSUB));
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 3)); // offset
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEVIRTUAL,
+                            "net/minecraft/world/phys/Vec3",
+                            asmapi.mapMethod("m_7096_"),
+                            "()D",
+                            false
+                        ));
+                        inject.add(new InsnNode(Opcodes.D2F));
+                        inject.add(new InsnNode(Opcodes.FADD));
+                        inject.add(new FieldInsnNode(
+                            Opcodes.PUTFIELD,
+                            "me/jellysquid/mods/sodium/client/render/chunk/vertex/format/ChunkVertexEncoder$Vertex",
+                            "x",
+                            "F"
+                        ));
+
+                        // -- If upside down: recalculate Y
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 13)); // out
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 1)); // ctx
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEVIRTUAL,
+                            "me/jellysquid/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderContext",
+                            "origin",
+                            "()Lorg/joml/Vector3fc;",
+                            false
+                        ));
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEINTERFACE,
+                            "org/joml/Vector3fc",
+                            "y",
+                            "()F",
+                            true
+                        ));
+                        inject.add(new InsnNode(Opcodes.FCONST_1));
+                        inject.add(new InsnNode(Opcodes.FADD));
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 5)); // quad
+                        inject.add(new VarInsnNode(Opcodes.ILOAD, 12)); // srcIndex
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEINTERFACE,
+                            "me/jellysquid/mods/sodium/client/model/quad/BakedQuadView",
+                            "getY",
+                            "(I)F",
+                            true
+                        ));
+                        inject.add(new InsnNode(Opcodes.FSUB));
+                        inject.add(new VarInsnNode(Opcodes.ALOAD, 3)); // offset
+                        inject.add(new MethodInsnNode(
+                            Opcodes.INVOKEVIRTUAL,
+                            "net/minecraft/world/phys/Vec3",
+                            asmapi.mapMethod("m_7098_"),
+                            "()D",
+                            false
+                        ));
+                        inject.add(new InsnNode(Opcodes.D2F));
+                        inject.add(new InsnNode(Opcodes.FADD));
+                        inject.add(new FieldInsnNode(
+                            Opcodes.PUTFIELD,
+                            "me/jellysquid/mods/sodium/client/render/chunk/vertex/format/ChunkVertexEncoder$Vertex",
+                            "y",
+                            "F"
+                        ));
+
+                        inject.add(labelIfNotUpsideDown);
+
+                        // Insert after the z assignment
+                        method.instructions.insert(method.instructions.get(targetIndex - 1), inject);
+                        asmapi.log("INFO", "Successfully patched writeGeometry for upside-down check.");
+                    }
 					if (method.name === "isFaceVisible") {
-						// Inject at the start of the method
-						var insn = new InsnList();
-						var continueLabel = new LabelNode();
+						var instructions = method.instructions;
+						var inject = new InsnList();
+						var labelContinue = new LabelNode();
 
-						// ctx.pos()
-						insn.add(new VarInsnNode(Opcodes.ALOAD, 1)); // load ctx (index 1)
-						insn.add(new MethodInsnNode(
+						// ctx is argument 1 (index 1), face is argument 2 (index 2)
+						inject.add(new VarInsnNode(Opcodes.ALOAD, 1)); // ctx
+						inject.add(new MethodInsnNode(
 						    Opcodes.INVOKEVIRTUAL,
 						    "me/jellysquid/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderContext",
 						    "pos",
 						    "()Lnet/minecraft/core/BlockPos;",
 						    false
 						));
-
-						// BTAClientUtil.MC
-						insn.add(new FieldInsnNode(
+						inject.add(new FieldInsnNode(
 						    Opcodes.GETSTATIC,
-						    "com/min01/beyondtheabyss/util/BTAClientUtil", // <-- Replace with your actual package
+						    "com/min01/beyondtheabyss/util/BTAClientUtil",
 						    "MC",
 						    "Lnet/minecraft/client/Minecraft;"
 						));
-
-						// BTAClientUtil.MC.level
-						insn.add(new FieldInsnNode(
+						inject.add(new FieldInsnNode(
 						    Opcodes.GETFIELD,
 						    "net/minecraft/client/Minecraft",
 						    asmapi.mapField("f_91073_"),
 						    "Lnet/minecraft/client/multiplayer/ClientLevel;"
 						));
-
-						// MirroredCityUtil.isBlockUpsideDown(pos, level)
-						insn.add(new MethodInsnNode(
+						inject.add(new MethodInsnNode(
 						    Opcodes.INVOKESTATIC,
-						    "com/min01/beyondtheabyss/util/MirroredCityUtil", // <-- Replace with actual package
+						    "com/min01/beyondtheabyss/util/MirroredCityUtil",
 						    "isBlockUpsideDown",
 						    "(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/Level;)Z",
 						    false
 						));
+						inject.add(new JumpInsnNode(Opcodes.IFEQ, labelContinue));
+						// If true, return true
+						inject.add(new InsnNode(Opcodes.ICONST_1));
+						inject.add(new InsnNode(Opcodes.IRETURN));
+						// Else continue
+						inject.add(labelContinue);
 
-						// if false, jump to continue
-						insn.add(new JumpInsnNode(Opcodes.IFEQ, continueLabel));
+						// Insert at the beginning
+						instructions.insert(inject);
 
-						// return true
-						insn.add(new InsnNode(Opcodes.ICONST_1));
-						insn.add(new InsnNode(Opcodes.IRETURN));
-
-						// continue label
-						insn.add(continueLabel);
-
-						method.instructions.insert(insn);
-						
-						asmapi.log("INFO", "Injected isFaceVisible upside-down patch");
+						asmapi.log("INFO", "Patched isFaceVisible to check upside-down blocks.");
 					}
-				}
+                }
+
                 return classNode;
             }
         }
