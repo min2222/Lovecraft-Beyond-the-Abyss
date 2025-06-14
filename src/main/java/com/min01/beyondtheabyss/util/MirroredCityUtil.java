@@ -10,7 +10,11 @@ public class MirroredCityUtil
 {
 	public static boolean isBlockUpsideDown(BlockPos pos, Level level)
 	{
-		return level.dimension() == BTAWorlds.MIRRORED_CITY && pos.getY() >= 200;
+		if(level != null)
+		{
+			return level.dimension() == BTAWorlds.MIRRORED_CITY && pos.getY() >= 200;
+		}
+		return false;
 	}
 	
 	public static boolean isUpsideDown(Entity entity)
