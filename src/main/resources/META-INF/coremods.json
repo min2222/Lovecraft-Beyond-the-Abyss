@@ -1,4 +1,3 @@
 {
-	"embeddium-block": "coremods/embeddium-block.js",
-	"embeddium-chunk": "coremods/embeddium-chunk.js"
+	"embeddium": "coremods/embeddium.js"
 }
