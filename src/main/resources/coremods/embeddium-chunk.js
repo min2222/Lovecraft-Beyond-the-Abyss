@@ -3,7 +3,7 @@ function initializeCoreMod() {
         'embeddium-chunk': {
             'target': {
                 'type': 'CLASS',
-                'name': 'org.embeddedt.embeddium.impl.render.chunk.DefaultChunkRenderer'
+                'name': 'me.jellysquid.mods.sodium.client.render.chunk.DefaultChunkRenderer'
             },
             'transformer': function(classNode) {
                 var Opcodes = Java.type("org.objectweb.asm.Opcodes");
@@ -18,7 +18,7 @@ function initializeCoreMod() {
                 var TypeInsnNode = Java.type("org.objectweb.asm.tree.TypeInsnNode");
 
                 var asmapi = Java.type("net.minecraftforge.coremod.api.ASMAPI");
-                asmapi.log("INFO", "Patching Embeddium ChunkRendering");
+                asmapi.log("INFO", "Patching Embeddium DefaultChunkRenderer");
 
                 var methods = classNode.methods;
                 for (var i = 0; i < methods.size(); i++) {
@@ -62,7 +62,7 @@ function initializeCoreMod() {
                                 // Insert before ISTORE (so stack: [old, ourNew] -> IOR -> ISTORE)
                                 instructions.insertBefore(insn, inject);
 
-                                asmapi.log("INFO", "Injected OR logic for useBlockFaceCulling at " + insn);
+                                asmapi.log("INFO", "Injected logic for useBlockFaceCulling at " + insn);
                                 break;
                             }
                         }
