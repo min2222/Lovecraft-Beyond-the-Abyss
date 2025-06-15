@@ -176,7 +176,6 @@ dependencies {
     
     implementation fg.deobf("curse.maven:assets-protector-1032813:6237647")
     implementation fg.deobf("curse.maven:gravity-api-forge-1283915:6651213")
-    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
     
     runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:5589681")
     

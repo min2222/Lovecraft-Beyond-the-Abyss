@@ -1,6 +1,6 @@
 function initializeCoreMod() {
     return {
-        'embeddium-patch': {
+        'embeddium-block': {
             'target': {
                 'type': 'CLASS',
                 'name': 'me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer'
