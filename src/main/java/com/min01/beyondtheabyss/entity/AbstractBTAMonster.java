@@ -37,7 +37,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	{
 		super(p_21683_, p_21684_);
 		this.partBuilder = this.createBuilder();
-		this.noCulling = true;
 	}
 	
 	@Override

@@ -158,7 +158,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	{
 		for(ModelPart part : model.root().getAllParts().toList())
 		{
-			String name = this.getModelPartName(model.root(), part);
+			String name = this.getModelPartNameWithPart(part, part);
 			Part p = this.partMap.get(name);
 			if(p != null)
 			{
@@ -267,9 +267,32 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     }
 
     @OnlyIn(Dist.CLIENT)
+    public String getModelPartNameWithPart(ModelPart part, ModelPart target) 
+    {
+        for(Map.Entry<String, ModelPart> entry : part.children.entrySet()) 
+        {
+            if(entry.getValue() == target) 
+            {
+                return entry.getKey();
+            }
+        }
+        return ROOT;
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public String getModelPartName(ModelPart root, ModelPart target) 
     {
-    	return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
+        for(ModelPart part : root.getAllParts().toList())
+        {
+            for(Map.Entry<String, ModelPart> entry : part.children.entrySet()) 
+            {
+                if(entry.getValue() == target) 
+                {
+                    return entry.getKey();
+                }
+            }
+        }
+        return ROOT;
     }
 
     public Vec2 defaultHeadRotation(LivingEntity entity, float partialTick)

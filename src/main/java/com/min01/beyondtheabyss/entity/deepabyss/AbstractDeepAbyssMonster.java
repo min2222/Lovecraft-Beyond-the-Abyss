@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
 import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
+import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -29,6 +30,7 @@ public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster implem
 	{
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+		this.noCulling = this.getBTAMobType() == BTAMobType.BOSS;
 		this.moveControl = this.getSwimmingMoveControl();
 		this.lookControl = this.getSwimmingLookControl();
 	}
