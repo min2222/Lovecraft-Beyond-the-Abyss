@@ -6,7 +6,8 @@
 	"mixins": [
 		"MixinEntity",
 		"MixinSwimNodeEvaluator",
-		"gravity.MixinBlockStateBase"
+		"gravity.MixinBlockStateBase",
+		"gravity.MixinBlockPlaceContext"
 	],
 	"client": [
 		"MixinLevelRenderer",

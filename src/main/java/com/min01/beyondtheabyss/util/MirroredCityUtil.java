@@ -12,13 +12,13 @@ public class MirroredCityUtil
 	{
 		if(level != null)
 		{
-			return level.dimension() == BTAWorlds.MIRRORED_CITY && pos.getY() >= 200;
+			return level.dimension() == BTAWorlds.MIRRORED_CITY && pos.getY() >= 150;
 		}
 		return false;
 	}
 	
 	public static boolean isUpsideDown(Entity entity)
 	{
-		return entity.level.dimension() == BTAWorlds.MIRRORED_CITY && entity.getY() >= 120;
+		return entity.level.dimension() == BTAWorlds.MIRRORED_CITY && entity.getY() >= 150;
 	}
 }
