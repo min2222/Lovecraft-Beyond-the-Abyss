@@ -19,6 +19,6 @@ public class MirroredCityUtil
 	
 	public static boolean isUpsideDown(Entity entity)
 	{
-		return entity.level.dimension() == BTAWorlds.MIRRORED_CITY && entity.getY() >= 150;
+		return entity.level.dimension() == BTAWorlds.MIRRORED_CITY && entity.getY() >= 120;
 	}
 }

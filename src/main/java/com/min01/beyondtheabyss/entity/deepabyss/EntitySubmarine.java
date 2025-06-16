@@ -128,10 +128,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	    		fuction.accept(p_20312_, pos.x, pos.y, pos.z);
 	    	}
         }
-        else
-        {
-            super.positionRider(p_20312_);
-        }
 	}
 	
 	@Override

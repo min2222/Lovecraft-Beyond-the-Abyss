@@ -223,9 +223,12 @@ public class OrientedBox
         double max1 = -Double.MAX_VALUE;
         for(Vec3 d : vertices1)
         {
-            double v = d.dot(normal);
-            min1 = Math.min(min1, v);
-            max1 = Math.max(max1, v);
+        	if(d != null)
+        	{
+                double v = d.dot(normal);
+                min1 = Math.min(min1, v);
+                max1 = Math.max(max1, v);
+        	}
         }
         double min2 = Double.MAX_VALUE;
         double max2 = -Double.MAX_VALUE;

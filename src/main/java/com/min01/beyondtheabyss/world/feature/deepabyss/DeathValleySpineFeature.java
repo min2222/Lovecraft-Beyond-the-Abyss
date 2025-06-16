@@ -1,12 +1,17 @@
 package com.min01.beyondtheabyss.world.feature.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.block.deepabyss.SpineBoneBaseBlock;
+import com.min01.beyondtheabyss.block.deepabyss.SpineBoneMiddleBlock;
+import com.min01.beyondtheabyss.block.deepabyss.SpineBoneTipBlock;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -51,20 +56,23 @@ public class DeathValleySpineFeature extends Feature<NoneFeatureConfiguration>
 	
 	public void placeSpine(WorldGenLevel level, BlockPos pos, int length)
 	{
+		BlockState tip = BTABlocks.SPINE_BONE_TIP.get().defaultBlockState().setValue(SpineBoneTipBlock.FACING, Direction.DOWN);
+		BlockState middle = BTABlocks.SPINE_BONE_MIDDLE.get().defaultBlockState().setValue(SpineBoneMiddleBlock.FACING, Direction.DOWN);
+		BlockState base = BTABlocks.SPINE_BONE_BASE.get().defaultBlockState().setValue(SpineBoneBaseBlock.FACING, Direction.DOWN);
 		if(length == 1)
 		{
-			level.setBlock(pos, BTABlocks.SPINE_BONE_TIP.get().defaultBlockState(), 2);
+			level.setBlock(pos, tip, 2);
 		}
 		else if(length == 2)
 		{
-			level.setBlock(pos, BTABlocks.SPINE_BONE_MIDDLE.get().defaultBlockState(), 2);
-			level.setBlock(pos.above(1), BTABlocks.SPINE_BONE_TIP.get().defaultBlockState(), 2);
+			level.setBlock(pos, middle, 2);
+			level.setBlock(pos.above(1), tip, 2);
 		}
 		else if(length == 3)
 		{
-			level.setBlock(pos, BTABlocks.SPINE_BONE_BASE.get().defaultBlockState(), 2);
-			level.setBlock(pos.above(1), BTABlocks.SPINE_BONE_MIDDLE.get().defaultBlockState(), 2);
-			level.setBlock(pos.above(2), BTABlocks.SPINE_BONE_TIP.get().defaultBlockState(), 2);
+			level.setBlock(pos, base, 2);
+			level.setBlock(pos.above(1), middle, 2);
+			level.setBlock(pos.above(2), tip, 2);
 		}
 	}
 }
