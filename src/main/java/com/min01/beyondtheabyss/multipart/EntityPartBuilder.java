@@ -158,7 +158,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	{
 		for(ModelPart part : model.root().getAllParts().toList())
 		{
-			String name = this.getModelPartNameWithPart(part, part);
+			String name = this.getModelPartName(model.root(), part);
 			Part p = this.partMap.get(name);
 			if(p != null)
 			{
@@ -264,19 +264,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
             this.partOffset.put(name, offset);
             return new AABB(-box.getXsize() / 2.0F, -box.getYsize() / 2.0F, -box.getZsize() / 2.0F, box.getXsize() / 2.0F, box.getYsize() / 2.0F, box.getZsize() / 2.0F);
         }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public String getModelPartNameWithPart(ModelPart part, ModelPart target) 
-    {
-        for(Map.Entry<String, ModelPart> entry : part.children.entrySet()) 
-        {
-            if(entry.getValue() == target) 
-            {
-                return entry.getKey();
-            }
-        }
-        return ROOT;
     }
 
     @OnlyIn(Dist.CLIENT)
