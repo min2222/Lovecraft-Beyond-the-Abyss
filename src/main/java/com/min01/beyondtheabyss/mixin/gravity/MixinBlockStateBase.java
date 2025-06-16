@@ -101,11 +101,11 @@ public abstract class MixinBlockStateBase
     private void neighborChanged(Level p_60691_, BlockPos p_60692_, Block p_60693_, BlockPos p_60694_, boolean p_60695_, CallbackInfo ci)
     {
 		BlockStateBase base = BlockStateBase.class.cast(this);
-		if(MirroredCityUtil.isBlockUpsideDown(p_60692_, p_60691_))
+		if(MirroredCityUtil.isBlockUpsideDown(p_60694_, p_60691_))
 		{
 			ci.cancel();
-			GravityBlockPos gravityPos = new GravityBlockPos(p_60692_, Direction.UP);
-			base.getBlock().neighborChanged(this.asState(), p_60691_, gravityPos, p_60693_, p_60694_, p_60695_);
+			GravityBlockPos gravityPos = new GravityBlockPos(p_60694_, Direction.UP);
+			base.getBlock().neighborChanged(this.asState(), p_60691_, p_60692_, p_60693_, gravityPos, p_60695_);
 		}
     }
 	
