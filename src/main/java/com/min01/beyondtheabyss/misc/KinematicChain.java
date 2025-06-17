@@ -12,29 +12,32 @@ public class KinematicChain
 	protected Entity entity;
 	protected Vec3 target;
 	protected Vec3 anchorPos;
-	protected float distance;
 	protected ChainSegment[] segments;
 	protected Vec2 initialRot = Vec2.ZERO;
+	
+	public KinematicChain(Entity entity, int length) 
+	{
+		this(entity, length, 0.0F);
+	}
 	
 	public KinematicChain(Entity entity, int length, float distance) 
 	{
 		this.entity = entity;
-		this.distance = distance;
 		this.segments = new ChainSegment[length];
-		this.createSegments();
+		this.createSegments(distance);
 	}
 	
-	public void createSegments()
+	public void createSegments(float distance)
 	{
-		this.setupSegments();
+		this.setupSegments(distance);
 		this.setupPos();
 	}
 	
-	public void setupSegments()
+	public void setupSegments(float distance)
 	{
 		for(int i = 0; i < this.segments.length; i++)
 		{
-			this.segments[i] = new ChainSegment(this.initialRot);
+			this.segments[i] = new ChainSegment(this.initialRot, distance);
 		}
 	}
 	
@@ -62,11 +65,16 @@ public class KinematicChain
 			if(!this.target.equals(Vec3.ZERO))
 			{
 				ChainSegment tip = this.getTipSegment();
-				if(tip.getPos().distanceTo(this.target) > 2.0F)
+				Vec3 tipPos = tip.getPos();
+				Vec3 dir = this.target.subtract(tipPos);
+				double minDistance = 0.001;
+				if(dir.lengthSqr() < minDistance * minDistance)
 				{
-					tip.setRot(this.lookAt(tip.getPos(), this.target));
-					tip.setPos(this.getLookPos(tip.getRot(), tip.getPos(), 0.0F, 0.0F, this.distance));
+				    dir = dir.normalize().scale(minDistance);
 				}
+				Vec3 safeTarget = tipPos.add(dir);
+				tip.setRot(this.lookAt(safeTarget, this.target));
+				tip.setPos(this.getLookPos(tip.getRot(), safeTarget, 0.0F, 0.0F, tip.distance));
 				
 				for(int i = 2; i < this.segments.length; i++)
 				{
@@ -74,7 +82,7 @@ public class KinematicChain
 					ChainSegment current = this.segments[this.segments.length - i];
 					ChainSegment next = this.segments[this.segments.length - index];
 					current.setRot(this.lookAt(current.getPos(), next.getPos()));
-					current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -this.distance));
+					current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
 				}
 				
 				for(int i = 0; i < this.segments.length - 1; i++)
@@ -82,7 +90,7 @@ public class KinematicChain
 					ChainSegment current = this.segments[i];
 					ChainSegment next = this.segments[i + 1];
 					current.setRot(this.lookAt(current.getPos(), next.getPos()));
-					next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, this.distance));
+					next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, next.distance));
 				}
 			}
 			else if(this.anchorPos != null)
@@ -95,7 +103,7 @@ public class KinematicChain
 						ChainSegment current = this.segments[i];
 						ChainSegment next = this.segments[i - 1];
 						Vec2 rot = this.lookAt(current.getPos(), next.getPos());
-						current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, this.distance));
+						current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, current.distance));
 					}
 				}
 				else
@@ -120,11 +128,16 @@ public class KinematicChain
 		if(this.target != null)
 		{
 			ChainSegment tip = this.getTipSegment();
-			if(tip.getPos().distanceTo(this.target) > 2.0F)
+			Vec3 tipPos = tip.getPos();
+			Vec3 dir = this.target.subtract(tipPos);
+			double minDistance = 0.001;
+			if(dir.lengthSqr() < minDistance * minDistance)
 			{
-				tip.setRot(this.lookAt(tip.getPos(), this.target));
-				tip.setPos(this.getLookPos(tip.getRot(), tip.getPos(), 0.0F, 0.0F, this.distance));
+			    dir = dir.normalize().scale(minDistance);
 			}
+			Vec3 safeTarget = tipPos.add(dir);
+			tip.setRot(this.lookAt(safeTarget, this.target));
+			tip.setPos(this.getLookPos(tip.getRot(), safeTarget, 0.0F, 0.0F, tip.distance));
 		}
 		
 		if(this.anchorPos != null)
@@ -138,7 +151,7 @@ public class KinematicChain
 			ChainSegment current = this.segments[this.segments.length - i];
 			ChainSegment next = this.segments[this.segments.length - index];
 			current.setRot(this.lookAt(current.getPos(), next.getPos()));
-			current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -this.distance));
+			current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
 		}
 		
 		for(int i = 0; i < this.segments.length - 1; i++)
@@ -146,7 +159,7 @@ public class KinematicChain
 			ChainSegment current = this.segments[i];
 			ChainSegment next = this.segments[i + 1];
 			current.setRot(this.lookAt(current.getPos(), next.getPos()));
-			next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, this.distance));
+			next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, next.distance));
 		}
 	}
 	
@@ -248,10 +261,12 @@ public class KinematicChain
 		protected Vec3 oldPosition = Vec3.ZERO;
 		protected Vec2 rotation = Vec2.ZERO;
 		protected Vec2 oldRotation = Vec2.ZERO;
+		protected float distance;
 		
-		public ChainSegment(Vec2 initialRot) 
+		public ChainSegment(Vec2 initialRot, float distance) 
 		{
 			this.rotation = initialRot;
+			this.distance = distance;
 		}
 		
     	public Vec3 position(float partialTicks)
@@ -304,6 +319,16 @@ public class KinematicChain
 		public Vec3 getOldPos()
 		{
 			return this.oldPosition;
+		}
+		
+		public void setDistance(float distance)
+		{
+			this.distance = distance;
+		}
+		
+		public float getDistance()
+		{
+			return this.distance;
 		}
 	}
 }

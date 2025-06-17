@@ -69,7 +69,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 				}
 				this.worms = worms;
 			}
-			else
+			else if(this.isWormChain())
 			{
 				for(int i = 0; i < this.worms.length; i++)
 				{

@@ -45,7 +45,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	public final Worm worm5 = new Worm();
 	public final Worm worm6 = new Worm();
 	
-	public static final List<String> LIST = List.of("Up", "Tails", "Body2", "TailEdge", "Jaw2", "Left", "Right");
+	public static final List<String> LIST = List.of("Up", "Jaw2", "Tails", "TailEdge", "Body2", "Left", "Right");
 	
 	public EntityCorpseAngler(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -254,7 +254,6 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		if(p_21016_.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
 		{
 	        String part = BTAUtil.getMultiPart(this.getBounds(), player);
-	        System.out.println(part);
 	        if(part != null && LIST.contains(part))
 	        {
 				this.setAnimationState(4);
