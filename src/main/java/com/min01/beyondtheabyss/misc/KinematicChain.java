@@ -65,17 +65,11 @@ public class KinematicChain
 			if(!this.target.equals(Vec3.ZERO))
 			{
 				ChainSegment tip = this.getTipSegment();
-				Vec3 tipPos = tip.getPos();
-				Vec3 dir = this.target.subtract(tipPos);
-				double minDistance = 0.001;
-				if(dir.lengthSqr() < minDistance * minDistance)
+				if(tip.getPos().distanceTo(this.target) > 2.0F)
 				{
-				    dir = dir.normalize().scale(minDistance);
+					tip.setRot(this.lookAt(tip.getPos(), this.target));
+					tip.setPos(this.getLookPos(tip.getRot(), tip.getPos(), 0.0F, 0.0F, tip.distance));
 				}
-				Vec3 safeTarget = tipPos.add(dir);
-				tip.setRot(this.lookAt(safeTarget, this.target));
-				tip.setPos(this.getLookPos(tip.getRot(), safeTarget, 0.0F, 0.0F, tip.distance));
-				
 				for(int i = 2; i < this.segments.length; i++)
 				{
 					int index = i - 1;
@@ -145,13 +139,13 @@ public class KinematicChain
 			this.segments[0].setPos(this.anchorPos);
 		}
 		
-		for(int i = 2; i < this.segments.length; i++)
+		for(int i = 1; i < this.segments.length; i++)
 		{
-			int index = i - 1;
-			ChainSegment current = this.segments[this.segments.length - i];
-			ChainSegment next = this.segments[this.segments.length - index];
-			current.setRot(this.lookAt(current.getPos(), next.getPos()));
-			current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
+		    int index = i - 1;
+		    ChainSegment current = this.segments[this.segments.length - i - 1];
+		    ChainSegment next = this.segments[this.segments.length - index - 1];
+		    current.setRot(this.lookAt(current.getPos(), next.getPos()));
+		    current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
 		}
 		
 		for(int i = 0; i < this.segments.length - 1; i++)
