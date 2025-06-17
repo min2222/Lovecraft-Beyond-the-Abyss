@@ -22,6 +22,7 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
+import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
 import com.min01.beyondtheabyss.entity.model.ModelFulgastra;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGloomfish;
@@ -39,6 +40,7 @@ import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.FulgastraRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GloomfishRenderer;
@@ -154,6 +156,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.KORMOS_HEAD.get(), KormosHeadRenderer::new);
     	event.registerEntityRenderer(BTAEntities.KORMOS_BODY.get(), KormosBodyRenderer::new);
     	event.registerEntityRenderer(BTAEntities.KORMOS_TAIL.get(), KormosTailRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.CORPSE_ANGLER.get(), CorpseAnglerRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FULGASTRA.get(), FulgastraRenderer::new);
     }
     
@@ -174,6 +177,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelKormosHead.LAYER_LOCATION, ModelKormosHead::createBodyLayer);
     	event.registerLayerDefinition(ModelKormosBody.LAYER_LOCATION, ModelKormosBody::createBodyLayer);
     	event.registerLayerDefinition(ModelKormosTail.LAYER_LOCATION, ModelKormosTail::createBodyLayer);
+    	event.registerLayerDefinition(ModelCorpseAngler.LAYER_LOCATION, ModelCorpseAngler::createBodyLayer);
     	event.registerLayerDefinition(ModelFulgastra.LAYER_LOCATION, ModelFulgastra::createBodyLayer);
 
     	//armors

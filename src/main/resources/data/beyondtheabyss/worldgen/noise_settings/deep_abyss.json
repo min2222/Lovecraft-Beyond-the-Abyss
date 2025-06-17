@@ -8,10 +8,7 @@
 		"Name": "beyondtheabyss:abyssalith"
 	},
 	"default_fluid": {
-		"Name": "minecraft:water",
-		"Properties": {
-			"level": "0"
-		}
+		"Name": "minecraft:water"
 	},
 	"noise": {
 		"min_y": -64,

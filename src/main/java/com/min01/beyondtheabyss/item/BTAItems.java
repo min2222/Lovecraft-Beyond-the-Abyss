@@ -51,6 +51,7 @@ public class BTAItems
 	public static final RegistryObject<Item> SPINE_WORM_SPAWN_EGG = registerSpawnEgg("spine_worm_spawn_egg", () -> BTAEntities.SPINE_WORM_HEAD.get(), 4068636, 15131359);
 	public static final RegistryObject<Item> GLOOMFISH_SPAWN_EGG = registerSpawnEgg("gloomfish_spawn_egg", () -> BTAEntities.GLOOMFISH.get(), 526088, 12060438);
 	public static final RegistryObject<Item> KORMOS_SPAWN_EGG = registerSpawnEgg("kormos_spawn_egg", () -> BTAEntities.KORMOS_HEAD.get(), 9338740, 4605533);
+	public static final RegistryObject<Item> CORPSE_ANGLER_SPAWN_EGG = registerSpawnEgg("corpse_angler_spawn_egg", () -> BTAEntities.CORPSE_ANGLER.get(), 6239541, 1864119);
 	public static final RegistryObject<Item> FULGASTRA_SPAWN_EGG = registerSpawnEgg("fulgastra_spawn_egg", () -> BTAEntities.FULGASTRA.get(), 4596012, 46834);
 	
 	//materials

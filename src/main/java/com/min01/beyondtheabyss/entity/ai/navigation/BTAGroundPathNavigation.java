@@ -2,10 +2,9 @@ package com.min01.beyondtheabyss.entity.ai.navigation;
 
 import java.util.Objects;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +20,7 @@ public class BTAGroundPathNavigation extends GroundPathNavigation
 {
     protected static final float EPSILON = 1.0E-8F;
     
-    public BTAGroundPathNavigation(AbstractBTAMonster entity, Level world) 
+    public BTAGroundPathNavigation(Mob entity, Level world) 
     {
         super(entity, world);
     }

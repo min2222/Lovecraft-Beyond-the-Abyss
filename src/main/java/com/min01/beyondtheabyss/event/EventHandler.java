@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.event;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
@@ -62,6 +63,7 @@ public class EventHandler
     	event.put(BTAEntities.KORMOS_HEAD.get(), EntityKormosHead.createAttributes().build());
     	event.put(BTAEntities.KORMOS_BODY.get(), EntityKormosHead.createAttributes().build());
     	event.put(BTAEntities.KORMOS_TAIL.get(), EntityKormosHead.createAttributes().build());
+    	event.put(BTAEntities.CORPSE_ANGLER.get(), EntityCorpseAngler.createAttributes().build());
     	event.put(BTAEntities.FULGASTRA.get(), EntityFulgastra.createAttributes().build());
     }
     
