@@ -30,6 +30,7 @@ import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelKormosBody;
 import com.min01.beyondtheabyss.entity.model.ModelKormosHead;
 import com.min01.beyondtheabyss.entity.model.ModelKormosTail;
+import com.min01.beyondtheabyss.entity.model.ModelOverseer;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentHead;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
@@ -48,6 +49,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.KormosBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.KormosHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.KormosTailRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.OverseerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
@@ -158,6 +160,8 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.KORMOS_TAIL.get(), KormosTailRenderer::new);
     	event.registerEntityRenderer(BTAEntities.CORPSE_ANGLER.get(), CorpseAnglerRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FULGASTRA.get(), FulgastraRenderer::new);
+
+    	event.registerEntityRenderer(BTAEntities.OVERSEER.get(), OverseerRenderer::new);
     }
     
     @SubscribeEvent
@@ -179,6 +183,8 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelKormosTail.LAYER_LOCATION, ModelKormosTail::createBodyLayer);
     	event.registerLayerDefinition(ModelCorpseAngler.LAYER_LOCATION, ModelCorpseAngler::createBodyLayer);
     	event.registerLayerDefinition(ModelFulgastra.LAYER_LOCATION, ModelFulgastra::createBodyLayer);
+    	
+    	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
 
     	//armors
     	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);

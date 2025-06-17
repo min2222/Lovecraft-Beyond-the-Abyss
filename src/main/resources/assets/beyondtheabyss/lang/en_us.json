@@ -1,5 +1,6 @@
 {
 	"itemGroup.deep_abyss": "Deep Abyss",
+	"itemGroup.mirrored_city": "Mirrored City",
 	"biome.beyondtheabyss.death_valley": "Death Valley",
 	"biome.beyondtheabyss.spire_hollow": "Spire Hollow",
 	"biome.beyondtheabyss.mirrored_city": "Mirrored City",
@@ -25,6 +26,7 @@
 	"entity.beyondtheabyss.fulgastra": "Fulgastra",
 	"entity.beyondtheabyss.splitted_fulgastra": "Splitted Fulgastra",
 	"entity.beyondtheabyss.chain_trap_maw": "Chain Trap Maw",
+	"entity.beyondtheabyss.overseer": "Overseer",
 	"item.beyondtheabyss.ghidruth_spawn_egg": "Ghidruth, the Stone Shark Spawn Egg",
 	"item.beyondtheabyss.forneus_spawn_egg": "Forneus, the King of Deep Abyss Spawn Egg",
 	"item.beyondtheabyss.gnasher_spawn_egg": "Gnasher Spawn Egg",
@@ -34,6 +36,7 @@
 	"item.beyondtheabyss.kormos_spawn_egg": "Kormos, the Blind Leviathan Spawn Egg",
 	"item.beyondtheabyss.fulgastra_spawn_egg": "Fulgastra Spawn Egg",
 	"item.beyondtheabyss.corpse_angler_spawn_egg": "Corpse Angler Spawn Egg",
+	"item.beyondtheabyss.overseer_spawn_egg": "Overseer Spawn Egg",
 	"item.beyondtheabyss.ghidruth_scale": "Scale of Ghidruth",
 	"item.beyondtheabyss.gnasher_eye": "Gnasher Eye",
 	"item.beyondtheabyss.gnasher_tooth": "Gnasher Tooth",

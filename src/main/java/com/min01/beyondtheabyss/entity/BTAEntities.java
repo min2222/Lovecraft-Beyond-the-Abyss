@@ -16,6 +16,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 
@@ -53,6 +54,8 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityKormosTail>> KORMOS_TAIL = registerEntity("kormos_tail", createBuilder(EntityKormosTail::new, MobCategory.WATER_CREATURE).sized(5.0F, 4.125F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
 	public static final RegistryObject<EntityType<EntityCorpseAngler>> CORPSE_ANGLER = registerEntity("corpse_angler", createBuilder(EntityCorpseAngler::new, MobCategory.WATER_CREATURE).sized(3.0F, 4.75F));
 	public static final RegistryObject<EntityType<EntityFulgastra>> FULGASTRA = registerEntity("fulgastra", createBuilder(EntityFulgastra::new, MobCategory.WATER_CREATURE).sized(4.875F, 1.5625F));
+	
+	public static final RegistryObject<EntityType<EntityOverseer>> OVERSEER = registerEntity("overseer", createBuilder(EntityOverseer::new, MobCategory.MONSTER).sized(4.0F, 1.75F));
 	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{

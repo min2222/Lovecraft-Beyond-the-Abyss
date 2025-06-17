@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import java.util.List;
+
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -14,6 +16,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,6 +25,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -40,6 +44,8 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	public final Worm worm4 = new Worm();
 	public final Worm worm5 = new Worm();
 	public final Worm worm6 = new Worm();
+	
+	public static final List<String> LIST = List.of("Up", "Tails", "Body2", "TailEdge", "Jaw2", "Left", "Right");
 	
 	public EntityCorpseAngler(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -240,6 +246,22 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		{
 			super.doPush(p_21294_);
 		}
+	}
+	
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	{
+		if(p_21016_.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
+		{
+	        String part = BTAUtil.getMultiPart(this.getBounds(), player);
+	        System.out.println(part);
+	        if(part != null && LIST.contains(part))
+	        {
+				this.setAnimationState(4);
+				this.setAnimationTick(20);
+	        }
+		}
+		return super.hurt(p_21016_, p_21017_);
 	}
     
 	@Override

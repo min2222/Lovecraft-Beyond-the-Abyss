@@ -14,6 +14,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.world.entity.SpawnPlacements;
@@ -52,6 +53,7 @@ public class EventHandler
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) 
     {
+    	//deep abyss
     	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
     	event.put(BTAEntities.SUBMARINE.get(), EntitySubmarine.createLivingAttributes().build());
     	event.put(BTAEntities.GNASHER.get(), EntityGnasher.createAttributes().build());
@@ -65,6 +67,9 @@ public class EventHandler
     	event.put(BTAEntities.KORMOS_TAIL.get(), EntityKormosHead.createAttributes().build());
     	event.put(BTAEntities.CORPSE_ANGLER.get(), EntityCorpseAngler.createAttributes().build());
     	event.put(BTAEntities.FULGASTRA.get(), EntityFulgastra.createAttributes().build());
+    	
+    	//mirrored city
+    	event.put(BTAEntities.OVERSEER.get(), EntityOverseer.createAttributes().build());
     }
     
     @SubscribeEvent

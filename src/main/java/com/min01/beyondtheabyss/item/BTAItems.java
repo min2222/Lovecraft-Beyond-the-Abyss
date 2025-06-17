@@ -54,6 +54,8 @@ public class BTAItems
 	public static final RegistryObject<Item> CORPSE_ANGLER_SPAWN_EGG = registerSpawnEgg("corpse_angler_spawn_egg", () -> BTAEntities.CORPSE_ANGLER.get(), 6239541, 1864119);
 	public static final RegistryObject<Item> FULGASTRA_SPAWN_EGG = registerSpawnEgg("fulgastra_spawn_egg", () -> BTAEntities.FULGASTRA.get(), 4596012, 46834);
 	
+	public static final RegistryObject<Item> OVERSEER_SPAWN_EGG = registerSpawnEgg("overseer_spawn_egg", () -> BTAEntities.OVERSEER.get(), 3752532, 7174016);
+	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> GNASHER_EYE = ITEMS.register("gnasher_eye", () -> new Item(new Item.Properties()));

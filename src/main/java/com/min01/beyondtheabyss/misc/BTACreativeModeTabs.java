@@ -12,7 +12,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -25,12 +24,16 @@ public class BTACreativeModeTabs
     		.icon(() -> new ItemStack(BTAItems.HEART_OF_FORNEUS.get()))
     		.displayItems((enabledFeatures, output) -> 
     		{
+				output.accept(BTAItems.GHIDRUTH_SPAWN_EGG.get());
+				output.accept(BTAItems.GNASHER_SPAWN_EGG.get());
+				output.accept(BTAItems.SIAMSERPENT_SPAWN_EGG.get());
+				output.accept(BTAItems.SPINE_WORM_SPAWN_EGG.get());
+				output.accept(BTAItems.GLOOMFISH_SPAWN_EGG.get());
+				output.accept(BTAItems.KORMOS_SPAWN_EGG.get());
+				output.accept(BTAItems.CORPSE_ANGLER_SPAWN_EGG.get());
+				output.accept(BTAItems.FULGASTRA_SPAWN_EGG.get());
     			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
     			{
-    				if(item.get() instanceof ForgeSpawnEggItem)
-    				{
-    					output.accept(item.get());
-    				}
     				if(item.get() instanceof BasicBTAFoodItem)
     				{
     					output.accept(item.get());
@@ -65,5 +68,14 @@ public class BTACreativeModeTabs
     					output.accept(item.get());
     				}
     			}
+    		}).build());
+    
+    
+    public static final RegistryObject<CreativeModeTab> MIRRORED_CITY = CREATIVE_MODE_TAB.register("mirrored_city", () -> CreativeModeTab.builder()
+    		.title(Component.translatable("itemGroup.mirrored_city"))
+    		.icon(() -> new ItemStack(BTAItems.OVERSEER_SPAWN_EGG.get()))
+    		.displayItems((enabledFeatures, output) -> 
+    		{
+				output.accept(BTAItems.OVERSEER_SPAWN_EGG.get());
     		}).build());
 }
