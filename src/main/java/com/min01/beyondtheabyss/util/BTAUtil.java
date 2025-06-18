@@ -52,7 +52,8 @@ public class BTAUtil
     	}
     	return new AnimationState();
     }
-    
+
+    //must be called on server side only
     public static void startItemAnimation(ItemStack stack, String name)
     {
     	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
@@ -62,6 +63,7 @@ public class BTAUtil
     	}
     }
     
+    //must be called on server side only
     public static void stopItemAnimation(ItemStack stack, String name)
     {
     	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())

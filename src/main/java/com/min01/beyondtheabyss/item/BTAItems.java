@@ -17,6 +17,7 @@ import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.weapon.HarpoonItem;
 import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -145,6 +146,7 @@ public class BTAItems
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));
 	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(1200).rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> SKELETAL_GUNBLADE = ITEMS.register("skeletal_gunblade", () -> new SkeletalGunbladeItem(new Item.Properties().durability(1500).rarity(RARITY_DEEP_ABYSS)));
+	public static final RegistryObject<Item> TOOTH_SHOTGUN = ITEMS.register("tooth_shotgun", () -> new ToothShotgunItem(new Item.Properties().durability(1100).rarity(RARITY_DEEP_ABYSS)));
 
 	//tools
 	public static final RegistryObject<Item> FLASHLIGHT = ITEMS.register("flashlight", () -> new FlashlightItem());

@@ -2,7 +2,9 @@ package com.min01.beyondtheabyss.item.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
+import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
 import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -23,11 +25,14 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 {
 	public static final ResourceLocation GUNBLADE_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/skeletal_gunblade.png");
 	public static final ResourceLocation GUNBLADE_LAYER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/skeletal_gunblade_layer.png");
+	public static final ResourceLocation SHOTGUN_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/tooth_shotgun.png");
 	public final ModelSkeletalGunblade modelGunblade;
+	public final ModelToothShotgun modelShotgun;
 	public BTAItemRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet) 
 	{
 		super(dispatcher, modelSet);
 		this.modelGunblade = new ModelSkeletalGunblade(modelSet.bakeLayer(ModelSkeletalGunblade.LAYER_LOCATION));
+		this.modelShotgun = new ModelToothShotgun(modelSet.bakeLayer(ModelToothShotgun.LAYER_LOCATION));
 	}
 	
 	@Override
@@ -44,6 +49,24 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 			this.modelGunblade.setupAnim(p_108830_, 0, 0, BTAUtil.getTickCount(p_108830_) + BTAClientUtil.MC.getFrameTime(), 0, 0);
 	        this.modelGunblade.renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
 	        this.modelGunblade.renderToBuffer(p_108832_, eyeConsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
+	        p_108832_.popPose();
+		}
+ 		if(p_108830_.getItem() instanceof ToothShotgunItem)
+		{
+	        p_108832_.pushPose();
+	        if(p_108831_ == ItemDisplayContext.GUI)
+	        {
+		        p_108832_.translate(1.0F, 0.5F, 0.0F);
+	        }
+	        else
+	        {
+		        p_108832_.translate(0.5F, 1.0F, -0.1F);
+	        }
+	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
+	        p_108832_.translate(0.0F, -1.0F, 0.0F);
+	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(SHOTGUN_TEXTURE), false, p_108830_.hasFoil());
+			this.modelShotgun.setupAnim(p_108830_, 0, 0, BTAUtil.getTickCount(p_108830_) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+	        this.modelShotgun.renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
 	        p_108832_.popPose();
 		}
 	}

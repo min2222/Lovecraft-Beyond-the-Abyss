@@ -45,16 +45,22 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 		{
 			if(isGunMode)
 			{
-				BTAUtil.stopItemAnimation(stack, GUNBLADE_OPEN);
-				BTAUtil.startItemAnimation(stack, GUNBLADE_CLOSE);
+				if(!p_41432_.isClientSide)
+				{
+					BTAUtil.stopItemAnimation(stack, GUNBLADE_OPEN);
+					BTAUtil.startItemAnimation(stack, GUNBLADE_CLOSE);
+				}
 				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_CLOSE);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 			}
 			else
 			{
-				BTAUtil.stopItemAnimation(stack, GUNBLADE_CLOSE);
-				BTAUtil.startItemAnimation(stack, GUNBLADE_OPEN);
+				if(!p_41432_.isClientSide)
+				{
+					BTAUtil.stopItemAnimation(stack, GUNBLADE_CLOSE);
+					BTAUtil.startItemAnimation(stack, GUNBLADE_OPEN);
+				}
 				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_OPEN);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);

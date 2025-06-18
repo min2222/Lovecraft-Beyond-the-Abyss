@@ -64,6 +64,7 @@ import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
+import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.world.effects.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.effects.MirroredCityDimensionSpecialEffects;
@@ -210,5 +211,6 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelFlashlight.LAYER_LOCATION, ModelFlashlight::createBodyLayer);
     	event.registerLayerDefinition(ModelSkeletalGunblade.LAYER_LOCATION, ModelSkeletalGunblade::createBodyLayer);
+    	event.registerLayerDefinition(ModelToothShotgun.LAYER_LOCATION, ModelToothShotgun::createBodyLayer);
     }
 }

@@ -56,6 +56,7 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.RUSTY_HARPOON.get());
 				output.accept(BTAItems.GHIDRUTH_SCALE_HARPOON.get());
 				output.accept(BTAItems.SKELETAL_GUNBLADE.get());
+				output.accept(BTAItems.TOOTH_SHOTGUN.get());
 				output.accept(BTAItems.FLASHLIGHT.get());
     			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
     			{
