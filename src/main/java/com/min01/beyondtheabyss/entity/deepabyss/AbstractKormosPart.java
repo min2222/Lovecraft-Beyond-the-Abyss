@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.entity.AbstractWormPart;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 
 import net.minecraft.world.entity.Entity;

@@ -1,10 +1,11 @@
-package com.min01.beyondtheabyss.entity.deepabyss;
+package com.min01.beyondtheabyss.entity;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.min01.beyondtheabyss.entity.deepabyss.AbstractOwnableDeepAbyssMonster;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.util.BTAUtil;
