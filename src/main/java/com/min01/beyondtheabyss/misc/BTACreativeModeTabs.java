@@ -41,6 +41,7 @@ public class BTACreativeModeTabs
     			}
 				output.accept(BTAItems.GUIDING_CLAM.get());
 				output.accept(BTAItems.HEART_OF_FORNEUS.get());
+				output.accept(BTAItems.FLYING_FISH.get());
 				output.accept(BTAItems.GHIDRUTH_SCALE.get());
 				output.accept(BTAItems.GNASHER_EYE.get());
 				output.accept(BTAItems.GNASHER_TOOTH.get());

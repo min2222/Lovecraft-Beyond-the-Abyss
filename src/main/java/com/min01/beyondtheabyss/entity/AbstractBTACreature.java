@@ -38,7 +38,6 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 		super(p_21683_, p_21684_);
 		this.partBuilder = this.createBuilder();
 	}
-
 	
 	@Override
 	protected void registerGoals() 

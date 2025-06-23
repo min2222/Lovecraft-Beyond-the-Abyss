@@ -2,11 +2,9 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.IPosArray;
-import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
-import com.min01.beyondtheabyss.multipart.EntityBounds;
+import com.min01.beyondtheabyss.entity.AbstractBTACreature;
+import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -19,18 +17,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
-public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArray
+public class EntitySubmarine extends AbstractBTACreature
 {
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
 	
@@ -41,15 +35,17 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     public float brightnessOld;
     public int glowingTicks;
     
-    public Vec3[] posArray = new Vec3[5];
-    
-	public final EntityPartBuilder<EntitySubmarine> partBuilder;
-    
-	public EntitySubmarine(EntityType<? extends LivingEntity> p_19870_, Level p_19871_)
+	public EntitySubmarine(EntityType<? extends AbstractBTACreature> p_19870_, Level p_19871_)
 	{
 		super(p_19870_, p_19871_);
-		this.partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
 		this.noCulling = true;
+		this.setNoAi(true);
+	}
+	
+	@Override
+	public BTAMobType getBTAMobType() 
+	{
+		return BTAMobType.MISC;
 	}
 	
 	@Override
@@ -59,20 +55,59 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 		this.entityData.define(HATCH_OPENED, false);
 	}
 	
+	@Override
+	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
+	{
+		EntityPartBuilder<EntitySubmarine> partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
+		return partBuilder;
+	}
+	
     @Override
     public void tick() 
     {
     	super.tick();
+    	this.deathTime = 0;
         if(this.level.isClientSide) 
         {
             ++this.glowingTicks;
             this.brightness += (0.0F - this.brightness) * 0.8F;
         }
-		if(this.partBuilder != null)
-		{
-			this.partBuilder.tick(1.0F);
-		}
     }
+    
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
+	{
+        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
+        {
+            switch(this.getAnimationState()) 
+            {
+        		case 0: 
+        		{
+        			this.stopAllAnimationStates();
+        			break;
+        		}
+        		case 1:
+        		{
+        			this.stopAllAnimationStates();
+        			this.openHatchAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 2:
+        		{
+        			this.stopAllAnimationStates();
+        			this.closeHatchAnimationState.start(this.tickCount);
+        			break;
+        		}
+            }
+        }
+	}
+	
+	@Override
+	public void stopAllAnimationStates() 
+	{
+		this.openHatchAnimationState.stop();
+		this.closeHatchAnimationState.stop();
+	}
     
     @Override
     public void travel(Vec3 vec3) 
@@ -87,10 +122,10 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
                 {
                 	if(!this.level.isClientSide)
                 	{
-                    	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 5));
-                    	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 5));
-                    	this.setYHeadRot(this.getYRot());
-                    	this.setYBodyRot(this.getYRot());
+                    	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 15));
+                    	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 15));
+                    	this.setYHeadRot(BTAUtil.rotlerp(this.getYHeadRot(), player.getYHeadRot(), 15));
+                    	this.setYBodyRot(BTAUtil.rotlerp(this.yBodyRot, player.yBodyRot, 15));
                 	}
                 	Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), Vec3.ZERO, 0.0F, 0.0F, 2.5F);
                 	motion = motion.add(lookPos);
@@ -117,28 +152,10 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     }
 	
 	@Override
-	public void positionRider(Entity p_20312_, MoveFunction fuction) 
+	public void positionRider(Entity entity, MoveFunction fuction) 
 	{
-        if(!this.touchingUnloadedChunk()) 
-        {
-	    	if(this.posArray[0] != null)
-	    	{
-	    		Vec3 pos = this.posArray[0].subtract(0, 0.25F, 0);
-	    		fuction.accept(p_20312_, pos.x, pos.y, pos.z);
-	    	}
-        }
-	}
-	
-	@Override
-	public Vec3[] getPosArray() 
-	{
-		return this.posArray;
-	}
-	
-	@Override
-	public EntityPartBuilder<?> getPartBuilder() 
-	{
-		return this.partBuilder;
+    	Vec3 pos = BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 1.75F, 2.0F);
+		fuction.accept(entity, pos.x, pos.y, pos.z);
 	}
 	
 	@Override
@@ -148,19 +165,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
 	}
     
     @Override
-    protected Entity.MovementEmission getMovementEmission() 
-    {
-    	return MovementEmission.EVENTS;
-    }
-    
-    @Override
-    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider)
-    {
-        return type.supportsBoating(null);
-    }
-    
-    @Override
-    public void push(double p_20286_, double p_20287_, double p_20288_) 
+    public void push(double x, double y, double z) 
     {
     	
     }
@@ -196,6 +201,15 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     }
     
     @Override
+    protected void tickDeath() 
+    {
+        if(!this.level.isClientSide && !this.isRemoved())
+        {
+        	this.remove(Entity.RemovalReason.KILLED);
+        }
+    }
+    
+    @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity p_20123_) 
     {
     	return new Vec3(this.getX(), this.getBoundingBox().minY + 2.0F, this.getZ());
@@ -210,37 +224,15 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     	}
     	return super.hurt(p_21016_, p_21017_);
     }
-    
-    @Override
-    protected void tickDeath()
-    {
-    	if(!this.level.isClientSide) 
-        {
-        	this.level.broadcastEntityEvent(this, (byte)60);
-            this.remove(Entity.RemovalReason.KILLED);
-        }
-    }
 	
 	@Override
 	public List<String> getCollidePart()
 	{
 		return List.of("bottom", "r_wall", "l_wall", "back", "hatch", "top", "front");
 	}
-
-	@Override
-	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
-	{
-		return this.partBuilder.hitbox.getBox(bounds);
-	}
-
-	@Override
-	public EntityBounds getBounds() 
-	{
-		return this.partBuilder.hitbox;
-	}
 	
 	@Override
-	public InteractionResult interact(Player player, InteractionHand hand) 
+	public InteractionResult mobInteract(Player player, InteractionHand hand) 
 	{
         String part = BTAUtil.getMultiPart(this.getBounds(), player);
         if(part != null)
@@ -249,49 +241,19 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
         	{
     			player.startRiding(this);
         	}
-        	//TODO proper animation tick so only close/open when animation is finished;
         	if(part.equals("hatch") || part.equals("valve"))
         	{
-    			if(!this.hatchOpened() && !this.openHatchAnimationState.isStarted())
+    			if(this.getAnimationTick() <= 0)
     			{
-        			this.closeHatchAnimationState.stop();
-        			this.openHatchAnimationState.start(this.tickCount);
-        			this.setHatchOpened(true);
+    				int state = this.getAnimationState() == 1 ? 2 : 1;
+    				this.setAnimationState(state);
+        			this.setHatchOpened(!this.hatchOpened());
+        			this.setAnimationTick(30);
     			}
-        		else if(this.openHatchAnimationState.isStarted())
-        		{
-    				this.openHatchAnimationState.stop();
-    				this.closeHatchAnimationState.start(this.tickCount);
-        			this.setHatchOpened(false);
-        		}
         	}
 			return InteractionResult.SUCCESS;
         }
-		return super.interact(player, hand);
-	}
-
-	@Override
-	public Iterable<ItemStack> getArmorSlots()
-	{
-		return List.of();
-	}
-
-	@Override
-	public ItemStack getItemBySlot(EquipmentSlot p_21127_) 
-	{
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public void setItemSlot(EquipmentSlot p_21036_, ItemStack p_21037_)
-	{
-		
-	}
-
-	@Override
-	public HumanoidArm getMainArm()
-	{
-		return HumanoidArm.RIGHT;
+		return super.mobInteract(player, hand);
 	}
 
 	public void setHatchOpened(boolean value)

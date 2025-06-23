@@ -55,7 +55,7 @@ public class EventHandler
     {
     	//deep abyss
     	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
-    	event.put(BTAEntities.SUBMARINE.get(), EntitySubmarine.createLivingAttributes().build());
+    	event.put(BTAEntities.SUBMARINE.get(), EntitySubmarine.createMobAttributes().build());
     	event.put(BTAEntities.GNASHER.get(), EntityGnasher.createAttributes().build());
     	event.put(BTAEntities.SIAMSERPENT_HEAD.get(), EntitySiamserpentHead.createAttributes().build());
     	event.put(BTAEntities.SIAMSERPENT_BONE.get(), EntitySiamserpentBone.createAttributes().build());

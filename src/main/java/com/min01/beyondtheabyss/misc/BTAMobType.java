@@ -5,7 +5,8 @@ public enum BTAMobType
 	BOSS(true, false, true, true, true),
 	HOSTILE(true, true, true, true, true),
 	NETURAL(false, true, true, true, false),
-	PASSIVE(false, true, false, false, false);
+	PASSIVE(false, true, false, false, false),
+	MISC(false, false, false, false, false);
 	
 	public boolean despawnInPeaceful;
 	public boolean removeWhenFarAway;

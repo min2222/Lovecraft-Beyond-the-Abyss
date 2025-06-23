@@ -90,6 +90,7 @@ public class BTAItems
 	//misc
 	public static final RegistryObject<Item> GUIDING_CLAM = ITEMS.register("guiding_clam", () -> new GuidingClamItem());
 	public static final RegistryObject<Item> HEART_OF_FORNEUS = ITEMS.register("heart_of_forneus", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
+	public static final RegistryObject<Item> FLYING_FISH = ITEMS.register("flying_fish", () -> new FlyingFishItem());
 	
 	//foods
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.5F).build(), true));

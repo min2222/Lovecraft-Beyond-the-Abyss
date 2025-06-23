@@ -7,11 +7,13 @@ import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
@@ -57,17 +59,21 @@ public class ClientEventHandlerForge
             	}
             	else
             	{
-            	    //FIXME
-        	    	if(submarine.posArray[0] != null)
-        	    	{
-                		event.getCamera().setPosition(submarine.posArray[0].add(0.0F, 1.5F, 0.0F).subtract(0, 0.25F, 0));
-        	    	}
+            		double partialTick = event.getPartialTick();
+            		float partialTicks = BTAClientUtil.MC.getFrameTime();
+            		double x = Mth.lerp(partialTick, submarine.xo, submarine.getX());
+            		double y = Mth.lerp(partialTick, submarine.yo, submarine.getY());
+            		double z = Mth.lerp(partialTick, submarine.zo, submarine.getZ());
+            		float yRot = Mth.rotLerp(partialTicks, submarine.yRotO, submarine.getYRot());
+                    float xRot = Mth.lerp(partialTicks, submarine.xRotO, submarine.getXRot());
+            		Vec3 pos = new Vec3(x, y, z);
+            		Vec3 lookPos = BTAUtil.getLookPos(new Vec2(xRot, yRot), pos, 0.0F, 1.75F + 1.5F, 2.0F);
+            		event.getCamera().setPosition(lookPos);
             	}
             }
         }
     }
     
-    //FIXME
     @SubscribeEvent
 	public static void onRenderPlayerPre(RenderPlayerEvent.Pre event)
 	{
@@ -76,12 +82,9 @@ public class ClientEventHandlerForge
         {
         	float partialTicks = event.getPartialTick();
         	PoseStack stack = event.getPoseStack();
-    		float yBodyRot = Mth.rotLerp(partialTicks, submarine.yBodyRotO, submarine.yBodyRot);
-    		float yHeadRot = Mth.rotLerp(partialTicks, submarine.yHeadRotO, submarine.yHeadRot);
-    		float yRot = yHeadRot - yBodyRot;
+    		float yRot = Mth.rotLerp(partialTicks, submarine.yRotO, submarine.getYRot());
             float xRot = Mth.lerp(partialTicks, submarine.xRotO, submarine.getXRot());
-            stack.mulPose(Axis.YP.rotationDegrees(180.0F - yBodyRot));
-            stack.mulPose(new Quaternionf().rotationZYX(0.0F, (float) Math.toRadians(yRot), (float) -Math.toRadians(xRot)));
+            stack.mulPose(new Quaternionf().rotationZYX(0.0F, (float) Math.toRadians(yRot), (float) Math.toRadians(xRot)));
         }
 	}
 }

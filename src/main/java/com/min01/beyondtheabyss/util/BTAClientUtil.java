@@ -5,7 +5,6 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector4f;
 
-import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -116,10 +115,6 @@ public class BTAClientUtil
 		if(renderer instanceof LivingEntityRenderer livingRenderer)
 		{
 			return (HierarchicalModel<T>) livingRenderer.getModel();
-		}
-		if(renderer instanceof SubmarineRenderer submarine)
-		{
- 			return (HierarchicalModel<T>) submarine.model;
 		}
 		return null;
 	}

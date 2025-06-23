@@ -23,7 +23,6 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -56,7 +55,6 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	@Override
 	public abstract void scheduleChunkRebuild(int x, int y, int z, boolean important);
 
-    //FIXME
 	@Inject(at = @At(value = "HEAD"), method = "renderLevel")
 	private void renderLevelHead(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
 	{
@@ -67,12 +65,9 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
         {
             if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine submarine && !BTAClientUtil.MC.gameRenderer.getMainCamera().isDetached())
             {
-        		float yBodyRot = Mth.rotLerp(frameTime, submarine.yBodyRotO, submarine.yBodyRot);
-        		float yHeadRot = Mth.rotLerp(frameTime, submarine.yHeadRotO, submarine.yHeadRot);
-        		float yRot = yHeadRot - yBodyRot;
+        		float yRot = Mth.rotLerp(frameTime, submarine.yRotO, submarine.getYRot());
                 float xRot = Mth.lerp(frameTime, submarine.xRotO, submarine.getXRot());
-                mtx.mulPose(Axis.YP.rotationDegrees(180.0F - yBodyRot));
-                mtx.mulPose(new Quaternionf().rotationZYX(0.0F, (float) Math.toRadians(yRot), (float) -Math.toRadians(xRot)));
+                mtx.mulPose(new Quaternionf().rotationZYX(0.0F, (float) Math.toRadians(yRot), (float) Math.toRadians(xRot)));
             }
         }
 	}
