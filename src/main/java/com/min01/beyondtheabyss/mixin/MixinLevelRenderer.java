@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.mixin;
 import javax.annotation.Nullable;
 
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.lights.DynamicLights;
 import com.min01.beyondtheabyss.lights.LevelRendererAccessor;
 import com.min01.beyondtheabyss.shader.BTAShaders;
@@ -21,6 +23,7 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -34,6 +37,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,8 +56,29 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	@Override
 	public abstract void scheduleChunkRebuild(int x, int y, int z, boolean important);
 
+    //FIXME
+	@Inject(at = @At(value = "HEAD"), method = "renderLevel")
+	private void renderLevelHead(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
+	{
+		BTAClientUtil.MC.getProfiler().incrementCounter("dynamic_lighting");
+	    DynamicLights.get().updateAll(LevelRenderer.class.cast(this));
+        Player player = BTAClientUtil.MC.player;
+        if(player != null)
+        {
+            if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine submarine && !BTAClientUtil.MC.gameRenderer.getMainCamera().isDetached())
+            {
+        		float yBodyRot = Mth.rotLerp(frameTime, submarine.yBodyRotO, submarine.yBodyRot);
+        		float yHeadRot = Mth.rotLerp(frameTime, submarine.yHeadRotO, submarine.yHeadRot);
+        		float yRot = yHeadRot - yBodyRot;
+                float xRot = Mth.lerp(frameTime, submarine.xRotO, submarine.getXRot());
+                mtx.mulPose(Axis.YP.rotationDegrees(180.0F - yBodyRot));
+                mtx.mulPose(new Quaternionf().rotationZYX(0.0F, (float) Math.toRadians(yRot), (float) -Math.toRadians(xRot)));
+            }
+        }
+	}
+	
 	@Inject(at = @At(value = "TAIL"), method = "renderLevel")
-	private void renderLevel(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
+	private void renderLevelTail(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
 	{
 		if(this.level != null)
 		{
@@ -76,13 +101,6 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 				mtx.popPose();
 			}
 		}
-	}
-	
-	@Inject(at = @At(value = "HEAD"), method = "renderLevel")
-	private void renderLevelHead(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
-	{
-		BTAClientUtil.MC.getProfiler().incrementCounter("dynamic_lighting");
-	    DynamicLights.get().updateAll(LevelRenderer.class.cast(this));
 	}
 	
 	@Inject(at = @At("TAIL"), method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", cancellable = true)

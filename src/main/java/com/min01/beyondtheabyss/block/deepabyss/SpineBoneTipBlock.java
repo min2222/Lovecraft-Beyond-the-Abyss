@@ -33,7 +33,7 @@ public class SpineBoneTipBlock extends Block implements SimpleWaterloggedBlock
 	public SpineBoneTipBlock() 
 	{
 		super(BlockBehaviour.Properties.of().mapColor(MapColor.SAND).strength(0.5F).dynamicShape().noOcclusion().requiresCorrectToolForDrops().sound(SoundType.BONE_BLOCK));
-		this.stateDefinition.any().setValue(FACING, Direction.DOWN);
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN));
 	}
 	
 	@Override

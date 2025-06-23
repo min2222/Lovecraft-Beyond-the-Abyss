@@ -37,7 +37,7 @@ public class ChainTrapMawRenderer extends EntityRenderer<EntityChainTrapMaw>
 			p_114488_.scale(-1.0F, -1.0F, 1.0F);
 			p_114488_.mulPose(Axis.YP.rotationDegrees(p_114485_.chain.getTipSegment().getRot(p_114487_).y));
 			p_114488_.mulPose(Axis.XP.rotationDegrees(-p_114485_.chain.getTipSegment().getRot(p_114487_).x - 90.0F));
-			p_114488_.translate(0, -1.5F, 0);
+			p_114488_.translate(0.0F, -1.5F, 0.0F);
 			this.model.setupAnim(p_114485_, 0, 0, 0, 0, 0);
 			this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			p_114488_.popPose();

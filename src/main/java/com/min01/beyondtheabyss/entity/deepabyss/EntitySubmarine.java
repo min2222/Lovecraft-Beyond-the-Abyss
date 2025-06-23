@@ -68,7 +68,6 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
             ++this.glowingTicks;
             this.brightness += (0.0F - this.brightness) * 0.8F;
         }
-        
 		if(this.partBuilder != null)
 		{
 			this.partBuilder.tick(1.0F);
@@ -84,7 +83,7 @@ public class EntitySubmarine extends LivingEntity implements IMultipart, IPosArr
     		{
             	Vec3 motion = vec3;
             	boolean jumping = ObfuscationReflectionHelper.getPrivateValue(LivingEntity.class, player, "f_20899_");
-                if(player.zza != 0 || player.xxa != 0)
+                if(player.xxa != 0 || player.zza != 0)
                 {
                 	if(!this.level.isClientSide)
                 	{

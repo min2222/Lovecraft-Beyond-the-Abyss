@@ -298,7 +298,7 @@ public abstract class MixinEntity implements IDynamicLight
 		}
     }
 
-    @Inject(method = "isInWater", at = @At("TAIL"), cancellable = true)
+    @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)
     private void isInWater(CallbackInfoReturnable<Boolean> cir)
     {
     	if(Entity.class.cast(this) instanceof LivingEntity living)

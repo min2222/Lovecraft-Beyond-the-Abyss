@@ -10,6 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -42,7 +43,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0, -1.5F, 0);
 		VertexConsumer consumer = p_114489_.getBuffer(RenderType.entityTranslucent(TEXTURE));
-		this.model.setupAnim(p_114485_, 0, 0, p_114485_.tickCount + BTAClientUtil.MC.getFrameTime(), f2, f6);
+		this.model.setupAnim(p_114485_, 0, 0, p_114485_.tickCount + p_114487_, f2, f6);
 		this.model.renderToBuffer(p_114488_, consumer, p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		Vec3 rotation = new Vec3(0.0F, p_114485_.yBodyRot, 0.0F);
 		Vec3 seat4Pos = BTAClientUtil.getWorldPosition(p_114485_, this.model.root(), rotation, new String[] {"submarine", "seat4"});
@@ -70,7 +71,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine>
 	        
 			VertexConsumer eyeConsumer = p_114489_.getBuffer(RenderType.eyes(LAYER_TEXTURE));
 			this.model.setupAnim(p_114485_, 0, 0, 0, f2, f6);
-			this.model.renderToBuffer(p_114488_, eyeConsumer, p_114490_, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
+			this.model.renderToBuffer(p_114488_, eyeConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, strength, strength, strength, 1.0F);
 		}
 		p_114488_.popPose();
 	}

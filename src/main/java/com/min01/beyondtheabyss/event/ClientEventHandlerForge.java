@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.event;
 
+import org.joml.Quaternionf;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
@@ -47,15 +49,27 @@ public class ClientEventHandlerForge
                 event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
         	}
         	
-            if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine && event.getCamera().isDetached())
+            if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine submarine)
             {
-                event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
+            	if(event.getCamera().isDetached())
+            	{
+            		event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
+            	}
+            	else
+            	{
+            	    //FIXME
+        	    	if(submarine.posArray[0] != null)
+        	    	{
+                		event.getCamera().setPosition(submarine.posArray[0].add(0.0F, 1.5F, 0.0F).subtract(0, 0.25F, 0));
+        	    	}
+            	}
             }
         }
     }
     
-	@SubscribeEvent
-	public static void onRenderPlayer(RenderPlayerEvent.Pre event)
+    //FIXME
+    @SubscribeEvent
+	public static void onRenderPlayerPre(RenderPlayerEvent.Pre event)
 	{
 		Player player = event.getEntity();
         if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine submarine)
@@ -65,9 +79,9 @@ public class ClientEventHandlerForge
     		float yBodyRot = Mth.rotLerp(partialTicks, submarine.yBodyRotO, submarine.yBodyRot);
     		float yHeadRot = Mth.rotLerp(partialTicks, submarine.yHeadRotO, submarine.yHeadRot);
     		float yRot = yHeadRot - yBodyRot;
-            //float xRot = Mth.lerp(partialTicks, submarine.xRotO, submarine.getXRot());
-            stack.mulPose(Axis.YP.rotationDegrees(yRot));
-            //stack.mulPose(Axis.XP.rotationDegrees(xRot));
+            float xRot = Mth.lerp(partialTicks, submarine.xRotO, submarine.getXRot());
+            stack.mulPose(Axis.YP.rotationDegrees(180.0F - yBodyRot));
+            stack.mulPose(new Quaternionf().rotationZYX(0.0F, (float) Math.toRadians(yRot), (float) -Math.toRadians(xRot)));
         }
 	}
 }

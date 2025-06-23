@@ -152,14 +152,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public void tick() 
 	{
 		super.tick();
-		if(this.isHead())
-		{
-			if(this.getHealth() <= this.getMaxHealth() / 2)
-			{
-				//TODO swap owner;
-			}
-		}
-		
 		//blaster laser
 		if(this.getAnimationTick() <= 0)
 		{
@@ -371,6 +363,22 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			}
 		}
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+	}
+	
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	{
+		if(this.isHead())
+		{
+			EntitySiamserpentHead head = (EntitySiamserpentHead) this.getHead();
+			if(head != null)
+			{
+				head.setHead(true);
+				this.setHead(false);
+				head.swapOwner = true;
+			}
+		}
+		return super.hurt(p_21016_, p_21017_);
 	}
 
 	public void setBeamLength(float value)

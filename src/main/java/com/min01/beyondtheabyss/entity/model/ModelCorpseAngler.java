@@ -113,7 +113,7 @@ public class ModelCorpseAngler extends HierarchicalModel<EntityCorpseAngler>
         float yBodyRot = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
 		boolean isBurrow = entity.getAnimationState() == 3 && entity.getAnimationTick() <= 0;
 		int tick = 40 - entity.getAnimationTick();
-		float yRot = Mth.lerp(tick / 40.0F, 0.0F, 42.5F);
+		float yRot = entity.getAnimationState() != 0 ? Mth.lerp(tick / 40.0F, 0.0F, 42.5F) : 0.0F;
         ModelPart root = this.root.getChild("corpse_angler");
 		ModelPart angler = root.getChild("angler");
         ModelPart part1 = angler.getChild("1");

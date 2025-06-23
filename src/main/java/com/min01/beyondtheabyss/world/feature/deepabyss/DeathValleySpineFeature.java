@@ -1,13 +1,9 @@
 package com.min01.beyondtheabyss.world.feature.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.block.deepabyss.SpineBoneBaseBlock;
-import com.min01.beyondtheabyss.block.deepabyss.SpineBoneMiddleBlock;
-import com.min01.beyondtheabyss.block.deepabyss.SpineBoneTipBlock;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -56,9 +52,9 @@ public class DeathValleySpineFeature extends Feature<NoneFeatureConfiguration>
 	
 	public void placeSpine(WorldGenLevel level, BlockPos pos, int length)
 	{
-		BlockState tip = BTABlocks.SPINE_BONE_TIP.get().defaultBlockState().setValue(SpineBoneTipBlock.FACING, Direction.DOWN);
-		BlockState middle = BTABlocks.SPINE_BONE_MIDDLE.get().defaultBlockState().setValue(SpineBoneMiddleBlock.FACING, Direction.DOWN);
-		BlockState base = BTABlocks.SPINE_BONE_BASE.get().defaultBlockState().setValue(SpineBoneBaseBlock.FACING, Direction.DOWN);
+		BlockState tip = BTABlocks.SPINE_BONE_TIP.get().defaultBlockState();
+		BlockState middle = BTABlocks.SPINE_BONE_MIDDLE.get().defaultBlockState();
+		BlockState base = BTABlocks.SPINE_BONE_BASE.get().defaultBlockState();
 		if(length == 1)
 		{
 			level.setBlock(pos, tip, 2);
