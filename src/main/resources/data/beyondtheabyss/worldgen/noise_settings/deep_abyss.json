@@ -201,6 +201,37 @@
 			{
 				"type": "minecraft:condition",
 				"if_true": {
+					"type": "minecraft:biome",
+					"biome_is": [
+						"beyondtheabyss:wailing_reef"
+					]
+				},
+				"then_run": {
+					"type": "minecraft:sequence",
+					"sequence": [
+						{
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:y_above",
+								"anchor": {
+									"above_bottom": 40
+								},
+								"surface_depth_multiplier": 0,
+								"add_stone_depth": true
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": {
+									"Name": "minecraft:stone"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"type": "minecraft:condition",
+				"if_true": {
 					"type": "minecraft:vertical_gradient",
 					"random_name": "beyondtheabyss:deep_abyssalith",
 					"true_at_and_below": {

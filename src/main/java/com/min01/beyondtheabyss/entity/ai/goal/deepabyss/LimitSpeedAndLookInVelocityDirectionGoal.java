@@ -57,7 +57,7 @@ public class LimitSpeedAndLookInVelocityDirectionGoal extends Goal
             velocity = velocity.normalize().scale(this.maxSpeed);
         }
         this.mob.setDeltaMovement(velocity);
-        this.mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.mob.position().add(velocity.scale(100)));
+        this.mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.mob.position().add(velocity.scale(10)));
     }
     
     public static List<? extends Mob> getNearbyEntitiesOfSameClass(Mob mob)

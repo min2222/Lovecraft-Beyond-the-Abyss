@@ -32,11 +32,11 @@ public class StayInWaterGoal extends Goal
         float amount = this.amount();
         if(blockBelow.getFluidState().isEmpty()) 
         {
-        	this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(new Vec3(0, amount, 0)));
+        	this.mob.addDeltaMovement(new Vec3(0, amount, 0));
         }
         if(blockAbove.getFluidState().isEmpty())
         {
-        	this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(new Vec3(0, -amount, 0)));
+        	this.mob.addDeltaMovement(new Vec3(0, -amount, 0));
         }
     }
 

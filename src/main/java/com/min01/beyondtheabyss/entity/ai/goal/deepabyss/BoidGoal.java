@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -51,35 +50,14 @@ public class BoidGoal extends Goal
         }
     	if(this.nearbyMobs.isEmpty())
     		return;
-        this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(this.cohesion()));
-        this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(this.alignment()));
-        this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(this.separation()));
+        this.mob.addDeltaMovement(this.cohesion());
+        this.mob.addDeltaMovement(this.alignment());
+        this.mob.addDeltaMovement(this.separation());
     }
 
     public static List<? extends Mob> getNearbyEntitiesOfSameClass(Mob mob)
     {
         return mob.level.getEntitiesOfClass(mob.getClass(), mob.getBoundingBox().inflate(4.0F, 4.0F, 4.0F), t -> t != mob);
-    }
-
-    public Vec3 random() 
-    {
-        Vec3 velocity = this.mob.getDeltaMovement();
-        if(Mth.abs((float) velocity.x) < 0.1 && Mth.abs((float) velocity.z) < 0.1)
-        {
-            return new Vec3(this.randomSign() * 0.2, 0, this.randomSign() * 0.2);
-        }
-        return Vec3.ZERO;
-    }
-
-    public int randomSign() 
-    {
-        boolean isNegative = this.mob.getRandom().nextBoolean();
-
-        if(isNegative) 
-        {
-            return -1;
-        }
-        return 1;
     }
 
     public Vec3 separation() 

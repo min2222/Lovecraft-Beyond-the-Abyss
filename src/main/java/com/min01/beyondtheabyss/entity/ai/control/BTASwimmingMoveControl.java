@@ -54,7 +54,7 @@ public class BTASwimmingMoveControl extends MoveControl
 			else 
 			{
 				float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, (float) mob.maxTurnY()));
+				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, 2.0F));
 				this.mob.yBodyRot = this.mob.getYRot();
 				this.mob.yHeadRot = this.mob.getYRot();
 				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
@@ -66,7 +66,7 @@ public class BTASwimmingMoveControl extends MoveControl
 					{
 						float f2 = -((float) (Mth.atan2(d1, d4) * (double) (180.0F / (float) Math.PI)));
 						f2 = Mth.clamp(Mth.wrapDegrees(f2), (float) (-mob.maxTurnX()), (float) mob.maxTurnX());
-						this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f2, 5.0F));
+						this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f2, 2.0F));
 					}
 					float f4 = Mth.cos(this.mob.getXRot() * ((float) Math.PI / 180.0F));
 					float f3 = Mth.sin(this.mob.getXRot() * ((float) Math.PI / 180.0F));
