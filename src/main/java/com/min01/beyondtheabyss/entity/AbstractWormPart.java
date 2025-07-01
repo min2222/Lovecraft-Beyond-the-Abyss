@@ -28,6 +28,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 {
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Boolean> UNLOADED = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.BOOLEAN);
 	public Worm[] worms;
 	
 	public AbstractWormPart(EntityType<? extends Monster> p_21683_, Level p_21684_)
@@ -41,6 +42,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		super.defineSynchedData();
 		this.entityData.define(INDEX, 0);
 		this.entityData.define(HEAD_UUID, Optional.empty());
+		this.entityData.define(UNLOADED, false);
 	}
 	
 	@Override
@@ -49,12 +51,18 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		super.tick();
 		this.resetFallDistance();
 		
+		if(this.getHead() != null)
+		{
+			this.setUnloaded(this.getHead().touchingUnloadedChunk());
+		}
+		
 		if(this.getOwner() != null)
 		{
     		this.hurtTime = this.getOwner().hurtTime;
     		this.deathTime = this.getOwner().deathTime;
+    				
 		}
-		else if(!this.isHead())
+		else if(!this.isHead() && !this.isUnloaded())
 		{
 			this.discard();
 		}
@@ -147,6 +155,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	{
 		super.addAdditionalSaveData(p_37265_);
 		p_37265_.putInt("Index", this.getIndex());
+		p_37265_.putBoolean("Unloaded", this.isUnloaded());
 		if(this.entityData.get(HEAD_UUID).isPresent())
 		{
 			p_37265_.putUUID("Head", this.entityData.get(HEAD_UUID).get());
@@ -164,6 +173,10 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		if(p_37262_.hasUUID("Head")) 
 		{
 			this.entityData.set(HEAD_UUID, Optional.of(p_37262_.getUUID("Head")));
+		}
+		if(p_37262_.contains("Unloaded"))
+		{
+			this.setUnloaded(p_37262_.getBoolean("Unloaded"));
 		}
 	}
 	
@@ -193,6 +206,16 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	public boolean isAlliedTo(Entity p_20355_)
 	{
 		return super.isAlliedTo(p_20355_) || p_20355_ == this.getHead() || (p_20355_ instanceof AbstractWormPart<?> worm && worm.getHead() == this.getHead());
+	}
+	
+	public void setUnloaded(boolean value)
+	{
+		this.entityData.set(UNLOADED, value);
+	}
+	
+	public boolean isUnloaded()
+	{
+		return this.entityData.get(UNLOADED);
 	}
 	
 	public void setHead(T p_37263_)

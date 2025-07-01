@@ -16,6 +16,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
 
 public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 {
@@ -206,6 +208,28 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root, netHeadYaw, headPitch);
+		float partialTicks = ageInTicks - entity.tickCount;
+        float yBodyRot = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
+		Vec2 rot1 = entity.worm1.getRot(partialTicks);
+		Vec2 rot2 = entity.worm2.getRot(partialTicks);
+		Vec2 rot3 = entity.worm3.getRot(partialTicks);
+		Vec2 rot4 = entity.worm4.getRot(partialTicks);
+		Vec2 rot5 = entity.worm5.getRot(partialTicks);
+		Vec2 rot6 = entity.worm6.getRot(partialTicks);
+		Vec2 rot7 = entity.worm7.getRot(partialTicks);
+		Vec2 rot8 = entity.worm8.getRot(partialTicks);
+		Vec2 rot9 = entity.worm9.getRot(partialTicks);
+		Vec2 rot10 = entity.worm10.getRot(partialTicks);
+		BTAClientUtil.animateHead(this.tentacle, rot1.y - netHeadYaw - yBodyRot, rot1.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle_segment, rot2.y - netHeadYaw - yBodyRot, rot2.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle2, rot3.y - netHeadYaw - yBodyRot, rot3.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle_segment2, rot4.y - netHeadYaw - yBodyRot, rot4.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle3, rot5.y - netHeadYaw - yBodyRot, rot5.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle_segment3, rot6.y - netHeadYaw - yBodyRot, rot6.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle4, rot7.y - netHeadYaw - yBodyRot, rot7.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle_segment4, rot8.y - netHeadYaw - yBodyRot, rot8.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle5, rot9.y - netHeadYaw - yBodyRot, rot9.x - headPitch);
+		BTAClientUtil.animateHead(this.tentacle_segment5, rot10.y - netHeadYaw - yBodyRot, rot10.x - headPitch);
 	}
 	
 	@Override

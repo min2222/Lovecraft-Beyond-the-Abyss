@@ -68,9 +68,17 @@ public class KinematicChain
 				Vec3 tipPos = tip.getPos();
 				Vec3 toTarget = this.target.subtract(tipPos);
 			    float actualDistance = (float)Math.sqrt(toTarget.lengthSqr());
-			    float moveDistance = Math.min(actualDistance, tip.distance);
-			    tip.setRot(this.lookAt(tipPos, this.target));
-			    tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
+			    float epsilon = 0.001F;
+			    if(actualDistance < epsilon)
+			    {
+			        tip.setPos(this.target);
+			    }
+			    else 
+			    {
+			        float moveDistance = Math.min(actualDistance, tip.distance);
+			        tip.setRot(this.lookAt(tipPos, this.target));
+			        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
+			    }
 			    
 				for(int i = 2; i < this.segments.length; i++)
 				{
@@ -127,9 +135,17 @@ public class KinematicChain
 			Vec3 tipPos = tip.getPos();
 			Vec3 toTarget = this.target.subtract(tipPos);
 		    float actualDistance = (float)Math.sqrt(toTarget.lengthSqr());
-		    float moveDistance = Math.min(actualDistance, tip.distance);
-		    tip.setRot(this.lookAt(tipPos, this.target));
-		    tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
+		    float epsilon = 0.001F;
+		    if(actualDistance < epsilon)
+		    {
+		        tip.setPos(this.target);
+		    }
+		    else 
+		    {
+		        float moveDistance = Math.min(actualDistance, tip.distance);
+		        tip.setRot(this.lookAt(tipPos, this.target));
+		        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
+		    }
 		}
 		
 		if(this.anchorPos != null)
