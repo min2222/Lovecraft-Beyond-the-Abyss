@@ -92,8 +92,8 @@ public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBon
 	public void setupAnim(EntitySiamserpentBone entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBone"), entity.shouldInvertRotation() ? netHeadYaw + 180.0F : netHeadYaw, entity.shouldInvertRotation() ? -headPitch : headPitch);
-		BTAClientUtil.animateHead(this.root.getChild("SiamserpentMiddlebone"), entity.shouldInvertRotation() ? netHeadYaw + 180.0F : netHeadYaw, entity.shouldInvertRotation() ? -headPitch : headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBone"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentMiddlebone"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
 		this.root.getChild("SiamserpentBone").visible = entity.getVariant() == 0 || entity.getVariant() == 1;
 		this.root.getChild("SiamserpentMiddlebone").visible = entity.getVariant() == 2;
 		this.root.getChild("SiamserpentMiddlebone").getChild("Heart").visible = entity.getIndex() == 5;

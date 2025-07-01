@@ -206,7 +206,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	
 	public static boolean checkSpineWormSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pPos.getY() >= 0 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ROT_SOIL.get()) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ROT_SOIL.get()) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
     
     @Override

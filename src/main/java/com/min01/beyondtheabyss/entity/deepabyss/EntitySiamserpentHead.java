@@ -152,6 +152,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public void tick() 
 	{
 		super.tick();
+		
 		//blaster laser
 		if(this.getAnimationTick() <= 0)
 		{
@@ -246,17 +247,11 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		return true;
 	}
 	
-	@Override
-	public Vec2 headRotation(LivingEntity living, Vec2 original)
-	{
-		return this.isInvert() ? new Vec2(-original.x, original.y + 180.0F) : original;
-	}
-	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		//TODO spawn in only nearby of giant fossil structure;
 		//LocateCommand
-		return pPos.getY() >= 10 && pPos.getY() <= 40 && pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
 	@Override
@@ -363,22 +358,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			}
 		}
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
-	}
-	
-	@Override
-	public boolean hurt(DamageSource p_21016_, float p_21017_) 
-	{
-		if(this.isHead())
-		{
-			EntitySiamserpentHead head = (EntitySiamserpentHead) this.getHead();
-			if(head != null)
-			{
-				head.setHead(true);
-				this.setHead(false);
-				head.swapOwner = true;
-			}
-		}
-		return super.hurt(p_21016_, p_21017_);
 	}
 
 	public void setBeamLength(float value)

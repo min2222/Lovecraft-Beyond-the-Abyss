@@ -32,31 +32,31 @@
 		"water_creature": [
 			{
 				"type": "beyondtheabyss:gnasher",
-				"weight": 10,
-				"minCount": 5,
+				"weight": 70,
+				"minCount": 3,
 				"maxCount": 5
 			},
 			{
 				"type": "beyondtheabyss:siamserpent_head",
-				"weight": 10,
+				"weight": 60,
 				"minCount": 1,
 				"maxCount": 1
 			},
 			{
 				"type": "beyondtheabyss:spine_worm",
-				"weight": 10,
+				"weight": 60,
 				"minCount": 1,
 				"maxCount": 1
 			},
 			{
 				"type": "beyondtheabyss:gloomfish",
-				"weight": 10,
-				"minCount": 9,
+				"weight": 80,
+				"minCount": 7,
 				"maxCount": 9
 			},
 			{
 				"type": "beyondtheabyss:corpse_angler",
-				"weight": 10,
+				"weight": 60,
 				"minCount": 1,
 				"maxCount": 1
 			}

@@ -12,13 +12,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec2;
 
 public class EntitySiamserpentBone extends AbstractSiamserpentPart
 {
@@ -73,12 +71,6 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	public Vec2 headRotation(LivingEntity living, Vec2 original)
-	{
-		return this.shouldInvertRotation() ? new Vec2(-original.x, original.y + 180.0F) : original;
-	}
-	
-	@Override
 	protected SoundEvent getHurtSound(DamageSource p_33034_) 
 	{
 		return BTASounds.SIAMSERPENT_HURT.get();
@@ -107,7 +99,7 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 		}
 	}
 	
-	public boolean shouldInvertRotation()
+	public boolean isInvert()
 	{
 		return this.getIndex() == 11;
 	}

@@ -163,11 +163,18 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	}
 
     @OnlyIn(Dist.CLIENT)
-	public void clientTick(HierarchicalModel<?> model)
+	public void clientTick(HierarchicalModel<T> model)
 	{
     	Map<String, PartState> lastStates = new HashMap<>();
-    	model.root().getAllParts().forEach(part -> 
+    	ModelPart root = this.root(model);
+    	root.getAllParts().forEach(part -> 
     	{
+    	    if(!this.partNameCache.containsKey(part))
+    	    {
+    	    	String name = this.getModelPartName(root, part);
+    	    	this.partNameCache.put(part, name);
+    	    	return;
+    	    }
     	    String name = this.partNameCache.get(part);
     	    Part p = this.partMap.get(name);
     	    if(p != null)
@@ -289,7 +296,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         {
             for(Map.Entry<String, ModelPart> entry : part.children.entrySet()) 
             {
-            	this.partNameCache.putIfAbsent(entry.getValue(), entry.getKey());
                 if(entry.getValue() == target) 
                 {
                     return entry.getKey();

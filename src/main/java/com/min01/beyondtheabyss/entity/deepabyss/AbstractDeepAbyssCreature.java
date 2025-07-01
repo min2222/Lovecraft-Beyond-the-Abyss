@@ -39,14 +39,14 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature impl
     	super.registerGoals();
      	if(this.isSwimable())
      	{
-             this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 40)
-             {
-             	@Override
-             	public boolean canUse() 
-             	{
-             		return super.canUse() && AbstractDeepAbyssCreature.this.canSwim();
-             	}
-             });
+     		this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 40)
+     		{
+     			@Override
+     			public boolean canUse() 
+     			{
+     				return super.canUse() && AbstractDeepAbyssCreature.this.canSwim();
+     			}
+     		});
      	}
     }
 	
