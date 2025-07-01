@@ -25,12 +25,14 @@ public class BTACreativeModeTabs
     		.displayItems((enabledFeatures, output) -> 
     		{
 				output.accept(BTAItems.GHIDRUTH_SPAWN_EGG.get());
+				output.accept(BTAItems.FORNEUS_SPAWN_EGG.get());
 				output.accept(BTAItems.GNASHER_SPAWN_EGG.get());
 				output.accept(BTAItems.SIAMSERPENT_SPAWN_EGG.get());
 				output.accept(BTAItems.SPINE_WORM_SPAWN_EGG.get());
 				output.accept(BTAItems.GLOOMFISH_SPAWN_EGG.get());
 				output.accept(BTAItems.KORMOS_SPAWN_EGG.get());
 				output.accept(BTAItems.CORPSE_ANGLER_SPAWN_EGG.get());
+				output.accept(BTAItems.MUTAVORE_SPAWN_EGG.get());
 				output.accept(BTAItems.FULGASTRA_SPAWN_EGG.get());
     			for(RegistryObject<Item> item : BTAItems.ITEMS.getEntries())
     			{
@@ -71,7 +73,6 @@ public class BTACreativeModeTabs
     				}
     			}
     		}).build());
-    
     
     public static final RegistryObject<CreativeModeTab> MIRRORED_CITY = CREATIVE_MODE_TAB.register("mirrored_city", () -> CreativeModeTab.builder()
     		.title(Component.translatable("itemGroup.mirrored_city"))

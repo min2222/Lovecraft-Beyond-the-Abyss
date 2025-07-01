@@ -16,7 +16,8 @@ public class BTATags
 		public static final TagKey<EntityType<?>> ABYSS_CREATURES = create("abyss_creatures");
 		public static final TagKey<EntityType<?>> EVERGREEN_CREATURES = create("evergreen_creatures");
 		public static final TagKey<EntityType<?>> CITY_CREATURES = create("city_creatures");
-		public static final TagKey<EntityType<?>> MINI_BOSS = create("mini_boss");
+		public static final TagKey<EntityType<?>> MINI_BOSSES = create("mini_bosses");
+		public static final TagKey<EntityType<?>> FAR_RANGE_TICKING = create("far_range_ticking");
 		
 		private static TagKey<EntityType<?>> create(String p_203849_) 
 		{

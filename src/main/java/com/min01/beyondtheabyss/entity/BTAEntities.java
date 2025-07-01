@@ -4,6 +4,9 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityChainTrapMaw;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityForneusBody;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityForneusHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityForneusTail;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
@@ -11,6 +14,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityKormosBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityKormosHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityKormosTail;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
@@ -53,7 +57,11 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityKormosBody>> KORMOS_BODY = registerEntity("kormos_body", createBuilder(EntityKormosBody::new, MobCategory.WATER_CREATURE).sized(5.0F, 4.125F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
 	public static final RegistryObject<EntityType<EntityKormosTail>> KORMOS_TAIL = registerEntity("kormos_tail", createBuilder(EntityKormosTail::new, MobCategory.WATER_CREATURE).sized(5.0F, 4.125F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
 	public static final RegistryObject<EntityType<EntityCorpseAngler>> CORPSE_ANGLER = registerEntity("corpse_angler", createBuilder(EntityCorpseAngler::new, MobCategory.WATER_CREATURE).sized(3.0F, 4.75F));
+	public static final RegistryObject<EntityType<EntityMutavore>> MUTAVORE = registerEntity("mutavore", createBuilder(EntityMutavore::new, MobCategory.WATER_CREATURE).sized(3.0F, 3.0F));
 	public static final RegistryObject<EntityType<EntityFulgastra>> FULGASTRA = registerEntity("fulgastra", createBuilder(EntityFulgastra::new, MobCategory.WATER_CREATURE).sized(4.875F, 1.5625F));
+	public static final RegistryObject<EntityType<EntityForneusHead>> FORNEUS_HEAD = registerEntity("forneus_head", createBuilder(EntityForneusHead::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityForneusBody>> FORNEUS_BODY = registerEntity("forneus_body", createBuilder(EntityForneusBody::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityForneusTail>> FORNEUS_TAIL = registerEntity("forneus_tail", createBuilder(EntityForneusTail::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
 	
 	public static final RegistryObject<EntityType<EntityOverseer>> OVERSEER = registerEntity("overseer", createBuilder(EntityOverseer::new, MobCategory.MONSTER).sized(4.0F, 1.75F));
 	

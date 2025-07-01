@@ -78,7 +78,7 @@ public class BTASwimmingMoveControl extends MoveControl
 					this.mob.setSpeed(f1 * this.outsideWaterSpeedModifier);
 				}
 			}
-		} 
+		}
 		else 
 		{
 			this.mob.setSpeed(0.0F);

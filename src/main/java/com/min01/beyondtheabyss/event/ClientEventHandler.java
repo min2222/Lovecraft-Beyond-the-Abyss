@@ -23,6 +23,9 @@ import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
+import com.min01.beyondtheabyss.entity.model.ModelForneusBody;
+import com.min01.beyondtheabyss.entity.model.ModelForneusHead;
+import com.min01.beyondtheabyss.entity.model.ModelForneusTail;
 import com.min01.beyondtheabyss.entity.model.ModelFulgastra;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGloomfish;
@@ -30,6 +33,7 @@ import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelKormosBody;
 import com.min01.beyondtheabyss.entity.model.ModelKormosHead;
 import com.min01.beyondtheabyss.entity.model.ModelKormosTail;
+import com.min01.beyondtheabyss.entity.model.ModelMutavore;
 import com.min01.beyondtheabyss.entity.model.ModelOverseer;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentHead;
@@ -42,6 +46,9 @@ import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.ForneusBodyRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.ForneusHeadRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.ForneusTailRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.FulgastraRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GloomfishRenderer;
@@ -49,6 +56,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.KormosBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.KormosHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.KormosTailRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.MutavoreRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.OverseerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentHeadRenderer;
@@ -160,7 +168,11 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.KORMOS_BODY.get(), KormosBodyRenderer::new);
     	event.registerEntityRenderer(BTAEntities.KORMOS_TAIL.get(), KormosTailRenderer::new);
     	event.registerEntityRenderer(BTAEntities.CORPSE_ANGLER.get(), CorpseAnglerRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.MUTAVORE.get(), MutavoreRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FULGASTRA.get(), FulgastraRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.FORNEUS_HEAD.get(), ForneusHeadRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.FORNEUS_BODY.get(), ForneusBodyRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.FORNEUS_TAIL.get(), ForneusTailRenderer::new);
 
     	event.registerEntityRenderer(BTAEntities.OVERSEER.get(), OverseerRenderer::new);
     }
@@ -183,7 +195,11 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelKormosBody.LAYER_LOCATION, ModelKormosBody::createBodyLayer);
     	event.registerLayerDefinition(ModelKormosTail.LAYER_LOCATION, ModelKormosTail::createBodyLayer);
     	event.registerLayerDefinition(ModelCorpseAngler.LAYER_LOCATION, ModelCorpseAngler::createBodyLayer);
+    	event.registerLayerDefinition(ModelMutavore.LAYER_LOCATION, ModelMutavore::createBodyLayer);
     	event.registerLayerDefinition(ModelFulgastra.LAYER_LOCATION, ModelFulgastra::createBodyLayer);
+    	event.registerLayerDefinition(ModelForneusHead.LAYER_LOCATION, ModelForneusHead::createBodyLayer);
+    	event.registerLayerDefinition(ModelForneusBody.LAYER_LOCATION, ModelForneusBody::createBodyLayer);
+    	event.registerLayerDefinition(ModelForneusTail.LAYER_LOCATION, ModelForneusTail::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
 
