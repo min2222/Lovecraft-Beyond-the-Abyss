@@ -20,6 +20,7 @@ import com.min01.beyondtheabyss.lights.LevelRendererAccessor;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.shader.ExtendedPostChain;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -94,6 +95,16 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 					this.applyMist(mtx, frameTime);
 				}
 				mtx.popPose();
+				
+				mtx.pushPose();
+				Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, x, y, y);
+				Vec3 pos2 = groundPos.subtract(camPos);
+				mtx.translate(pos2.x, pos2.y - 2, pos2.z);
+				if(dimension == BTAWorlds.ENDLESS_DESERT)
+				{
+					this.applySandstorm(mtx, frameTime);
+				}
+				mtx.popPose();
 			}
 		}
 	}
@@ -104,6 +115,25 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 		if(!level.getBlockState(pos).isSolidRender(level, pos))
 		{
 			cir.setReturnValue(DynamicLights.get().getLightmapWithDynamicLight(pos, cir.getReturnValue()));
+		}
+	}
+	
+	@Unique
+	private void applySandstorm(PoseStack mtx, float frameTime)
+	{
+		Minecraft mc = BTAClientUtil.MC;
+
+		ExtendedPostChain shaderChain = BTAShaders.getSandstorm();
+		EffectInstance shader = shaderChain.getMainShader();
+
+		if(shader != null)
+		{
+			shader.safeGetUniform("iResolution").set(mc.getWindow().getWidth(), mc.getWindow().getHeight());
+			shader.setSampler("ImageSampler", () -> mc.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
+			shader.safeGetUniform("InverseTransformMatrix").set(this.getInverseTransformMatrix(INVERSE_MAT, mtx.last().pose()));
+			shader.safeGetUniform("iTime").set((((float) (mc.level.getGameTime() % 2400000)) + frameTime) / 20.0F);
+			shaderChain.process(frameTime);
+			mc.getMainRenderTarget().bindWrite(false);
 		}
 	}
 	
@@ -129,6 +159,6 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	@Unique
 	private Matrix4f getInverseTransformMatrix(Matrix4f outMat, Matrix4f modelView)
     {
-       return outMat.identity().mul(RenderSystem.getProjectionMatrix()).mul(modelView).invert();
+		return outMat.identity().mul(RenderSystem.getProjectionMatrix()).mul(modelView).invert();
     }
 }
