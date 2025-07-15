@@ -58,7 +58,19 @@ public abstract class AbstractForneusPart extends AbstractWormPart<AbstractForne
 	}
 	
 	@Override
+	protected void pushEntities() 
+	{
+		
+	}
+	
+	@Override
 	public boolean isWormChain() 
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canSwim()
 	{
 		return false;
 	}
@@ -72,7 +84,7 @@ public abstract class AbstractForneusPart extends AbstractWormPart<AbstractForne
 			EntityForneusHead head = (EntityForneusHead) this.getHead();
 			if(head.chain != null)
 			{
-				ChainSegment segment = head.chain.getSegments()[head.chain.getSegments().length - (this.getIndex() + 1)];
+				ChainSegment segment = head.chain.getSegments()[Math.max(head.chain.getSegments().length - (this.getIndex() + 2), 0)];
 				Vec3 pos = segment.getPos();
 				Vec2 rot = segment.getRot();
 				this.setPos(pos);

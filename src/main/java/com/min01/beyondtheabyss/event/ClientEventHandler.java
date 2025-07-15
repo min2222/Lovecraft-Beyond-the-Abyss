@@ -18,6 +18,7 @@ import com.min01.beyondtheabyss.blockentity.renderer.BiocrafterRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.ChainTrapRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
+import com.min01.beyondtheabyss.efkefc.EfkEfcLoader;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
@@ -42,6 +43,7 @@ import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
+import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
@@ -73,6 +75,8 @@ import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
 import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
+import com.min01.beyondtheabyss.particle.BTAParticles;
+import com.min01.beyondtheabyss.particle.WaterParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.world.effects.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.effects.MirroredCityDimensionSpecialEffects;
@@ -135,13 +139,14 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
 	{
-		
+		event.registerSpriteSet(BTAParticles.WATER.get(), WaterParticle.Provider::new);
 	}
     
 	@SubscribeEvent
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event)
 	{
 		event.registerReloadListener(new BTAShaders());
+		event.registerReloadListener(new EfkEfcLoader());
 	}
 	
     @SubscribeEvent
@@ -155,6 +160,7 @@ public class ClientEventHandler
     	
     	//projectile
     	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.FORNEUS_MAGIC.get(), ForneusMagicRenderer::new);
     	
     	//living
     	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);

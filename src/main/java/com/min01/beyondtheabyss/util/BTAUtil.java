@@ -3,7 +3,10 @@ package com.min01.beyondtheabyss.util;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import org.joml.Math;
 
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
@@ -41,7 +44,54 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BTAUtil 
 {
+	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
+	
+	public static void createBallWithStep(Level level, Vec3 pos, double velocity, int size, int step, BiConsumer<Vec3, Vec3> consumer)
+	{
+		RandomSource random = level.random;
+		for(int i = -size; i <= size; i += step) 
+		{
+			for(int j = -size; j <= size; j += step) 
+			{
+				for(int k = -size; k <= size; k += step) 
+				{
+					double d3 = (double) j + (random.nextDouble() - random.nextDouble()) * 0.5D;
+					double d4 = (double) i + (random.nextDouble() - random.nextDouble()) * 0.5D;
+					double d5 = (double) k + (random.nextDouble() - random.nextDouble()) * 0.5D;
+					double d6 = Math.sqrt(d3 * d3 + d4 * d4 + d5 * d5) / velocity + random.nextGaussian() * 0.05D;
+					consumer.accept(pos, new Vec3(d3 / d6, d4 / d6, d5 / d6));
+					if(i != -size && i != size && j != -size && j != size)
+					{
+						k += size * 2 - 1;
+					}
+				}
+			}
+		}
+	}
+	
+	public static void createBall(Level level, Vec3 pos, double velocity, int size, BiConsumer<Vec3, Vec3> consumer)
+	{
+		RandomSource random = level.random;
+		for(int i = -size; i <= size; ++i) 
+		{
+			for(int j = -size; j <= size; ++j) 
+			{
+				for(int k = -size; k <= size; ++k) 
+				{
+					double d3 = (double) j + (random.nextDouble() - random.nextDouble()) * 0.5D;
+					double d4 = (double) i + (random.nextDouble() - random.nextDouble()) * 0.5D;
+					double d5 = (double) k + (random.nextDouble() - random.nextDouble()) * 0.5D;
+					double d6 = Math.sqrt(d3 * d3 + d4 * d4 + d5 * d5) / velocity + random.nextGaussian() * 0.05D;
+					consumer.accept(pos, new Vec3(d3 / d6, d4 / d6, d5 / d6));
+					if(i != -size && i != size && j != -size && j != size)
+					{
+						k += size * 2 - 1;
+					}
+				}
+			}
+		}
+	}
 	
     public static AnimationState getItemAnimation(ItemStack stack, String name)
     {
@@ -244,10 +294,9 @@ public class BTAUtil
 	@SuppressWarnings("unchecked")
 	public static <T extends Entity> T getEntityByUUID(Level level, UUID uuid)
 	{
-		Method m = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 		try 
 		{
-			LevelEntityGetter<Entity> entities = (LevelEntityGetter<Entity>) m.invoke(level);
+			LevelEntityGetter<Entity> entities = (LevelEntityGetter<Entity>) GET_ENTITY.invoke(level);
 			return (T) entities.get(uuid);
 		}
 		catch (Exception e) 

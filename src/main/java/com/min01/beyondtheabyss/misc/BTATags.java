@@ -19,9 +19,9 @@ public class BTATags
 		public static final TagKey<EntityType<?>> MINI_BOSSES = create("mini_bosses");
 		public static final TagKey<EntityType<?>> FAR_RANGE_TICKING = create("far_range_ticking");
 		
-		private static TagKey<EntityType<?>> create(String p_203849_) 
+		private static TagKey<EntityType<?>> create(String name) 
 		{
-			return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
+			return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, name));
 		}
 	}
 	
@@ -30,9 +30,9 @@ public class BTATags
 		public static final TagKey<Item> DIVING_SET = create("diving_set");
 		public static final TagKey<Item> TEETH = create("teeth");
 		
-		private static TagKey<Item> create(String p_203849_) 
+		private static TagKey<Item> create(String name) 
 		{
-			return TagKey.create(Registries.ITEM, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
+			return TagKey.create(Registries.ITEM, new ResourceLocation(BeyondtheAbyss.MODID, name));
 		}
 	}
 	
@@ -41,9 +41,9 @@ public class BTATags
 		public static final TagKey<Block> SPIRE_HOLLOW_REPLACEABLES = create("spire_hollow_replaceables");
 		public static final TagKey<Block> DEATH_VALLEY_REPLACEABLES = create("death_valley_replaceables");
 		
-		private static TagKey<Block> create(String p_203849_) 
+		private static TagKey<Block> create(String name) 
 		{
-			return TagKey.create(Registries.BLOCK, new ResourceLocation(BeyondtheAbyss.MODID, p_203849_));
+			return TagKey.create(Registries.BLOCK, new ResourceLocation(BeyondtheAbyss.MODID, name));
 		}
 	}
 }

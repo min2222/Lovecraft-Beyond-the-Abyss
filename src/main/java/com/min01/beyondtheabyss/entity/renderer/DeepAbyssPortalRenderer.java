@@ -32,7 +32,7 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
 		p_114488_.scale(scale, scale, scale);
 		p_114488_.translate(0, 0, -0.001F);
 		p_114488_.mulPose(Axis.ZP.rotationDegrees(p_114485_.tickCount));
-		BTAClientUtil.renderFlatQuad(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), 0.5F, p_114490_);
+		BTAClientUtil.drawQuad(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), 0.5F, p_114490_);
 		p_114488_.popPose();
 	}
 

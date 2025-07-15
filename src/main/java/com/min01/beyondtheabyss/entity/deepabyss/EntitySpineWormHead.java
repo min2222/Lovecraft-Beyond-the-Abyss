@@ -129,7 +129,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 			
 			if(this.posArray[0] != null && this.canExtend())
 			{
-				if(this.posArray[0].distanceTo(this.position()) <= 1.0F)
+				if(this.posArray[0].subtract(this.position()).length() <= 0.5F)
 				{
 					this.chain.setTarget(Vec3.ZERO);
 					this.setCooldown(100);

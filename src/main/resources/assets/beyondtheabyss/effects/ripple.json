@@ -1,0 +1,151 @@
+{
+	"EffekseerProject": {
+		"Root": {
+			"Name": "Root",
+			"Children": {
+				"Node": {
+					"CommonValues": {
+						"MaxGeneration": {
+							"Infinite": "True"
+						},
+						"GenerationTime": {
+							"Center": "30",
+							"Max": "30",
+							"Min": "30"
+						}
+					},
+					"RotationValues": {
+						"Type": "2",
+						"Fixed": {
+							"Rotation": {
+								"X": "90"
+							}
+						},
+						"Easing": {
+							"Start": {
+								"X": {
+									"Center": "90",
+									"Max": "90",
+									"Min": "90"
+								}
+							},
+							"End": {
+								"X": {
+									"Center": "90",
+									"Max": "90",
+									"Min": "90"
+								},
+								"Z": {
+									"Max": "360",
+									"Min": "-360"
+								}
+							}
+						}
+					},
+					"ScalingValues": {
+						"Type": "2",
+						"Easing": {
+							"End": {
+								"X": {
+									"Center": "5",
+									"Max": "5",
+									"Min": "5"
+								},
+								"Y": {
+									"Center": "5",
+									"Max": "5",
+									"Min": "5"
+								},
+								"Z": {
+									"Center": "5",
+									"Max": "5",
+									"Min": "5"
+								}
+							}
+						}
+					},
+					"RendererCommonValues": {
+						"ColorTexture": "vfx/voronoi.png",
+						"FadeInType": "1",
+						"FadeIn": {
+							"Frame": "10"
+						},
+						"FadeOutType": "1",
+						"FadeOut": {
+							"Frame": "20"
+						}
+					},
+					"DrawingValues": {
+						"Type": "4",
+						"Ring": {
+							"VertexCount": "24",
+							"Outer": "2",
+							"Outer_Easing": {
+								"Start": {
+									"X": {
+										"Center": "2",
+										"Max": "2",
+										"Min": "2"
+									}
+								},
+								"End": {
+									"X": {
+										"Center": "2",
+										"Max": "2",
+										"Min": "2"
+									}
+								}
+							},
+							"Inner": "2",
+							"Inner_Easing": {
+								"Start": {
+									"X": {
+										"Center": "1",
+										"Max": "1",
+										"Min": "1"
+									}
+								},
+								"End": {
+									"X": {
+										"Center": "2",
+										"Max": "2",
+										"Min": "2"
+									}
+								}
+							},
+							"CenterRatio_Fixed": "0"
+						}
+					},
+					"Children": ""
+				}
+			}
+		},
+		"Dynamic": {
+			"Inputs": {
+				"DynamicInput": [
+					{
+						"Input": "0"
+					},
+					{
+						"Input": "0"
+					},
+					{
+						"Input": "0"
+					},
+					{
+						"Input": "0"
+					}
+				]
+			},
+			"Equations": ""
+		},
+		"ProceduralModel": {
+			"ProceduralModels": ""
+		},
+		"ToolVersion": "1.70e",
+		"Version": "3",
+		"StartFrame": "0",
+		"EndFrame": "1000",
+		"IsLoop": "True"
+	}
+}

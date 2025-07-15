@@ -2,11 +2,15 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
+import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -17,15 +21,20 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityForneusHead extends AbstractForneusPart
 {
+	public static final EntityDataAccessor<Vec3> WANTED_POS = SynchedEntityData.defineId(EntityForneusHead.class, BTAEntityDataSerializers.VEC3.get());
 	public KinematicChain chain;
+	public boolean isTarget;
 	
 	public EntityForneusHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.noPhysics = true;
+		this.setNoGravity(true);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -41,6 +50,13 @@ public class EntityForneusHead extends AbstractForneusPart
     public boolean isHead()
     {
     	return true;
+    }
+    
+    @Override
+    protected void defineSynchedData()
+    {
+    	super.defineSynchedData();
+    	this.entityData.define(WANTED_POS, Vec3.ZERO);
     }
 
 	@Override
@@ -67,17 +83,55 @@ public class EntityForneusHead extends AbstractForneusPart
 	public void tick()
 	{
 		super.tick();
-		
+		Vec3 pos = this.getWantedPos();
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
 		}
 		else
 		{
-	        Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 0.0F, -6.25F);
 	    	this.chain.setOldPosAndRot();
 	    	this.chain.tick();
-	    	this.chain.setTarget(lookPos);
+	    	if(!pos.equals(Vec3.ZERO))
+			{
+		    	this.chain.setTarget(pos);
+		    	
+				ChainSegment segment = this.chain.getTipSegment();
+				Vec2 rot = segment.getRot();
+				this.setPos(segment.getPos());
+				this.setXRot(rot.x);
+				this.setYRot(rot.y);
+				this.setYBodyRot(rot.y);
+				this.setYHeadRot(rot.y);
+				
+				this.xRotO = rot.x;
+				this.yRotO = rot.y;
+				this.yHeadRotO = rot.y;
+				this.yBodyRotO = rot.y;
+			}
+		}
+		if(this.getTarget() != null)
+		{
+			Vec3 spreadPos = BTAUtil.getSpreadPosition(this.level, Vec3.ZERO, 200);
+			Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, this.getTarget().getX(), this.getTarget().getY(), this.getTarget().getZ()).subtract(spreadPos.x, 0, spreadPos.z);
+			Vec3 targetPos = this.getTarget().getEyePosition().add(spreadPos.x, 30, spreadPos.z);
+			if(pos.equals(Vec3.ZERO))
+			{
+				this.setWantedPos(groundPos);
+			}
+			if(this.tickCount % 100 == 0 || pos.subtract(this.position()).length() <= 1.0F)
+			{
+				if(this.isTarget)
+				{
+					this.setWantedPos(groundPos);
+					this.isTarget = false;
+				}
+				else
+				{
+					this.setWantedPos(targetPos);
+					this.isTarget = true;
+				}
+			}
 		}
 	}
 	
@@ -127,5 +181,15 @@ public class EntityForneusHead extends AbstractForneusPart
 	public int getSwimRadius()
 	{
 		return 150;
+	}
+	
+	public void setWantedPos(Vec3 pos)
+	{
+		this.entityData.set(WANTED_POS, pos);
+	}
+	
+	public Vec3 getWantedPos()
+	{
+		return this.entityData.get(WANTED_POS);
 	}
 }

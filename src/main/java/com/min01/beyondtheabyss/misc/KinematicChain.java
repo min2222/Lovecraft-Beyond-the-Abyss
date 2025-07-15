@@ -1,5 +1,8 @@
 package com.min01.beyondtheabyss.misc;
 
+import com.min01.beyondtheabyss.entity.deepabyss.AbstractForneusPart;
+import com.min01.beyondtheabyss.util.BTAUtil;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -67,7 +70,7 @@ public class KinematicChain
 				ChainSegment tip = this.getTipSegment();
 				Vec3 tipPos = tip.getPos();
 				Vec3 toTarget = this.target.subtract(tipPos);
-			    float actualDistance = (float)Math.sqrt(toTarget.lengthSqr());
+			    float actualDistance = (float)toTarget.length();
 			    float epsilon = 0.001F;
 			    if(actualDistance < epsilon)
 			    {
@@ -129,28 +132,36 @@ public class KinematicChain
 	
 	public void tick() 
 	{
+		//TODO
 		if(this.target != null)
 		{
-			ChainSegment tip = this.getTipSegment();
-			Vec3 tipPos = tip.getPos();
-			Vec3 toTarget = this.target.subtract(tipPos);
-		    float actualDistance = (float)Math.sqrt(toTarget.lengthSqr());
-		    float epsilon = 0.001F;
-		    if(actualDistance < epsilon)
-		    {
-		        tip.setPos(this.target);
-		    }
-		    else 
-		    {
-		        float moveDistance = Math.min(actualDistance, tip.distance);
-		        tip.setRot(this.lookAt(tipPos, this.target));
-		        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
-		    }
-		}
-		
-		if(this.anchorPos != null)
-		{
-			this.segments[0].setPos(this.anchorPos);
+			if(this.entity instanceof AbstractForneusPart)
+			{
+				ChainSegment tip = this.getTipSegment();
+				Vec3 tipPos = tip.getPos();
+		        Vec3 targetPos = this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, tip.distance);
+		        Vec3 pos = tipPos.lerp(targetPos, 0.5F);
+		        tip.setRot(this.lookAt(pos, this.target, tip.getRot()));
+		        tip.setPos(pos);
+			}
+			else
+			{
+				ChainSegment tip = this.getTipSegment();
+				Vec3 tipPos = tip.getPos();
+				Vec3 toTarget = this.target.subtract(tipPos);
+			    float actualDistance = (float)toTarget.length();
+			    float epsilon = 0.001F;
+			    if(actualDistance < epsilon)
+			    {
+			        tip.setPos(this.target);
+			    }
+			    else
+			    {
+			        float moveDistance = Math.min(actualDistance, tip.distance);
+			        tip.setRot(this.lookAt(tipPos, this.target, tip.getRot()));
+			        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
+			    }
+			}
 		}
 		
 		for(int i = 1; i < this.segments.length; i++)
@@ -160,6 +171,11 @@ public class KinematicChain
 		    ChainSegment next = this.segments[this.segments.length - index - 1];
 		    current.setRot(this.lookAt(current.getPos(), next.getPos()));
 		    current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
+		}
+		
+		if(this.anchorPos != null)
+		{
+			this.segments[0].setPos(this.anchorPos);
 		}
 		
 		for(int i = 0; i < this.segments.length - 1; i++)
@@ -184,6 +200,18 @@ public class KinematicChain
             double d8 = level.random.nextGaussian() * speed;
 			level.addAlwaysVisibleParticle(ParticleTypes.BUBBLE, pos.x + d1, pos.y + d3, pos.z + d5, d6, d7, d8);
 		}
+	}
+	
+	public Vec2 lookAt(Vec3 startPos, Vec3 pos, Vec2 oldRot)
+	{
+		Vec3 vec3 = startPos;
+		double d0 = pos.x - vec3.x;
+		double d1 = pos.y - vec3.y;
+		double d2 = pos.z - vec3.z;
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		float xRot = Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI))));
+		float yRot = Mth.wrapDegrees((float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F);
+	    return new Vec2(BTAUtil.rotlerp(oldRot.x, xRot, 8), BTAUtil.rotlerp(oldRot.y, yRot, 8));
 	}
 	
 	public Vec2 lookAt(Vec3 startPos, Vec3 pos)
