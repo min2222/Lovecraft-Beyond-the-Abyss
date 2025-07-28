@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -57,11 +57,11 @@ public class LimitSpeedAndLookInVelocityDirectionGoal extends Goal
             velocity = velocity.normalize().scale(this.maxSpeed);
         }
         this.mob.setDeltaMovement(velocity);
-        this.mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.mob.position().add(velocity.scale(10)));
+        this.mob.lookAt(Anchor.EYES, this.mob.position().add(velocity.scale(10)));
     }
     
     public static List<? extends Mob> getNearbyEntitiesOfSameClass(Mob mob)
     {
-        return mob.level.getEntitiesOfClass(mob.getClass(), mob.getBoundingBox().inflate(4.0F, 4.0F, 4.0F), t -> t != mob);
+        return mob.level.getEntitiesOfClass(mob.getClass(), mob.getBoundingBox().inflate(4.0F), t -> t != mob);
     }
 }

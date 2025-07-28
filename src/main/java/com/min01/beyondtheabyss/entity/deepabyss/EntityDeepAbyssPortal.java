@@ -53,8 +53,7 @@ public class EntityDeepAbyssPortal extends Entity
 		
 		if(this.tickCount >= 25)
 		{
-			List<Entity> list = this.level.getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(6.0F));
-			list.removeIf(t -> t instanceof EntityDeepAbyssPortal);
+			List<Entity> list = this.level.getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(6.0F), t -> !(t instanceof EntityDeepAbyssPortal));
 			list.forEach(entity -> 
 			{
 				if(entity.isEyeInFluidType(Fluids.WATER.getFluidType()) && entity.distanceTo(this) > 2.0F)

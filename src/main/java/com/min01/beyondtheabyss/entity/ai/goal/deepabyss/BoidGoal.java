@@ -2,8 +2,6 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
-
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -16,7 +14,7 @@ public class BoidGoal extends Goal
     public final float separationRange;
     public final float alignmentInfluence;
     public final float cohesionInfluence;
-    private final Mob mob;
+    protected final Mob mob;
     private int timeToFindNearbyEntities;
     private List<? extends Mob> nearbyMobs;
 
@@ -33,7 +31,7 @@ public class BoidGoal extends Goal
     @Override
     public boolean canUse() 
     {
-        return this.mob instanceof EntityGnasher gnasher ? !gnasher.isDisperse() && this.mob.isInWater() : this.mob.isInWater();
+        return this.mob.isInWater();
     }
 
     @Override
@@ -57,7 +55,7 @@ public class BoidGoal extends Goal
 
     public static List<? extends Mob> getNearbyEntitiesOfSameClass(Mob mob)
     {
-        return mob.level.getEntitiesOfClass(mob.getClass(), mob.getBoundingBox().inflate(4.0F, 4.0F, 4.0F), t -> t != mob);
+        return mob.level.getEntitiesOfClass(mob.getClass(), mob.getBoundingBox().inflate(4.0F), t -> t != mob && !t.isDeadOrDying());
     }
 
     public Vec3 separation() 
@@ -98,13 +96,6 @@ public class BoidGoal extends Goal
         Vec3 c = Vec3.ZERO;
         for(Mob nearbyMob : this.nearbyMobs)
         {
-        	if(nearbyMob instanceof EntityGnasher leader && this.mob instanceof EntityGnasher gnasher)
-        	{
-        		if(leader.isLeader())
-        		{
-            		gnasher.setLeader(leader);
-        		}
-        	}
             c = c.add(nearbyMob.position());
         }
         c = c.scale(1.0F / this.nearbyMobs.size());

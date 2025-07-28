@@ -6,10 +6,8 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.BoidGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LimitSpeedAndLookInVelocityDirectionGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.StayInWaterGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBoidGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -81,9 +79,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	{
 		super.registerGoals();
 		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
-        this.goalSelector.addGoal(5, new BoidGoal(this, 0.1F, 2.5F, 8 / 20.0F, 1 / 20.0F));
-        this.goalSelector.addGoal(3, new StayInWaterGoal(this));
-        this.goalSelector.addGoal(2, new LimitSpeedAndLookInVelocityDirectionGoal(this, 0.3F, 0.5F));
+		this.goalSelector.addGoal(5, new GnasherBoidGoal(this, 0.1F, 1.25F, 0.3F, 0.5F));
 	}
 	
 	@Override

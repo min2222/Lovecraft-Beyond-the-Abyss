@@ -218,7 +218,7 @@ public class EfkEfcRenderer
 	    	
 	    	Vector3f fixedRot = rot[0];
 	    	Vector3f pvaRot = rot[1];
-	    	Vector3f pvaRotVelocity = size[2];
+	    	Vector3f pvaRotVelocity = rot[2];
 	    	Vector3f easingRotStart = rot[3];
 	    	Vector3f easingRotEnd = rot[4];
 	    	

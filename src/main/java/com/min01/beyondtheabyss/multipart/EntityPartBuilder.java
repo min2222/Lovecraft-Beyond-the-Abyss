@@ -171,7 +171,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     	{
     	    if(!this.partNameCache.containsKey(part))
     	    {
-    	    	String name = this.getModelPartName(root, part);
+    	    	String name = this.getModelPartName(model.root(), part);
     	    	this.partNameCache.put(part, name);
     	    	return;
     	    }

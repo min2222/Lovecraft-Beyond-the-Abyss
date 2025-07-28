@@ -1,9 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.BoidGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.LimitSpeedAndLookInVelocityDirectionGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.StayInWaterGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.BTABoidGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -38,9 +36,7 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(5, new BoidGoal(this, 0.1F, 0.9F, 8 / 20.0F, 1 / 20.0F));
-        this.goalSelector.addGoal(3, new StayInWaterGoal(this));
-        this.goalSelector.addGoal(2, new LimitSpeedAndLookInVelocityDirectionGoal(this, 0.3F, 0.5F));
+        this.goalSelector.addGoal(5, new BTABoidGoal(this, 0.1F, 0.9F, 0.3F, 0.5F));
     }
 
 	@Override

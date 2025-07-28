@@ -161,6 +161,7 @@ public abstract class MixinEntity implements IDynamicLight
 	public void resetDynamicLight() 
 	{
 		this.lastLuminance = 0;
+		this.luminance = 0;
 	}
 
 	@Override
