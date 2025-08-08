@@ -1,6 +1,8 @@
 package com.min01.beyondtheabyss.world;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.world.structure.HutStructure;
+import com.min01.beyondtheabyss.world.structure.HutStructurePiece;
 import com.min01.beyondtheabyss.world.structure.SpireHollowStructure;
 import com.min01.beyondtheabyss.world.structure.SpireHollowStructurePiece;
 
@@ -16,5 +18,8 @@ public class BTAStructures
     public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registries.STRUCTURE_PIECE, BeyondtheAbyss.MODID);
 
     public static final RegistryObject<StructureType<SpireHollowStructure>> SPIRE_HOLLOW = STRUCTURE_TYPES.register("spire_hollow", () -> () -> SpireHollowStructure.CODEC);
+    public static final RegistryObject<StructureType<HutStructure>> HUT = STRUCTURE_TYPES.register("hut", () -> () -> HutStructure.CODEC);
+    
+    public static final RegistryObject<StructurePieceType.StructureTemplateType> HUT_PIECE = STRUCTURE_PIECE_TYPES.register("hut_piece", () -> HutStructurePiece::new);
     public static final RegistryObject<StructurePieceType> SPIRE_HOLLOW_PIECE = STRUCTURE_PIECE_TYPES.register("spire_hollow_piece", () -> SpireHollowStructurePiece::new);
 }

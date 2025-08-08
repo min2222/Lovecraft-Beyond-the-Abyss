@@ -114,5 +114,19 @@
 			"beyondtheabyss:entity/siamserpent_death1",
 			"beyondtheabyss:entity/siamserpent_death2"
 		]
+	},
+	"siamserpent_beam_charge": {
+		"sounds": [
+			"beyondtheabyss:entity/siamserpent_beam_charge1",
+			"beyondtheabyss:entity/siamserpent_beam_charge2",
+			"beyondtheabyss:entity/siamserpent_beam_charge3"
+		]
+	},
+	"siamserpent_beam_shoot": {
+		"sounds": [
+			"beyondtheabyss:entity/siamserpent_beam_shoot1",
+			"beyondtheabyss:entity/siamserpent_beam_shoot2",
+			"beyondtheabyss:entity/siamserpent_beam_shoot3"
+		]
 	}
 }

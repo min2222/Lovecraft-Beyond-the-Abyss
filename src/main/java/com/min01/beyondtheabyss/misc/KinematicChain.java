@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 public class KinematicChain 
 {
 	protected Entity entity;
-	protected Vec3 target;
+	protected Vec3 target = Vec3.ZERO;
 	protected Vec3 anchorPos;
 	protected ChainSegment[] segments;
 	protected Vec2 initialRot = Vec2.ZERO;
@@ -63,63 +63,60 @@ public class KinematicChain
 	
 	public void tickBobbit()
 	{
-		if(this.target != null)
+		if(!this.target.equals(Vec3.ZERO))
 		{
-			if(!this.target.equals(Vec3.ZERO))
+			ChainSegment tip = this.getTipSegment();
+			Vec3 tipPos = tip.getPos();
+			Vec3 toTarget = this.target.subtract(tipPos);
+		    float actualDistance = (float)toTarget.length();
+		    float epsilon = 0.001F;
+		    if(actualDistance < epsilon)
+		    {
+		        tip.setPos(this.target);
+		    }
+		    else 
+		    {
+		        float moveDistance = Math.min(actualDistance, tip.distance);
+		        tip.setRot(this.lookAt(tipPos, this.target));
+		        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
+		    }
+		    
+			for(int i = 2; i < this.segments.length; i++)
 			{
-				ChainSegment tip = this.getTipSegment();
-				Vec3 tipPos = tip.getPos();
-				Vec3 toTarget = this.target.subtract(tipPos);
-			    float actualDistance = (float)toTarget.length();
-			    float epsilon = 0.001F;
-			    if(actualDistance < epsilon)
-			    {
-			        tip.setPos(this.target);
-			    }
-			    else 
-			    {
-			        float moveDistance = Math.min(actualDistance, tip.distance);
-			        tip.setRot(this.lookAt(tipPos, this.target));
-			        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
-			    }
-			    
-				for(int i = 2; i < this.segments.length; i++)
-				{
-					int index = i - 1;
-					ChainSegment current = this.segments[this.segments.length - i];
-					ChainSegment next = this.segments[this.segments.length - index];
-					current.setRot(this.lookAt(current.getPos(), next.getPos()));
-					current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
-				}
-				
-				for(int i = 0; i < this.segments.length - 1; i++)
+				int index = i - 1;
+				ChainSegment current = this.segments[this.segments.length - i];
+				ChainSegment next = this.segments[this.segments.length - index];
+				current.setRot(this.lookAt(current.getPos(), next.getPos()));
+				current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
+			}
+			
+			for(int i = 0; i < this.segments.length - 1; i++)
+			{
+				ChainSegment current = this.segments[i];
+				ChainSegment next = this.segments[i + 1];
+				current.setRot(this.lookAt(current.getPos(), next.getPos()));
+				next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, next.distance));
+			}
+		}
+		else if(this.anchorPos != null)
+		{
+			ChainSegment tip = this.getTipSegment();
+			if(tip.getPos().distanceTo(this.anchorPos) > 2.0F)
+			{
+				for(int i = 1; i < this.segments.length; i++)
 				{
 					ChainSegment current = this.segments[i];
-					ChainSegment next = this.segments[i + 1];
-					current.setRot(this.lookAt(current.getPos(), next.getPos()));
-					next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, next.distance));
+					ChainSegment next = this.segments[i - 1];
+					Vec2 rot = this.lookAt(current.getPos(), next.getPos());
+					current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, current.distance));
 				}
 			}
-			else if(this.anchorPos != null)
+			else
 			{
-				ChainSegment tip = this.getTipSegment();
-				if(tip.getPos().distanceTo(this.anchorPos) > 2.0F)
+				for(ChainSegment segment : this.segments)
 				{
-					for(int i = 1; i < this.segments.length; i++)
-					{
-						ChainSegment current = this.segments[i];
-						ChainSegment next = this.segments[i - 1];
-						Vec2 rot = this.lookAt(current.getPos(), next.getPos());
-						current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, current.distance));
-					}
-				}
-				else
-				{
-					for(ChainSegment segment : this.segments)
-					{
-						segment.setRot(this.initialRot);
-						segment.setPos(this.anchorPos);
-					}
+					segment.setRot(this.initialRot);
+					segment.setPos(this.anchorPos);
 				}
 			}
 		}
@@ -133,7 +130,7 @@ public class KinematicChain
 	public void tick() 
 	{
 		//TODO
-		if(this.target != null)
+		if(!this.target.equals(Vec3.ZERO))
 		{
 			if(this.entity instanceof AbstractForneusPart)
 			{

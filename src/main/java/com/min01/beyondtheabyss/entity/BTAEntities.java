@@ -22,6 +22,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.projectile.EntityEnergyBall;
 import com.min01.beyondtheabyss.entity.projectile.EntityForneusMagic;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
 
@@ -46,6 +47,7 @@ public class BTAEntities
 	//projectile
 	public static final RegistryObject<EntityType<EntityThrownHarpoon>> THROWN_HARPOON = registerEntity("thrown_harpoon", EntityType.Builder.<EntityThrownHarpoon>of(EntityThrownHarpoon::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<EntityForneusMagic>> FORNEUS_MAGIC = registerEntity("forneus_magic", EntityType.Builder.<EntityForneusMagic>of(EntityForneusMagic::new, MobCategory.MISC).sized(0.5F, 0.5F));
+	public static final RegistryObject<EntityType<EntityEnergyBall>> ENERGY_BALL = registerEntity("energy_ball", EntityType.Builder.<EntityEnergyBall>of(EntityEnergyBall::new, MobCategory.MISC).sized(0.375F, 0.375F));
 
 	//living
 	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerEntity("ghidruth", createBuilder(EntityGhidruth::new, MobCategory.WATER_CREATURE).sized(5.2F, 4.5F));

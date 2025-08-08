@@ -27,6 +27,8 @@ public class BTASounds
 	public static final RegistryObject<SoundEvent> SIAMSERPENT_AMBIENT = registerSound("siamserpent_ambient");
 	public static final RegistryObject<SoundEvent> SIAMSERPENT_HURT = registerSound("siamserpent_hurt");
 	public static final RegistryObject<SoundEvent> SIAMSERPENT_DEATH = registerSound("siamserpent_death");
+	public static final RegistryObject<SoundEvent> SIAMSERPENT_BEAM_CHARGE = registerSound("siamserpent_beam_charge");
+	public static final RegistryObject<SoundEvent> SIAMSERPENT_BEAM_SHOOT = registerSound("siamserpent_beam_shoot");
 	
 	private static RegistryObject<SoundEvent> registerSound(String name) 
 	{

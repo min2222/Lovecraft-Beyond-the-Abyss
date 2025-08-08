@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 //https://github.com/Tomate0613/boids/tree/1.21
 //https://github.com/TheCymaera/minecraft-boids/tree/master
+//TODO
 public class BTABoidGoal extends Goal 
 {
     protected final Mob mob;
@@ -73,6 +73,11 @@ public class BTABoidGoal extends Goal
     public void lookAt()
     {
         Vec3 velocity = this.mob.getDeltaMovement();
+        double d0 = velocity.horizontalDistance();
+        this.mob.setYRot((float)(Mth.atan2(velocity.x, velocity.z) * (double)(180.0F / (float)Math.PI)));
+        this.mob.setXRot((float)(Mth.atan2(velocity.y, d0) * (double)(180.0F / (float)Math.PI)));
+        this.mob.yRotO = this.mob.getYRot();
+        this.mob.xRotO = this.mob.getXRot();
         double speed = velocity.length();
         if(speed < this.minSpeed)
         {
@@ -82,8 +87,8 @@ public class BTABoidGoal extends Goal
         {
             velocity = velocity.normalize().scale(this.maxSpeed);
         }
-        this.mob.setDeltaMovement(velocity);
-        this.mob.lookAt(Anchor.EYES, this.mob.position().add(velocity.scale(10)));
+        //this.mob.setDeltaMovement(velocity);
+        //this.mob.lookAt(Anchor.EYES, this.mob.position().add(velocity.scale(10)));
     }
     
     public void stayInWater()

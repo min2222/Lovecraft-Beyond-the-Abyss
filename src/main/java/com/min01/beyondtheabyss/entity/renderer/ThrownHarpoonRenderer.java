@@ -50,7 +50,6 @@ public class ThrownHarpoonRenderer extends EntityRenderer<EntityThrownHarpoon>
 		{
 			this.renderLeash(p_116111_, p_116113_, p_116114_, p_116115_, p_116111_.getOwner());
 		}
-		super.render(p_116111_, p_116112_, p_116113_, p_116114_, p_116115_, p_116116_);
 	}
 	
 	private void renderLeash(EntityThrownHarpoon p_115462_, float p_115463_, PoseStack p_115464_, MultiBufferSource p_115465_, Entity p_115466_)

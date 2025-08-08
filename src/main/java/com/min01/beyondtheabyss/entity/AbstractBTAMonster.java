@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.entity;
 
+import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
@@ -28,6 +29,7 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_USING_SKILL = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Vec3> LAST_LOOK_POS = SynchedEntityData.defineId(AbstractBTAMonster.class, BTAEntityDataSerializers.VEC3.get());
 
 	public Vec3[] posArray;
 	
@@ -63,6 +65,7 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 		this.entityData.define(CAN_MOVE, true);
 		this.entityData.define(IS_USING_SKILL, false);
 		this.entityData.define(HAS_TARGET, false);
+		this.entityData.define(LAST_LOOK_POS, Vec3.ZERO);
 	}
 	
 	@Override
@@ -135,9 +138,16 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 			{
 				this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
 			}
-			if(this.getBTAMobType().lookTarget && this.canLook())
+			if(this.getBTAMobType().lookTarget)
 			{
-				this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
+				if(this.canLook())
+				{
+					this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
+				}
+				else if(!this.getLastLookPos().equals(Vec3.ZERO))
+				{
+					this.lookAt(Anchor.EYES, this.getLastLookPos());
+				}
 			}
 		}
 	}
@@ -213,5 +223,15 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
     public int getAnimationState()
     {
         return this.entityData.get(ANIMATION_STATE);
+    }
+    
+    public void setLastLookPos(Vec3 value)
+    {
+        this.entityData.set(LAST_LOOK_POS, value);
+    }
+    
+    public Vec3 getLastLookPos()
+    {
+        return this.entityData.get(LAST_LOOK_POS);
     }
 }

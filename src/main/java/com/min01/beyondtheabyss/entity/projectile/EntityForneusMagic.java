@@ -19,6 +19,7 @@ public class EntityForneusMagic extends ThrowableProjectile
 	public float cylRadius = 1.5F;
 	public float cylAlpha = 1.0F;
 	public Vec2 rot;
+	
 	public EntityForneusMagic(EntityType<? extends EntityForneusMagic> p_37391_, Level p_37392_) 
 	{
 		super(p_37391_, p_37392_);

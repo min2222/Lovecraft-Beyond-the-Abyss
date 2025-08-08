@@ -6,7 +6,12 @@ import java.util.List;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterShotGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherChargeGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherSlashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.WormChain;
+import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -45,18 +50,25 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_HEAD = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_INVERT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.FLOAT);
 	
-	public final AnimationState chargeAnimationState = new AnimationState();
-	public final AnimationState shootStartAnimationState = new AnimationState();
-	public final AnimationState shootLoopAnimationState = new AnimationState();
-	public final AnimationState shootEndAnimationState = new AnimationState();
+	public final AnimationState rayChargeAnimationState = new AnimationState();
+	public final AnimationState rayStartAnimationState = new AnimationState();
+	public final AnimationState rayLoopAnimationState = new AnimationState();
+	public final AnimationState rayEndAnimationState = new AnimationState();
+	public final AnimationState blasterShotAnimationState = new AnimationState();
+	public final AnimationState blasterDisabledAnimationState = new AnimationState();
+	public final AnimationState slashRightAnimationState = new AnimationState();
+	public final AnimationState slashLeftAnimationState = new AnimationState();
+	public final AnimationState slasherChargeStartAnimationState = new AnimationState();
+	public final AnimationState slasherChargingAnimationState = new AnimationState();
+	public final AnimationState slasherDisabledAnimationState = new AnimationState();
 	
 	public EntitySiamserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(15);
+		this.noCulling = true;
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -64,7 +76,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 60.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F)
-        		.add(Attributes.FOLLOW_RANGE, 30.0F);
+        		.add(Attributes.FOLLOW_RANGE, 30.0F)
+        		.add(Attributes.ATTACK_DAMAGE, 6.0F);
     }
     
     @Override
@@ -75,7 +88,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
     	this.entityData.define(IS_DISABLED, false);
     	this.entityData.define(IS_DORMANT, false);
     	this.entityData.define(IS_HEAD, false);
-    	this.entityData.define(IS_INVERT, false);
     	this.entityData.define(BEAM_LENGTH, 0.0F);
     }
     
@@ -107,25 +119,56 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
         		case 1:
         		{
         			this.stopAllAnimationStates();
-        			this.chargeAnimationState.start(this.tickCount);
+        			this.rayChargeAnimationState.start(this.tickCount);
         			break;
         		}
         		case 2:
         		{
         			this.stopAllAnimationStates();
-        			this.shootStartAnimationState.start(this.tickCount);
+        			this.rayStartAnimationState.start(this.tickCount);
         			break;
         		}
         		case 3:
         		{
         			this.stopAllAnimationStates();
-        			this.shootLoopAnimationState.start(this.tickCount);
+        			this.rayLoopAnimationState.start(this.tickCount);
         			break;
         		}
         		case 4:
         		{
         			this.stopAllAnimationStates();
-        			this.shootEndAnimationState.start(this.tickCount);
+        			this.rayEndAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 5:
+        		{
+        			this.stopAllAnimationStates();
+        			if(this.random.nextBoolean())
+        			{
+            			this.slashRightAnimationState.start(this.tickCount);
+        			}
+        			else
+        			{
+            			this.slashLeftAnimationState.start(this.tickCount);
+        			}
+        			break;
+        		}
+        		case 6:
+        		{
+        			this.stopAllAnimationStates();
+        			this.blasterShotAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 7:
+        		{
+        			this.stopAllAnimationStates();
+        			this.slasherChargeStartAnimationState.start(this.tickCount);
+        			break;
+        		}
+        		case 8:
+        		{
+        			this.stopAllAnimationStates();
+        			this.slasherChargingAnimationState.start(this.tickCount);
         			break;
         		}
             }
@@ -135,10 +178,15 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public void stopAllAnimationStates() 
 	{
-		this.chargeAnimationState.stop();
-		this.shootStartAnimationState.stop();
-		this.shootLoopAnimationState.stop();
-		this.shootEndAnimationState.stop();
+		this.rayChargeAnimationState.stop();
+		this.rayStartAnimationState.stop();
+		this.rayLoopAnimationState.stop();
+		this.rayEndAnimationState.stop();
+		this.blasterShotAnimationState.stop();
+		this.slashRightAnimationState.stop();
+		this.slashLeftAnimationState.stop();
+		this.slasherChargeStartAnimationState.stop();
+		this.slasherChargingAnimationState.stop();
 	}
 	
 	@Override
@@ -146,6 +194,9 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	{
 		super.registerGoals();
 		this.goalSelector.addGoal(4, new SiamserpentBlasterBeamGoal(this));
+		this.goalSelector.addGoal(4, new SiamserpentBlasterShotGoal(this));
+		this.goalSelector.addGoal(4, new SiamserpentSlasherSlashGoal(this));
+		this.goalSelector.addGoal(4, new SiamserpentSlasherChargeGoal(this));
 	}
 	
 	@Override
@@ -153,12 +204,24 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	{
 		super.tick();
 		
+		if(this.level.isClientSide)
+		{
+			this.blasterDisabledAnimationState.animateWhen(this.getHeadType() == HeadType.BLASTER && this.isDisabled(), this.tickCount);
+			this.slasherDisabledAnimationState.animateWhen(this.getHeadType() == HeadType.SLASHER && this.isDisabled(), this.tickCount);
+		}
+		
+		if(this.getHealth() <= this.getMaxHealth() / 2.0F)
+		{
+			this.setDisabled(true);
+		}
+		
 		//blaster laser
 		if(this.getAnimationTick() <= 0)
 		{
 			if(this.getAnimationState() == 3)
 			{
 				this.setCanLook(true);
+				this.setCanMove(true);
 				this.setAnimationState(4);
 				this.setAnimationTick(5);
 			}
@@ -192,6 +255,69 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	            {
 	            	t.hurt(this.damageSources().mobAttack(this), 0.5F);
 	            });
+			}
+		}
+	}
+	
+	@Override
+	public void setupWorms()
+	{
+		if(this.worms == null)
+		{
+			Worm[] worms = new Worm[this.getChainLength()];
+			for(int i = 0; i < worms.length; i++) 
+			{
+			    worms[i] = new Worm();
+			}
+			this.worms = worms;
+		}
+		else
+		{
+			for(int i = 0; i < this.worms.length; i++)
+			{
+				float speed = this.getChainSpeed();
+				float distance = this.getSegmentDistance(i);
+				Worm worm = this.worms[i];
+				if(worm != null)
+				{
+					worm.setOldPosAndRot();
+					if(i == 0)
+					{
+						WormChain.tick(worm, this, distance, speed);
+					}
+					else
+					{
+						Worm parent = this.worms[i - 1];
+						if(parent != null)
+						{
+							WormChain.tick(worm, parent, distance, speed);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void tickWorms(AbstractSiamserpentPart head)
+	{
+		if(head.worms != null && head.isHead())
+		{
+			Worm worm = head.worms[this.getIndex()];
+			if(worm != null)
+			{
+				Vec3 pos = head.position().add(worm.position());
+				Vec2 rot = worm.getRot(1.0F);
+				this.setPos(pos);
+				this.setXRot(-rot.x);
+				this.setYRot(rot.y + 180.0F);
+				this.setYHeadRot(rot.y + 180.0F);
+				this.setYBodyRot(rot.y + 180.0F);
+				
+				this.xRotO = -rot.x;
+				this.yRotO = rot.y + 180.0F;
+				this.yHeadRotO = rot.y + 180.0F;
+				this.yBodyRotO = rot.y + 180.0F;
 			}
 		}
 	}
@@ -262,7 +388,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		p_21484_.putBoolean("isDormant", this.isDormant());
 		p_21484_.putBoolean("isDisabled", this.isDisabled());
 		p_21484_.putBoolean("isHead", this.isHead());
-		p_21484_.putBoolean("isInvert", this.isInvert());
 	}
 	
 	@Override
@@ -285,16 +410,13 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		{
 			this.setHead(p_21450_.getBoolean("isHead"));
 		}
-		if(p_21450_.contains("isInvert"))
-		{
-			this.setInvert(p_21450_.getBoolean("isInvert"));
-		}
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
 	{
+		List<AbstractSiamserpentPart> list = new ArrayList<>();
 		this.setHead(true);
 		AbstractSiamserpentPart prev = this;
 		EntitySiamserpentBone bone = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
@@ -314,6 +436,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		bone.setHead(this);
 		prev = bone;
 		this.level.addFreshEntity(bone);
+		list.add(this);
+		list.add(bone);
 		for(int i = 0; i < 12; i++)
 		{
 			if(i < 10)
@@ -326,6 +450,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 				bone2.setHead(this);
 				prev = bone2;
 				this.level.addFreshEntity(bone2);
+				list.add(bone2);
 			}
 			else
 			{
@@ -340,6 +465,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 					bone2.setHead(this);
 					prev = bone2;
 					this.level.addFreshEntity(bone2);
+					list.add(bone2);
 				}
 				if(i == 11)
 				{
@@ -349,14 +475,22 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 					head.setHeadType(type);
 					head.setIndex(i + 1);
 					head.setPos(this.position());
-					head.setDormant(true);
 					head.setHead(this);
-					head.setInvert(true);
 					this.setHead(head);
 					this.level.addFreshEntity(head);
+					list.add(head);
 				}
 			}
 		}
+		AbstractSiamserpentPart last = list.get(list.size() - 1);
+		for(int i = 0; i < list.size() - 1; i++)
+		{
+			AbstractSiamserpentPart part = list.get(i);
+			part.setOwner2(list.get(i + 1));
+			part.setHead2(last);
+		}
+		this.setOwner2(list.get(1));
+		last.setOwner2(null);
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 
@@ -368,16 +502,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public float getBeamLength()
 	{
 		return this.entityData.get(BEAM_LENGTH);
-	}
-	
-	public void setInvert(boolean value)
-	{
-		this.entityData.set(IS_INVERT, value);
-	}
-	
-	public boolean isInvert()
-	{
-		return this.entityData.get(IS_INVERT);
 	}
 	
 	public void setDormant(boolean value)

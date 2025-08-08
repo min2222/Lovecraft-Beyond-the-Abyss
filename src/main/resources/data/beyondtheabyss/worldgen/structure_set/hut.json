@@ -1,0 +1,14 @@
+{
+	"placement": {
+		"type": "minecraft:random_spread",
+		"salt": 827598697,
+		"separation": 8,
+		"spacing": 32
+	},
+	"structures": [
+		{
+			"structure": "beyondtheabyss:hut",
+			"weight": 1
+		}
+	]
+}

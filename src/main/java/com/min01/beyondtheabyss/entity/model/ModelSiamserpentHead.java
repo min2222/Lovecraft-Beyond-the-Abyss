@@ -71,18 +71,25 @@ public class ModelSiamserpentHead extends HierarchicalModel<EntitySiamserpentHea
 	public void setupAnim(EntitySiamserpentHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("SiamserpentSlasher"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
-		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBlaster"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentSlasher"), netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBlaster"), netHeadYaw, headPitch);
 		this.root.getChild("SiamserpentSlasher").visible = entity.getHeadType() == HeadType.SLASHER;
 		this.root.getChild("SiamserpentBlaster").visible = entity.getHeadType() == HeadType.BLASTER;
 		this.root.getChild("SiamserpentBlaster").getChild("RayofEnergy").visible = false;
 		this.root.getChild("SiamserpentBlaster").getChild("InnerRay").visible = false;
 		this.root.getChild("SiamserpentBlaster").getChild("RayofEnergy").zScale += entity.getBeamLength();
 		this.root.getChild("SiamserpentBlaster").getChild("InnerRay").zScale += entity.getBeamLength() + (entity.getBeamLength() / 2.0F);
-		this.animate(entity.chargeAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_CHARGE, ageInTicks);
-		this.animate(entity.shootStartAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_START, ageInTicks);
-		this.animate(entity.shootLoopAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_LOOP, ageInTicks);
-		this.animate(entity.shootEndAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_END, ageInTicks);
+		this.animate(entity.rayChargeAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_CHARGE, ageInTicks);
+		this.animate(entity.rayStartAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_START, ageInTicks);
+		this.animate(entity.rayLoopAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_LOOP, ageInTicks);
+		this.animate(entity.rayEndAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_END, ageInTicks);
+		this.animate(entity.blasterShotAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOT, ageInTicks);
+		this.animate(entity.blasterDisabledAnimationState, SiamserpentAnimation.BlasterAnimation.BLASTER_DISABLED, ageInTicks);
+		this.animate(entity.slashRightAnimationState, SiamserpentAnimation.SlasherAnimation.SLASHER_SLASH_RIGHT, ageInTicks);
+		this.animate(entity.slashLeftAnimationState, SiamserpentAnimation.SlasherAnimation.SLASHER_SLASH_LEFT, ageInTicks);
+		this.animate(entity.slasherChargeStartAnimationState, SiamserpentAnimation.SlasherAnimation.SLASHER_CHARGE_START, ageInTicks);
+		this.animate(entity.slasherChargingAnimationState, SiamserpentAnimation.SlasherAnimation.SLASHER_CHARGING, ageInTicks);
+		this.animate(entity.slasherDisabledAnimationState, SiamserpentAnimation.SlasherAnimation.SLASHER_DISABLED, ageInTicks);
 	}
 
 	@Override

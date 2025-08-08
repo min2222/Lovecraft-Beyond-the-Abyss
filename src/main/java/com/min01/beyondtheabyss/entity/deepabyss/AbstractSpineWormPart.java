@@ -17,10 +17,7 @@ public abstract class AbstractSpineWormPart extends AbstractWormPart<AbstractSpi
 	@Override
 	protected void doPush(Entity p_21294_)
 	{
-		if(!(p_21294_ instanceof AbstractSpineWormPart))
-		{
-			super.doPush(p_21294_);
-		}
+		
 	}
 	
 	@Override

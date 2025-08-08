@@ -59,15 +59,48 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		if(this.getOwner() != null)
 		{
     		this.hurtTime = this.getOwner().hurtTime;
-    		this.deathTime = this.getOwner().deathTime;
-    				
+    		this.deathTime = this.getOwner().deathTime;	
 		}
 		else if(!this.isHead() && !this.isUnloaded())
 		{
 			this.discard();
 		}
 		
-		if(this.isHead())
+		this.setupWorms();
+		
+		if(this.getHead() != null && this.isWormChain())
+		{
+			T head = this.getHead();
+			this.tickWorms(head);
+		}
+	}
+	
+	public void tickWorms(T head)
+	{
+		if(head.worms != null && head.isHead())
+		{
+			Worm worm = head.worms[this.getIndex()];
+			if(worm != null)
+			{
+				Vec3 pos = head.position().add(worm.position());
+				Vec2 rot = worm.getRot(1.0F);
+				this.setPos(pos);
+				this.setXRot(rot.x);
+				this.setYRot(rot.y);
+				this.setYHeadRot(rot.y);
+				this.setYBodyRot(rot.y);
+				
+				this.xRotO = rot.x;
+				this.yRotO = rot.y;
+				this.yHeadRotO = rot.y;
+				this.yBodyRotO = rot.y;
+			}
+		}
+	}
+	
+	public void setupWorms()
+	{
+		if(this.isHead() && this.isWormChain())
 		{
 			if(this.worms == null)
 			{
@@ -78,7 +111,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 				}
 				this.worms = worms;
 			}
-			else if(this.isWormChain())
+			else
 			{
 				for(int i = 0; i < this.worms.length; i++)
 				{
@@ -101,30 +134,6 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 							}
 						}
 					}
-				}
-			}
-		}
-		
-		if(this.getHead() != null && this.isWormChain())
-		{
-			T head = this.getHead();
-			if(head.worms != null)
-			{
-				Worm worm = head.worms[this.getIndex()];
-				if(worm != null)
-				{
-					Vec3 pos = head.position().add(worm.position());
-					Vec2 rot = worm.getRot(1.0F);
-					this.setPos(pos);
-					this.setXRot(rot.x);
-					this.setYRot(rot.y);
-					this.setYHeadRot(rot.y);
-					this.setYBodyRot(rot.y);
-					
-					this.xRotO = rot.x;
-					this.yRotO = rot.y;
-					this.yHeadRotO = rot.y;
-					this.yBodyRotO = rot.y;
 				}
 			}
 		}

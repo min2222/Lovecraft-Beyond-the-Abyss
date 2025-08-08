@@ -165,30 +165,46 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     @OnlyIn(Dist.CLIENT)
 	public void clientTick(HierarchicalModel<T> model)
 	{
-    	Map<String, PartState> lastStates = new HashMap<>();
-    	ModelPart root = this.root(model);
-    	root.getAllParts().forEach(part -> 
+    	if(this.entity.useSubRoot())
     	{
-    	    if(!this.partNameCache.containsKey(part))
-    	    {
-    	    	String name = this.getModelPartName(model.root(), part);
-    	    	this.partNameCache.put(part, name);
-    	    	return;
-    	    }
-    	    String name = this.partNameCache.get(part);
-    	    Part p = this.partMap.get(name);
-    	    if(p != null)
-    	    {
-    	        PartState current = new PartState(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-    	        PartState last = lastStates.get(name);
-    	        if(last == null || current.changed(last))
-    	        {
-    	            p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-    	            BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
-    	            lastStates.put(name, current);
-    	        }
-    	    }
-    	});
+        	model.root().getAllParts().forEach(part -> 
+        	{
+    			String name = this.getModelPartName2(model.root(), part);
+    			Part p = this.partMap.get(name);
+    			if(p != null)
+    			{
+    				p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+    				BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
+    			}
+    		});
+    	}
+    	else
+    	{
+        	Map<String, PartState> lastStates = new HashMap<>();
+        	ModelPart root = this.root(model);
+        	root.getAllParts().forEach(part -> 
+        	{
+        	    if(!this.partNameCache.containsKey(part))
+        	    {
+        	    	String name = this.getModelPartName(model.root(), part);
+        	    	this.partNameCache.put(part, name);
+        	    	return;
+        	    }
+        	    String name = this.partNameCache.get(part);
+        	    Part p = this.partMap.get(name);
+        	    if(p != null)
+        	    {
+        	        PartState current = new PartState(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+        	        PartState last = lastStates.get(name);
+        	        if(last == null || current.changed(last))
+        	        {
+        	            p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+        	            BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
+        	            lastStates.put(name, current);
+        	        }
+        	    }
+        	});
+    	}
 	}
 
     @OnlyIn(Dist.CLIENT)
@@ -287,6 +303,12 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
             this.partOffset.put(name, offset);
             return new AABB(-box.getXsize() / 2.0F, -box.getYsize() / 2.0F, -box.getZsize() / 2.0F, box.getXsize() / 2.0F, box.getYsize() / 2.0F, box.getZsize() / 2.0F);
         }
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    public String getModelPartName2(ModelPart root, ModelPart target) 
+    {
+    	return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -469,9 +491,8 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	
 	public Vec3 getOffset()
 	{
-		float offset = this.entity.useSubRoot() ? 0.0F : 1.5F;
         float waterOffset = this.isInWater() && !this.entity.isInWater() ? -this.getWaterOffset() : 0.0F;
-		return new Vec3(0.0F, offset + waterOffset, 0.0F);
+		return new Vec3(0.0F, 1.5F + waterOffset, 0.0F);
 	}
 	
 	public boolean isInWater()

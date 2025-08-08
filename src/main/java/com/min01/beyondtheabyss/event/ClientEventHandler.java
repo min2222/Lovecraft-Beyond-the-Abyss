@@ -24,6 +24,7 @@ import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
+import com.min01.beyondtheabyss.entity.model.ModelEnergyBall;
 import com.min01.beyondtheabyss.entity.model.ModelForneusBody;
 import com.min01.beyondtheabyss.entity.model.ModelForneusHead;
 import com.min01.beyondtheabyss.entity.model.ModelForneusTail;
@@ -43,6 +44,7 @@ import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
+import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
@@ -161,6 +163,7 @@ public class ClientEventHandler
     	//projectile
     	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FORNEUS_MAGIC.get(), ForneusMagicRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.ENERGY_BALL.get(), EnergyBallRenderer::new);
     	
     	//living
     	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);
@@ -206,6 +209,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelForneusHead.LAYER_LOCATION, ModelForneusHead::createBodyLayer);
     	event.registerLayerDefinition(ModelForneusBody.LAYER_LOCATION, ModelForneusBody::createBodyLayer);
     	event.registerLayerDefinition(ModelForneusTail.LAYER_LOCATION, ModelForneusTail::createBodyLayer);
+    	event.registerLayerDefinition(ModelEnergyBall.LAYER_LOCATION, ModelEnergyBall::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
 

@@ -102,7 +102,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		super.tick();
 		if(this.level.isClientSide)
 		{
-			this.idleAnimationState.animateWhen(this.getAnimationState() == 0 && !BTAUtil.isMoving(this), this.tickCount);
+			this.idleAnimationState.animateWhen(this.getAnimationState() == 0, this.tickCount);
 		}
 		if(this.chain == null)
 		{
@@ -114,6 +114,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 			this.chain.setOldPosAndRot();
 			this.chain.tickBobbit();
 			this.chain.setAnchorPos(Vec3.atBottomCenterOf(this.getAttachedPos()));
+			this.chain.setInitialRot(new Vec2(-90.0F, 0.0F));
 
 			if(this.getTarget() != null && this.canExtend())
 			{
@@ -139,7 +140,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 						BTANetwork.sendToAll(new UpdateVehiclePacket(this.getTarget(), this));
 					}
 				}
-				else
+				else if(!this.posArray[0].equals(Vec3.ZERO))
 				{
 					this.chain.setTarget(this.posArray[0]);
 				}
@@ -149,16 +150,17 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 			{
 				this.setCooldown(this.getCooldown() - 1);
 			}
-			
+
 			ChainSegment segment = this.chain.getTipSegment();
 			Vec3 pos = segment.getPos();
 			Vec2 rot = segment.getRot();
+			
 			this.setPos(pos);
 			this.setXRot(rot.x);
 			this.setYRot(rot.y);
 			this.setYBodyRot(rot.y);
 			this.setYHeadRot(rot.y);
-			
+
 			this.xRotO = rot.x;
 			this.yRotO = rot.y;
 			this.yHeadRotO = rot.y;
@@ -188,7 +190,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		this.setYRot(0.0F);
 		this.setYHeadRot(0.0F);
 		this.setYBodyRot(0.0F);
-		this.setXRot(this.getAttachedDirection().toYRot());
+		this.setXRot(0.0F);
 		
 		for(int i = 0; i < this.getChainLength(); i++)
 		{

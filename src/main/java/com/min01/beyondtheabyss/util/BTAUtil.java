@@ -46,7 +46,7 @@ public class BTAUtil
 {
 	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
-	
+	   
 	public static void createBallWithStep(Level level, Vec3 pos, double velocity, int size, int step, BiConsumer<Vec3, Vec3> consumer)
 	{
 		RandomSource random = level.random;

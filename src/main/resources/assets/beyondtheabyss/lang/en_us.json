@@ -10,6 +10,7 @@
 	"entity.beyondtheabyss.bta_camera_shake": "Camera Shake",
 	"entity.beyondtheabyss.thrown_harpoon": "Thrown Harpoon",
 	"entity.beyondtheabyss.forneus_magic": "Magic of Forneus",
+	"entity.beyondtheabyss.energy_ball": "Energy Ball",
 	"entity.beyondtheabyss.submarine": "Submarine",
 	"entity.beyondtheabyss.submarine_part": "Submarine",
 	"entity.beyondtheabyss.ghidruth": "Ghidruth, the Stone Shark",
@@ -150,5 +151,7 @@
 	"effect.beyondtheabyss.disorder": "Disorder",
 	"effect.beyondtheabyss.disorder.description": "make target move to random directions.",
 	"effect.beyondtheabyss.coordination": "Coordination",
-	"effect.beyondtheabyss.coordination.description": "increase stat depending on number of nearby mobs."
+	"effect.beyondtheabyss.coordination.description": "increase stat depending on number of nearby mobs.",
+	"message.beyondtheabyss.solomon": "???",
+	"message.beyondtheabyss.solomoncall": "Come here... %1$s"
 }
