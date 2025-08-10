@@ -11,7 +11,7 @@
 		"Name": "minecraft:water"
 	},
 	"noise": {
-		"min_y": -64,
+		"min_y": -160,
 		"height": 400,
 		"size_horizontal": 1,
 		"size_vertical": 2

@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.event;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.EntitySolomon;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityForneusHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
@@ -20,6 +21,7 @@ import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -27,6 +29,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent.Operation;
@@ -55,6 +58,8 @@ public class EventHandler
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) 
     {
+    	event.put(BTAEntities.SOLOMON.get(), EntitySolomon.createAttributes().build());
+    	
     	//deep abyss
     	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
     	event.put(BTAEntities.SUBMARINE.get(), EntitySubmarine.createMobAttributes().build());
@@ -86,5 +91,14 @@ public class EventHandler
     	event.register(BTAEntities.SPINE_WORM_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntitySpineWormHead::checkSpineWormSpawnRules, Operation.AND);
      	event.register(BTAEntities.GLOOMFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGloomfish::checkGloomfishSpawnRules, Operation.AND);
      	event.register(BTAEntities.CORPSE_ANGLER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCorpseAngler::checkCorpseAnglerSpawnRules, Operation.AND);
+    }
+    
+    @SubscribeEvent
+    public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event)
+    {
+    	if(event.getTabKey() == CreativeModeTabs.SPAWN_EGGS)
+    	{
+    		event.accept(BTAItems.SOLOMON_SPAWN_EGG.get());
+    	}
     }
 }

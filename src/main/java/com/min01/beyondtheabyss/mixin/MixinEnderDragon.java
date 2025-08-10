@@ -28,7 +28,47 @@ public class MixinEnderDragon
 	@Inject(at = @At(value = "HEAD"), method = "tickDeath")
 	private void tickDeath(CallbackInfo ci)
 	{
-		this.sendChat();
+		this.sendChat2();
+	}
+	
+	private void sendChat2()
+	{
+		EnderDragon dragon = EnderDragon.class.cast(this);
+		MinecraftServer server = dragon.level.getServer();
+		if(server == null)
+			return;
+		BTASavedData data = BTASavedData.get(server.getLevel(Level.OVERWORLD));
+		if(dragon.getDragonFight() != null && !dragon.getDragonFight().hasPreviouslyKilledDragon())
+		{
+			if(!data.getHutPos().equals(BlockPos.ZERO))
+			{
+				if(dragon.getLastAttacker() instanceof ServerPlayer player)
+				{
+					BlockPos pos = data.getHutPos();
+					if(dragon.dragonDeathTime == 0)
+					{
+						Component component = Component.translatable("message.beyondtheabyss.solomoncall1");
+						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+					}
+					if(dragon.dragonDeathTime == 40)
+					{
+						Component component = Component.translatable("message.beyondtheabyss.solomoncall2");
+						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+					}
+					if(dragon.dragonDeathTime == 80)
+					{
+						Component component = Component.translatable("message.beyondtheabyss.solomoncall3");
+						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+					}
+					//note : lasthurtbymob become null after 100 ticks;
+					if(dragon.dragonDeathTime == 90)
+					{
+						Component component = Component.translatable("message.beyondtheabyss.solomoncall4", "x: " + pos.getX() + ", z: " + pos.getZ());
+						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+					}
+				}
+			}
+		}
 	}
 	
 	private void sendChat()

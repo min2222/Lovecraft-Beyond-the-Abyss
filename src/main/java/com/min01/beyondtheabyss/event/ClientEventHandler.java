@@ -11,9 +11,11 @@ import com.min01.beyondtheabyss.block.model.ModelBoneWallTorch;
 import com.min01.beyondtheabyss.block.model.ModelChainTrap;
 import com.min01.beyondtheabyss.block.model.ModelFallenSkeleton;
 import com.min01.beyondtheabyss.block.model.ModelFangSkull;
+import com.min01.beyondtheabyss.block.model.ModelGlaringBarnacle;
 import com.min01.beyondtheabyss.block.model.ModelLargeSkull;
 import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
 import com.min01.beyondtheabyss.block.model.ModelSittingSkeleton;
+import com.min01.beyondtheabyss.blockentity.renderer.AnimatableBlockRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.BiocrafterRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.ChainTrapRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
@@ -39,6 +41,7 @@ import com.min01.beyondtheabyss.entity.model.ModelMutavore;
 import com.min01.beyondtheabyss.entity.model.ModelOverseer;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentHead;
+import com.min01.beyondtheabyss.entity.model.ModelSolomon;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
@@ -47,6 +50,7 @@ import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
+import com.min01.beyondtheabyss.entity.renderer.SolomonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
@@ -105,6 +109,7 @@ public class ClientEventHandler
     {
         BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
         BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
+        BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);
         BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
         BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
         ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
@@ -166,6 +171,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.ENERGY_BALL.get(), EnergyBallRenderer::new);
     	
     	//living
+    	event.registerEntityRenderer(BTAEntities.SOLOMON.get(), SolomonRenderer::new);
     	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);
     	event.registerEntityRenderer(BTAEntities.GNASHER.get(), GnasherRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SIAMSERPENT_HEAD.get(), SiamserpentHeadRenderer::new);
@@ -190,6 +196,7 @@ public class ClientEventHandler
     public static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
     	//entities
+    	event.registerLayerDefinition(ModelSolomon.LAYER_LOCATION, ModelSolomon::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruth.LAYER_LOCATION, ModelGhidruth::createBodyLayer);
     	event.registerLayerDefinition(ModelSubmarine.LAYER_LOCATION, ModelSubmarine::createBodyLayer);
     	event.registerLayerDefinition(ModelGnasher.LAYER_LOCATION, ModelGnasher::createBodyLayer);
@@ -231,6 +238,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelBoneLeverOn.LAYER_LOCATION, ModelBoneLeverOn::createBodyLayer);
     	event.registerLayerDefinition(ModelChainTrap.LAYER_LOCATION, ModelChainTrap::createBodyLayer);
     	event.registerLayerDefinition(ModelBiocrafter.LAYER_LOCATION, ModelBiocrafter::createBodyLayer);
+    	event.registerLayerDefinition(ModelGlaringBarnacle.LAYER_LOCATION, ModelGlaringBarnacle::createBodyLayer);
 
     	//items
     	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);

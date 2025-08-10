@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,8 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 //https://github.com/Tomate0613/boids/tree/1.21
-//https://github.com/TheCymaera/minecraft-boids/tree/master
-//TODO
 public class BTABoidGoal extends Goal 
 {
     protected final Mob mob;
@@ -64,8 +63,8 @@ public class BTABoidGoal extends Goal
     {
     	if(!this.canBoid())
     		return;
-        this.mob.addDeltaMovement(this.cohesion().scale(0.006));
-        this.mob.addDeltaMovement(this.alignment().scale(0.06));
+        this.mob.addDeltaMovement(this.cohesion());
+        this.mob.addDeltaMovement(this.alignment());
         this.mob.addDeltaMovement(this.separation());
         this.lookAt();
     }
@@ -73,11 +72,11 @@ public class BTABoidGoal extends Goal
     public void lookAt()
     {
         Vec3 velocity = this.mob.getDeltaMovement();
-        double d0 = velocity.horizontalDistance();
+        /*double d0 = velocity.horizontalDistance();
         this.mob.setYRot((float)(Mth.atan2(velocity.x, velocity.z) * (double)(180.0F / (float)Math.PI)));
         this.mob.setXRot((float)(Mth.atan2(velocity.y, d0) * (double)(180.0F / (float)Math.PI)));
         this.mob.yRotO = this.mob.getYRot();
-        this.mob.xRotO = this.mob.getXRot();
+        this.mob.xRotO = this.mob.getXRot();*/
         double speed = velocity.length();
         if(speed < this.minSpeed)
         {
@@ -87,8 +86,8 @@ public class BTABoidGoal extends Goal
         {
             velocity = velocity.normalize().scale(this.maxSpeed);
         }
-        //this.mob.setDeltaMovement(velocity);
-        //this.mob.lookAt(Anchor.EYES, this.mob.position().add(velocity.scale(10)));
+        this.mob.setDeltaMovement(velocity);
+        this.mob.lookAt(Anchor.EYES, this.mob.position().add(velocity.scale(10)));
     }
     
     public void stayInWater()
@@ -136,32 +135,34 @@ public class BTABoidGoal extends Goal
     
     public Vec3 cohesion()
 	{
-		Vec3 center = Vec3.ZERO;
-		if(this.nearbyMobs.isEmpty())
-		{
-			return Vec3.ZERO;
-		}
-		for(Mob other : this.nearbyMobs)
-		{
-			center = center.add(other.position());
-		}
-		center = center.scale(1.0 / this.nearbyMobs.size());
-		return center.subtract(this.mob.position());
+        if(this.nearbyMobs.isEmpty()) 
+        {
+        	return Vec3.ZERO;
+        }
+        Vec3 c = Vec3.ZERO;
+        for(Mob nearbyMob : this.nearbyMobs)
+        {
+            c = c.add(nearbyMob.position());
+        }
+        c = c.scale(1.0F / this.nearbyMobs.size());
+        c = c.subtract(this.mob.position());
+        return c.scale(1 / 20.0F);
 	}
     
 	public Vec3 alignment()
 	{
-		Vec3 avg = Vec3.ZERO;
-		if(this.nearbyMobs.isEmpty())
-		{
-			return Vec3.ZERO;
-		}
-		for(Mob other : this.nearbyMobs)
-		{
-			avg = avg.add(other.getDeltaMovement());
-		}
-		avg = avg.scale(1.0 / this.nearbyMobs.size());
-		return avg;
+        if(this.nearbyMobs.isEmpty()) 
+        {
+        	return Vec3.ZERO;
+        }
+        Vec3 c = Vec3.ZERO;
+        for(Mob nearbyMob : this.nearbyMobs)
+        {
+            c = c.add(nearbyMob.getDeltaMovement());
+        }
+        c = c.scale(1.0F / this.nearbyMobs.size());
+        c = c.subtract(this.mob.getDeltaMovement());
+        return c.scale(8 / 20.0F);
 	}
 
     public static List<? extends Mob> getNearbyEntitiesOfSameClass(Mob mob)

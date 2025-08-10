@@ -25,8 +25,8 @@ public class GnasherBoidGoal extends BTABoidGoal
     		return;
     	if(this.mob.getTarget() == null)
     	{
-            this.mob.addDeltaMovement(this.cohesion().scale(0.006));
-            this.mob.addDeltaMovement(this.alignment().scale(0.06));
+            this.mob.addDeltaMovement(this.cohesion());
+            this.mob.addDeltaMovement(this.alignment());
             this.lookAt();
     	}
         this.mob.addDeltaMovement(this.separation());
@@ -35,23 +35,24 @@ public class GnasherBoidGoal extends BTABoidGoal
 	@Override
     public Vec3 cohesion() 
     {
-		Vec3 center = Vec3.ZERO;
-		if(this.nearbyMobs.isEmpty())
-		{
-			return Vec3.ZERO;
-		}
-		for(Mob other : this.nearbyMobs)
-		{
-        	if(other instanceof EntityGnasher leader && this.mob instanceof EntityGnasher gnasher)
+        if(this.nearbyMobs.isEmpty()) 
+        {
+        	return Vec3.ZERO;
+        }
+        Vec3 c = Vec3.ZERO;
+        for(Mob nearbyMob : this.nearbyMobs)
+        {
+        	if(nearbyMob instanceof EntityGnasher leader && this.mob instanceof EntityGnasher gnasher)
         	{
         		if(leader.isLeader())
         		{
             		gnasher.setLeader(leader);
         		}
         	}
-			center = center.add(other.position());
-		}
-		center = center.scale(1.0 / this.nearbyMobs.size());
-		return center.subtract(this.mob.position());
+            c = c.add(nearbyMob.position());
+        }
+        c = c.scale(1.0F / this.nearbyMobs.size());
+        c = c.subtract(this.mob.position());
+        return c.scale(1 / 20.0F);
     }
 }

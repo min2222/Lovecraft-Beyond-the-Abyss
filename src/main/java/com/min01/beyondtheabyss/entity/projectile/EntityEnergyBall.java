@@ -57,4 +57,20 @@ public class EntityEnergyBall extends ThrowableProjectile
 		super.onHitBlock(p_37258_);
 		this.discard();
 	}
+	
+	@Override
+	public void tick()
+	{
+		super.tick();
+		if(this.tickCount >= 100)
+		{
+			this.discard();
+		}
+	}
+	
+	@Override
+	public boolean isInWater() 
+	{
+		return false;
+	}
 }

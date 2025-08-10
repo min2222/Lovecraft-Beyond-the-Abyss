@@ -3,14 +3,8 @@
 	"config": {
 		"feature": {
 			"feature": {
-				"type": "beyondtheabyss:bone",
+				"type": "beyondtheabyss:bone_patch",
 				"config": {
-					"structures": [
-						"beyondtheabyss:deepabyss/bone_1",
-						"beyondtheabyss:deepabyss/bone_2",
-						"beyondtheabyss:deepabyss/bone_3",
-						"beyondtheabyss:deepabyss/bone_4"
-					]
 				}
 			},
 			"placement": [
@@ -25,8 +19,8 @@
 				}
 			]
 		},
-		"tries": 1,
-		"xz_spread": 16,
+		"tries": 32,
+		"xz_spread": 7,
 		"y_spread": 3
 	}
 }

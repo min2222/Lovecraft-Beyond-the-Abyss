@@ -13,15 +13,14 @@
 					"predicate": {
 						"type": "minecraft:matching_blocks",
 						"blocks": [
-							"minecraft:air",
 							"minecraft:water"
 						]
 					}
 				}
 			]
 		},
-		"tries": 48,
-		"xz_spread": 7,
+		"tries": 64,
+		"xz_spread": 3,
 		"y_spread": 3
 	}
 }

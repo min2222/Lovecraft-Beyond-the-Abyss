@@ -135,6 +135,8 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 		if(this.isDisperse() && this.getNavigation().isDone())
 		{
 			this.setDisperse(false);
+			this.setCanMove(true);
+			this.setCanLook(true);
 		}
 		
 		if(this.getLeader() != null)
@@ -142,13 +144,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 			EntityGnasher leader = this.getLeader();
 			if(leader.isDisperse() && !this.isDisperse() && leader.getLastHurtByMob() != null)
 			{
-	    		this.setDisperse(true);
-				this.setTarget(null);
-		        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, leader.getLastHurtByMob().position());
-		        if(vec3 != null)
-		        {
-		        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
-		        }
+				this.disperse(leader.getLastHurtByMob().position());
 			}
 		}
     }
@@ -158,15 +154,22 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
     {
     	if(this.isLeader() && !this.isDisperse() && p_21016_.getDirectEntity() != null)
     	{
-    		this.setDisperse(true);
-			this.setTarget(null);
-	        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, p_21016_.getDirectEntity().position());
-	        if(vec3 != null)
-	        {
-	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
-	        }
+    		this.disperse(p_21016_.getDirectEntity().position());
     	}
     	return super.hurt(p_21016_, p_21017_);
+    }
+    
+    public void disperse(Vec3 pos)
+    {
+		this.setDisperse(true);
+		this.setTarget(null);
+		this.setCanMove(false);
+		this.setCanLook(false);
+        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, pos);
+        if(vec3 != null)
+        {
+        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
+        }
     }
     
 	@Override

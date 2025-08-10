@@ -30,6 +30,7 @@ public class EnergyBallRenderer extends EntityRenderer<EntityEnergyBall>
 		p_114488_.pushPose();
 		p_114488_.mulPose(Axis.YP.rotationDegrees(Mth.lerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot())));
 		p_114488_.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot())));
+		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0.0F, -1.5F, 0.0F);
 		this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.eyes(this.getTextureLocation(p_114485_))), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		p_114488_.popPose();

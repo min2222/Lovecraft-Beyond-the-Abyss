@@ -12,7 +12,7 @@
 					"argument1": "beyondtheabyss:deep_abyss/depth",
 					"argument2": {
 						"type": "minecraft:mul",
-						"argument1": "beyondtheabyss:deep_abyss/jaggedness",
+						"argument1": "minecraft:overworld/jaggedness",
 						"argument2": {
 							"type": "minecraft:half_negative",
 							"argument": {
@@ -24,7 +24,7 @@
 						}
 					}
 				},
-				"argument2": "beyondtheabyss:deep_abyss/factor"
+				"argument2": "minecraft:overworld/factor"
 			}
 		}
 	},

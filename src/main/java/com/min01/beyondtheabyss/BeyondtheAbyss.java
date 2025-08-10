@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.world.BTAChunkGenerators;
 import com.min01.beyondtheabyss.world.BTAFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTASurfaceRules;
+import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,6 +49,7 @@ public class BeyondtheAbyss
 		BTACreativeModeTabs.CREATIVE_MODE_TAB.register(bus);
 		BTAChunkGenerators.CHUNK_GENERATORS.register(bus);
 		BTASurfaceRules.RULE_SOURCES.register(bus);
+		BTAWorldCarvers.WORLD_CARVERS.register(bus);
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");

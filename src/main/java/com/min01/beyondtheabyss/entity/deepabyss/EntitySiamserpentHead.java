@@ -253,7 +253,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	            }
 	            arrayList.forEach(t -> 
 	            {
-	            	t.hurt(this.damageSources().mobAttack(this), 0.5F);
+	            	t.hurt(this.damageSources().indirectMagic(this, this), 6.0F);
 	            });
 			}
 		}

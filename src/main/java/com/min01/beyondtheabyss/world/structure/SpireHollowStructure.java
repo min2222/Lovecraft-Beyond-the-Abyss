@@ -28,7 +28,7 @@ public class SpireHollowStructure extends AbstractCaveGenerationStructure
     @Override
     public int getGenerateYHeight(WorldgenRandom random, int x, int y) 
     {
-        return -20;
+        return -60;
     }
 
     @Override

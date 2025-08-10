@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.blockentity.AnimatableBlockEntity;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
@@ -45,6 +46,7 @@ public class BTAItems
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
 	
 	//spawn eggs
+	public static final RegistryObject<Item> SOLOMON_SPAWN_EGG = registerSpawnEgg("solomon_spawn_egg", () -> BTAEntities.SOLOMON.get(), 5588543, 4339505);
 	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = registerSpawnEgg("ghidruth_spawn_egg", () -> BTAEntities.GHIDRUTH.get(), 862018, 10239048);
 	public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg("forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
 	public static final RegistryObject<Item> GNASHER_SPAWN_EGG = registerSpawnEgg("gnasher_spawn_egg", () -> BTAEntities.GNASHER.get(), 1318679, 3019282);
@@ -143,6 +145,13 @@ public class BTAItems
 	public static final RegistryObject<Item> CHAIN_TRAP = registerCustomRendererBlockItem("chain_trap", () -> BTABlocks.CHAIN_TRAP.get(), () -> new ChainTrapBlockEntity(BlockPos.ZERO, BTABlocks.CHAIN_TRAP.get().defaultBlockState()), new Item.Properties());
  	public static final RegistryObject<Item> TOOTHVINE = registerBlockItem("toothvine", () -> BTABlocks.TOOTHVINE.get(), new Item.Properties());
 	public static final RegistryObject<Item> BIOCRAFTER = registerCustomRendererBlockItem("biocrafter", () -> BTABlocks.BIOCRAFTER.get(), () -> new BiocrafterBlockEntity(BlockPos.ZERO, BTABlocks.BIOCRAFTER.get().defaultBlockState()), new Item.Properties());
+	public static final RegistryObject<Item> OYSTER_CORAL = registerBlockItem("oyster_coral", () -> BTABlocks.OYSTER_CORAL.get(), new Item.Properties());
+	public static final RegistryObject<Item> OSTEO_CORAL = registerBlockItem("osteo_coral", () -> BTABlocks.OSTEO_CORAL.get(), new Item.Properties());
+	public static final RegistryObject<Item> GUTS_CORAL = registerBlockItem("guts_coral", () -> BTABlocks.GUTS_CORAL.get(), new Item.Properties());
+	public static final RegistryObject<Item> SPINYWEED = registerBlockItem("spinyweed", () -> BTABlocks.SPINYWEED.get(), new Item.Properties());
+	public static final RegistryObject<Item> DEEPWEED = registerBlockItem("deepweed", () -> BTABlocks.DEEPWEED.get(), new Item.Properties());
+	public static final RegistryObject<Item> GLARING_BARNACLE = registerCustomRendererBlockItem("glaring_barnacle", () -> BTABlocks.GLARING_BARNACLE.get(), () -> new AnimatableBlockEntity(BlockPos.ZERO, BTABlocks.GLARING_BARNACLE.get().defaultBlockState()), new Item.Properties());
+	public static final RegistryObject<Item> RAFFLESIA_ANEMONE = registerBlockItem("rafflesia_anemone", () -> BTABlocks.RAFFLESIA_ANEMONE.get(), new Item.Properties());
 	
 	//weapons
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));

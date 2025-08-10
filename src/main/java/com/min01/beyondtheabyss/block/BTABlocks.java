@@ -12,8 +12,12 @@ import com.min01.beyondtheabyss.block.deepabyss.FallenSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FangSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.FishBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.GhoulBloomBlock;
+import com.min01.beyondtheabyss.block.deepabyss.GlaringBarnacleBlock;
 import com.min01.beyondtheabyss.block.deepabyss.JawBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.LargeSkullBlock;
+import com.min01.beyondtheabyss.block.deepabyss.NoBonemealSeagrassBlock;
+import com.min01.beyondtheabyss.block.deepabyss.NoDeadCoralPlantBlock;
+import com.min01.beyondtheabyss.block.deepabyss.RafflesiaAnemoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RibBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RiftwellingAltarBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RotSoilBlock;
@@ -24,11 +28,13 @@ import com.min01.beyondtheabyss.block.deepabyss.SpineBoneMiddleBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneTipBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvineBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvinePlantBlock;
+import com.min01.beyondtheabyss.blockentity.AnimatableBlockEntity;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
@@ -40,6 +46,8 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -87,6 +95,13 @@ public class BTABlocks
     public static final RegistryObject<Block> GHOUL_BLOOM = BLOCKS.register("ghoul_bloom", () -> new GhoulBloomBlock());
     public static final RegistryObject<Block> TOOTHVINE = BLOCKS.register("toothvine", () -> new ToothvineBlock());
     public static final RegistryObject<Block> TOOTHVINE_PLANT = BLOCKS.register("toothvine_plant", () -> new ToothvinePlantBlock());
+    public static final RegistryObject<Block> OYSTER_CORAL = BLOCKS.register("oyster_coral", () -> new NoDeadCoralPlantBlock(BlockBehaviour.Properties.copy(Blocks.BRAIN_CORAL).mapColor(DyeColor.PURPLE)));
+    public static final RegistryObject<Block> OSTEO_CORAL = BLOCKS.register("osteo_coral", () -> new NoDeadCoralPlantBlock(BlockBehaviour.Properties.copy(Blocks.BRAIN_CORAL).mapColor(DyeColor.WHITE)));
+    public static final RegistryObject<Block> GUTS_CORAL = BLOCKS.register("guts_coral", () -> new NoDeadCoralPlantBlock(BlockBehaviour.Properties.copy(Blocks.BRAIN_CORAL).mapColor(DyeColor.RED)));
+    public static final RegistryObject<Block> SPINYWEED = BLOCKS.register("spinyweed", () -> new NoBonemealSeagrassBlock(BlockBehaviour.Properties.copy(Blocks.SEAGRASS), false));
+    public static final RegistryObject<Block> DEEPWEED = BLOCKS.register("deepweed", () -> new NoBonemealSeagrassBlock(BlockBehaviour.Properties.copy(Blocks.SEAGRASS), false));
+    public static final RegistryObject<Block> GLARING_BARNACLE = BLOCKS.register("glaring_barnacle", () -> new GlaringBarnacleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.SLIME_BLOCK).noOcclusion().pushReaction(PushReaction.DESTROY)));
+    public static final RegistryObject<Block> RAFFLESIA_ANEMONE = BLOCKS.register("rafflesia_anemone", () -> new RafflesiaAnemoneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.SLIME_BLOCK).noOcclusion().pushReaction(PushReaction.DESTROY)));
     
     public static final RegistryObject<Block> CHISELED_BONE_BLOCK = BLOCKS.register("chiseled_bone_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     public static final RegistryObject<Block> CRACKED_BONE_BLOCK = BLOCKS.register("cracked_bone_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
@@ -119,6 +134,8 @@ public class BTABlocks
     		BTABlocks.BONE_WALL_TORCH.get(),
     		BTABlocks.BONE_WALL_TORCH.get(),
     		BTABlocks.BONE_LEVER.get()).build(null));
+    public static final RegistryObject<BlockEntityType<AnimatableBlockEntity>> ANIMATABLE_BLOCK_ENTITY = BLOCK_ENTITIES.register("animatable", () -> BlockEntityType.Builder.of(AnimatableBlockEntity::new, 
+    		BTABlocks.GLARING_BARNACLE.get()).build(null));
     public static final RegistryObject<BlockEntityType<ChainTrapBlockEntity>> CHAIN_TRAP_BLOCK_ENTITY = BLOCK_ENTITIES.register("chain_trap", () -> BlockEntityType.Builder.of(ChainTrapBlockEntity::new, BTABlocks.CHAIN_TRAP.get()).build(null));
     public static final RegistryObject<BlockEntityType<BiocrafterBlockEntity>> BIOCRAFTER_BLOCK_ENTITY = BLOCK_ENTITIES.register("biocrafter", () -> BlockEntityType.Builder.of(BiocrafterBlockEntity::new, BTABlocks.BIOCRAFTER.get()).build(null));
 }

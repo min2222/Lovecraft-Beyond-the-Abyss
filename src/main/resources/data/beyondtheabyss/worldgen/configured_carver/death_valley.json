@@ -1,5 +1,5 @@
 {
-	"type": "minecraft:canyon",
+	"type": "beyondtheabyss:trench",
 	"config": {
 		"debug_settings": {
 			"air_state": {
@@ -34,23 +34,22 @@
 			"distance_factor": {
 				"type": "minecraft:uniform",
 				"value": {
-					"max_exclusive": 1,
-					"min_inclusive": 0.75
+					"max_exclusive": 2,
+					"min_inclusive": 1.75
 				}
 			},
 			"horizontal_radius_factor": {
 				"type": "minecraft:uniform",
 				"value": {
-					"max_exclusive": 1,
-					"min_inclusive": 0.75
+					"max_exclusive": 3,
+					"min_inclusive": 2
 				}
 			},
 			"thickness": {
-				"type": "minecraft:trapezoid",
+				"type": "minecraft:uniform",
 				"value": {
-					"max": 6,
-					"min": 0,
-					"plateau": 2
+					"max_exclusive": 3,
+					"min_inclusive": 2
 				}
 			},
 			"vertical_radius_center_factor": 0,
@@ -60,19 +59,19 @@
 		"vertical_rotation": {
 			"type": "minecraft:uniform",
 			"value": {
-				"max_exclusive": 0.125,
-				"min_inclusive": -0.125
+				"max_exclusive": 0.05,
+				"min_inclusive": -0.05
 			}
 		},
 		"y": {
 			"type": "minecraft:uniform",
 			"max_inclusive": {
-				"absolute": 30
+				"absolute": 10
 			},
 			"min_inclusive": {
-				"absolute": -10
+				"absolute": -40
 			}
 		},
-		"yScale": 3
+		"yScale": 10
 	}
 }
