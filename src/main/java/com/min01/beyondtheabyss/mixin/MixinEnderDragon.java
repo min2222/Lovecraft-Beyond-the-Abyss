@@ -45,26 +45,28 @@ public class MixinEnderDragon
 				if(dragon.getLastAttacker() instanceof ServerPlayer player)
 				{
 					BlockPos pos = data.getHutPos();
+					Component solomon = Component.translatable("message.beyondtheabyss.solomon");
 					if(dragon.dragonDeathTime == 0)
 					{
 						Component component = Component.translatable("message.beyondtheabyss.solomoncall1");
-						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), solomon));
 					}
 					if(dragon.dragonDeathTime == 40)
 					{
 						Component component = Component.translatable("message.beyondtheabyss.solomoncall2");
-						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), solomon));
 					}
 					if(dragon.dragonDeathTime == 80)
 					{
 						Component component = Component.translatable("message.beyondtheabyss.solomoncall3");
-						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), solomon));
 					}
-					//note : lasthurtbymob become null after 100 ticks;
+					//note : lastHurtByMob become null after 100 ticks;
 					if(dragon.dragonDeathTime == 90)
 					{
 						Component component = Component.translatable("message.beyondtheabyss.solomoncall4", "x: " + pos.getX() + ", z: " + pos.getZ());
-						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), solomon));
+						data.setDragonKilled(true);
 					}
 				}
 			}
@@ -85,8 +87,9 @@ public class MixinEnderDragon
 				for(ServerPlayer player : server.getPlayerList().getPlayers())
 				{
 					BlockPos pos = data.getHutPos();
-					Component component = Component.translatable("message.beyondtheabyss.solomoncall", pos.getX() + ", " + pos.getZ());
-					player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), Component.translatable("message.beyondtheabyss.solomon")));
+					Component solomon = Component.translatable("message.beyondtheabyss.solomon");
+					Component component = Component.translatable("message.beyondtheabyss.solomoncall0", pos.getX() + ", " + pos.getZ());
+					player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), solomon));
 				}
 			}
 		}

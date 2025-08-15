@@ -12,6 +12,7 @@ public class BTASavedData extends SavedData
 {
 	public static final String NAME = "bta_data";
 	protected boolean isHutGenerated;
+	protected boolean isDragonKilled;
 	protected BlockPos hutPos = BlockPos.ZERO;
 	
     public static BTASavedData get(Level level)
@@ -29,6 +30,7 @@ public class BTASavedData extends SavedData
     {
     	BTASavedData data = new BTASavedData();
     	data.setHutGenerated(nbt.getBoolean("isHutGenerated"));
+    	data.setDragonKilled(nbt.getBoolean("isDragonKilled"));
     	data.setHutPos(NbtUtils.readBlockPos(nbt.getCompound("HutPos")));
         return data;
     }
@@ -37,6 +39,7 @@ public class BTASavedData extends SavedData
 	public CompoundTag save(CompoundTag nbt)
 	{
 		nbt.putBoolean("isHutGenerated", this.isHutGenerated);
+		nbt.putBoolean("isDragonKilled", this.isDragonKilled);
 		nbt.put("HutPos", NbtUtils.writeBlockPos(this.hutPos));
 		return nbt;
 	}
@@ -44,6 +47,12 @@ public class BTASavedData extends SavedData
 	public void setHutGenerated(boolean value)
 	{
 		this.isHutGenerated = value;
+		this.setDirty();
+	}
+	
+	public void setDragonKilled(boolean value)
+	{
+		this.isDragonKilled = value;
 		this.setDirty();
 	}
 	
@@ -61,5 +70,10 @@ public class BTASavedData extends SavedData
 	public boolean isHutGenerated()
 	{
 		return this.isHutGenerated;
+	}
+	
+	public boolean isDragonKilled()
+	{
+		return this.isDragonKilled;
 	}
 }

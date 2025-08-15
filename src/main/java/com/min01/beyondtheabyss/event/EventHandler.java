@@ -91,6 +91,7 @@ public class EventHandler
     	event.register(BTAEntities.SPINE_WORM_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntitySpineWormHead::checkSpineWormSpawnRules, Operation.AND);
      	event.register(BTAEntities.GLOOMFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGloomfish::checkGloomfishSpawnRules, Operation.AND);
      	event.register(BTAEntities.CORPSE_ANGLER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCorpseAngler::checkCorpseAnglerSpawnRules, Operation.AND);
+     	event.register(BTAEntities.MUTAVORE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityMutavore::checkMutavoreSpawnRules, Operation.AND);
     }
     
     @SubscribeEvent

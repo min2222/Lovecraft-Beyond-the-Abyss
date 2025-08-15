@@ -18,12 +18,12 @@ public class BTAShaders implements ResourceManagerReloadListener
 	protected static ExtendedPostChain SANDSTORM;
 
 	@Override
-	public void onResourceManagerReload(ResourceManager mgr)
+	public void onResourceManagerReload(ResourceManager manager)
 	{
 		this.clear();
 		try
 		{
-			init(mgr);
+			init(manager);
 		}
 		catch (IOException e)
 		{
@@ -31,7 +31,7 @@ public class BTAShaders implements ResourceManagerReloadListener
 		}
 	}
 
-	public static void init(ResourceManager mgr) throws IOException
+	public static void init(ResourceManager manager) throws IOException
 	{
 		MIST = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "mist"));
 		SANDSTORM = add(new ExtendedPostChain(BeyondtheAbyss.MODID, "sandstorm"));

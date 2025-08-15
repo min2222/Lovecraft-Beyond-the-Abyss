@@ -6,12 +6,17 @@ import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 
 public class EntityMutavore extends AbstractDeepAbyssMonster
 {
@@ -109,4 +114,9 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	{
 		return !this.hasTarget() ? 3 : 5;
 	}
+	
+	public static boolean checkMutavoreSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
+    }
 }

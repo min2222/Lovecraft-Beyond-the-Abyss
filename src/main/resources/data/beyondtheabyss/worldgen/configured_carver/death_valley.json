@@ -1,5 +1,5 @@
 {
-	"type": "beyondtheabyss:trench",
+	"type": "beyondtheabyss:crack",
 	"config": {
 		"debug_settings": {
 			"air_state": {
@@ -28,21 +28,21 @@
 		"lava_level": {
 			"above_bottom": 8
 		},
-		"probability": 0.01,
+		"probability": 0.03,
 		"replaceable": "#beyondtheabyss:death_valley_replaceables",
 		"shape": {
 			"distance_factor": {
 				"type": "minecraft:uniform",
 				"value": {
-					"max_exclusive": 2,
-					"min_inclusive": 1.75
+					"max_exclusive": 1,
+					"min_inclusive": 0.75
 				}
 			},
 			"horizontal_radius_factor": {
 				"type": "minecraft:uniform",
 				"value": {
-					"max_exclusive": 3,
-					"min_inclusive": 2
+					"max_exclusive": 1,
+					"min_inclusive": 0.75
 				}
 			},
 			"thickness": {

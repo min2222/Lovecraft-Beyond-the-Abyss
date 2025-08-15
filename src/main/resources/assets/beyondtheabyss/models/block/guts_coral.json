@@ -2,6 +2,7 @@
 	"render_type": "cutout",
 	"texture_size": [64, 64],
 	"textures": {
+		"particle": "beyondtheabyss:item/guts_coral",
 		"0": "beyondtheabyss:block/guts_coral"
 	},
 	"elements": [

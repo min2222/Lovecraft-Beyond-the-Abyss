@@ -76,7 +76,7 @@
 											"argument1": {
 												"type": "minecraft:y_clamped_gradient",
 												"from_y": 40,
-												"to_y": 350,
+												"to_y": 250,
 												"from_value": 1,
 												"to_value": 0
 											},
@@ -149,7 +149,7 @@
 				"if_true": {
 					"type": "minecraft:y_above",
 					"anchor": {
-						"below_top": 180
+						"absolute": 180
 					},
 					"surface_depth_multiplier": 0,
 					"add_stone_depth": false
@@ -177,7 +177,7 @@
 							"if_true": {
 								"type": "minecraft:y_above",
 								"anchor": {
-									"above_bottom": 40
+									"above_bottom": 110
 								},
 								"surface_depth_multiplier": 0,
 								"add_stone_depth": true
@@ -235,10 +235,10 @@
 					"type": "minecraft:vertical_gradient",
 					"random_name": "beyondtheabyss:deep_abyssalith",
 					"true_at_and_below": {
-						"above_bottom": 6
+						"above_bottom": 0
 					},
 					"false_at_and_above": {
-						"above_bottom": 80
+						"above_bottom": 160
 					}
 				},
 				"then_run": {

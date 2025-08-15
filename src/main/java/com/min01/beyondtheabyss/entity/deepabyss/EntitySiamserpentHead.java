@@ -377,7 +377,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
     {
 		//TODO spawn in only nearby of giant fossil structure;
 		//LocateCommand
-		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
 	
 	@Override

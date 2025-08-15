@@ -44,7 +44,7 @@ public class GnasherBoidGoal extends BTABoidGoal
         {
         	if(nearbyMob instanceof EntityGnasher leader && this.mob instanceof EntityGnasher gnasher)
         	{
-        		if(leader.isLeader())
+        		if(leader.isLeader() && !gnasher.isLeader())
         		{
             		gnasher.setLeader(leader);
         		}

@@ -15,7 +15,7 @@ import net.minecraft.world.entity.Entity;
 @Mixin(ServerLevel.class)
 public class MixinServerLevel
 {
-	//lambda$tick$6 for dev enviroment
+	//lambda$tick$6 for dev environment
 	//m_184063_ for actual game play
 	@Inject(at = @At("HEAD"), method = "lambda$tick$6", cancellable = true)
 	private void tick(ProfilerFiller profilerfiller, Entity p_184065_, CallbackInfo ci)

@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.WormChain;
@@ -14,14 +13,17 @@ import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -29,6 +31,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.phys.Vec3;
 
 public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 {
@@ -209,8 +213,20 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	
 	public static boolean checkCorpseAnglerSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ROT_SOIL.get()) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
+	{
+		if(p_21436_ == MobSpawnType.NATURAL)
+		{
+			Vec3 pos = Vec3.atBottomCenterOf(p_21434_.getHeightmapPos(Types.OCEAN_FLOOR_WG, this.blockPosition()).above());
+			this.moveTo(pos);
+		}
+		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+	}
 	
 	public void spawnParticle()
 	{

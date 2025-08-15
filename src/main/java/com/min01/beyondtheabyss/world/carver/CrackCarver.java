@@ -17,9 +17,10 @@ import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
-public class TrenchCarver extends WorldCarver<CanyonCarverConfiguration> 
+//CanyonWorldCarver
+public class CrackCarver extends WorldCarver<CanyonCarverConfiguration> 
 {
-	public TrenchCarver(Codec<CanyonCarverConfiguration> p_64711_) 
+	public CrackCarver(Codec<CanyonCarverConfiguration> p_64711_) 
 	{
 		super(p_64711_);
 	}
@@ -37,7 +38,7 @@ public class TrenchCarver extends WorldCarver<CanyonCarverConfiguration>
 		double d0 = (double) p_224819_.getBlockX(p_224817_.nextInt(16));
 		int j = p_224814_.y.sample(p_224817_, p_224813_);
 		double d1 = (double) p_224819_.getBlockZ(p_224817_.nextInt(16));
-		float f = p_224817_.nextFloat() * ((float) Math.PI * 2F);
+		float f = p_224817_.nextFloat() * ((float) Math.PI * 2.0F);
 		float f1 = p_224814_.verticalRotation.sample(p_224817_);
 		double d2 = (double) p_224814_.yScale.sample(p_224817_);
 		float f2 = p_224814_.shape.thickness.sample(p_224817_);
@@ -45,28 +46,22 @@ public class TrenchCarver extends WorldCarver<CanyonCarverConfiguration>
 		this.doCarve(p_224813_, p_224814_, p_224815_, p_224816_, p_224817_.nextLong(), p_224818_, d0, (double) j, d1, f2, f, f1, 0, k, d2, p_224820_);
 		return true;
 	}
-
-	//ChatGPT ahh;
+	
+	//FIXME cut off appears at end of canyon
 	private void doCarve(CarvingContext context, CanyonCarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeGetter, long seed, Aquifer aquifer, double x, double y, double z, float thickness, float horizontalAngle, float verticalAngle, int startStep, int totalSteps, double yScale, CarvingMask mask)
 	{
 	    RandomSource random = RandomSource.create(seed);
 	    float[] widthFactors = this.initWidthFactors(context, config, random);
-
-	    float horizontalWiggleAmplitude = 0.02F;
-	    float horizontalWiggleSpeed = 0.02F;
 	    float verticalWiggleAmplitude = 0.005F;
-
-	    float meanderPhase = random.nextFloat() * 1000F;
 
 	    for(int i = startStep; i < totalSteps; ++i)
 	    {
-	        float meanderOffset = Mth.sin(meanderPhase + i * horizontalWiggleSpeed) * horizontalWiggleAmplitude;
-	        horizontalAngle += meanderOffset;
-
+	        double taperFactor = 0.1F + Mth.sin((float)i * (float)Math.PI / (float)totalSteps);
+	        
 	        verticalAngle += (random.nextFloat() - 0.5F) * verticalWiggleAmplitude;
 	        verticalAngle = Mth.clamp(verticalAngle, -0.1F, 0.1F);
 
-	        double horizontalRadius = thickness;
+	        double horizontalRadius = thickness * taperFactor;
 	        double verticalRadius = thickness * yScale;
 
 	        horizontalRadius *= config.shape.horizontalRadiusFactor.sample(random);
@@ -81,10 +76,17 @@ public class TrenchCarver extends WorldCarver<CanyonCarverConfiguration>
 
 	        if(random.nextInt(3) != 0)
 	        {
-	            if(!canReach(chunk.getPos(), x, z, i, totalSteps, thickness))
+	            if(!canReach(chunk.getPos(), x, z, i, totalSteps, (float)horizontalRadius))
 	                return;
-
 	            this.carveEllipsoid(context, config, chunk, biomeGetter, aquifer, x, y, z, horizontalRadius, verticalRadius, mask, (ctx, dx, dy, dz, index) -> this.shouldSkip(ctx, widthFactors, dx, dy, dz, index));
+	        }
+
+	        if(random.nextInt(10) == 0 && i > totalSteps / 4 && i < totalSteps - 5)
+	        {
+	            float newHorizontalAngle = horizontalAngle + (random.nextFloat() - random.nextFloat()) * (float)Math.PI * 0.5F;
+	            float newVerticalAngle = verticalAngle + (random.nextFloat() - random.nextFloat()) * (float)Math.PI * 0.5F;
+	            int newTotalSteps = totalSteps / 3 + random.nextInt(totalSteps / 2);
+	            this.doCarve(context, config, chunk, biomeGetter, random.nextLong(), aquifer, x, y, z, thickness / 2.0F, newHorizontalAngle, newVerticalAngle, 0, newTotalSteps, yScale, mask);
 	        }
 	    }
 	}
@@ -113,7 +115,6 @@ public class TrenchCarver extends WorldCarver<CanyonCarverConfiguration>
 	    return factor * p_224802_ * Mth.randomBetween(p_224801_, 0.75F, 1.0F);
 	}
 
-	//ChatGPT ahh;
 	private boolean shouldSkip(CarvingContext context, float[] widthFactors, double dx, double dy, double dz, int y)
 	{
 	    int heightIndex = y - context.getMinGenY();

@@ -1,6 +1,6 @@
 {
 	"type": "beyondtheabyss:hut",
-	"biomes": "#minecraft:is_forest",
+	"biomes": "#minecraft:is_taiga",
 	"spawn_overrides": {
 	},
 	"step": "surface_structures"

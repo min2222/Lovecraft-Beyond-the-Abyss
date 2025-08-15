@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -32,6 +31,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
@@ -185,6 +185,17 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
 	{
+		if(p_21436_ == MobSpawnType.NATURAL)
+		{
+			BlockPos blockPos = p_21434_.getHeightmapPos(Types.OCEAN_FLOOR_WG, this.blockPosition());
+			if(!p_21434_.getBlockState(blockPos).is(Blocks.WATER))
+			{
+				blockPos = blockPos.above();
+			}
+			Vec3 pos = Vec3.atBottomCenterOf(blockPos);
+			this.moveTo(pos);
+		}
+		
 		AbstractSpineWormPart prev = this;
 		this.setAttachedPos(this.blockPosition());
 		this.setYRot(0.0F);
@@ -208,7 +219,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	
 	public static boolean checkSpineWormSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pServerLevel.getBlockState(pPos.below()).is(BTABlocks.ROT_SOIL.get()) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
     
     @Override

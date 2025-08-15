@@ -43,7 +43,7 @@
 				"maxCount": 1
 			},
 			{
-				"type": "beyondtheabyss:spine_worm",
+				"type": "beyondtheabyss:spine_worm_head",
 				"weight": 60,
 				"minCount": 1,
 				"maxCount": 1
@@ -57,6 +57,12 @@
 			{
 				"type": "beyondtheabyss:corpse_angler",
 				"weight": 60,
+				"minCount": 1,
+				"maxCount": 1
+			},
+			{
+				"type": "beyondtheabyss:mutavore",
+				"weight": 40,
 				"minCount": 1,
 				"maxCount": 1
 			}

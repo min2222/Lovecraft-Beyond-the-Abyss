@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.world;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.world.carver.TrenchCarver;
+import com.min01.beyondtheabyss.world.carver.CrackCarver;
 
 import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
@@ -13,5 +13,5 @@ public class BTAWorldCarvers
 {
     public static final DeferredRegister<WorldCarver<?>> WORLD_CARVERS = DeferredRegister.create(ForgeRegistries.WORLD_CARVERS, BeyondtheAbyss.MODID);
     
-    public static final RegistryObject<TrenchCarver> TRENCH = WORLD_CARVERS.register("trench", () -> new TrenchCarver(CanyonCarverConfiguration.CODEC));
+    public static final RegistryObject<CrackCarver> CRACK = WORLD_CARVERS.register("crack", () -> new CrackCarver(CanyonCarverConfiguration.CODEC));
 }
