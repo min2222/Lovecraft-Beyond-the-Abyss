@@ -12,6 +12,7 @@ import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.world.BTAChunkGenerators;
+import com.min01.beyondtheabyss.world.BTADensityFunctions;
 import com.min01.beyondtheabyss.world.BTAFeatures;
 import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTASurfaceRules;
@@ -50,6 +51,7 @@ public class BeyondtheAbyss
 		BTAChunkGenerators.CHUNK_GENERATORS.register(bus);
 		BTASurfaceRules.RULE_SOURCES.register(bus);
 		BTAWorldCarvers.WORLD_CARVERS.register(bus);
+		BTADensityFunctions.DENSITY_FUNCTIONS.register(bus);
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");

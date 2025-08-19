@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.util;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,6 +26,18 @@ import net.minecraft.world.phys.Vec3;
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
+	
+	public static Vector3f projectWorldToScreen(Vector3f worldPos, Matrix4f viewMatrix, Matrix4f projMatrix, int screenWidth, int screenHeight) 
+	{
+	    Vector4f clipPos = projMatrix.transform(viewMatrix.transform(new Vector4f(worldPos, 1.0F)));
+	    clipPos.x /= clipPos.w;
+	    clipPos.y /= clipPos.w;
+	    clipPos.z /= clipPos.w;
+	    float screenX = (clipPos.x * 0.5F + 0.5F) * screenWidth;
+	    float screenY = (1.0F - (clipPos.y * 0.5F + 0.5F)) * screenHeight;
+	    float depth = clipPos.z * 0.5F + 0.5F;
+	    return new Vector3f(screenX, screenY, depth);
+	}
 	
 	public static void drawRing(float innerRadius, float outerRadius, float innerHeight, float outerHeight, float centerRatio, int segments, PoseStack stack, MultiBufferSource buffer, Vector4f innerColor, Vector4f centerColor, Vector4f outerColor, int light, RenderType renderType, Vec3 center) 
 	{

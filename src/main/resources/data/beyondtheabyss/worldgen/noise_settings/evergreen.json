@@ -1,7 +1,7 @@
 {
 	"aquifers_enabled": true,
 	"default_block": {
-		"Name": "minecraft:sandstone"
+		"Name": "minecraft:stone"
 	},
 	"default_fluid": {
 		"Name": "minecraft:lava",
@@ -24,7 +24,7 @@
 			"xz_scale": 1,
 			"y_scale": 0.5
 		},
-		"continents": "minecraft:overworld/continents",
+		"continents": "beyondtheabyss:evergreen/circular",
 		"depth": "minecraft:overworld/depth",
 		"erosion": "minecraft:overworld/erosion",
 		"final_density": {
@@ -136,22 +136,11 @@
 																			}
 																		}
 																	},
-																	"argument2": "minecraft:overworld/caves/entrances"
+																	"argument2": 1
 																},
-																"argument2": {
-																	"type": "minecraft:add",
-																	"argument1": "minecraft:overworld/caves/spaghetti_2d",
-																	"argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
-																}
+																"argument2": 1
 															},
-															"argument2": {
-																"type": "minecraft:range_choice",
-																"input": "minecraft:overworld/caves/pillars",
-																"max_exclusive": 0.03,
-																"min_inclusive": -1000000,
-																"when_in_range": -1000000,
-																"when_out_of_range": "minecraft:overworld/caves/pillars"
-															}
+															"argument2": 1
 														}
 													}
 												}
@@ -164,7 +153,7 @@
 					}
 				}
 			},
-			"argument2": "minecraft:overworld/caves/noodle"
+			"argument2": "minecraft:overworld/sloped_cheese"
 		},
 		"fluid_level_floodedness": {
 			"type": "minecraft:noise",
@@ -416,29 +405,84 @@
 						{
 							"type": "minecraft:condition",
 							"if_true": {
-								"type": "minecraft:biome",
-								"biome_is": [
-									"beyondtheabyss:endless_desert"
-								]
+								"type": "minecraft:stone_depth",
+								"offset": 0,
+								"surface_type": "floor",
+								"add_surface_depth": false,
+								"secondary_depth_range": 0
 							},
 							"then_run": {
 								"type": "minecraft:condition",
 								"if_true": {
-									"type": "minecraft:stone_depth",
-									"offset": 5,
-									"surface_type": "floor",
-									"add_surface_depth": false,
-									"secondary_depth_range": 0
+									"type": "minecraft:water",
+									"offset": -1,
+									"surface_depth_multiplier": 0,
+									"add_stone_depth": false
 								},
 								"then_run": {
-									"type": "minecraft:block",
-									"result_state": {
-										"Name": "minecraft:sand"
+									"type": "minecraft:condition",
+									"if_true": {
+										"type": "minecraft:biome",
+										"biome_is": [
+											"beyondtheabyss:forest1",
+											"beyondtheabyss:forest2",
+											"beyondtheabyss:forest3",
+											"beyondtheabyss:foggy_plains"
+										]
+									},
+									"then_run": {
+										"type": "minecraft:sequence",
+										"sequence": [
+											{
+												"type": "minecraft:condition",
+												"if_true": {
+													"type": "minecraft:stone_depth",
+													"offset": 0,
+													"surface_type": "ceiling",
+													"add_surface_depth": false,
+													"secondary_depth_range": 0
+												},
+												"then_run": {
+													"type": "minecraft:block",
+													"result_state": {
+														"Name": "minecraft:dirt"
+													}
+												}
+											},
+											{
+												"type": "minecraft:block",
+												"result_state": {
+													"Name": "minecraft:grass_block"
+												}
+											}
+										]
 									}
 								}
 							}
 						}
 					]
+				}
+			},
+			{
+				"type": "minecraft:condition",
+				"if_true": {
+					"type": "minecraft:vertical_gradient",
+					"false_at_and_above": {
+						"absolute": 8
+					},
+					"random_name": "minecraft:deepslate",
+					"true_at_and_below": {
+						"absolute": 0
+					}
+				},
+				"then_run": {
+					"type": "minecraft:block",
+					"result_state": {
+						"Name": "minecraft:deepslate",
+						"Properties": {
+							"axis": "y"
+						}
+					}
 				}
 			}
 		]

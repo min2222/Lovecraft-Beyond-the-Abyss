@@ -51,5 +51,5 @@ void main() {
     // Mix the original color with the fog color
     col = mix(col, fogColor, fogFactor);
 
-    fragColor = vec4(col, 1.0);;
+    fragColor = vec4(col, 1.0);
 }

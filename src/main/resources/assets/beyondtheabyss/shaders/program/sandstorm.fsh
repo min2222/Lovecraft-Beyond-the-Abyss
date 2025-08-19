@@ -3,6 +3,7 @@
 uniform sampler2D DiffuseSampler;
 uniform sampler2D DepthSampler;
 uniform sampler2D ImageSampler;
+uniform sampler2D SandSampler;
 
 uniform ivec2 iResolution;
 uniform vec2 OutSize;
@@ -103,6 +104,9 @@ void main() {
 
     float rz = march(ro, rd, fg, texCoord, timeX, timeY, depth);
     fg = pow(fg, 0.35);  // controls fog thickness falloff
+    
+    float mask = texture(SandSampler, texCoord).r; 
+    fg *= mask;
 
     vec3 col = texture(DiffuseSampler, texCoord).rgb;
     vec3 fogColor = vec3(0.784, 0.604, 0.373);

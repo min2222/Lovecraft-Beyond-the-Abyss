@@ -65,12 +65,6 @@ description=''''''
     ordering="NONE"
     side="BOTH"
 [[dependencies.beyondtheabyss]]
-    modId="aes"
-    mandatory=true
-    versionRange="[1.0.0,)"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.beyondtheabyss]]
     modId="gravityapi"
     mandatory=true
     versionRange="[1.0.0,)"
