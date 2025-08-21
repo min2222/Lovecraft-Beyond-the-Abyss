@@ -34,10 +34,10 @@ public class ExtendedPostChain extends PostChain
 	@Override
 	public void process(float frameTime)
 	{
-		Window w = BTAClientUtil.MC.getWindow();
-		if(this.screenWidth != w.getWidth() || this.screenHeight != w.getHeight())
+		Window window = BTAClientUtil.MC.getWindow();
+		if(this.screenWidth != window.getWidth() || this.screenHeight != window.getHeight())
 		{
-			this.resize(w.getWidth(), w.getHeight());
+			this.resize(window.getWidth(), window.getHeight());
 		}
 		super.process(frameTime);
 	}

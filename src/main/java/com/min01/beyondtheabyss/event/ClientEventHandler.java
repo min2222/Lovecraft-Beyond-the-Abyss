@@ -84,12 +84,18 @@ import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.particle.WaterParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
+import com.min01.beyondtheabyss.shader.BTAWorldShader;
+import com.min01.beyondtheabyss.world.BTABiomes;
+import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.effects.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.effects.MirroredCityDimensionSpecialEffects;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -128,6 +134,17 @@ public class ClientEventHandler
         {
         	return FlashlightItem.isOn(p_174585_) ? 1.0F : 0.0F;
         });
+        BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, t -> BTAShaders.getPlainFog(), (t, u) -> 
+        {
+        	BlockPos surface = t.getHeightmapPos(Types.WORLD_SURFACE_WG, new BlockPos(0, 256, 0));
+        	return new Vec3(0, surface.getY(), 0);
+        }, (shader, pos) -> {}, (t, u) -> t.getBiome(u).is(BTABiomes.FOGGY_PLAINS) && t.canSeeSky(u), true, "FogSampler");
+        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, t -> BTAShaders.getFog(), (t, u) -> u, (shader, pos) -> {});
+        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, t -> BTAShaders.getSandstorm(), (t, u) -> 
+        {
+        	BlockPos surface = t.getHeightmapPos(Types.WORLD_SURFACE_WG, new BlockPos(0, 256, 0));
+        	return new Vec3(0, surface.getY(), 0);
+        }, (shader, pos) -> {}, (t, u) -> t.canSeeSky(u), true, "SandSampler");
     }
     
     @SubscribeEvent

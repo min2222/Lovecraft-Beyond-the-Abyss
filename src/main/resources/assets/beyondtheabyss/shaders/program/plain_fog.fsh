@@ -3,6 +3,7 @@
 uniform sampler2D DiffuseSampler;
 uniform sampler2D DepthSampler;
 uniform sampler2D ImageSampler;
+uniform sampler2D FogSampler;
 
 uniform ivec2 iResolution;
 uniform vec2 OutSize;
@@ -43,6 +44,13 @@ void main() {
     
     // Linearize the depth
     float linearDepth = linearizeDepth(depth);
+    
+    float maskDepth = linearizeDepth(texture(FogSampler, texCoord).r);
+    if(maskDepth <= 0.0) 
+    	discard;
+    	
+    if(maskDepth > depth)
+    	discard;
     
     // Calculate fog factor
     float noiseValue = noise((texCoord * iResolution + iTime * 0.05) * 0.1);

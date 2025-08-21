@@ -10,6 +10,7 @@ import net.minecraft.world.level.biome.Biome;
 public class BTABiomes 
 {
 	public static final ResourceKey<Biome> SPIRE_HOLLOW = register("spire_hollow");
+	public static final ResourceKey<Biome> FOGGY_PLAINS = register("foggy_plains");
 	   
 	public static ResourceKey<Biome> register(String name)
 	{

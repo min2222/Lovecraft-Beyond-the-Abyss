@@ -27,6 +27,25 @@ public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
 	
+	public static Vector3f unprojectScreenToWorld(float screenX, float screenY, float depth, Matrix4f viewMatrix, Matrix4f projMatrix, int screenWidth, int screenHeight) 
+	{
+		float ndcX = (screenX / screenWidth) * 2.0F - 1.0F;
+		float ndcY = 1.0F - (screenY / screenHeight) * 2.0F;
+		float ndcZ = depth * 2.0F - 1.0F;
+		
+		Vector4f clipPos = new Vector4f(ndcX, ndcY, ndcZ, 1.0F);
+		
+		Matrix4f invProj = new Matrix4f(projMatrix).invert();
+		Vector4f viewPos = invProj.transform(clipPos);
+		viewPos.div(viewPos.w);
+		
+		Matrix4f invView = new Matrix4f(viewMatrix).invert();
+		Vector4f worldPos = invView.transform(viewPos);
+		worldPos.div(worldPos.w);
+	
+		return new Vector3f(worldPos.x, worldPos.y, worldPos.z);
+	}
+	
 	public static Vector3f projectWorldToScreen(Vector3f worldPos, Matrix4f viewMatrix, Matrix4f projMatrix, int screenWidth, int screenHeight) 
 	{
 	    Vector4f clipPos = projMatrix.transform(viewMatrix.transform(new Vector4f(worldPos, 1.0F)));
