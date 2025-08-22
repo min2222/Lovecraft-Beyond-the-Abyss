@@ -93,12 +93,12 @@ public class BTAWorldShader
 					else
 					{
 						this.update(renderChunksInFrustum, camEntity);
-						this.apply(mtx, frameTime, playerPos, this.texture.getId());
+						this.apply(mtx, frameTime, playerPos);
 					}
 				}
 				else
 				{
-					this.apply(mtx, frameTime, playerPos, -1);
+					this.apply(mtx, frameTime, playerPos);
 				}
 				mtx.popPose();
 			}
@@ -212,28 +212,28 @@ public class BTAWorldShader
 	    this.texture.upload();
 	}
 	
-	public void apply(PoseStack mtx, float frameTime, Vec3 pos, int texId)
+	public void apply(PoseStack mtx, float frameTime, Vec3 pos)
 	{
-		Minecraft mc = BTAClientUtil.MC;
+		Minecraft minecraft = BTAClientUtil.MC;
 
 		ExtendedPostChain shaderChain = this.shader.apply(this.world);
 		EffectInstance shader = shaderChain.getMainShader();
 
 		if(shader != null)
 		{
-			shader.safeGetUniform("iResolution").set(mc.getWindow().getWidth(), mc.getWindow().getHeight());
-			shader.setSampler("ImageSampler", () -> mc.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
-			if(texId != -1)
+			shader.safeGetUniform("iResolution").set(minecraft.getWindow().getWidth(), minecraft.getWindow().getHeight());
+			shader.setSampler("ImageSampler", () -> minecraft.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
+			if(!this.samplerName.equals(""))
 			{
-				shader.setSampler(this.samplerName + "Sampler", () -> texId);
+				shader.setSampler(this.samplerName + "Sampler", () -> this.texture.getId());
 			}
 			shader.safeGetUniform("InverseTransformMatrix").set(getInverseTransformMatrix(this.inverseMat, mtx.last().pose()));
 			shader.safeGetUniform("ViewMatrix").set(mtx.last().pose());
 			shader.safeGetUniform("ProjectionMatrix").set(RenderSystem.getProjectionMatrix());
-			shader.safeGetUniform("iTime").set((((float) (mc.level.getGameTime() % 2400000)) + frameTime) / 20.0F);
+			shader.safeGetUniform("iTime").set((((float) (minecraft.level.getGameTime() % 2400000)) + frameTime) / 20.0F);
 			this.effect.accept(shader, pos);
 			shaderChain.process(frameTime);
-			mc.getMainRenderTarget().bindWrite(false);
+			minecraft.getMainRenderTarget().bindWrite(false);
 		}
 	}
 	

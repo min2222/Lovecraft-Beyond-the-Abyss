@@ -54,7 +54,7 @@ void main() {
 	fogFactor *= mask;
 	
 	if(worldDepth < depth + 0.001) {
-	    col = mix(col, fogColor, fogFactor);
+		col = mix(col, fogColor, fogFactor);
 	}
 
     fragColor = vec4(col, 1.0);
