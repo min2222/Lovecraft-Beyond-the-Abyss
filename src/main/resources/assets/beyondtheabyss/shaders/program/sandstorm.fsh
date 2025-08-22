@@ -8,6 +8,9 @@ uniform sampler2D SandSampler;
 uniform ivec2 iResolution;
 uniform vec2 OutSize;
 uniform float iTime;
+uniform mat4 InverseTransformMatrix;
+uniform mat4 ViewMatrix;
+uniform mat4 ProjectionMatrix;
 
 in vec2 texCoord;
 in vec4 near_4;
@@ -95,14 +98,23 @@ float march(vec3 ro, vec3 rd, out float drift, vec2 scUV, float timeX, float tim
 void main() {
     vec3 ro = near_4.xyz / near_4.w;
     vec3 rd = normalize(far_4.xyz / far_4.w - ro);
-
-    float depth = linearizeDepth(texture(DepthSampler, texCoord).r);
+	
+	float depth = texture(DepthSampler, texCoord).r;
+	float linearizeDepth = linearizeDepth(depth);
+	
+	vec2 ndc = texCoord * 2.0 - 1.0;
+	vec4 clipPos = vec4(ndc, depth, 1.0);
+	vec4 worldPosH = InverseTransformMatrix * clipPos;
+	vec3 worldPos = worldPosH.xyz / worldPosH.w;
+	
+	vec4 clipPos2 = ProjectionMatrix * ViewMatrix * vec4(worldPos, 1.0);
+	float worldDepth = clipPos2.z / clipPos2.w * 0.5 + 0.5;
 
     float fg;
     float timeX = iTime * 7.0;
     float timeY = iTime * 0.5;
 
-    float rz = march(ro, rd, fg, texCoord, timeX, timeY, depth);
+    float rz = march(ro, rd, fg, texCoord, timeX, timeY, linearizeDepth);
     fg = pow(fg, 0.35);  // controls fog thickness falloff
     
     float mask = texture(SandSampler, texCoord).r; 
@@ -111,6 +123,8 @@ void main() {
     vec3 col = texture(DiffuseSampler, texCoord).rgb;
     vec3 fogColor = vec3(0.784, 0.604, 0.373);
 
-    col = mix(col, fogColor, fg);
+    if(worldDepth < depth + 0.001) {
+    	col = mix(col, fogColor, fg);
+    }
     fragColor = vec4(col, 1.0);
 }

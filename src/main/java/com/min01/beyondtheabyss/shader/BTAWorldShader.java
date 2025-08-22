@@ -1,7 +1,5 @@
 package com.min01.beyondtheabyss.shader;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -10,10 +8,6 @@ import java.util.function.Function;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL21;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
@@ -45,7 +39,6 @@ public class BTAWorldShader
 	
 	private boolean setup = true;
     private DynamicTexture texture;
-    private DepthReader depthReader;
     
     private final ResourceKey<Level> world;
     private final Function<ResourceKey<Level>, ExtendedPostChain> shader;
@@ -127,8 +120,7 @@ public class BTAWorldShader
 		        maskImage.setPixelRGBA(x, y, 0x00000000);
 		    }
 		}
-
-		this.depthReader = new DepthReader(width, height);
+		
 		this.texture.upload();
     }
 	
@@ -147,18 +139,18 @@ public class BTAWorldShader
 		float fov = (float) Math.toRadians(minecraft.options.fov().get());
 		float aspectRatio = (float) width / (float) height;
 		float near = 0.05F;
-		float far = 1000F;
+		float far = 1000.0F;
 		Matrix4f projMatrix = new Matrix4f().perspective(fov, aspectRatio, near, far, true);
 		NativeImage maskImage = this.texture.getPixels();
 	    List<Vector3f> list = new ArrayList<>();
-
-        for(int x = 0; x < width; x++) 
-        {
-    	    for(int y = 0; y < height; y++) 
-    	    {
-                maskImage.setPixelRGBA(x, y, 0x00000000);
-    	    }
-        }
+	    
+	    for(int y = 0; y < height; y++) 
+	    {
+	        for(int x = 0; x < width; x++) 
+	        {
+	            maskImage.setPixelRGBA(x, y, 0x00000000);
+	        }
+	    }
 	    
 	    for(RenderChunkInfo chunkInfo : renderChunksInFrustum)
 	    {
@@ -175,7 +167,7 @@ public class BTAWorldShader
 	    
 	    for(Vector3f worldPos : list)
 	    {	
-	    	float expansion = 1.0F;
+	    	float expansion = 8.0F;
 
 	    	Vector3f[] expandedCorners = new Vector3f[] 
 	    	{
@@ -212,7 +204,7 @@ public class BTAWorldShader
 	    	{
 	    	    for(int y = startY; y <= endY; y++)
 	    	    {
-	                maskImage.setPixelRGBA(x, y, 0xFFFFFFFF);
+    	    	    maskImage.setPixelRGBA(x, y, 0xFFFFFFFF);
 	    	    }
 	    	}
 	    }
@@ -233,9 +225,11 @@ public class BTAWorldShader
 			shader.setSampler("ImageSampler", () -> mc.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
 			if(texId != -1)
 			{
-				shader.setSampler(this.samplerName, () -> texId);
+				shader.setSampler(this.samplerName + "Sampler", () -> texId);
 			}
 			shader.safeGetUniform("InverseTransformMatrix").set(getInverseTransformMatrix(this.inverseMat, mtx.last().pose()));
+			shader.safeGetUniform("ViewMatrix").set(mtx.last().pose());
+			shader.safeGetUniform("ProjectionMatrix").set(RenderSystem.getProjectionMatrix());
 			shader.safeGetUniform("iTime").set((((float) (mc.level.getGameTime() % 2400000)) + frameTime) / 20.0F);
 			this.effect.accept(shader, pos);
 			shaderChain.process(frameTime);
@@ -258,47 +252,4 @@ public class BTAWorldShader
     	BTAWorldShader worldShader = new BTAWorldShader(world, shader, pos, effect, sampler, useCustomSampler, samplerName);
     	WORLD_SHADERS.add(worldShader);
     }
-    
-	public static class DepthReader 
-	{
-	    private int width;
-	    private int height;
-	    private int pboId;
-	    private FloatBuffer depthBuffer;
-
-	    public DepthReader(int width, int height)
-	    {
-	        this.width = width;
-	        this.height = height;
-
-	        this.pboId = GL15.glGenBuffers();
-	        GL15.glBindBuffer(GL21.GL_PIXEL_PACK_BUFFER, this.pboId);
-	        GL15.glBufferData(GL21.GL_PIXEL_PACK_BUFFER, width * height * Float.BYTES, GL15.GL_STREAM_READ);
-	        GL15.glBindBuffer(GL21.GL_PIXEL_PACK_BUFFER, 0);
-
-	        this.depthBuffer = BufferUtils.createFloatBuffer(width * height);
-	    }
-
-	    public FloatBuffer readDepth(int depthTexId)
-	    {
-	        GL15.glBindBuffer(GL21.GL_PIXEL_PACK_BUFFER, this.pboId);
-
-	        GL11.glBindTexture(GL11.GL_TEXTURE_2D, depthTexId);
-	        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, 0);
-
-	        GL15.glBindBuffer(GL21.GL_PIXEL_PACK_BUFFER, this.pboId);
-	        ByteBuffer mapped = GL15.glMapBuffer(GL21.GL_PIXEL_PACK_BUFFER, GL15.GL_READ_ONLY, this.width * this.height * Float.BYTES, null);
-	        if(mapped != null)
-	        {
-	        	this.depthBuffer.clear();
-	            this.depthBuffer.put(mapped.asFloatBuffer());
-	            this.depthBuffer.flip();
-	            GL15.glUnmapBuffer(GL21.GL_PIXEL_PACK_BUFFER);
-	        }
-
-	        GL15.glBindBuffer(GL21.GL_PIXEL_PACK_BUFFER, 0);
-
-	        return this.depthBuffer;
-	    }
-	}
 }
