@@ -8,9 +8,7 @@ uniform sampler2D SandSampler;
 uniform ivec2 iResolution;
 uniform vec2 OutSize;
 uniform float iTime;
-uniform mat4 InverseTransformMatrix;
-uniform mat4 ViewMatrix;
-uniform mat4 ProjectionMatrix;
+uniform int ChunkCount;
 
 in vec2 texCoord;
 in vec4 near_4;
@@ -66,6 +64,39 @@ float map(vec3 p) {
     return p.y;
 }
 
+void getChunkAabb(int index, out vec3 bmin, out vec3 bmax) {
+    int texW = textureSize(SandSampler, 0).x;
+    int base = index * 2;
+
+    int x0 = base % texW;
+    int y0 = base / texW;
+
+    int x1 = (base + 1) % texW;
+    int y1 = (base + 1) / texW;
+
+    bmin = texelFetch(SandSampler, ivec2(x0, y0), 0).xyz - 0.05;
+    bmax = texelFetch(SandSampler, ivec2(x1, y1), 0).xyz - 0.05;
+}
+
+bool rayAABB(vec3 ro, vec3 rd, vec3 bmin, vec3 bmax, out float tmin, out float tmax) {
+    vec3 invD = 1.0 / rd;
+    vec3 t0 = (bmin - ro) * invD;
+    vec3 t1 = (bmax - ro) * invD;
+
+    vec3 tsm = min(t0, t1);
+    vec3 tsM = max(t0, t1);
+
+    tmin = max(max(tsm.x, tsm.y), max(tsm.z, 0.0));
+    tmax = min(min(tsM.x, tsM.y), tsM.z);
+
+    return tmax >= tmin;
+}
+
+float boxSDF(vec3 p, vec3 c, vec3 s) {
+    vec3 box = abs(p - c) - s;
+	return length(max(box, 0.0)) + min(max(box.x, max(box.y, box.z)), 0.0);
+}
+
 // Fog shape with cheaper math
 float fogmap(vec3 p, float d, float timeX, float timeY) {
     p.xz -= timeX;
@@ -81,10 +112,33 @@ float march(vec3 ro, vec3 rd, out float drift, vec2 scUV, float timeX, float tim
     float h;
     float d = hash12(gl_FragCoord.xy) * 1.5;
     drift = 0.0;
+    
+    float bestTnear = 1e20;
+    float bestTfar = -1e20;
+    vec3 bestMin = vec3(0.0), bestMax = vec3(0.0);
+
+    for (int i = 0; i < ChunkCount; ++i) {
+        vec3 bmin, bmax;
+        getChunkAabb(i, bmin, bmax);
+
+        float t0, t1;
+        if (rayAABB(ro, rd, bmin, bmax, t0, t1)) {
+			float tFarClamp = min(t1, depth);
+            if (tFarClamp >= t0 && t0 < bestTnear) {
+                bestTnear = t0;
+                bestTfar = tFarClamp;
+                bestMin = bmin;
+                bestMax = bmax;
+            }
+        }
+    }
+    
+    vec3 center = (bestMin + bestMax) * 0.5;
+	vec3 extend = (bestMax - bestMin) * 0.5;
 
     for (int i = 0; i < 20; i++) {
         vec3 p = ro + rd * d;
-        h = map(p);
+        h = boxSDF(p, center, extend);
         if (h < precis * (1.0 + d * 0.05) || d > 90.0 || d > depth) break;
         drift += fogmap(p, d, timeX, timeY);
         d += h * mul;
@@ -100,31 +154,19 @@ void main() {
     vec3 rd = normalize(far_4.xyz / far_4.w - ro);
 	
 	float depth = texture(DepthSampler, texCoord).r;
-	float linearizeDepth = linearizeDepth(depth);
-	
-	vec2 ndc = texCoord * 2.0 - 1.0;
-	vec4 clipPos = vec4(ndc, depth, 1.0);
-	vec4 worldPosH = InverseTransformMatrix * clipPos;
-	vec3 worldPos = worldPosH.xyz / worldPosH.w;
-	
-	vec4 clipPos2 = ProjectionMatrix * ViewMatrix * vec4(worldPos, 1.0);
-	float worldDepth = clipPos2.z / clipPos2.w * 0.5 + 0.5;
+	float linearDepth = linearizeDepth(depth);
 
     float fg;
     float timeX = iTime * 7.0;
     float timeY = iTime * 0.5;
 
-    float rz = march(ro, rd, fg, texCoord, timeX, timeY, linearizeDepth);
+    float rz = march(ro, rd, fg, texCoord, timeX, timeY, linearDepth);
     fg = pow(fg, 0.35);  // controls fog thickness falloff
-    
-    float mask = texture(SandSampler, texCoord).r; 
-    fg *= mask;
 
     vec3 col = texture(DiffuseSampler, texCoord).rgb;
     vec3 fogColor = vec3(0.784, 0.604, 0.373);
 
-    if(worldDepth < depth + 0.001) {
-    	col = mix(col, fogColor, fg);
-    }
+    col = mix(col, fogColor, fg);
+    	
     fragColor = vec4(col, 1.0);
 }

@@ -1,17 +1,22 @@
 package com.min01.beyondtheabyss.shader;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -23,44 +28,42 @@ import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelRenderer.RenderChunkInfo;
 import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher.RenderChunk;
-import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class BTAWorldShader
 {
 	private final Matrix4f inverseMat = new Matrix4f();
-	
-	private boolean setup = true;
-    private DynamicTexture texture;
-    
+	private final Map<String, AABB> closestChunks = new HashMap<>();
+
     private final ResourceKey<Level> world;
     private final Function<ResourceKey<Level>, ExtendedPostChain> shader;
-    private final BiFunction<Level, Vec3, Vec3> pos;
-    private final BiConsumer<EffectInstance, Vec3> effect;
     private final BiFunction<Level, BlockPos, Boolean> sampler;
     private final boolean useCustomSampler;
     private final String samplerName;
     
+    private ByteBuffer buffer = null;
+    private int lastWidth = -1;
+    private int lastHeight = -1;
+    private int texId = -1;
+    
     public static final List<BTAWorldShader> WORLD_SHADERS = new ArrayList<>();
     
-    public BTAWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, Vec3, Vec3> pos, BiConsumer<EffectInstance, Vec3> effect)
+    public BTAWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader)
     {
-    	this(world, shader, pos, effect, null, false, "");
+    	this(world, shader, null, false, "");
 	}
     
-    public BTAWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, Vec3, Vec3> pos, BiConsumer<EffectInstance, Vec3> effect, BiFunction<Level, BlockPos, Boolean> sampler, boolean useCustomSampler, String samplerName) 
+    public BTAWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, BlockPos, Boolean> sampler, boolean useCustomSampler, String samplerName) 
     {
     	this.world = world;
     	this.shader = shader;
-    	this.pos = pos;
-    	this.effect = effect;
     	this.sampler = sampler;
     	this.useCustomSampler = useCustomSampler;
     	this.samplerName = samplerName;
@@ -78,141 +81,96 @@ public class BTAWorldShader
 			double z = Mth.lerp((double)frameTime, camEntity.zOld, camEntity.getZ());
 			Vec3 camPos = camera.getPosition();
 			Vec3 playerPos = new Vec3(x, y, z);
-
+			Vec3 pos = playerPos.subtract(camPos);
+			
 			if(dimension == this.world)
 			{
 				mtx.pushPose();
-				Vec3 pos = this.pos.apply(level, playerPos).subtract(camPos);
 				mtx.translate(pos.x, pos.y, pos.z);
 				if(this.useCustomSampler)
 				{
-					if(this.setup)
-					{
-						this.setup();
-					}
-					else
-					{
-						this.update(renderChunksInFrustum, camEntity);
-						this.apply(mtx, frameTime, playerPos);
-					}
+					this.update(renderChunksInFrustum, playerPos);
+					this.apply(mtx, frameTime);
 				}
 				else
 				{
-					this.apply(mtx, frameTime, playerPos);
+					this.apply(mtx, frameTime);
 				}
 				mtx.popPose();
 			}
 		}
     }
-    
-    public void setup()
-    {
-    	this.setup = false;
-		int width = BTAClientUtil.MC.getWindow().getWidth();
-		int height = BTAClientUtil.MC.getWindow().getHeight();
-		this.texture = new DynamicTexture(width, height, true);
-		NativeImage maskImage = this.texture.getPixels();
+	
+	public void update(ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum, Vec3 playerPos)
+	{
+		Minecraft minecraft = BTAClientUtil.MC;
 		
-		for(int y = 0; y < height; y++) 
+		int width = minecraft.getWindow().getWidth();
+		int height = minecraft.getWindow().getHeight();
+		
+	    if(width != this.lastWidth || height != this.lastHeight)
+	    {
+	        if(this.texId != -1)
+	        {
+	            TextureUtil.releaseTextureId(this.texId);
+	        }
+
+	        this.texId = TextureUtil.generateTextureId();
+	        GlStateManager._bindTexture(this.texId);
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
+	        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+	        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+	        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL30.GL_CLAMP_TO_EDGE);
+	        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL30.GL_CLAMP_TO_EDGE);
+
+	        this.buffer = BufferUtils.createByteBuffer(width * height * 4);
+	        this.lastWidth = width;
+	        this.lastHeight = height;
+	    }
+
+		this.buffer.clear();
+		
+		for(RenderChunkInfo chunkInfo : renderChunksInFrustum)
 		{
-		    for(int x = 0; x < width; x++) 
+		    RenderChunk chunk = chunkInfo.chunk;
+		    BlockPos origin = chunk.getOrigin();
+		    AABB aabb = chunk.getBoundingBox();
+
+		    if(!this.sampler.apply(minecraft.level, origin)) 
 		    {
-		        maskImage.setPixelRGBA(x, y, 0x00000000);
+		        continue;
+		    }
+		    
+	    	AABB expanded = new AABB(aabb.minX, minecraft.level.getMinBuildHeight(), aabb.minZ, aabb.maxX, minecraft.level.getMaxBuildHeight(), aabb.maxZ);
+
+		    int cx = origin.getX() >> 4;
+		    int cz = origin.getZ() >> 4;
+
+		    String key = cx + "," + cz;
+
+		    double distSqr = expanded.distanceToSqr(playerPos);
+
+		    if(!this.closestChunks.containsKey(key) || distSqr < this.closestChunks.get(key).distanceToSqr(playerPos))
+		    {
+		    	this.closestChunks.put(key, expanded);
 		    }
 		}
 		
-		this.texture.upload();
-    }
-	
-	public void update(ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum, Entity camEntity)
-	{
-		Minecraft minecraft = BTAClientUtil.MC;
-		int width = minecraft.getWindow().getWidth();
-		int height = minecraft.getWindow().getHeight();
-		Camera camera = minecraft.gameRenderer.getMainCamera();
-		Frustum frustum = minecraft.levelRenderer.getFrustum();
-		Matrix4f viewMatrix = new Matrix4f();
-		viewMatrix.rotation(camera.rotation());
-		viewMatrix.transpose();
-		Vec3 pos = camera.getPosition();
-		viewMatrix.translate((float)-pos.x, (float)-pos.y, (float)-pos.z);
-		float fov = (float) Math.toRadians(minecraft.options.fov().get());
-		float aspectRatio = (float) width / (float) height;
-		float near = 0.05F;
-		float far = 1000.0F;
-		Matrix4f projMatrix = new Matrix4f().perspective(fov, aspectRatio, near, far, true);
-		NativeImage maskImage = this.texture.getPixels();
-	    List<Vector3f> list = new ArrayList<>();
-	    
-	    for(int y = 0; y < height; y++) 
-	    {
-	        for(int x = 0; x < width; x++) 
-	        {
-	            maskImage.setPixelRGBA(x, y, 0x00000000);
-	        }
-	    }
-	    
-	    for(RenderChunkInfo chunkInfo : renderChunksInFrustum)
-	    {
-	    	RenderChunk chunk = chunkInfo.chunk;
-    		BlockPos origin = chunk.getOrigin();
-    		if(!frustum.isVisible(chunk.getBoundingBox()) || !this.sampler.apply(minecraft.level, origin))
-    		{
-    			continue;
-    		}
+		for(AABB aabb :	this.closestChunks.values())
+		{
+		    AABB shifted = new AABB(aabb.minX - playerPos.x, aabb.minY - playerPos.y, aabb.minZ - playerPos.z, aabb.maxX - playerPos.x, aabb.maxY - playerPos.y, aabb.maxZ - playerPos.z);
+		    
+		    this.buffer.put((byte)(Mth.clamp(shifted.minX, 0, 1) * 255)).put((byte)(Mth.clamp(shifted.minY, 0, 1) * 255)).put((byte)(Mth.clamp(shifted.minZ, 0, 1) * 255)).put((byte)255);
+		    this.buffer.put((byte)(Mth.clamp(shifted.maxX, 0, 1) * 255)).put((byte)(Mth.clamp(shifted.maxY, 0, 1) * 255)).put((byte)(Mth.clamp(shifted.maxZ, 0, 1) * 255)).put((byte)255);
+		}
 
-    		Vector3f worldPos = new Vector3f(origin.getX(), origin.getY(), origin.getZ());
-        	list.add(worldPos);
-	    }
-	    
-	    for(Vector3f worldPos : list)
-	    {	
-	    	float expansion = 8.0F;
+		this.buffer.flip();
 
-	    	Vector3f[] expandedCorners = new Vector3f[] 
-	    	{
-	    	    new Vector3f(worldPos.x - 0.5F - expansion, worldPos.y - 0.5F - expansion, worldPos.z - 0.5F - expansion), 
-	    	    new Vector3f(worldPos.x + 0.5F + expansion, worldPos.y - 0.5F - expansion, worldPos.z - 0.5F - expansion), 
-	    	    new Vector3f(worldPos.x - 0.5F - expansion, worldPos.y + 0.5F + expansion, worldPos.z - 0.5F - expansion), 
-	    	    new Vector3f(worldPos.x - 0.5F - expansion, worldPos.y - 0.5F - expansion, worldPos.z + 0.5F + expansion), 
-	    	    new Vector3f(worldPos.x + 0.5F + expansion, worldPos.y + 0.5F + expansion, worldPos.z - 0.5F - expansion), 
-	    	    new Vector3f(worldPos.x + 0.5F + expansion, worldPos.y - 0.5F - expansion, worldPos.z + 0.5F + expansion), 
-	    	    new Vector3f(worldPos.x - 0.5F - expansion, worldPos.y + 0.5F + expansion, worldPos.z + 0.5F + expansion), 
-	    	    new Vector3f(worldPos.x + 0.5F + expansion, worldPos.y + 0.5F + expansion, worldPos.z + 0.5F + expansion)
-	    	};
-
-	    	float minX = width;
-	    	float minY = height;
-	    	float maxX = 0;
-	    	float maxY = 0;
-	    	
-	    	for(Vector3f corner : expandedCorners)
-	    	{
-	    	    Vector3f screenPos = BTAClientUtil.projectWorldToScreen(corner, viewMatrix, projMatrix, width, height);
-	    	    minX = Math.min(minX, screenPos.x);
-	    	    minY = Math.min(minY, screenPos.y);
-	    	    maxX = Math.max(maxX, screenPos.x);
-	    	    maxY = Math.max(maxY, screenPos.y);
-	    	}
-	    	
-	    	int startX = Math.max(0, (int)Math.floor(minX));
-	    	int startY = Math.max(0, (int)Math.floor(minY));
-	    	int endX = Math.min(width - 1, (int)Math.ceil(maxX));
-	    	int endY = Math.min(height - 1, (int)Math.ceil(maxY));
-	    	
-	    	for(int x = startX; x <= endX; x++)
-	    	{
-	    	    for(int y = startY; y <= endY; y++)
-	    	    {
-    	    	    maskImage.setPixelRGBA(x, y, 0xFFFFFFFF);
-	    	    }
-	    	}
-	    }
-	    
-	    this.texture.upload();
+        GlStateManager._bindTexture(this.texId);
+        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.buffer);
 	}
 	
-	public void apply(PoseStack mtx, float frameTime, Vec3 pos)
+	public void apply(PoseStack mtx, float frameTime)
 	{
 		Minecraft minecraft = BTAClientUtil.MC;
 
@@ -225,13 +183,11 @@ public class BTAWorldShader
 			shader.setSampler("ImageSampler", () -> minecraft.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
 			if(!this.samplerName.equals(""))
 			{
-				shader.setSampler(this.samplerName + "Sampler", () -> this.texture.getId());
+				shader.setSampler(this.samplerName + "Sampler", () -> this.texId);
+				shader.safeGetUniform("ChunkCount").set(this.closestChunks.values().size());
 			}
 			shader.safeGetUniform("InverseTransformMatrix").set(getInverseTransformMatrix(this.inverseMat, mtx.last().pose()));
-			shader.safeGetUniform("ViewMatrix").set(mtx.last().pose());
-			shader.safeGetUniform("ProjectionMatrix").set(RenderSystem.getProjectionMatrix());
 			shader.safeGetUniform("iTime").set((((float) (minecraft.level.getGameTime() % 2400000)) + frameTime) / 20.0F);
-			this.effect.accept(shader, pos);
 			shaderChain.process(frameTime);
 			minecraft.getMainRenderTarget().bindWrite(false);
 		}
@@ -242,14 +198,14 @@ public class BTAWorldShader
 		return outMat.identity().mul(RenderSystem.getProjectionMatrix()).mul(modelView).invert();
     }
 	
-    public static void registerWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, Vec3, Vec3> pos, BiConsumer<EffectInstance, Vec3> effect)
+    public static void registerWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader)
     {
-    	registerWorldShader(world, shader, pos, effect, null, false, "");
+    	registerWorldShader(world, shader, null, false, "");
     }
 	
-    public static void registerWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, Vec3, Vec3> pos, BiConsumer<EffectInstance, Vec3> effect, BiFunction<Level, BlockPos, Boolean> sampler, boolean useCustomSampler, String samplerName)
+    public static void registerWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, BlockPos, Boolean> sampler, boolean useCustomSampler, String samplerName)
     {
-    	BTAWorldShader worldShader = new BTAWorldShader(world, shader, pos, effect, sampler, useCustomSampler, samplerName);
+    	BTAWorldShader worldShader = new BTAWorldShader(world, shader, sampler, useCustomSampler, samplerName);
     	WORLD_SHADERS.add(worldShader);
     }
 }
