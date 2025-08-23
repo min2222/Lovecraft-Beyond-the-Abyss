@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.shader;
 
-import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +12,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryUtil;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
@@ -40,7 +41,7 @@ import net.minecraft.world.phys.Vec3;
 public class BTAWorldShader
 {
 	private final Matrix4f inverseMat = new Matrix4f();
-	private final Map<String, AABB> closestChunks = new HashMap<>();
+	private final List<AABB> chunkList = new ArrayList<>();
 
     private final ResourceKey<Level> world;
     private final Function<ResourceKey<Level>, ExtendedPostChain> shader;
@@ -48,9 +49,6 @@ public class BTAWorldShader
     private final boolean useCustomSampler;
     private final String samplerName;
     
-    private ByteBuffer buffer = null;
-    private int lastWidth = -1;
-    private int lastHeight = -1;
     private int texId = -1;
     
     public static final List<BTAWorldShader> WORLD_SHADERS = new ArrayList<>();
@@ -104,70 +102,62 @@ public class BTAWorldShader
 	public void update(ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum, Vec3 playerPos)
 	{
 		Minecraft minecraft = BTAClientUtil.MC;
-		
 		int width = minecraft.getWindow().getWidth();
-		int height = minecraft.getWindow().getHeight();
+		int height = minecraft.getWindow().getWidth();
 		
-	    if(width != this.lastWidth || height != this.lastHeight)
-	    {
-	        if(this.texId != -1)
-	        {
-	            TextureUtil.releaseTextureId(this.texId);
-	        }
-
-	        this.texId = TextureUtil.generateTextureId();
-	        GlStateManager._bindTexture(this.texId);
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
-	        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-	        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-	        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL30.GL_CLAMP_TO_EDGE);
-	        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL30.GL_CLAMP_TO_EDGE);
-
-	        this.buffer = BufferUtils.createByteBuffer(width * height * 4);
-	        this.lastWidth = width;
-	        this.lastHeight = height;
-	    }
-
-		this.buffer.clear();
+		this.chunkList.clear();
+		
+		if(this.texId == -1)
+		{
+			this.texId = TextureUtil.generateTextureId();
+			GlStateManager._bindTexture(this.texId);
+			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL30.GL_RGBA32F, width, height, 0, GL11.GL_RGBA, GL11.GL_FLOAT, (FloatBuffer) null);
+			GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+			GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+			GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL30.GL_CLAMP_TO_EDGE);
+			GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL30.GL_CLAMP_TO_EDGE);
+			return;
+		}
+		
+		Map<String, AABB> closestChunks = new HashMap<>();
+		
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(width * height * 4);
+		buffer.clear();
 		
 		for(RenderChunkInfo chunkInfo : renderChunksInFrustum)
 		{
-		    RenderChunk chunk = chunkInfo.chunk;
-		    BlockPos origin = chunk.getOrigin();
-		    AABB aabb = chunk.getBoundingBox();
-
-		    if(!this.sampler.apply(minecraft.level, origin)) 
-		    {
-		        continue;
-		    }
-		    
-	    	AABB expanded = new AABB(aabb.minX, minecraft.level.getMinBuildHeight(), aabb.minZ, aabb.maxX, minecraft.level.getMaxBuildHeight(), aabb.maxZ);
-
-		    int cx = origin.getX() >> 4;
-		    int cz = origin.getZ() >> 4;
-
-		    String key = cx + "," + cz;
-
-		    double distSqr = expanded.distanceToSqr(playerPos);
-
-		    if(!this.closestChunks.containsKey(key) || distSqr < this.closestChunks.get(key).distanceToSqr(playerPos))
-		    {
-		    	this.closestChunks.put(key, expanded);
-		    }
+			RenderChunk chunk = chunkInfo.chunk;
+			BlockPos origin = chunk.getOrigin();
+			AABB aabb = chunk.getBoundingBox();
+			
+			if(!this.sampler.apply(minecraft.level, origin)) 
+			{
+				continue;
+			}
+			
+			AABB expanded = new AABB(aabb.minX, minecraft.level.getMinBuildHeight(), aabb.minZ, aabb.maxX, minecraft.level.getMaxBuildHeight(), aabb.maxZ);
+			
+			int cx = origin.getX() >> 4;
+			int cz = origin.getZ() >> 4;
+			
+			String key = cx + "," + cz;
+			
+			double distSqr = expanded.distanceToSqr(playerPos);
+			
+			if(!closestChunks.containsKey(key) || distSqr < closestChunks.get(key).distanceToSqr(playerPos))
+			{
+				closestChunks.put(key, expanded);
+				AABB shifted = new AABB(expanded.minX - playerPos.x, expanded.minY - playerPos.y, expanded.minZ - playerPos.z, expanded.maxX - playerPos.x, expanded.maxY - playerPos.y, expanded.maxZ - playerPos.z);
+				buffer.put((float) shifted.minX).put((float) shifted.minY).put((float) shifted.minZ).put(1.0F);
+				buffer.put((float) shifted.maxX).put((float) shifted.maxY).put((float) shifted.maxZ).put(1.0F);
+				this.chunkList.add(shifted);
+			}
 		}
 		
-		for(AABB aabb :	this.closestChunks.values())
-		{
-		    AABB shifted = new AABB(aabb.minX - playerPos.x, aabb.minY - playerPos.y, aabb.minZ - playerPos.z, aabb.maxX - playerPos.x, aabb.maxY - playerPos.y, aabb.maxZ - playerPos.z);
-		    
-		    this.buffer.put((byte)(Mth.clamp(shifted.minX, 0, 1) * 255)).put((byte)(Mth.clamp(shifted.minY, 0, 1) * 255)).put((byte)(Mth.clamp(shifted.minZ, 0, 1) * 255)).put((byte)255);
-		    this.buffer.put((byte)(Mth.clamp(shifted.maxX, 0, 1) * 255)).put((byte)(Mth.clamp(shifted.maxY, 0, 1) * 255)).put((byte)(Mth.clamp(shifted.maxZ, 0, 1) * 255)).put((byte)255);
-		}
-
-		this.buffer.flip();
-
-        GlStateManager._bindTexture(this.texId);
-        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.buffer);
+		buffer.flip();
+		
+		GlStateManager._bindTexture(this.texId);
+		GlStateManager._texSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_FLOAT, MemoryUtil.memAddress(buffer));
 	}
 	
 	public void apply(PoseStack mtx, float frameTime)
@@ -184,7 +174,7 @@ public class BTAWorldShader
 			if(!this.samplerName.equals(""))
 			{
 				shader.setSampler(this.samplerName + "Sampler", () -> this.texId);
-				shader.safeGetUniform("ChunkCount").set(this.closestChunks.values().size());
+				shader.safeGetUniform("ChunkCount").set(this.chunkList.size());
 			}
 			shader.safeGetUniform("InverseTransformMatrix").set(getInverseTransformMatrix(this.inverseMat, mtx.last().pose()));
 			shader.safeGetUniform("iTime").set((((float) (minecraft.level.getGameTime() % 2400000)) + frameTime) / 20.0F);

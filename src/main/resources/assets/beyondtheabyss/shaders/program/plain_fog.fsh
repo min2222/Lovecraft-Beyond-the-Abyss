@@ -103,14 +103,12 @@ void main() {
 	for(int i = 0; i < 20; i++) {
 	    vec3 p = ro + rd * t;
 		float d = boxSDF(p, center, extend);
-	    if(t > 20.0 || t > linearDepth) break;
+	    if(t > linearDepth) break;
 	    t += d;
 	}
 	
-	if(t < 20.0) {
-		if(t < linearDepth) {
-			outCol = mix(outCol, fogColor, fogFactor);
-		}
+	if(t < linearDepth) {
+		outCol = mix(outCol, fogColor, fogFactor);
 	}
 
     fragColor = vec4(outCol, 1.0);
