@@ -89,6 +89,9 @@ import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.effects.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.effects.MirroredCityDimensionSpecialEffects;
+import com.min01.beyondtheabyss.world.effects.MoonDimensionSpecialEffects;
+import com.min01.beyondtheabyss.world.effects.OuterSpaceDimensionSpecialEffects;
+import com.min01.beyondtheabyss.world.effects.PurgatoryDimensionSpecialEffects;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -141,6 +144,9 @@ public class ClientEventHandler
     {
     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "deep_abyss"), new DeepAbyssDimensionSpecialEffects());
      	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "mirrored_city"), new MirroredCityDimensionSpecialEffects());
+     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "moon"), new MoonDimensionSpecialEffects());
+     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "purgatory"), new PurgatoryDimensionSpecialEffects());
+     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "outer_space"), new OuterSpaceDimensionSpecialEffects());
     }
     
     @SubscribeEvent

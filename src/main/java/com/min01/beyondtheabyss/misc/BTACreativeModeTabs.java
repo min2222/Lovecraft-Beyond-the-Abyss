@@ -81,4 +81,20 @@ public class BTACreativeModeTabs
     		{
 				output.accept(BTAItems.OVERSEER_SPAWN_EGG.get());
     		}).build());
+    
+    public static final RegistryObject<CreativeModeTab> MOON = CREATIVE_MODE_TAB.register("moon", () -> CreativeModeTab.builder()
+    		.title(Component.translatable("itemGroup.moon"))
+    		.icon(() -> new ItemStack(BTAItems.MOONSTONE.get()))
+    		.displayItems((enabledFeatures, output) -> 
+    		{
+				output.accept(BTAItems.MOONSTONE.get());
+    		}).build());
+    
+    public static final RegistryObject<CreativeModeTab> PURGATORY = CREATIVE_MODE_TAB.register("purgatory", () -> CreativeModeTab.builder()
+    		.title(Component.translatable("itemGroup.purgatory"))
+    		.icon(() -> new ItemStack(BTAItems.MOLTEN_STONE.get()))
+    		.displayItems((enabledFeatures, output) -> 
+    		{
+				output.accept(BTAItems.MOLTEN_STONE.get());
+    		}).build());
 }

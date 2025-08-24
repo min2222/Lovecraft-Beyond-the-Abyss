@@ -3,14 +3,14 @@
 	},
 	"downfall": 0.8,
 	"effects": {
-		"fog_color": 12638463,
+		"fog_color": 0,
 		"mood_sound": {
 			"block_search_extent": 8,
 			"offset": 2,
 			"sound": "minecraft:ambient.cave",
 			"tick_delay": 6000
 		},
-		"sky_color": 8233983,
+		"sky_color": 0,
 		"water_color": 4159204,
 		"water_fog_color": 329011
 	},
@@ -18,15 +18,10 @@
 		[
 		],
 		[
-			"minecraft:lake_lava_underground",
-			"minecraft:lake_lava_surface"
 		],
 		[
-			"minecraft:amethyst_geode"
 		],
 		[
-			"minecraft:monster_room",
-			"minecraft:monster_room_deep"
 		],
 		[
 		],
@@ -71,7 +66,7 @@
 		[
 			"minecraft:glow_lichen",
 			"minecraft:patch_large_fern",
-			"minecraft:trees_taiga",
+			"beyondtheabyss:giant_trees_taiga",
 			"minecraft:flower_default",
 			"minecraft:patch_grass_taiga_2",
 			"minecraft:brown_mushroom_taiga",

@@ -153,6 +153,10 @@ public class BTAItems
 	public static final RegistryObject<Item> GLARING_BARNACLE = registerCustomRendererBlockItem("glaring_barnacle", () -> BTABlocks.GLARING_BARNACLE.get(), () -> new AnimatableBlockEntity(BlockPos.ZERO, BTABlocks.GLARING_BARNACLE.get().defaultBlockState()), new Item.Properties());
 	public static final RegistryObject<Item> RAFFLESIA_ANEMONE = registerBlockItem("rafflesia_anemone", () -> BTABlocks.RAFFLESIA_ANEMONE.get(), new Item.Properties());
 	
+	public static final RegistryObject<Item> MOONSTONE = registerBlockItem("moonstone", () -> BTABlocks.MOONSTONE.get(), new Item.Properties());
+	
+	public static final RegistryObject<Item> MOLTEN_STONE = registerBlockItem("molten_stone", () -> BTABlocks.MOLTEN_STONE.get(), new Item.Properties());
+	
 	//weapons
 	public static final RegistryObject<Item> RUSTY_HARPOON = ITEMS.register("rusty_harpoon", () -> new HarpoonItem(new Item.Properties().durability(750)));
 	public static final RegistryObject<Item> GHIDRUTH_SCALE_HARPOON = ITEMS.register("ghidruth_scale_harpoon", () -> new HarpoonItem(new Item.Properties().durability(1200).rarity(RARITY_DEEP_ABYSS)));

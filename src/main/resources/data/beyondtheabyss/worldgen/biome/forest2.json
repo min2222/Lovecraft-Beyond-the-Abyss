@@ -25,15 +25,10 @@
 		[
 		],
 		[
-			"minecraft:lake_lava_underground",
-			"minecraft:lake_lava_surface"
 		],
 		[
-			"minecraft:amethyst_geode"
 		],
 		[
-			"minecraft:monster_room",
-			"minecraft:monster_room_deep"
 		],
 		[
 		],
@@ -77,7 +72,7 @@
 		],
 		[
 			"minecraft:glow_lichen",
-			"minecraft:dark_forest_vegetation",
+			"beyondtheabyss:dark_forest",
 			"minecraft:forest_flowers",
 			"minecraft:flower_default",
 			"minecraft:patch_grass_forest",

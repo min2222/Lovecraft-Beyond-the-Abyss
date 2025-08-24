@@ -18,6 +18,7 @@ import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.world.BTASavedData;
+import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.Util;
@@ -41,9 +42,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingBreatheEvent;
+import net.minecraftforge.event.entity.living.LivingDrownEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
@@ -97,6 +101,30 @@ public class EventHandlerForge
 	        e.printStackTrace();
 	    }
 	}
+    
+    @SubscribeEvent
+    public static void onLivingBreath(LivingBreatheEvent event)
+    {
+    	LivingEntity entity = event.getEntity();
+    	if(entity.level.dimension() == BTAWorlds.MOON || entity.level.dimension() == BTAWorlds.OUTER_SPACE)
+    	{
+    		//TODO can breath if wear space helmet;
+    		event.setCanBreathe(false);
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onLivingDrown(LivingDrownEvent event)
+    {
+    	LivingEntity entity = event.getEntity();
+    	if(entity.level.dimension() == BTAWorlds.MOON || entity.level.dimension() == BTAWorlds.OUTER_SPACE)
+    	{
+    		if(!entity.isEyeInFluidType(ForgeMod.WATER_TYPE.get()) && event.isDrowning())
+    		{
+    			event.setBubbleCount(0);
+    		}
+    	}
+    }
     
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) 

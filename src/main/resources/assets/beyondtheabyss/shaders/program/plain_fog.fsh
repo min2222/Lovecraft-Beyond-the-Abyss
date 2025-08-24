@@ -27,18 +27,25 @@ float noise(vec2 coord) {
     return fract(sin(dot(coord, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
+int unpackRGBAtoInt(vec4 color) {
+    ivec4 c = ivec4(color * 255.0 + 0.5);
+    return (c.r & 0xFF) | ((c.g & 0xFF) << 8) | ((c.b & 0xFF) << 16) | ((c.a & 0xFF) << 24);
+}
+
 void getChunkAabb(int index, out vec3 bmin, out vec3 bmax) {
     int texW = textureSize(FogSampler, 0).x;
-    int base = index * 2;
+    int base = index * 6;
 
-    int x0 = base % texW;
-    int y0 = base / texW;
+    int minX = unpackRGBAtoInt(texelFetch(FogSampler, ivec2((base+0)%texW, (base+0)/texW), 0));
+    int minY = unpackRGBAtoInt(texelFetch(FogSampler, ivec2((base+1)%texW, (base+1)/texW), 0));
+    int minZ = unpackRGBAtoInt(texelFetch(FogSampler, ivec2((base+2)%texW, (base+2)/texW), 0));
 
-    int x1 = (base + 1) % texW;
-    int y1 = (base + 1) / texW;
+    int maxX = unpackRGBAtoInt(texelFetch(FogSampler, ivec2((base+3)%texW, (base+3)/texW), 0));
+    int maxY = unpackRGBAtoInt(texelFetch(FogSampler, ivec2((base+4)%texW, (base+4)/texW), 0));
+    int maxZ = unpackRGBAtoInt(texelFetch(FogSampler, ivec2((base+5)%texW, (base+5)/texW), 0));
 
-    bmin = texelFetch(FogSampler, ivec2(x0, y0), 0).xyz - 0.05;
-    bmax = texelFetch(FogSampler, ivec2(x1, y1), 0).xyz - 0.05;
+    bmin = vec3(minX, minY, minZ) - 0.05;
+    bmax = vec3(maxX, maxY, maxZ) - 0.05;
 }
 
 bool rayAABB(vec3 ro, vec3 rd, vec3 bmin, vec3 bmax, out float tmin, out float tmax) {

@@ -21,4 +21,10 @@ public class DeepAbyssDimensionSpecialEffects extends DimensionSpecialEffects
 	{
 		return false;
 	}
+	
+	@Override
+	public float[] getSunriseColor(float p_108872_, float p_108873_) 
+	{
+		return null;
+	}
 }

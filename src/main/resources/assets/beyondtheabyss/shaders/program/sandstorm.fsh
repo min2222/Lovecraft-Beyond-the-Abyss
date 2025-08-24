@@ -64,18 +64,25 @@ float map(vec3 p) {
     return p.y;
 }
 
+int unpackRGBAtoInt(vec4 color) {
+    ivec4 c = ivec4(color * 255.0 + 0.5);
+    return (c.r & 0xFF) | ((c.g & 0xFF) << 8) | ((c.b & 0xFF) << 16) | ((c.a & 0xFF) << 24);
+}
+
 void getChunkAabb(int index, out vec3 bmin, out vec3 bmax) {
     int texW = textureSize(SandSampler, 0).x;
-    int base = index * 2;
+    int base = index * 6;
 
-    int x0 = base % texW;
-    int y0 = base / texW;
+    int minX = unpackRGBAtoInt(texelFetch(SandSampler, ivec2((base+0)%texW, (base+0)/texW), 0));
+    int minY = unpackRGBAtoInt(texelFetch(SandSampler, ivec2((base+1)%texW, (base+1)/texW), 0));
+    int minZ = unpackRGBAtoInt(texelFetch(SandSampler, ivec2((base+2)%texW, (base+2)/texW), 0));
 
-    int x1 = (base + 1) % texW;
-    int y1 = (base + 1) / texW;
+    int maxX = unpackRGBAtoInt(texelFetch(SandSampler, ivec2((base+3)%texW, (base+3)/texW), 0));
+    int maxY = unpackRGBAtoInt(texelFetch(SandSampler, ivec2((base+4)%texW, (base+4)/texW), 0));
+    int maxZ = unpackRGBAtoInt(texelFetch(SandSampler, ivec2((base+5)%texW, (base+5)/texW), 0));
 
-    bmin = texelFetch(SandSampler, ivec2(x0, y0), 0).xyz - 0.05;
-    bmax = texelFetch(SandSampler, ivec2(x1, y1), 0).xyz - 0.05;
+    bmin = vec3(minX, minY, minZ) - 0.05;
+    bmax = vec3(maxX, maxY, maxZ) - 0.05;
 }
 
 bool rayAABB(vec3 ro, vec3 rd, vec3 bmin, vec3 bmax, out float tmin, out float tmax) {
@@ -138,7 +145,7 @@ float march(vec3 ro, vec3 rd, out float drift, vec2 scUV, float timeX, float tim
 
     for (int i = 0; i < 20; i++) {
         vec3 p = ro + rd * d;
-        h = boxSDF(p, center, extend);
+        h = map(p);//boxSDF(p, center, extend); //map(p);
         if (h < precis * (1.0 + d * 0.05) || d > 90.0 || d > depth) break;
         drift += fogmap(p, d, timeX, timeY);
         d += h * mul;

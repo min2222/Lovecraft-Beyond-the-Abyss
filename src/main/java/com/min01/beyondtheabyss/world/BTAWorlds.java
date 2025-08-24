@@ -10,8 +10,10 @@ import net.minecraft.world.level.Level;
 public class BTAWorlds
 {
 	public static final ResourceKey<Level> DEEP_ABYSS = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(BeyondtheAbyss.MODID, "deep_abyss"));
-	//https://minecraft.wiki/w/Tree_definition
 	public static final ResourceKey<Level> EVERGREEN = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(BeyondtheAbyss.MODID, "evergreen")); 
  	public static final ResourceKey<Level> MIRRORED_CITY = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(BeyondtheAbyss.MODID, "mirrored_city"));
+ 	public static final ResourceKey<Level> MOON = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(BeyondtheAbyss.MODID, "moon"));
  	public static final ResourceKey<Level> ENDLESS_DESERT = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(BeyondtheAbyss.MODID, "endless_desert"));
+ 	public static final ResourceKey<Level> PURGATORY = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(BeyondtheAbyss.MODID, "purgatory"));
+ 	public static final ResourceKey<Level> OUTER_SPACE = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(BeyondtheAbyss.MODID, "outer_space"));
 }

@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:random_selector",
+	"config": {
+		"default": "beyondtheabyss:giant_spruce",
+		"features": [
+			{
+				"chance": 0.33333334,
+				"feature": "beyondtheabyss:giant_spruce"
+			}
+		]
+	}
+}

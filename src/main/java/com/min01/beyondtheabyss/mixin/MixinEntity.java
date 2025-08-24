@@ -26,6 +26,7 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.util.MirroredCityUtil;
+import com.min01.beyondtheabyss.util.MoonUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.gravityapi.api.GravityChangerAPI;
 import com.min01.gravityapi.capabilities.GravityCapabilityImpl;
@@ -104,6 +105,25 @@ public abstract class MixinEntity implements IDynamicLight
 			GravityCapabilityImpl cap = GravityChangerAPI.getGravityComponent(Entity.class.cast(this));
 			cap.applyGravityDirectionEffect(Direction.UP, null, Double.MAX_VALUE);
 		}
+		MoonUtil.updateMoonGravity(Entity.class.cast(this));
+	}
+	
+	@Inject(method = "isNoGravity", at = @At("HEAD"), cancellable = true)
+	private void isNoGravity(CallbackInfoReturnable<Boolean> cir) 
+	{
+		if(Entity.class.cast(this).level.dimension() == BTAWorlds.OUTER_SPACE)
+		{
+			cir.setReturnValue(true);
+		}
+	}
+	
+	@Inject(method = "checkBelowWorld", at = @At("HEAD"), cancellable = true)
+	private void checkBelowWorld(CallbackInfo ci) 
+	{
+		if(Entity.class.cast(this).level.dimension() == BTAWorlds.OUTER_SPACE)
+		{
+			ci.cancel();
+		}
 	}
 
 	@Inject(method = "remove", at = @At("TAIL"))
@@ -171,8 +191,8 @@ public abstract class MixinEntity implements IDynamicLight
 		{
 			ItemStack mainHandStack = player.getMainHandItem();
 			ItemStack offHandStack = player.getOffhandItem();
-			boolean flag1 = !mainHandStack.isEmpty() && mainHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(mainHandStack);
-			boolean flag2 = !offHandStack.isEmpty() && offHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(offHandStack);
+			boolean flag1 = mainHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(mainHandStack);
+			boolean flag2 = offHandStack.getItem() instanceof FlashlightItem && FlashlightItem.isOn(offHandStack);
 			return flag1 || flag2;
 		}
 		if(Entity.class.cast(this) instanceof EntitySubmarine submarine)
