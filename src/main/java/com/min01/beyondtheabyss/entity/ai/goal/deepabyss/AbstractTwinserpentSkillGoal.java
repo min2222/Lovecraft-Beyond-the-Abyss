@@ -1,11 +1,11 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
 
-public abstract class AbstractSiamserpentSkillGoal extends BasicBTASkillGoal<EntitySiamserpentHead>
+public abstract class AbstractTwinserpentSkillGoal extends BasicBTASkillGoal<EntityTwinserpentHead>
 {
-	public AbstractSiamserpentSkillGoal(EntitySiamserpentHead mob)
+	public AbstractTwinserpentSkillGoal(EntityTwinserpentHead mob)
 	{
 		super(mob);
 	}
@@ -18,7 +18,7 @@ public abstract class AbstractSiamserpentSkillGoal extends BasicBTASkillGoal<Ent
 	
 	public boolean isOtherHeadDisabled()
 	{
-		return this.mob.getHead() != null && ((EntitySiamserpentHead) this.mob.getHead()).isDisabled();
+		return this.mob.getHead() != null && ((EntityTwinserpentHead) this.mob.getHead()).isDisabled();
 	}
 	
 	@Override

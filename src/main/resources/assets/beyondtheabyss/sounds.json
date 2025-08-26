@@ -95,38 +95,38 @@
 			}
 		]
 	},
-	"siamserpent_ambient": {
+	"twinserpent_ambient": {
 		"sounds": [
-			"beyondtheabyss:entity/siamserpent_ambient1",
-			"beyondtheabyss:entity/siamserpent_ambient2",
-			"beyondtheabyss:entity/siamserpent_ambient3"
+			"beyondtheabyss:entity/twinserpent_ambient1",
+			"beyondtheabyss:entity/twinserpent_ambient2",
+			"beyondtheabyss:entity/twinserpent_ambient3"
 		]
 	},
-	"siamserpent_hurt": {
+	"twinserpent_hurt": {
 		"sounds": [
-			"beyondtheabyss:entity/siamserpent_hurt1",
-			"beyondtheabyss:entity/siamserpent_hurt2",
-			"beyondtheabyss:entity/siamserpent_hurt3"
+			"beyondtheabyss:entity/twinserpent_hurt1",
+			"beyondtheabyss:entity/twinserpent_hurt2",
+			"beyondtheabyss:entity/twinserpent_hurt3"
 		]
 	},
-	"siamserpent_death": {
+	"twinserpent_death": {
 		"sounds": [
-			"beyondtheabyss:entity/siamserpent_death1",
-			"beyondtheabyss:entity/siamserpent_death2"
+			"beyondtheabyss:entity/twinserpent_death1",
+			"beyondtheabyss:entity/twinserpent_death2"
 		]
 	},
-	"siamserpent_beam_charge": {
+	"twinserpent_beam_charge": {
 		"sounds": [
-			"beyondtheabyss:entity/siamserpent_beam_charge1",
-			"beyondtheabyss:entity/siamserpent_beam_charge2",
-			"beyondtheabyss:entity/siamserpent_beam_charge3"
+			"beyondtheabyss:entity/twinserpent_beam_charge1",
+			"beyondtheabyss:entity/twinserpent_beam_charge2",
+			"beyondtheabyss:entity/twinserpent_beam_charge3"
 		]
 	},
-	"siamserpent_beam_shoot": {
+	"twinserpent_beam_shoot": {
 		"sounds": [
-			"beyondtheabyss:entity/siamserpent_beam_shoot1",
-			"beyondtheabyss:entity/siamserpent_beam_shoot2",
-			"beyondtheabyss:entity/siamserpent_beam_shoot3"
+			"beyondtheabyss:entity/twinserpent_beam_shoot1",
+			"beyondtheabyss:entity/twinserpent_beam_shoot2",
+			"beyondtheabyss:entity/twinserpent_beam_shoot3"
 		]
 	}
 }

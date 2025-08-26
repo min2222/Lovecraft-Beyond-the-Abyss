@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentBone;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -17,12 +17,12 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBone> 
+public class ModelTwinserpentBone extends HierarchicalModel<EntityTwinserpentBone> 
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "siamserpent_bone"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "twinserpent_bone"), "main");
 	private final ModelPart root;
 
-	public ModelSiamserpentBone(ModelPart root) 
+	public ModelTwinserpentBone(ModelPart root) 
 	{
 		this.root = root.getChild("root");
 	}
@@ -34,23 +34,23 @@ public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBon
 
 		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition SiamserpentBone = root.addOrReplaceChild("SiamserpentBone", CubeListBuilder.create().texOffs(0, 60).addBox(-2.0F, -17.0F, -8.0F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
+		PartDefinition TwinserpentBone = root.addOrReplaceChild("TwinserpentBone", CubeListBuilder.create().texOffs(0, 60).addBox(-2.0F, -17.0F, -8.0F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
 		.texOffs(41, 60).addBox(0.0F, -24.0F, -8.0F, 0.0F, 7.0F, 16.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(-9.0F, -15.0F, -8.0F, 18.0F, 15.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		SiamserpentBone.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(51, 46).addBox(-12.0F, 0.0F, -7.0F, 12.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-9.0F, -15.0F, 0.0F, 0.0F, 0.0F, 0.6109F));
+		TwinserpentBone.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(51, 46).addBox(-12.0F, 0.0F, -7.0F, 12.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-9.0F, -15.0F, 0.0F, 0.0F, 0.0F, 0.6109F));
 
-		SiamserpentBone.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 46).addBox(0.0F, 0.0F, -7.0F, 12.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.0F, -15.0F, 0.0F, 0.0F, 0.0F, -0.6109F));
+		TwinserpentBone.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 46).addBox(0.0F, 0.0F, -7.0F, 12.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.0F, -15.0F, 0.0F, 0.0F, 0.0F, -0.6109F));
 
-		PartDefinition Finleft = SiamserpentBone.addOrReplaceChild("Finleft", CubeListBuilder.create(), PartPose.offset(9.0F, -3.0F, 1.0F));
+		PartDefinition Finleft = TwinserpentBone.addOrReplaceChild("Finleft", CubeListBuilder.create(), PartPose.offset(9.0F, -3.0F, 1.0F));
 
 		Finleft.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 32).addBox(0.0F, 0.0F, -8.0F, 16.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.6109F));
 
-		PartDefinition Finright = SiamserpentBone.addOrReplaceChild("Finright", CubeListBuilder.create(), PartPose.offset(9.0F, -3.0F, 1.0F));
+		PartDefinition Finright = TwinserpentBone.addOrReplaceChild("Finright", CubeListBuilder.create(), PartPose.offset(9.0F, -3.0F, 1.0F));
 
 		Finright.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 32).mirror().addBox(-16.0F, 0.0F, -8.0F, 16.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-18.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.6109F));
 
-		PartDefinition Armleft = SiamserpentBone.addOrReplaceChild("Armleft", CubeListBuilder.create().texOffs(59, 32).addBox(-0.25F, -1.5F, -2.5F, 11.0F, 3.0F, 5.0F, new CubeDeformation(0.0F))
+		PartDefinition Armleft = TwinserpentBone.addOrReplaceChild("Armleft", CubeListBuilder.create().texOffs(59, 32).addBox(-0.25F, -1.5F, -2.5F, 11.0F, 3.0F, 5.0F, new CubeDeformation(0.0F))
 		.texOffs(69, 0).addBox(10.75F, -1.5F, -3.5F, 4.0F, 3.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.45F, -5.5833F, -0.25F, 0.0F, 0.0F, 0.7854F));
 
 		Armleft.addOrReplaceChild("Claw", CubeListBuilder.create().texOffs(59, 41).addBox(-1.0F, -1.0F, 0.0F, 6.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(14.75F, 0.0F, -2.25F));
@@ -61,7 +61,7 @@ public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBon
 
 		Armleft.addOrReplaceChild("Claw3", CubeListBuilder.create().texOffs(59, 41).addBox(-1.0F, -1.0F, 0.0F, 6.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(14.75F, 0.0F, 2.25F));
 
-		PartDefinition Armright = SiamserpentBone.addOrReplaceChild("Armright", CubeListBuilder.create().texOffs(59, 32).mirror().addBox(-10.75F, -1.5F, -2.5F, 11.0F, 3.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false)
+		PartDefinition Armright = TwinserpentBone.addOrReplaceChild("Armright", CubeListBuilder.create().texOffs(59, 32).mirror().addBox(-10.75F, -1.5F, -2.5F, 11.0F, 3.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false)
 		.texOffs(69, 0).mirror().addBox(-14.75F, -1.5F, -3.5F, 4.0F, 3.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-9.45F, -5.5833F, -0.25F, 0.0F, 0.0F, -0.7854F));
 
 		Armright.addOrReplaceChild("Claw5", CubeListBuilder.create().texOffs(59, 41).mirror().addBox(-5.0F, -1.0F, 0.0F, 6.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-14.75F, 0.0F, -2.25F));
@@ -72,11 +72,11 @@ public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBon
 
 		Armright.addOrReplaceChild("Claw8", CubeListBuilder.create().texOffs(59, 41).mirror().addBox(-5.0F, -1.0F, 0.0F, 6.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-14.75F, 0.0F, 2.25F));
 
-		PartDefinition SiamserpentMiddlebone = root.addOrReplaceChild("SiamserpentMiddlebone", CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, -17.0F, -8.0F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
+		PartDefinition TwinserpentMiddlebone = root.addOrReplaceChild("TwinserpentMiddlebone", CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, -17.0F, -8.0F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
 		.texOffs(41, 32).addBox(0.0F, -25.0F, -8.0F, 0.0F, 8.0F, 16.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(-9.0F, -15.0F, -8.0F, 18.0F, 15.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition Heart = SiamserpentMiddlebone.addOrReplaceChild("Heart", CubeListBuilder.create().texOffs(0, 53).addBox(-3.5F, -0.7415F, -3.5F, 7.0F, 8.0F, 7.0F, new CubeDeformation(0.0F))
+		PartDefinition Heart = TwinserpentMiddlebone.addOrReplaceChild("Heart", CubeListBuilder.create().texOffs(0, 53).addBox(-3.5F, -0.7415F, -3.5F, 7.0F, 8.0F, 7.0F, new CubeDeformation(0.0F))
 		.texOffs(58, 57).addBox(-2.5F, -1.7415F, -4.5F, 5.0F, 5.0F, 5.0F, new CubeDeformation(0.0F))
 		.texOffs(29, 57).addBox(-3.5F, 7.2585F, -3.5F, 7.0F, 2.0F, 7.0F, new CubeDeformation(0.0F))
 		.texOffs(61, 68).addBox(-1.5F, -5.7415F, -1.5F, 3.0F, 5.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -7.2585F, -2.0F, 1.5708F, 0.0F, 0.0F));
@@ -89,14 +89,14 @@ public class ModelSiamserpentBone extends HierarchicalModel<EntitySiamserpentBon
 	}
 
 	@Override
-	public void setupAnim(EntitySiamserpentBone entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
+	public void setupAnim(EntityTwinserpentBone entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("SiamserpentBone"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
-		BTAClientUtil.animateHead(this.root.getChild("SiamserpentMiddlebone"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
-		this.root.getChild("SiamserpentBone").visible = entity.getVariant() == 0 || entity.getVariant() == 1;
-		this.root.getChild("SiamserpentMiddlebone").visible = entity.getVariant() == 2;
-		this.root.getChild("SiamserpentMiddlebone").getChild("Heart").visible = entity.getIndex() == 5;
+		BTAClientUtil.animateHead(this.root.getChild("TwinserpentBone"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
+		BTAClientUtil.animateHead(this.root.getChild("TwinserpentMiddlebone"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
+		this.root.getChild("TwinserpentBone").visible = entity.getVariant() == 0 || entity.getVariant() == 1;
+		this.root.getChild("TwinserpentMiddlebone").visible = entity.getVariant() == 2;
+		this.root.getChild("TwinserpentMiddlebone").getChild("Heart").visible = entity.getIndex() == 5;
 	}
 
 	@Override

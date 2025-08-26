@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterShotGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherChargeGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherSlashGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentBlasterBeamGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentBlasterShotGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentSlasherChargeGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentSlasherSlashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
@@ -44,13 +44,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class EntitySiamserpentHead extends AbstractSiamserpentPart
+public class EntityTwinserpentHead extends AbstractTwinserpentPart
 {
-	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_HEAD = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_HEAD = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.FLOAT);
 	
 	public final AnimationState rayChargeAnimationState = new AnimationState();
 	public final AnimationState rayStartAnimationState = new AnimationState();
@@ -64,7 +64,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public final AnimationState slasherChargingAnimationState = new AnimationState();
 	public final AnimationState slasherDisabledAnimationState = new AnimationState();
 	
-	public EntitySiamserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityTwinserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(15);
@@ -94,7 +94,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
 	{
-		EntityPartBuilder<EntitySiamserpentHead> partBuilder = new EntityPartBuilder<EntitySiamserpentHead>(this);
+		EntityPartBuilder<EntityTwinserpentHead> partBuilder = new EntityPartBuilder<EntityTwinserpentHead>(this);
 		return partBuilder;
 	}
 
@@ -193,10 +193,10 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	protected void registerGoals() 
 	{
 		super.registerGoals();
-		this.goalSelector.addGoal(4, new SiamserpentBlasterBeamGoal(this));
-		this.goalSelector.addGoal(4, new SiamserpentBlasterShotGoal(this));
-		this.goalSelector.addGoal(4, new SiamserpentSlasherSlashGoal(this));
-		this.goalSelector.addGoal(4, new SiamserpentSlasherChargeGoal(this));
+		this.goalSelector.addGoal(4, new TwinserpentBlasterBeamGoal(this));
+		this.goalSelector.addGoal(4, new TwinserpentBlasterShotGoal(this));
+		this.goalSelector.addGoal(4, new TwinserpentSlasherSlashGoal(this));
+		this.goalSelector.addGoal(4, new TwinserpentSlasherChargeGoal(this));
 	}
 	
 	@Override
@@ -299,7 +299,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	public void tickWorms(AbstractSiamserpentPart head)
+	public void tickWorms(AbstractTwinserpentPart head)
 	{
 		if(head.worms != null && head.isHead())
 		{
@@ -336,19 +336,19 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	protected SoundEvent getAmbientSound() 
 	{
-		return BTASounds.SIAMSERPENT_AMBIENT.get();
+		return BTASounds.TWINSERPENT_AMBIENT.get();
 	}
 	
 	@Override
 	protected SoundEvent getHurtSound(DamageSource p_33034_) 
 	{
-		return BTASounds.SIAMSERPENT_HURT.get();
+		return BTASounds.TWINSERPENT_HURT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return BTASounds.SIAMSERPENT_DEATH.get();
+		return BTASounds.TWINSERPENT_DEATH.get();
 	}
 	
 	@Override
@@ -362,9 +362,9 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	{
 		if(this.getHeadType() == HeadType.SLASHER)
 		{
-			return "SiamserpentSlasher";
+			return "TwinserpentSlasher";
 		}
-		return "SiamserpentBlaster";
+		return "TwinserpentBlaster";
 	}
 	
 	@Override
@@ -373,7 +373,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		return true;
 	}
 	
-	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkTwinserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		//TODO spawn in only nearby of giant fossil structure;
 		//LocateCommand
@@ -416,10 +416,10 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
 	{
-		List<AbstractSiamserpentPart> list = new ArrayList<>();
+		List<AbstractTwinserpentPart> list = new ArrayList<>();
 		this.setHead(true);
-		AbstractSiamserpentPart prev = this;
-		EntitySiamserpentBone bone = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
+		AbstractTwinserpentPart prev = this;
+		EntityTwinserpentBone bone = new EntityTwinserpentBone(BTAEntities.TWINSERPENT_BONE.get(), this.level);
 		bone.setOwner(this);
 		bone.setIndex(0);
 		if(this.random.nextBoolean())
@@ -442,7 +442,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		{
 			if(i < 10)
 			{
-				EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
+				EntityTwinserpentBone bone2 = new EntityTwinserpentBone(BTAEntities.TWINSERPENT_BONE.get(), this.level);
 				bone2.setOwner(prev);
 				bone2.setIndex(i + 1);
 				bone2.setVariant(2);
@@ -457,7 +457,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 				if(i == 10)
 				{
 					int variant = this.getHeadType() == HeadType.SLASHER ? 1 : 0;
-					EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
+					EntityTwinserpentBone bone2 = new EntityTwinserpentBone(BTAEntities.TWINSERPENT_BONE.get(), this.level);
 					bone2.setOwner(prev);
 					bone2.setIndex(i + 1);
 					bone2.setVariant(variant);
@@ -470,7 +470,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 				if(i == 11)
 				{
 					HeadType type = this.getHeadType() == HeadType.SLASHER ? HeadType.BLASTER : HeadType.SLASHER;
-					EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
+					EntityTwinserpentHead head = new EntityTwinserpentHead(BTAEntities.TWINSERPENT_HEAD.get(), this.level);
 					head.setOwner(prev);
 					head.setHeadType(type);
 					head.setIndex(i + 1);
@@ -482,10 +482,10 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 				}
 			}
 		}
-		AbstractSiamserpentPart last = list.get(list.size() - 1);
+		AbstractTwinserpentPart last = list.get(list.size() - 1);
 		for(int i = 0; i < list.size() - 1; i++)
 		{
-			AbstractSiamserpentPart part = list.get(i);
+			AbstractTwinserpentPart part = list.get(i);
 			part.setOwner2(list.get(i + 1));
 			part.setHead2(last);
 		}
@@ -540,9 +540,9 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		switch(this.getHeadType())
 		{
 		case SLASHER:
-			return Component.translatable("entity.beyondtheabyss.siamserpent_slasher");
+			return Component.translatable("entity.beyondtheabyss.twinserpent_slasher");
 		case BLASTER:
-			return Component.translatable("entity.beyondtheabyss.siamserpent_blaster");
+			return Component.translatable("entity.beyondtheabyss.twinserpent_blaster");
 		}
 		return super.getTypeName();
 	}

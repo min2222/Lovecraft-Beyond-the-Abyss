@@ -20,11 +20,11 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 
-public class EntitySiamserpentBone extends AbstractSiamserpentPart
+public class EntityTwinserpentBone extends AbstractTwinserpentPart
 {
-	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityTwinserpentBone.class, EntityDataSerializers.INT);
 	
-	public EntitySiamserpentBone(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public EntityTwinserpentBone(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 	}
@@ -46,7 +46,7 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 	@Override
 	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
 	{
-		EntityPartBuilder<EntitySiamserpentBone> partBuilder = new EntityPartBuilder<EntitySiamserpentBone>(this);
+		EntityPartBuilder<EntityTwinserpentBone> partBuilder = new EntityPartBuilder<EntityTwinserpentBone>(this);
 		return partBuilder;
 	}
     
@@ -55,9 +55,9 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
     {
 		if(this.getVariant() == 0 || this.getVariant() == 1)
 		{
-			return "SiamserpentBone";
+			return "TwinserpentBone";
 		}
-		return "SiamserpentMiddlebone";
+		return "TwinserpentMiddlebone";
     }
     
 	@Override
@@ -82,13 +82,13 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 	@Override
 	protected SoundEvent getHurtSound(DamageSource p_33034_) 
 	{
-		return BTASounds.SIAMSERPENT_HURT.get();
+		return BTASounds.TWINSERPENT_HURT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return BTASounds.SIAMSERPENT_DEATH.get();
+		return BTASounds.TWINSERPENT_DEATH.get();
 	}
 	
 	@Override
@@ -109,7 +109,7 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	public AbstractSiamserpentPart getHead() 
+	public AbstractTwinserpentPart getHead() 
 	{
 		if(this.isSwap())
 		{

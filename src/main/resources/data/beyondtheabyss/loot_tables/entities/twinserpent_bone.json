@@ -18,7 +18,7 @@
 							"condition": "minecraft:entity_properties",
 							"entity": "this",
 							"predicate": {
-								"type": "beyondtheabyss:siamserpent_bone",
+								"type": "beyondtheabyss:twinserpent_bone",
 								"nbt": "{Index:5}"
 							}
 						}

@@ -24,11 +24,11 @@ public class BTASounds
 	public static final RegistryObject<SoundEvent> GUNBLADE_BLADE_TO_GUN = registerSound("gunblade_blade_to_gun");
 	public static final RegistryObject<SoundEvent> GUNBLADE_GUN_TO_BLADE = registerSound("gunblade_gun_to_blade");
 	public static final RegistryObject<SoundEvent> GUNBLADE_SWING = registerSound("gunblade_swing");
-	public static final RegistryObject<SoundEvent> SIAMSERPENT_AMBIENT = registerSound("siamserpent_ambient");
-	public static final RegistryObject<SoundEvent> SIAMSERPENT_HURT = registerSound("siamserpent_hurt");
-	public static final RegistryObject<SoundEvent> SIAMSERPENT_DEATH = registerSound("siamserpent_death");
-	public static final RegistryObject<SoundEvent> SIAMSERPENT_BEAM_CHARGE = registerSound("siamserpent_beam_charge");
-	public static final RegistryObject<SoundEvent> SIAMSERPENT_BEAM_SHOOT = registerSound("siamserpent_beam_shoot");
+	public static final RegistryObject<SoundEvent> TWINSERPENT_AMBIENT = registerSound("twinserpent_ambient");
+	public static final RegistryObject<SoundEvent> TWINSERPENT_HURT = registerSound("twinserpent_hurt");
+	public static final RegistryObject<SoundEvent> TWINSERPENT_DEATH = registerSound("twinserpent_death");
+	public static final RegistryObject<SoundEvent> TWINSERPENT_BEAM_CHARGE = registerSound("twinserpent_beam_charge");
+	public static final RegistryObject<SoundEvent> TWINSERPENT_BEAM_SHOOT = registerSound("twinserpent_beam_shoot");
 	
 	private static RegistryObject<SoundEvent> registerSound(String name) 
 	{

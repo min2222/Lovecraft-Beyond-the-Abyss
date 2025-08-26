@@ -1,12 +1,12 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead.HeadType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-public class SiamserpentSlasherSlashGoal extends AbstractSiamserpentSkillGoal
+public class TwinserpentSlasherSlashGoal extends AbstractTwinserpentSkillGoal
 {
-	public SiamserpentSlasherSlashGoal(EntitySiamserpentHead mob) 
+	public TwinserpentSlasherSlashGoal(EntityTwinserpentHead mob) 
 	{
 		super(mob);
 	}

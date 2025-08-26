@@ -1,16 +1,16 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead.HeadType;
 import com.min01.beyondtheabyss.entity.projectile.EntityEnergyBall;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class SiamserpentBlasterShotGoal extends AbstractSiamserpentSkillGoal
+public class TwinserpentBlasterShotGoal extends AbstractTwinserpentSkillGoal
 {
-	public SiamserpentBlasterShotGoal(EntitySiamserpentHead mob) 
+	public TwinserpentBlasterShotGoal(EntityTwinserpentHead mob) 
 	{
 		super(mob);
 	}
