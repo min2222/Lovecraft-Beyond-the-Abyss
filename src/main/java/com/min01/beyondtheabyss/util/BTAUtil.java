@@ -1,17 +1,22 @@
 package com.min01.beyondtheabyss.util;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.joml.Math;
 
+import com.google.common.collect.ImmutableList;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
+import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
+import com.min01.beyondtheabyss.world.BTAWorlds;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -29,9 +34,22 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.StructureBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.entity.LevelEntityGetter;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.synth.SimplexNoise;
@@ -46,7 +64,79 @@ public class BTAUtil
 {
 	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
-	   
+	
+	public static void moveStructurePiece(Structure.GenerationContext p_227387_, StructurePiece piece, StructureTemplate template, Rotation rotation, Mirror mirror, Consumer<Integer> consumer)
+	{
+		ChunkPos chunkPos = p_227387_.chunkPos();
+		ChunkGenerator chunkGenerator = p_227387_.chunkGenerator();
+		RandomSource random = p_227387_.random();
+		RandomState randomState = p_227387_.randomState();
+		LevelHeightAccessor heightAccessor = p_227387_.heightAccessor();
+		BlockPos blockPos = chunkPos.getWorldPosition();
+		BlockPos blockPos1 = new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2);
+		BoundingBox boundingBox = template.getBoundingBox(blockPos, rotation, blockPos1, mirror);
+		BlockPos blockPos2 = boundingBox.getCenter();
+		int i = chunkGenerator.getBaseHeight(blockPos2.getX(), blockPos2.getZ(), Types.WORLD_SURFACE_WG, heightAccessor, randomState);
+		int j = findSuitableY(random, chunkGenerator, i, piece.getBoundingBox(), heightAccessor, randomState);
+		consumer.accept(j);
+	}
+	
+	//copied from RuinedPortalStructure
+	public static int findSuitableY(RandomSource p_229267_, ChunkGenerator p_229268_, int p_229271_, BoundingBox p_229273_, LevelHeightAccessor p_229274_, RandomState p_229275_)
+	{
+		int j = p_229274_.getMinBuildHeight() + 15;
+		int i = p_229271_;
+		List<BlockPos> list1 = ImmutableList.of(new BlockPos(p_229273_.minX(), 0, p_229273_.minZ()), new BlockPos(p_229273_.maxX(), 0, p_229273_.minZ()), new BlockPos(p_229273_.minX(), 0, p_229273_.maxZ()), new BlockPos(p_229273_.maxX(), 0, p_229273_.maxZ()));
+		List<NoiseColumn> list = list1.stream().map((p_229280_) -> 
+		{
+			return p_229268_.getBaseColumn(p_229280_.getX(), p_229280_.getZ(), p_229274_, p_229275_);
+		}).collect(Collectors.toList());
+		Heightmap.Types heightmap$types = Heightmap.Types.WORLD_SURFACE_WG;
+		int l;
+		for(l = i; l > j; --l) 
+		{
+			int i1 = 0;
+			for(NoiseColumn noisecolumn : list)
+			{
+				BlockState blockstate = noisecolumn.getBlock(l);
+				if(heightmap$types.isOpaque().test(blockstate)) 
+				{
+					++i1;
+					if(i1 == 3)
+					{
+						return l;
+					}
+				}
+			}
+		}
+		return l;
+	}
+	
+	public static boolean canSwimInAir(LivingEntity living)
+	{
+		return living.hasEffect(BTAEffects.AIR_SWIM.get()) || living.level.dimension() == BTAWorlds.OUTER_SPACE;
+	}
+	
+	public static void updateGravity(Entity entity)
+	{
+		if(entity.level.dimension() == BTAWorlds.MOON)
+		{
+			entity.resetFallDistance();
+			if(entity.getDeltaMovement().y <= 0.0D)
+			{
+				entity.setDeltaMovement(entity.getDeltaMovement().x, entity.getDeltaMovement().y * 0.7, entity.getDeltaMovement().z);
+			}
+		}
+		if(entity.level.dimension() == BTAWorlds.OUTER_SPACE)
+		{
+			entity.resetFallDistance();
+			if(entity.getDeltaMovement().y <= 0.0D)
+			{
+				entity.setDeltaMovement(entity.getDeltaMovement().x, 0.0, entity.getDeltaMovement().z);
+			}
+		}
+	}
+	
 	public static void createBallWithStep(Level level, Vec3 pos, double velocity, int size, int step, BiConsumer<Vec3, Vec3> consumer)
 	{
 		RandomSource random = level.random;

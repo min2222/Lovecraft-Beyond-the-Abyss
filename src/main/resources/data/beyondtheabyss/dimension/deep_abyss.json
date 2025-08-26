@@ -21,10 +21,7 @@
 							-1,
 							1
 						],
-						"temperature": [
-							-1,
-							1
-						],
+						"temperature": -1,
 						"humidity": [
 							-1,
 							1
@@ -51,10 +48,31 @@
 							-1,
 							1
 						],
-						"temperature": [
+						"temperature": -1,
+						"humidity": [
 							-1,
 							1
 						],
+						"depth": [
+							0,
+							0
+						],
+						"offset": 0
+					}
+				},
+				{
+					"biome": "beyondtheabyss:wailing_reef",
+					"parameters": {
+						"weirdness": [
+							-1,
+							1
+						],
+						"continentalness": 0,
+						"erosion": [
+							-1,
+							1
+						],
+						"temperature": 0.975,
 						"humidity": [
 							-1,
 							1

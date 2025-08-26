@@ -15,6 +15,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderBlockScreenEffectEvent;
+import net.minecraftforge.client.event.RenderBlockScreenEffectEvent.OverlayType;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -72,6 +74,16 @@ public class ClientEventHandlerForge
             	}
             }
         }
+    }
+    
+    @SubscribeEvent
+    public static void onRenderBlockScreenEffect(RenderBlockScreenEffectEvent event)
+    {
+    	Player player = event.getPlayer();
+    	if(event.getOverlayType() == OverlayType.WATER && BTAUtil.canSwimInAir(player))
+    	{
+    		event.setCanceled(true);
+    	}
     }
     
     @SubscribeEvent

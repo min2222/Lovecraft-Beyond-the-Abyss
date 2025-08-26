@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.common.collect.ImmutableList;
-import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.lights.DynamicLights;
@@ -26,7 +25,6 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.util.MirroredCityUtil;
-import com.min01.beyondtheabyss.util.MoonUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.gravityapi.api.GravityChangerAPI;
 import com.min01.gravityapi.capabilities.GravityCapabilityImpl;
@@ -62,9 +60,6 @@ public abstract class MixinEntity implements IDynamicLight
 	
 	@Unique
 	private int lastLuminance = 0;
-	
-	@Unique
-	private long slastUpdate = 0;
 	
 	@Unique
 	private double prevX;
@@ -105,16 +100,7 @@ public abstract class MixinEntity implements IDynamicLight
 			GravityCapabilityImpl cap = GravityChangerAPI.getGravityComponent(Entity.class.cast(this));
 			cap.applyGravityDirectionEffect(Direction.UP, null, Double.MAX_VALUE);
 		}
-		MoonUtil.updateMoonGravity(Entity.class.cast(this));
-	}
-	
-	@Inject(method = "isNoGravity", at = @At("HEAD"), cancellable = true)
-	private void isNoGravity(CallbackInfoReturnable<Boolean> cir) 
-	{
-		if(Entity.class.cast(this).level.dimension() == BTAWorlds.OUTER_SPACE)
-		{
-			cir.setReturnValue(true);
-		}
+		BTAUtil.updateGravity(Entity.class.cast(this));
 	}
 	
 	@Inject(method = "checkBelowWorld", at = @At("HEAD"), cancellable = true)
@@ -264,7 +250,8 @@ public abstract class MixinEntity implements IDynamicLight
 					{
 						chunkPos.move(directionZ);
 					}
-					else if(i % 4 == 2) {
+					else if(i % 4 == 2) 
+					{
 						chunkPos.move(directionX.getOpposite());
 					} 
 					else 
@@ -324,7 +311,7 @@ public abstract class MixinEntity implements IDynamicLight
     {
     	if(Entity.class.cast(this) instanceof LivingEntity living)
     	{
-    		if(living.hasEffect(BTAEffects.AIR_SWIM.get()))
+    		if(BTAUtil.canSwimInAir(living))
     		{
     			cir.setReturnValue(true);
     		}
@@ -340,7 +327,7 @@ public abstract class MixinEntity implements IDynamicLight
     {
     	if(Entity.class.cast(this) instanceof LivingEntity living)
     	{
-    		if(living.hasEffect(BTAEffects.AIR_SWIM.get()))
+    		if(BTAUtil.canSwimInAir(living))
     		{
     			cir.setReturnValue(ForgeMod.WATER_TYPE.get());
     		}

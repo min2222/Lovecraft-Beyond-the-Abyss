@@ -51,7 +51,6 @@ public class ChainTrapBlockEntity extends BlockEntity
 					{
 						EntityChainTrapMaw maw = new EntityChainTrapMaw(BTAEntities.CHAIN_TRAP_MAW.get(), level);
 						maw.setPos(Vec3.atCenterOf(pos));
-						maw.setChainPos(Vec3.atBottomCenterOf(pos));
 						maw.setTarget(t);
 						maw.setChainLength(Math.max((int) Math.floor(maw.position().distanceTo(t.getEyePosition())), 5));
 						maw.setTrapPos(pos);

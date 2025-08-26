@@ -21,15 +21,7 @@
 		"fluid_level_floodedness": 0,
 		"fluid_level_spread": 0,
 		"lava": 0,
-		"temperature": {
-			"type": "minecraft:shifted_noise",
-			"noise": "minecraft:temperature",
-			"xz_scale": 0.25,
-			"y_scale": 0,
-			"shift_x": "minecraft:shift_x",
-			"shift_y": 0,
-			"shift_z": "minecraft:shift_z"
-		},
+		"temperature": "beyondtheabyss:deep_abyss/circular",
 		"vegetation": {
 			"type": "minecraft:shifted_noise",
 			"noise": "minecraft:vegetation",

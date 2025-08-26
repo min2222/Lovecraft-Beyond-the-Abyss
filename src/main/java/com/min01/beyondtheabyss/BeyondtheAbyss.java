@@ -36,7 +36,13 @@ public class BeyondtheAbyss
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		ModLoadingContext ctx = ModLoadingContext.get();
 		BTAEntities.ENTITY_TYPES.register(bus);
-		BTAItems.ITEMS.register(bus);
+		BTAItems.DEEP_ABYSS_ITEMS.register(bus);
+		BTAItems.EVERGREEN_ITEMS.register(bus);
+		BTAItems.MIRRORED_CITY_ITEMS.register(bus);
+		BTAItems.MOON_ITEMS.register(bus);
+		BTAItems.ENDLESS_DESERT_ITEMS.register(bus);
+		BTAItems.PURGATORY_ITEMS.register(bus);
+		BTAItems.OUTER_SPACE_ITEMS.register(bus);
 		BTABlocks.BLOCKS.register(bus);
 		BTABlocks.BLOCK_ENTITIES.register(bus);
 		BTASounds.SOUNDS.register(bus);

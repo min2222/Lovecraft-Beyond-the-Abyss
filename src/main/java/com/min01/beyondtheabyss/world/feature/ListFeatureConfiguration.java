@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.world.feature.deepabyss;
+package com.min01.beyondtheabyss.world.feature;
 
 import java.util.List;
 
