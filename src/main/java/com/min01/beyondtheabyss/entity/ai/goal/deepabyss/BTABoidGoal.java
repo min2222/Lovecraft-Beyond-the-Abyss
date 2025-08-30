@@ -72,11 +72,6 @@ public class BTABoidGoal extends Goal
     public void lookAt()
     {
         Vec3 velocity = this.mob.getDeltaMovement();
-        /*double d0 = velocity.horizontalDistance();
-        this.mob.setYRot((float)(Mth.atan2(velocity.x, velocity.z) * (double)(180.0F / (float)Math.PI)));
-        this.mob.setXRot((float)(Mth.atan2(velocity.y, d0) * (double)(180.0F / (float)Math.PI)));
-        this.mob.yRotO = this.mob.getYRot();
-        this.mob.xRotO = this.mob.getXRot();*/
         double speed = velocity.length();
         if(speed < this.minSpeed)
         {

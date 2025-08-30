@@ -28,7 +28,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> CAN_LOOK = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_USING_SKILL = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Vec3> LAST_LOOK_POS = SynchedEntityData.defineId(AbstractBTAMonster.class, BTAEntityDataSerializers.VEC3.get());
 
@@ -64,7 +63,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 		this.entityData.define(ANIMATION_TICK, 0);
 		this.entityData.define(CAN_LOOK, true);
 		this.entityData.define(CAN_MOVE, true);
-		this.entityData.define(IS_USING_SKILL, false);
 		this.entityData.define(HAS_TARGET, false);
 		this.entityData.define(LAST_LOOK_POS, Vec3.ZERO);
 	}
@@ -164,7 +162,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
     public void readAdditionalSaveData(CompoundTag p_21450_) 
     {
     	super.readAdditionalSaveData(p_21450_);
-    	this.setUsingSkill(p_21450_.getBoolean("isUsingSkill"));
     	this.setCanLook(p_21450_.getBoolean("CanLook"));
     	this.setCanMove(p_21450_.getBoolean("CanMove"));
     	this.setAnimationTick(p_21450_.getInt("AnimationTick"));
@@ -175,7 +172,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
     public void addAdditionalSaveData(CompoundTag p_21484_) 
     {
     	super.addAdditionalSaveData(p_21484_);
-    	p_21484_.putBoolean("isUsingSkill", this.isUsingSkill());
     	p_21484_.putBoolean("CanLook", this.canLook());
     	p_21484_.putBoolean("CanMove", this.canMove());
     	p_21484_.putInt("AnimationTick", this.getAnimationTick());
@@ -193,15 +189,9 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	}
 	
 	@Override
-	public void setUsingSkill(boolean value) 
-	{
-		this.entityData.set(IS_USING_SKILL, value);
-	}
-	
-	@Override
 	public boolean isUsingSkill() 
 	{
-		return this.getAnimationTick() > 0 || this.entityData.get(IS_USING_SKILL);
+		return this.getAnimationTick() > 0;
 	}
 	
     public void setCanLook(boolean value)
@@ -246,6 +236,11 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
     public int getAnimationState()
     {
         return this.entityData.get(ANIMATION_STATE);
+    }
+    
+    public boolean isUsingSkill(int state)
+    {
+    	return this.getAnimationState() == state && this.isUsingSkill();
     }
     
     public void setLastLookPos(Vec3 value)

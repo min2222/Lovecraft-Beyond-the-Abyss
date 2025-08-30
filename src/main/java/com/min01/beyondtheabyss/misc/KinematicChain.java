@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.misc;
 
-import com.min01.beyondtheabyss.entity.deepabyss.AbstractForneusPart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -65,38 +64,7 @@ public class KinematicChain
 	{
 		if(!this.target.equals(Vec3.ZERO))
 		{
-			ChainSegment tip = this.getTipSegment();
-			Vec3 tipPos = tip.getPos();
-			Vec3 toTarget = this.target.subtract(tipPos);
-		    float actualDistance = (float)toTarget.length();
-		    float epsilon = 0.001F;
-		    if(actualDistance < epsilon)
-		    {
-		        tip.setPos(this.target);
-		    }
-		    else 
-		    {
-		        float moveDistance = Math.min(actualDistance, tip.distance);
-		        tip.setRot(this.lookAt(tipPos, this.target));
-		        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
-		    }
-		    
-			for(int i = 2; i < this.segments.length; i++)
-			{
-				int index = i - 1;
-				ChainSegment current = this.segments[this.segments.length - i];
-				ChainSegment next = this.segments[this.segments.length - index];
-				current.setRot(this.lookAt(current.getPos(), next.getPos()));
-				current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
-			}
-			
-			for(int i = 0; i < this.segments.length - 1; i++)
-			{
-				ChainSegment current = this.segments[i];
-				ChainSegment next = this.segments[i + 1];
-				current.setRot(this.lookAt(current.getPos(), next.getPos()));
-				next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, next.distance));
-			}
+			this.tick();
 		}
 		else if(this.anchorPos != null)
 		{
@@ -120,45 +88,19 @@ public class KinematicChain
 				}
 			}
 		}
-		
-		if(this.anchorPos != null)
-		{
-			this.segments[0].setPos(this.anchorPos);
-		}
 	}
 	
 	public void tick() 
 	{
-		//TODO
 		if(!this.target.equals(Vec3.ZERO))
 		{
-			if(this.entity instanceof AbstractForneusPart)
-			{
-				ChainSegment tip = this.getTipSegment();
-				Vec3 tipPos = tip.getPos();
-		        Vec3 targetPos = this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, tip.distance);
-		        Vec3 pos = tipPos.lerp(targetPos, 0.5F);
-		        tip.setRot(this.lookAt(pos, this.target, tip.getRot()));
-		        tip.setPos(pos);
-			}
-			else
-			{
-				ChainSegment tip = this.getTipSegment();
-				Vec3 tipPos = tip.getPos();
-				Vec3 toTarget = this.target.subtract(tipPos);
-			    float actualDistance = (float)toTarget.length();
-			    float epsilon = 0.001F;
-			    if(actualDistance < epsilon)
-			    {
-			        tip.setPos(this.target);
-			    }
-			    else
-			    {
-			        float moveDistance = Math.min(actualDistance, tip.distance);
-			        tip.setRot(this.lookAt(tipPos, this.target, tip.getRot()));
-			        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDistance));
-			    }
-			}
+			ChainSegment tip = this.getTipSegment();
+			Vec3 tipPos = tip.getPos();
+	        Vec3 toTarget = this.target.subtract(tipPos);
+	        double dist = toTarget.length();
+	        double moveDist = Math.min(dist, tip.distance);
+	        tip.setRot(this.lookAt(tipPos, this.target));
+	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist));
 		}
 		
 		for(int i = 1; i < this.segments.length; i++)

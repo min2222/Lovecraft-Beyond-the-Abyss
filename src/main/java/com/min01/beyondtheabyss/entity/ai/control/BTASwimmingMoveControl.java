@@ -20,7 +20,7 @@ public class BTASwimmingMoveControl extends MoveControl
 {
 	private final float outsideWaterSpeedModifier;
 	private final boolean applyGravity;
-	private float targetX, targetY, targetZ;
+	private Vec3 targetPos = Vec3.ZERO;
 
 	public BTASwimmingMoveControl(Mob p_148070_, float p_148074_, boolean p_148075_) 
 	{
@@ -43,9 +43,9 @@ public class BTASwimmingMoveControl extends MoveControl
 			{
 				this.generateNewTarget();
 			}
-			double d0 = this.targetX - this.mob.getX();
-			double d1 = this.targetY - this.mob.getY();
-			double d2 = this.targetZ - this.mob.getZ();
+			double d0 = this.targetPos.x - this.mob.getX();
+			double d1 = this.targetPos.y - this.mob.getY();
+			double d2 = this.targetPos.z - this.mob.getZ();
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			if(d3 < (double) 2.5000003E-7F) 
 			{
@@ -75,7 +75,9 @@ public class BTASwimmingMoveControl extends MoveControl
 				}
 				else 
 				{
-					this.mob.setSpeed(f1 * this.outsideWaterSpeedModifier);
+					float f5 = Math.abs(Mth.wrapDegrees(this.mob.getYRot() - f));
+					float f2 = this.getTurningSpeedFactor(f5);
+					this.mob.setSpeed(f1 * this.outsideWaterSpeedModifier * f2);
 				}
 			}
 		}
@@ -102,12 +104,25 @@ public class BTASwimmingMoveControl extends MoveControl
                 BlockState blockState = world.getBlockState(targetPos);
                 if(blockState.is(Blocks.WATER))
                 {
-                	this.targetX = targetPos.getX();
-                	this.targetY = targetPos.getY();
-                	this.targetZ = targetPos.getZ();
+                	this.targetPos = blockHit.getLocation();
                 	break;
                 }
         	}
         }
+    }
+    
+	private float getTurningSpeedFactor(float p_249853_) 
+	{
+		return 1.0F - Mth.clamp((p_249853_ - 10.0F) / 50.0F, 0.0F, 1.0F);
+	}
+	
+    public void setTargetPos(Vec3 pos)
+    {
+    	this.targetPos = pos;
+    }
+    
+    public Vec3 getTargetPos()
+    {
+    	return this.targetPos;
     }
 }

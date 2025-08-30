@@ -42,7 +42,6 @@ public class EntityChainTrapMaw extends Entity
 		this.entityData.define(CHAIN_LENGTH, 5);
 	}
 	
-	//FIXME chain is weird;
 	@Override
 	public void tick() 
 	{
