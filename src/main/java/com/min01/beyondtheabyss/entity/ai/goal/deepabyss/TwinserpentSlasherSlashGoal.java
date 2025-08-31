@@ -15,7 +15,14 @@ public class TwinserpentSlasherSlashGoal extends AbstractTwinserpentSkillGoal
 	public void start() 
 	{
 		super.start();
-		this.mob.setAnimationState(5);
+		if(this.mob.getRandom().nextBoolean())
+		{
+			this.mob.setAnimationState(5);
+		}
+		else
+		{
+			this.mob.setAnimationState(9);
+		}
 	}
 	
 	@Override

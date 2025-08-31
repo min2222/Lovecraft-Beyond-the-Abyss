@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -14,7 +15,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,8 +28,8 @@ public class EntitySubmarine extends AbstractBTACreature
 {
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
 	
-	public final AnimationState openHatchAnimationState = new AnimationState();
-	public final AnimationState closeHatchAnimationState = new AnimationState();
+	public final SmoothAnimationState openHatchAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState closeHatchAnimationState = new SmoothAnimationState();
 	
     public float brightness;	
     public float brightnessOld;
@@ -69,45 +69,12 @@ public class EntitySubmarine extends AbstractBTACreature
     	this.deathTime = 0;
         if(this.level.isClientSide) 
         {
+        	this.openHatchAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
+        	this.closeHatchAnimationState.updateWhen(this.getAnimationState() == 2, this.tickCount);
             ++this.glowingTicks;
             this.brightness += (0.0F - this.brightness) * 0.8F;
         }
     }
-    
-	@Override
-	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
-	{
-        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
-        {
-            switch(this.getAnimationState()) 
-            {
-        		case 0: 
-        		{
-        			this.stopAllAnimationStates();
-        			break;
-        		}
-        		case 1:
-        		{
-        			this.stopAllAnimationStates();
-        			this.openHatchAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 2:
-        		{
-        			this.stopAllAnimationStates();
-        			this.closeHatchAnimationState.start(this.tickCount);
-        			break;
-        		}
-            }
-        }
-	}
-	
-	@Override
-	public void stopAllAnimationStates() 
-	{
-		this.openHatchAnimationState.stop();
-		this.closeHatchAnimationState.stop();
-	}
     
     @Override
     public void travel(Vec3 vec3) 

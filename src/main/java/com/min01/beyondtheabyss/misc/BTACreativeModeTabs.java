@@ -27,7 +27,7 @@ public class BTACreativeModeTabs
     		{
     			for(RegistryObject<Item> item : BTAItems.DEEP_ABYSS_ITEMS.getEntries())
     			{
-      				if(item.get() instanceof ForgeSpawnEggItem)
+      				if(item.get() instanceof ForgeSpawnEggItem && item != BTAItems.SOLOMON_SPAWN_EGG)
     				{
     					output.accept(item.get());
     				}
@@ -74,7 +74,10 @@ public class BTACreativeModeTabs
     		.icon(() -> new ItemStack(BTAItems.OVERSEER_SPAWN_EGG.get()))
     		.displayItems((enabledFeatures, output) -> 
     		{
-				output.accept(BTAItems.OVERSEER_SPAWN_EGG.get());
+    			for(RegistryObject<Item> item : BTAItems.MIRRORED_CITY_ITEMS.getEntries())
+    			{
+					output.accept(item.get());
+    			}
     		}).build());
     
     public static final RegistryObject<CreativeModeTab> MOON = CREATIVE_MODE_TAB.register("moon", () -> CreativeModeTab.builder()
@@ -82,7 +85,10 @@ public class BTACreativeModeTabs
     		.icon(() -> new ItemStack(BTAItems.MOONSTONE.get()))
     		.displayItems((enabledFeatures, output) -> 
     		{
-				output.accept(BTAItems.MOONSTONE.get());
+    			for(RegistryObject<Item> item : BTAItems.MOON_ITEMS.getEntries())
+    			{
+					output.accept(item.get());
+    			}
     		}).build());
     
     public static final RegistryObject<CreativeModeTab> PURGATORY = CREATIVE_MODE_TAB.register("purgatory", () -> CreativeModeTab.builder()
@@ -90,6 +96,9 @@ public class BTACreativeModeTabs
     		.icon(() -> new ItemStack(BTAItems.MOLTEN_STONE.get()))
     		.displayItems((enabledFeatures, output) -> 
     		{
-				output.accept(BTAItems.MOLTEN_STONE.get());
+    			for(RegistryObject<Item> item : BTAItems.PURGATORY_ITEMS.getEntries())
+    			{
+					output.accept(item.get());
+    			}
     		}).build());
 }

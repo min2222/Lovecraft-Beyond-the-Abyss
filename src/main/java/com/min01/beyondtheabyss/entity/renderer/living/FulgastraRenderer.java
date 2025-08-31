@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.renderer.living;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.model.ModelFulgastra;
+import com.min01.beyondtheabyss.entity.renderer.layer.FulgastraLayer;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.RenderType;
@@ -14,7 +15,7 @@ public class FulgastraRenderer extends MobRenderer<EntityFulgastra, ModelFulgast
 	public FulgastraRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelFulgastra(p_174304_.bakeLayer(ModelFulgastra.LAYER_LOCATION)), 0.5F);
-		//TODO charged layer;
+		this.addLayer(new FulgastraLayer(this, this.model));
 	}
 	
 	@Override

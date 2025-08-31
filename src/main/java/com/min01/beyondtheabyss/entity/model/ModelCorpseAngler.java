@@ -139,11 +139,11 @@ public class ModelCorpseAngler extends HierarchicalModel<EntityCorpseAngler>
 		bait.visible = isBurrow;
 		
 		this.animateWalk(CorpseAnglerAnimation.CORPSE_ANGLER_SWIM, limbSwing, limbSwingAmount, 2.5F, 2.5F);
-		this.animate(entity.idleAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_IDLE, ageInTicks);
-		this.animate(entity.openMouthAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_OPEN_MOUTH, ageInTicks);
-		this.animate(entity.closeMouthAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_CLOSE_MOUTH, ageInTicks);
-		this.animate(entity.burrowAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_BURROW, ageInTicks);
-		this.animate(entity.unburrowAnimationState, CorpseAnglerAnimation.CORPSE_ANGLER_UNBURROW, ageInTicks);
+		entity.idleAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_IDLE, ageInTicks, limbSwingAmount);
+		entity.openMouthAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_OPEN_MOUTH, ageInTicks);
+		entity.closeMouthAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_CLOSE_MOUTH, ageInTicks);
+		entity.burrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_BURROW, ageInTicks);
+		entity.unburrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_UNBURROW, ageInTicks);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -14,11 +15,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -36,11 +35,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 {
-	public final AnimationState idleAnimationState = new AnimationState();
-	public final AnimationState openMouthAnimationState = new AnimationState();
-	public final AnimationState closeMouthAnimationState = new AnimationState();
-	public final AnimationState burrowAnimationState = new AnimationState();
-	public final AnimationState unburrowAnimationState = new AnimationState();
+	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState openMouthAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState closeMouthAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState burrowAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState unburrowAnimationState = new SmoothAnimationState();
 	
 	public final Worm worm1 = new Worm();
 	public final Worm worm2 = new Worm();
@@ -84,55 +83,6 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
     	};
     	return partBuilder;
 	}
-	
-	@Override
-	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
-	{
-        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
-        {
-            switch(this.getAnimationState()) 
-            {
-        		case 0: 
-        		{
-        			this.stopAllAnimationStates();
-        			break;
-        		}
-        		case 1:
-        		{
-        			this.stopAllAnimationStates();
-        			this.openMouthAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 2:
-        		{
-        			this.stopAllAnimationStates();
-        			this.closeMouthAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 3:
-        		{
-        			this.stopAllAnimationStates();
-        			this.burrowAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 4:
-        		{
-        			this.stopAllAnimationStates();
-        			this.unburrowAnimationState.start(this.tickCount);
-        			break;
-        		}
-            }
-        }
-	}
-	
-	@Override
-	public void stopAllAnimationStates() 
-	{
-		this.openMouthAnimationState.stop();
-		this.closeMouthAnimationState.stop();
-		this.burrowAnimationState.stop();
-		this.unburrowAnimationState.stop();
-	}
 
 	@Override
 	public BTAMobType getBTAMobType()
@@ -166,7 +116,11 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
 		if(this.level.isClientSide)
 		{
-			this.idleAnimationState.animateWhen(this.isInWater() && !BTAUtil.isMoving(this), this.tickCount);
+			this.idleAnimationState.updateWhen(this.isInWater(), this.tickCount);
+			this.openMouthAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+			this.closeMouthAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
+			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3, this.tickCount);
+			this.unburrowAnimationState.updateWhen(this.getAnimationState() == 4, this.tickCount);
 		}
 		if(this.getAnimationState() == 0 && this.isInWater())
 		{

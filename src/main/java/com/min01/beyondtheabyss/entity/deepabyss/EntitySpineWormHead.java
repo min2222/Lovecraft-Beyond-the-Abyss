@@ -5,6 +5,7 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
@@ -19,7 +20,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -43,7 +43,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	public static final EntityDataAccessor<Integer> COOLDOWN = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.INT);
 	public KinematicChain chain;
 	
-	public final AnimationState idleAnimationState = new AnimationState();
+	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	
 	public EntitySpineWormHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -102,7 +102,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		super.tick();
 		if(this.level.isClientSide)
 		{
-			this.idleAnimationState.animateWhen(this.getAnimationState() == 0, this.tickCount);
+			this.idleAnimationState.updateWhen(this.getAnimationState() == 0, this.tickCount);
 		}
 		if(this.chain == null)
 		{

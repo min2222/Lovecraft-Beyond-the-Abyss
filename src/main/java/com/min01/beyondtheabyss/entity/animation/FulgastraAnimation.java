@@ -2286,4 +2286,13 @@ public class FulgastraAnimation
 				new Keyframe(4.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -40.57F), AnimationChannel.Interpolations.LINEAR)
 			))
 			.build();
+	
+	public static final AnimationDefinition FULGASTRA_SPLITTING = AnimationDefinition.Builder.withLength(0.5F)
+			.addAnimation("Fulgastra", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+				new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 0.7F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.3333F, KeyframeAnimations.scaleVec(1.2F, 0.7F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+				new Keyframe(0.5F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM)
+			))
+			.build();
 }

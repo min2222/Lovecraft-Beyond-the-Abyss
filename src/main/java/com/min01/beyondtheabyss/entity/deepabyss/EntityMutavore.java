@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -34,6 +35,8 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	
 	public final Worm worm5 = new Worm();
 	public final Worm worm10 = new Worm();
+	
+	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	
 	public EntityMutavore(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -95,6 +98,11 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     	
     	WormChain.tick(this.worm9, this, 0.0F, speed);
     	WormChain.tick(this.worm10, this.worm9, 0.0F, speed);
+    	
+    	if(this.level.isClientSide)
+    	{
+    		this.idleAnimationState.updateWhen(this.getAnimationState() == 0, this.tickCount);
+    	}
 	}
 	
 	@Override

@@ -16,6 +16,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 public class ModelSpineWormBody extends HierarchicalModel<EntitySpineWormBody>
 {
@@ -52,7 +53,18 @@ public class ModelSpineWormBody extends HierarchicalModel<EntitySpineWormBody>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("segment"), netHeadYaw, headPitch + 90.0F);
-		this.root.visible = entity.getHead() != null && entity.distanceTo(entity.getHead()) >= 0.5F;
+		
+		if(entity.getHead() != null)
+		{
+	        Vec3 toTarget = entity.getHead().position().subtract(entity.position());
+	        double dist = toTarget.length();
+	        double moveDist = Math.min(dist, 0.5F);
+			this.root.visible = moveDist > 0.0F;
+		}
+		else
+		{
+			this.root.visible = false;
+		}
 	}
 	
 	@Override

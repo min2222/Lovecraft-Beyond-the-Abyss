@@ -121,6 +121,10 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 		{
 			this.setAnimationTick(this.getAnimationTick() - 1);
 		}
+		else
+		{
+			this.onAnimationFinished(this.getAnimationState());
+		}
 		
 		if(this.getTarget() != null)
 		{
@@ -131,16 +135,17 @@ public abstract class AbstractBTACreature extends PathfinderMob implements IMult
 			if(this.getBTAMobType().lookTarget && this.canLook())
 			{
 				this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
+				//this.getLookControl().setLookAt(this.getTarget(), 360.0F, 360.0F);
 			}
 		}
 	}
 	
 	public abstract BTAMobType getBTAMobType();
     
-    public void stopAllAnimationStates() 
-    {
-    	
-    }
+	public void onAnimationFinished(int state)
+	{
+		
+	}
     
     @Override
     public void readAdditionalSaveData(CompoundTag p_21450_) 

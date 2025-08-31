@@ -79,17 +79,17 @@ public class ModelTwinserpentHead extends HierarchicalModel<EntityTwinserpentHea
 		this.root.getChild("TwinserpentBlaster").getChild("InnerRay").visible = false;
 		this.root.getChild("TwinserpentBlaster").getChild("RayofEnergy").zScale += entity.getBeamLength();
 		this.root.getChild("TwinserpentBlaster").getChild("InnerRay").zScale += entity.getBeamLength() + (entity.getBeamLength() / 2.0F);
-		this.animate(entity.rayChargeAnimationState, TwinserpentAnimation.BlasterAnimation.BLASTER_CHARGE, ageInTicks);
-		this.animate(entity.rayStartAnimationState, TwinserpentAnimation.BlasterAnimation.BLASTER_SHOOT_START, ageInTicks);
-		this.animate(entity.rayLoopAnimationState, TwinserpentAnimation.BlasterAnimation.BLASTER_SHOOT_LOOP, ageInTicks);
-		this.animate(entity.rayEndAnimationState, TwinserpentAnimation.BlasterAnimation.BLASTER_SHOOT_END, ageInTicks);
-		this.animate(entity.blasterShotAnimationState, TwinserpentAnimation.BlasterAnimation.BLASTER_SHOT, ageInTicks);
-		this.animate(entity.blasterDisabledAnimationState, TwinserpentAnimation.BlasterAnimation.BLASTER_DISABLED, ageInTicks);
-		this.animate(entity.slashRightAnimationState, TwinserpentAnimation.SlasherAnimation.SLASHER_SLASH_RIGHT, ageInTicks);
-		this.animate(entity.slashLeftAnimationState, TwinserpentAnimation.SlasherAnimation.SLASHER_SLASH_LEFT, ageInTicks);
-		this.animate(entity.slasherChargeStartAnimationState, TwinserpentAnimation.SlasherAnimation.SLASHER_CHARGE_START, ageInTicks);
-		this.animate(entity.slasherChargingAnimationState, TwinserpentAnimation.SlasherAnimation.SLASHER_CHARGING, ageInTicks);
-		this.animate(entity.slasherDisabledAnimationState, TwinserpentAnimation.SlasherAnimation.SLASHER_DISABLED, ageInTicks);
+		entity.rayChargeAnimationState.animate(this, TwinserpentAnimation.BlasterAnimation.BLASTER_CHARGE, ageInTicks);
+		entity.rayStartAnimationState.animate(this, TwinserpentAnimation.BlasterAnimation.BLASTER_SHOOT_START, ageInTicks);
+		entity.rayLoopAnimationState.animate(this, TwinserpentAnimation.BlasterAnimation.BLASTER_SHOOT_LOOP, ageInTicks);
+		entity.rayEndAnimationState.animate(this, TwinserpentAnimation.BlasterAnimation.BLASTER_SHOOT_END, ageInTicks);
+		entity.blasterShotAnimationState.animate(this, TwinserpentAnimation.BlasterAnimation.BLASTER_SHOT, ageInTicks);
+		entity.blasterDisabledAnimationState.animate(this, TwinserpentAnimation.BlasterAnimation.BLASTER_DISABLED, ageInTicks);
+		entity.slashRightAnimationState.animate(this, TwinserpentAnimation.SlasherAnimation.SLASHER_SLASH_RIGHT, ageInTicks);
+		entity.slashLeftAnimationState.animate(this, TwinserpentAnimation.SlasherAnimation.SLASHER_SLASH_LEFT, ageInTicks);
+		entity.slasherChargeStartAnimationState.animate(this, TwinserpentAnimation.SlasherAnimation.SLASHER_CHARGE_START, ageInTicks);
+		entity.slasherChargingAnimationState.animate(this, TwinserpentAnimation.SlasherAnimation.SLASHER_CHARGING, ageInTicks);
+		entity.slasherDisabledAnimationState.animate(this, TwinserpentAnimation.SlasherAnimation.SLASHER_DISABLED, ageInTicks);
 	}
 
 	@Override

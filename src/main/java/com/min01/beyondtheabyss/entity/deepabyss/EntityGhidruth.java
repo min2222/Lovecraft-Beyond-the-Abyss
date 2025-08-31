@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.sound.BTASounds;
 
-import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -63,29 +62,6 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     	super.registerGoals();
         this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
     }
-    
-	@Override
-	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
-	{
-        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
-        {
-            switch(this.getAnimationState()) 
-            {
-        		case 0: 
-        		{
-        			this.stopAllAnimationStates();
-        			break;
-        		}
-            }
-        }
-        super.onSyncedDataUpdated(p_219422_);
-	}
-	
-	@Override
-	public void stopAllAnimationStates() 
-	{
-
-	}
     
     @Override
     protected SoundEvent getHurtSound(DamageSource p_21239_) 

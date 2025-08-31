@@ -134,8 +134,8 @@ public class ModelSubmarine extends HierarchicalModel<EntitySubmarine>
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("submarine"), netHeadYaw, headPitch);
 		this.animateWalk(SubmarineAnimation.SUBMARINE_TURBINE_SPIN, limbSwing, limbSwingAmount, 2.5F, 2.5F);
-		this.animate(entity.openHatchAnimationState, SubmarineAnimation.SUBMARINE_OPEN_HATCH, ageInTicks);
-		this.animate(entity.closeHatchAnimationState, SubmarineAnimation.SUBMARINE_CLOSE_HATCH, ageInTicks);
+		entity.openHatchAnimationState.animate(this, SubmarineAnimation.SUBMARINE_OPEN_HATCH, ageInTicks);
+		entity.closeHatchAnimationState.animate(this, SubmarineAnimation.SUBMARINE_CLOSE_HATCH, ageInTicks);
 	}
 
 	@Override

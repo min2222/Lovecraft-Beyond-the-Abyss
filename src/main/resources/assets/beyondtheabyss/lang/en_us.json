@@ -169,6 +169,7 @@
 	"block.beyondtheabyss.moonstone": "Moonstone",
 	"block.beyondtheabyss.molten_stone": "Molten Stone",
 	"death.attack.ghidruth_flesh": "%1$s teeth shattered while trying to chew on Ghidruth's flesh",
+	"death.attack.electronic": "%1$s was electrocuted by %2$s",
 	"effect.beyondtheabyss.air_swim": "Air Swim",
 	"effect.beyondtheabyss.air_swim.description": "allows you to swim in the air.",
 	"effect.beyondtheabyss.disorder": "Disorder",

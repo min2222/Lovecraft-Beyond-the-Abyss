@@ -68,23 +68,22 @@ public class KinematicChain
 		}
 		else if(this.anchorPos != null)
 		{
-			ChainSegment tip = this.getTipSegment();
-			if(tip.getPos().distanceTo(this.anchorPos) > 2.0F)
+			for(int i = 1; i < this.segments.length; i++)
 			{
-				for(int i = 1; i < this.segments.length; i++)
+				ChainSegment current = this.segments[i];
+				ChainSegment next = this.segments[i - 1];
+		        Vec3 toTarget = this.anchorPos.subtract(current.getPos());
+		        double dist = toTarget.length();
+		        double moveDist = Math.min(dist, 0.5F);
+				Vec2 rot = this.lookAt(current.getPos(), next.getPos());
+				if(moveDist > 0.0F)
 				{
-					ChainSegment current = this.segments[i];
-					ChainSegment next = this.segments[i - 1];
-					Vec2 rot = this.lookAt(current.getPos(), next.getPos());
-					current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, current.distance));
+					current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, moveDist));
 				}
-			}
-			else
-			{
-				for(ChainSegment segment : this.segments)
+				else
 				{
-					segment.setRot(this.initialRot);
-					segment.setPos(this.anchorPos);
+					current.setRot(this.initialRot);
+					current.setPos(this.anchorPos);
 				}
 			}
 		}

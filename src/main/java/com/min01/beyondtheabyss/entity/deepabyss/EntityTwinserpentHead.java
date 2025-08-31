@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentBlasterShotG
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentSlasherChargeGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentSlasherSlashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -26,7 +27,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -52,17 +52,17 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	public static final EntityDataAccessor<Boolean> IS_HEAD = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.FLOAT);
 	
-	public final AnimationState rayChargeAnimationState = new AnimationState();
-	public final AnimationState rayStartAnimationState = new AnimationState();
-	public final AnimationState rayLoopAnimationState = new AnimationState();
-	public final AnimationState rayEndAnimationState = new AnimationState();
-	public final AnimationState blasterShotAnimationState = new AnimationState();
-	public final AnimationState blasterDisabledAnimationState = new AnimationState();
-	public final AnimationState slashRightAnimationState = new AnimationState();
-	public final AnimationState slashLeftAnimationState = new AnimationState();
-	public final AnimationState slasherChargeStartAnimationState = new AnimationState();
-	public final AnimationState slasherChargingAnimationState = new AnimationState();
-	public final AnimationState slasherDisabledAnimationState = new AnimationState();
+	public final SmoothAnimationState rayChargeAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState rayStartAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState rayLoopAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState rayEndAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState blasterShotAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState blasterDisabledAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState slashRightAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState slashLeftAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState slasherChargeStartAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState slasherChargingAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState slasherDisabledAnimationState = new SmoothAnimationState();
 	
 	public EntityTwinserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -103,91 +103,6 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	{
 		return BTAMobType.HOSTILE;
 	}
-    
-	@Override
-	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
-	{
-        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
-        {
-            switch(this.getAnimationState()) 
-            {
-        		case 0: 
-        		{
-        			this.stopAllAnimationStates();
-        			break;
-        		}
-        		case 1:
-        		{
-        			this.stopAllAnimationStates();
-        			this.rayChargeAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 2:
-        		{
-        			this.stopAllAnimationStates();
-        			this.rayStartAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 3:
-        		{
-        			this.stopAllAnimationStates();
-        			this.rayLoopAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 4:
-        		{
-        			this.stopAllAnimationStates();
-        			this.rayEndAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 5:
-        		{
-        			this.stopAllAnimationStates();
-        			if(this.random.nextBoolean())
-        			{
-            			this.slashRightAnimationState.start(this.tickCount);
-        			}
-        			else
-        			{
-            			this.slashLeftAnimationState.start(this.tickCount);
-        			}
-        			break;
-        		}
-        		case 6:
-        		{
-        			this.stopAllAnimationStates();
-        			this.blasterShotAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 7:
-        		{
-        			this.stopAllAnimationStates();
-        			this.slasherChargeStartAnimationState.start(this.tickCount);
-        			break;
-        		}
-        		case 8:
-        		{
-        			this.stopAllAnimationStates();
-        			this.slasherChargingAnimationState.start(this.tickCount);
-        			break;
-        		}
-            }
-        }
-	}
-	
-	@Override
-	public void stopAllAnimationStates() 
-	{
-		this.rayChargeAnimationState.stop();
-		this.rayStartAnimationState.stop();
-		this.rayLoopAnimationState.stop();
-		this.rayEndAnimationState.stop();
-		this.blasterShotAnimationState.stop();
-		this.slashRightAnimationState.stop();
-		this.slashLeftAnimationState.stop();
-		this.slasherChargeStartAnimationState.stop();
-		this.slasherChargingAnimationState.stop();
-	}
 	
 	@Override
 	protected void registerGoals() 
@@ -206,8 +121,17 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 		
 		if(this.level.isClientSide)
 		{
-			this.blasterDisabledAnimationState.animateWhen(this.getHeadType() == HeadType.BLASTER && this.isDisabled(), this.tickCount);
-			this.slasherDisabledAnimationState.animateWhen(this.getHeadType() == HeadType.SLASHER && this.isDisabled(), this.tickCount);
+			this.blasterDisabledAnimationState.updateWhen(this.getHeadType() == HeadType.BLASTER && this.isDisabled(), this.tickCount);
+			this.slasherDisabledAnimationState.updateWhen(this.getHeadType() == HeadType.SLASHER && this.isDisabled(), this.tickCount);
+			this.rayChargeAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+			this.rayStartAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
+			this.rayLoopAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
+			this.rayEndAnimationState.updateWhen(this.isUsingSkill(4), this.tickCount);
+			this.slashRightAnimationState.updateWhen(this.isUsingSkill(5), this.tickCount);
+			this.slashLeftAnimationState.updateWhen(this.isUsingSkill(9), this.tickCount);
+			this.blasterShotAnimationState.updateWhen(this.isUsingSkill(6), this.tickCount);
+			this.slasherChargeStartAnimationState.updateWhen(this.isUsingSkill(7), this.tickCount);
+			this.slasherChargingAnimationState.updateWhen(this.isUsingSkill(8), this.tickCount);
 		}
 		
 		if(this.getHealth() <= this.getMaxHealth() / 2.0F)

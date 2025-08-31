@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBoidGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -21,7 +22,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -43,7 +43,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	public static final EntityDataAccessor<Boolean> IS_DISPERSE = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Optional<UUID>> LEADER_UUID = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.OPTIONAL_UUID);
 	
-	public final AnimationState biteAnimationState = new AnimationState();
+	public final SmoothAnimationState biteAnimationState = new SmoothAnimationState();
 	
 	public EntityGnasher(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -92,34 +92,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public void onSyncedDataUpdated(EntityDataAccessor<?> p_219422_) 
-	{
-        if(ANIMATION_STATE.equals(p_219422_) && this.level.isClientSide) 
-        {
-            switch(this.getAnimationState()) 
-            {
-        		case 0: 
-        		{
-        			this.stopAllAnimationStates();
-        			break;
-        		}
-        		case 1:
-        		{
-        			this.stopAllAnimationStates();
-        			this.biteAnimationState.start(this.tickCount);
-        			break;
-        		}
-            }
-        }
-	}
-	
-	@Override
-	public void stopAllAnimationStates() 
-	{
-		this.biteAnimationState.stop();
-	}
-	
-	@Override
 	public EntityDimensions getDimensions(Pose p_21047_) 
 	{
 		return this.isLeader() ? EntityDimensions.scalable(1.25F, 1.0F) : super.getDimensions(p_21047_);
@@ -132,6 +104,11 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
     	super.tick();
         this.refreshDimensions();
         DeepAbyssUtil.fishFlopping(this);
+        
+        if(this.level.isClientSide)
+        {
+        	this.biteAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+        }
 		
 		if(this.isDisperse() && !this.isLeader() && this.getLeader() != null)
 		{

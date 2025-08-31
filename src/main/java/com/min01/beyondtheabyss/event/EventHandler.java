@@ -16,6 +16,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentBone;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySplittedFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -75,6 +76,7 @@ public class EventHandler
     	event.put(BTAEntities.CORPSE_ANGLER.get(), EntityCorpseAngler.createAttributes().build());
     	event.put(BTAEntities.MUTAVORE.get(), EntityMutavore.createAttributes().build());
     	event.put(BTAEntities.FULGASTRA.get(), EntityFulgastra.createAttributes().build());
+    	event.put(BTAEntities.SPLITTED_FULGASTRA.get(), EntitySplittedFulgastra.createAttributes().build());
     	event.put(BTAEntities.FORNEUS_HEAD.get(), EntityForneusHead.createAttributes().build());
     	event.put(BTAEntities.FORNEUS_BODY.get(), EntityForneusHead.createAttributes().build());
     	event.put(BTAEntities.FORNEUS_TAIL.get(), EntityForneusHead.createAttributes().build());

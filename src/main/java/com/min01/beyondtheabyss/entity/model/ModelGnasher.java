@@ -102,13 +102,13 @@ public class ModelGnasher extends HierarchicalModel<EntityGnasher>
 		this.root.getChild("Gnasher").visible = !entity.isLeader();
 		if(entity.isLeader())
 		{
-			this.animateWalk( GnasherLeaderAnimation.GNASHER_LEADER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
-			this.animate(entity.biteAnimationState, GnasherLeaderAnimation.GNASHER_LEADER_BITE, ageInTicks);
+			this.animateWalk(GnasherLeaderAnimation.GNASHER_LEADER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
+			entity.biteAnimationState.animate(this, GnasherLeaderAnimation.GNASHER_LEADER_BITE, ageInTicks);
 		}
 		else
 		{
 			this.animateWalk(GnasherAnimation.GNASHER_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
-			this.animate(entity.biteAnimationState, GnasherAnimation.GNASHER_BITE, ageInTicks);
+			entity.biteAnimationState.animate(this, GnasherAnimation.GNASHER_BITE, ageInTicks);
 		}
 	}
 

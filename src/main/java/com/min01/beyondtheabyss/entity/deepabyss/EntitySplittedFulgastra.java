@@ -1,10 +1,11 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FulgastraSplitGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FulgastraChargeGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,14 +18,17 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
-public class EntityFulgastra extends AbstractDeepAbyssMonster
+public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<EntityFulgastra>
 {
-	public static final EntityDataAccessor<Boolean> IS_CHARGED = SynchedEntityData.defineId(EntityFulgastra.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_CHARGED = SynchedEntityData.defineId(EntitySplittedFulgastra.class, EntityDataSerializers.BOOLEAN);
 	
-	public final SmoothAnimationState splittingAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState chargingAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState shockingAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState closedAnimationState = new SmoothAnimationState();
 	
-	public EntityFulgastra(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntitySplittedFulgastra(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 	}
@@ -32,23 +36,23 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 	@Override
 	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
 	{
-    	EntityPartBuilder<EntityFulgastra> partBuilder = new EntityPartBuilder<EntityFulgastra>(this);
+    	EntityPartBuilder<EntitySplittedFulgastra> partBuilder = new EntityPartBuilder<EntitySplittedFulgastra>(this);
     	return partBuilder;
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
-    			.add(Attributes.MAX_HEALTH, 60.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.4F)
+    			.add(Attributes.MAX_HEALTH, 5.0F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.65F)
     			.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
-
+	
 	@Override
-	protected void registerGoals()
+	protected void registerGoals() 
 	{
 		super.registerGoals();
-		this.goalSelector.addGoal(0, new FulgastraSplitGoal(this));
+		this.goalSelector.addGoal(0, new FulgastraChargeGoal(this));
 	}
 	
     @Override
@@ -65,12 +69,32 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public void tick() 
+	public void tick()
 	{
 		super.tick();
+		this.setCanMove(false);
+		this.setCanLook(false);
+		this.getNavigation().stop();
 		if(this.level.isClientSide)
 		{
-			this.splittingAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+			this.chargingAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+			this.shockingAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
+			this.closedAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
+		}
+		if(this.getAnimationState() == 3 && this.getOwner() != null)
+		{
+			this.setDeltaMovement(BTAUtil.fromToVector(this.position(), this.getOwner().position(), 0.25F));
+			if(this.distanceTo(this.getOwner()) <= 2.0F)
+			{
+				this.discard();
+				this.getOwner().setAnimationState(1);
+				this.getOwner().setAnimationTick(10);
+				this.getOwner().heal(this.getHealth());
+			}
+		}
+		if(this.tickCount == 20)
+		{
+			this.setDeltaMovement(Vec3.ZERO);
 		}
 	}
 	
@@ -81,6 +105,12 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 		{
 			super.push(p_21294_);
 		}
+	}
+	
+	@Override
+	public boolean canSwim() 
+	{
+		return false;
 	}
 	
 	@Override

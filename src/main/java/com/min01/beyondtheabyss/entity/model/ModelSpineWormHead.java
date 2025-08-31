@@ -80,7 +80,7 @@ public class ModelSpineWormHead extends HierarchicalModel<EntitySpineWormHead>
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.root.getChild("head"), netHeadYaw, headPitch + 90.0F);
-		this.animate(entity.idleAnimationState, SpinewormAnimation.SPINEWORM_IDLE, ageInTicks);
+		entity.idleAnimationState.animate(this, SpinewormAnimation.SPINEWORM_IDLE, ageInTicks, limbSwingAmount);
 	}
 	
 	@Override

@@ -130,6 +130,10 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 		{
 			this.setAnimationTick(this.getAnimationTick() - 1);
 		}
+		else
+		{
+			this.onAnimationFinished(this.getAnimationState());
+		}
 		
 		if(this.getTarget() != null)
 		{
@@ -142,21 +146,24 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 				if(this.canLook())
 				{
 					this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
+					//this.getLookControl().setLookAt(this.getTarget(), 360.0F, 360.0F);
 				}
 				else if(!this.getLastLookPos().equals(Vec3.ZERO))
 				{
 					this.lookAt(Anchor.EYES, this.getLastLookPos());
+					//Vec3 pos = this.getLastLookPos();
+					//this.getLookControl().setLookAt(pos.x, pos.y, pos.z, 360.0F, 360.0F);
 				}
 			}
 		}
 	}
 	
 	public abstract BTAMobType getBTAMobType();
-    
-    public void stopAllAnimationStates() 
-    {
-    	
-    }
+	
+	public void onAnimationFinished(int state)
+	{
+		
+	}
     
     @Override
     public void readAdditionalSaveData(CompoundTag p_21450_) 

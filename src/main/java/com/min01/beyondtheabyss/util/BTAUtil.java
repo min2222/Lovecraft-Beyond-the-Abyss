@@ -64,7 +64,7 @@ public class BTAUtil
 {
 	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
-	
+    
 	public static void moveStructurePiece(Structure.GenerationContext p_227387_, StructurePiece piece, StructureTemplate template, Rotation rotation, Mirror mirror, Consumer<Integer> consumer)
 	{
 		ChunkPos chunkPos = p_227387_.chunkPos();
@@ -500,11 +500,6 @@ public class BTAUtil
     {
     	double d0 = owner.distanceToSqr(target.getX(), target.getY(), target.getZ());
     	return d0 <= getMeleeAttackRangeSqr(owner, target, multiplier);
-    }
-    
-    public static boolean isMoving(Entity entity) 
-    {
-		return entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
     }
 
 	public static Vec3 getLookPos(float xRot, float yRot, float yPos, double distance)
