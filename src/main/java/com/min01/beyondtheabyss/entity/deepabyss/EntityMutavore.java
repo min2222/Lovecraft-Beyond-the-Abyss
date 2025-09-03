@@ -1,6 +1,8 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavorePutridBubbleGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavoreTongueGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
@@ -37,6 +39,11 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public final Worm worm10 = new Worm();
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState bubbleStartAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState bubbleStopAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState tongueStartAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState tongueLoopAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState tongueStopAnimationState = new SmoothAnimationState();
 	
 	public EntityMutavore(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -50,7 +57,16 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     			.add(Attributes.MAX_HEALTH, 150.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.65F)
         		.add(Attributes.FOLLOW_RANGE, 50.0F)
+        		.add(Attributes.ATTACK_DAMAGE, 8.0F)
         		.add(Attributes.ARMOR, 8.0F);
+    }
+    
+    @Override
+    protected void registerGoals() 
+    {
+    	super.registerGoals();
+    	this.goalSelector.addGoal(0, new MutavorePutridBubbleGoal(this));
+    	this.goalSelector.addGoal(0, new MutavoreTongueGoal(this));
     }
 
 	@Override
@@ -101,14 +117,20 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     	
     	if(this.level.isClientSide)
     	{
-    		this.idleAnimationState.updateWhen(this.getAnimationState() == 0, this.tickCount);
+    		this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
+    		this.bubbleStartAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+    		this.bubbleStopAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
+    		this.tongueStartAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
+    		this.tongueLoopAnimationState.updateWhen(this.isUsingSkill(4), this.tickCount);
+    		this.tongueStopAnimationState.updateWhen(this.isUsingSkill(5), this.tickCount);
     	}
 	}
 	
 	@Override
-	public boolean rotateHead() 
+	protected void updateWalkAnimation(float p_268283_) 
 	{
-		return true;
+		float f = Math.min(p_268283_ * 10.0F, 1.0F);
+		this.walkAnimation.update(f, 0.4F);
 	}
 	
 	@Override

@@ -26,9 +26,9 @@ public class TwinserpentSlasherSlashGoal extends AbstractTwinserpentSkillGoal
 	}
 	
 	@Override
-	public boolean additionalStartCondition() 
+	public boolean canUse() 
 	{
-		return BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4) && this.mob.getHeadType() == HeadType.SLASHER && this.isOtherHeadDisabled();
+		return super.canUse() && BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4) && this.mob.getHeadType() == HeadType.SLASHER && this.isOtherHeadDisabled();
 	}
 
 	@Override

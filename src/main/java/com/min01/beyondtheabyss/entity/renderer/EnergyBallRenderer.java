@@ -28,7 +28,7 @@ public class EnergyBallRenderer extends EntityRenderer<EntityEnergyBall>
 	public void render(EntityEnergyBall p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_) 
 	{
 		p_114488_.pushPose();
-		p_114488_.mulPose(Axis.YP.rotationDegrees(Mth.lerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot())));
+		p_114488_.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot())));
 		p_114488_.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot())));
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0.0F, -1.5F, 0.0F);

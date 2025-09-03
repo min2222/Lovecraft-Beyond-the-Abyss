@@ -19,9 +19,9 @@ public class TwinserpentBlasterBeamGoal extends AbstractTwinserpentSkillGoal
 	}
 	
 	@Override
-	public boolean additionalStartCondition() 
+	public boolean canUse() 
 	{
-		return this.mob.getHeadType() == HeadType.BLASTER && !this.isOtherHeadDisabled();
+		return super.canUse() && this.mob.getHeadType() == HeadType.BLASTER && !this.isOtherHeadDisabled();
 	}
 
 	@Override

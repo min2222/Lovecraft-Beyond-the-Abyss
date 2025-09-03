@@ -116,7 +116,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
 		if(this.level.isClientSide)
 		{
-			this.idleAnimationState.updateWhen(this.isInWater(), this.tickCount);
+			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
 			this.openMouthAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
 			this.closeMouthAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3, this.tickCount);

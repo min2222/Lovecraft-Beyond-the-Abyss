@@ -1,6 +1,7 @@
 {
 	"type": "beyondtheabyss:hut",
 	"biomes": "#minecraft:is_taiga",
+	"terrain_adaptation": "beard_thin",
 	"spawn_overrides": {
 	},
 	"step": "surface_structures"

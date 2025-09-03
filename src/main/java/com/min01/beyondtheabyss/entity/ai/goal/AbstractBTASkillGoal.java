@@ -11,16 +11,11 @@ public abstract class AbstractBTASkillGoal<T extends Mob & IAnimatable> extends 
 	protected int skillWarmupDelay;
 	protected int nextSkillTickCount;
 	
-	public AbstractBTASkillGoal() 
-	{
-
-	}
-	
     @Override
     public boolean canUse() 
     {
-    	LivingEntity livingentity = this.getMob().getTarget();
-    	if(livingentity != null && livingentity.isAlive()) 
+    	LivingEntity target = this.getMob().getTarget();
+    	if(target != null && target.isAlive()) 
     	{
     		if(this.getMob().isUsingSkill())
     		{
@@ -28,18 +23,13 @@ public abstract class AbstractBTASkillGoal<T extends Mob & IAnimatable> extends 
     		}
     		else 
     		{
-    			return this.getMob().tickCount >= this.nextSkillTickCount && this.additionalStartCondition();
+    			return this.getMob().tickCount >= this.nextSkillTickCount;
     		}
     	}
     	else 
     	{
     		return false;
     	}
-    }
-    
-    public boolean additionalStartCondition()
-    {
-    	return true;
     }
     
     @Override
@@ -58,6 +48,7 @@ public abstract class AbstractBTASkillGoal<T extends Mob & IAnimatable> extends 
     	}
     	
     	this.getMob().setAggressive(true);
+    	this.getMob().setUsingSkill(true);
     	this.skillWarmupDelay = this.adjustedTickDelay(this.getSkillWarmupTime());
     	this.getMob().setAnimationTick(this.getSkillUsingTime());
     	this.nextSkillTickCount = this.getMob().tickCount + this.getSkillUsingInterval();
@@ -76,6 +67,7 @@ public abstract class AbstractBTASkillGoal<T extends Mob & IAnimatable> extends 
 			this.getMob().setCanMove(true);
 		}
 		this.getMob().setAggressive(false);
+    	this.getMob().setUsingSkill(false);
 	}
 	
     @Override
@@ -90,7 +82,6 @@ public abstract class AbstractBTASkillGoal<T extends Mob & IAnimatable> extends 
 
     protected abstract void performSkill();
 
-    //wait specific tick before use skill
     protected int getSkillWarmupTime()
     {
     	return 20;

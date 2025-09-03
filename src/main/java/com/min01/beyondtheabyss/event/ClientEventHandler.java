@@ -39,6 +39,7 @@ import com.min01.beyondtheabyss.entity.model.ModelKormosHead;
 import com.min01.beyondtheabyss.entity.model.ModelKormosTail;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
 import com.min01.beyondtheabyss.entity.model.ModelOverseer;
+import com.min01.beyondtheabyss.entity.model.ModelPutridBubble;
 import com.min01.beyondtheabyss.entity.model.ModelSolomon;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
@@ -51,6 +52,7 @@ import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
+import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
@@ -183,6 +185,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FORNEUS_MAGIC.get(), ForneusMagicRenderer::new);
     	event.registerEntityRenderer(BTAEntities.ENERGY_BALL.get(), EnergyBallRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.PUTRID_BUBBLE.get(), PutridBubbleRenderer::new);
     	
     	//living
     	event.registerEntityRenderer(BTAEntities.SOLOMON.get(), SolomonRenderer::new);
@@ -233,6 +236,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelForneusBody.LAYER_LOCATION, ModelForneusBody::createBodyLayer);
     	event.registerLayerDefinition(ModelForneusTail.LAYER_LOCATION, ModelForneusTail::createBodyLayer);
     	event.registerLayerDefinition(ModelEnergyBall.LAYER_LOCATION, ModelEnergyBall::createBodyLayer);
+    	event.registerLayerDefinition(ModelPutridBubble.LAYER_LOCATION, ModelPutridBubble::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
 

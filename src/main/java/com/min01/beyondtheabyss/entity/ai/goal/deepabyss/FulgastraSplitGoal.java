@@ -25,9 +25,9 @@ public class FulgastraSplitGoal extends BasicBTASkillGoal<EntityFulgastra>
 	}
 	
 	@Override
-	public boolean additionalStartCondition() 
+	public boolean canUse() 
 	{
-		return this.mob.getHealth() > 10;
+		return super.canUse() && this.mob.getHealth() > 10;
 	}
 
 	@Override

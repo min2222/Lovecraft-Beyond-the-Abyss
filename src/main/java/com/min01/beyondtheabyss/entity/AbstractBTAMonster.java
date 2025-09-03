@@ -8,11 +8,10 @@ import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -22,16 +21,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractBTAMonster extends Monster implements IMultipart, IAnimatable, IPosArray
+public abstract class AbstractBTAMonster extends AbstractAnimatableMonster implements IMultipart
 {
-	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Boolean> CAN_LOOK = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Vec3> LAST_LOOK_POS = SynchedEntityData.defineId(AbstractBTAMonster.class, BTAEntityDataSerializers.VEC3.get());
-
-	public Vec3[] posArray;
 	
 	public final EntityPartBuilder<? extends AbstractBTAMonster> partBuilder;
 	
@@ -44,11 +36,14 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	@Override
 	protected void registerGoals() 
 	{
+		if(this.getMobType() != MobType.WATER)
+		{
+			super.registerGoals();
+		}
         if(this.getBTAMobType().alwaysHostile)
         {
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
         }
-        
         if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
         {
             this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
@@ -59,11 +54,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	protected void defineSynchedData()
 	{
 		super.defineSynchedData();
-		this.entityData.define(ANIMATION_STATE, 0);
-		this.entityData.define(ANIMATION_TICK, 0);
-		this.entityData.define(CAN_LOOK, true);
-		this.entityData.define(CAN_MOVE, true);
-		this.entityData.define(HAS_TARGET, false);
 		this.entityData.define(LAST_LOOK_POS, Vec3.ZERO);
 	}
 	
@@ -98,12 +88,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	}
 	
 	@Override
-	public Vec3[] getPosArray() 
-	{
-		return this.posArray;
-	}
-	
-	@Override
 	public EntityPartBuilder<?> getPartBuilder() 
 	{
 		return this.partBuilder;
@@ -119,20 +103,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 		if(this.partBuilder != null)
 		{
 			this.partBuilder.tick(1.0F);
-		}
-		
-		if(!this.level.isClientSide)
-		{
-			this.setHasTarget(this.getTarget() != null);
-		}
-		
-		if(this.getAnimationTick() > 0)
-		{
-			this.setAnimationTick(this.getAnimationTick() - 1);
-		}
-		else
-		{
-			this.onAnimationFinished(this.getAnimationState());
 		}
 		
 		if(this.getTarget() != null)
@@ -160,96 +130,6 @@ public abstract class AbstractBTAMonster extends Monster implements IMultipart, 
 	
 	public abstract BTAMobType getBTAMobType();
 	
-	public void onAnimationFinished(int state)
-	{
-		
-	}
-    
-    @Override
-    public void readAdditionalSaveData(CompoundTag p_21450_) 
-    {
-    	super.readAdditionalSaveData(p_21450_);
-    	this.setCanLook(p_21450_.getBoolean("CanLook"));
-    	this.setCanMove(p_21450_.getBoolean("CanMove"));
-    	this.setAnimationTick(p_21450_.getInt("AnimationTick"));
-    	this.setAnimationState(p_21450_.getInt("AnimationState"));
-    }
-    
-    @Override
-    public void addAdditionalSaveData(CompoundTag p_21484_) 
-    {
-    	super.addAdditionalSaveData(p_21484_);
-    	p_21484_.putBoolean("CanLook", this.canLook());
-    	p_21484_.putBoolean("CanMove", this.canMove());
-    	p_21484_.putInt("AnimationTick", this.getAnimationTick());
-    	p_21484_.putInt("AnimationState", this.getAnimationState());
-    }
-	
-	public void setHasTarget(boolean value)
-	{
-		this.entityData.set(HAS_TARGET, value);
-	}
-	
-	public boolean hasTarget()
-	{
-		return this.entityData.get(HAS_TARGET);
-	}
-	
-	@Override
-	public boolean isUsingSkill() 
-	{
-		return this.getAnimationTick() > 0;
-	}
-	
-    public void setCanLook(boolean value)
-    {
-    	this.entityData.set(CAN_LOOK, value);
-    }
-    
-    public boolean canLook()
-    {
-    	return this.entityData.get(CAN_LOOK);
-    }
-    
-    @Override
-    public void setCanMove(boolean value)
-    {
-    	this.entityData.set(CAN_MOVE, value);
-    }
-    
-    @Override
-    public boolean canMove()
-    {
-    	return this.entityData.get(CAN_MOVE);
-    }
-    
-    @Override
-    public void setAnimationTick(int value)
-    {
-        this.entityData.set(ANIMATION_TICK, value);
-    }
-    
-    @Override
-    public int getAnimationTick()
-    {
-        return this.entityData.get(ANIMATION_TICK);
-    }
-    
-    public void setAnimationState(int value)
-    {
-        this.entityData.set(ANIMATION_STATE, value);
-    }
-    
-    public int getAnimationState()
-    {
-        return this.entityData.get(ANIMATION_STATE);
-    }
-    
-    public boolean isUsingSkill(int state)
-    {
-    	return this.getAnimationState() == state && this.isUsingSkill();
-    }
-    
     public void setLastLookPos(Vec3 value)
     {
         this.entityData.set(LAST_LOOK_POS, value);

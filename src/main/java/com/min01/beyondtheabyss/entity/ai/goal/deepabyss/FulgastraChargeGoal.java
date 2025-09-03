@@ -25,9 +25,9 @@ public class FulgastraChargeGoal extends BasicBTASkillGoal<EntitySplittedFulgast
 	}
 	
 	@Override
-	public boolean additionalStartCondition() 
+	public boolean canUse() 
 	{
-		return this.mob.getAnimationState() == 0 && this.mob.distanceTo(this.mob.getTarget()) <= 4.0F;
+		return super.canUse() && this.mob.getAnimationState() == 0 && this.mob.distanceTo(this.mob.getTarget()) <= 4.0F;
 	}
 
 	@Override

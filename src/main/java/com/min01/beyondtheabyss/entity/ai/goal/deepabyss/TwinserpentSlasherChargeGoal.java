@@ -25,9 +25,9 @@ public class TwinserpentSlasherChargeGoal extends AbstractTwinserpentSkillGoal
 	}
 	
 	@Override
-	public boolean additionalStartCondition() 
+	public boolean canUse() 
 	{
-		return this.mob.getHeadType() == HeadType.SLASHER && !this.isOtherHeadDisabled();
+		return super.canUse() && this.mob.getHeadType() == HeadType.SLASHER && !this.isOtherHeadDisabled();
 	}
 
 	@Override

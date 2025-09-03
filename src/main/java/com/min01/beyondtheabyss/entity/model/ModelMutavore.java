@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.MutavoreAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,6 +26,13 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 	private final ModelPart root;
 	private final ModelPart body;
 	private final ModelPart mound;
+	private final ModelPart chunk2;
+	private final ModelPart mine3;
+	private final ModelPart mine2;
+	private final ModelPart chunk3;
+	private final ModelPart mound_head;
+	private final ModelPart mine;
+	private final ModelPart mine4;
 	private final ModelPart tentacle;
 	private final ModelPart tentacle_segment;
 	private final ModelPart tentacle2;
@@ -36,11 +44,18 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 	private final ModelPart tentacle5;
 	private final ModelPart tentacle_segment5;
 
-	public ModelMutavore(ModelPart root) 
+	public ModelMutavore(ModelPart root)
 	{
 		this.root = root.getChild("root");
 		this.body = this.root.getChild("body");
 		this.mound = this.body.getChild("mound");
+		this.chunk2 = this.mound.getChild("chunk2");
+		this.mine3 = this.chunk2.getChild("mine3");
+		this.mine2 = this.chunk2.getChild("mine2");
+		this.chunk3 = this.mound.getChild("chunk3");
+		this.mound_head = this.chunk3.getChild("mound_head");
+		this.mine = this.chunk3.getChild("mine");
+		this.mine4 = this.chunk3.getChild("mine4");
 		this.tentacle = this.mound.getChild("tentacle");
 		this.tentacle_segment = this.tentacle.getChild("tentacle_segment");
 		this.tentacle2 = this.mound.getChild("tentacle2");
@@ -79,7 +94,9 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		.texOffs(0, 161).addBox(-8.0F, -2.0F, -23.0F, 16.0F, 6.0F, 19.0F, new CubeDeformation(0.0F))
 		.texOffs(182, 55).addBox(-8.0F, -6.0F, -23.0F, 16.0F, 4.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 7.0F, -3.0F));
 
-		PartDefinition tongue = jaw.addOrReplaceChild("tongue", CubeListBuilder.create().texOffs(4, 64).addBox(-1.5F, -2.0F, -13.0F, 3.0F, 3.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.0F, -1.0F));
+		PartDefinition tongue = jaw.addOrReplaceChild("tongue", CubeListBuilder.create(), PartPose.offset(0.0F, -3.0F, -1.0F));
+
+		tongue.addOrReplaceChild("tongue2", CubeListBuilder.create().texOffs(4, 64).addBox(-1.5F, -2.0F, 3.0F, 3.0F, 3.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -16.0F));
 
 		tongue.addOrReplaceChild("mouth", CubeListBuilder.create().texOffs(0, 23).addBox(-2.5F, -1.5F, -6.0F, 5.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, -11.0F));
 
@@ -145,13 +162,13 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 
 		PartDefinition chunk2 = mound.addOrReplaceChild("chunk2", CubeListBuilder.create().texOffs(128, 185).addBox(-9.0F, -8.0F, -7.0F, 17.0F, 17.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(-7.0F, -9.0F, -4.0F));
 
-		chunk2.addOrReplaceChild("mine2", CubeListBuilder.create().texOffs(224, 79).mirror().addBox(-4.0F, -2.0F, -3.0F, 7.0F, 10.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false)
-		.texOffs(115, 39).addBox(-7.0F, 1.0F, -6.0F, 13.0F, 0.0F, 13.0F, new CubeDeformation(0.0F))
-		.texOffs(115, 39).mirror().addBox(-7.0F, 5.0F, -6.0F, 13.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-8.0F, -2.0F, 3.0F));
-
 		chunk2.addOrReplaceChild("mine3", CubeListBuilder.create().texOffs(55, 64).addBox(-5.0F, -5.0F, -3.0F, 10.0F, 7.0F, 7.0F, new CubeDeformation(0.0F))
 		.texOffs(128, 26).addBox(-2.0F, -8.0F, -6.0F, 0.0F, 13.0F, 13.0F, new CubeDeformation(0.0F))
 		.texOffs(128, 26).addBox(3.0F, -8.0F, -6.0F, 0.0F, 13.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, -7.0F, 0.0F));
+
+		chunk2.addOrReplaceChild("mine2", CubeListBuilder.create().texOffs(224, 79).mirror().addBox(-4.0F, -2.0F, -3.0F, 7.0F, 10.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false)
+		.texOffs(115, 39).addBox(-7.0F, 1.0F, -6.0F, 13.0F, 0.0F, 13.0F, new CubeDeformation(0.0F))
+		.texOffs(115, 39).mirror().addBox(-7.0F, 5.0F, -6.0F, 13.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-8.0F, -2.0F, 3.0F));
 
 		PartDefinition chunk3 = mound.addOrReplaceChild("chunk3", CubeListBuilder.create().texOffs(0, 186).addBox(-5.0F, -15.0F, -7.0F, 16.0F, 10.0F, 12.0F, new CubeDeformation(0.0F))
 		.texOffs(72, 149).addBox(-13.0F, -5.0F, -5.0F, 27.0F, 20.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -207,7 +224,7 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 	public void setupAnim(EntityMutavore entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root, netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.body, netHeadYaw, headPitch);
 		float partialTicks = ageInTicks - entity.tickCount;
         float yBodyRot = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
 		Vec2 rot1 = entity.worm1.getRot(partialTicks);
@@ -230,6 +247,20 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		BTAClientUtil.animateHead(this.tentacle_segment4, rot8.y - netHeadYaw - yBodyRot, rot8.x - headPitch);
 		BTAClientUtil.animateHead(this.tentacle5, rot9.y - netHeadYaw - yBodyRot, rot9.x - headPitch);
 		BTAClientUtil.animateHead(this.tentacle_segment5, rot10.y - netHeadYaw - yBodyRot, rot10.x - headPitch);
+		
+		this.mound_head.visible = false;
+		this.mine.visible = false;
+		this.mine2.visible = false;
+		this.mine3.visible = false;
+		this.mine4.visible = false;
+		
+		entity.idleAnimationState.animate(this, MutavoreAnimation.MUTAVORE_IDLE, ageInTicks, limbSwingAmount);
+		entity.bubbleStartAnimationState.animate(this, MutavoreAnimation.MUTAVORE_BUBBLE_START, ageInTicks);
+		entity.bubbleStopAnimationState.animate(this, MutavoreAnimation.MUTAVORE_BUBBLE_STOP, ageInTicks);
+		entity.tongueStartAnimationState.animate(this, MutavoreAnimation.TongueAnimation.MUTAVORE_TONGUE_START, ageInTicks);
+		entity.tongueLoopAnimationState.animate(this, MutavoreAnimation.TongueAnimation.MUTAVORE_TONGUE_LOOP, ageInTicks);
+		entity.tongueStopAnimationState.animate(this, MutavoreAnimation.TongueAnimation.MUTAVORE_TONGUE_STOP, ageInTicks);
+		this.animateWalk(MutavoreAnimation.MUTAVORE_SWIM, limbSwing, limbSwingAmount, 2.5F, 2.5F);
 	}
 	
 	@Override
