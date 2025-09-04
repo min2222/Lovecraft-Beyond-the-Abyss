@@ -157,7 +157,7 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 				List<LivingEntity> arrayList = new ArrayList<>();
 	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.getEyePosition(), 0.0F, -0.25F, 0.5F);
 				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), startPos, 0.0F, 0.0F, 100.0F);
-				HitResult hitResult = level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+				HitResult hitResult = this.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 	        	Vec3 hitPos = hitResult.getLocation();
 	            Vec3 targetPos = hitPos.subtract(startPos);
 	            Vec3 normalizedPos = targetPos.normalize();
