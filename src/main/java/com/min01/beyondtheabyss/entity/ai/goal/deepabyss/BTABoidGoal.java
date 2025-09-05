@@ -16,14 +16,12 @@ public class BTABoidGoal extends Goal
     protected final Mob mob;
     private int timeToFindNearbyEntities;
     protected List<? extends Mob> nearbyMobs;
-    public final float separationInfluence;
     public final float separationRange;
 
-    public BTABoidGoal(Mob mob, float separationInfluence, float separationRange)
+    public BTABoidGoal(Mob mob, float separationRange)
     {
         this.timeToFindNearbyEntities = 0;
         this.mob = mob;
-        this.separationInfluence = separationInfluence;
         this.separationRange = separationRange;
     }
 
@@ -61,6 +59,24 @@ public class BTABoidGoal extends Goal
         this.mob.addDeltaMovement(this.cohesion());
         this.mob.addDeltaMovement(this.alignment());
         this.mob.addDeltaMovement(this.separation());
+        this.lookAt();
+    }
+    
+    public void lookAt()
+    {
+        Vec3 velocity = this.mob.getDeltaMovement();
+        double speed = velocity.length();
+        float minSpeed = 0.3F;
+        float maxSpeed = 0.5F;
+        if(speed < minSpeed)
+        {
+        	velocity = velocity.normalize().scale(minSpeed);
+        }
+        if(speed > maxSpeed)
+        {
+            velocity = velocity.normalize().scale(maxSpeed);
+        }
+        this.mob.setDeltaMovement(velocity);
     }
     
     public void stayInWater()
@@ -103,7 +119,7 @@ public class BTABoidGoal extends Goal
             	c = c.subtract(nearbyMob.position().subtract(this.mob.position()));
             }
         }
-        return c.scale(this.separationInfluence);
+        return c.scale(0.05F);
     }
     
     public Vec3 cohesion()
@@ -119,7 +135,7 @@ public class BTABoidGoal extends Goal
         }
         c = c.scale(1.0F / this.nearbyMobs.size());
         c = c.subtract(this.mob.position());
-        return c.scale(1 / 20.0F);
+        return c.scale(0.05F);
 	}
     
 	public Vec3 alignment()
@@ -135,7 +151,7 @@ public class BTABoidGoal extends Goal
         }
         c = c.scale(1.0F / this.nearbyMobs.size());
         c = c.subtract(this.mob.getDeltaMovement());
-        return c.scale(8 / 20.0F);
+        return c.scale(0.05F);
 	}
 
     public static List<? extends Mob> getNearbyEntitiesOfSameClass(Mob mob)

@@ -37,7 +37,7 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(5, new BTABoidGoal(this, 0.1F, 0.9F));
+        this.goalSelector.addGoal(5, new BTABoidGoal(this, 0.9F));
     }
 
 	@Override

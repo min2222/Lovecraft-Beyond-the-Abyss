@@ -80,7 +80,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid
 	{
 		super.registerGoals();
 		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
-		this.goalSelector.addGoal(5, new GnasherBoidGoal(this, 0.1F, 1.35F));
+		this.goalSelector.addGoal(5, new GnasherBoidGoal(this, 1.35F));
 	}
 	
 	@Override
