@@ -33,11 +33,8 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_)
 	{
 		ItemStack stack = p_41433_.getItemInHand(p_41434_);
-		if(!p_41432_.isClientSide)
-		{
-			BTAUtil.stopItemAnimation(stack, FREAKY);
-			BTAUtil.startItemAnimation(stack, FREAKY);
-		}
+		BTAUtil.setItemAnimationState(stack, 3);
+		BTAUtil.setItemAnimationTick(stack, 10);
     	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 		return InteractionResultHolder.consume(stack);
 	}

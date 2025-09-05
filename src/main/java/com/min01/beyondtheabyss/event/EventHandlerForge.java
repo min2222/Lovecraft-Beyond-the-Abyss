@@ -169,7 +169,7 @@ public class EventHandlerForge
 				stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
 				{
 					t.setEntity(event.player);
-					t.update();
+					t.tick();
 				});
 			}
 		}

@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
@@ -28,7 +29,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -64,6 +64,7 @@ public class BTAUtil
 {
 	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
+    public static final String TICK_COUNT = "TickCount";
     
 	public static void moveStructurePiece(Structure.GenerationContext p_227387_, StructurePiece piece, StructureTemplate template, Rotation rotation, Mirror mirror, Consumer<Integer> consumer)
 	{
@@ -183,76 +184,46 @@ public class BTAUtil
 		}
 	}
 	
-    public static AnimationState getItemAnimation(ItemStack stack, String name)
-    {
-    	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
-    	{
-    		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-    		return cap.getAnimationState(name);
-    	}
-    	return new AnimationState();
-    }
-
-    //must be called on server side only
-    public static void startItemAnimation(ItemStack stack, String name)
-    {
-    	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
-    	{
-    		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-    		cap.startItemAnimation(name);
-    	}
-    }
-    
-    //must be called on server side only
-    public static void stopItemAnimation(ItemStack stack, String name)
-    {
-    	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
-    	{
-    		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-    		cap.stopItemAnimation(name);
-    	}
-    }
-    
     public static int getTickCount(ItemStack stack)
     {
-    	if(stack.getCapability(BTACapabilities.ITEM_ANIMATION).isPresent())
-    	{
-    		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-    		return cap.getTickCount();
-    	}
-    	return 0;
+        CompoundTag tag = stack.getTag();
+        return tag != null ? tag.getInt(TICK_COUNT) : 0;
+    }
+
+    public static void setTickCount(ItemStack stack, int tickCount)
+    {
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putInt(TICK_COUNT, tickCount);
+    }
+	
+    public static void setItemAnimationState(ItemStack stack, int state)
+    {
+		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+		cap.setAnimationState(state);
     }
     
-    public static void writeAnimationTime(CompoundTag tag, String name, AnimationState state)
+    public static int getItemAnimationState(ItemStack stack)
     {
-        CompoundTag animationsTag;
-        if(tag.contains("Animations", 10))
-        {
-            animationsTag = tag.getCompound("Animations");
-        }
-        else
-        {
-            animationsTag = new CompoundTag();
-            tag.put("Animations", animationsTag);
-        }
-        CompoundTag timeTag = new CompoundTag();
-        timeTag.putLong("LastTime", state.lastTime);
-        timeTag.putLong("AccumulatedTime", state.accumulatedTime);
-        animationsTag.put(name, timeTag);
+		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+		return cap.getAnimationState();
     }
     
-    public static void readAnimationTime(CompoundTag tag, String name, AnimationState state)
+    public static SmoothAnimationState getItemAnimationStateByName(ItemStack stack, String name)
     {
-        if(tag.contains("Animations", 10)) 
-        {
-            CompoundTag animationsTag = tag.getCompound("Animations");
-            if(animationsTag.contains(name, 10))
-            {
-                CompoundTag timeTag = animationsTag.getCompound(name);
-                state.lastTime = timeTag.getLong("LastTime");
-                state.accumulatedTime = timeTag.getLong("AccumulatedTime");
-            }
-        }
+		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+		return cap.getAnimationStateByName(name);
+    }
+    
+    public static void setItemAnimationTick(ItemStack stack, int tick)
+    {
+		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+		cap.setAnimationTick(tick * 2);
+    }
+    
+    public static int getItemAnimationTick(ItemStack stack)
+    {
+		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+		return cap.getAnimationTick();
     }
 	
 	public static boolean isCollisionShapeFullBlock(Level level, BlockPos pos)

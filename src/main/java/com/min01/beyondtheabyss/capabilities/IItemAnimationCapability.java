@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
@@ -19,15 +19,15 @@ public interface IItemAnimationCapability extends INBTSerializable<CompoundTag>
 	
 	void setItemStack(ItemStack stack);
 
-	void update();
+	void tick();
 	
-	void startItemAnimation(String name);
+	void setAnimationState(int state);
 	
-	void stopItemAnimation(String name);
+	int getAnimationState();
 	
-	AnimationState getAnimationState(String name);
-
-	void setTickCount(int tickCount);
+	SmoothAnimationState getAnimationStateByName(String name);
 	
-	int getTickCount();
+	void setAnimationTick(int tick);
+	
+	int getAnimationTick();
 }

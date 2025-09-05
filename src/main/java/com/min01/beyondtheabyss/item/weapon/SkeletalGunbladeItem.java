@@ -45,23 +45,15 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 		{
 			if(isGunMode)
 			{
-				if(!p_41432_.isClientSide)
-				{
-					BTAUtil.stopItemAnimation(stack, GUNBLADE_OPEN);
-					BTAUtil.startItemAnimation(stack, GUNBLADE_CLOSE);
-				}
-				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_CLOSE);
+				BTAUtil.setItemAnimationState(stack, 2);
+				BTAUtil.setItemAnimationTick(stack, 20);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 			}
 			else
 			{
-				if(!p_41432_.isClientSide)
-				{
-					BTAUtil.stopItemAnimation(stack, GUNBLADE_CLOSE);
-					BTAUtil.startItemAnimation(stack, GUNBLADE_OPEN);
-				}
-				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_OPEN);
+				BTAUtil.setItemAnimationState(stack, 1);
+				BTAUtil.setItemAnimationTick(stack, 20);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 			}
@@ -71,7 +63,6 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 		{
 			if(isGunMode)
 			{
-				//BTAUtil.startPlayerAnimation(p_41433_, GUNBLADE_SHOOT_LIGHT);
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 10);
 			}
 		}
