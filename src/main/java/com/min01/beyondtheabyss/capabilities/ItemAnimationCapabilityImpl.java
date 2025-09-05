@@ -55,20 +55,20 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	@Override
 	public void tick() 
 	{
+		BTAUtil.setTickCount(this.stack, BTAUtil.getTickCount(this.stack) + 1);
 		if(this.entity.level.isClientSide)
 		{
-			BTAUtil.setTickCount(this.stack, BTAUtil.getTickCount(this.stack) + 1);
 			this.gunBladeOpenAnimationState.updateWhen(this.getAnimationState() == 1 && this.stack.is(BTAItems.SKELETAL_GUNBLADE.get()), BTAUtil.getTickCount(this.stack));
 			this.gunBladeCloseAnimationState.updateWhen(this.getAnimationState() == 2 && this.stack.is(BTAItems.SKELETAL_GUNBLADE.get()), BTAUtil.getTickCount(this.stack));
 			this.freakyAnimationState.updateWhen(this.getAnimationState() == 3 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
-			if(this.getAnimationTick() >= 0)
-			{
-				this.setAnimationTick(this.getAnimationTick() - 1);
-			}
-			else
-			{
-				this.setAnimationState(0);
-			}
+		}
+		if(this.getAnimationTick() >= 0)
+		{
+			this.setAnimationTick(this.getAnimationTick() - 1);
+		}
+		else
+		{
+			this.setAnimationState(0);
 		}
 	}
 
