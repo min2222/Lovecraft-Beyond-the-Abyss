@@ -1,25 +1,51 @@
 package com.min01.beyondtheabyss.entity.renderer.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.IMultiModel;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.renderer.layer.GnasherLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
+import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher>
+public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher> implements IMultiModel<EntityGnasher>
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher.png");
-	private static final ResourceLocation TEXTURE_LEADER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher_leader.png");
+	private final GnasherLeaderRenderer leaderRenderer;
 	
 	public GnasherRenderer(Context p_174008_)
 	{
 		super(p_174008_, new ModelGnasher(p_174008_.bakeLayer(ModelGnasher.LAYER_LOCATION)), 0.5F);
 		this.addLayer(new GnasherLayer(this, this.model));
+		this.leaderRenderer = new GnasherLeaderRenderer(p_174008_);
+	}
+	
+	@Override
+	public void render(EntityGnasher p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
+	{
+		if(p_115455_.isLeader())
+		{
+			this.leaderRenderer.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+		}
+		else
+		{
+			super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+		}
+	}
+	
+	@Override
+	public HierarchicalModel<EntityGnasher> getModel(EntityGnasher entity) 
+	{
+		if(entity.isLeader())
+		{
+			return this.leaderRenderer.getModel();
+		}
+		return this.getModel();
 	}
 	
 	@Override
@@ -36,6 +62,6 @@ public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher>
 	@Override
 	public ResourceLocation getTextureLocation(EntityGnasher p_114482_) 
 	{
-		return p_114482_.isLeader() ? TEXTURE_LEADER : TEXTURE;
+		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher.png");
 	}
 }

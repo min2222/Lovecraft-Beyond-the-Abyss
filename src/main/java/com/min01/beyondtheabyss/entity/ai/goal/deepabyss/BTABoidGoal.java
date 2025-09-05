@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,17 +18,13 @@ public class BTABoidGoal extends Goal
     protected List<? extends Mob> nearbyMobs;
     public final float separationInfluence;
     public final float separationRange;
-    private final float minSpeed;
-    private final float maxSpeed;
 
-    public BTABoidGoal(Mob mob, float separationInfluence, float separationRange, float minSpeed, float maxSpeed)
+    public BTABoidGoal(Mob mob, float separationInfluence, float separationRange)
     {
         this.timeToFindNearbyEntities = 0;
         this.mob = mob;
         this.separationInfluence = separationInfluence;
         this.separationRange = separationRange;
-        this.minSpeed = minSpeed;
-        this.maxSpeed = maxSpeed;
     }
 
     @Override
@@ -66,23 +61,6 @@ public class BTABoidGoal extends Goal
         this.mob.addDeltaMovement(this.cohesion());
         this.mob.addDeltaMovement(this.alignment());
         this.mob.addDeltaMovement(this.separation());
-        this.lookAt();
-    }
-    
-    public void lookAt()
-    {
-        Vec3 velocity = this.mob.getDeltaMovement();
-        double speed = velocity.length();
-        if(speed < this.minSpeed)
-        {
-        	velocity = velocity.normalize().scale(this.minSpeed);
-        }
-        if(speed > this.maxSpeed)
-        {
-            velocity = velocity.normalize().scale(this.maxSpeed);
-        }
-        this.mob.setDeltaMovement(velocity);
-        this.mob.lookAt(Anchor.EYES, this.mob.position().add(velocity.scale(10)));
     }
     
     public void stayInWater()

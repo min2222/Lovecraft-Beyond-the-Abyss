@@ -282,16 +282,6 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	}
 	
 	@Override
-	public String subRoot() 
-	{
-		if(this.getHeadType() == HeadType.SLASHER)
-		{
-			return "TwinserpentSlasher";
-		}
-		return "TwinserpentBlaster";
-	}
-	
-	@Override
 	public boolean rotateHead() 
 	{
 		return true;

@@ -50,16 +50,6 @@ public class EntityTwinserpentBone extends AbstractTwinserpentPart
 		return partBuilder;
 	}
     
-    @Override
-    public String subRoot()
-    {
-		if(this.getVariant() == 0 || this.getVariant() == 1)
-		{
-			return "TwinserpentBone";
-		}
-		return "TwinserpentMiddlebone";
-    }
-    
 	@Override
 	public boolean rotateHead() 
 	{

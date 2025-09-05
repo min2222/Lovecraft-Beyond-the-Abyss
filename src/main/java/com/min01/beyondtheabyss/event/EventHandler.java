@@ -10,14 +10,13 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityKormosHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentBone;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySplittedFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentBone;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.item.BTAItems;
 
@@ -70,9 +69,6 @@ public class EventHandler
     	event.put(BTAEntities.SPINE_WORM_HEAD.get(), EntitySpineWormHead.createAttributes().build());
     	event.put(BTAEntities.SPINE_WORM_BODY.get(), EntitySpineWormBody.createAttributes().build());
     	event.put(BTAEntities.GLOOMFISH.get(), EntityGloomfish.createAttributes().build());
-    	event.put(BTAEntities.KORMOS_HEAD.get(), EntityKormosHead.createAttributes().build());
-    	event.put(BTAEntities.KORMOS_BODY.get(), EntityKormosHead.createAttributes().build());
-    	event.put(BTAEntities.KORMOS_TAIL.get(), EntityKormosHead.createAttributes().build());
     	event.put(BTAEntities.CORPSE_ANGLER.get(), EntityCorpseAngler.createAttributes().build());
     	event.put(BTAEntities.MUTAVORE.get(), EntityMutavore.createAttributes().build());
     	event.put(BTAEntities.FULGASTRA.get(), EntityFulgastra.createAttributes().build());

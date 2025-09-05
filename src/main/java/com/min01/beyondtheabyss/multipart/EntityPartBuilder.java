@@ -47,10 +47,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	public EntityPartBuilder(T entity)
 	{
 		this.entity = entity;
-		if(!this.entity.useSubRoot() && this.entity.level.isClientSide)
-		{
-    		this.hitbox = this.buildHitbox();
-		}
 	}
 	
 	public void tick(float partialTick)
@@ -82,10 +78,7 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	        
 	        if(this.entity.tickCount == 2)
 	        {
-	        	if(this.entity.useSubRoot())
-	        	{
-		    		this.hitbox = this.buildHitbox();
-	        	}
+	    		this.hitbox = this.buildHitbox();
 	    		BTANetwork.sendToServer(new BuildMultipartPacket(this.entity, this.partOffset, this.parts, this.partMap, this.hitbox.getPartMap()));
 	        }
 		}
@@ -165,46 +158,30 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
     @OnlyIn(Dist.CLIENT)
 	public void clientTick(HierarchicalModel<T> model)
 	{
-    	if(this.entity.useSubRoot())
+    	Map<String, PartState> lastStates = new HashMap<>();
+    	ModelPart root = model.root();
+    	root.getAllParts().forEach(part -> 
     	{
-        	model.root().getAllParts().forEach(part -> 
-        	{
-    			String name = this.getModelPartName2(model.root(), part);
-    			Part p = this.partMap.get(name);
-    			if(p != null)
-    			{
-    				p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-    				BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
-    			}
-    		});
-    	}
-    	else
-    	{
-        	Map<String, PartState> lastStates = new HashMap<>();
-        	ModelPart root = this.root(model);
-        	root.getAllParts().forEach(part -> 
-        	{
-        	    if(!this.partNameCache.containsKey(part))
-        	    {
-        	    	String name = this.getModelPartName(model.root(), part);
-        	    	this.partNameCache.put(part, name);
-        	    	return;
-        	    }
-        	    String name = this.partNameCache.get(part);
-        	    Part p = this.partMap.get(name);
-        	    if(p != null)
-        	    {
-        	        PartState current = new PartState(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-        	        PartState last = lastStates.get(name);
-        	        if(last == null || current.changed(last))
-        	        {
-        	            p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-        	            BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
-        	            lastStates.put(name, current);
-        	        }
-        	    }
-        	});
-    	}
+    	    if(!this.partNameCache.containsKey(part))
+    	    {
+    	    	String name = this.getModelPartName(model.root(), part);
+    	    	this.partNameCache.put(part, name);
+    	    	return;
+    	    }
+    	    String name = this.partNameCache.get(part);
+    	    Part p = this.partMap.get(name);
+    	    if(p != null)
+    	    {
+    	        PartState current = new PartState(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+    	        PartState last = lastStates.get(name);
+    	        if(last == null || current.changed(last))
+    	        {
+    	            p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+    	            BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
+    	            lastStates.put(name, current);
+    	        }
+    	    }
+    	});
 	}
 
     @OnlyIn(Dist.CLIENT)
@@ -212,14 +189,14 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         EntityBounds.EntityBoundsBuilder builder = EntityBounds.builder();
-        return this.addPart(builder, this.root(model), null).getFactory().create();
+        return this.addPart(builder, model.root(), null).getFactory().create();
 	}
 
     @OnlyIn(Dist.CLIENT)
     public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
     {
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
-        String name = this.getModelPartName(this.root(model), part);
+        String name = this.getModelPartName(model.root(), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
         partInfo.setCollide(this.entity.getCollidePart().contains(name));
         if(parent != null) 
@@ -240,16 +217,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         }
         return builder2;
     }
-
-    @OnlyIn(Dist.CLIENT)
-	public ModelPart root(HierarchicalModel<T> model)
-	{
-		if(this.entity.useSubRoot())
-		{
-			return model.root().getChild(this.entity.subRoot());
-		}
-		return model.root();
-	}
 
     @OnlyIn(Dist.CLIENT)
     public AABB getPartSize(ModelPart part, String name)
@@ -303,12 +270,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
             this.partOffset.put(name, offset);
             return new AABB(-box.getXsize() / 2.0F, -box.getYsize() / 2.0F, -box.getZsize() / 2.0F, box.getXsize() / 2.0F, box.getYsize() / 2.0F, box.getZsize() / 2.0F);
         }
-    }
-    
-    @OnlyIn(Dist.CLIENT)
-    public String getModelPartName2(ModelPart root, ModelPart target) 
-    {
-    	return root.getAllParts().filter(part -> part.children.containsValue(target)).map(part -> part.children.entrySet().stream().filter(entry -> entry.getValue() == target).map(Map.Entry::getKey).findFirst().orElse(ROOT)).findFirst().orElse(ROOT);
     }
 
     @OnlyIn(Dist.CLIENT)

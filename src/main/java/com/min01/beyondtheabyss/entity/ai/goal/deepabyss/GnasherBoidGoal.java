@@ -7,9 +7,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class GnasherBoidGoal extends BTABoidGoal
 {
-	public GnasherBoidGoal(Mob mob, float separationInfluence, float separationRange, float minSpeed, float maxSpeed) 
+	public GnasherBoidGoal(Mob mob, float separationInfluence, float separationRange) 
 	{
-		super(mob, separationInfluence, separationRange, minSpeed, maxSpeed);
+		super(mob, separationInfluence, separationRange);
 	}
 
 	@Override
@@ -27,7 +27,6 @@ public class GnasherBoidGoal extends BTABoidGoal
     	{
             this.mob.addDeltaMovement(this.cohesion());
             this.mob.addDeltaMovement(this.alignment());
-            this.lookAt();
     	}
         this.mob.addDeltaMovement(this.separation());
     }

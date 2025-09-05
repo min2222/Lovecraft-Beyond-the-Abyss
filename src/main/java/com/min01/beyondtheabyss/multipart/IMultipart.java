@@ -11,16 +11,6 @@ public interface IMultipart
     EntityBounds getBounds();
 
     CompoundOrientedBox getCompoundBoundingBox(AABB bounds);
-
-    default String subRoot()
-    {
-    	return "";
-    }
-    
-    default boolean useSubRoot()
-    {
-    	return !this.subRoot().equals("");
-    }
     
 	default boolean rotateHead()
 	{

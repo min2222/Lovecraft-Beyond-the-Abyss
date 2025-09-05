@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.IBoid;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBoidGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -37,7 +38,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGnasher extends AbstractDeepAbyssMonster
+public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DISPERSE = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
@@ -79,7 +80,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	{
 		super.registerGoals();
 		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
-		this.goalSelector.addGoal(5, new GnasherBoidGoal(this, 0.1F, 1.35F, 0.3F, 0.5F));
+		this.goalSelector.addGoal(5, new GnasherBoidGoal(this, 0.1F, 1.35F));
 	}
 	
 	@Override
@@ -173,22 +174,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.HOSTILE;
-	}
-	
-	@Override
-	public String subRoot()
-	{
-		if(this.isLeader())
-		{
-			return "LeadGnasher";
-		}
-		return "Gnasher";
-	}
-	
-	@Override
-	public boolean rotateHead() 
-	{
-		return true;
 	}
 	
     @Override

@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
+import com.min01.beyondtheabyss.entity.IBoid;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.BTABoidGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityGloomfish extends AbstractDeepAbyssCreature
+public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid
 {
 	public EntityGloomfish(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
@@ -36,7 +37,7 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
     protected void registerGoals() 
     {
     	super.registerGoals();
-        this.goalSelector.addGoal(5, new BTABoidGoal(this, 0.1F, 0.9F, 0.3F, 0.5F));
+        this.goalSelector.addGoal(5, new BTABoidGoal(this, 0.1F, 0.9F));
     }
 
 	@Override

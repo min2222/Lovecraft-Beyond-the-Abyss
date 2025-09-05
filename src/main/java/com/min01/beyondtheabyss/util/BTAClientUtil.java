@@ -6,6 +6,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import com.min01.beyondtheabyss.entity.IMultiModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -15,7 +16,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -280,9 +280,9 @@ public class BTAClientUtil
 	public static <T extends LivingEntity> HierarchicalModel<T> getModelFromEntity(T entity)
 	{
 		EntityRenderer renderer = MC.getEntityRenderDispatcher().getRenderer(entity);
-		if(renderer instanceof LivingEntityRenderer livingRenderer)
+		if(renderer instanceof IMultiModel multiModel)
 		{
-			return (HierarchicalModel<T>) livingRenderer.getModel();
+			return multiModel.getModel(entity);
 		}
 		return null;
 	}
