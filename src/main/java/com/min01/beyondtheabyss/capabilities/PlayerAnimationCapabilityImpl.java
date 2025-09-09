@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.weapon.RadrifleItem;
+import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePlayerAnimationPacket;
@@ -98,19 +98,19 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	@Override
 	public SmoothAnimationState getAnimationStateByName(String name) 
 	{
-		if(name.equals(RadrifleItem.RADRIFLE_FIRE))
+		if(name.equals(ToothShotgunItem.SHOTGUN_FIRE))
 		{
 			return this.shotgunFireAnimationState;
 		}
-		if(name.equals(RadrifleItem.RADRIFLE_HOLD))
+		if(name.equals(ToothShotgunItem.SHOTGUN_HOLD))
 		{
 			return this.shotgunHoldAnimationState;
 		}
-		if(name.equals(RadrifleItem.RADRIFLE_RUNNING))
+		if(name.equals(ToothShotgunItem.SHOTGUN_RUNNING))
 		{
 			return this.shotgunRunningAnimationState;
 		}
-		if(name.equals(RadrifleItem.RADRIFLE_HOLD_TO_RUN))
+		if(name.equals(ToothShotgunItem.SHOTGUN_HOLD_TO_RUN))
 		{
 			return this.shotgunHoldToRunAnimationState;
 		}

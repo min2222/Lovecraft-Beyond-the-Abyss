@@ -35,6 +35,11 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
     public static final String EMPTY = "Empty";
     public static final String EMPTY2 = "Empty2";
     
+    public static final String SHOTGUN_FIRE = "ShotgunFire";
+    public static final String SHOTGUN_HOLD = "ShotgunHold";
+    public static final String SHOTGUN_RUNNING = "ShotgunRunning";
+    public static final String SHOTGUN_HOLD_TO_RUN = "ShotgunHoldToRun";
+    
     public static final Predicate<ItemStack> AMMO = (stack) ->
     {
         return stack.is(BTATags.BTAItems.TEETH);

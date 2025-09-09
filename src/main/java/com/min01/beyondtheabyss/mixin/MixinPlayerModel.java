@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.animation.PlayerAnimation;
-import com.min01.beyondtheabyss.item.weapon.RadrifleItem;
+import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -44,10 +44,10 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     public void setupAnimFirstPerson(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
     {
     	this.setupMap();
-    	this.animate(entity, RadrifleItem.RADRIFLE_FIRE, PlayerAnimation.RadrifleAnimation.RADRIFLE_FIRE, ageInTicks);
-    	this.animate(entity, RadrifleItem.RADRIFLE_HOLD, PlayerAnimation.RadrifleAnimation.RADRIFLE_HOLD, ageInTicks);
-    	this.animate(entity, RadrifleItem.RADRIFLE_RUNNING, PlayerAnimation.RadrifleAnimation.RADRIFLE_RUNNING, ageInTicks);
-    	this.animate(entity, RadrifleItem.RADRIFLE_HOLD_TO_RUN, PlayerAnimation.RadrifleAnimation.RADRIFLE_HOLD_TO_RUN, ageInTicks);
+    	this.animate(entity, ToothShotgunItem.SHOTGUN_FIRE, PlayerAnimation.ShotgunAnimation.SHOTGUN_FIRE, ageInTicks);
+    	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD, PlayerAnimation.ShotgunAnimation.SHOTGUN_HOLD, ageInTicks);
+    	this.animate(entity, ToothShotgunItem.SHOTGUN_RUNNING, PlayerAnimation.ShotgunAnimation.SHOTGUN_RUNNING, ageInTicks);
+    	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD_TO_RUN, PlayerAnimation.ShotgunAnimation.SHOTGUN_HOLD_TO_RUN, ageInTicks);
     }
     
 	@Override
