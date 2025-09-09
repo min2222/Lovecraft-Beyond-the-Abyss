@@ -68,6 +68,10 @@ public class ModelToothShotgun extends HierarchicalItemModel
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animate(stack, ToothShotgunItem.FREAKY, ToothShotgunAnimation.FREAKY, ageInTicks);
+		this.animate(stack, ToothShotgunItem.RELOAD, ToothShotgunAnimation.RELOAD, ageInTicks);
+		this.animate(stack, ToothShotgunItem.SHOOT, ToothShotgunAnimation.SHOOT, ageInTicks);
+		this.animate(stack, ToothShotgunItem.EMPTY, ToothShotgunAnimation.EMPTY, ageInTicks);
+		this.animate(stack, ToothShotgunItem.EMPTY2, ToothShotgunAnimation.EMPTY2, ageInTicks);
 	}
 	
 	@Override

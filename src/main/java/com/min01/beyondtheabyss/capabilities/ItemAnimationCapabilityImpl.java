@@ -23,6 +23,10 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	private final SmoothAnimationState gunBladeOpenAnimationState = new SmoothAnimationState();
 	private final SmoothAnimationState gunBladeCloseAnimationState = new SmoothAnimationState();
 	private final SmoothAnimationState freakyAnimationState = new SmoothAnimationState();
+	private final SmoothAnimationState reloadAnimationState = new SmoothAnimationState();
+	private final SmoothAnimationState shootAnimationState = new SmoothAnimationState();
+	private final SmoothAnimationState emptyAnimationState = new SmoothAnimationState();
+	private final SmoothAnimationState empty2AnimationState = new SmoothAnimationState();
 	
 	@Override
 	public CompoundTag serializeNBT() 
@@ -55,20 +59,24 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	@Override
 	public void tick() 
 	{
-		BTAUtil.setTickCount(this.stack, BTAUtil.getTickCount(this.stack) + 1);
 		if(this.entity.level.isClientSide)
 		{
+			BTAUtil.setTickCount(this.stack, BTAUtil.getTickCount(this.stack) + 1);
 			this.gunBladeOpenAnimationState.updateWhen(this.getAnimationState() == 1 && this.stack.is(BTAItems.SKELETAL_GUNBLADE.get()), BTAUtil.getTickCount(this.stack));
 			this.gunBladeCloseAnimationState.updateWhen(this.getAnimationState() == 2 && this.stack.is(BTAItems.SKELETAL_GUNBLADE.get()), BTAUtil.getTickCount(this.stack));
-			this.freakyAnimationState.updateWhen(this.getAnimationState() == 3 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
-		}
-		if(this.getAnimationTick() >= 0)
-		{
-			this.setAnimationTick(this.getAnimationTick() - 1);
-		}
-		else
-		{
-			this.setAnimationState(0);
+			this.freakyAnimationState.updateWhen(this.getAnimationState() == 1 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
+			this.reloadAnimationState.updateWhen(this.getAnimationState() == 2 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
+			this.shootAnimationState.updateWhen(this.getAnimationState() == 3 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
+			this.emptyAnimationState.updateWhen(this.getAnimationState() == 4 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
+			this.empty2AnimationState.updateWhen(this.getAnimationState() == 5 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
+			if(this.getAnimationTick() >= 0)
+			{
+				this.setAnimationTick(this.getAnimationTick() - 1);
+			}
+			else
+			{
+				this.setAnimationState(0);
+			}
 		}
 	}
 
@@ -99,6 +107,22 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 		if(name.equals(ToothShotgunItem.FREAKY))
 		{
 			return this.freakyAnimationState;
+		}
+		if(name.equals(ToothShotgunItem.RELOAD))
+		{
+			return this.reloadAnimationState;
+		}
+		if(name.equals(ToothShotgunItem.SHOOT))
+		{
+			return this.shootAnimationState;
+		}
+		if(name.equals(ToothShotgunItem.EMPTY))
+		{
+			return this.emptyAnimationState;
+		}
+		if(name.equals(ToothShotgunItem.EMPTY2))
+		{
+			return this.empty2AnimationState;
 		}
 		return new SmoothAnimationState();
 	}

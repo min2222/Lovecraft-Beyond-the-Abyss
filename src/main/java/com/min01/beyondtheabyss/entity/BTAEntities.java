@@ -24,6 +24,7 @@ import com.min01.beyondtheabyss.entity.projectile.EntityEnergyBall;
 import com.min01.beyondtheabyss.entity.projectile.EntityForneusMagic;
 import com.min01.beyondtheabyss.entity.projectile.EntityPutridBubble;
 import com.min01.beyondtheabyss.entity.projectile.EntityThrownHarpoon;
+import com.min01.beyondtheabyss.entity.projectile.EntityToothBullet;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -48,6 +49,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityForneusMagic>> FORNEUS_MAGIC = registerEntity("forneus_magic", EntityType.Builder.<EntityForneusMagic>of(EntityForneusMagic::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<EntityEnergyBall>> ENERGY_BALL = registerEntity("energy_ball", EntityType.Builder.<EntityEnergyBall>of(EntityEnergyBall::new, MobCategory.MISC).sized(0.375F, 0.375F));
 	public static final RegistryObject<EntityType<EntityPutridBubble>> PUTRID_BUBBLE = registerEntity("putrid_bubble", EntityType.Builder.<EntityPutridBubble>of(EntityPutridBubble::new, MobCategory.MISC).sized(0.75F, 0.75F));
+	public static final RegistryObject<EntityType<EntityToothBullet>> TOOTH_BULLET = registerEntity("tooth_bullet", EntityType.Builder.<EntityToothBullet>of(EntityToothBullet::new, MobCategory.MISC).sized(0.1875F, 0.25F));
 
 	//living
 	public static final RegistryObject<EntityType<EntitySolomon>> SOLOMON = registerEntity("solomon", createBuilder(EntitySolomon::new, MobCategory.CREATURE).sized(0.75F, 2.0F));

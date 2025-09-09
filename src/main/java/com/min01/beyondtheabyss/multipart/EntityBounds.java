@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -31,9 +32,15 @@ public class EntityBounds
         return this.partMap.get(name);
     }
     
-    public Map<String, EntityPart> getPartMap()
+    public void write(FriendlyByteBuf buf)
     {
-    	return this.partMap;
+    	buf.writeMap(this.partMap, (t, u) -> t.writeUtf(u), (t, u) -> EntityPart.write(t, u));
+    }
+    
+    public static EntityBounds read(FriendlyByteBuf buf)
+    {
+    	Map<String, EntityPart> map = buf.readMap(t -> t.readUtf(), t -> EntityPart.read(t));
+    	return new EntityBounds(map);
     }
     
     @Nullable
@@ -88,7 +95,7 @@ public class EntityBounds
 
     public static class EntityBoundsBuilder
     {
-        private Map<String, EntityPartInfo> partInfos = new Object2ObjectLinkedOpenHashMap<>();
+    	private Map<String, EntityPartInfo> partInfos = new Object2ObjectLinkedOpenHashMap<>();
 
         EntityBoundsBuilder() 
         {
@@ -202,10 +209,5 @@ public class EntityBounds
     private record EntityPartInfo(@Nullable String parent, String name, double x, double y, double z, double px, double py, double pz, AABB bounds, boolean collide) 
     {
     	
-    }
-    
-    public static EntityBounds create(Map<String, EntityPart> partMap)
-    {
-    	return new EntityBounds(partMap);
     }
 }

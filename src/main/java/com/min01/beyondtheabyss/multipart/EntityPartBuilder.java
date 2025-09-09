@@ -75,12 +75,12 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	        {
 	        	root.setPivotY(-this.getWaterOffset());
 	        }
-	        
+
 	        if(this.entity.tickCount == 2)
 	        {
 	    		this.hitbox = this.buildHitbox();
-	    		BTANetwork.sendToServer(new BuildMultipartPacket(this.entity, this.partOffset, this.parts, this.partMap, this.hitbox.getPartMap()));
 	        }
+    		BTANetwork.sendToServer(new BuildMultipartPacket(this.entity, this.partOffset, this.parts, this.partMap, this.hitbox));
 		}
 		else
 		{
@@ -435,14 +435,6 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
         	}
         }
         return false;
-    }
-    
-    public void setupHitbox(Map<String, Vec3> partOffset, Map<String, String> parts, Map<String, Part> partMap, EntityBounds hitbox)
-    {
-		this.partOffset.putAll(partOffset);
-		this.parts.putAll(parts);
-		this.partMap.putAll(partMap);
-		this.hitbox = hitbox;
     }
 	
 	public float getRenderScale()

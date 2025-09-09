@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.enchantment.BTAEnchantments;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTACreativeModeTabs;
@@ -18,6 +19,7 @@ import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTASurfaceRules;
 import com.min01.beyondtheabyss.world.BTAWorldCarvers;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -58,9 +60,11 @@ public class BeyondtheAbyss
 		BTASurfaceRules.RULE_SOURCES.register(bus);
 		BTAWorldCarvers.WORLD_CARVERS.register(bus);
 		BTADensityFunctions.DENSITY_FUNCTIONS.register(bus);
+		BTAEnchantments.ENCHANTMENTS.register(bus);
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");
 		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::attachItemStackCapability);
+		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::attachEntityCapability);
 	}
 }

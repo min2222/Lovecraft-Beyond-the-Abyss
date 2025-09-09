@@ -5,6 +5,8 @@ import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
 import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
@@ -132,18 +134,26 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature impl
     		super.travel(p_27490_);
     	}
     }
-	
+
     @Override
-    public void setXRot(float p_146927_) 
+    public void lookAt(Anchor p_21078_, Vec3 p_21079_) 
     {
-    	super.setXRot(BTAUtil.rotlerp(this.getXRot(), p_146927_, this.maxTurnX()));
+		Vec3 vec3 = p_21078_.apply(this);
+		double d0 = p_21079_.x - vec3.x;
+		double d1 = p_21079_.y - vec3.y;
+		double d2 = p_21079_.z - vec3.z;
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
+		float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
+		this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.maxTurnX()));
+		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, (float)this.maxTurnY()));
+		this.setYHeadRot(this.getYRot());
+		this.xRotO = this.getXRot();
+		this.yRotO = this.getYRot();
+		this.yHeadRotO = this.yHeadRot;
+		this.yBodyRot = this.yHeadRot;
+		this.yBodyRotO = this.yBodyRot;
     }
-	
-	@Override
-	public void setYRot(float p_146923_)
-	{
-		super.setYRot(BTAUtil.rotlerp(this.getYRot(), p_146923_, this.maxTurnY()));
-	}
 	
 	@Override
 	public boolean canSwim()

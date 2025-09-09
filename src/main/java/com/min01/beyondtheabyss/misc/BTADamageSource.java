@@ -15,6 +15,7 @@ public class BTADamageSource
     public static final ResourceKey<DamageType> GHIDRUTH_FLESH = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "ghidruth_flesh"));
     public static final ResourceKey<DamageType> ELECTRONIC = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "electronic"));
     public static final ResourceKey<DamageType> PUTRID = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "putrid"));
+    public static final ResourceKey<DamageType> TOOTH = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "tooth"));
     
     public static DamageSource causeGhidruthFleshDamage(RegistryAccess registryAccess)
     {
@@ -29,5 +30,10 @@ public class BTADamageSource
     public static DamageSource causePutridDamage(RegistryAccess registryAccess, Entity entity)
     {
         return new DamageSource(registryAccess.registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(PUTRID), entity);
+    }
+    
+    public static DamageSource causeToothDamage(RegistryAccess registryAccess, Entity entity)
+    {
+        return new DamageSource(registryAccess.registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(TOOTH), entity);
     }
 }

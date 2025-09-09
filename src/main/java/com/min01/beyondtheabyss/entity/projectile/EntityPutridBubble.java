@@ -5,6 +5,7 @@ import java.util.List;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -90,6 +91,22 @@ public class EntityPutridBubble extends ThrowableProjectile
 				this.discard();
 			}
 		}
+	}
+	
+	@Override
+	protected void addAdditionalSaveData(CompoundTag p_37265_) 
+	{
+		super.addAdditionalSaveData(p_37265_);
+		p_37265_.putBoolean("isExplode", this.isExplode());
+		p_37265_.putInt("ExplosionTick", this.explosionTick);
+	}
+	
+	@Override
+	protected void readAdditionalSaveData(CompoundTag p_37262_)
+	{
+		super.readAdditionalSaveData(p_37262_);
+		this.setExplode(p_37262_.getBoolean("isExplode"));
+		this.explosionTick = p_37262_.getInt("ExplosionTick");
 	}
 	
 	@Override

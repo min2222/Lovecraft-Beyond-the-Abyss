@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.joml.Vector3f;
 
 import net.minecraft.client.animation.AnimationChannel;
@@ -24,7 +25,7 @@ public class KeyframePlayerAnimations
 
 		for(Map.Entry<String, List<AnimationChannel>> entry : p_232321_.boneAnimations().entrySet())
 		{
-			Optional<ModelPart> optional = ((IHierarchicalPlayerModel)p_232320_).getAnyDescendantWithName(entry.getKey());
+			Optional<Pair<ModelPart, ModelPart>> optional = ((IHierarchicalPlayerModel<?>)p_232320_).getAnyDescendantWithName(entry.getKey());
 			List<AnimationChannel> list = entry.getValue();
 			optional.ifPresent((p_232330_) -> 
 			{
@@ -41,7 +42,8 @@ public class KeyframePlayerAnimations
 					float f1 = f - keyframe.timestamp();
 					float f2 = Mth.clamp(f1 / (keyframe1.timestamp() - keyframe.timestamp()), 0.0F, 1.0F);
 					keyframe1.interpolation().apply(p_232324_, f2, akeyframe, i, j, p_232323_);
-					p_232311_.target().apply(p_232330_, p_232324_);
+					p_232311_.target().apply(p_232330_.getLeft(), p_232324_);
+					p_232311_.target().apply(p_232330_.getRight(), p_232324_);
 				});
 			});
 		}

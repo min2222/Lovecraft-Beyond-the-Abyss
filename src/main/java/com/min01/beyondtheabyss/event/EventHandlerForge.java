@@ -162,8 +162,9 @@ public class EventHandlerForge
 	@SubscribeEvent
 	public static void onPlayerTick(PlayerTickEvent event)
 	{
-		for(ItemStack stack : event.player.getAllSlots())
+		for(int i = 0; i < event.player.getInventory().getContainerSize(); i++)
 		{
+			ItemStack stack = event.player.getInventory().getItem(i);
 			if(stack.getItem() instanceof IAnimatableItem)
 			{
 				stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
@@ -173,6 +174,7 @@ public class EventHandlerForge
 				});
 			}
 		}
+		BTAUtil.tickPlayerAnimation(event.player);
 	}
 	
     @SubscribeEvent

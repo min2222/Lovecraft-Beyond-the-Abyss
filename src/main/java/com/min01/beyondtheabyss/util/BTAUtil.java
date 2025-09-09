@@ -13,7 +13,9 @@ import org.joml.Math;
 import com.google.common.collect.ImmutableList;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
+import com.min01.beyondtheabyss.capabilities.IPlayerAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
+import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
@@ -184,6 +186,42 @@ public class BTAUtil
 		}
 	}
 	
+    public static void tickPlayerAnimation(Entity player)
+    {
+		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
+		cap.tick();
+    }
+    
+    public static void setPlayerAnimationState(Entity player, int state)
+    {
+		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
+		cap.setAnimationState(state);
+    }
+    
+    public static int getPlayerAnimationState(Entity player)
+    {
+		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
+		return cap.getAnimationState();
+    }
+    
+    public static SmoothAnimationState getPlayerAnimationStateByName(Entity player, String name)
+    {
+		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
+		return cap.getAnimationStateByName(name);
+    }
+    
+    public static void setPlayerAnimationTick(Entity player, int tick)
+    {
+		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
+		cap.setAnimationTick(tick);
+    }
+    
+    public static int getPlayerAnimationTick(Entity player)
+    {
+		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
+		return cap.getAnimationTick();
+    }
+	
     public static int getTickCount(ItemStack stack)
     {
         CompoundTag tag = stack.getTag();
@@ -217,7 +255,7 @@ public class BTAUtil
     public static void setItemAnimationTick(ItemStack stack, int tick)
     {
 		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-		cap.setAnimationTick(tick * 2);
+		cap.setAnimationTick(tick);
     }
     
     public static int getItemAnimationTick(ItemStack stack)

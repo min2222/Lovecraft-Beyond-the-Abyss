@@ -43,6 +43,7 @@ import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSplittedFulgastra;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
+import com.min01.beyondtheabyss.entity.model.ModelToothBullet;
 import com.min01.beyondtheabyss.entity.model.ModelTwinserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelTwinserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelTwinserpentMiddleBone;
@@ -55,6 +56,7 @@ import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
+import com.min01.beyondtheabyss.entity.renderer.ToothBulletRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.ForneusBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.ForneusHeadRenderer;
@@ -69,8 +71,8 @@ import com.min01.beyondtheabyss.entity.renderer.living.SolomonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SplittedFulgastraRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.TwinserpentSlasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.TwinserpentMiddleBoneRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.TwinserpentSlasherRenderer;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
@@ -183,6 +185,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.FORNEUS_MAGIC.get(), ForneusMagicRenderer::new);
     	event.registerEntityRenderer(BTAEntities.ENERGY_BALL.get(), EnergyBallRenderer::new);
     	event.registerEntityRenderer(BTAEntities.PUTRID_BUBBLE.get(), PutridBubbleRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.TOOTH_BULLET.get(), ToothBulletRenderer::new);
     	
     	//living
     	event.registerEntityRenderer(BTAEntities.SOLOMON.get(), SolomonRenderer::new);
@@ -231,6 +234,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelForneusTail.LAYER_LOCATION, ModelForneusTail::createBodyLayer);
     	event.registerLayerDefinition(ModelEnergyBall.LAYER_LOCATION, ModelEnergyBall::createBodyLayer);
     	event.registerLayerDefinition(ModelPutridBubble.LAYER_LOCATION, ModelPutridBubble::createBodyLayer);
+    	event.registerLayerDefinition(ModelToothBullet.LAYER_LOCATION, ModelToothBullet::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
 
