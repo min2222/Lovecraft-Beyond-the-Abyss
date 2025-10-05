@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
@@ -8,6 +9,7 @@ import com.min01.beyondtheabyss.network.UpdatePlayerAnimationPacket;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
 public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
@@ -21,6 +23,8 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	private final SmoothAnimationState shotgunHoldAnimationState = new SmoothAnimationState();
 	private final SmoothAnimationState shotgunRunningAnimationState = new SmoothAnimationState();
 	private final SmoothAnimationState shotgunHoldToRunAnimationState = new SmoothAnimationState();
+	private final SmoothAnimationState gunbladeChargeAnimationState = new SmoothAnimationState();
+	private final SmoothAnimationState gunbladeShootAnimationState = new SmoothAnimationState();
 	
 	@Override
 	public CompoundTag serializeNBT() 
@@ -57,8 +61,10 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 				this.shotgunHoldAnimationState.updateWhen(this.getAnimationState() == 0 && this.entity.isHolding(BTAItems.TOOTH_SHOTGUN.get()) && !this.entity.isSprinting(), this.entity.tickCount);
 				this.shotgunHoldToRunAnimationState.updateWhen(this.getAnimationState() == 2 && this.entity.isHolding(BTAItems.TOOTH_SHOTGUN.get()) && this.entity.isSprinting(), this.entity.tickCount);
 				this.shotgunRunningAnimationState.updateWhen(this.getAnimationState() == 0 && this.entity.isHolding(BTAItems.TOOTH_SHOTGUN.get()) && this.entity.isSprinting(), this.entity.tickCount);
+				this.gunbladeChargeAnimationState.updateWhen(this.getAnimationState() == 3 && this.entity.isUsingItem() && this.entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()), this.entity.tickCount);
+				this.gunbladeShootAnimationState.updateWhen(this.getAnimationState() == 4 && this.entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()), this.entity.tickCount);
 			}
-			if(this.entity.isSprinting() && this.getAnimationState() == 0 && this.prevAnimationState != 2)
+			if(this.entity.isSprinting() && this.getAnimationState() == 0 && this.prevAnimationState != 2 && this.entity.isHolding(BTAItems.TOOTH_SHOTGUN.get()))
 			{
 				this.setAnimationState(2);
 				this.setAnimationTick(10);
@@ -76,6 +82,12 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 				if(!this.entity.isSprinting() && this.prevAnimationState == 2)
 				{
 					this.prevAnimationState = 0;
+				}
+				if(this.getAnimationState() == 4 && this.entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get())) 
+				{
+					ItemStack stack = this.entity.getItemInHand(this.entity.getUsedItemHand());
+					SkeletalGunbladeItem.setLaserVisible(stack, false);
+					SkeletalGunbladeItem.setLaserLength(stack, 0);
 				}
 				this.setAnimationState(0);
 			}
@@ -113,6 +125,14 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 		if(name.equals(ToothShotgunItem.SHOTGUN_HOLD_TO_RUN))
 		{
 			return this.shotgunHoldToRunAnimationState;
+		}
+		if(name.equals(SkeletalGunbladeItem.GUNBLADE_CHARGE))
+		{
+			return this.gunbladeChargeAnimationState;
+		}
+		if(name.equals(SkeletalGunbladeItem.GUNBLADE_SHOOT))
+		{
+			return this.gunbladeShootAnimationState;
 		}
 		return new SmoothAnimationState();
 	}

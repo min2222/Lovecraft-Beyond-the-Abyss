@@ -17,7 +17,7 @@ public class CoordinationEffect extends BasicBTAEffect
 	
 	public CoordinationEffect()
 	{
-		super(MobEffectCategory.NEUTRAL, 4531998);
+		super(MobEffectCategory.BENEFICIAL, 4531998);
 		this.addAttributeModifier(Attributes.ATTACK_DAMAGE, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		this.addAttributeModifier(Attributes.ARMOR, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		this.addAttributeModifier(Attributes.MAX_HEALTH, UUID.randomUUID().toString(), 0, Operation.ADDITION);

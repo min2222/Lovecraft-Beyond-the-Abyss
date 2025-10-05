@@ -55,7 +55,6 @@ import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
-import com.min01.beyondtheabyss.entity.renderer.ThrownHarpoonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ToothBulletRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.ForneusBodyRenderer;
@@ -76,12 +75,8 @@ import com.min01.beyondtheabyss.entity.renderer.living.TwinserpentSlasherRendere
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
-import com.min01.beyondtheabyss.item.model.ModelAdvancedDiverSet;
-import com.min01.beyondtheabyss.item.model.ModelDiverSet;
+import com.min01.beyondtheabyss.item.model.ModelFelmetalDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelFlashlight;
-import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
-import com.min01.beyondtheabyss.item.model.ModelGhidruthHarpoon;
-import com.min01.beyondtheabyss.item.model.ModelHarpoon;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
 import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
 import com.min01.beyondtheabyss.particle.BTAParticles;
@@ -121,14 +116,6 @@ public class ClientEventHandler
         BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);
         BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
         BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
-        ItemProperties.register(BTAItems.RUSTY_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
-        {
-        	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
-        });
-        ItemProperties.register(BTAItems.GHIDRUTH_SCALE_HARPOON.get(), new ResourceLocation("throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
-        {
-        	return p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F;
-        });
         ItemProperties.register(BTAItems.GUIDING_CLAM.get(), new ResourceLocation("open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
         	return GuidingClamItem.isOpen(p_174585_) ? 1.0F : 0.0F;
@@ -181,7 +168,6 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.CHAIN_TRAP_MAW.get(), ChainTrapMawRenderer::new);
     	
     	//projectile
-    	event.registerEntityRenderer(BTAEntities.THROWN_HARPOON.get(), ThrownHarpoonRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FORNEUS_MAGIC.get(), ForneusMagicRenderer::new);
     	event.registerEntityRenderer(BTAEntities.ENERGY_BALL.get(), EnergyBallRenderer::new);
     	event.registerEntityRenderer(BTAEntities.PUTRID_BUBBLE.get(), PutridBubbleRenderer::new);
@@ -239,9 +225,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
 
     	//armors
-    	event.registerLayerDefinition(ModelDiverSet.LAYER_LOCATION, ModelDiverSet::createBodyLayer);
-    	event.registerLayerDefinition(ModelAdvancedDiverSet.LAYER_LOCATION, ModelAdvancedDiverSet::createBodyLayer);
-    	event.registerLayerDefinition(ModelGhidruthDiverSet.LAYER_LOCATION, ModelGhidruthDiverSet::createBodyLayer);
+    	event.registerLayerDefinition(ModelFelmetalDiverSet.LAYER_LOCATION, ModelFelmetalDiverSet::createBodyLayer);
 
     	//blocks
     	event.registerLayerDefinition(ModelRiftwellingAltar.LAYER_LOCATION, ModelRiftwellingAltar::createBodyLayer);
@@ -259,8 +243,6 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelGlaringBarnacle.LAYER_LOCATION, ModelGlaringBarnacle::createBodyLayer);
 
     	//items
-    	event.registerLayerDefinition(ModelHarpoon.LAYER_LOCATION, ModelHarpoon::createBodyLayer);
-    	event.registerLayerDefinition(ModelGhidruthHarpoon.LAYER_LOCATION, ModelGhidruthHarpoon::createBodyLayer);
     	event.registerLayerDefinition(ModelFlashlight.LAYER_LOCATION, ModelFlashlight::createBodyLayer);
     	event.registerLayerDefinition(ModelSkeletalGunblade.LAYER_LOCATION, ModelSkeletalGunblade::createBodyLayer);
     	event.registerLayerDefinition(ModelToothShotgun.LAYER_LOCATION, ModelToothShotgun::createBodyLayer);

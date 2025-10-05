@@ -20,8 +20,8 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	private int animationTick;
 	private int animationState;
 	
-	private final SmoothAnimationState gunBladeOpenAnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState gunBladeCloseAnimationState = new SmoothAnimationState();
+	private final SmoothAnimationState gunBladeOpenAnimationState = new SmoothAnimationState(0.999F);
+	private final SmoothAnimationState gunBladeCloseAnimationState = new SmoothAnimationState(0.999F);
 	private final SmoothAnimationState freakyAnimationState = new SmoothAnimationState();
 	private final SmoothAnimationState reloadAnimationState = new SmoothAnimationState();
 	private final SmoothAnimationState shootAnimationState = new SmoothAnimationState();
@@ -62,8 +62,10 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 		if(this.entity.level.isClientSide)
 		{
 			BTAUtil.setTickCount(this.stack, BTAUtil.getTickCount(this.stack) + 1);
+
 			this.gunBladeOpenAnimationState.updateWhen(this.getAnimationState() == 1 && this.stack.is(BTAItems.SKELETAL_GUNBLADE.get()), BTAUtil.getTickCount(this.stack));
 			this.gunBladeCloseAnimationState.updateWhen(this.getAnimationState() == 2 && this.stack.is(BTAItems.SKELETAL_GUNBLADE.get()), BTAUtil.getTickCount(this.stack));
+
 			this.freakyAnimationState.updateWhen(this.getAnimationState() == 1 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
 			this.reloadAnimationState.updateWhen(this.getAnimationState() == 2 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
 			this.shootAnimationState.updateWhen(this.getAnimationState() == 3 && this.stack.is(BTAItems.TOOTH_SHOTGUN.get()), BTAUtil.getTickCount(this.stack));
@@ -75,7 +77,17 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 			}
 			else
 			{
-				this.setAnimationState(0);
+				if(this.stack.is(BTAItems.SKELETAL_GUNBLADE.get())) 
+				{
+					if(this.getAnimationState() != 1 && this.getAnimationState() != 2)
+					{
+						this.setAnimationState(0);
+					}
+				}
+				else
+				{
+					this.setAnimationState(0);
+				}
 			}
 		}
 	}

@@ -75,7 +75,7 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 		Blade.addOrReplaceChild("Right", CubeListBuilder.create().texOffs(0, 23).addBox(-6.75F, 0.0F, -20.0F, 9.0F, 0.0F, 22.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 66).addBox(0.25F, -1.5F, -13.0F, 2.0F, 3.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offset(-2.25F, 0.0F, 0.0F));
 
-		Blade.addOrReplaceChild("EnergyRay", CubeListBuilder.create().texOffs(99, 79).addBox(-3.0F, -4.0F, -1.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-4.0F))
+		Blade.addOrReplaceChild("EnergyRay", CubeListBuilder.create().texOffs(99, 79).addBox(-3.0F, -4.0F, -1.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
 		.texOffs(35, 74).addBox(-2.5F, -3.5F, -0.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 2.0F, -5.0F));
 
 		SkeletalGunblade.addOrReplaceChild("Heart", CubeListBuilder.create().texOffs(70, 83).addBox(-3.5F, -0.7415F, -3.5F, 7.0F, 8.0F, 7.0F, new CubeDeformation(0.0F))
@@ -91,9 +91,9 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_OPEN, SkeletalGunbladeAnimation.GUNBLADE_OPEN, ageInTicks);
 		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_CLOSE, SkeletalGunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
-		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_OPENED, SkeletalGunbladeAnimation.GUNBLADE_OPENED, ageInTicks);
-		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_CLOSED, SkeletalGunbladeAnimation.GUNBLADE_CLOSED, ageInTicks);
-		this.EnergyRay.visible = false;
+		this.EnergyRay.visible = SkeletalGunbladeItem.isLaserVisible(stack);
+		this.EnergyRay.zScale += SkeletalGunbladeItem.getLaserLength(stack);
+		this.EnergyRay.z -= SkeletalGunbladeItem.getLaserLength(stack) * 3;
 	}
 	
 	@Override

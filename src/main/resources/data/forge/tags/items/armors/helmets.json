@@ -1,8 +1,6 @@
 {
 	"replace": false,
 	"values": [
-		"beyondtheabyss:diving_helmet",
-		"beyondtheabyss:advanced_diving_helmet",
-		"beyondtheabyss:ghidruth_diving_helmet"
+		"beyondtheabyss:felmetal_diving_helmet"
 	]
 }

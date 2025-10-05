@@ -55,7 +55,7 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	{
         ItemStack ammo = this.findAmmo(p_41433_);
 		ItemStack stack = p_41433_.getItemInHand(p_41434_);
-		int isGolden = stack.getEnchantmentLevel(BTAEnchantments.GOLDEN_TOOTH.get());
+		int isGolden = stack.getEnchantmentLevel(BTAEnchantments.GOLDEN_TOOTH.get()) * 2;
 		if(getAmmo(stack) > 0)
 		{
         	for(int i = 0; i < 4; i++)
@@ -82,9 +82,9 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
         	if(!p_41433_.getAbilities().instabuild)
         	{
-                ammo.shrink(1);
+                ammo.shrink(2);
         	}
-        	setAmmo(stack, getAmmo(stack) + 1);
+        	setAmmo(stack, getAmmo(stack) + 2);
 		}
 		else if(p_41432_.isClientSide)
 		{

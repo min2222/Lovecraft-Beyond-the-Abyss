@@ -203,13 +203,9 @@ public class EventHandlerForge
     	Player player = event.getEntity();
     	if(player.isEyeInFluidType(Fluids.WATER.getFluidType()))
     	{
-        	if(player.getItemBySlot(EquipmentSlot.CHEST).getItem() == BTAItems.ADVANCED_DIVING_SUIT.get())
+        	if(player.getItemBySlot(EquipmentSlot.CHEST).getItem() == BTAItems.FELMETAL_DIVING_SUIT.get())
         	{
-        		event.setNewSpeed(event.getOriginalSpeed() * 5.0F);
-        	}
-        	else if(player.getItemBySlot(EquipmentSlot.CHEST).getItem() == BTAItems.GHIDRUTH_DIVING_SUIT.get())
-        	{
-        		event.setNewSpeed(event.getOriginalSpeed() * 7.0F);
+        		event.setNewSpeed(event.getOriginalSpeed() * 4.0F);
         	}
     	}
     }

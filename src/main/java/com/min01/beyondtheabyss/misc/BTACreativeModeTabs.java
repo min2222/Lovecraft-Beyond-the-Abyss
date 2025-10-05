@@ -51,8 +51,6 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.SLASHER_BLADE.get());
 				output.accept(BTAItems.BLASTER_SKULL.get());
 				output.accept(BTAItems.SERPENT_HEART.get());
-				output.accept(BTAItems.RUSTY_HARPOON.get());
-				output.accept(BTAItems.GHIDRUTH_SCALE_HARPOON.get());
 				output.accept(BTAItems.SKELETAL_GUNBLADE.get());
 				output.accept(BTAItems.TOOTH_SHOTGUN.get());
 				output.accept(BTAItems.FLASHLIGHT.get());

@@ -2,17 +2,22 @@ package com.min01.beyondtheabyss.item.weapon;
 
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.min01.beyondtheabyss.item.IServerUpdate;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.item.renderer.BTAItemRenderer;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateServerItemPacket;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -22,14 +27,12 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
+public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem, IServerUpdate
 {
-    public static final String GUN_MODE = "GunMode";
-    public static final String IS_SELECTED = "isSelected";
     public static final String GUNBLADE_OPEN = "GunbladeOpen";
     public static final String GUNBLADE_CLOSE = "GunbladeClose";
-    public static final String GUNBLADE_OPENED = "GunbladeOpened";
-    public static final String GUNBLADE_CLOSED = "GunbladeClosed";
+    public static final String GUNBLADE_CHARGE = "GunbladeCharge";
+    public static final String GUNBLADE_SHOOT = "GunbladeShoot";
     
 	public SkeletalGunbladeItem(Item.Properties properties) 
 	{
@@ -63,16 +66,62 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 		{
 			if(isGunMode)
 			{
-	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 10);
+				p_41433_.startUsingItem(p_41434_);
+				if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
+				{
+					BTAUtil.setPlayerAnimationState(p_41433_, 3);
+					BTAUtil.setPlayerAnimationTick(p_41433_, 72000);
+				}
+			}
+			else
+			{
+				
 			}
 		}
 		return InteractionResultHolder.consume(stack);
 	}
 	
 	@Override
-	public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) 
+	public void onUseTick(Level p_41428_, LivingEntity p_41429_, ItemStack p_41430_, int p_41431_) 
 	{
-		setSelected(p_41404_, p_41408_);
+		if(getCharge(p_41430_) < 3 && p_41431_ % 25 == 0 && p_41429_.level.isClientSide)
+		{
+			setCharge(p_41430_, getCharge(p_41430_) + 1);
+		}
+	}
+	
+	@Override
+	public void onStopUsing(ItemStack stack, LivingEntity entity, int count)
+	{
+		if(getCharge(stack) > 0 && entity.level.isClientSide)
+		{
+			BTAUtil.setPlayerAnimationState(entity, 4);
+			BTAUtil.setPlayerAnimationTick(entity, 20);
+			setLaserVisible(stack, true);
+			setLaserLength(stack, 100);
+			setCharge(stack, 0);
+			BTANetwork.sendToServer(new UpdateServerItemPacket(entity, stack));
+		}
+	}
+	
+	@Override
+	public void onServerUpdate(LivingEntity living, ItemStack stack)
+	{
+		BTAUtil.setPlayerAnimationState(living, 4);
+		BTAUtil.setPlayerAnimationTick(living, 20);
+		setLaserVisible(stack, true);
+		setLaserLength(stack, 100);
+		setCharge(stack, 0);
+	}
+	
+	@Override
+	public int getUseDuration(ItemStack p_41454_) 
+	{
+		if(isGunMode(p_41454_))
+		{
+			return 72000;
+		}
+		return 0;
 	}
 	
 	@Override
@@ -81,41 +130,52 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 		return newStack.getItem() != this;
 	}
 	
-	@Override
-	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) 
-	{
-		boolean isGunMode = isGunMode(stack);
-		if(!isGunMode)
-		{
-			//BTAUtil.startPlayerAnimation(entity, GUNBLADE_SWING);
-			//TODO play with correct timing
-			//entity.playSound(BTASounds.GUNBLADE_SWING.get());
-		}
-		return true;
-	}
-	
-	public static boolean isSelected(ItemStack stack) 
+	public static int getCharge(ItemStack stack) 
 	{
 		CompoundTag tag = stack.getTag();
-		return tag != null && tag.getBoolean(IS_SELECTED);
+		return tag != null ? tag.getInt("Charge") : 0;
 	}
 	
-	public static void setSelected(ItemStack stack, boolean isSelected) 
+	public static void setCharge(ItemStack stack, int charge) 
 	{
 		CompoundTag tag = stack.getOrCreateTag();
-		tag.putBoolean(IS_SELECTED, isSelected);
+		tag.putInt("Charge", charge);
 	}
 	
 	public static boolean isGunMode(ItemStack stack) 
 	{
 		CompoundTag tag = stack.getTag();
-		return tag != null && tag.getBoolean(GUN_MODE);
+		return tag != null && tag.getBoolean("GunMode");
 	}
 	
 	public static void setGunMode(ItemStack stack, boolean isGunMode) 
 	{
 		CompoundTag tag = stack.getOrCreateTag();
-		tag.putBoolean(GUN_MODE, isGunMode);
+		tag.putBoolean("GunMode", isGunMode);
+	}
+	
+	public static int getLaserLength(ItemStack stack) 
+	{
+		CompoundTag tag = stack.getTag();
+		return tag != null ? tag.getInt("LaserLength") : 0;
+	}
+	
+	public static void setLaserLength(ItemStack stack, int length) 
+	{
+		CompoundTag tag = stack.getOrCreateTag();
+		tag.putInt("LaserLength", length);
+	}
+	
+	public static boolean isLaserVisible(ItemStack stack) 
+	{
+		CompoundTag tag = stack.getTag();
+		return tag != null && tag.getBoolean("LaserVisible");
+	}
+	
+	public static void setLaserVisible(ItemStack stack, boolean LaserVisible) 
+	{
+		CompoundTag tag = stack.getOrCreateTag();
+		tag.putBoolean("LaserVisible", LaserVisible);
 	}
 	
 	@Override
@@ -127,6 +187,12 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 			public BlockEntityWithoutLevelRenderer getCustomRenderer()
 			{
 				return new BTAItemRenderer(BTAClientUtil.MC.getBlockEntityRenderDispatcher(), BTAClientUtil.MC.getEntityModels());
+			}
+			
+			@Override
+			public @Nullable ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) 
+			{
+				return ArmPose.EMPTY;
 			}
 		});
 	}

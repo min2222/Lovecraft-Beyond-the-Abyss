@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "beyondtheabyss:item/diving_helmet"
+		"layer0": "beyondtheabyss:item/felmetal_diving_boots"
 	}
 }

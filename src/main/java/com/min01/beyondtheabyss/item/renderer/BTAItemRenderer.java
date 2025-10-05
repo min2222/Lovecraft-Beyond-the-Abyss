@@ -23,8 +23,6 @@ import net.minecraft.world.item.ItemStack;
 
 public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 {
-	public static final ResourceLocation GUNBLADE_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/skeletal_gunblade.png");
-	public static final ResourceLocation GUNBLADE_LAYER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/skeletal_gunblade_layer.png");
 	public static final ResourceLocation SHOTGUN_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/tooth_shotgun.png");
 	public final ModelSkeletalGunblade modelGunblade;
 	public final ModelToothShotgun modelShotgun;
@@ -44,11 +42,20 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	        p_108832_.translate(0.5F, 0.6F, 0.3F);
 	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
 	        p_108832_.translate(0.0F, -1.0F, 0.0F);
-	        VertexConsumer eyeConsumer = p_108833_.getBuffer(BTARenderType.eyesFix(GUNBLADE_LAYER));
-	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(GUNBLADE_TEXTURE), false, p_108830_.hasFoil());
+	        ResourceLocation texture = new ResourceLocation(String.format("%s:textures/item/skeletal_gunblade%d.png", BeyondtheAbyss.MODID, SkeletalGunbladeItem.getCharge(p_108830_)));
+	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(texture), false, p_108830_.hasFoil());
 			this.modelGunblade.setupAnim(p_108830_, 0, 0, BTAUtil.getTickCount(p_108830_) + BTAClientUtil.MC.getFrameTime(), 0, 0);
 	        this.modelGunblade.renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
-	        this.modelGunblade.renderToBuffer(p_108832_, eyeConsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
+	        p_108832_.popPose();
+
+	        p_108832_.pushPose();
+	        p_108832_.translate(0.5F, 0.6F, 0.3F);
+	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
+	        p_108832_.translate(0.0F, -1.0F, 0.0F);
+	        ResourceLocation layerTexture = new ResourceLocation(String.format("%s:textures/item/skeletal_gunblade_layer%d.png", BeyondtheAbyss.MODID, SkeletalGunbladeItem.getCharge(p_108830_)));
+	        VertexConsumer eyeConsumer = p_108833_.getBuffer(BTARenderType.eyesFix(layerTexture));
+			this.modelGunblade.setupAnim(p_108830_, 0, 0, BTAUtil.getTickCount(p_108830_) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+	        this.modelGunblade.renderToBuffer(p_108832_, eyeConsumer, p_108834_, p_108835_, 0.7F, 0.7F, 0.7F, 1.0F);
 	        p_108832_.popPose();
 		}
  		if(p_108830_.getItem() instanceof ToothShotgunItem)

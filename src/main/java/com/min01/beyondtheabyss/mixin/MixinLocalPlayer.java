@@ -38,17 +38,9 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 	{
 		LocalPlayer player = LocalPlayer.class.cast(this);
 		ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
-		if(stack.is(BTAItems.GHIDRUTH_DIVING_HELMET.get()))
-		{
-			cir.setReturnValue(cir.getReturnValue() + 2.0F);
-		}
-		if(stack.is(BTAItems.ADVANCED_DIVING_HELMET.get()))
+		if(stack.is(BTAItems.FELMETAL_DIVING_HELMET.get()))
 		{
 			cir.setReturnValue(cir.getReturnValue() + 1.0F);
-		}
-		if(stack.is(BTAItems.DIVING_HELMET.get()))
-		{
-			cir.setReturnValue(cir.getReturnValue() + 0.5F);
 		}
 	}
 }

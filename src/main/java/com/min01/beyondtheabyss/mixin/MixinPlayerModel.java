@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.animation.PlayerAnimation;
+import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
@@ -37,17 +38,20 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     @Inject(at = @At("TAIL"), method = "setupAnim", cancellable = true)
     private void setupAnimTail(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {
-    	
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
     }
     
     @Override
     public void setupAnimFirstPerson(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
     {
     	this.setupMap();
-    	this.animate(entity, ToothShotgunItem.SHOTGUN_FIRE, PlayerAnimation.ShotgunAnimation.SHOTGUN_FIRE, ageInTicks);
-    	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD, PlayerAnimation.ShotgunAnimation.SHOTGUN_HOLD, ageInTicks);
-    	this.animate(entity, ToothShotgunItem.SHOTGUN_RUNNING, PlayerAnimation.ShotgunAnimation.SHOTGUN_RUNNING, ageInTicks);
-    	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD_TO_RUN, PlayerAnimation.ShotgunAnimation.SHOTGUN_HOLD_TO_RUN, ageInTicks);
+    	this.animate(entity, ToothShotgunItem.SHOTGUN_FIRE, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_FIRE, ageInTicks);
+    	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD, ageInTicks);
+    	this.animate(entity, ToothShotgunItem.SHOTGUN_RUNNING, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_RUNNING, ageInTicks);
+    	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD_TO_RUN, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD_TO_RUN, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
     }
     
 	@Override

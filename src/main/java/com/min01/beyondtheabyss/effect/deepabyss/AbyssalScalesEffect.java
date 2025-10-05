@@ -13,7 +13,7 @@ public class AbyssalScalesEffect extends BasicBTAEffect
 {
 	public AbyssalScalesEffect()
 	{
-		super(MobEffectCategory.NEUTRAL, 657950);
+		super(MobEffectCategory.BENEFICIAL, 657950);
 		this.addAttributeModifier(Attributes.ARMOR, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 		this.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, UUID.randomUUID().toString(), 0, Operation.ADDITION);
 	}

@@ -24,7 +24,6 @@ public class TwinserpentMiddleBoneRenderer extends MobRenderer<EntityTwinserpent
 		this.boneRenderer = new TwinserpentBoneRenderer(p_174304_);
 	}
 	
-	//FIXME boneRenderer not rendered for some reason;
 	@Override
 	public void render(EntityTwinserpentBone p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
 	{

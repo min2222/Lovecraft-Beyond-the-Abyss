@@ -1,8 +1,6 @@
 {
 	"replace": false,
 	"values": [
-		"beyondtheabyss:diving_suit",
-		"beyondtheabyss:advanced_diving_suit",
-		"beyondtheabyss:ghidruth_diving_suit"
+		"beyondtheabyss:felmetal_diving_suit"
 	]
 }

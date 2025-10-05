@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.min01.beyondtheabyss.item.model.ModelGhidruthDiverSet;
+import com.min01.beyondtheabyss.item.model.ModelFelmetalDiverSet;
 import com.min01.beyondtheabyss.misc.BTAArmorMaterials;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
@@ -17,11 +17,11 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class GhidruthDivingSetItem extends AbstractDivingSetItem
+public class FelmetalDivingSetItem extends AbstractDivingSetItem
 {
-	public GhidruthDivingSetItem(ArmorItem.Type type)
+	public FelmetalDivingSetItem(ArmorItem.Type type)
 	{
-		super(BTAArmorMaterials.GHIDRUTH_DIVING_SET, type, 0.7F);
+		super(BTAArmorMaterials.DIVING_SET, type, 0.2F);
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class GhidruthDivingSetItem extends AbstractDivingSetItem
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) 
 			{
-				ModelGhidruthDiverSet<?> diverModel = new ModelGhidruthDiverSet<>(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelGhidruthDiverSet.LAYER_LOCATION));
+				ModelFelmetalDiverSet<?> diverModel = new ModelFelmetalDiverSet<>(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelFelmetalDiverSet.LAYER_LOCATION));
 				diverModel.Head.visible = equipmentSlot == EquipmentSlot.HEAD;
 				diverModel.Body.visible = equipmentSlot == EquipmentSlot.CHEST;
 				diverModel.LeftArm.visible = equipmentSlot == EquipmentSlot.CHEST;
@@ -49,13 +49,13 @@ public class GhidruthDivingSetItem extends AbstractDivingSetItem
 	@Override
 	public int getMaxOxygen() 
 	{
-		//1 hour;
-		return 72000;
+		//10 minutes;
+		return 12000;
 	}
 	
 	@Override
 	public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) 
 	{
-		return "beyondtheabyss:textures/armor/ghidruth_diver_set.png";
+		return "beyondtheabyss:textures/armor/felmetal_diver_set.png";
 	}
 }
