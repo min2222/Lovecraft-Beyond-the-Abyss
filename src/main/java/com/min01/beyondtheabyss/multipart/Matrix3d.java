@@ -6,15 +6,15 @@ public class Matrix3d
 {
     public static final Matrix3d IDENTITY = new Matrix3d(QuaternionD.IDENTITY);
     public static final Vec3[] IDENTITY_BASIS = IDENTITY.getBasis();
-    public final double m00;
-    public final double m01;
-    public final double m02;
-    public final double m10;
-    public final double m11;
-    public final double m12;
-    public final double m20;
-    public final double m21;
-    public final double m22;
+    public double m00;
+    public double m01;
+    public double m02;
+    public double m10;
+    public double m11;
+    public double m12;
+    public double m20;
+    public double m21;
+    public double m22;
 
     public Matrix3d(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) 
     {

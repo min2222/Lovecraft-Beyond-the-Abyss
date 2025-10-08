@@ -43,6 +43,12 @@ public class EntitySubmarine extends AbstractBTACreature
 	}
 	
 	@Override
+	public boolean isEffectiveAi()
+	{
+		return false;
+	}
+	
+	@Override
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.MISC;

@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.ai.control;
 
 import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
+import com.min01.beyondtheabyss.misc.Boid;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -16,36 +17,45 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class BTASwimmingMoveControl extends MoveControl 
+public class BoidMoveControl extends MoveControl 
 {
 	private final float outsideWaterSpeedModifier;
 	private final boolean applyGravity;
-	private Vec3 targetPos = Vec3.ZERO;
+	private boolean forceTarget;
+	public Vec3 targetPos = Vec3.ZERO;
+	public final Boid boid;
 
-	public BTASwimmingMoveControl(Mob p_148070_, float p_148074_, boolean p_148075_) 
+	public BoidMoveControl(Mob mob, float outsideWaterSpeedModifier, boolean applyGravity)
 	{
-		super(p_148070_);
-		this.outsideWaterSpeedModifier = p_148074_;
-		this.applyGravity = p_148075_;
+		super(mob);
+		this.outsideWaterSpeedModifier = outsideWaterSpeedModifier;
+		this.applyGravity = applyGravity;
+		this.boid = new Boid(mob);
 	}
 
 	@Override
-	public void tick()
+	public void tick() 
 	{
 		IDeepAbyssMob mob = (IDeepAbyssMob) this.mob;
 		if(this.applyGravity && this.mob.isInWater()) 
 		{
 			this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
 		}
-		if(this.operation == MoveControl.Operation.MOVE_TO && !this.mob.getNavigation().isDone()) 
+		if(this.operation == MoveControl.Operation.MOVE_TO) 
 		{
-			if(this.mob.tickCount % 60 == 0)
-			{
-				this.generateNewTarget();
-			}
-			double d0 = this.targetPos.x - this.mob.getX();
-			double d1 = this.targetPos.y - this.mob.getY();
-			double d2 = this.targetPos.z - this.mob.getZ();
+        	if(!this.forceTarget)
+        	{
+    	        if(this.mob.tickCount % 60 == 0 || this.targetPos.equals(Vec3.ZERO))
+    	        {
+    	        	this.generateNewTarget();
+    	        }
+        	}
+			this.boid.tick();
+	        this.stayInWater();
+			Vec3 direction = this.mob.getDeltaMovement();
+			double d0 = direction.x;
+			double d1 = direction.y;
+			double d2 = direction.z;
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			if(d3 < (double) 2.5000003E-7F) 
 			{
@@ -80,7 +90,7 @@ public class BTASwimmingMoveControl extends MoveControl
 					this.mob.setSpeed(f1 * this.outsideWaterSpeedModifier * f2);
 				}
 			}
-		}
+		} 
 		else 
 		{
 			this.mob.setSpeed(0.0F);
@@ -89,7 +99,7 @@ public class BTASwimmingMoveControl extends MoveControl
 			this.mob.setZza(0.0F);
 		}
 	}
-	
+    
     private void generateNewTarget() 
     {
         Level world = this.mob.level;
@@ -110,15 +120,60 @@ public class BTASwimmingMoveControl extends MoveControl
         	}
         }
     }
-    
+
 	private float getTurningSpeedFactor(float p_249853_) 
 	{
 		return 1.0F - Mth.clamp((p_249853_ - 10.0F) / 50.0F, 0.0F, 1.0F);
 	}
+    
+    public void stayInWater()
+    {
+		if(this.mob.isInWater())
+		{
+	        BlockPos blockPos = this.mob.blockPosition();
+	        BlockState blockAbove = this.mob.level.getBlockState(blockPos.above(2));
+	        BlockState blockBelow = this.mob.level.getBlockState(blockPos.below(1));
+	        float amount = this.amount();
+	        if(blockBelow.getFluidState().isEmpty()) 
+	        {
+	        	this.mob.addDeltaMovement(new Vec3(0, amount, 0));
+	        }
+	        if(blockAbove.getFluidState().isEmpty())
+	        {
+	        	this.mob.addDeltaMovement(new Vec3(0, -amount, 0));
+	        }
+		}
+    }
+    
+    public float amount() 
+    {
+        float amount = 0.05F;
+        float dY = Mth.abs((float) this.mob.getDeltaMovement().y);
+        if(dY > amount) 
+        {
+            amount = dY;
+        }
+        return amount;
+    }
 	
     public void setTargetPos(Vec3 pos)
     {
     	this.targetPos = pos;
+    }
+    
+    public void setForceTarget(Vec3 pos)
+    {
+    	this.targetPos = pos;
+    	this.forceTarget = true;
+    }
+    
+    public void setForceTarget(boolean forceTarget)
+    {
+    	this.forceTarget = forceTarget;
+    	if(!forceTarget)
+    	{
+    		this.generateNewTarget();
+    	}
     }
     
     public Vec3 getTargetPos()

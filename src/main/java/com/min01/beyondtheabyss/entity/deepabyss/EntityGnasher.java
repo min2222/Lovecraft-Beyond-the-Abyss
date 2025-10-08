@@ -6,9 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.IBoid;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBoidGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -38,7 +36,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid
+public class EntityGnasher extends AbstractDeepAbyssMonster
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DISPERSE = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
@@ -50,6 +48,8 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(6);
+		//TODO Boid
+		//this.moveControl = new BoidMoveControl(this, 0.1F, false);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -80,7 +80,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements IBoid
 	{
 		super.registerGoals();
 		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
-		this.goalSelector.addGoal(5, new GnasherBoidGoal(this, 1.35F));
 	}
 	
 	@Override

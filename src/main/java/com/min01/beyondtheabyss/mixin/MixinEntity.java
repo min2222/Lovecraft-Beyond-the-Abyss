@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.mixin;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -338,7 +339,7 @@ public abstract class MixinEntity implements IDynamicLight
     	}
     }
 
-    @Inject(method = "collide", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "collide", at = @At("HEAD"), cancellable = true)
     private void collide(Vec3 p_20273_, CallbackInfoReturnable<Vec3> cir)
     {
     	Entity entity = Entity.class.cast(this);
@@ -346,30 +347,7 @@ public abstract class MixinEntity implements IDynamicLight
         List<OrientedBox> list = this.getOBBEntityCollisions(entity.level, entity, aabb.expandTowards(p_20273_));
         if(!list.isEmpty())
         {
-            Vec3 vec3 = p_20273_.lengthSqr() == 0.0D ? p_20273_ : collideOBB(p_20273_, aabb, list);
-            boolean flag = p_20273_.x != vec3.x;
-            boolean flag1 = p_20273_.y != vec3.y;
-            boolean flag2 = p_20273_.z != vec3.z;
-            boolean flag3 = entity.onGround() || flag1 && p_20273_.y < 0.0D;
-            float stepHeight = entity.getStepHeight();
-            if(stepHeight > 0.0F && flag3 && (flag || flag2)) 
-            {
-            	Vec3 vec31 = collideOBB(new Vec3(p_20273_.x, (double)stepHeight, p_20273_.z), aabb, list);
-            	Vec3 vec32 = collideOBB(new Vec3(0.0D, (double)stepHeight, 0.0D), aabb.expandTowards(p_20273_.x, 0.0D, p_20273_.z), list);
-            	if(vec32.y < (double)stepHeight)
-            	{
-            		Vec3 vec33 = collideOBB(new Vec3(p_20273_.x, 0.0D, p_20273_.z), aabb.move(vec32), list).add(vec32);
-            		if(vec33.horizontalDistanceSqr() > vec31.horizontalDistanceSqr()) 
-            		{
-            			vec31 = vec33;
-            		}
-            	}
-            	if(vec31.horizontalDistanceSqr() > vec3.horizontalDistanceSqr()) 
-            	{
-            		cir.setReturnValue(vec31.add(collideOBB(new Vec3(0.0D, -vec31.y + p_20273_.y, 0.0D), aabb.move(vec31), list)));
-            	}
-            }
-        	cir.setReturnValue(vec3);
+        	
         }
     }
     
@@ -394,116 +372,13 @@ public abstract class MixinEntity implements IDynamicLight
         		{
         			if(entity.getBoundingBox() instanceof CompoundOrientedBox compoundBox)
         			{
-        				builder.addAll(compoundBox.boxes.stream().filter(t -> t.collide).toList());
+        				Collection<OrientedBox> boxes = compoundBox.boxes;
+        				boxes.removeIf(t -> !t.collide);
+        				builder.addAll(boxes);
         			}
         		}
         		return builder.build();
         	}
         }
-    }
-    
-    //DeepSeek Ahh;
-    private static Vec3 collideOBB(Vec3 movement, AABB entityBox, List<OrientedBox> obbs) 
-    {
-        if(obbs.isEmpty())
-        {
-            return movement;
-        }
-
-        // Create vertices for the swept volume (current position to target position)
-        AABB sweptBox = entityBox.expandTowards(movement.x, movement.y, movement.z);
-        Vec3[] sweptVertices = OrientedBox.getVertices(sweptBox);
-        
-        // Check for collisions with each OBB
-        for(OrientedBox obb : obbs) 
-        {
-            if(obb.intersects(sweptVertices)) 
-            {
-                // Collision detected - adjust movement
-                movement = adjustMovementForOBB(movement, entityBox, obb);
-                // Early exit if movement is fully blocked
-                if(movement.lengthSqr() < 1.0E-7)
-                {
-                    return Vec3.ZERO;
-                }
-                // Update swept vertices for new movement
-                sweptBox = entityBox.expandTowards(movement.x, movement.y, movement.z);
-                sweptVertices = OrientedBox.getVertices(sweptBox);
-            }
-        }
-        return movement;
-    }
-
-    private static Vec3 adjustMovementForOBB(Vec3 movement, AABB entityBox, OrientedBox obb) 
-    {
-        // Try adjusting each axis separately
-        Vec3 adjusted = movement;
-        // 1. Check Y axis (vertical movement)
-        if(movement.y != 0) 
-        {
-            double newY = adjustSingleAxis(movement.y, entityBox, obb, Direction.Axis.Y);
-            adjusted = new Vec3(adjusted.x, newY, adjusted.z);
-        }
-        // 2. Check dominant horizontal axis
-        boolean xDominant = Math.abs(movement.x) > Math.abs(movement.z);
-        if(xDominant)
-        {
-            if(movement.x != 0) 
-            {
-                double newX = adjustSingleAxis(movement.x, entityBox, obb, Direction.Axis.X);
-                adjusted = new Vec3(newX, adjusted.y, adjusted.z);
-            }
-            if(movement.z != 0)
-            {
-                double newZ = adjustSingleAxis(movement.z, entityBox.move(adjusted.x, adjusted.y, 0), obb, Direction.Axis.Z);
-                adjusted = new Vec3(adjusted.x, adjusted.y, newZ);
-            }
-        }
-        else
-        {
-            if(movement.z != 0) 
-            {
-                double newZ = adjustSingleAxis(movement.z, entityBox, obb, Direction.Axis.Z);
-                adjusted = new Vec3(adjusted.x, adjusted.y, newZ);
-            }
-            if(movement.x != 0)
-            {
-                double newX = adjustSingleAxis(movement.x, entityBox.move(0, adjusted.y, adjusted.z), obb, Direction.Axis.X);
-                adjusted = new Vec3(newX, adjusted.y, adjusted.z);
-            }
-        }
-        return adjusted;
-    }
-
-    private static double adjustSingleAxis(double distance, AABB entityBox, OrientedBox obb, Direction.Axis axis)
-    {
-        // Binary search to find maximum safe movement
-        double low = 0;
-        double high = distance;
-        double threshold = 0.001;
-        
-        AABB testBox = entityBox;
-        Vec3[] testVertices;
-        
-        while(Math.abs(high - low) > threshold)
-        {
-            double mid = (low + high) / 2;
-            switch(axis) 
-            {
-                case X -> testBox = entityBox.expandTowards(mid, 0, 0);
-                case Y -> testBox = entityBox.expandTowards(0, mid, 0);
-                case Z -> testBox = entityBox.expandTowards(0, 0, mid);
-            }
-            testVertices = OrientedBox.getVertices(testBox);
-            if(obb.intersects(testVertices))
-            {
-                high = mid; // Collision - reduce movement
-            } 
-            else 
-            {
-                low = mid; // No collision - can move further
-            }
-        }
-        return low;
     }
 }

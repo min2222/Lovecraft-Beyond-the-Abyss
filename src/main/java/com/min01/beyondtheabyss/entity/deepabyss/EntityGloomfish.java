@@ -1,8 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
-import com.min01.beyondtheabyss.entity.IBoid;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.BTABoidGoal;
+import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -19,11 +18,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid
-{
+public class EntityGloomfish extends AbstractDeepAbyssCreature
+{	
 	public EntityGloomfish(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.moveControl = new BoidMoveControl(this, 0.1F, false);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -31,13 +31,6 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 2.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F);
-    }
-    
-    @Override
-    protected void registerGoals() 
-    {
-    	super.registerGoals();
-        this.goalSelector.addGoal(5, new BTABoidGoal(this, 0.9F));
     }
 
 	@Override
@@ -63,7 +56,7 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature implements IBoid
 	@Override
 	public BTAMobType getBTAMobType() 
 	{
-		return BTAMobType.PASSIVE; 
+		return BTAMobType.PASSIVE;
 	}
 	
 	@Override
