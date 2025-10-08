@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -339,16 +340,77 @@ public abstract class MixinEntity implements IDynamicLight
     	}
     }
 
-    @Inject(method = "collide", at = @At("HEAD"), cancellable = true)
-    private void collide(Vec3 p_20273_, CallbackInfoReturnable<Vec3> cir)
+    @ModifyVariable(method = "collide", at = @At("HEAD"), argsOnly = true)
+    private Vec3 collide(Vec3 originalMovement) 
     {
-    	Entity entity = Entity.class.cast(this);
+        Entity entity = Entity.class.cast(this);
         AABB aabb = entity.getBoundingBox();
-        List<OrientedBox> list = this.getOBBEntityCollisions(entity.level, entity, aabb.expandTowards(p_20273_));
-        if(!list.isEmpty())
+        List<OrientedBox> obbList = this.getOBBEntityCollisions(entity.level(), entity, aabb.expandTowards(originalMovement));
+        if(obbList.isEmpty())
         {
-        	
+            return originalMovement;
         }
+        return this.collideWithOrientedBoxes(originalMovement, aabb, obbList);
+    }
+
+    private Vec3 collideWithOrientedBoxes(Vec3 movement, AABB entityAABB, List<OrientedBox> obbs)
+    {
+        if(obbs.isEmpty() || movement.equals(Vec3.ZERO)) 
+        {
+            return movement;
+        }
+
+        double moveX = movement.x;
+        double moveY = movement.y;
+        double moveZ = movement.z;
+        AABB currentAABB = entityAABB;
+
+        if(moveY != 0.0D) 
+        {
+            for(OrientedBox obb : obbs) 
+            {
+                moveY = obb.collide(Direction.Axis.Y, currentAABB, moveY);
+            }
+            if(Math.abs(moveY) > 1.0E-7D) 
+            {
+                currentAABB = currentAABB.move(0.0D, moveY, 0.0D);
+            }
+        }
+
+        boolean checkZFirst = Math.abs(moveX) < Math.abs(moveZ);
+        if(checkZFirst && moveZ != 0.0D) 
+        {
+            for(OrientedBox obb : obbs)
+            {
+                moveZ = obb.collide(Direction.Axis.Z, currentAABB, moveZ);
+            }
+            if(Math.abs(moveZ) > 1.0E-7D) 
+            {
+                currentAABB = currentAABB.move(0.0D, 0.0D, moveZ);
+            }
+        }
+
+        if(moveX != 0.0D) 
+        {
+            for(OrientedBox obb : obbs)
+            {
+                moveX = obb.collide(Direction.Axis.X, currentAABB, moveX);
+            }
+            if(Math.abs(moveX) > 1.0E-7D) 
+            {
+                currentAABB = currentAABB.move(moveX, 0.0D, 0.0D);
+            }
+        }
+
+        if(!checkZFirst && moveZ != 0.0D) 
+        {
+            for(OrientedBox obb : obbs) 
+            {
+                moveZ = obb.collide(Direction.Axis.Z, currentAABB, moveZ);
+            }
+        }
+
+        return new Vec3(moveX, moveY, moveZ);
     }
     
     private List<OrientedBox> getOBBEntityCollisions(Level level, @Nullable Entity p_186451_, AABB p_186452_) 

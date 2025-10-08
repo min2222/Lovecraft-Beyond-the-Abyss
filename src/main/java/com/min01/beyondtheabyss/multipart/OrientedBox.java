@@ -169,132 +169,120 @@ public class OrientedBox
     {
         return direction == Direction.AxisDirection.NEGATIVE ? box.min(axis) : box.max(axis);
     }
+    
+    public double collide(Direction.Axis axis, AABB aabb, double desiredMove) 
+    {
+        if(Math.abs(desiredMove) < 1.0E-7D) 
+        {
+            return 0.0D;
+        }
 
+        double sign = Math.signum(desiredMove);
+        Vec3 axisVec = switch (axis) 
+        {
+            case X -> new Vec3(sign, 0, 0);
+            case Y -> new Vec3(0, sign, 0);
+            case Z -> new Vec3(0, 0, sign);
+        };
+
+        AABB finalMovedAABB = aabb.move(axisVec.scale(Math.abs(desiredMove)));
+        if(!this.intersects(finalMovedAABB)) 
+        {
+            return desiredMove;
+        }
+
+        double low = 0.0;
+        double high = Math.abs(desiredMove);
+
+        for(int i = 0; i < 10; i++)
+        {
+            double mid = (low + high) / 2.0;
+            if (mid == low || mid == high) 
+            {
+                break;
+            }
+
+            AABB testAABB = aabb.move(axisVec.scale(mid));
+            if(this.intersects(testAABB)) 
+            {
+                high = mid;
+            } 
+            else
+            {
+                low = mid;
+            }
+        }
+
+        return low * sign;
+    }
+    
     public boolean intersects(AABB other)
     {
-        Vec3 aabbCenter = other.getCenter();
-        Vec3 aabbHalfExtents = new Vec3(other.getXsize() / 2.0, other.getYsize() / 2.0, other.getZsize() / 2.0);
+        return this.intersects(getVertices(other));
+    }
 
-        Vec3 obbCenter = this.getCenter();
-        Vec3 obbHalfExtents = this.getHalfExtents();
-        Vec3[] obbAxes = this.getBasis();
-
-        Vec3 T = obbCenter.subtract(aabbCenter);
-
-        Matrix3d R = this.getMatrix();
-        Matrix3d AbsR = new Matrix3d(new QuaternionD(0, 0, 0, 1));
-        AbsR.m00 = Math.abs(R.m00); AbsR.m01 = Math.abs(R.m01); AbsR.m02 = Math.abs(R.m02);
-        AbsR.m10 = Math.abs(R.m10); AbsR.m11 = Math.abs(R.m11); AbsR.m12 = Math.abs(R.m12);
-        AbsR.m20 = Math.abs(R.m20); AbsR.m21 = Math.abs(R.m21); AbsR.m22 = Math.abs(R.m22);
-
-        double ra, rb;
-
-        ra = aabbHalfExtents.x;
-        rb = obbHalfExtents.x * AbsR.m00 + obbHalfExtents.y * AbsR.m01 + obbHalfExtents.z * AbsR.m02;
-        if(Math.abs(T.x) > ra + rb)
+    public boolean intersects(Vec3[] otherVertices)
+    {
+        if(this.vertices == null)
         {
-        	return false;
+            this.computeVertices();
         }
-        
-        ra = aabbHalfExtents.y;
-        rb = obbHalfExtents.x * AbsR.m10 + obbHalfExtents.y * AbsR.m11 + obbHalfExtents.z * AbsR.m12;
-        if(Math.abs(T.y) > ra + rb) 
+        Vec3[] vertices1 = this.vertices;
+        Vec3[] normals1 = this.getBasis();
+        for(Vec3 normal : normals1)
         {
-        	return false;
+            if(!sat(normal, vertices1, otherVertices))
+            {
+                return false;
+            }
         }
-
-        ra = aabbHalfExtents.z;
-        rb = obbHalfExtents.x * AbsR.m20 + obbHalfExtents.y * AbsR.m21 + obbHalfExtents.z * AbsR.m22;
-        if(Math.abs(T.z) > ra + rb)
+        Vec3[] normals2 = Matrix3d.IDENTITY_BASIS;
+        for(Vec3 normal : normals2) 
         {
-        	return false;
+            if(!sat(normal, vertices1, otherVertices))
+            {
+                return false;
+            }
         }
-
-        ra = aabbHalfExtents.x * AbsR.m00 + aabbHalfExtents.y * AbsR.m10 + aabbHalfExtents.z * AbsR.m20;
-        rb = obbHalfExtents.x;
-        if(Math.abs(T.dot(obbAxes[0])) > ra + rb)
+        for(int i = 0; i < normals1.length; i++)
         {
-        	return false;
+            for(int j = 0; j < normals2.length; j++) 
+            {
+                Vec3 normal = cross(normals1[i], normals2[j]);
+                if (normal.lengthSqr() < 1.0E-9) {
+                    continue;
+                }
+                if(!sat(normal, vertices1, otherVertices))
+                {
+                    return false;
+                }
+            }
         }
-
-        ra = aabbHalfExtents.x * AbsR.m01 + aabbHalfExtents.y * AbsR.m11 + aabbHalfExtents.z * AbsR.m21;
-        rb = obbHalfExtents.y;
-        if(Math.abs(T.dot(obbAxes[1])) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.x * AbsR.m02 + aabbHalfExtents.y * AbsR.m12 + aabbHalfExtents.z * AbsR.m22;
-        rb = obbHalfExtents.z;
-        if(Math.abs(T.dot(obbAxes[2])) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.y * AbsR.m20 + aabbHalfExtents.z * AbsR.m10;
-        rb = obbHalfExtents.y * AbsR.m02 + obbHalfExtents.z * AbsR.m01;
-        if(Math.abs(T.z * R.m10 - T.y * R.m20) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.y * AbsR.m21 + aabbHalfExtents.z * AbsR.m11;
-        rb = obbHalfExtents.x * AbsR.m02 + obbHalfExtents.z * AbsR.m00;
-        if(Math.abs(T.z * R.m11 - T.y * R.m21) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.y * AbsR.m22 + aabbHalfExtents.z * AbsR.m12;
-        rb = obbHalfExtents.x * AbsR.m01 + obbHalfExtents.y * AbsR.m00;
-        if(Math.abs(T.z * R.m12 - T.y * R.m22) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.x * AbsR.m20 + aabbHalfExtents.z * AbsR.m00;
-        rb = obbHalfExtents.y * AbsR.m12 + obbHalfExtents.z * AbsR.m11;
-        if(Math.abs(T.x * R.m20 - T.z * R.m00) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.x * AbsR.m21 + aabbHalfExtents.z * AbsR.m01;
-        rb = obbHalfExtents.x * AbsR.m12 + obbHalfExtents.z * AbsR.m10;
-        if(Math.abs(T.x * R.m21 - T.z * R.m01) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.x * AbsR.m22 + aabbHalfExtents.z * AbsR.m02;
-        rb = obbHalfExtents.x * AbsR.m11 + obbHalfExtents.y * AbsR.m10;
-        if(Math.abs(T.x * R.m22 - T.z * R.m02) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.x * AbsR.m10 + aabbHalfExtents.y * AbsR.m00;
-        rb = obbHalfExtents.y * AbsR.m22 + obbHalfExtents.z * AbsR.m21;
-        if(Math.abs(T.y * R.m00 - T.x * R.m10) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.x * AbsR.m11 + aabbHalfExtents.y * AbsR.m01;
-        rb = obbHalfExtents.x * AbsR.m22 + obbHalfExtents.z * AbsR.m20;
-        if(Math.abs(T.y * R.m01 - T.x * R.m11) > ra + rb)
-        {
-        	return false;
-        }
-
-        ra = aabbHalfExtents.x * AbsR.m12 + aabbHalfExtents.y * AbsR.m02;
-        rb = obbHalfExtents.x * AbsR.m21 + obbHalfExtents.y * AbsR.m20;
-        if(Math.abs(T.y * R.m02 - T.x * R.m12) > ra + rb) 
-        {
-        	return false;
-        }
-
         return true;
+    }
+    
+    private static boolean sat(Vec3 normal, Vec3[] vertices1, Vec3[] vertices2)
+    {
+        double min1 = Double.MAX_VALUE;
+        double max1 = -Double.MAX_VALUE;
+        for(Vec3 d : vertices1)
+        {
+        	if(d != null)
+        	{
+                double v = d.dot(normal);
+                min1 = Math.min(min1, v);
+                max1 = Math.max(max1, v);
+        	}
+        }
+        double min2 = Double.MAX_VALUE;
+        double max2 = -Double.MAX_VALUE;
+        for(Vec3 vec3d : vertices2)
+        {
+            double v = vec3d.dot(normal);
+            min2 = Math.min(min2, v);
+            max2 = Math.max(max2, v);
+        }
+        return min1 <= min2 && min2 <= max1 || min2 <= min1 && min1 <= max2;
     }
 
     public static Vec3 cross(Vec3 first, Vec3 second)
