@@ -68,6 +68,13 @@ public class BTAUtil
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
     public static final String TICK_COUNT = "TickCount";
     
+    public static float distanceToXZ(Entity entity, Entity target)
+    {
+        float f = (float)(entity.getX() - target.getX());
+        float f2 = (float)(entity.getZ() - target.getZ());
+        return Mth.sqrt(f * f + f2 * f2);
+    }
+    
 	public static void moveStructurePiece(Structure.GenerationContext p_227387_, StructurePiece piece, StructureTemplate template, Rotation rotation, Mirror mirror, Consumer<Integer> consumer)
 	{
 		ChunkPos chunkPos = p_227387_.chunkPos();

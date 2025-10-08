@@ -123,6 +123,7 @@ public class ModelCorpseAngler extends HierarchicalModel<EntityCorpseAngler>
         ModelPart part5 = part4.getChild("5");
         ModelPart part6 = part5.getChild("6");
         ModelPart bait = part6.getChild("Bait").getChild("Gnasher");
+		Vec2 rot = entity.worm.getRot(partialTicks);
 		Vec2 rot1 = entity.worm1.getRot(partialTicks);
 		Vec2 rot2 = entity.worm2.getRot(partialTicks);
 		Vec2 rot3 = entity.worm3.getRot(partialTicks);
@@ -130,11 +131,13 @@ public class ModelCorpseAngler extends HierarchicalModel<EntityCorpseAngler>
 		Vec2 rot5 = entity.worm5.getRot(partialTicks);
 		Vec2 rot6 = entity.worm6.getRot(partialTicks);
 		BTAClientUtil.animateHead(root, netHeadYaw, headPitch);
-		BTAClientUtil.animateHead(part1, rot1.y - netHeadYaw - yBodyRot, rot1.x - headPitch + yRot);
+		BTAClientUtil.animateHead(angler, rot.y - netHeadYaw - yBodyRot, rot.x - headPitch + yRot);
+		BTAClientUtil.animateHead(part1, rot1.y - netHeadYaw - yBodyRot, rot1.x - headPitch);
 		BTAClientUtil.animateHead(part2, rot2.y - netHeadYaw - yBodyRot, rot2.x - headPitch);
 		BTAClientUtil.animateHead(part3, rot3.y - netHeadYaw - yBodyRot, rot3.x - headPitch);
 		BTAClientUtil.animateHead(part4, rot4.y - netHeadYaw - yBodyRot, rot4.x - headPitch);
 		BTAClientUtil.animateHead(part5, rot5.y - netHeadYaw - yBodyRot, rot5.x - headPitch);
+		BTAClientUtil.animateHead(part6, rot6.y - netHeadYaw - yBodyRot, rot6.x - headPitch);
 		BTAClientUtil.animateHead(part6, rot6.y - netHeadYaw - yBodyRot, rot6.x - headPitch);
 		bait.visible = isBurrow;
 		
@@ -144,6 +147,7 @@ public class ModelCorpseAngler extends HierarchicalModel<EntityCorpseAngler>
 		entity.closeMouthAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_CLOSE_MOUTH, ageInTicks);
 		entity.burrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_BURROW, ageInTicks);
 		entity.unburrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_UNBURROW, ageInTicks);
+		entity.ambushAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_AMBUSH, ageInTicks);
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.List;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerAmbushGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
@@ -15,6 +16,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -35,12 +39,16 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 {
+	public static final EntityDataAccessor<Integer> BURROW_COOLDOWN = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.INT);
+	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState openMouthAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState closeMouthAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState burrowAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState unburrowAnimationState = new SmoothAnimationState();
-	
+	public final SmoothAnimationState ambushAnimationState = new SmoothAnimationState();
+
+	public final Worm worm = new Worm();
 	public final Worm worm1 = new Worm();
 	public final Worm worm2 = new Worm();
 	public final Worm worm3 = new Worm();
@@ -61,9 +69,24 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 80.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.65F)
-        		.add(Attributes.FOLLOW_RANGE, 30.0F);
+        		.add(Attributes.FOLLOW_RANGE, 30.0F)
+        		.add(Attributes.ATTACK_DAMAGE, 8.0F);
+    }
+    
+    @Override
+    protected void registerGoals() 
+    {
+    	super.registerGoals();
+    	this.goalSelector.addGoal(0, new CorpseAnglerAmbushGoal(this));
     }
 
+    @Override
+    protected void defineSynchedData() 
+    {
+    	super.defineSynchedData();
+    	this.entityData.define(BURROW_COOLDOWN, 0);
+    }
+    
 	@Override
 	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
 	{
@@ -94,7 +117,8 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	public void tick() 
 	{
 		super.tick();
-		
+
+		this.worm.setOldPosAndRot();
 		this.worm1.setOldPosAndRot();
 		this.worm2.setOldPosAndRot();
 		this.worm3.setOldPosAndRot();
@@ -103,8 +127,9 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		this.worm6.setOldPosAndRot();
 		
 		float speed = 0.35F;
-    	
-    	WormChain.tick(this.worm1, this, 0.0F, speed);
+
+    	WormChain.tick(this.worm, this, 0.0F, speed);
+    	WormChain.tick(this.worm1, this.worm, 0.0F, speed);
     	WormChain.tick(this.worm2, this.worm1, 0.0F, speed);
     	WormChain.tick(this.worm3, this.worm2, 0.0F, speed);
     	
@@ -121,26 +146,35 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 			this.closeMouthAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3, this.tickCount);
 			this.unburrowAnimationState.updateWhen(this.getAnimationState() == 4, this.tickCount);
+			this.ambushAnimationState.updateWhen(this.getAnimationState() == 5, this.tickCount);
 		}
 		if(this.getAnimationState() == 0 && this.isInWater())
 		{
-			if(canBurrow)
+			if(this.getBurrowCooldown() <= 0)
 			{
-				if(!this.level.isClientSide && this.getTarget() == null)
+				if(canBurrow)
 				{
-					this.setAnimationState(3);
-					this.setAnimationTick(40);
-					this.setCanMove(false);
-					this.setCanLook(false);
+					if(!this.level.isClientSide && this.getTarget() == null)
+					{
+						this.setAnimationState(3);
+						this.setAnimationTick(40);
+						this.setCanMove(false);
+						this.setCanLook(false);
+					}
 				}
-			}
-			else
-			{
-				//TODO move to ground;
+				else
+				{
+					Vec3 pos = Vec3.atBottomCenterOf(this.level.getHeightmapPos(Types.OCEAN_FLOOR_WG, this.blockPosition()).above());
+					if(this.getNavigation().isDone())
+					{
+						this.getNavigation().moveTo(pos.x, pos.y, pos.z, 0.25F);
+					}
+				}
 			}
 		}
 		if(this.getAnimationState() == 3)
 		{
+			this.getNavigation().stop();
 			if(this.getAnimationTick() > 0)
 			{
 				this.spawnParticle();
@@ -159,6 +193,8 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 			}
 			else
 			{
+				this.setAnimationState(0);
+				this.setBurrowCooldown(100);
 				this.setCanMove(true);
 				this.setCanLook(true);
 			}
@@ -219,6 +255,12 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
+	public boolean isPushable() 
+	{
+		return super.isPushable() && this.getAnimationState() != 3;
+	}
+	
+	@Override
 	public boolean hurt(DamageSource p_21016_, float p_21017_) 
 	{
 		if(p_21016_.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
@@ -243,5 +285,29 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	public int maxTurnY() 
 	{
 		return 5;
+	}
+	
+	@Override
+	public void addAdditionalSaveData(CompoundTag p_21484_)
+	{
+		super.addAdditionalSaveData(p_21484_);
+		p_21484_.putInt("BurrowCooldown", this.getBurrowCooldown());
+	}
+	
+	@Override
+	public void readAdditionalSaveData(CompoundTag p_21450_)
+	{
+		super.readAdditionalSaveData(p_21450_);
+		this.setBurrowCooldown(p_21450_.getInt("BurrowCooldown"));
+	}
+	
+	public void setBurrowCooldown(int cooldown)
+	{
+		this.entityData.set(BURROW_COOLDOWN, cooldown);
+	}
+	
+	public int getBurrowCooldown()
+	{
+		return this.entityData.get(BURROW_COOLDOWN);
 	}
 }
