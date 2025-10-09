@@ -1,42 +1,37 @@
 package com.min01.beyondtheabyss.shader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL30;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.EffectInstance;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.LevelRenderer.RenderChunkInfo;
-import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher.RenderChunk;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class BTAWorldShader
 {
 	private final Matrix4f inverseMat = new Matrix4f();
-	private final List<AABB> chunkList = new ArrayList<>();
 
     private final ResourceKey<Level> world;
     private final Function<ResourceKey<Level>, ExtendedPostChain> shader;
@@ -44,9 +39,14 @@ public class BTAWorldShader
     private final boolean useCustomSampler;
     private final String samplerName;
     
-    private DynamicTexture texture;
-    private int lastWidth;
-    private int lastHeight;
+    private final int volumeWidth = 64;
+    private final int volumeHeight = 64;
+    private final int volumeDepth = 64;
+    
+    private final NativeImage volumeImage = new NativeImage(NativeImage.Format.LUMINANCE, this.volumeWidth, this.volumeHeight * this.volumeDepth, false);
+    
+    private int volumeTextureId = -1;
+    private BlockPos lastVolumeCenter = null;
     
     public static final List<BTAWorldShader> WORLD_SHADERS = new ArrayList<>();
     
@@ -64,7 +64,7 @@ public class BTAWorldShader
     	this.samplerName = samplerName;
 	}
     
-    public void render(PoseStack mtx, float frameTime, Camera camera, ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum)
+    public void render(PoseStack mtx, float frameTime, Camera camera)
     {
     	ClientLevel level = BTAClientUtil.MC.level;
 		ResourceKey<Level> dimension = level.dimension();
@@ -74,6 +74,7 @@ public class BTAWorldShader
 			double x = Mth.lerp((double)frameTime, camEntity.xOld, camEntity.getX());
 			double y = Mth.lerp((double)frameTime, camEntity.yOld, camEntity.getY());
 			double z = Mth.lerp((double)frameTime, camEntity.zOld, camEntity.getZ());
+			
 			Vec3 camPos = camera.getPosition();
 			Vec3 playerPos = new Vec3(x, y, z);
 			Vec3 pos = playerPos.subtract(camPos);
@@ -81,126 +82,74 @@ public class BTAWorldShader
 			if(dimension == this.world)
 			{
 				mtx.pushPose();
-				mtx.translate(pos.x, pos.y, pos.z);
 				if(this.useCustomSampler)
 				{
-					this.update(renderChunksInFrustum, playerPos);
-					this.apply(mtx, frameTime);
+					this.update(camPos);
+					this.apply(mtx, frameTime, camera);
 				}
 				else
 				{
-					this.apply(mtx, frameTime);
+					mtx.translate(pos.x, pos.y, pos.z);
+					this.apply(mtx, frameTime, camera);
 				}
 				mtx.popPose();
 			}
 		}
     }
 	
-	public void update(ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum, Vec3 playerPos)
+	public void update(Vec3 centerPos)
 	{
-		Minecraft minecraft = BTAClientUtil.MC;
-		int width = minecraft.getWindow().getWidth();
-		int height = minecraft.getWindow().getWidth();
-		
-		this.chunkList.clear();
-		
-		if(this.lastWidth != width || this.lastHeight != height)
-		{
-			this.texture = new DynamicTexture(width, height, true);
-			this.lastWidth = width;
-			this.lastHeight = height;
-
-			NativeImage image = this.texture.getPixels();
-			
-		    for(int x = 0; x < width; x++) 
-		    {
-				for(int y = 0; y < height; y++) 
-				{
-			    	image.setPixelRGBA(x, y, 0x00000000);
-				}
-		    }
-			
-			this.texture.upload();
-			return;
-		}
-		
-		NativeImage image = this.texture.getPixels();
-		
-	    for(int x = 0; x < width; x++) 
+	    if(this.volumeTextureId == -1) 
 	    {
-			for(int y = 0; y < height; y++) 
-			{
-		    	image.setPixelRGBA(x, y, 0x00000000);
-			}
+	    	this.volumeTextureId = GlStateManager._genTexture();
+	        RenderSystem.bindTexture(this.volumeTextureId);
+	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL12.GL_TEXTURE_WRAP_R, GL12.GL_CLAMP_TO_EDGE);
+	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 	    }
-		
-		Map<String, AABB> closestChunks = new HashMap<>();
-		
-		//FIXME in endless desert, sandstorm only exist in underground;
-		for(RenderChunkInfo chunkInfo : renderChunksInFrustum)
-		{
-			RenderChunk chunk = chunkInfo.chunk;
-			BlockPos origin = chunk.getOrigin();
-			AABB aabb = chunk.getBoundingBox();
-			
-			if(!this.sampler.apply(minecraft.level, origin)) 
-			{
-				continue;
-			}
-			
-			AABB expanded = new AABB(aabb.minX, minecraft.level.getMinBuildHeight(), aabb.minZ, aabb.maxX, minecraft.level.getMaxBuildHeight(), aabb.maxZ);
-			
-			int cx = origin.getX() >> 4;
-			int cz = origin.getZ() >> 4;
-			
-			String key = cx + "," + cz;
-			
-			double distSqr = expanded.distanceToSqr(playerPos);
-			
-			if(!closestChunks.containsKey(key) || distSqr < closestChunks.get(key).distanceToSqr(playerPos))
-			{
-				closestChunks.put(key, expanded);
-				AABB shifted = new AABB(expanded.minX - playerPos.x, expanded.minY - playerPos.y, expanded.minZ - playerPos.z, expanded.maxX - playerPos.x, expanded.maxY - playerPos.y, expanded.maxZ - playerPos.z);
-				this.chunkList.add(shifted);
-			}
-		}
-		
-		for(int i = 0; i < this.chunkList.size(); i++)
-		{
-			AABB aabb = this.chunkList.get(i);
-			
-			int minX = (int)aabb.minX;
-			int minY = (int)aabb.minY;
-			int minZ = (int)aabb.minZ;
-			
-			int maxX = (int)aabb.maxX;
-			int maxY = (int)aabb.maxY;
-			int maxZ = (int)aabb.maxZ;
-			
-			int base = i * 6;
 
-			image.setPixelRGBA((base + 0) % width, (base + 0) / width, this.packIntToRGBA(minX));
-			image.setPixelRGBA((base + 1) % width, (base + 1) / width, this.packIntToRGBA(minY));
-			image.setPixelRGBA((base + 2) % width, (base + 2) / width, this.packIntToRGBA(minZ));
+	    BlockPos centerBlockPos = BlockPos.containing(centerPos);
+	    
+	    if(this.lastVolumeCenter != null && centerBlockPos.distSqr(this.lastVolumeCenter) < 16 * 16)
+	    {
+	        return;
+	    }
+	    
+	    this.lastVolumeCenter = centerBlockPos;
 
-			image.setPixelRGBA((base + 3) % width, (base + 3) / width, this.packIntToRGBA(maxX));
-			image.setPixelRGBA((base + 4) % width, (base + 4) / width, this.packIntToRGBA(maxY));
-			image.setPixelRGBA((base + 5) % width, (base + 5) / width, this.packIntToRGBA(maxZ));
-		}
-		
-	    this.texture.upload();
+	    BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+	    
+	    for(int z = 0; z < this.volumeDepth; z++)
+	    {
+	        for(int y = 0; y < this.volumeHeight; y++) 
+	        {
+	            for(int x = 0; x < this.volumeWidth; x++) 
+	            {
+	                int worldX = this.lastVolumeCenter.getX() - this.volumeWidth / 2 + x;
+	                int worldY = this.lastVolumeCenter.getY() - this.volumeHeight / 2 + y;
+	                int worldZ = this.lastVolumeCenter.getZ() - this.volumeDepth / 2 + z;
+	                mutablePos.set(worldX, worldY, worldZ);
+
+	                boolean canApply = this.sampler.apply(BTAClientUtil.MC.level, mutablePos);
+	                byte density = (byte)(canApply ? 255 : 0);
+	                
+	                int imageX = x;
+	                int imageY = (z * this.volumeHeight) + y;
+	                
+	                this.volumeImage.setPixelLuminance(imageX, imageY, density);
+	            }
+	        }
+	    }
+
+	    RenderSystem.bindTexture(this.volumeTextureId);
+	    RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 1);
+	    GL12.glTexImage3D(GL12.GL_TEXTURE_3D, 0, GL30.GL_R8, this.volumeWidth, this.volumeHeight, this.volumeDepth, 0, GL11.GL_RED, GL11.GL_UNSIGNED_BYTE, this.volumeImage.pixels);
+	    RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
 	}
 	
-	public int packIntToRGBA(int value) 
-	{
-	    int r = (value >>  0) & 0xFF;
-	    int g = (value >>  8) & 0xFF;
-	    int b = (value >> 16) & 0xFF;
-	    int a = (value >> 24) & 0xFF;
-	    return (a << 24) | (b << 16) | (g << 8) | r;
-	}
-	
-	public void apply(PoseStack mtx, float frameTime)
+	public void apply(PoseStack mtx, float frameTime, Camera camera)
 	{
 		Minecraft minecraft = BTAClientUtil.MC;
 
@@ -213,8 +162,14 @@ public class BTAWorldShader
 			shader.setSampler("ImageSampler", () -> minecraft.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
 			if(!this.samplerName.equals(""))
 			{
-				shader.setSampler(this.samplerName + "Sampler", () -> this.texture.getId());
-				shader.safeGetUniform("ChunkCount").set(this.chunkList.size());
+				Vec3 cameraPos = camera.getPosition();
+	            shader.setSampler(this.samplerName + "VolumeSampler", () -> this.volumeTextureId);
+	            if(this.lastVolumeCenter != null)
+	            {
+	                shader.safeGetUniform("VolumeCenter").set((float)this.lastVolumeCenter.getX(), (float)this.lastVolumeCenter.getY(), (float)this.lastVolumeCenter.getZ());
+	            }
+	            shader.safeGetUniform("VolumeSize").set((float)this.volumeWidth, (float)this.volumeHeight, (float)this.volumeDepth);
+	            shader.safeGetUniform("CameraPos").set((float)cameraPos.x, (float)cameraPos.y, (float)cameraPos.z);
 			}
 			shader.safeGetUniform("InverseTransformMatrix").set(getInverseTransformMatrix(this.inverseMat, mtx.last().pose()));
 			shader.safeGetUniform("iTime").set((((float) (minecraft.level.getGameTime() % 2400000)) + frameTime) / 20.0F);

@@ -21,7 +21,6 @@ import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -39,9 +38,6 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
     @Nullable
     @Shadow
     private ClientLevel level;
-    
-    @Shadow
-    private ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum;
     
 	@Invoker("setSectionDirty")
 	@Override
@@ -69,7 +65,7 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	{
 		new ArrayList<>(BTAWorldShader.WORLD_SHADERS).forEach(t -> 
 		{
-			t.render(mtx, frameTime, camera, this.renderChunksInFrustum);
+			t.render(mtx, frameTime, camera);
 		});
 	}
 	
