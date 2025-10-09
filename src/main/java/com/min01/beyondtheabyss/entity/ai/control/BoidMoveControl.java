@@ -64,7 +64,7 @@ public class BoidMoveControl extends MoveControl
 			else 
 			{
 				float f = (float) (Mth.atan2(d2, d0) * (double) (180.0F / (float) Math.PI)) - 90.0F;
-				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, 2.0F));
+				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, mob.maxTurnY()));
 				this.mob.yBodyRot = this.mob.getYRot();
 				this.mob.yHeadRot = this.mob.getYRot();
 				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));

@@ -44,6 +44,8 @@ import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSplittedFulgastra;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.model.ModelToothBullet;
+import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel;
+import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel2;
 import com.min01.beyondtheabyss.entity.model.ModelTwinserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelTwinserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelTwinserpentMiddleBone;
@@ -221,6 +223,8 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelEnergyBall.LAYER_LOCATION, ModelEnergyBall::createBodyLayer);
     	event.registerLayerDefinition(ModelPutridBubble.LAYER_LOCATION, ModelPutridBubble::createBodyLayer);
     	event.registerLayerDefinition(ModelToothBullet.LAYER_LOCATION, ModelToothBullet::createBodyLayer);
+    	event.registerLayerDefinition(ModelToothBulletShrapnel.LAYER_LOCATION, ModelToothBulletShrapnel::createBodyLayer);
+    	event.registerLayerDefinition(ModelToothBulletShrapnel2.LAYER_LOCATION, ModelToothBulletShrapnel2::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
 

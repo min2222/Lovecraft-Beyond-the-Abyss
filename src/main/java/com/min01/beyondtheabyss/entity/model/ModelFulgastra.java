@@ -173,6 +173,7 @@ public class ModelFulgastra extends HierarchicalModel<EntityFulgastra>
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(FulgastraAnimation.FULGASTRA_SWIM, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 		entity.splittingAnimationState.animate(this, FulgastraAnimation.FULGASTRA_SPLITTING, ageInTicks);
+		entity.reformingAnimationState.animate(this, FulgastraAnimation.FULGASTRA_REFORMING, ageInTicks);
 	}
 	
 	@Override

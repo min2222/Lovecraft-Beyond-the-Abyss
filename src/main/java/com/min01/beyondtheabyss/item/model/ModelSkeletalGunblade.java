@@ -24,6 +24,7 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 	private final ModelPart SkeletalGunblade;
 	private final ModelPart Blade;
 	private final ModelPart EnergyRay;
+	private final ModelPart InnerRay;
 
 	public ModelSkeletalGunblade(ModelPart root)
 	{
@@ -31,6 +32,7 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 		this.SkeletalGunblade = this.root.getChild("SkeletalGunblade");
 		this.Blade = this.SkeletalGunblade.getChild("Blade");
 		this.EnergyRay = this.Blade.getChild("EnergyRay");
+		this.InnerRay = this.EnergyRay.getChild("InnerRay");
 	}
 
 	public static LayerDefinition createBodyLayer() 
@@ -75,8 +77,9 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 		Blade.addOrReplaceChild("Right", CubeListBuilder.create().texOffs(0, 23).addBox(-6.75F, 0.0F, -20.0F, 9.0F, 0.0F, 22.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 66).addBox(0.25F, -1.5F, -13.0F, 2.0F, 3.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offset(-2.25F, 0.0F, 0.0F));
 
-		Blade.addOrReplaceChild("EnergyRay", CubeListBuilder.create().texOffs(99, 79).addBox(-3.0F, -4.0F, -1.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
-		.texOffs(35, 74).addBox(-2.5F, -3.5F, -0.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, 2.0F, -5.0F));
+		PartDefinition EnergyRay = Blade.addOrReplaceChild("EnergyRay", CubeListBuilder.create().texOffs(99, 79).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -2.0F));
+
+		EnergyRay.addOrReplaceChild("InnerRay", CubeListBuilder.create().texOffs(35, 74).addBox(-1.5F, -1.5F, -3.0F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -0.5F));
 
 		SkeletalGunblade.addOrReplaceChild("Heart", CubeListBuilder.create().texOffs(70, 83).addBox(-3.5F, -0.7415F, -3.5F, 7.0F, 8.0F, 7.0F, new CubeDeformation(0.0F))
 		.texOffs(98, 47).addBox(-2.5F, -1.7415F, -4.5F, 5.0F, 5.0F, 5.0F, new CubeDeformation(0.0F))
@@ -93,7 +96,7 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_CLOSE, SkeletalGunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
 		this.EnergyRay.visible = SkeletalGunbladeItem.isLaserVisible(stack);
 		this.EnergyRay.zScale += SkeletalGunbladeItem.getLaserLength(stack);
-		this.EnergyRay.z -= SkeletalGunbladeItem.getLaserLength(stack) * 3;
+		this.InnerRay.z += 0.5F;
 	}
 	
 	@Override

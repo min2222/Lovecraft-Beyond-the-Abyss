@@ -66,6 +66,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem, 
 		{
 			if(isGunMode)
 			{
+	        	p_41433_.playSound(BTASounds.GUNBLADE_CHARGE.get());
 				p_41433_.startUsingItem(p_41434_);
 				if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
 				{
@@ -75,7 +76,8 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem, 
 			}
 			else
 			{
-				
+	        	p_41433_.playSound(BTASounds.GUNBLADE_SWING.get());
+	        	//TODO
 			}
 		}
 		return InteractionResultHolder.consume(stack);

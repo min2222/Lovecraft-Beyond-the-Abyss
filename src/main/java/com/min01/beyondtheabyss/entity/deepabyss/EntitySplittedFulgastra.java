@@ -81,14 +81,14 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 			this.shockingAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.closedAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
 		}
-		if(this.getAnimationState() == 3 && this.getOwner() != null)
+		if(this.getAnimationState() == 3 && this.getOwner() != null && this.isInWater())
 		{
 			this.setDeltaMovement(BTAUtil.fromToVector(this.position(), this.getOwner().position(), 0.25F));
 			if(this.distanceTo(this.getOwner()) <= 2.0F)
 			{
 				this.discard();
-				this.getOwner().setAnimationState(1);
-				this.getOwner().setAnimationTick(10);
+				this.getOwner().setAnimationState(2);
+				this.getOwner().setAnimationTick(20);
 				this.getOwner().heal(this.getHealth());
 			}
 		}

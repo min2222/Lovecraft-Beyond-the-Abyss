@@ -63,14 +63,6 @@
 			}
 		]
 	},
-	"abyss_portal_opening": {
-		"sounds": [
-			{
-				"name": "beyondtheabyss:misc/abyss_portal_opening",
-				"stream": true
-			}
-		]
-	},
 	"gunblade_blade_to_gun": {
 		"sounds": [
 			{
@@ -91,6 +83,14 @@
 		"sounds": [
 			{
 				"name": "beyondtheabyss:item/gunblade_swing",
+				"stream": true
+			}
+		]
+	},
+	"gunblade_charge": {
+		"sounds": [
+			{
+				"name": "beyondtheabyss:item/gunblade_charge",
 				"stream": true
 			}
 		]

@@ -8,10 +8,12 @@ import com.google.common.collect.Multimap;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 
 public abstract class AbstractDivingSetItem extends ArmorItem
@@ -40,6 +42,13 @@ public abstract class AbstractDivingSetItem extends ArmorItem
 			return this.map;
 		}
 		return super.getAttributeModifiers(slot, stack);
+	}
+	
+	@Override
+	public void onArmorTick(ItemStack stack, Level level, Player player) 
+	{
+		//TODO
+		player.setAirSupply(player.getMaxAirSupply());
 	}
     
     public abstract int getMaxOxygen();

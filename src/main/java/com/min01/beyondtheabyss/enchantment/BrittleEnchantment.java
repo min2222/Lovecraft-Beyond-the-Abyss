@@ -3,11 +3,11 @@ package com.min01.beyondtheabyss.enchantment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-public class GoldenToothEnchantment extends Enchantment
+public class BrittleEnchantment extends Enchantment
 {
-	public GoldenToothEnchantment() 
+	public BrittleEnchantment() 
 	{
-		super(Rarity.VERY_RARE, BTAEnchantments.TOOTH_SHOTGUN, new EquipmentSlot[] {EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND});
+		super(Rarity.UNCOMMON, BTAEnchantments.TOOTH_SHOTGUN, new EquipmentSlot[] {EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND});
 	}
 	
 	@Override

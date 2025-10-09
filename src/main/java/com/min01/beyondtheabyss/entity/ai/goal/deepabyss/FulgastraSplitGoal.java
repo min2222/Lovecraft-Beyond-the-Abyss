@@ -50,14 +50,14 @@ public class FulgastraSplitGoal extends BasicBTASkillGoal<EntityFulgastra>
 			this.mob.level.addFreshEntity(splitted);
 		}
 		this.mob.setHealth(this.mob.getHealth() - (count * 5));
-		this.mob.setAnimationState(1);
-		this.mob.setAnimationTick(10);
 	}
 	
 	@Override
 	public void stop() 
 	{
 		super.stop();
+		this.mob.setAnimationState(1);
+		this.mob.setAnimationTick(25);
 		this.mob.setCharged(false);
 	}
 

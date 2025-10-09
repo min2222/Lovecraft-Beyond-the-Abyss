@@ -16,4 +16,6 @@ public class BTAEnchantments
 	public static final EnchantmentCategory TOOTH_SHOTGUN = EnchantmentCategory.create("tooth_shotgun", (item -> item == BTAItems.TOOTH_SHOTGUN.get()));
 	
 	public static final RegistryObject<Enchantment> GOLDEN_TOOTH = ENCHANTMENTS.register("golden_tooth", () -> new GoldenToothEnchantment());
+	public static final RegistryObject<Enchantment> BRITTLE = ENCHANTMENTS.register("brittle", () -> new BrittleEnchantment());
+	public static final RegistryObject<Enchantment> FRACTURE = ENCHANTMENTS.register("fracture", () -> new FractureEnchantment());
 }

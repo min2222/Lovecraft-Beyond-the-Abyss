@@ -50,28 +50,29 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	{
 		super.tick();
 		this.resetFallDistance();
+		this.setupWorms();
 		
 		if(this.getHead() != null)
 		{
-			this.setUnloaded(this.getHead().touchingUnloadedChunk());
-		}
-		
-		if(this.getOwner() != null)
-		{
-    		this.hurtTime = this.getOwner().hurtTime;
-    		this.deathTime = this.getOwner().deathTime;	
+			T head = this.getHead();
+			this.setUnloaded(head.touchingUnloadedChunk());
+			if(!this.isHead())
+			{
+	    		this.hurtTime = head.hurtTime;
+	    		this.deathTime = head.deathTime;
+			}
+			if(this.isWormChain())
+			{
+				this.tickWorms(head);
+			}
+    		if(this.deathTime >= 19 && head.getLastDamageSource() != null)
+    		{
+    			this.die(head.getLastDamageSource());
+    		}
 		}
 		else if(!this.isHead() && !this.isUnloaded())
 		{
 			this.discard();
-		}
-		
-		this.setupWorms();
-		
-		if(this.getHead() != null && this.isWormChain())
-		{
-			T head = this.getHead();
-			this.tickWorms(head);
 		}
 	}
 	

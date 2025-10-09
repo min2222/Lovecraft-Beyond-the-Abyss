@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -48,8 +49,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(6);
-		//TODO Boid
-		//this.moveControl = new BoidMoveControl(this, 0.1F, false);
+		this.moveControl = new BoidMoveControl(this, 0.1F, false);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()

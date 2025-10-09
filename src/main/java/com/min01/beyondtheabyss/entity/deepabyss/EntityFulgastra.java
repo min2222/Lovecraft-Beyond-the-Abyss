@@ -23,6 +23,7 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 	public static final EntityDataAccessor<Boolean> IS_CHARGED = SynchedEntityData.defineId(EntityFulgastra.class, EntityDataSerializers.BOOLEAN);
 	
 	public final SmoothAnimationState splittingAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState reformingAnimationState = new SmoothAnimationState();
 	
 	public EntityFulgastra(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -70,7 +71,8 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 		super.tick();
 		if(this.level.isClientSide)
 		{
-			this.splittingAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+			this.splittingAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
+			this.reformingAnimationState.updateWhen(this.getAnimationState() == 2, this.tickCount);
 		}
 	}
 	

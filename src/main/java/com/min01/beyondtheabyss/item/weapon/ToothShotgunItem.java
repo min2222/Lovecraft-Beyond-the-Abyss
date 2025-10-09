@@ -55,17 +55,21 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	{
         ItemStack ammo = this.findAmmo(p_41433_);
 		ItemStack stack = p_41433_.getItemInHand(p_41434_);
-		int isGolden = stack.getEnchantmentLevel(BTAEnchantments.GOLDEN_TOOTH.get()) * 2;
-		if(getAmmo(stack) > 0)
+		int goldenChance = stack.getEnchantmentLevel(BTAEnchantments.GOLDEN_TOOTH.get()) * 2;
+		int brittle = stack.getEnchantmentLevel(BTAEnchantments.BRITTLE.get());
+		int fracture = stack.getEnchantmentLevel(BTAEnchantments.FRACTURE.get());
+		if(getAmmo(stack) > 0 || p_41433_.getAbilities().instabuild)
 		{
         	for(int i = 0; i < 4; i++)
         	{
         		EntityToothBullet bullet = new EntityToothBullet(p_41432_, p_41433_);
         		bullet.shootFromRotation(p_41433_, p_41433_.getXRot(), p_41433_.yHeadRot, 0.0F, 2.0F, 4.0F);
-        		if(isGolden > 0)
+        		if(goldenChance > 0)
         		{
-        			bullet.setGolden(Math.random() <= isGolden / 10.0F);
+        			bullet.setGolden(Math.random() <= goldenChance / 10.0F);
         		}
+        		bullet.setMaxShrapnelCount(bullet.getMaxShrapnelCount() + brittle);
+        		bullet.setFracture(fracture > 0);
         		p_41432_.addFreshEntity(bullet);
         	}
 			BTAUtil.setItemAnimationState(stack, 3);
@@ -73,7 +77,10 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 			BTAUtil.setPlayerAnimationState(p_41433_, 1);
 			BTAUtil.setPlayerAnimationTick(p_41433_, 10);
 	    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 15);
-        	setAmmo(stack, getAmmo(stack) - 1);
+	    	if(!p_41433_.getAbilities().instabuild)
+	    	{
+	        	setAmmo(stack, getAmmo(stack) - 1);
+	    	}
 		}
 		else if(!ammo.isEmpty())
 		{

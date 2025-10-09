@@ -3,17 +3,17 @@ package com.min01.beyondtheabyss.enchantment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-public class GoldenToothEnchantment extends Enchantment
+public class FractureEnchantment extends Enchantment
 {
-	public GoldenToothEnchantment() 
+	public FractureEnchantment() 
 	{
-		super(Rarity.VERY_RARE, BTAEnchantments.TOOTH_SHOTGUN, new EquipmentSlot[] {EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND});
+		super(Rarity.RARE, BTAEnchantments.TOOTH_SHOTGUN, new EquipmentSlot[] {EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND});
 	}
 	
 	@Override
 	public int getMaxLevel() 
 	{
-		return 3;
+		return 1;
 	}
 	
 	@Override

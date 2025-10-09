@@ -20,6 +20,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -44,6 +45,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	public KinematicChain chain;
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState holdingAnimationState = new SmoothAnimationState();
 	
 	public EntitySpineWormHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -59,6 +61,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
     			.add(Attributes.MAX_HEALTH, 30.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.0F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F)
+    			.add(Attributes.ATTACK_DAMAGE, 0.5F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 100.0F);
     }
     
@@ -102,19 +105,19 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		super.tick();
 		if(this.level.isClientSide)
 		{
-			this.idleAnimationState.updateWhen(this.getAnimationState() == 0, this.tickCount);
+			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && !this.isVehicle(), this.tickCount);
+			this.holdingAnimationState.updateWhen(this.isVehicle(), this.tickCount);
 		}
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
+			this.chain.setAnchorPos(Vec3.atBottomCenterOf(this.getAttachedPos()));
 			this.chain.setInitialRot(new Vec2(this.getAttachedDirection().toYRot(), 0.0F));
 		}
 		else
 		{
 			this.chain.setOldPosAndRot();
 			this.chain.tickBobbit();
-			this.chain.setAnchorPos(Vec3.atBottomCenterOf(this.getAttachedPos()));
-			this.chain.setInitialRot(new Vec2(-90.0F, 0.0F));
 
 			if(this.getTarget() != null && this.canExtend())
 			{
@@ -150,6 +153,12 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 			{
 				this.setCooldown(this.getCooldown() - 1);
 			}
+			
+			if(this.isVehicle())
+			{
+				Entity entity = this.getFirstPassenger();
+				this.doHurtTarget(entity);
+			}
 
 			ChainSegment segment = this.chain.getTipSegment();
 			Vec3 pos = segment.getPos();
@@ -181,6 +190,16 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		function.accept(entity, pos.x, pos.y, pos.z);
 	}
 	
+	@Override
+	public boolean hurt(DamageSource p_21016_, float p_21017_)
+	{
+		if(this.isVehicle() && p_21017_ >= 3.0F)
+		{
+			this.getFirstPassenger().stopRiding();
+		}
+		return super.hurt(p_21016_, p_21017_);
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
@@ -197,11 +216,13 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		}
 		
 		AbstractSpineWormPart prev = this;
+		Direction direction = this.tryAttach();
 		this.setAttachedPos(this.blockPosition());
+		this.setAttachedDirection(direction);
 		this.setYRot(0.0F);
 		this.setYHeadRot(0.0F);
 		this.setYBodyRot(0.0F);
-		this.setXRot(0.0F);
+		this.setXRot(direction.toYRot());
 		
 		for(int i = 0; i < this.getChainLength(); i++)
 		{
@@ -221,6 +242,20 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
+	
+	//FIXME proper direction;
+	public Direction tryAttach()
+	{
+		for(Direction direction : Direction.values())
+		{
+			BlockPos pos = this.blockPosition().relative(direction);
+			if(BTAUtil.isCollisionShapeFullBlock(this.level, pos))
+			{
+				return direction.getOpposite();
+			}
+		}
+		return Direction.DOWN;
+	}
     
     @Override
     public void addAdditionalSaveData(CompoundTag p_21484_) 

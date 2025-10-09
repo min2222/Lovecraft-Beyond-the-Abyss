@@ -20,10 +20,10 @@ public class BTASounds
 	public static final RegistryObject<SoundEvent> GHIDRUTH_CHARGE_LOOP = registerSound("ghidruth_charge_loop");
 	public static final RegistryObject<SoundEvent> GHIDRUTH_BITE = registerSound("ghidruth_bite");
 	public static final RegistryObject<SoundEvent> GHIDRUTH_AWAKEN = registerSound("ghidruth_awaken");
-	public static final RegistryObject<SoundEvent> ABYSS_PORTAL_OPENING = registerSound("abyss_portal_opening");
 	public static final RegistryObject<SoundEvent> GUNBLADE_BLADE_TO_GUN = registerSound("gunblade_blade_to_gun");
 	public static final RegistryObject<SoundEvent> GUNBLADE_GUN_TO_BLADE = registerSound("gunblade_gun_to_blade");
 	public static final RegistryObject<SoundEvent> GUNBLADE_SWING = registerSound("gunblade_swing");
+	public static final RegistryObject<SoundEvent> GUNBLADE_CHARGE = registerSound("gunblade_charge");
 	public static final RegistryObject<SoundEvent> TWINSERPENT_AMBIENT = registerSound("twinserpent_ambient");
 	public static final RegistryObject<SoundEvent> TWINSERPENT_HURT = registerSound("twinserpent_hurt");
 	public static final RegistryObject<SoundEvent> TWINSERPENT_DEATH = registerSound("twinserpent_death");

@@ -152,7 +152,7 @@ public class Boid
     		{
                 Vec3 start = this.position;
                 Vec3 dir = this.calculateViewVector(this.mob.getXRot() + j, this.mob.getYRot() + i).normalize();
-                Vec3 end = position.add(dir.scale(this.settings.collisionAvoidDst));
+                Vec3 end = this.position.add(dir.scale(this.settings.collisionAvoidDst));
                 HitResult hit = this.mob.level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob));
                 if(hit.getType() == HitResult.Type.MISS)
                 {
