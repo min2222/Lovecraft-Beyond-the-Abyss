@@ -297,9 +297,9 @@
 									"if_true": {
 										"type": "minecraft:biome",
 										"biome_is": [
-											"beyondtheabyss:forest1",
-											"beyondtheabyss:forest2",
-											"beyondtheabyss:forest3",
+											"beyondtheabyss:green_forest",
+											"beyondtheabyss:dark_forest",
+											"beyondtheabyss:death_forest",
 											"beyondtheabyss:foggy_plains"
 										]
 									},

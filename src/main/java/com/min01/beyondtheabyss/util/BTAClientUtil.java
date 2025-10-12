@@ -113,6 +113,48 @@ public class BTAClientUtil
 	    return new Vector3f(screenX, screenY, depth);
 	}
 	
+	public static void drawTorus(float majorRadius, float minorRadiusX, float minorRadiusY, int majorSegments, int minorSegments, float scrollSpeed, PoseStack stack, MultiBufferSource buffer, Vec3 color, float alpha, int light, RenderType renderType, double time, Vec3 center) 
+	{
+		VertexConsumer vertexBuffer = buffer.getBuffer(renderType);
+		Matrix4f matrix = stack.last().pose();
+		float timeScroll = (float)(time * scrollSpeed);
+		Vec3[][] torusPoints = new Vec3[majorSegments + 1][minorSegments + 1];
+		for(int i = 0; i <= majorSegments; i++) 
+		{
+		    float theta = (float)(2 * Math.PI * i / majorSegments);
+		    for(int j = 0; j <= minorSegments; j++)
+		    {
+		        float phi = (float)(2 * Math.PI * j / minorSegments);
+		        torusPoints[i][j] = torusToCartesian(majorRadius, minorRadiusX, minorRadiusY, theta, phi).add(center);
+		    }
+		}
+		for(int i = 0; i < majorSegments; i++)
+		{
+			for(int j = 0; j < minorSegments; j++)
+			{
+	            Vec3 p0 = torusPoints[i][j];
+	            Vec3 p1 = torusPoints[i + 1][j];
+	            Vec3 p2 = torusPoints[i + 1][j + 1];
+	            Vec3 p3 = torusPoints[i][j + 1];
+				float u0 = (float)i / majorSegments + timeScroll;
+				float u1 = (float)(i + 1) / majorSegments + timeScroll;
+				float v0 = (float)j / minorSegments - timeScroll;
+				float v1 = (float)(j + 1) / minorSegments - timeScroll;
+				addQuadWithUV(vertexBuffer, matrix, p0, p1, p2, p3, u0, u1, v0, v1, color, alpha, light);
+			}
+		}
+	}
+	
+	public static Vec3 torusToCartesian(float majorRadius, float minorRadiusX, float minorRadiusY, float theta, float phi)
+	{
+	    double cosPhi = Math.cos(phi);
+	    double sinPhi = Math.sin(phi);
+	    double x = (majorRadius + minorRadiusX * cosPhi) * Math.cos(theta);
+	    double y = minorRadiusY * sinPhi;
+	    double z = (majorRadius + minorRadiusX * cosPhi) * Math.sin(theta);
+	    return new Vec3(x, y, z);
+	}
+	
 	public static void drawRing(float innerRadius, float outerRadius, float innerHeight, float outerHeight, float centerRatio, int segments, PoseStack stack, MultiBufferSource buffer, Vector4f innerColor, Vector4f centerColor, Vector4f outerColor, int light, RenderType renderType, Vec3 center) 
 	{
 	    VertexConsumer vertexBuffer = buffer.getBuffer(renderType);

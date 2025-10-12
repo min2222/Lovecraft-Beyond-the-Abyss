@@ -16,6 +16,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySplittedFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.mirroredcity.EntityObserver;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.item.BTAItems;
 
@@ -77,6 +78,7 @@ public class EventHandler
     	
     	//mirrored city
     	event.put(BTAEntities.OVERSEER.get(), EntityOverseer.createAttributes().build());
+    	event.put(BTAEntities.OBSERVER.get(), EntityObserver.createAttributes().build());
     }
     
     @SubscribeEvent

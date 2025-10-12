@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.event;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.config.BTAConfig;
@@ -12,11 +14,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
+import net.minecraft.client.Camera;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +34,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent.OverlayType;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -35,7 +43,9 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.FORGE)
 public class ClientEventHandlerForge 
-{   
+{
+	public static final AtomicReference<BlockPos> ABYSS_PORTAL_POS = new AtomicReference<>(BlockPos.ZERO);
+	
     @SubscribeEvent
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
     {
@@ -93,6 +103,36 @@ public class ClientEventHandlerForge
     	if(event.getOverlayType() == OverlayType.WATER && BTAUtil.canSwimInAir(player))
     	{
     		event.setCanceled(true);
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onRenderLevelStage(RenderLevelStageEvent event)
+    {
+    	if(event.getStage() == Stage.AFTER_ENTITIES)
+    	{
+    		Camera cam = event.getCamera();
+	    	Vec3 camPos = cam.getPosition();
+	    	PoseStack stack = event.getPoseStack();
+	    	MultiBufferSource bufferSource = BTAClientUtil.MC.renderBuffers().bufferSource();
+	    	float partialTicks = event.getPartialTick();
+	    	if(!ABYSS_PORTAL_POS.get().equals(BlockPos.ZERO))
+	    	{
+	    		Vec3 pos = Vec3.atBottomCenterOf(ABYSS_PORTAL_POS.get());
+	            float time = (BTAClientUtil.MC.level.getGameTime() + partialTicks) / 20.0F;
+		    	stack.pushPose();
+		    	stack.translate(pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z);
+		    	stack.translate(0, 6.5F, 0);
+		    	stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+		    	Vec3 color = new Vec3(0.0F, 1.0F, 0.4F);
+		    	RenderType renderType1 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/water.png"));
+		    	RenderType renderType2 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics2.png"));
+		    	RenderType renderType3 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics.png"));
+	            BTAClientUtil.drawTorus(3.5F, 3.5F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType1, time, Vec3.ZERO);
+	            BTAClientUtil.drawTorus(3.505F, 3.505F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType2, time, Vec3.ZERO);
+	            BTAClientUtil.drawTorus(3.51F, 3.51F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType3, time, Vec3.ZERO);
+		    	stack.popPose();
+	    	}
     	}
     }
     

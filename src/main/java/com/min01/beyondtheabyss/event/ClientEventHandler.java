@@ -36,8 +36,13 @@ import com.min01.beyondtheabyss.entity.model.ModelGloomfish;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
+import com.min01.beyondtheabyss.entity.model.ModelObserver;
 import com.min01.beyondtheabyss.entity.model.ModelOverseer;
 import com.min01.beyondtheabyss.entity.model.ModelPutridBubble;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
+import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
 import com.min01.beyondtheabyss.entity.model.ModelSolomon;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
@@ -46,12 +51,7 @@ import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.entity.model.ModelToothBullet;
 import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel;
 import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel2;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
-import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
@@ -67,13 +67,14 @@ import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GloomfishRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.MutavoreRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.ObserverRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.OverseerRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentMiddleBoneRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentSlasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SolomonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SplittedFulgastraRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentMiddleBoneRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentSlasherRenderer;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
@@ -164,7 +165,6 @@ public class ClientEventHandler
     public static void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
     	//misc
-    	event.registerEntityRenderer(BTAEntities.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
     	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
     	event.registerEntityRenderer(BTAEntities.SUBMARINE.get(), SubmarineRenderer::new);
     	event.registerEntityRenderer(BTAEntities.CHAIN_TRAP_MAW.get(), ChainTrapMawRenderer::new);
@@ -193,6 +193,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.FORNEUS_TAIL.get(), ForneusTailRenderer::new);
 
     	event.registerEntityRenderer(BTAEntities.OVERSEER.get(), OverseerRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.OBSERVER.get(), ObserverRenderer::new);
     }
     
     @SubscribeEvent
@@ -227,6 +228,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelToothBulletShrapnel2.LAYER_LOCATION, ModelToothBulletShrapnel2::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
+    	event.registerLayerDefinition(ModelObserver.LAYER_LOCATION, ModelObserver::createBodyLayer);
 
     	//armors
     	event.registerLayerDefinition(ModelFelmetalDiverSet.LAYER_LOCATION, ModelFelmetalDiverSet::createBodyLayer);

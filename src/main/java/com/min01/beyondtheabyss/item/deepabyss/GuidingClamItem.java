@@ -1,18 +1,20 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
-import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
-import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.world.BTASavedData;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class GuidingClamItem extends Item
 {
@@ -34,6 +36,30 @@ public class GuidingClamItem extends Item
     	setOpen(p_41404_, isDeepOcean);
 	}
 	
+	@Override
+	public InteractionResult useOn(UseOnContext p_41427_) 
+	{
+		Level level = p_41427_.getLevel();
+		BlockPos pos = p_41427_.getClickedPos();
+		BlockState state = level.getBlockState(pos);
+		Player player = p_41427_.getPlayer();
+		ItemStack stack = p_41427_.getItemInHand();
+		if(state.is(BTABlocks.ORIVINE.get()))
+		{
+			BTASavedData data = BTASavedData.get(level);
+			if(data != null)
+			{
+				data.setAbyssPortalPos(pos.above());
+			}
+			if(!player.getAbilities().instabuild)
+			{
+				stack.shrink(1);
+			}
+			return InteractionResult.SUCCESS;
+		}
+		return super.useOn(p_41427_);
+	}
+	
 	public static boolean isOpen(ItemStack stack) 
 	{
 		CompoundTag tag = stack.getTag();
@@ -44,30 +70,6 @@ public class GuidingClamItem extends Item
 	{
 		CompoundTag tag = stack.getOrCreateTag();
 		tag.putBoolean("Open", open);
-	}
-	
-	@Override
-	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) 
-	{
-        boolean isOverworld = entity.level.dimension() == Level.OVERWORLD;
-        boolean isInWater = entity.isEyeInFluidType(Fluids.WATER.getFluidType());
-        if(isOverworld && isOpen(stack) && isInWater && entity.getOwner() != null)
-        {
-        	entity.setDeltaMovement(entity.getDeltaMovement().subtract(0, 0.01F, 0));
-        	entity.setGlowingTag(true);
-        	if(entity.onGround() && entity.tickCount % 20 == 0)
-        	{
-            	EntityBTACameraShake.cameraShake(entity.level, entity.position(), 20, 0.05F, 10, 15);
-            	entity.discard();
-            	if(!entity.level.isClientSide)
-            	{
-            		EntityDeepAbyssPortal portal = new EntityDeepAbyssPortal(BTAEntities.DEEP_ABYSS_PORTAL.get(), entity.level);
-            		portal.setPos(entity.position());
-            		entity.level.addFreshEntity(portal);
-            	}
-        	}
-        }
-		return super.onEntityItemUpdate(stack, entity);
 	}
 	
 	@Override

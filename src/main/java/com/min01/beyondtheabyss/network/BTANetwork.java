@@ -31,6 +31,7 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdateSynchedEntityDataPacket.class, UpdateSynchedEntityDataPacket::encode, UpdateSynchedEntityDataPacket::new, UpdateSynchedEntityDataPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationPacket.class, UpdatePlayerAnimationPacket::encode, UpdatePlayerAnimationPacket::new, UpdatePlayerAnimationPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateServerItemPacket.class, UpdateServerItemPacket::encode, UpdateServerItemPacket::new, UpdateServerItemPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateAbyssPortalPosPacket.class, UpdateAbyssPortalPosPacket::encode, UpdateAbyssPortalPosPacket::new, UpdateAbyssPortalPosPacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 

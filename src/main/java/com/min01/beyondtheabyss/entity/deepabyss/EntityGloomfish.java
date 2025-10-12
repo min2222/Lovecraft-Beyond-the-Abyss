@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
-import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
+import com.min01.beyondtheabyss.entity.ai.control.SwimmingBoidMoveControl;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -23,7 +23,7 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
 	public EntityGloomfish(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.moveControl = new BoidMoveControl(this, 0.1F, false);
+		this.moveControl = new SwimmingBoidMoveControl(this, 0.1F, false);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()

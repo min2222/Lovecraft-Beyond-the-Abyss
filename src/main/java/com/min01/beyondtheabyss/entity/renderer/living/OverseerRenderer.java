@@ -13,7 +13,7 @@ public class OverseerRenderer extends MobRenderer<EntityOverseer, ModelOverseer>
 {
 	public OverseerRenderer(Context p_174304_)
 	{
-		super(p_174304_, new ModelOverseer(p_174304_.bakeLayer(ModelOverseer.LAYER_LOCATION)), 0.5F);
+		super(p_174304_, new ModelOverseer(p_174304_.bakeLayer(ModelOverseer.LAYER_LOCATION)), 0.0F);
 		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/overseer_layer.png")));
 	}
 

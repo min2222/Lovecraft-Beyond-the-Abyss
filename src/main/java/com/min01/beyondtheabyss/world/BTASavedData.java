@@ -1,5 +1,8 @@
 package com.min01.beyondtheabyss.world;
 
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateAbyssPortalPosPacket;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -14,6 +17,7 @@ public class BTASavedData extends SavedData
 	protected boolean isHutGenerated;
 	protected boolean isDragonKilled;
 	protected BlockPos hutPos = BlockPos.ZERO;
+	protected BlockPos abyssPortalPos = BlockPos.ZERO;
 	
     public static BTASavedData get(Level level)
     {
@@ -32,6 +36,7 @@ public class BTASavedData extends SavedData
     	data.setHutGenerated(nbt.getBoolean("isHutGenerated"));
     	data.setDragonKilled(nbt.getBoolean("isDragonKilled"));
     	data.setHutPos(NbtUtils.readBlockPos(nbt.getCompound("HutPos")));
+    	data.setAbyssPortalPos(NbtUtils.readBlockPos(nbt.getCompound("AbyssPortalPos")));
         return data;
     }
 	
@@ -41,6 +46,7 @@ public class BTASavedData extends SavedData
 		nbt.putBoolean("isHutGenerated", this.isHutGenerated);
 		nbt.putBoolean("isDragonKilled", this.isDragonKilled);
 		nbt.put("HutPos", NbtUtils.writeBlockPos(this.hutPos));
+		nbt.put("AbyssPortalPos", NbtUtils.writeBlockPos(this.abyssPortalPos));
 		return nbt;
 	}
 	
@@ -65,6 +71,18 @@ public class BTASavedData extends SavedData
 	public BlockPos getHutPos()
 	{
 		return this.hutPos;
+	}
+	
+	public void setAbyssPortalPos(BlockPos value)
+	{
+		this.abyssPortalPos = value;
+		BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(value));
+		this.setDirty();
+	}
+	
+	public BlockPos getAbyssPortalPos()
+	{
+		return this.abyssPortalPos;
 	}
 	
 	public boolean isHutGenerated()

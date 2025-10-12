@@ -6,7 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
+import com.min01.beyondtheabyss.entity.ai.control.SwimmingBoidMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -49,7 +49,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(6);
-		this.moveControl = new BoidMoveControl(this, 0.1F, false);
+		this.moveControl = new SwimmingBoidMoveControl(this, 0.1F, false);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -109,7 +109,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
         	this.biteAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
         }
         
-        if(!this.level.isClientSide && this.moveControl instanceof BoidMoveControl boid)
+        if(!this.level.isClientSide && this.moveControl instanceof SwimmingBoidMoveControl boid)
         {
         	if(this.getTarget() != null)
         	{
@@ -187,7 +187,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
     {
     	if(isBoid)
     	{
-    		this.moveControl = new BoidMoveControl(this, 0.1F, false);
+    		this.moveControl = new SwimmingBoidMoveControl(this, 0.1F, false);
     	}
     	else
     	{

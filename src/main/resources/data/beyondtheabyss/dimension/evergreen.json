@@ -19,7 +19,7 @@
 					}
 				},
 				{
-					"biome": "beyondtheabyss:forest1",
+					"biome": "beyondtheabyss:green_forest",
 					"parameters": {
 						"temperature": 0,
 						"humidity": 0,
@@ -31,7 +31,7 @@
 					}
 				},
 				{
-					"biome": "beyondtheabyss:forest2",
+					"biome": "beyondtheabyss:dark_forest",
 					"parameters": {
 						"temperature": 0,
 						"humidity": 0,
@@ -43,7 +43,7 @@
 					}
 				},
 				{
-					"biome": "beyondtheabyss:forest3",
+					"biome": "beyondtheabyss:death_forest",
 					"parameters": {
 						"temperature": 0,
 						"humidity": 0,

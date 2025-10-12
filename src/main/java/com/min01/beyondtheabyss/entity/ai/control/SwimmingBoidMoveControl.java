@@ -16,36 +16,41 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class BTASwimmingMoveControl extends MoveControl 
+public class SwimmingBoidMoveControl extends BoidMoveControl 
 {
 	private final float outsideWaterSpeedModifier;
 	private final boolean applyGravity;
-	private Vec3 targetPos = Vec3.ZERO;
 
-	public BTASwimmingMoveControl(Mob p_148070_, float p_148074_, boolean p_148075_) 
+	public SwimmingBoidMoveControl(Mob mob, float outsideWaterSpeedModifier, boolean applyGravity)
 	{
-		super(p_148070_);
-		this.outsideWaterSpeedModifier = p_148074_;
-		this.applyGravity = p_148075_;
+		super(mob);
+		this.outsideWaterSpeedModifier = outsideWaterSpeedModifier;
+		this.applyGravity = applyGravity;
 	}
 
 	@Override
-	public void tick()
+	public void tick() 
 	{
 		IDeepAbyssMob mob = (IDeepAbyssMob) this.mob;
 		if(this.applyGravity && this.mob.isInWater()) 
 		{
 			this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
 		}
-		if(this.operation == MoveControl.Operation.MOVE_TO && !this.mob.getNavigation().isDone()) 
+		if(this.operation == MoveControl.Operation.MOVE_TO) 
 		{
-			if(this.mob.tickCount % 60 == 0)
-			{
-				this.generateNewTarget();
-			}
-			double d0 = this.targetPos.x - this.mob.getX();
-			double d1 = this.targetPos.y - this.mob.getY();
-			double d2 = this.targetPos.z - this.mob.getZ();
+        	if(!this.forceTarget)
+        	{
+    	        if(this.mob.tickCount % 60 == 0 || this.targetPos.equals(Vec3.ZERO))
+    	        {
+    	        	this.generateNewTarget();
+    	        }
+        	}
+			this.boid.tick();
+	        this.stayInWater();
+			Vec3 direction = this.mob.getDeltaMovement();
+			double d0 = direction.x;
+			double d1 = direction.y;
+			double d2 = direction.z;
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			if(d3 < (double) 2.5000003E-7F) 
 			{
@@ -54,7 +59,7 @@ public class BTASwimmingMoveControl extends MoveControl
 			else 
 			{
 				float f = (float) (Mth.atan2(d2, d0) * (double) (180.0F / (float) Math.PI)) - 90.0F;
-				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, 2.0F));
+				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, mob.maxTurnY()));
 				this.mob.yBodyRot = this.mob.getYRot();
 				this.mob.yHeadRot = this.mob.getYRot();
 				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
@@ -80,7 +85,7 @@ public class BTASwimmingMoveControl extends MoveControl
 					this.mob.setSpeed(f1 * this.outsideWaterSpeedModifier * f2);
 				}
 			}
-		}
+		} 
 		else 
 		{
 			this.mob.setSpeed(0.0F);
@@ -89,8 +94,9 @@ public class BTASwimmingMoveControl extends MoveControl
 			this.mob.setZza(0.0F);
 		}
 	}
-	
-    private void generateNewTarget() 
+    
+	@Override
+    public void generateNewTarget() 
     {
         Level world = this.mob.level;
         int radius = ((IDeepAbyssMob)this.mob).getSwimRadius();
@@ -110,19 +116,39 @@ public class BTASwimmingMoveControl extends MoveControl
         	}
         }
     }
-    
+
 	private float getTurningSpeedFactor(float p_249853_) 
 	{
 		return 1.0F - Mth.clamp((p_249853_ - 10.0F) / 50.0F, 0.0F, 1.0F);
 	}
-	
-    public void setTargetPos(Vec3 pos)
+    
+    public void stayInWater()
     {
-    	this.targetPos = pos;
+		if(this.mob.isInWater())
+		{
+	        BlockPos blockPos = this.mob.blockPosition();
+	        BlockState blockAbove = this.mob.level.getBlockState(blockPos.above(2));
+	        BlockState blockBelow = this.mob.level.getBlockState(blockPos.below(1));
+	        float amount = this.amount();
+	        if(blockBelow.getFluidState().isEmpty()) 
+	        {
+	        	this.mob.addDeltaMovement(new Vec3(0, amount, 0));
+	        }
+	        if(blockAbove.getFluidState().isEmpty())
+	        {
+	        	this.mob.addDeltaMovement(new Vec3(0, -amount, 0));
+	        }
+		}
     }
     
-    public Vec3 getTargetPos()
+    public float amount() 
     {
-    	return this.targetPos;
+        float amount = 0.05F;
+        float dY = Mth.abs((float) this.mob.getDeltaMovement().y);
+        if(dY > amount) 
+        {
+            amount = dY;
+        }
+        return amount;
     }
 }
