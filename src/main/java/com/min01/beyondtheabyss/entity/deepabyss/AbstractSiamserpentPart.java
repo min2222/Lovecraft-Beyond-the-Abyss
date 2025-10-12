@@ -21,15 +21,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractTwinserpentPart extends AbstractWormPart<AbstractTwinserpentPart>
+public abstract class AbstractSiamserpentPart extends AbstractWormPart<AbstractSiamserpentPart>
 {
-	public static final EntityDataAccessor<Boolean> IS_SWAP = SynchedEntityData.defineId(AbstractTwinserpentPart.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID2 = SynchedEntityData.defineId(AbstractTwinserpentPart.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID2 = SynchedEntityData.defineId(AbstractTwinserpentPart.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Boolean> IS_SWAP = SynchedEntityData.defineId(AbstractSiamserpentPart.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID2 = SynchedEntityData.defineId(AbstractSiamserpentPart.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID2 = SynchedEntityData.defineId(AbstractSiamserpentPart.class, EntityDataSerializers.OPTIONAL_UUID);
 
 	public Class<? extends AbstractBTASkillGoal<?>> goal;
 	
-	public AbstractTwinserpentPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public AbstractSiamserpentPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 	}
@@ -46,7 +46,7 @@ public abstract class AbstractTwinserpentPart extends AbstractWormPart<AbstractT
 	@Override
 	protected void doPush(Entity p_21294_)
 	{
-		if(!(p_21294_ instanceof AbstractTwinserpentPart))
+		if(!(p_21294_ instanceof AbstractSiamserpentPart))
 		{
 			super.doPush(p_21294_);
 		}
@@ -62,14 +62,14 @@ public abstract class AbstractTwinserpentPart extends AbstractWormPart<AbstractT
 			List<Integer> list = Arrays.asList(12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 			Collections.reverse(list);
 			Integer index = list.get(this.getIndex());
-			if(!(this instanceof EntityTwinserpentHead))
+			if(!(this instanceof EntitySiamserpentHead))
 			{
 				this.setIndex(index);
 			}
 			else if(this.isHead() && this.getHead() != null)
 			{
-				EntityTwinserpentHead head = (EntityTwinserpentHead) this;
-				EntityTwinserpentHead head2 = (EntityTwinserpentHead) this.getHead();
+				EntitySiamserpentHead head = (EntitySiamserpentHead) this;
+				EntitySiamserpentHead head2 = (EntitySiamserpentHead) this.getHead();
 				head2.setIndex(0);
 				head.setIndex(12);
 				head2.setHead(true);
@@ -128,7 +128,7 @@ public abstract class AbstractTwinserpentPart extends AbstractWormPart<AbstractT
 	}
 	
 	@Override
-	public AbstractTwinserpentPart getOwner() 
+	public AbstractSiamserpentPart getOwner() 
 	{
 		if(this.isSwap())
 		{
@@ -137,7 +137,7 @@ public abstract class AbstractTwinserpentPart extends AbstractWormPart<AbstractT
 		return super.getOwner();
 	}
 	
-	public void setOwner2(AbstractTwinserpentPart owner)
+	public void setOwner2(AbstractSiamserpentPart owner)
 	{
 		if(owner == null)
 		{
@@ -150,7 +150,7 @@ public abstract class AbstractTwinserpentPart extends AbstractWormPart<AbstractT
 	}
 	
 	@Nullable
-	public AbstractTwinserpentPart getOwner2() 
+	public AbstractSiamserpentPart getOwner2() 
 	{
 		if(this.entityData.get(OWNER_UUID2).isPresent()) 
 		{
@@ -159,13 +159,13 @@ public abstract class AbstractTwinserpentPart extends AbstractWormPart<AbstractT
 		return null;
 	}
 	
-	public void setHead2(AbstractTwinserpentPart p_37263_)
+	public void setHead2(AbstractSiamserpentPart p_37263_)
 	{
 		this.entityData.set(HEAD_UUID2, Optional.of(p_37263_.getUUID()));
 	}
 	
 	@Nullable
-	public AbstractTwinserpentPart getHead2() 
+	public AbstractSiamserpentPart getHead2() 
 	{
 		if(this.entityData.get(HEAD_UUID2).isPresent()) 
 		{

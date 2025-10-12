@@ -19,6 +19,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityPartBuilder<T extends LivingEntity & IMultipart>
+public class EntityPartBuilder<T extends Entity & IMultipart>
 {
 	public static final String ROOT = "root";
 	public static final float SCALE = 0.0625F;
@@ -68,8 +69,11 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 			this.clientTick(BTAClientUtil.getModelFromEntity(this.entity));
 			this.partTick();
 	        
-	        QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
-	        root.rotate(rotation);
+			if(this.entity instanceof LivingEntity living)
+			{
+		        QuaternionD rotation = this.defaultEntityRotation(living, partialTick);
+		        root.rotate(rotation);
+			}
 
 	        if(this.isInWater() && !this.entity.isInWater())
 	        {
@@ -98,8 +102,11 @@ public class EntityPartBuilder<T extends LivingEntity & IMultipart>
 	        
 			this.partTick();
 	        
-	        QuaternionD rotation = this.defaultEntityRotation(this.entity, partialTick);
-	        root.rotate(rotation);
+			if(this.entity instanceof LivingEntity living)
+			{
+		        QuaternionD rotation = this.defaultEntityRotation(living, partialTick);
+		        root.rotate(rotation);
+			}
 
 	        if(this.isInWater() && !this.entity.isInWater())
 	        {

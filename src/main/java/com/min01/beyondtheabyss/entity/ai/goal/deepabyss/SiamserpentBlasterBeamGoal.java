@@ -1,12 +1,12 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead.HeadType;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.sound.BTASounds;
 
-public class TwinserpentBlasterBeamGoal extends AbstractTwinserpentSkillGoal
+public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 {
-	public TwinserpentBlasterBeamGoal(EntityTwinserpentHead mob) 
+	public SiamserpentBlasterBeamGoal(EntitySiamserpentHead mob) 
 	{
 		super(mob);
 	}
@@ -21,14 +21,14 @@ public class TwinserpentBlasterBeamGoal extends AbstractTwinserpentSkillGoal
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.getHeadType() == HeadType.BLASTER && !this.isOtherHeadDisabled();
+		return super.canUse() && this.mob.getHeadType() == HeadType.BLASTER && !this.isOtherHeadDormant();
 	}
 
 	@Override
 	protected void performSkill() 
 	{
 		this.mob.setAnimationState(1);
-		this.mob.playSound(BTASounds.TWINSERPENT_BEAM_CHARGE.get());
+		this.mob.playSound(BTASounds.SIAMSERPENT_BEAM_CHARGE.get());
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class TwinserpentBlasterBeamGoal extends AbstractTwinserpentSkillGoal
 		{
 			this.mob.setLastLookPos(this.mob.getTarget().getEyePosition());
 		}
-		//this.mob.playSound(BTASounds.TWINSERPENT_BEAM_SHOOT.get());
+		//this.mob.playSound(BTASounds.SIAMSERPENT_BEAM_SHOOT.get());
 	}
 
 	@Override

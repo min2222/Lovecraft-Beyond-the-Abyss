@@ -5,12 +5,12 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-public class TwinserpentAnimation
+public class SiamserpentAnimation
 {
 	public static class BlasterAnimation
 	{
 		public static final AnimationDefinition BLASTER_CHARGE = AnimationDefinition.Builder.withLength(2.0417F)
-				.addAnimation("TwinserpentBlaster", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+				.addAnimation("SiamserpentBlaster", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.0417F, KeyframeAnimations.degreeVec(0.02F, 0.02F, 0.01F), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(0.0833F, KeyframeAnimations.degreeVec(0.0F, 0.07F, 0.07F), AnimationChannel.Interpolations.LINEAR),
@@ -143,7 +143,7 @@ public class TwinserpentAnimation
 				.build();
 			
 			public static final AnimationDefinition BLASTER_DISABLED = AnimationDefinition.Builder.withLength(4.0F).looping()
-					.addAnimation("TwinserpentBlaster", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					.addAnimation("SiamserpentBlaster", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 						new Keyframe(0.0F, KeyframeAnimations.degreeVec(20.0F, 0.0F, 15.0F), AnimationChannel.Interpolations.LINEAR),
 						new Keyframe(0.0417F, KeyframeAnimations.degreeVec(20.13F, -0.01F, 15.0F), AnimationChannel.Interpolations.LINEAR),
 						new Keyframe(0.0833F, KeyframeAnimations.degreeVec(20.26F, -0.04F, 15.0F), AnimationChannel.Interpolations.LINEAR),
@@ -350,14 +350,14 @@ public class TwinserpentAnimation
 					.build();
 
 				public static final AnimationDefinition BLASTER_SHOT = AnimationDefinition.Builder.withLength(1.75F)
-					.addAnimation("TwinserpentBlaster", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					.addAnimation("SiamserpentBlaster", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 						new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.2083F, KeyframeAnimations.degreeVec(-35.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.3333F, KeyframeAnimations.degreeVec(-35.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.4167F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(1.75F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 					))
-					.addAnimation("TwinserpentBlaster", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+					.addAnimation("SiamserpentBlaster", new AnimationChannel(AnimationChannel.Targets.POSITION, 
 						new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.4167F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.5417F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.5F), AnimationChannel.Interpolations.CATMULLROM),
@@ -401,7 +401,7 @@ public class TwinserpentAnimation
 	public static class SlasherAnimation
 	{
 		public static final AnimationDefinition SLASHER_SLASH_RIGHT = AnimationDefinition.Builder.withLength(1.0F)
-				.addAnimation("TwinserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+				.addAnimation("SiamserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.125F, KeyframeAnimations.degreeVec(13.0F, -20.0F, -2.0F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.25F, KeyframeAnimations.degreeVec(13.0F, -30.0F, -2.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -413,7 +413,7 @@ public class TwinserpentAnimation
 				.build();
 
 			public static final AnimationDefinition SLASHER_SLASH_LEFT = AnimationDefinition.Builder.withLength(1.0F)
-				.addAnimation("TwinserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+				.addAnimation("SiamserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.125F, KeyframeAnimations.degreeVec(13.0F, 20.0F, 2.0F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.25F, KeyframeAnimations.degreeVec(13.0F, 30.0F, 2.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -425,14 +425,14 @@ public class TwinserpentAnimation
 				.build();
 			
 			public static final AnimationDefinition SLASHER_CHARGE_START = AnimationDefinition.Builder.withLength(1.0F)
-					.addAnimation("TwinserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					.addAnimation("SiamserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 						new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.25F, KeyframeAnimations.degreeVec(20.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.5417F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.7917F, KeyframeAnimations.degreeVec(0.0F, 8.0F, 6.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, 8.0F, 6.0F), AnimationChannel.Interpolations.CATMULLROM)
 					))
-					.addAnimation("TwinserpentSlasher", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+					.addAnimation("SiamserpentSlasher", new AnimationChannel(AnimationChannel.Targets.POSITION, 
 						new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.25F, KeyframeAnimations.posVec(0.0F, 0.0F, -3.0F), AnimationChannel.Interpolations.CATMULLROM),
 						new Keyframe(0.6667F, KeyframeAnimations.posVec(0.0F, 0.0F, 2.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -443,7 +443,7 @@ public class TwinserpentAnimation
 					.build();
 
 				public static final AnimationDefinition SLASHER_CHARGING = AnimationDefinition.Builder.withLength(1.0F).looping()
-					.addAnimation("TwinserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					.addAnimation("SiamserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 						new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 6.0F), AnimationChannel.Interpolations.LINEAR),
 						new Keyframe(0.0417F, KeyframeAnimations.degreeVec(0.0F, 6.93F, 3.0F), AnimationChannel.Interpolations.LINEAR),
 						new Keyframe(0.0833F, KeyframeAnimations.degreeVec(0.0F, 6.93F, -3.0F), AnimationChannel.Interpolations.LINEAR),
@@ -470,13 +470,13 @@ public class TwinserpentAnimation
 						new Keyframe(0.9583F, KeyframeAnimations.degreeVec(0.0F, -6.93F, 3.0F), AnimationChannel.Interpolations.LINEAR),
 						new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 6.0F), AnimationChannel.Interpolations.LINEAR)
 					))
-					.addAnimation("TwinserpentSlasher", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+					.addAnimation("SiamserpentSlasher", new AnimationChannel(AnimationChannel.Targets.POSITION, 
 						new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, -2.0F), AnimationChannel.Interpolations.CATMULLROM)
 					))
 					.build();
 
 				public static final AnimationDefinition SLASHER_DISABLED = AnimationDefinition.Builder.withLength(4.0F)
-					.addAnimation("TwinserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+					.addAnimation("SiamserpentSlasher", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 						new Keyframe(0.0F, KeyframeAnimations.degreeVec(20.0F, 10.0F, -13.0F), AnimationChannel.Interpolations.LINEAR),
 						new Keyframe(0.0417F, KeyframeAnimations.degreeVec(20.13F, 9.99F, -13.07F), AnimationChannel.Interpolations.LINEAR),
 						new Keyframe(0.0833F, KeyframeAnimations.degreeVec(20.26F, 9.96F, -13.27F), AnimationChannel.Interpolations.LINEAR),

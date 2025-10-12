@@ -14,9 +14,8 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySplittedFulgastra;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentBone;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.item.BTAItems;
 
@@ -62,10 +61,9 @@ public class EventHandler
     	
     	//deep abyss
     	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
-    	event.put(BTAEntities.SUBMARINE.get(), EntitySubmarine.createMobAttributes().build());
     	event.put(BTAEntities.GNASHER.get(), EntityGnasher.createAttributes().build());
-    	event.put(BTAEntities.TWINSERPENT_HEAD.get(), EntityTwinserpentHead.createAttributes().build());
-    	event.put(BTAEntities.TWINSERPENT_BONE.get(), EntityTwinserpentBone.createAttributes().build());
+    	event.put(BTAEntities.SIAMSERPENT_HEAD.get(), EntitySiamserpentHead.createAttributes().build());
+    	event.put(BTAEntities.SIAMSERPENT_BONE.get(), EntitySiamserpentBone.createAttributes().build());
     	event.put(BTAEntities.SPINE_WORM_HEAD.get(), EntitySpineWormHead.createAttributes().build());
     	event.put(BTAEntities.SPINE_WORM_BODY.get(), EntitySpineWormBody.createAttributes().build());
     	event.put(BTAEntities.GLOOMFISH.get(), EntityGloomfish.createAttributes().build());
@@ -85,7 +83,7 @@ public class EventHandler
     public static void onSpawnPlacementRegister(SpawnPlacementRegisterEvent event)
     {
     	event.register(BTAEntities.GNASHER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGnasher::checkGnasherSpawnRules, Operation.AND);
-    	event.register(BTAEntities.TWINSERPENT_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityTwinserpentHead::checkTwinserpentSpawnRules, Operation.AND);
+    	event.register(BTAEntities.SIAMSERPENT_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntitySiamserpentHead::checkSiamserpentSpawnRules, Operation.AND);
     	event.register(BTAEntities.SPINE_WORM_HEAD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntitySpineWormHead::checkSpineWormSpawnRules, Operation.AND);
      	event.register(BTAEntities.GLOOMFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGloomfish::checkGloomfishSpawnRules, Operation.AND);
      	event.register(BTAEntities.CORPSE_ANGLER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCorpseAngler::checkCorpseAnglerSpawnRules, Operation.AND);

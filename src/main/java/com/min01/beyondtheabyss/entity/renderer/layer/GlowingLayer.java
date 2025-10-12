@@ -10,10 +10,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
-public class GlowingLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
+public class GlowingLayer<T extends Entity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
 	protected M model;
 	protected ResourceLocation texture;
@@ -44,7 +46,8 @@ public class GlowingLayer<T extends LivingEntity, M extends EntityModel<T>> exte
 	public void renderColoredGlowingModel(M model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T entity, float r, float g, float b)
 	{
 		VertexConsumer consumer = bufferSource.getBuffer(this.getRenderType(texture));
-		model.renderToBuffer(poseStack, consumer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), r, g, b, this.getAlpha(entity));
+		int overlayCoords = entity instanceof LivingEntity living ? LivingEntityRenderer.getOverlayCoords(living, 0.0F) : OverlayTexture.NO_OVERLAY;
+		model.renderToBuffer(poseStack, consumer, packedLight, overlayCoords, r, g, b, this.getAlpha(entity));
 	}
 	
 	public RenderType getRenderType(ResourceLocation texture)

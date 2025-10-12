@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentBlasterBeamGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentBlasterShotGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentSlasherChargeGoal;
-import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.TwinserpentSlasherSlashGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterShotGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherChargeGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherSlashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
@@ -17,6 +17,7 @@ import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,13 +45,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityTwinserpentHead extends AbstractTwinserpentPart
+public class EntitySiamserpentHead extends AbstractSiamserpentPart
 {
-	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_HEAD = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntityTwinserpentHead.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Integer> HEAD_TYPE = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> IS_DISABLED = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_DORMANT = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_HEAD = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(EntitySiamserpentHead.class, EntityDataSerializers.FLOAT);
 	
 	public final SmoothAnimationState rayChargeAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState rayStartAnimationState = new SmoothAnimationState();
@@ -64,7 +65,11 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	public final SmoothAnimationState slasherChargingAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState slasherDisabledAnimationState = new SmoothAnimationState();
 	
-	public EntityTwinserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public int tickAfterDormant;
+	
+	public Vec3 wantedPos = Vec3.ZERO;
+	
+	public EntitySiamserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(15);
@@ -94,7 +99,7 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	@Override
 	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
 	{
-		EntityPartBuilder<EntityTwinserpentHead> partBuilder = new EntityPartBuilder<EntityTwinserpentHead>(this);
+		EntityPartBuilder<EntitySiamserpentHead> partBuilder = new EntityPartBuilder<EntitySiamserpentHead>(this);
 		return partBuilder;
 	}
 
@@ -108,10 +113,10 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	protected void registerGoals() 
 	{
 		super.registerGoals();
-		this.goalSelector.addGoal(4, new TwinserpentBlasterBeamGoal(this));
-		this.goalSelector.addGoal(4, new TwinserpentBlasterShotGoal(this));
-		this.goalSelector.addGoal(4, new TwinserpentSlasherSlashGoal(this));
-		this.goalSelector.addGoal(4, new TwinserpentSlasherChargeGoal(this));
+		this.goalSelector.addGoal(4, new SiamserpentBlasterBeamGoal(this));
+		this.goalSelector.addGoal(4, new SiamserpentBlasterShotGoal(this));
+		this.goalSelector.addGoal(4, new SiamserpentSlasherSlashGoal(this));
+		this.goalSelector.addGoal(4, new SiamserpentSlasherChargeGoal(this));
 	}
 	
 	@Override
@@ -121,8 +126,8 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 		
 		if(this.level.isClientSide)
 		{
-			this.blasterDisabledAnimationState.updateWhen(this.getHeadType() == HeadType.BLASTER && this.isDisabled(), this.tickCount);
-			this.slasherDisabledAnimationState.updateWhen(this.getHeadType() == HeadType.SLASHER && this.isDisabled(), this.tickCount);
+			this.blasterDisabledAnimationState.updateWhen(this.getHeadType() == HeadType.BLASTER && (this.isDisabled() || this.isDormant()), this.tickCount);
+			this.slasherDisabledAnimationState.updateWhen(this.getHeadType() == HeadType.SLASHER && (this.isDisabled() || this.isDormant()), this.tickCount);
 			this.rayChargeAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
 			this.rayStartAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.rayLoopAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
@@ -134,12 +139,24 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 			this.slasherChargingAnimationState.updateWhen(this.isUsingSkill(8), this.tickCount);
 		}
 		
-		if(this.getHealth() <= this.getMaxHealth() / 2.0F)
+		if(this.getHealth() <= this.getMaxHealth() / 2.0F && !this.isDormant() && this.tickAfterDormant == 0)
 		{
-			this.setDisabled(true);
+			this.setDormant(true);
+			this.setCanLook(false);
+			this.setCanMove(false);
+			this.tickAfterDormant = this.tickCount;
 		}
 		
-		//blaster laser
+		if(this.isDormant())
+		{
+			if(this.tickCount - this.tickAfterDormant == 100)
+			{
+				this.setCanLook(true);
+				this.setCanMove(true);
+				this.setDormant(false);
+			}
+		}
+		
 		if(this.getAnimationTick() <= 0)
 		{
 			if(this.getAnimationState() == 3)
@@ -184,6 +201,35 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	}
 	
 	@Override
+	public void moveToTarget() 
+	{
+		//TODO
+		if(this.wantedPos.equals(Vec3.ZERO) || this.wantedPos.subtract(this.position()).length() <= 1.5F)
+		{
+			Vec3 pos = BTAUtil.getSpreadPosition(this.getTarget(), 15);
+			this.wantedPos = pos;
+			this.getNavigation().moveTo(pos.x, pos.y, pos.z, 0.5F);
+		}
+		else
+		{
+			super.moveToTarget();
+		}
+	}
+	
+	@Override
+	public void lookTarget() 
+	{
+		if(!this.wantedPos.equals(Vec3.ZERO))
+		{
+			this.lookAt(Anchor.EYES, this.wantedPos);
+		}
+		else
+		{
+			super.lookTarget();
+		}
+	}
+	
+	@Override
 	public void setupWorms()
 	{
 		if(this.worms == null)
@@ -223,7 +269,13 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	}
 	
 	@Override
-	public void tickWorms(AbstractTwinserpentPart head)
+	public boolean canSwim()
+	{
+		return super.canSwim() && !this.isDormant() && !this.isDisabled();
+	}
+	
+	@Override
+	public void tickWorms(AbstractSiamserpentPart head)
 	{
 		if(head.worms != null && head.isHead())
 		{
@@ -260,19 +312,19 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 	@Override
 	protected SoundEvent getAmbientSound() 
 	{
-		return BTASounds.TWINSERPENT_AMBIENT.get();
+		return BTASounds.SIAMSERPENT_AMBIENT.get();
 	}
 	
 	@Override
 	protected SoundEvent getHurtSound(DamageSource p_33034_) 
 	{
-		return BTASounds.TWINSERPENT_HURT.get();
+		return BTASounds.SIAMSERPENT_HURT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return BTASounds.TWINSERPENT_DEATH.get();
+		return BTASounds.SIAMSERPENT_DEATH.get();
 	}
 	
 	@Override
@@ -287,7 +339,7 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 		return true;
 	}
 	
-	public static boolean checkTwinserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		//TODO spawn in only nearby of giant fossil structure;
 		//LocateCommand
@@ -302,38 +354,28 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 		p_21484_.putBoolean("isDormant", this.isDormant());
 		p_21484_.putBoolean("isDisabled", this.isDisabled());
 		p_21484_.putBoolean("isHead", this.isHead());
+		p_21484_.putInt("TickAfterDormant", this.tickAfterDormant);
 	}
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag p_21450_) 
 	{
 		super.readAdditionalSaveData(p_21450_);
-		if(p_21450_.contains("HeadType"))
-		{
-			this.setHeadType(HeadType.values()[p_21450_.getInt("HeadType")]);
-		}
-		if(p_21450_.contains("isDormant"))
-		{
-			this.setDormant(p_21450_.getBoolean("isDormant"));
-		}
-		if(p_21450_.contains("isDisabled"))
-		{
-			this.setDisabled(p_21450_.getBoolean("isDisabled"));
-		}
-		if(p_21450_.contains("isHead"))
-		{
-			this.setHead(p_21450_.getBoolean("isHead"));
-		}
+		this.setHeadType(HeadType.values()[p_21450_.getInt("HeadType")]);
+		this.setDormant(p_21450_.getBoolean("isDormant"));
+		this.setDisabled(p_21450_.getBoolean("isDisabled"));
+		this.setHead(p_21450_.getBoolean("isHead"));
+		this.tickAfterDormant = p_21450_.getInt("TickAfterDormant");
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
 	{
-		List<AbstractTwinserpentPart> list = new ArrayList<>();
+		List<AbstractSiamserpentPart> list = new ArrayList<>();
 		this.setHead(true);
-		AbstractTwinserpentPart prev = this;
-		EntityTwinserpentBone bone = new EntityTwinserpentBone(BTAEntities.TWINSERPENT_BONE.get(), this.level);
+		AbstractSiamserpentPart prev = this;
+		EntitySiamserpentBone bone = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
 		bone.setOwner(this);
 		bone.setIndex(0);
 		if(this.random.nextBoolean())
@@ -356,7 +398,7 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 		{
 			if(i < 10)
 			{
-				EntityTwinserpentBone bone2 = new EntityTwinserpentBone(BTAEntities.TWINSERPENT_BONE.get(), this.level);
+				EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
 				bone2.setOwner(prev);
 				bone2.setIndex(i + 1);
 				bone2.setVariant(2);
@@ -371,7 +413,7 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 				if(i == 10)
 				{
 					int variant = this.getHeadType() == HeadType.SLASHER ? 1 : 0;
-					EntityTwinserpentBone bone2 = new EntityTwinserpentBone(BTAEntities.TWINSERPENT_BONE.get(), this.level);
+					EntitySiamserpentBone bone2 = new EntitySiamserpentBone(BTAEntities.SIAMSERPENT_BONE.get(), this.level);
 					bone2.setOwner(prev);
 					bone2.setIndex(i + 1);
 					bone2.setVariant(variant);
@@ -384,7 +426,7 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 				if(i == 11)
 				{
 					HeadType type = this.getHeadType() == HeadType.SLASHER ? HeadType.BLASTER : HeadType.SLASHER;
-					EntityTwinserpentHead head = new EntityTwinserpentHead(BTAEntities.TWINSERPENT_HEAD.get(), this.level);
+					EntitySiamserpentHead head = new EntitySiamserpentHead(BTAEntities.SIAMSERPENT_HEAD.get(), this.level);
 					head.setOwner(prev);
 					head.setHeadType(type);
 					head.setIndex(i + 1);
@@ -396,10 +438,10 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 				}
 			}
 		}
-		AbstractTwinserpentPart last = list.get(list.size() - 1);
+		AbstractSiamserpentPart last = list.get(list.size() - 1);
 		for(int i = 0; i < list.size() - 1; i++)
 		{
-			AbstractTwinserpentPart part = list.get(i);
+			AbstractSiamserpentPart part = list.get(i);
 			part.setOwner2(list.get(i + 1));
 			part.setHead2(last);
 		}
@@ -454,9 +496,9 @@ public class EntityTwinserpentHead extends AbstractTwinserpentPart
 		switch(this.getHeadType())
 		{
 		case SLASHER:
-			return Component.translatable("entity.beyondtheabyss.twinserpent_slasher");
+			return Component.translatable("entity.beyondtheabyss.siamserpent_slasher");
 		case BLASTER:
-			return Component.translatable("entity.beyondtheabyss.twinserpent_blaster");
+			return Component.translatable("entity.beyondtheabyss.siamserpent_blaster");
 		}
 		return super.getTypeName();
 	}

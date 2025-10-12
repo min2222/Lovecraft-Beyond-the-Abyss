@@ -54,8 +54,7 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 	{
 		return CompletableFuture.completedFuture(p_224316_);
 	}
-	
-	//ChatGPT ahh;
+
 	@Override
 	public void buildSurface(WorldGenRegion p_224232_, StructureManager p_224233_, RandomState p_224234_, ChunkAccess chunk) 
 	{

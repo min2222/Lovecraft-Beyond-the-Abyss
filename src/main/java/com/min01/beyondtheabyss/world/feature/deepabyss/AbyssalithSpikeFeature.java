@@ -17,7 +17,6 @@ public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration>
 		super(p_66003_);
 	}
 
-	//ChatGPT ahh;
 	@Override
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) 
 	{

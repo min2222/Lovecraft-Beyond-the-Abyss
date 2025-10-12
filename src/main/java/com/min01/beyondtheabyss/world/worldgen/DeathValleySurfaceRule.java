@@ -23,8 +23,7 @@ public class DeathValleySurfaceRule extends SurfaceRules
 			}
 			return this.state;
 		}
-		
-		//Chat GPT ahh;
+
 		public BlockState randomizeSoil(BlockState state) 
 		{
 			SoilType type = SoilType.VARIANT_1;

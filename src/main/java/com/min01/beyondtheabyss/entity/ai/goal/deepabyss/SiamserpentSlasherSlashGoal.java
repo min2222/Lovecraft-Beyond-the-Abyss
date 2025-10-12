@@ -1,12 +1,12 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead.HeadType;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-public class TwinserpentSlasherSlashGoal extends AbstractTwinserpentSkillGoal
+public class SiamserpentSlasherSlashGoal extends AbstractSiamserpentSkillGoal
 {
-	public TwinserpentSlasherSlashGoal(EntityTwinserpentHead mob) 
+	public SiamserpentSlasherSlashGoal(EntitySiamserpentHead mob) 
 	{
 		super(mob);
 	}
@@ -28,7 +28,7 @@ public class TwinserpentSlasherSlashGoal extends AbstractTwinserpentSkillGoal
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4) && this.mob.getHeadType() == HeadType.SLASHER && this.isOtherHeadDisabled();
+		return super.canUse() && BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4) && this.mob.getHeadType() == HeadType.SLASHER && this.isOtherHeadDormant();
 	}
 
 	@Override

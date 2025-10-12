@@ -18,7 +18,7 @@
 							"condition": "minecraft:entity_properties",
 							"entity": "this",
 							"predicate": {
-								"type": "beyondtheabyss:twinserpent_head",
+								"type": "beyondtheabyss:siamserpent_head",
 								"nbt": "{HeadType:0}"
 							}
 						}
@@ -38,7 +38,7 @@
 							"condition": "minecraft:entity_properties",
 							"entity": "this",
 							"predicate": {
-								"type": "beyondtheabyss:twinserpent_head",
+								"type": "beyondtheabyss:siamserpent_head",
 								"nbt": "{HeadType:1}"
 							}
 						}

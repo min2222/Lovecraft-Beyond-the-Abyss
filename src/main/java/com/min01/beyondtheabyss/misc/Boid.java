@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +45,14 @@ public class Boid
 	
     public void tick() 
     {
-    	this.tickNearbyMobs();
+    	if(this.mob instanceof EntityGnasher)
+    	{
+    		this.tickGnashers();
+    	}
+    	else
+    	{
+        	this.tickNearbyMobs();
+    	}
     	
     	this.compute(new ArrayList<>(this.boids), this.settings.perceptionRadius, this.settings.avoidanceRadius);
     	
@@ -174,11 +182,11 @@ public class Boid
         return new Vec3((double)(f3 * f4), (double)(-f5), (double)(f2 * f4));
     }
     
-    public void tickNearbyMobs()
+    public void tickGnashers()
     {
     	if(this.mob.tickCount % 60 == 0 || this.nearbyMobs.isEmpty())
     	{
-        	this.nearbyMobs = this.mob.level.getEntitiesOfClass(this.mob.getClass(), this.mob.getBoundingBox().inflate(6.0F), t -> !t.isDeadOrDying());
+        	this.nearbyMobs = this.mob.level.getEntitiesOfClass(this.mob.getClass(), this.mob.getBoundingBox().inflate(10.0F), t -> !t.isDeadOrDying());
         	this.nearbyMobs.sort(Comparator.comparing(Entity::getUUID));
     	}
     	
@@ -186,16 +194,55 @@ public class Boid
         
         for(Mob mob : this.nearbyMobs)
         {
-        	Boid boid = ((BoidMoveControl)mob.getMoveControl()).boid;
-        	if(!this.boids.contains(boid))
+        	if(mob.getMoveControl() instanceof BoidMoveControl control)
         	{
-	        	this.boids.add(boid);
+            	Boid boid = control.boid;
+            	if(!this.boids.contains(boid) && mob instanceof EntityGnasher gnasher)
+            	{
+    	        	this.boids.add(boid);
+    	        	if(gnasher.isLeader())
+    	        	{
+    	        		((EntityGnasher) this.mob).setLeader(gnasher);
+    	        	}
+            	}
         	}
         }
         
-        if(!this.nearbyMobs.isEmpty())
+        if(!this.nearbyMobs.isEmpty() && this.nearbyMobs.get(0).getMoveControl() instanceof BoidMoveControl boid)
         {
-        	Vec3 targetPos = ((BoidMoveControl)this.nearbyMobs.get(0).getMoveControl()).targetPos;
+        	Vec3 targetPos = boid.targetPos;
+        	if(!targetPos.equals(Vec3.ZERO))
+        	{
+        		this.target = targetPos;
+        	}
+        }
+    }
+    
+    public void tickNearbyMobs()
+    {
+    	if(this.mob.tickCount % 60 == 0 || this.nearbyMobs.isEmpty())
+    	{
+        	this.nearbyMobs = this.mob.level.getEntitiesOfClass(this.mob.getClass(), this.mob.getBoundingBox().inflate(10.0F), t -> !t.isDeadOrDying());
+        	this.nearbyMobs.sort(Comparator.comparing(Entity::getUUID));
+    	}
+    	
+        this.nearbyMobs.removeIf(t -> t.isDeadOrDying());
+        
+        for(Mob mob : this.nearbyMobs)
+        {
+        	if(mob.getMoveControl() instanceof BoidMoveControl control)
+        	{
+            	Boid boid = control.boid;
+            	if(!this.boids.contains(boid))
+            	{
+    	        	this.boids.add(boid);
+            	}
+        	}
+        }
+        
+        if(!this.nearbyMobs.isEmpty() && this.nearbyMobs.get(0).getMoveControl() instanceof BoidMoveControl boid)
+        {
+        	Vec3 targetPos = boid.targetPos;
         	if(!targetPos.equals(Vec3.ZERO))
         	{
         		this.target = targetPos;

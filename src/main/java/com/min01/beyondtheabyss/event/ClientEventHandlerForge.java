@@ -1,7 +1,5 @@
 package com.min01.beyondtheabyss.event;
 
-import org.joml.Quaternionf;
-
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.config.BTAConfig;
@@ -30,7 +28,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent.OverlayType;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -98,20 +95,6 @@ public class ClientEventHandlerForge
     		event.setCanceled(true);
     	}
     }
-    
-    @SubscribeEvent
-	public static void onRenderPlayerPre(RenderPlayerEvent.Pre event)
-	{
-		Player player = event.getEntity();
-        if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine submarine)
-        {
-        	float partialTicks = event.getPartialTick();
-        	PoseStack stack = event.getPoseStack();
-    		float yRot = Mth.rotLerp(partialTicks, submarine.yRotO, submarine.getYRot());
-            float xRot = Mth.lerp(partialTicks, submarine.xRotO, submarine.getXRot());
-            stack.mulPose(new Quaternionf().rotationZYX(0.0F, (float) Math.toRadians(yRot), (float) Math.toRadians(xRot)));
-        }
-	}
     
 	@SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event)

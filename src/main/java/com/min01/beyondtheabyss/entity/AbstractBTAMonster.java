@@ -109,22 +109,32 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 		{
 			if(this.getBTAMobType().moveToTarget && this.canMove())
 			{
-				this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+				this.moveToTarget();
 			}
 			if(this.getBTAMobType().lookTarget)
 			{
-				if(this.canLook())
-				{
-					this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
-					//this.getLookControl().setLookAt(this.getTarget(), 360.0F, 360.0F);
-				}
-				else if(!this.getLastLookPos().equals(Vec3.ZERO))
-				{
-					this.lookAt(Anchor.EYES, this.getLastLookPos());
-					//Vec3 pos = this.getLastLookPos();
-					//this.getLookControl().setLookAt(pos.x, pos.y, pos.z, 360.0F, 360.0F);
-				}
+				this.lookTarget();
 			}
+		}
+	}
+	
+	public void moveToTarget()
+	{
+		this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+	}
+	
+	public void lookTarget()
+	{
+		if(this.canLook())
+		{
+			this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
+			//this.getLookControl().setLookAt(this.getTarget(), 360.0F, 360.0F);
+		}
+		else if(!this.getLastLookPos().equals(Vec3.ZERO))
+		{
+			this.lookAt(Anchor.EYES, this.getLastLookPos());
+			//Vec3 pos = this.getLastLookPos();
+			//this.getLookControl().setLookAt(pos.x, pos.y, pos.z, 360.0F, 360.0F);
 		}
 	}
 	

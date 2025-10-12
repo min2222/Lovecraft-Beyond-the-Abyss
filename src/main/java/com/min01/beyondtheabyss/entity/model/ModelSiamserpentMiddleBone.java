@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentBone;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -17,12 +17,12 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class ModelTwinserpentMiddleBone extends HierarchicalModel<EntityTwinserpentBone> 
+public class ModelSiamserpentMiddleBone extends HierarchicalModel<EntitySiamserpentBone> 
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "twinserpent_middle_bone"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "siamserpent_middle_bone"), "main");
 	private final ModelPart root;
 
-	public ModelTwinserpentMiddleBone(ModelPart root) 
+	public ModelSiamserpentMiddleBone(ModelPart root) 
 	{
 		this.root = root.getChild("root");
 	}
@@ -34,7 +34,7 @@ public class ModelTwinserpentMiddleBone extends HierarchicalModel<EntityTwinserp
 
 		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition SiamserpentMiddlebone = root.addOrReplaceChild("TwinserpentMiddlebone", CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, -17.0F, -8.0F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
+		PartDefinition SiamserpentMiddlebone = root.addOrReplaceChild("SiamserpentMiddlebone", CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, -17.0F, -8.0F, 4.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
 		.texOffs(41, 32).addBox(0.0F, -25.0F, -8.0F, 0.0F, 8.0F, 16.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 0).addBox(-9.0F, -15.0F, -8.0F, 18.0F, 15.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
@@ -51,11 +51,11 @@ public class ModelTwinserpentMiddleBone extends HierarchicalModel<EntityTwinserp
 	}
 
 	@Override
-	public void setupAnim(EntityTwinserpentBone entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
+	public void setupAnim(EntitySiamserpentBone entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("TwinserpentMiddlebone"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
-		this.root.getChild("TwinserpentMiddlebone").getChild("Heart").visible = entity.getIndex() == 5;
+		BTAClientUtil.animateHead(this.root.getChild("SiamserpentMiddlebone"), entity.isInvert() ? netHeadYaw + 180.0F : netHeadYaw, entity.isInvert() ? -headPitch : headPitch);
+		this.root.getChild("SiamserpentMiddlebone").getChild("Heart").visible = entity.getIndex() == 5;
 	}
 
 	@Override

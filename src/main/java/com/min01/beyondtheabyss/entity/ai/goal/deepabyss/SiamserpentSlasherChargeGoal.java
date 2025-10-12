@@ -1,14 +1,14 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityTwinserpentHead.HeadType;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec3;
 
-public class TwinserpentSlasherChargeGoal extends AbstractTwinserpentSkillGoal
+public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 {
-	public TwinserpentSlasherChargeGoal(EntityTwinserpentHead mob) 
+	public SiamserpentSlasherChargeGoal(EntitySiamserpentHead mob) 
 	{
 		super(mob);
 	}
@@ -20,14 +20,14 @@ public class TwinserpentSlasherChargeGoal extends AbstractTwinserpentSkillGoal
 		this.mob.setAnimationState(7);
 		if(this.mob.getHead() != null)
 		{
-			this.mob.getHead().goal = TwinserpentBlasterBeamGoal.class;
+			this.mob.getHead().goal = SiamserpentBlasterBeamGoal.class;
 		}
 	}
 	
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.getHeadType() == HeadType.SLASHER && !this.isOtherHeadDisabled();
+		return super.canUse() && this.mob.getHeadType() == HeadType.SLASHER && !this.isOtherHeadDormant();
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class TwinserpentSlasherChargeGoal extends AbstractTwinserpentSkillGoal
 			}
 			if(this.mob.getLastLookPos().subtract(this.mob.position()).length() <= 1.5F)
 			{
-				EntityTwinserpentHead head = (EntityTwinserpentHead) this.mob.getHead();
+				EntitySiamserpentHead head = (EntitySiamserpentHead) this.mob.getHead();
 				head.setCanLook(true);
 				head.setCanMove(true);
 				head.setAnimationState(4);

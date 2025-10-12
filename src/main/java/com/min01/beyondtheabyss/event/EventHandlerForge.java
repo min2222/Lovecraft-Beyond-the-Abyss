@@ -13,6 +13,7 @@ import com.google.common.base.Stopwatch;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTALootTables;
@@ -47,6 +48,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.living.LivingDrownEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
@@ -66,7 +68,6 @@ public class EventHandlerForge
         copyRegionFiles(event.getServer());
     }
 	
-	//ChatGPT ahh;
     public static void copyRegionFiles(MinecraftServer server)
     {
         if(server == null || server.isDedicatedServer()) 
@@ -111,6 +112,21 @@ public class EventHandlerForge
     	{
     		//TODO can breath if wear space helmet;
     		event.setCanBreathe(false);
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onEntityMount(EntityMountEvent event)
+    {
+    	if(event.isDismounting())
+    	{
+    		if(event.getEntityBeingMounted() instanceof EntitySpineWormHead)
+    		{
+    			if(event.getEntityMounting().isShiftKeyDown())
+    			{
+            		event.setCanceled(true);
+    			}
+    		}
     	}
     }
     

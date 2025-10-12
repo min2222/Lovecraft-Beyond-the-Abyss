@@ -20,11 +20,11 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 
-public class EntityTwinserpentBone extends AbstractTwinserpentPart
+public class EntitySiamserpentBone extends AbstractSiamserpentPart
 {
-	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityTwinserpentBone.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
 	
-	public EntityTwinserpentBone(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public EntitySiamserpentBone(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 	}
@@ -46,7 +46,7 @@ public class EntityTwinserpentBone extends AbstractTwinserpentPart
 	@Override
 	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
 	{
-		EntityPartBuilder<EntityTwinserpentBone> partBuilder = new EntityPartBuilder<EntityTwinserpentBone>(this);
+		EntityPartBuilder<EntitySiamserpentBone> partBuilder = new EntityPartBuilder<EntitySiamserpentBone>(this);
 		return partBuilder;
 	}
     
@@ -72,13 +72,13 @@ public class EntityTwinserpentBone extends AbstractTwinserpentPart
 	@Override
 	protected SoundEvent getHurtSound(DamageSource p_33034_) 
 	{
-		return BTASounds.TWINSERPENT_HURT.get();
+		return BTASounds.SIAMSERPENT_HURT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return BTASounds.TWINSERPENT_DEATH.get();
+		return BTASounds.SIAMSERPENT_DEATH.get();
 	}
 	
 	@Override
@@ -99,7 +99,7 @@ public class EntityTwinserpentBone extends AbstractTwinserpentPart
 	}
 	
 	@Override
-	public AbstractTwinserpentPart getHead() 
+	public AbstractSiamserpentPart getHead() 
 	{
 		if(this.isSwap())
 		{

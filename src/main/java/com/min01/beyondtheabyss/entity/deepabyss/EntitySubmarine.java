@@ -2,12 +2,15 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.AbstractBTACreature;
-import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.entity.AbstractOwnableEntity;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
+import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
+import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,15 +21,19 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
-public class EntitySubmarine extends AbstractBTACreature
+public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> implements IMultipart
 {
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.INT);
 	
 	public final SmoothAnimationState openHatchAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState closeHatchAnimationState = new SmoothAnimationState();
@@ -34,24 +41,14 @@ public class EntitySubmarine extends AbstractBTACreature
     public float brightness;	
     public float brightnessOld;
     public int glowingTicks;
+
+	public final EntityPartBuilder<EntitySubmarine> partBuilder;
     
-	public EntitySubmarine(EntityType<? extends AbstractBTACreature> p_19870_, Level p_19871_)
+	public EntitySubmarine(EntityType<? extends Entity> p_19870_, Level p_19871_)
 	{
 		super(p_19870_, p_19871_);
 		this.noCulling = true;
-		this.setNoAi(true);
-	}
-	
-	@Override
-	public boolean isEffectiveAi()
-	{
-		return false;
-	}
-	
-	@Override
-	public BTAMobType getBTAMobType() 
-	{
-		return BTAMobType.MISC;
+		this.partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
 	}
 	
 	@Override
@@ -59,47 +56,53 @@ public class EntitySubmarine extends AbstractBTACreature
 	{
 		super.defineSynchedData();
 		this.entityData.define(HATCH_OPENED, false);
+		this.entityData.define(ANIMATION_STATE, 0);
+		this.entityData.define(ANIMATION_TICK, 0);
 	}
 	
 	@Override
-	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
+	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
 	{
-		EntityPartBuilder<EntitySubmarine> partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
-		return partBuilder;
+		return this.partBuilder.hitbox.getBox(bounds);
+	}
+
+	@Override
+	public EntityBounds getBounds() 
+	{
+		return this.partBuilder.hitbox;
+	}
+	
+	@Override
+	public EntityPartBuilder<?> getPartBuilder() 
+	{
+		return this.partBuilder;
 	}
 	
     @Override
     public void tick() 
     {
     	super.tick();
-    	this.deathTime = 0;
-        if(this.level.isClientSide) 
-        {
-        	this.openHatchAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
-        	this.closeHatchAnimationState.updateWhen(this.getAnimationState() == 2, this.tickCount);
-            ++this.glowingTicks;
-            this.brightness += (0.0F - this.brightness) * 0.8F;
-        }
-    }
-    
-    @Override
-    public void travel(Vec3 vec3) 
-    {
+    	
+		if(this.partBuilder != null)
+		{
+			this.partBuilder.tick(1.0F);
+		}
+		
+		if(this.getAnimationTick() > 0)
+		{
+			this.setAnimationTick(this.getAnimationTick() - 1);
+		}
+		
     	if(this.getFirstPassenger() instanceof Player player)
     	{
     		if(this.isInWater())
     		{
-            	Vec3 motion = vec3;
+            	Vec3 motion = this.getDeltaMovement();
             	boolean jumping = ObfuscationReflectionHelper.getPrivateValue(LivingEntity.class, player, "f_20899_");
                 if(player.xxa != 0 || player.zza != 0)
                 {
-                	if(!this.level.isClientSide)
-                	{
-                    	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 15));
-                    	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 15));
-                    	this.setYHeadRot(BTAUtil.rotlerp(this.getYHeadRot(), player.getYHeadRot(), 15));
-                    	this.setYBodyRot(BTAUtil.rotlerp(this.yBodyRot, player.yBodyRot, 15));
-                	}
+                	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 15));
+                	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 15));
                 	Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), Vec3.ZERO, 0.0F, 0.0F, 2.5F);
                 	motion = motion.add(lookPos);
                 }
@@ -108,20 +111,18 @@ public class EntitySubmarine extends AbstractBTACreature
             		motion = motion.add(0, 1.5F, 0);
             	}
             	this.setDeltaMovement(motion.scale(0.1F));
-            	super.travel(motion);
     		}
     	}
-    	else
-    	{
-        	super.travel(vec3);
-    	}
-    }
-    
-    @Override
-    public Vec3 getFluidFallingAdjustedMovement(double p_20995_, boolean p_20996_, Vec3 p_20997_)
-    {
-    	Vec3 motion = super.getFluidFallingAdjustedMovement(p_20995_, p_20996_, p_20997_);
-    	return new Vec3(motion.x, 0.0F, motion.z);
+    	
+    	this.move(MoverType.SELF, this.getDeltaMovement());
+		
+        if(this.level.isClientSide) 
+        {
+        	this.openHatchAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
+        	this.closeHatchAnimationState.updateWhen(this.getAnimationState() == 2, this.tickCount);
+            ++this.glowingTicks;
+            this.brightness += (0.0F - this.brightness) * 0.8F;
+        }
     }
 	
 	@Override
@@ -130,30 +131,6 @@ public class EntitySubmarine extends AbstractBTACreature
     	Vec3 pos = BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 1.75F, 2.0F);
 		fuction.accept(entity, pos.x, pos.y, pos.z);
 	}
-	
-	@Override
-	public boolean showVehicleHealth() 
-	{
-		return false;
-	}
-    
-    @Override
-    public void push(double x, double y, double z) 
-    {
-    	
-    }
-    
-    @Override
-    protected void pushEntities()
-    {
-    	
-    }
-    
-    @Override
-    public boolean canDrownInFluidType(FluidType type)
-    {
-    	return false;
-    }
     
     @Override
     public boolean isPushable() 
@@ -171,15 +148,6 @@ public class EntitySubmarine extends AbstractBTACreature
     public boolean isPushedByFluid() 
     {
         return false;
-    }
-    
-    @Override
-    protected void tickDeath() 
-    {
-        if(!this.level.isClientSide && !this.isRemoved())
-        {
-        	this.remove(Entity.RemovalReason.KILLED);
-        }
     }
     
     @Override
@@ -205,7 +173,13 @@ public class EntitySubmarine extends AbstractBTACreature
 	}
 	
 	@Override
-	public InteractionResult mobInteract(Player player, InteractionHand hand) 
+	public boolean isPickable()
+	{
+		return true;
+	}
+	
+	@Override
+	public InteractionResult interact(Player player, InteractionHand hand) 
 	{
         String part = BTAUtil.getMultiPart(this.getBounds(), player);
         if(part != null)
@@ -226,8 +200,44 @@ public class EntitySubmarine extends AbstractBTACreature
         	}
 			return InteractionResult.SUCCESS;
         }
-		return super.mobInteract(player, hand);
+		return super.interact(player, hand);
 	}
+	
+    @Override
+    public void readAdditionalSaveData(CompoundTag p_21450_) 
+    {
+    	super.readAdditionalSaveData(p_21450_);
+    	this.setAnimationTick(p_21450_.getInt("AnimationTick"));
+    	this.setAnimationState(p_21450_.getInt("AnimationState"));
+    }
+    
+    @Override
+    public void addAdditionalSaveData(CompoundTag p_21484_) 
+    {
+    	super.addAdditionalSaveData(p_21484_);
+    	p_21484_.putInt("AnimationTick", this.getAnimationTick());
+    	p_21484_.putInt("AnimationState", this.getAnimationState());
+    }
+    
+    public void setAnimationTick(int value)
+    {
+        this.entityData.set(ANIMATION_TICK, value);
+    }
+    
+    public int getAnimationTick()
+    {
+        return this.entityData.get(ANIMATION_TICK);
+    }
+    
+    public void setAnimationState(int value)
+    {
+        this.entityData.set(ANIMATION_STATE, value);
+    }
+    
+    public int getAnimationState()
+    {
+        return this.entityData.get(ANIMATION_STATE);
+    }
 
 	public void setHatchOpened(boolean value)
 	{
