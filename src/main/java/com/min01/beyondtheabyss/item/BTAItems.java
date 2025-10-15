@@ -60,6 +60,7 @@ public class BTAItems
 	public static final RegistryObject<Item> CORPSE_ANGLER_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "corpse_angler_spawn_egg", () -> BTAEntities.CORPSE_ANGLER.get(), 6239541, 1864119);
 	public static final RegistryObject<Item> MUTAVORE_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "mutavore_spawn_egg", () -> BTAEntities.MUTAVORE.get(), 7692894, 4921891);
 	public static final RegistryObject<Item> FULGASTRA_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "fulgastra_spawn_egg", () -> BTAEntities.FULGASTRA.get(), 4596012, 46834);
+	public static final RegistryObject<Item> NECROSHELL_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "necroshell_spawn_egg", () -> BTAEntities.NECROSHELL.get(), 3286815, 8878945);
 	
 	public static final RegistryObject<Item> OVERSEER_SPAWN_EGG = registerSpawnEgg(MIRRORED_CITY_ITEMS, "overseer_spawn_egg", () -> BTAEntities.OVERSEER.get(), 3752532, 7174016);
 	public static final RegistryObject<Item> OBSERVER_SPAWN_EGG = registerSpawnEgg(MIRRORED_CITY_ITEMS, "observer_spawn_egg", () -> BTAEntities.OBSERVER.get(), 3752532, 2699068);

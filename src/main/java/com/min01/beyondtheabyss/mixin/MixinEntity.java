@@ -421,7 +421,11 @@ public abstract class MixinEntity implements IDynamicLight
         } 
         else 
         {
-        	Predicate<Entity> predicate = p_186451_ == null ? EntitySelector.NO_SPECTATORS.and(t -> t instanceof IMultipart multipart && !multipart.getCollidePart().isEmpty()) : EntitySelector.NO_SPECTATORS.and(t -> t instanceof IMultipart multipart && !multipart.getCollidePart().isEmpty() && !p_186451_.isPassengerOfSameVehicle(t));
+        	Predicate<Entity> predicate = EntitySelector.NO_SPECTATORS.and(t -> t instanceof IMultipart multipart && !multipart.getCollidePart().isEmpty());
+        	if(p_186451_ != null)
+        	{
+        		predicate = predicate.and(t -> !p_186451_.isPassengerOfSameVehicle(t));
+        	}
         	List<Entity> list = level.getEntities(p_186451_, p_186452_.inflate(1.0E-7D), predicate);
         	if(list.isEmpty())
         	{

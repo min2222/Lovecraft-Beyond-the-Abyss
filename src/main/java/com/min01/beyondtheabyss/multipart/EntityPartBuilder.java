@@ -196,32 +196,39 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 	{
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         EntityBounds.EntityBoundsBuilder builder = EntityBounds.builder();
-        return this.addPart(builder, model.root(), null).getFactory().create();
+        return this.addPart(builder, model.root(), false, null).getFactory().create();
 	}
 
     @OnlyIn(Dist.CLIENT)
-    public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, @Nullable String parent)
+    public EntityBounds.EntityBoundsBuilder addPart(EntityBounds.EntityBoundsBuilder builder, ModelPart part, boolean collide, @Nullable String parent)
     {
 		HierarchicalModel<T> model = BTAClientUtil.getModelFromEntity(this.entity);
         String name = this.getModelPartName(model.root(), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
-        partInfo.setCollide(this.entity.getCollidePart().contains(name));
-        if(parent != null) 
-        {
-            partInfo.setParent(parent);
-            this.parts.put(name, parent);
-        }
+        boolean isCollide = this.entity.getCollidePart().contains(name) || collide;
+    	partInfo.setCollide(isCollide);
+    	if(part.visible)
+    	{
+            if(parent != null)
+            {
+                partInfo.setParent(parent);
+                this.parts.put(name, parent);
+            }
+    	}
         partInfo.setBounds(this.getPartSize(part, name));
         EntityBounds.EntityBoundsBuilder builder2 = partInfo.build();
         for(ModelPart child : part.children.values())
         {
-        	this.addPart(builder2, child, name);
+        	this.addPart(builder2, child, isCollide, name);
         }
-        Part p = new Part(name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-        if(!this.partMap.containsValue(p))
-        {
-        	this.partMap.put(p.name, p);
-        }
+    	if(part.visible)
+    	{
+            Part p = new Part(name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
+            if(!this.partMap.containsValue(p))
+            {
+            	this.partMap.put(p.name, p);
+            }
+    	}
         return builder2;
     }
 

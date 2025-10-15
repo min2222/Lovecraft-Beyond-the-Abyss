@@ -19,6 +19,7 @@ import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTASavedData;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.mojang.datafixers.util.Pair;
@@ -141,7 +142,7 @@ public class EventHandlerForge
     			event.setBubbleCount(0);
     		}
     	}
-    	if(BTAUtil.canSwimInAir(entity))
+    	if(BTAUtil.canSwimInAir(entity) || DeepAbyssUtil.isInsideSubmarine(entity))
     	{
 			event.setBubbleCount(0);
     	}

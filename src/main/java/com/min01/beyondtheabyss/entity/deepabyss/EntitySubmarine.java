@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -41,6 +42,13 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
     public float brightness;	
     public float brightnessOld;
     public int glowingTicks;
+    
+	private int lerpSteps;
+	private double lerpX;
+	private double lerpY;
+	private double lerpZ;
+	private double lerpYRot;
+	private double lerpXRot;
 
 	public final EntityPartBuilder<EntitySubmarine> partBuilder;
     
@@ -81,8 +89,8 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
     @Override
     public void tick() 
     {
-    	super.tick();
-    	
+		super.tick();
+		this.tickLerp();
 		if(this.partBuilder != null)
 		{
 			this.partBuilder.tick(1.0F);
@@ -93,28 +101,35 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 			this.setAnimationTick(this.getAnimationTick() - 1);
 		}
 		
-    	if(this.getFirstPassenger() instanceof Player player)
-    	{
-    		if(this.isInWater())
-    		{
-            	Vec3 motion = this.getDeltaMovement();
-            	boolean jumping = ObfuscationReflectionHelper.getPrivateValue(LivingEntity.class, player, "f_20899_");
-                if(player.xxa != 0 || player.zza != 0)
-                {
-                	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 15));
-                	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 15));
-                	Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), Vec3.ZERO, 0.0F, 0.0F, 2.5F);
-                	motion = motion.add(lookPos);
-                }
-            	if(jumping)
-            	{
-            		motion = motion.add(0, 1.5F, 0);
-            	}
-            	this.setDeltaMovement(motion.scale(0.1F));
-    		}
-    	}
-    	
-    	this.move(MoverType.SELF, this.getDeltaMovement());
+		if(this.isControlledByLocalInstance())
+		{
+	    	if(this.getFirstPassenger() instanceof Player player)
+	    	{
+	    		if(this.isInWater())
+	    		{
+	            	Vec3 motion = this.getDeltaMovement();
+	            	boolean jumping = ObfuscationReflectionHelper.getPrivateValue(LivingEntity.class, player, "f_20899_");
+	                if(player.xxa != 0 || player.zza != 0)
+	                {
+	                	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 15));
+	                	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 15));
+	                	Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), Vec3.ZERO, 0.0F, 0.0F, 2.5F);
+	                	motion = motion.add(lookPos);
+	                }
+	            	if(jumping)
+	            	{
+	            		motion = motion.add(0, 1.5F, 0);
+	            	}
+	            	this.setDeltaMovement(motion.scale(0.1F));
+	    		}
+	    	}
+	    	
+	    	this.move(MoverType.SELF, this.getDeltaMovement());
+		}
+		else
+		{
+			this.setDeltaMovement(Vec3.ZERO);
+		}
 		
         if(this.level.isClientSide) 
         {
@@ -130,6 +145,49 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	{
     	Vec3 pos = BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 1.75F, 2.0F);
 		fuction.accept(entity, pos.x, pos.y, pos.z);
+	}
+	
+	@Override
+	public void lerpTo(double p_38299_, double p_38300_, double p_38301_, float p_38302_, float p_38303_, int p_38304_, boolean p_38305_)
+	{
+		this.lerpX = p_38299_;
+		this.lerpY = p_38300_;
+		this.lerpZ = p_38301_;
+		this.lerpYRot = (double)p_38302_;
+		this.lerpXRot = (double)p_38303_;
+		this.lerpSteps = 10;
+	}
+	
+	private void tickLerp() 
+	{
+		if(this.isControlledByLocalInstance()) 
+		{
+			this.lerpSteps = 0;
+			this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
+		}
+		if(this.lerpSteps > 0) 
+		{
+			double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
+			double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
+			double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
+			double d3 = Mth.wrapDegrees(this.lerpYRot - (double)this.getYRot());
+			this.setYRot(this.getYRot() + (float)d3 / (float)this.lerpSteps);
+			this.setXRot(this.getXRot() + (float)(this.lerpXRot - (double)this.getXRot()) / (float)this.lerpSteps);
+			--this.lerpSteps;
+			this.setPos(d0, d1, d2);
+			this.setRot(this.getYRot(), this.getXRot());
+		}
+	}
+	
+	@Override
+	protected void addPassenger(Entity passenger)
+	{
+		super.addPassenger(passenger);
+		if(this.isControlledByLocalInstance() && this.lerpSteps > 0) 
+		{
+			this.lerpSteps = 0;
+			this.absMoveTo(this.lerpX, this.lerpY, this.lerpZ, (float)this.lerpYRot, (float)this.lerpXRot);
+		}
 	}
     
     @Override

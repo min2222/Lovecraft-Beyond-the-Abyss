@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.mojang.authlib.GameProfile;
 
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -26,7 +27,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 	@Inject(at = @At("HEAD"), method = "updateIsUnderwater", cancellable = true)
 	private void updateIsUnderwater(CallbackInfoReturnable<Boolean> cir)
 	{
-		if(BTAUtil.canSwimInAir(LocalPlayer.class.cast(this)))
+		if(BTAUtil.canSwimInAir(LocalPlayer.class.cast(this)) || DeepAbyssUtil.isInsideSubmarine(LocalPlayer.class.cast(this)))
 		{
 			cir.cancel();
 			super.updateIsUnderwater();
@@ -41,6 +42,10 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 		if(stack.is(BTAItems.FELMETAL_DIVING_HELMET.get()))
 		{
 			cir.setReturnValue(cir.getReturnValue() + 1.0F);
+		}
+		if(DeepAbyssUtil.isInsideSubmarine(player))
+		{
+			cir.setReturnValue(cir.getReturnValue() + 2.5F);
 		}
 	}
 }

@@ -59,12 +59,6 @@ description=''''''
     # Side this dependency is applied on - BOTH, CLIENT, or SERVER
     side="BOTH"
 [[dependencies.beyondtheabyss]]
-    modId="curios"
-    mandatory=true
-    versionRange="[5.14.1+1.20.1,)"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.beyondtheabyss]]
     modId="gravityapi"
     mandatory=true
     versionRange="[1.0.0,)"

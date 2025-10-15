@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -100,9 +101,12 @@ public class ClientEventHandlerForge
     public static void onRenderBlockScreenEffect(RenderBlockScreenEffectEvent event)
     {
     	Player player = event.getPlayer();
-    	if(event.getOverlayType() == OverlayType.WATER && BTAUtil.canSwimInAir(player))
+    	if(event.getOverlayType() == OverlayType.WATER)
     	{
-    		event.setCanceled(true);
+    		if(BTAUtil.canSwimInAir(player) || DeepAbyssUtil.isInsideSubmarine(player))
+    		{
+        		event.setCanceled(true);
+    		}
     	}
     }
     

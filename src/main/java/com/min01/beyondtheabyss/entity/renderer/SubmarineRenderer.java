@@ -33,7 +33,7 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implement
 		float xRot = Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot());
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
 		p_114488_.translate(0.0F, -1.5F, 0.0F);
-		this.model.setupAnim(p_114485_, 0, 0, p_114485_.tickCount + p_114487_, yRot + 180.0F, -xRot);
+		this.model.setupAnim(p_114485_, 0, 0, p_114485_.tickCount + p_114487_, yRot + 180.0F, xRot);
 		this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		p_114488_.popPose();
 	}

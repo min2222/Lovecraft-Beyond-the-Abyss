@@ -29,8 +29,11 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature impl
 	{
 		super(p_21683_, p_21684_);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-		this.moveControl = this.getSwimmingMoveControl();
-		this.lookControl = this.getSwimmingLookControl();
+		if(this.isSwimable())
+		{
+			this.moveControl = this.getSwimmingMoveControl();
+			this.lookControl = this.getSwimmingLookControl();
+		}
 	}
     
     @Override

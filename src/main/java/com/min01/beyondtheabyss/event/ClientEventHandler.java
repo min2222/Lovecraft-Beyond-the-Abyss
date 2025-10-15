@@ -36,6 +36,7 @@ import com.min01.beyondtheabyss.entity.model.ModelGloomfish;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
+import com.min01.beyondtheabyss.entity.model.ModelNecroshell;
 import com.min01.beyondtheabyss.entity.model.ModelObserver;
 import com.min01.beyondtheabyss.entity.model.ModelOverseer;
 import com.min01.beyondtheabyss.entity.model.ModelPutridBubble;
@@ -67,6 +68,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GloomfishRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.MutavoreRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.NecroshellRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.ObserverRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.OverseerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentMiddleBoneRenderer;
@@ -82,8 +84,6 @@ import com.min01.beyondtheabyss.item.model.ModelFelmetalDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelFlashlight;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
 import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
-import com.min01.beyondtheabyss.particle.BTAParticles;
-import com.min01.beyondtheabyss.particle.WaterParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.world.BTABiomes;
@@ -151,7 +151,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
 	{
-		event.registerSpriteSet(BTAParticles.WATER.get(), WaterParticle.Provider::new);
+		
 	}
     
 	@SubscribeEvent
@@ -188,6 +188,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.MUTAVORE.get(), MutavoreRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FULGASTRA.get(), FulgastraRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SPLITTED_FULGASTRA.get(), SplittedFulgastraRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.NECROSHELL.get(), NecroshellRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FORNEUS_HEAD.get(), ForneusHeadRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FORNEUS_BODY.get(), ForneusBodyRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FORNEUS_TAIL.get(), ForneusTailRenderer::new);
@@ -218,6 +219,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelMutavore.LAYER_LOCATION, ModelMutavore::createBodyLayer);
     	event.registerLayerDefinition(ModelFulgastra.LAYER_LOCATION, ModelFulgastra::createBodyLayer);
     	event.registerLayerDefinition(ModelSplittedFulgastra.LAYER_LOCATION, ModelSplittedFulgastra::createBodyLayer);
+    	event.registerLayerDefinition(ModelNecroshell.LAYER_LOCATION, ModelNecroshell::createBodyLayer);
     	event.registerLayerDefinition(ModelForneusHead.LAYER_LOCATION, ModelForneusHead::createBodyLayer);
     	event.registerLayerDefinition(ModelForneusBody.LAYER_LOCATION, ModelForneusBody::createBodyLayer);
     	event.registerLayerDefinition(ModelForneusTail.LAYER_LOCATION, ModelForneusTail::createBodyLayer);
