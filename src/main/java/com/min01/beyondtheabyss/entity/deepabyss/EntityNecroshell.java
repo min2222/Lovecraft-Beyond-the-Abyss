@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellHidingGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +28,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityNecroshell extends AbstractDeepAbyssMonster
@@ -44,6 +44,7 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	public EntityNecroshell(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.xpReward = this.random.nextInt(5);
 		this.setMaxUpStep(1);
 	}
 	
@@ -149,7 +150,8 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 		this.setShellType(this.random.nextInt(0, 2));
 		if(p_21436_ == MobSpawnType.NATURAL)
 		{
-			Vec3 pos = Vec3.atBottomCenterOf(p_21434_.getHeightmapPos(Types.OCEAN_FLOOR_WG, this.blockPosition()).above());
+			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above(2);
+			Vec3 pos = Vec3.atBottomCenterOf(floorPos);
 			this.moveTo(pos);
 		}
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);

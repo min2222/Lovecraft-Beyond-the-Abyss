@@ -31,7 +31,7 @@ public class LargeFossilStructure extends Structure
 		{
 			StructureTemplateManager manager = p_227387_.structureTemplateManager();
 			ChunkPos chunkPos = p_227387_.chunkPos();
-			BlockPos blockPos = chunkPos.getWorldPosition().offset(0, 2, 0);
+			BlockPos blockPos = chunkPos.getWorldPosition();
 			LargeFossilStructurePiece piece = new LargeFossilStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
 			p_227390_.addPiece(piece);
 		});

@@ -16,6 +16,7 @@ public class EntityObserver extends AbstractBTAFlyingMonster
 	public EntityObserver(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
+		this.xpReward = this.random.nextInt(3);
 		this.moveControl = new FlyingBoidMoveControl(this, 85, 10, 0.05F);
 	}
 	

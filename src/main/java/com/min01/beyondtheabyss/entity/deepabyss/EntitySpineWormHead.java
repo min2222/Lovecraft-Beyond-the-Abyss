@@ -32,7 +32,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
@@ -52,6 +51,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		super(p_21683_, p_21684_);
 		this.setCanMove(false);
 		this.setCanLook(false);
+		this.xpReward = this.random.nextInt(15);
 		this.posArray = new Vec3[1];
 	}
 	
@@ -234,7 +234,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		BlockPos attachPos = this.blockPosition();
 		if(p_21436_ == MobSpawnType.NATURAL)
 		{
-			BlockPos blockPos = p_21434_.getHeightmapPos(Types.OCEAN_FLOOR_WG, this.blockPosition());
+			BlockPos blockPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above();
 			if(!p_21434_.getBlockState(blockPos).is(Blocks.WATER))
 			{
 				blockPos = blockPos.above();

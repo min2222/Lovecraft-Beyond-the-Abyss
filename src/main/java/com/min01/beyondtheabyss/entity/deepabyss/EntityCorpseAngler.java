@@ -62,6 +62,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	public EntityCorpseAngler(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
+		this.xpReward = this.random.nextInt(10);
 		this.noCulling = true;
 	}
 	
@@ -214,7 +215,8 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	{
 		if(p_21436_ == MobSpawnType.NATURAL)
 		{
-			Vec3 pos = Vec3.atBottomCenterOf(p_21434_.getHeightmapPos(Types.OCEAN_FLOOR_WG, this.blockPosition()).above());
+			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above();
+			Vec3 pos = Vec3.atBottomCenterOf(floorPos);
 			this.moveTo(pos);
 		}
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
@@ -280,12 +282,20 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	@Override
 	public int maxTurnX() 
 	{
-		return 5;
+		if(this.getAnimationState() == 1)
+		{
+			return 75;
+		}
+		return 55;
 	}
 	
 	@Override
 	public int maxTurnY() 
 	{
+		if(this.getAnimationState() == 1)
+		{
+			return 7;
+		}
 		return 5;
 	}
 	

@@ -84,6 +84,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public EntityMutavore(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.xpReward = this.random.nextInt(25);
 		this.posArray = new Vec3[4];
 		this.noCulling = true;
 	}

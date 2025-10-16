@@ -33,8 +33,8 @@
 			{
 				"type": "beyondtheabyss:gnasher",
 				"weight": 70,
-				"minCount": 3,
-				"maxCount": 5
+				"minCount": 7,
+				"maxCount": 8
 			},
 			{
 				"type": "beyondtheabyss:siamserpent_head",
@@ -62,7 +62,7 @@
 			},
 			{
 				"type": "beyondtheabyss:mutavore",
-				"weight": 40,
+				"weight": 20,
 				"minCount": 1,
 				"maxCount": 1
 			},
@@ -74,7 +74,7 @@
 			},
 			{
 				"type": "beyondtheabyss:fulgastra",
-				"weight": 70,
+				"weight": 40,
 				"minCount": 1,
 				"maxCount": 1
 			}

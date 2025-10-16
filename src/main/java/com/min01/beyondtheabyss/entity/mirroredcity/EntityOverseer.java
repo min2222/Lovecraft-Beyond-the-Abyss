@@ -15,6 +15,7 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	public EntityOverseer(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.xpReward = this.random.nextInt(30);
 		this.setCanLook(false);
 		this.noCulling = true;
 	}

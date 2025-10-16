@@ -33,6 +33,7 @@ public class EntityForneusHead extends AbstractForneusPart
 	public EntityForneusHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
+		this.xpReward = 1000 + this.random.nextInt(1000);
 		this.noPhysics = true;
 		this.setNoGravity(true);
 	}
