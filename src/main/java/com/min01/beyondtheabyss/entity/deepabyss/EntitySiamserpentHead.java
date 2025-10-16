@@ -17,7 +17,6 @@ import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -81,8 +80,9 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 60.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F)
-        		.add(Attributes.FOLLOW_RANGE, 30.0F)
-        		.add(Attributes.ATTACK_DAMAGE, 6.0F);
+        		.add(Attributes.FOLLOW_RANGE, 45.0F)
+        		.add(Attributes.ATTACK_DAMAGE, 6.0F)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F);
     }
     
     @Override
@@ -203,27 +203,25 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public void moveToTarget() 
 	{
-		//TODO
-		if(this.wantedPos.equals(Vec3.ZERO) || this.wantedPos.subtract(this.position()).length() <= 1.5F)
+		if(this.isUsingSkill())
 		{
-			Vec3 pos = BTAUtil.getSpreadPosition(this.getTarget(), 15);
-			this.wantedPos = pos;
-			this.getNavigation().moveTo(pos.x, pos.y, pos.z, 0.5F);
+			this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
 		}
-		else
+		else if(this.wantedPos.equals(Vec3.ZERO) || this.wantedPos.subtract(this.position()).length() <= 3.5F || this.tickCount % 60 == 0)
 		{
-			super.moveToTarget();
+			Vec3 pos = BTAUtil.getSpreadPosition(this.getTarget(), 6);
+			if(this.getTarget().position().distanceTo(pos) <= 6.0F && !this.isDormant() && !this.isDisabled())
+			{
+				this.wantedPos = pos;
+				this.getNavigation().moveTo(pos.x, pos.y, pos.z, 1.5F);
+			}
 		}
 	}
 	
 	@Override
 	public void lookTarget() 
 	{
-		if(!this.wantedPos.equals(Vec3.ZERO))
-		{
-			this.lookAt(Anchor.EYES, this.wantedPos);
-		}
-		else
+		if(this.isUsingSkill())
 		{
 			super.lookTarget();
 		}

@@ -29,6 +29,7 @@ public class BTATags
 	{
 		public static final TagKey<Item> DIVING_SET = create("diving_set");
 		public static final TagKey<Item> TEETH = create("teeth");
+		public static final TagKey<Item> MUTAVORE_CONSUMABLE = create("mutavore_consumable");
 		
 		private static TagKey<Item> create(String name) 
 		{

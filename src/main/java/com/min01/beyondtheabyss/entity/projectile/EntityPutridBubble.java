@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.projectile;
 import java.util.List;
 
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
 
 import net.minecraft.nbt.CompoundTag;
@@ -80,7 +81,7 @@ public class EntityPutridBubble extends ThrowableProjectile
 			if(1.0F - tick <= 0.0F)
 			{
 				this.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
-				List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F), t -> this.getOwner() != null ? !t.isAlliedTo(this.getOwner()) && t != this.getOwner() : true);
+				List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F), t -> !(t instanceof EntityMutavore) && this.getOwner() != null ? !t.isAlliedTo(this.getOwner()) && t != this.getOwner() : true);
 				list.forEach(t -> 
 				{
 					if(t.hurt(BTADamageSource.causePutridDamage(this.level.registryAccess(), this), 1.5F))

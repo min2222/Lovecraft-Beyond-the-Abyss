@@ -27,8 +27,8 @@ public class PutridBubbleRenderer extends EntityRenderer<EntityPutridBubble>
 		float tick = p_114485_.explosionTick * 0.08F;
 		p_114488_.pushPose();
 		p_114488_.scale(-1.0F, -1.0F, 1.0F);
-		p_114488_.translate(0.0F, -1.5F, 0.0F);
 		p_114488_.scale(1.0F + tick, 1.0F + tick, 1.0F + tick);
+		p_114488_.translate(0.0F, -1.5F, 0.0F);
 		this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, Math.max(1.0F - tick, 0.0F));
 		p_114488_.popPose();
 	}

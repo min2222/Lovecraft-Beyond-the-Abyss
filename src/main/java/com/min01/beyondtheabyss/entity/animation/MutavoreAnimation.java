@@ -146,6 +146,102 @@ public class MutavoreAnimation
 				))
 				.build();
 	}
+	
+	public static class MutationAnimation
+	{
+		public static final AnimationDefinition MUTATE_L_ARM = AnimationDefinition.Builder.withLength(0.625F)
+				.addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+					new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.0833F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.25F, KeyframeAnimations.scaleVec(0.9F, 0.5F, 1.8F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.375F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.4583F, KeyframeAnimations.scaleVec(1.22F, 1.16F, 1.22F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.625F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM)
+				))
+				.build();
+
+			public static final AnimationDefinition MUTATE_R_ARM = AnimationDefinition.Builder.withLength(0.625F)
+				.addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+					new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.0833F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.25F, KeyframeAnimations.scaleVec(0.9F, 0.5F, 1.8F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.375F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.4583F, KeyframeAnimations.scaleVec(1.22F, 1.16F, 1.22F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.625F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM)
+				))
+				.build();
+
+			public static final AnimationDefinition MUTATE1 = AnimationDefinition.Builder.withLength(0.625F)
+				.addAnimation("chunk", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+					new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.0833F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.25F, KeyframeAnimations.scaleVec(0.9F, 0.5F, 1.8F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.375F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.4583F, KeyframeAnimations.scaleVec(1.22F, 1.16F, 1.22F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.625F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM)
+				))
+				.build();
+
+			public static final AnimationDefinition MUTATE2 = AnimationDefinition.Builder.withLength(0.625F)
+				.addAnimation("mound_head", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+					new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.0833F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.25F, KeyframeAnimations.scaleVec(0.9F, 0.5F, 1.8F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.375F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.4583F, KeyframeAnimations.scaleVec(1.22F, 1.16F, 1.22F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.625F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM)
+				))
+				.build();
+
+			public static final AnimationDefinition MUTATE3 = AnimationDefinition.Builder.withLength(0.625F)
+				.addAnimation("chunk2", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+					new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.0833F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.25F, KeyframeAnimations.scaleVec(0.9F, 0.5F, 1.8F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.375F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.4583F, KeyframeAnimations.scaleVec(1.22F, 1.16F, 1.22F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.625F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM)
+				))
+				.build();
+
+			public static final AnimationDefinition MUTATE4 = AnimationDefinition.Builder.withLength(0.625F)
+				.addAnimation("chunk2", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+					new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.0833F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.25F, KeyframeAnimations.scaleVec(0.9F, 0.5F, 1.8F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.375F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.4583F, KeyframeAnimations.scaleVec(1.22F, 1.16F, 1.22F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.625F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM)
+				))
+				.addAnimation("chunk3", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+					new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.0833F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.25F, KeyframeAnimations.scaleVec(0.9F, 0.5F, 1.8F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.375F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.4583F, KeyframeAnimations.scaleVec(1.22F, 1.16F, 1.22F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.625F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM)
+				))
+				.build();
+
+			public static final AnimationDefinition MUTATE_HEAD = AnimationDefinition.Builder.withLength(0.625F)
+				.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.SCALE, 
+					new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.0833F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.1667F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 0.6F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.25F, KeyframeAnimations.scaleVec(0.9F, 0.5F, 1.8F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.375F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.4583F, KeyframeAnimations.scaleVec(1.22F, 1.16F, 1.22F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.625F, KeyframeAnimations.scaleVec(1.2F, 1.2F, 1.2F), AnimationChannel.Interpolations.CATMULLROM)
+				))
+				.build();
+	}
 		
 	public static final AnimationDefinition MUTAVORE_BUBBLE_START = AnimationDefinition.Builder.withLength(0.5F)
 			.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 

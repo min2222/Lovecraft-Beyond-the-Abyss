@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -30,6 +31,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -80,6 +83,9 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	{
 		super.registerGoals();
 		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
+		Set<WrappedGoal> set = this.goalSelector.getAvailableGoals();
+		set.removeIf(t -> t.getGoal() instanceof HurtByTargetGoal);
+		this.goalSelector.addGoal(4, new HurtByTargetGoal(this).setAlertOthers());
 	}
 	
 	@Override

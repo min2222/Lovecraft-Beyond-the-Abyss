@@ -23,6 +23,7 @@ import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.projectile.EntityEnergyBall;
 import com.min01.beyondtheabyss.entity.projectile.EntityForneusMagic;
+import com.min01.beyondtheabyss.entity.projectile.EntityMutavoreCyst;
 import com.min01.beyondtheabyss.entity.projectile.EntityPutridBubble;
 import com.min01.beyondtheabyss.entity.projectile.EntityToothBullet;
 
@@ -48,6 +49,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityEnergyBall>> ENERGY_BALL = registerEntity("energy_ball", EntityType.Builder.<EntityEnergyBall>of(EntityEnergyBall::new, MobCategory.MISC).sized(0.375F, 0.375F));
 	public static final RegistryObject<EntityType<EntityPutridBubble>> PUTRID_BUBBLE = registerEntity("putrid_bubble", EntityType.Builder.<EntityPutridBubble>of(EntityPutridBubble::new, MobCategory.MISC).sized(0.75F, 0.75F));
 	public static final RegistryObject<EntityType<EntityToothBullet>> TOOTH_BULLET = registerEntity("tooth_bullet", EntityType.Builder.<EntityToothBullet>of(EntityToothBullet::new, MobCategory.MISC).sized(0.1875F, 0.25F));
+	public static final RegistryObject<EntityType<EntityMutavoreCyst>> MUTAVORE_CYST = registerEntity("mutavore_cyst", createBuilder(EntityMutavoreCyst::new, MobCategory.MISC).sized(0.625F, 0.625F));
 
 	//living
 	public static final RegistryObject<EntityType<EntitySolomon>> SOLOMON = registerEntity("solomon", createBuilder(EntitySolomon::new, MobCategory.CREATURE).sized(0.75F, 2.0F));

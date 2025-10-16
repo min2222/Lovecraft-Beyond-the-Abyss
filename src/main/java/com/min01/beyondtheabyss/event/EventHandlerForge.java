@@ -123,7 +123,8 @@ public class EventHandlerForge
     	{
     		if(event.getEntityBeingMounted() instanceof EntitySpineWormHead)
     		{
-    			if(event.getEntityMounting().isShiftKeyDown())
+    			boolean flag = event.getEntityMounting() instanceof Player player ? !player.getAbilities().instabuild : true;
+    			if(event.getEntityMounting().isShiftKeyDown() && flag)
     			{
             		event.setCanceled(true);
     			}

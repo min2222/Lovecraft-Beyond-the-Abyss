@@ -41,6 +41,7 @@ public class CorpseAnglerAmbushGoal extends BasicBTASkillGoal<EntityCorpseAngler
 	{
 		super.stop();
 		this.mob.setAnimationState(0);
+		this.mob.setBurrowCooldown(100);
 	}
 
 	@Override

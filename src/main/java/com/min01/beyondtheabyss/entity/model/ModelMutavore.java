@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.animation.MutavoreAnimation;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore.MutationType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -248,11 +249,11 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		BTAClientUtil.animateHead(this.tentacle5, rot9.y - netHeadYaw - yBodyRot, rot9.x - headPitch);
 		BTAClientUtil.animateHead(this.tentacle_segment5, rot10.y - netHeadYaw - yBodyRot, rot10.x - headPitch);
 		
-		this.mound_head.visible = false;
-		this.mine.visible = false;
-		this.mine2.visible = false;
-		this.mine3.visible = false;
-		this.mine4.visible = false;
+		this.mound_head.visible = entity.isMutated(MutationType.MUTATE4);
+		this.mine.visible =  entity.hasCyst(0) && entity.isMutated(MutationType.MUTATE4);
+		this.mine2.visible = entity.hasCyst(1) && (entity.isMutated(MutationType.MUTATE3) || entity.isMutated(MutationType.MUTATE4));
+		this.mine3.visible = entity.hasCyst(2) && (entity.isMutated(MutationType.MUTATE3) || entity.isMutated(MutationType.MUTATE4));
+		this.mine4.visible = entity.hasCyst(3) && entity.isMutated(MutationType.MUTATE4);
 		
 		entity.idleAnimationState.animate(this, MutavoreAnimation.MUTAVORE_IDLE, ageInTicks, limbSwingAmount);
 		entity.bubbleStartAnimationState.animate(this, MutavoreAnimation.MUTAVORE_BUBBLE_START, ageInTicks);
@@ -260,7 +261,14 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		entity.tongueStartAnimationState.animate(this, MutavoreAnimation.TongueAnimation.MUTAVORE_TONGUE_START, ageInTicks);
 		entity.tongueLoopAnimationState.animate(this, MutavoreAnimation.TongueAnimation.MUTAVORE_TONGUE_LOOP, ageInTicks);
 		entity.tongueStopAnimationState.animate(this, MutavoreAnimation.TongueAnimation.MUTAVORE_TONGUE_STOP, ageInTicks);
-		this.animateWalk(MutavoreAnimation.MUTAVORE_SWIM, limbSwing, limbSwingAmount, 2.5F, 2.5F);
+		entity.mutateLArmAnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE_L_ARM, ageInTicks);
+		entity.mutateRArmAnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE_R_ARM, ageInTicks);
+		entity.mutate1AnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE1, ageInTicks);
+		entity.mutate2AnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE2, ageInTicks);
+		entity.mutate3AnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE3, ageInTicks);
+		entity.mutate4AnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE4, ageInTicks);
+		entity.mutateHeadAnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE_HEAD, ageInTicks);
+		this.animateWalk(MutavoreAnimation.MUTAVORE_SWIM, limbSwing, limbSwingAmount, 2.5F, 1.5F);
 	}
 	
 	@Override

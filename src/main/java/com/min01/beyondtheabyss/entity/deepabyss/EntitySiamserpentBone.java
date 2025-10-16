@@ -33,7 +33,7 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 60.0F)
-        		.add(Attributes.FOLLOW_RANGE, 30.0F);
+        		.add(Attributes.FOLLOW_RANGE, 45.0F);
     }
 	
 	@Override

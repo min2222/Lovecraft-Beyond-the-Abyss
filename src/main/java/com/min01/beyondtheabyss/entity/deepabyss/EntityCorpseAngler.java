@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerAmbushGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerDashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
@@ -78,6 +79,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
     {
     	super.registerGoals();
     	this.goalSelector.addGoal(0, new CorpseAnglerAmbushGoal(this));
+    	this.goalSelector.addGoal(0, new CorpseAnglerDashGoal(this));
     }
 
     @Override
@@ -142,7 +144,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		if(this.level.isClientSide)
 		{
 			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
-			this.openMouthAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+			this.openMouthAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
 			this.closeMouthAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3, this.tickCount);
 			this.unburrowAnimationState.updateWhen(this.getAnimationState() == 4, this.tickCount);

@@ -26,9 +26,15 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	}
 	
 	@Override
+	public boolean stopMovingWhenStart()
+	{
+		return false;
+	}
+	
+	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.distanceTo(this.mob.getTarget()) >= 8.0F;
+		return super.canUse() && this.mob.distanceTo(this.mob.getTarget()) >= 12.0F;
 	}
 	
 	@Override
@@ -43,9 +49,9 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 				{
 					EntityPutridBubble bubble = new EntityPutridBubble(BTAEntities.PUTRID_BUBBLE.get(), this.mob.level);
 					bubble.setOwner(this.mob);
-					Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.mob.getXRot(), this.mob.getYHeadRot()), this.mob.position(), 0, 1.5F, 4.0F);
+					Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.mob.getXRot(), this.mob.getYHeadRot()), this.mob.position(), 0, 1.0F, 3.5F);
 					bubble.setPos(lookPos.add(this.mob.level.random.nextFloat() * 0.1F, this.mob.level.random.nextFloat() * 0.1F, this.mob.level.random.nextFloat() * 0.1F));
-					bubble.setDeltaMovement(BTAUtil.fromToVector(bubble.position(), BTAUtil.getSpreadPosition(this.mob.getTarget(), 1.5F), 0.25F));
+					bubble.setDeltaMovement(BTAUtil.fromToVector(bubble.position(), BTAUtil.getSpreadPosition(this.mob.getTarget(), 2.5F), 0.35F));
 					bubble.lookAt(Anchor.EYES, this.mob.getTarget().getEyePosition());
 					this.mob.level.addFreshEntity(bubble);
 				}
@@ -69,7 +75,7 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	@Override
 	protected int getSkillUsingTime() 
 	{
-		return 20 + 60;
+		return 80;
 	}
 	
 	@Override
@@ -81,6 +87,6 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	@Override
 	protected int getSkillUsingInterval()
 	{
-		return 100;
+		return 120;
 	}
 }

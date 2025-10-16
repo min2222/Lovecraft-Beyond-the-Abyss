@@ -34,7 +34,7 @@ public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 	public void tick() 
 	{
 		super.tick();
-		if(this.mob.getTarget() != null || this.mob.getTarget().distanceTo(this.mob) <= 4.5F || this.mob.getLastHurtByMob() != null)
+		if((this.mob.getTarget() != null && this.mob.getTarget().distanceTo(this.mob) <= 4.5F) || this.mob.getLastHurtByMob() != null)
 		{
 			this.noTargetTick = 0;
 		}

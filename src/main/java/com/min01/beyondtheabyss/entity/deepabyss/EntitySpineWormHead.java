@@ -112,7 +112,31 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
 			this.chain.setAnchorPos(Vec3.atBottomCenterOf(this.getAttachedPos()));
-			this.chain.setInitialRot(new Vec2(this.getAttachedDirection().toYRot(), 0.0F));
+			Direction direction = this.getAttachedDirection();
+			switch(direction)
+			{
+			case DOWN:
+				this.chain.setInitialRot(new Vec2(direction.toYRot() + 180.0F, 0.0F));
+				break;
+			case EAST:
+				this.chain.setInitialRot(new Vec2(direction.toYRot() + 90.0F, -90.0F));
+				break;
+			case NORTH:
+				this.chain.setInitialRot(new Vec2(direction.toYRot() + 180.0F, 180.0F));
+				break;
+			case SOUTH:
+				this.chain.setInitialRot(new Vec2(direction.toYRot(), 0.0F));
+				break;
+			case UP:
+				this.chain.setInitialRot(new Vec2(direction.toYRot(), 0.0F));
+				break;
+			case WEST:
+				this.chain.setInitialRot(new Vec2(direction.toYRot() - 90.0F, 90.0F));
+				break;
+			default:
+				this.chain.setInitialRot(new Vec2(direction.toYRot(), 0.0F));
+				break;
+			}
 		}
 		else
 		{
@@ -121,8 +145,11 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 
 			if(this.getTarget() != null && this.canExtend())
 			{
-				this.posArray[0] = this.getTarget().position();
-				BTANetwork.sendToAll(new UpdatePosArrayPacket(this, this.getTarget().position(), 0));
+				if(!this.getTarget().isPassenger())
+				{
+					this.posArray[0] = this.getTarget().position();
+					BTANetwork.sendToAll(new UpdatePosArrayPacket(this, this.getTarget().position(), 0));
+				}
 			}
 
 			if(!this.level.isClientSide && this.getTarget() == null)
@@ -219,10 +246,51 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		Direction direction = this.tryAttach();
 		this.setAttachedPos(this.blockPosition());
 		this.setAttachedDirection(direction);
-		this.setYRot(0.0F);
-		this.setYHeadRot(0.0F);
-		this.setYBodyRot(0.0F);
-		this.setXRot(direction.toYRot());
+		switch(direction)
+		{
+		case DOWN:
+			this.setYRot(0.0F);
+			this.setYHeadRot(0.0F);
+			this.setYBodyRot(0.0F);
+			this.setXRot(direction.toYRot() + 180.0F);
+			break;
+		case EAST:
+			this.setYRot(-90.0F);
+			this.setYHeadRot(-90.0F);
+			this.setYBodyRot(-90.0F);
+			this.setXRot(direction.toYRot() + 90.0F);
+			break;
+		case NORTH:
+			this.setYRot(180.0F);
+			this.setYHeadRot(180.0F);
+			this.setYBodyRot(180.0F);
+			this.setXRot(direction.toYRot() + 180.0F);
+			break;
+		case SOUTH:
+			this.setYRot(0.0F);
+			this.setYHeadRot(0.0F);
+			this.setYBodyRot(0.0F);
+			this.setXRot(direction.toYRot());
+			break;
+		case UP:
+			this.setYRot(0.0F);
+			this.setYHeadRot(0.0F);
+			this.setYBodyRot(0.0F);
+			this.setXRot(direction.toYRot());
+			break;
+		case WEST:
+			this.setYRot(90.0F);
+			this.setYHeadRot(90.0F);
+			this.setYBodyRot(90.0F);
+			this.setXRot(direction.toYRot() - 90.0F);
+			break;
+		default:
+			this.setYRot(0.0F);
+			this.setYHeadRot(0.0F);
+			this.setYBodyRot(0.0F);
+			this.setXRot(direction.toYRot());
+			break;
+		}
 		
 		for(int i = 0; i < this.getChainLength(); i++)
 		{
@@ -243,7 +311,6 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }
 	
-	//FIXME proper direction;
 	public Direction tryAttach()
 	{
 		for(Direction direction : Direction.values())

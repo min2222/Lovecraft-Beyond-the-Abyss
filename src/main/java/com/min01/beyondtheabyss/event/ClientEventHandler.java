@@ -26,6 +26,7 @@ import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
+import com.min01.beyondtheabyss.entity.model.ModelCystShrapnel;
 import com.min01.beyondtheabyss.entity.model.ModelEnergyBall;
 import com.min01.beyondtheabyss.entity.model.ModelForneusBody;
 import com.min01.beyondtheabyss.entity.model.ModelForneusHead;
@@ -36,6 +37,7 @@ import com.min01.beyondtheabyss.entity.model.ModelGloomfish;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
+import com.min01.beyondtheabyss.entity.model.ModelMutavoreCyst;
 import com.min01.beyondtheabyss.entity.model.ModelNecroshell;
 import com.min01.beyondtheabyss.entity.model.ModelObserver;
 import com.min01.beyondtheabyss.entity.model.ModelOverseer;
@@ -55,6 +57,7 @@ import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel2;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
+import com.min01.beyondtheabyss.entity.renderer.MutavoreCystRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
@@ -174,6 +177,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.ENERGY_BALL.get(), EnergyBallRenderer::new);
     	event.registerEntityRenderer(BTAEntities.PUTRID_BUBBLE.get(), PutridBubbleRenderer::new);
     	event.registerEntityRenderer(BTAEntities.TOOTH_BULLET.get(), ToothBulletRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.MUTAVORE_CYST.get(), MutavoreCystRenderer::new);
     	
     	//living
     	event.registerEntityRenderer(BTAEntities.SOLOMON.get(), SolomonRenderer::new);
@@ -228,6 +232,8 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelToothBullet.LAYER_LOCATION, ModelToothBullet::createBodyLayer);
     	event.registerLayerDefinition(ModelToothBulletShrapnel.LAYER_LOCATION, ModelToothBulletShrapnel::createBodyLayer);
     	event.registerLayerDefinition(ModelToothBulletShrapnel2.LAYER_LOCATION, ModelToothBulletShrapnel2::createBodyLayer);
+    	event.registerLayerDefinition(ModelMutavoreCyst.LAYER_LOCATION, ModelMutavoreCyst::createBodyLayer);
+    	event.registerLayerDefinition(ModelCystShrapnel.LAYER_LOCATION, ModelCystShrapnel::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
     	event.registerLayerDefinition(ModelObserver.LAYER_LOCATION, ModelObserver::createBodyLayer);
