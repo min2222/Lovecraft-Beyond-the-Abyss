@@ -1,7 +1,7 @@
 {
 	"type": "beyondtheabyss:mirrored_city",
 	"generator": {
-		"type": "minecraft:noise",
+		"type": "beyondtheabyss:mirrored_city",
 		"settings": "beyondtheabyss:mirrored_city",
 		"biome_source": {
 			"type": "minecraft:multi_noise",
