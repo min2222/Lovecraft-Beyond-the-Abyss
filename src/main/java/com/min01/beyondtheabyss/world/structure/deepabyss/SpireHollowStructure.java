@@ -1,7 +1,8 @@
-package com.min01.beyondtheabyss.world.structure;
+package com.min01.beyondtheabyss.world.structure.deepabyss;
 
 import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTAStructures;
+import com.min01.beyondtheabyss.world.structure.AbstractCaveGenerationStructure;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;

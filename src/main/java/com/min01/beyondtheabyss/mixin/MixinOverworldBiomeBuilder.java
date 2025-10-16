@@ -29,7 +29,7 @@ public class MixinOverworldBiomeBuilder
     {
     	if(!SharedConstants.debugGenerateSquareTerrainWithoutNoise) 
     	{
-        	//TODO custom biome in overworld;
+
     	}
     }
 }

@@ -47,7 +47,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -75,7 +74,7 @@ public class BTAUtil
         return Mth.sqrt(f * f + f2 * f2);
     }
     
-	public static void moveStructurePiece(Structure.GenerationContext p_227387_, StructurePiece piece, StructureTemplate template, Rotation rotation, Mirror mirror, Consumer<Integer> consumer)
+	public static void moveStructurePiece(Structure.GenerationContext p_227387_, Heightmap.Types types, StructurePiece piece, StructureTemplate template, Rotation rotation, Mirror mirror, Consumer<Integer> consumer)
 	{
 		ChunkPos chunkPos = p_227387_.chunkPos();
 		ChunkGenerator chunkGenerator = p_227387_.chunkGenerator();
@@ -86,7 +85,7 @@ public class BTAUtil
 		BlockPos blockPos1 = new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2);
 		BoundingBox boundingBox = template.getBoundingBox(blockPos, rotation, blockPos1, mirror);
 		BlockPos blockPos2 = boundingBox.getCenter();
-		int i = chunkGenerator.getBaseHeight(blockPos2.getX(), blockPos2.getZ(), Types.WORLD_SURFACE_WG, heightAccessor, randomState);
+		int i = chunkGenerator.getBaseHeight(blockPos2.getX(), blockPos2.getZ(), types, heightAccessor, randomState);
 		int j = findSuitableY(random, chunkGenerator, i, piece.getBoundingBox(), heightAccessor, randomState);
 		consumer.accept(j);
 	}

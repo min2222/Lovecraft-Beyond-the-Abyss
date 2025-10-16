@@ -1,0 +1,7 @@
+{
+	"type": "beyondtheabyss:large_fossil",
+	"biomes": "beyondtheabyss:death_valley",
+	"spawn_overrides": {
+	},
+	"step": "underground_structures"
+}

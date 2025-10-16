@@ -47,7 +47,7 @@ public abstract class AbstractDivingSetItem extends ArmorItem
 	@Override
 	public void onArmorTick(ItemStack stack, Level level, Player player) 
 	{
-		//TODO
+		//TODO oxygen system;
 		player.setAirSupply(player.getMaxAirSupply());
 	}
     

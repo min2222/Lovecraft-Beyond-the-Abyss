@@ -5,6 +5,7 @@ import java.util.List;
 import com.min01.beyondtheabyss.entity.AbstractOwnableEntity;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
+import com.min01.beyondtheabyss.misc.BTADamageSource;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
@@ -117,7 +118,7 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 			}
 			else
 			{
-				p_20293_.hurt(this.damageSources().thorns(this), 0.5F);
+				p_20293_.hurt(BTADamageSource.causeShrapnelDamage(this.level.registryAccess(), this), 0.5F);
 			}
 		}
 	}

@@ -1,0 +1,14 @@
+{
+	"placement": {
+		"type": "minecraft:random_spread",
+		"salt": 945884785759,
+		"separation": 16,
+		"spacing": 32
+	},
+	"structures": [
+		{
+			"structure": "beyondtheabyss:deep_abyss_portal",
+			"weight": 1
+		}
+	]
+}

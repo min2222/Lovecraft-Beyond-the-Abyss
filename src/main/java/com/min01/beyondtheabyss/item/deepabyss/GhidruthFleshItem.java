@@ -28,7 +28,7 @@ public class GhidruthFleshItem extends BasicBTAFoodItem
 		}
 		else
 		{
-			//TODO
+			//TODO custom effect?
 		}
 		
 		if(p_41411_ instanceof Player && !((Player)p_41411_).getAbilities().instabuild) 

@@ -64,9 +64,5 @@ public class GhoulBloomBlock extends SeagrassBlock
 		{
 			p_222423_.setBlock(p_222425_, p_222426_.setValue(GROWN, true), 2);
 		}
-		else
-		{
-			//TODO tall ghoul bloom;
-		}
 	}
 }

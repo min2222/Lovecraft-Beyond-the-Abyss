@@ -49,7 +49,7 @@ public class HutStructure extends Structure
 				Rotation rotation = Util.getRandom(Rotation.values(), random);
 				StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
 				HutStructurePiece piece = new HutStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
-				BTAUtil.moveStructurePiece(p_227387_, piece, template, rotation, Mirror.NONE, t -> 
+				BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, piece, template, rotation, Mirror.NONE, t -> 
 				{
 					piece.move(0, t + 2, 0);
 				});

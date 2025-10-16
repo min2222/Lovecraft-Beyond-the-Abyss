@@ -77,7 +77,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem, 
 			else
 			{
 	        	p_41433_.playSound(BTASounds.GUNBLADE_SWING.get());
-	        	//TODO
+	        	//TODO swing animation;
 			}
 		}
 		return InteractionResultHolder.consume(stack);

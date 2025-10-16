@@ -176,6 +176,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:gravity-api-forge-1283915:7104761")
     
     runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:5589681")
+    runtimeOnly fg.deobf("curse.maven:worldedit-225608:4586218")
     
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}"))
