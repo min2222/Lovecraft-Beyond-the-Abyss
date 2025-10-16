@@ -65,6 +65,18 @@
 				"weight": 40,
 				"minCount": 1,
 				"maxCount": 1
+			},
+			{
+				"type": "beyondtheabyss:necroshell",
+				"weight": 70,
+				"minCount": 1,
+				"maxCount": 1
+			},
+			{
+				"type": "beyondtheabyss:fulgastra",
+				"weight": 70,
+				"minCount": 1,
+				"maxCount": 1
 			}
 		]
 	},

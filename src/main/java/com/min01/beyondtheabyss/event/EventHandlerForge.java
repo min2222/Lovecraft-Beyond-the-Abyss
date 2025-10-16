@@ -1,14 +1,5 @@
 package com.min01.beyondtheabyss.event;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.google.common.base.Stopwatch;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
@@ -30,11 +21,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -54,57 +41,13 @@ import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.living.LivingDrownEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, bus = Bus.FORGE)
 public class EventHandlerForge 
 {
-    @SubscribeEvent
-    public static void onServerAboutToStart(ServerAboutToStartEvent event) 
-    {
-        copyRegionFiles(event.getServer());
-    }
-	
-    public static void copyRegionFiles(MinecraftServer server)
-    {
-        if(server == null || server.isDedicatedServer()) 
-        	return;
-	    Path baseDir = FMLPaths.CONFIGDIR.get().resolve("beyondtheabyss");
-	    File baseDirFile = baseDir.toFile();
-	    if(baseDirFile.exists())
-	    {
-	        System.out.println("Config folder 'beyondtheabyss' already exists. Skipping region file copy.");
-	        return;
-	    }
-	    Path outputDir = baseDir.resolve("region");
-	    outputDir.toFile().mkdirs();
-	    ResourceManager resourceManager = server.getResourceManager();
-	    try
-	    {
-	        Map<ResourceLocation, Resource> resources = resourceManager.listResources("region", path -> path.getPath().endsWith(".mca"));
-	        for(Entry<ResourceLocation, Resource> entry : resources.entrySet())
-	        {
-	        	ResourceLocation location = entry.getKey();
-	        	Resource resource = entry.getValue();
-                try(InputStream in = resource.open()) 
-                {
-                    String fileName = Path.of(location.getPath()).getFileName().toString();
-                    Path outputFile = outputDir.resolve(fileName);
-                    Files.copy(in, outputFile, StandardCopyOption.REPLACE_EXISTING);
-                    System.out.println("Copied region file: " + fileName);
-                }
-	        }
-	    } 
-	    catch (IOException e)
-	    {
-	        e.printStackTrace();
-	    }
-	}
-    
     @SubscribeEvent
     public static void onLivingBreath(LivingBreatheEvent event)
     {

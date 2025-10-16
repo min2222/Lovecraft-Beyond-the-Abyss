@@ -37,17 +37,22 @@ public class CrackCarver extends WorldCarver<CanyonCarverConfiguration>
 		double d0 = (double) p_224819_.getBlockX(p_224817_.nextInt(16));
 		int j = p_224814_.y.sample(p_224817_, p_224813_);
 		double d1 = (double) p_224819_.getBlockZ(p_224817_.nextInt(16));
-		float f = p_224817_.nextFloat() * ((float) Math.PI * 2F);
+		float f = p_224817_.nextFloat() * ((float) Math.PI * 2.0F);
 		float f1 = p_224814_.verticalRotation.sample(p_224817_);
 		double d2 = (double) p_224814_.yScale.sample(p_224817_);
 		float f2 = p_224814_.shape.thickness.sample(p_224817_);
 		int k = (int) ((float) i * p_224814_.shape.distanceFactor.sample(p_224817_));
-		this.doCarve(p_224813_, p_224814_, p_224815_, p_224816_, p_224817_.nextLong(), p_224818_, d0, (double) j, d1, f2, f, f1, 0, k, d2, p_224820_);
+		this.doCarve(p_224813_, p_224814_, p_224815_, p_224816_, p_224817_.nextLong(), p_224818_, d0, (double) j, d1, f2, f, f1, 0, k, d2, 0, p_224820_);
 		return true;
 	}
 
-	private void doCarve(CarvingContext p_190594_, CanyonCarverConfiguration p_190595_, ChunkAccess p_190596_, Function<BlockPos, Holder<Biome>> p_190597_, long p_190598_, Aquifer p_190599_, double p_190600_, double p_190601_, double p_190602_, float p_190603_, float p_190604_, float p_190605_, int p_190606_, int p_190607_, double p_190608_, CarvingMask p_190609_) 
+	private void doCarve(CarvingContext p_190594_, CanyonCarverConfiguration p_190595_, ChunkAccess p_190596_, Function<BlockPos, Holder<Biome>> p_190597_, long p_190598_, Aquifer p_190599_, double p_190600_, double p_190601_, double p_190602_, float p_190603_, float p_190604_, float p_190605_, int p_190606_, int p_190607_, double p_190608_, int depth, CarvingMask p_190609_) 
 	{
+	    if(depth >= 10)
+	    {
+	        return;
+	    }
+	    
 		RandomSource randomsource = RandomSource.create(p_190598_);
 		float[] afloat = this.initWidthFactors(p_190594_, p_190595_, randomsource);
 		float f = 0.0F;
@@ -55,7 +60,9 @@ public class CrackCarver extends WorldCarver<CanyonCarverConfiguration>
 
 		for(int i = p_190606_; i < p_190607_; ++i)
 		{
-			double d0 = 1.5D + (double) (Mth.sin((float) i * (float) Math.PI / (float) p_190607_) * p_190603_);
+	        float progress = (float)i / (float)p_190607_;
+	        float sharpnessFactor = 1.0F - Mth.abs(progress - 0.5F) * 2.0F;
+	        double d0 = 1.5D + (double) (sharpnessFactor * p_190603_);
 			double d1 = d0 * p_190608_;
 			d0 *= (double) p_190595_.shape.horizontalRadiusFactor.sample(randomsource);
 			d1 = this.updateVerticalRadius(p_190595_, randomsource, d1, (float) p_190607_, (float) i);
@@ -69,8 +76,12 @@ public class CrackCarver extends WorldCarver<CanyonCarverConfiguration>
 			p_190604_ += f * 0.05F;
 			f1 *= 0.8F;
 			f *= 0.5F;
-			f1 += (randomsource.nextFloat() - randomsource.nextFloat()) * randomsource.nextFloat() * 2.0F;
-			f += (randomsource.nextFloat() - randomsource.nextFloat()) * randomsource.nextFloat() * 4.0F;
+			
+	        if(depth < 10 && i > p_190607_ / 4 && i < p_190607_ * 3 / 4 && randomsource.nextInt(25) == 0) 
+	        {
+	            this.doCarve(p_190594_, p_190595_, p_190596_, p_190597_, randomsource.nextLong(), p_190599_, p_190600_, p_190601_, p_190602_, p_190603_ * 0.6F, p_190604_ + (randomsource.nextFloat() - 0.5F) * 1.8F, p_190605_ * 0.6F + (randomsource.nextFloat() - 0.5F) * 0.4F, 0, p_190607_ * 2 / 3, p_190608_, depth + 1, p_190609_);
+	        }
+	        
 			if(randomsource.nextInt(4) != 0)
 			{
 				if(!canReach(p_190596_.getPos(), p_190600_, p_190602_, i, p_190607_, p_190603_)) 

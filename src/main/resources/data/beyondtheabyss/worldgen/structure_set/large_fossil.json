@@ -3,12 +3,12 @@
 		"type": "minecraft:random_spread",
 		"salt": 239768939,
 		"separation": 16,
-		"spacing": 32
+		"spacing": 20
 	},
 	"structures": [
 		{
 			"structure": "beyondtheabyss:large_fossil",
-			"weight": 5
+			"weight": 20
 		}
 	]
 }

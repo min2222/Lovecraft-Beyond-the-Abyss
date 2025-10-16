@@ -231,6 +231,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
 	{
+		BlockPos attachPos = this.blockPosition();
 		if(p_21436_ == MobSpawnType.NATURAL)
 		{
 			BlockPos blockPos = p_21434_.getHeightmapPos(Types.OCEAN_FLOOR_WG, this.blockPosition());
@@ -239,12 +240,13 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 				blockPos = blockPos.above();
 			}
 			Vec3 pos = Vec3.atBottomCenterOf(blockPos);
+			attachPos = blockPos;
 			this.moveTo(pos);
 		}
 		
 		AbstractSpineWormPart prev = this;
 		Direction direction = this.tryAttach();
-		this.setAttachedPos(this.blockPosition());
+		this.setAttachedPos(attachPos);
 		this.setAttachedDirection(direction);
 		switch(direction)
 		{
@@ -308,7 +310,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	
 	public static boolean checkSpineWormSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
 	
 	public Direction tryAttach()
