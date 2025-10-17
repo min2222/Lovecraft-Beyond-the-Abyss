@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.IDeepAbyssMob;
+import com.min01.beyondtheabyss.entity.IBTAMob;
 import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster implements IDeepAbyssMob
+public abstract class AbstractDeepAbyssMonster extends AbstractBTAMonster implements IBTAMob
 {
 	public AbstractDeepAbyssMonster(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{

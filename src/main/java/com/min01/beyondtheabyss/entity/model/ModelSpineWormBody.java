@@ -60,12 +60,9 @@ public class ModelSpineWormBody extends HierarchicalModel<EntitySpineWormBody>
 	        double dist = toTarget.length();
 	        double moveDist = Math.min(dist, 0.5F);
 			this.root.visible = moveDist > 0.0F;
-			if(entity.getHead().isVehicle())
+			if(entity.getIndex() == entity.getChainLength())
 			{
-				if(entity.getIndex() == entity.getChainLength())
-				{
-					this.root.visible = false;
-				}
+				this.root.visible = false;
 			}
 		}
 		else

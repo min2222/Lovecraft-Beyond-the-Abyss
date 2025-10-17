@@ -17,7 +17,7 @@ public class EntityObserver extends AbstractBTAFlyingMonster
 	{
 		super(p_21683_, p_21684_);
 		this.xpReward = this.random.nextInt(3);
-		this.moveControl = new FlyingBoidMoveControl(this, 85, 10, 0.05F);
+		this.moveControl = new FlyingBoidMoveControl(this);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -40,5 +40,17 @@ public class EntityObserver extends AbstractBTAFlyingMonster
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.HOSTILE;
+	}
+	
+	@Override
+	public boolean ignoreExplosion() 
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean ignoreOperation() 
+	{
+		return true;
 	}
 }

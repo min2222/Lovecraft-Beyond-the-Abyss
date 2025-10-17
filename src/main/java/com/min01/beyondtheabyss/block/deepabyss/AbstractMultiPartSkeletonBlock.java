@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Fluids;
 
 public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationLimitBoneBlock
 {
@@ -67,7 +68,7 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 			boolean flag = p_49499_.isEmptyBlock(blockPos) || p_49499_.getBlockState(blockPos).liquid();
 			if(flag)
 			{
-				p_49499_.setBlock(blockPos, p_49501_.setValue(SKELETON_PART, SkeletonPart.UPPER), 3);
+				p_49499_.setBlock(blockPos, p_49501_.setValue(SKELETON_PART, SkeletonPart.UPPER).setValue(WATERLOGGED, p_49499_.getFluidState(blockPos).getType() == Fluids.WATER), 3);
 				p_49499_.blockUpdated(p_49500_, Blocks.AIR);
 				p_49501_.updateNeighbourShapes(p_49499_, p_49500_, 3);
 			}

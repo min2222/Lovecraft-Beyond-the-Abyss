@@ -100,6 +100,7 @@ public abstract class MixinEntity implements IDynamicLight
 		if(MirroredCityUtil.isUpsideDown(Entity.class.cast(this)))
 		{
 			GravityCapabilityImpl cap = GravityChangerAPI.getGravityComponent(Entity.class.cast(this));
+			cap.noAnimation = true;
 			cap.applyGravityDirectionEffect(Direction.UP, null, Double.MAX_VALUE);
 		}
 		BTAUtil.updateGravity(Entity.class.cast(this));

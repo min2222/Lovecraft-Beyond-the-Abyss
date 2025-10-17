@@ -110,7 +110,7 @@ public class BTABlocks
     public static final RegistryObject<Block> BONE_PILLAR_BLOCK = BLOCKS.register("bone_pillar_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));;
     
     public static final RegistryObject<Block> BONE_FENCE = BLOCKS.register("bone_fence", () -> new BoneFenceBlock(BlockBehaviour.Properties.of().strength(2.0F, 3.0F).sound(SoundType.BONE_BLOCK)));
-    public static final RegistryObject<Block> BONE_FENCE_GATE = BLOCKS.register("bone_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.of().strength(2.0F, 3.0F).sound(SoundType.BONE_BLOCK), WoodType.OAK));
+    public static final RegistryObject<Block> BONE_FENCE_GATE = BLOCKS.register("bone_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.of().forceSolidOn().strength(2.0F, 3.0F).sound(SoundType.BONE_BLOCK), WoodType.OAK));
     public static final RegistryObject<Block> BONE_LADDER = BLOCKS.register("bone_ladder", () ->  new LadderBlock(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.BONE_BLOCK).noOcclusion()));
     public static final RegistryObject<Block> BONE_TORCH = BLOCKS.register("bone_torch", () -> new BoneTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50886_) -> 
     {

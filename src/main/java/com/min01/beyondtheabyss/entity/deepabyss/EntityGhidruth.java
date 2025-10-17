@@ -100,8 +100,14 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     }
     
     @Override
-    public int getSwimRadius()
+    public int targetSettingInterval()
     {
-    	return 20;
+    	return 80;
+    }
+    
+    @Override
+    public Vec3 getMoveRadius()
+    {
+    	return new Vec3(40, 20, 40);
     }
 }

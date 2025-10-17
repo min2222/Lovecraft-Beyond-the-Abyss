@@ -40,9 +40,9 @@ public class ModelFallenSkeleton extends Model
 
 		body.addOrReplaceChild("body_r1", CubeListBuilder.create().texOffs(0, 17).addBox(-4.0F, -6.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 6.0F, 0.0F, 0.0F, 0.0F, -0.0873F));
 
-		body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(33, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 2.0F, 0.0F, 0.0F, 0.0F, -0.2182F));
+		body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(25, 17).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 2.0F, 0.0F, 0.0F, 0.0F, -0.2182F));
 
-		body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(32, 30).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.0F, 6.0F, 2.0F, -0.0436F, 0.0F, 0.1745F));
+		body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(25, 32).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.0F, 6.0F, 2.0F, -0.0436F, 0.0F, 0.1745F));
 
 		Skeleton.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(23, 32).addBox(-1.0F, 0.0F, -1.1F, 2.0F, 12.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, -11.0F, 0.1F));
 

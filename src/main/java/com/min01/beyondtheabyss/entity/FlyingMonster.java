@@ -52,12 +52,17 @@ public abstract class FlyingMonster extends Monster
 				{
 					f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
 				}
-				this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, p_20818_);
+				this.moveRelative(this.onGround() ? 0.1F * f1 : this.getRelativeSpeed(), p_20818_);
 				this.move(MoverType.SELF, this.getDeltaMovement());
 				this.setDeltaMovement(this.getDeltaMovement().scale((double) f));
 			}
 		}
 		this.calculateEntityAnimation(false);
+	}
+	
+	public float getRelativeSpeed()
+	{
+		return 0.02F;
 	}
 
 	@Override

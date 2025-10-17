@@ -36,6 +36,7 @@ import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGloomfish;
 import com.min01.beyondtheabyss.entity.model.ModelGnasher;
 import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
+import com.min01.beyondtheabyss.entity.model.ModelMissile;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
 import com.min01.beyondtheabyss.entity.model.ModelMutavoreCyst;
 import com.min01.beyondtheabyss.entity.model.ModelNecroshell;
@@ -57,6 +58,7 @@ import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel2;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
+import com.min01.beyondtheabyss.entity.renderer.MissileRenderer;
 import com.min01.beyondtheabyss.entity.renderer.MutavoreCystRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
@@ -199,6 +201,7 @@ public class ClientEventHandler
 
     	event.registerEntityRenderer(BTAEntities.OVERSEER.get(), OverseerRenderer::new);
     	event.registerEntityRenderer(BTAEntities.OBSERVER.get(), ObserverRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.MISSILE.get(), MissileRenderer::new);
     }
     
     @SubscribeEvent
@@ -237,6 +240,7 @@ public class ClientEventHandler
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
     	event.registerLayerDefinition(ModelObserver.LAYER_LOCATION, ModelObserver::createBodyLayer);
+    	event.registerLayerDefinition(ModelMissile.LAYER_LOCATION, ModelMissile::createBodyLayer);
 
     	//armors
     	event.registerLayerDefinition(ModelFelmetalDiverSet.LAYER_LOCATION, ModelFelmetalDiverSet::createBodyLayer);

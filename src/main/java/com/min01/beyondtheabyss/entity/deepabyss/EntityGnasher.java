@@ -248,6 +248,12 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 		return 100;
 	}
 	
+	@Override
+	public boolean ignoreOperation() 
+	{
+		return true;
+	}
+	
 	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;

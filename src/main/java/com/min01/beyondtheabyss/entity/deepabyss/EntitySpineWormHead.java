@@ -61,7 +61,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
     			.add(Attributes.MAX_HEALTH, 30.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.0F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F)
-    			.add(Attributes.ATTACK_DAMAGE, 0.5F)
+    			.add(Attributes.ATTACK_DAMAGE, 1.5F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 100.0F);
     }
     
@@ -170,7 +170,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 						BTANetwork.sendToAll(new UpdateVehiclePacket(this.getTarget(), this));
 					}
 				}
-				else if(!this.posArray[0].equals(Vec3.ZERO))
+				else if(!this.posArray[0].equals(Vec3.ZERO) && !this.isVehicle())
 				{
 					this.chain.setTarget(this.posArray[0]);
 				}

@@ -179,9 +179,15 @@ public class EntityForneusHead extends AbstractForneusPart
 	}
 	
 	@Override
-	public int getSwimRadius()
+	public int targetSettingInterval() 
 	{
-		return 150;
+		return 100;
+	}
+	
+	@Override
+	public Vec3 getMoveRadius()
+	{
+		return new Vec3(150, 30, 150);
 	}
 	
 	public void setWantedPos(Vec3 pos)

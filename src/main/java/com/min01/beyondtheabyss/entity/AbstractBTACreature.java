@@ -36,7 +36,7 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 		}
         if(this.getBTAMobType().alwaysHostile)
         {
-            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<Player>(this, Player.class, false, false));
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
         }
         if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
         {

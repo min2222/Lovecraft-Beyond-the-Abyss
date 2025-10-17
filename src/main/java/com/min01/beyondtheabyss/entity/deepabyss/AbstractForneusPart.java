@@ -25,7 +25,7 @@ public abstract class AbstractForneusPart extends AbstractWormPart<AbstractForne
 	}
 	
 	@Override
-	public float insideWaterSpeed() 
+	public float moveSpeed() 
 	{
 		return 0.8F;
 	}

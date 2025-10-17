@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.entity.animation.OverseerAnimation;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -75,9 +76,11 @@ public class ModelOverseer extends HierarchicalModel<EntityOverseer>
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		ModelPart root = this.root.getChild("overseer");
 		ModelPart head = root.getChild("head");
+		root.zRot += Math.toRadians(entity.getRollAngle());
 		BTAClientUtil.animateHead(root, netHeadYaw, headPitch);
 		BTAClientUtil.animateHead(head.getChild("right_eye"), netHeadYaw, headPitch - (float) Math.toDegrees(root.xRot));
 		BTAClientUtil.animateHead(head.getChild("left_eye"), -netHeadYaw, headPitch - (float) Math.toDegrees(root.xRot));
+		entity.openAnimationState.animate(this, OverseerAnimation.OVERSEER_OPEN, ageInTicks);
 	}
 
 	@Override
