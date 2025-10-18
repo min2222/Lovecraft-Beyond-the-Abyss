@@ -84,13 +84,13 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     @Override
     public int maxTurnX() 
     {
-    	return !this.hasTarget() ? 65 : 75;
+    	return !this.hasTarget() ? 45 : 55;
     }
 
     @Override
     public int maxTurnY() 
     {
-    	return !this.hasTarget() ? 4 : 8;
+    	return !this.hasTarget() ? 4 : 6;
     }
     
     @Override
@@ -102,12 +102,12 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     @Override
     public int targetSettingInterval()
     {
-    	return 80;
+    	return 100;
     }
     
     @Override
     public Vec3 getMoveRadius()
     {
-    	return new Vec3(40, 20, 40);
+    	return new Vec3(40, 10, 40);
     }
 }

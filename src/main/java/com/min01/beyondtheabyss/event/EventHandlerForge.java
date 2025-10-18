@@ -18,6 +18,7 @@ import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
+import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTASavedData;
@@ -32,6 +33,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.DistanceManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -40,6 +42,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.EntityTickList;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -47,6 +50,8 @@ import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -104,6 +109,29 @@ public class EventHandlerForge
 	        e.printStackTrace();
 	    }
 	}
+    
+    @SubscribeEvent
+    public static void onLevelTick(LevelTickEvent event)
+    {
+    	if(event.level instanceof ServerLevel serverLevel)
+    	{
+    		if(event.phase == TickEvent.Phase.END)
+    		{
+    			EntityTickList list = serverLevel.entityTickList;
+    			list.forEach(t ->
+    			{
+    				if(!t.isRemoved() && t.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+    				{
+    					DistanceManager manager = serverLevel.getChunkSource().chunkMap.getDistanceManager();
+    					if(!manager.inEntityTickingRange(t.chunkPosition().toLong())) 
+    					{
+    						serverLevel.getChunkSource().updateChunkForced(t.chunkPosition(), true);
+    					}
+    				}
+    			});
+    		}
+    	}
+    }
     
     @SubscribeEvent
     public static void onLivingBreath(LivingBreatheEvent event)

@@ -207,7 +207,8 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
         boolean isCollide = this.entity.getCollidePart().contains(name) || collide;
     	partInfo.setCollide(isCollide);
-    	if(part.visible)
+    	boolean flag = this.entity.skipInvisiblePart() ? part.visible : true;
+    	if(flag)
     	{
             if(parent != null)
             {
@@ -221,7 +222,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
         {
         	this.addPart(builder2, child, isCollide, name);
         }
-    	if(part.visible)
+    	if(flag)
     	{
             Part p = new Part(name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
             if(!this.partMap.containsValue(p))

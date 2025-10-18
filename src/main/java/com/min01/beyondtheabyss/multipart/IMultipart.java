@@ -26,6 +26,11 @@ public interface IMultipart
 	{
 		return List.of();
 	}
+	
+	default boolean skipInvisiblePart()
+	{
+		return true;
+	}
 
 	EntityPartBuilder<?> getPartBuilder();
 }
