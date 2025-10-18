@@ -72,7 +72,7 @@ public abstract class AbstractForneusPart extends AbstractWormPart<AbstractForne
 	@Override
 	public boolean canSwim()
 	{
-		return false;
+		return this.isHead();
 	}
 	
 	@Override

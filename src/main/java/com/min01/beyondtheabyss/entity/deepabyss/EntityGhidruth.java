@@ -84,13 +84,13 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     @Override
     public int maxTurnX() 
     {
-    	return !this.hasTarget() ? 2 : 6;
+    	return !this.hasTarget() ? 65 : 75;
     }
 
     @Override
     public int maxTurnY() 
     {
-    	return !this.hasTarget() ? 2 : 6;
+    	return !this.hasTarget() ? 4 : 8;
     }
     
     @Override

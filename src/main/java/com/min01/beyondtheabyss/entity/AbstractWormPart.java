@@ -72,6 +72,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		}
 		else if(!this.isHead() && !this.isUnloaded())
 		{
+			//FIXME forneus discard;
 			this.discard();
 		}
 	}

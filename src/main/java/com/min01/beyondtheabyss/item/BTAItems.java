@@ -134,6 +134,8 @@ public class BTAItems
 	public static final RegistryObject<Item> BONE_PILLAR_BLOCK = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_pillar_block", () -> BTABlocks.BONE_PILLAR_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_FENCE = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_fence", () -> BTABlocks.BONE_FENCE.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_FENCE_GATE = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_fence_gate", () -> BTABlocks.BONE_FENCE_GATE.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_SLAB = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_slab", () -> BTABlocks.BONE_SLAB.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_STAIRS = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_stairs", () -> BTABlocks.BONE_STAIRS.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_LADDER = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_ladder", () -> BTABlocks.BONE_LADDER.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_TORCH = DEEP_ABYSS_ITEMS.register("bone_torch", () -> new StandingAndWallBlockItem(BTABlocks.BONE_TORCH.get(), BTABlocks.BONE_WALL_TORCH.get(), new Item.Properties(), Direction.DOWN));
 	public static final RegistryObject<Item> BONE_LEVER = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_lever", () -> BTABlocks.BONE_LEVER.get(), new Item.Properties());

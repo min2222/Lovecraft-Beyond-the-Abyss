@@ -2,11 +2,13 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,7 +30,6 @@ public class EntityForneusHead extends AbstractForneusPart
 {
 	public static final EntityDataAccessor<Vec3> WANTED_POS = SynchedEntityData.defineId(EntityForneusHead.class, BTAEntityDataSerializers.VEC3.get());
 	public KinematicChain chain;
-	public boolean isTarget;
 	
 	public EntityForneusHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
@@ -36,6 +37,7 @@ public class EntityForneusHead extends AbstractForneusPart
 		this.xpReward = 1000 + this.random.nextInt(1000);
 		this.noPhysics = true;
 		this.setNoGravity(true);
+		this.posArray = new Vec3[1];
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -84,19 +86,26 @@ public class EntityForneusHead extends AbstractForneusPart
 	public void tick()
 	{
 		super.tick();
-		Vec3 pos = this.getWantedPos();
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
 		}
 		else
 		{
-	    	this.chain.setOldPosAndRot();
-	    	this.chain.tick();
-	    	if(!pos.equals(Vec3.ZERO))
+			this.chain.setOldPosAndRot();
+			this.chain.tick();
+			Vec3 pos = ((BTASwimmingMoveControl)this.moveControl).getTargetPos();
+			if(!pos.equals(Vec3.ZERO))
 			{
-		    	this.chain.setTarget(pos);
-		    	
+				this.posArray[0] = pos;
+				BTANetwork.sendToAll(new UpdatePosArrayPacket(this, pos, 0));
+			}
+			if(this.posArray[0] != null)
+			{
+		    	this.chain.setTarget(this.posArray[0]);
+			}
+	    	if(!this.chain.getTarget().equals(Vec3.ZERO))
+	    	{
 				ChainSegment segment = this.chain.getTipSegment();
 				Vec2 rot = segment.getRot();
 				this.setPos(segment.getPos());
@@ -109,30 +118,7 @@ public class EntityForneusHead extends AbstractForneusPart
 				this.yRotO = rot.y;
 				this.yHeadRotO = rot.y;
 				this.yBodyRotO = rot.y;
-			}
-		}
-		if(this.getTarget() != null)
-		{
-			Vec3 spreadPos = BTAUtil.getSpreadPosition(this.level, Vec3.ZERO, 200);
-			Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, this.getTarget().getX(), this.getTarget().getY(), this.getTarget().getZ()).subtract(spreadPos.x, 0, spreadPos.z);
-			Vec3 targetPos = this.getTarget().getEyePosition().add(spreadPos.x, 30, spreadPos.z);
-			if(pos.equals(Vec3.ZERO))
-			{
-				this.setWantedPos(groundPos);
-			}
-			if(this.tickCount % 100 == 0 || pos.subtract(this.position()).length() <= 1.0F)
-			{
-				if(this.isTarget)
-				{
-					this.setWantedPos(groundPos);
-					this.isTarget = false;
-				}
-				else
-				{
-					this.setWantedPos(targetPos);
-					this.isTarget = true;
-				}
-			}
+	    	}
 		}
 	}
 	
@@ -181,7 +167,7 @@ public class EntityForneusHead extends AbstractForneusPart
 	@Override
 	public int targetSettingInterval() 
 	{
-		return 100;
+		return 10;
 	}
 	
 	@Override
