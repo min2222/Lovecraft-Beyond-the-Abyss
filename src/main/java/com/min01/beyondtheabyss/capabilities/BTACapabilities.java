@@ -26,7 +26,6 @@ public class BTACapabilities
 			LazyOptional<IItemAnimationCapability> inst = LazyOptional.of(() -> 
 			{
 				ItemAnimationCapabilityImpl i = new ItemAnimationCapabilityImpl();
-				i.setItemStack(e.getObject());
 				return i;
 			});
 
@@ -53,14 +52,13 @@ public class BTACapabilities
 	
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e)
 	{
-		if(e.getObject() instanceof Player player) 
+		if(e.getObject() instanceof Player) 
 		{
 			e.addCapability(IPlayerAnimationCapability.ID, new ICapabilitySerializable<CompoundTag>() 
 			{
 				LazyOptional<IPlayerAnimationCapability> inst = LazyOptional.of(() -> 
 				{
 					PlayerAnimationCapabilityImpl i = new PlayerAnimationCapabilityImpl();
-					i.setEntity(player);
 					return i;
 				});
 

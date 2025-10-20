@@ -64,6 +64,8 @@ public class BTAItems
 	
 	public static final RegistryObject<Item> OVERSEER_SPAWN_EGG = registerSpawnEgg(MIRRORED_CITY_ITEMS, "overseer_spawn_egg", () -> BTAEntities.OVERSEER.get(), 3752532, 7174016);
 	public static final RegistryObject<Item> OBSERVER_SPAWN_EGG = registerSpawnEgg(MIRRORED_CITY_ITEMS, "observer_spawn_egg", () -> BTAEntities.OBSERVER.get(), 3752532, 2699068);
+
+	public static final RegistryObject<Item> DUNE_DEVOURER_SPAWN_EGG = registerSpawnEgg(ENDLESS_DESERT_ITEMS, "dune_devourer_spawn_egg", () -> BTAEntities.DUNE_DEVOURER_HEAD.get(), 9595205, 5058351);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = DEEP_ABYSS_ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));

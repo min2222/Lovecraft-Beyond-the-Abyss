@@ -21,6 +21,12 @@ public class ForneusHeadRenderer extends MobRenderer<EntityForneusHead, ModelFor
 	{
 		p_115315_.scale(1.5F, 1.5F, 1.5F);
 	}
+	
+	@Override
+	protected float getFlipDegrees(EntityForneusHead p_115337_) 
+	{
+		return 0.0F;
+	}
 
 	@Override
 	public ResourceLocation getTextureLocation(EntityForneusHead p_115812_)

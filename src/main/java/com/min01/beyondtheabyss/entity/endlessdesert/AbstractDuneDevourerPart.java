@@ -1,5 +1,7 @@
-package com.min01.beyondtheabyss.entity.deepabyss;
+package com.min01.beyondtheabyss.entity.endlessdesert;
 
+import com.min01.beyondtheabyss.entity.AbstractWormPart;
+import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 
@@ -10,26 +12,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<AbstractForneusPart>
+public abstract class AbstractDuneDevourerPart extends AbstractWormPart<AbstractDuneDevourerPart>
 {
-	public AbstractForneusPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public boolean inWall;
+	
+	public AbstractDuneDevourerPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
 		this.noPhysics = true;
 		this.setNoGravity(true);
 		this.setNoAi(!this.isHead());
 	}
-
+	
 	@Override
 	public BTAMobType getBTAMobType() 
 	{
-		return BTAMobType.BOSS;
-	}
-	
-	@Override
-	public float moveSpeed() 
-	{
-		return 0.8F;
+		return BTAMobType.NETURAL;
 	}
 	
 	@Override
@@ -47,16 +45,22 @@ public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<Abst
 	@Override
 	public float getSegmentDistance(int index) 
 	{
-		return 12.5F;
+		return 6.0F;
 	}
 	
 	@Override
 	protected void doPush(Entity p_21294_)
 	{
-		if(!(p_21294_ instanceof AbstractForneusPart))
+		if(!(p_21294_ instanceof AbstractDuneDevourerPart))
 		{
 			super.doPush(p_21294_);
 		}
+	}
+	
+	@Override
+	public boolean displayFireAnimation() 
+	{
+		return false;
 	}
 	
 	@Override
@@ -70,20 +74,30 @@ public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<Abst
 	{
 		return false;
 	}
-
+	
 	@Override
-	public boolean canSwim()
+	public boolean removeWhenFarAway(double p_21542_) 
 	{
-		return this.isHead();
+		return false;
 	}
 	
 	@Override
 	public void tick() 
 	{
 		super.tick();
+		if(!this.getBlockStateOn().isAir() && !this.inWall)
+		{
+			EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.05F, 0, 5);
+			this.inWall = true;
+		}
+		if(this.getBlockStateOn().isAir() && this.inWall)
+		{
+			EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.05F, 0, 5);
+			this.inWall = false;
+		}
 		if(this.getHead() != null)
 		{
-			EntityForneusHead head = (EntityForneusHead) this.getHead();
+			EntityDuneDevourerHead head = (EntityDuneDevourerHead) this.getHead();
 			if(head.chain != null)
 			{
 				ChainSegment segment = head.chain.getSegments()[Math.max(head.chain.getSegments().length - (this.getIndex() + 2), 0)];

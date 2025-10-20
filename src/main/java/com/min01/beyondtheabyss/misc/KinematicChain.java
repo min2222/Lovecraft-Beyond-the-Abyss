@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.misc;
 
+import com.min01.beyondtheabyss.util.BTAUtil;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -14,6 +16,7 @@ public class KinematicChain
 	protected Vec3 anchorPos;
 	protected ChainSegment[] segments;
 	protected Vec2 initialRot = Vec2.ZERO;
+	public boolean rotLerp;
 	
 	public KinematicChain(Entity entity, int length) 
 	{
@@ -96,8 +99,15 @@ public class KinematicChain
 	        Vec3 toTarget = this.target.subtract(tipPos);
 	        double dist = toTarget.length();
 	        double moveDist = Math.min(dist, tip.distance);
-	        tip.setRot(this.lookAt(tipPos, this.target));
-	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist));
+	        if(this.rotLerp)
+	        {
+		        tip.setRot(this.lookAt(tipPos, this.target, tip.getOldRot()));
+	        }
+	        else
+	        {
+		        tip.setRot(this.lookAt(tipPos, this.target));
+	        }
+	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist * 0.5F));
 		}
 		
 		for(int i = 1; i < this.segments.length; i++)
@@ -136,6 +146,18 @@ public class KinematicChain
             double d8 = level.random.nextGaussian() * speed;
 			level.addAlwaysVisibleParticle(ParticleTypes.BUBBLE, pos.x + d1, pos.y + d3, pos.z + d5, d6, d7, d8);
 		}
+	}
+	
+	public Vec2 lookAt(Vec3 startPos, Vec3 pos, Vec2 currentRot)
+	{
+		Vec3 vec3 = startPos;
+		double d0 = pos.x - vec3.x;
+		double d1 = pos.y - vec3.y;
+		double d2 = pos.z - vec3.z;
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		float xRot = Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI))));
+		float yRot = Mth.wrapDegrees((float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F);
+	    return new Vec2(BTAUtil.rotlerp(currentRot.x, xRot, 15), BTAUtil.rotlerp(currentRot.y, yRot, 10));
 	}
 	
 	public Vec2 lookAt(Vec3 startPos, Vec3 pos)
@@ -213,6 +235,11 @@ public class KinematicChain
 	public ChainSegment getTipSegment()
 	{
 		return this.segments[this.segments.length - 1];
+	}
+	
+	public ChainSegment getLastSegment()
+	{
+		return this.segments[this.segments.length - 2];
 	}
 	
 	public static class ChainSegment

@@ -313,12 +313,6 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
 	
-	@Override
-	public boolean skipInvisiblePart() 
-	{
-		return false;
-	}
-	
 	public Direction tryAttach()
 	{
 		for(Direction direction : Direction.values())

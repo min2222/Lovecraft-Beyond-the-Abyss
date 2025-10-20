@@ -27,6 +27,9 @@ import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
 import com.min01.beyondtheabyss.entity.model.ModelCystShrapnel;
+import com.min01.beyondtheabyss.entity.model.ModelDuneDevourerBody;
+import com.min01.beyondtheabyss.entity.model.ModelDuneDevourerHead;
+import com.min01.beyondtheabyss.entity.model.ModelDuneDevourerTail;
 import com.min01.beyondtheabyss.entity.model.ModelEnergyBall;
 import com.min01.beyondtheabyss.entity.model.ModelForneusBody;
 import com.min01.beyondtheabyss.entity.model.ModelForneusHead;
@@ -65,6 +68,9 @@ import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ToothBulletRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.DuneDevourerBodyRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.DuneDevourerHeadRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.DuneDevourerTailRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.ForneusBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.ForneusHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.ForneusTailRenderer;
@@ -133,8 +139,9 @@ public class ClientEventHandler
         	return FlashlightItem.isOn(p_174585_) ? 1.0F : 0.0F;
         });
         BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, t -> BTAShaders.getPlainFog(), (t, u) -> t.getBiome(u).is(BTABiomes.FOGGY_PLAINS) && t.canSeeSky(u), true, "Fog");
-        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, t -> BTAShaders.getFog());
-        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, t -> BTAShaders.getSandstorm(), (t, u) -> t.canSeeSky(u), true, "Sand");
+        //BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, t -> BTAShaders.getFog());
+        //TODO weather system;
+        //BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, t -> BTAShaders.getSandstorm(), (t, u) -> t.canSeeSky(u), true, "Sand");
     }
     
     @SubscribeEvent
@@ -202,6 +209,10 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.OVERSEER.get(), OverseerRenderer::new);
     	event.registerEntityRenderer(BTAEntities.OBSERVER.get(), ObserverRenderer::new);
     	event.registerEntityRenderer(BTAEntities.MISSILE.get(), MissileRenderer::new);
+    	
+    	event.registerEntityRenderer(BTAEntities.DUNE_DEVOURER_HEAD.get(), DuneDevourerHeadRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.DUNE_DEVOURER_BODY.get(), DuneDevourerBodyRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.DUNE_DEVOURER_TAIL.get(), DuneDevourerTailRenderer::new);
     }
     
     @SubscribeEvent
@@ -241,6 +252,10 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
     	event.registerLayerDefinition(ModelObserver.LAYER_LOCATION, ModelObserver::createBodyLayer);
     	event.registerLayerDefinition(ModelMissile.LAYER_LOCATION, ModelMissile::createBodyLayer);
+    	
+    	event.registerLayerDefinition(ModelDuneDevourerHead.LAYER_LOCATION, ModelDuneDevourerHead::createBodyLayer);
+    	event.registerLayerDefinition(ModelDuneDevourerBody.LAYER_LOCATION, ModelDuneDevourerBody::createBodyLayer);
+    	event.registerLayerDefinition(ModelDuneDevourerTail.LAYER_LOCATION, ModelDuneDevourerTail::createBodyLayer);
 
     	//armors
     	event.registerLayerDefinition(ModelFelmetalDiverSet.LAYER_LOCATION, ModelFelmetalDiverSet::createBodyLayer);

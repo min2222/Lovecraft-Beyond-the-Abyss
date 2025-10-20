@@ -15,11 +15,7 @@ public interface IItemAnimationCapability extends INBTSerializable<CompoundTag>
 {
 	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "item_animation");
 
-	void setEntity(Entity entity);
-	
-	void setItemStack(ItemStack stack);
-
-	void tick();
+	void tick(Entity player, ItemStack stack);
 	
 	void setAnimationState(int state);
 	
@@ -30,4 +26,6 @@ public interface IItemAnimationCapability extends INBTSerializable<CompoundTag>
 	void setAnimationTick(int tick);
 	
 	int getAnimationTick();
+	
+	int getTickCount();
 }

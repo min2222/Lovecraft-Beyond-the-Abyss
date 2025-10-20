@@ -21,6 +21,12 @@ public class ForneusTailRenderer extends MobRenderer<EntityForneusTail, ModelFor
 	{
 		p_115315_.scale(1.5F, 1.5F, 1.5F);
 	}
+	
+	@Override
+	protected float getFlipDegrees(EntityForneusTail p_115337_) 
+	{
+		return 0.0F;
+	}
 
 	@Override
 	public ResourceLocation getTextureLocation(EntityForneusTail p_115812_)

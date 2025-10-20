@@ -4,11 +4,8 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.min01.beyondtheabyss.item.IServerUpdate;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.item.renderer.BTAItemRenderer;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateServerItemPacket;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -27,7 +24,7 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem, IServerUpdate
+public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 {
     public static final String GUNBLADE_OPEN = "GunbladeOpen";
     public static final String GUNBLADE_CLOSE = "GunbladeClose";
@@ -49,14 +46,14 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem, 
 			if(isGunMode)
 			{
 				BTAUtil.setItemAnimationState(stack, 2);
-				BTAUtil.setItemAnimationTick(stack, 20);
+				BTAUtil.setItemAnimationTick(stack, 40);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 			}
 			else
 			{
 				BTAUtil.setItemAnimationState(stack, 1);
-				BTAUtil.setItemAnimationTick(stack, 20);
+				BTAUtil.setItemAnimationTick(stack, 40);
 	        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
 	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
 			}
@@ -95,25 +92,14 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem, 
 	@Override
 	public void onStopUsing(ItemStack stack, LivingEntity entity, int count)
 	{
-		if(getCharge(stack) > 0 && entity.level.isClientSide)
+		if(getCharge(stack) > 0)
 		{
 			BTAUtil.setPlayerAnimationState(entity, 4);
-			BTAUtil.setPlayerAnimationTick(entity, 20);
+			BTAUtil.setPlayerAnimationTick(entity, 40);
 			setLaserVisible(stack, true);
 			setLaserLength(stack, 100);
 			setCharge(stack, 0);
-			BTANetwork.sendToServer(new UpdateServerItemPacket(entity, stack));
 		}
-	}
-	
-	@Override
-	public void onServerUpdate(LivingEntity living, ItemStack stack)
-	{
-		BTAUtil.setPlayerAnimationState(living, 4);
-		BTAUtil.setPlayerAnimationTick(living, 20);
-		setLaserVisible(stack, true);
-		setLaserLength(stack, 100);
-		setCharge(stack, 0);
 	}
 	
 	@Override

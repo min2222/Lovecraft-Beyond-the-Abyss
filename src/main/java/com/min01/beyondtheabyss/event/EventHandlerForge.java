@@ -11,11 +11,9 @@ import java.util.Map.Entry;
 
 import com.google.common.base.Stopwatch;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.misc.BTATags;
@@ -40,7 +38,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTickList;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -208,18 +205,7 @@ public class EventHandlerForge
 	@SubscribeEvent
 	public static void onPlayerTick(PlayerTickEvent event)
 	{
-		for(int i = 0; i < event.player.getInventory().getContainerSize(); i++)
-		{
-			ItemStack stack = event.player.getInventory().getItem(i);
-			if(stack.getItem() instanceof IAnimatableItem)
-			{
-				stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
-				{
-					t.setEntity(event.player);
-					t.tick();
-				});
-			}
-		}
+		BTAUtil.tickItemAnimation(event.player);
 		BTAUtil.tickPlayerAnimation(event.player);
 	}
 	

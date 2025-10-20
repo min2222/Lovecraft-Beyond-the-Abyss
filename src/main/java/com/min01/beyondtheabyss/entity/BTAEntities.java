@@ -18,6 +18,9 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySplittedFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.endlessdesert.EntityDuneDevourerBody;
+import com.min01.beyondtheabyss.entity.endlessdesert.EntityDuneDevourerHead;
+import com.min01.beyondtheabyss.entity.endlessdesert.EntityDuneDevourerTail;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityObserver;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
@@ -73,6 +76,10 @@ public class BTAEntities
 	
 	public static final RegistryObject<EntityType<EntityOverseer>> OVERSEER = registerEntity("overseer", createBuilder(EntityOverseer::new, MobCategory.MONSTER).sized(4.0F, 1.75F));
 	public static final RegistryObject<EntityType<EntityObserver>> OBSERVER = registerEntity("observer", createBuilder(EntityObserver::new, MobCategory.MONSTER).sized(0.4375F, 0.4375F));
+	
+	public static final RegistryObject<EntityType<EntityDuneDevourerHead>> DUNE_DEVOURER_HEAD = registerEntity("dune_devourer_head", createBuilder(EntityDuneDevourerHead::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityDuneDevourerBody>> DUNE_DEVOURER_BODY = registerEntity("dune_devourer_body", createBuilder(EntityDuneDevourerBody::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityDuneDevourerTail>> DUNE_DEVOURER_TAIL = registerEntity("dune_devourer_tail", createBuilder(EntityDuneDevourerTail::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
 	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{

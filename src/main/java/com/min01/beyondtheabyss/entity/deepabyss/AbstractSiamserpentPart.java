@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractWormPart;
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractBTASkillGoal;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -21,7 +20,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractSiamserpentPart extends AbstractWormPart<AbstractSiamserpentPart>
+public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<AbstractSiamserpentPart>
 {
 	public static final EntityDataAccessor<Boolean> IS_SWAP = SynchedEntityData.defineId(AbstractSiamserpentPart.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID2 = SynchedEntityData.defineId(AbstractSiamserpentPart.class, EntityDataSerializers.OPTIONAL_UUID);

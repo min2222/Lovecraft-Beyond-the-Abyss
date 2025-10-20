@@ -46,7 +46,7 @@ public class ForneusMagicRenderer extends EntityRenderer<EntityForneusMagic>
 		        p_114488_.mulPose(Axis.YP.rotationDegrees(-p_114485_.rot.y));
 		        p_114488_.mulPose(Axis.XP.rotationDegrees(p_114485_.rot.x));
 		    }
-	        EfkEfcRenderer renderer = EfkEfcLoader.getEfkEfcRenderer(p_114485_, "ripple");
+	        EfkEfcRenderer renderer = EfkEfcLoader.getEfkEfcRenderer(p_114485_, "ripple", p_114487_);
 	        if(renderer != null)
 	        {
 	        	p_114488_.pushPose();

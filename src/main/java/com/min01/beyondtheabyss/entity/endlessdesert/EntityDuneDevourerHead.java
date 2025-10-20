@@ -1,12 +1,13 @@
-package com.min01.beyondtheabyss.entity.deepabyss;
+package com.min01.beyondtheabyss.entity.endlessdesert;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
+import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,25 +24,24 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityForneusHead extends AbstractForneusPart
+public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 {
-	public static final EntityDataAccessor<Vec3> WANTED_POS = SynchedEntityData.defineId(EntityForneusHead.class, BTAEntityDataSerializers.VEC3.get());
+	public static final EntityDataAccessor<Vec3> WANTED_POS = SynchedEntityData.defineId(EntityDuneDevourerHead.class, BTAEntityDataSerializers.VEC3.get());
+	
 	public KinematicChain chain;
 	
-	public EntityForneusHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityDuneDevourerHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
-		this.xpReward = 1000 + this.random.nextInt(1000);
-		this.posArray = new Vec3[1];
 	}
-	
+
     public static AttributeSupplier.Builder createAttributes()
     {
         return Monster.createMonsterAttributes()
-    			.add(Attributes.MAX_HEALTH, 1000.0F)
+    			.add(Attributes.MAX_HEALTH, 500.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.85F)
         		.add(Attributes.FOLLOW_RANGE, 200.0F)
-        		.add(Attributes.ARMOR, 20.0F);
+        		.add(Attributes.ARMOR, 40.0F);
     }
     
     @Override
@@ -56,24 +56,11 @@ public class EntityForneusHead extends AbstractForneusPart
     	super.defineSynchedData();
     	this.entityData.define(WANTED_POS, Vec3.ZERO);
     }
-
+    
 	@Override
 	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
 	{
-    	EntityPartBuilder<EntityForneusHead> partBuilder = new EntityPartBuilder<EntityForneusHead>(this)
-    	{
-    		@Override
-    		public Vec3 getOffset()
-    		{
-    			return new Vec3(0.0F, 2.25F, 0.0F);
-    		}
-    		
-    		@Override
-    		public float getRenderScale() 
-    		{
-    			return 1.5F;
-    		}
-    	};
+    	EntityPartBuilder<EntityDuneDevourerHead> partBuilder = new EntityPartBuilder<EntityDuneDevourerHead>(this);
 		return partBuilder;
 	}
 	
@@ -91,19 +78,32 @@ public class EntityForneusHead extends AbstractForneusPart
 			this.chain.tick();
 			this.chain.rotLerp = true;
 			
-			Vec3 pos = ((BTASwimmingMoveControl)this.moveControl).getTargetPos();
-			if(!pos.equals(Vec3.ZERO))
-			{
-				this.setWantedPos(pos);
-			}
 			if(!this.getWantedPos().equals(Vec3.ZERO))
 			{
-		    	this.chain.setTarget(this.getWantedPos());
+				this.chain.setTarget(this.getWantedPos());
 			}
+			
+			if(this.getWantedPos().equals(Vec3.ZERO) || this.getWantedPos().subtract(this.position()).length() <= this.getSegmentDistance(0) * 2.5F)
+			{
+				if(!this.getBlockStateOn().isAir())
+				{
+					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 150);
+					Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
+					this.setWantedPos(groundPos.add(0, 20, 0));
+				}
+				else
+				{
+					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 150);
+					Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
+					this.setWantedPos(groundPos.subtract(0, 20, 0));
+				}
+			}
+			
 			ChainSegment segment = this.chain.getTarget().equals(Vec3.ZERO) ? this.chain.getTipSegment() : this.chain.getLastSegment();
-			this.chain.getLastSegment().setDistance(8.0F);
+			this.chain.getLastSegment().setDistance(3.5F);
+			Vec3 pos = segment.getPos();
 			Vec2 rot = segment.getRot();
-			this.setPos(segment.getPos());
+			this.setPos(pos);
 			this.setXRot(rot.x);
 			this.setYRot(rot.y);
 			this.setYBodyRot(rot.y);
@@ -120,12 +120,12 @@ public class EntityForneusHead extends AbstractForneusPart
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
 	{
-		AbstractForneusPart prev = this;
+		AbstractDuneDevourerPart prev = this;
 		for(int i = 1; i < this.getChainLength(); i++)
 		{
 			if(i < this.getChainLength() - 1)
 			{
-				EntityForneusBody body = new EntityForneusBody(BTAEntities.FORNEUS_BODY.get(), this.level);
+				EntityDuneDevourerBody body = new EntityDuneDevourerBody(BTAEntities.DUNE_DEVOURER_BODY.get(), this.level);
 				body.setPos(this.position());
 				body.setOwner(prev);
 				body.setIndex(i);
@@ -135,7 +135,7 @@ public class EntityForneusHead extends AbstractForneusPart
 			}
 			else
 			{
-				EntityForneusTail tail = new EntityForneusTail(BTAEntities.FORNEUS_TAIL.get(), this.level);
+				EntityDuneDevourerTail tail = new EntityDuneDevourerTail(BTAEntities.DUNE_DEVOURER_TAIL.get(), this.level);
 				tail.setPos(this.position());
 				tail.setOwner(prev);
 				tail.setIndex(i);
@@ -146,33 +146,10 @@ public class EntityForneusHead extends AbstractForneusPart
 		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
 	}
 	
-	@Override
-	public int maxTurnX() 
-	{
-		return !this.hasTarget() ? 55 : 75;
-	}
-	
-	@Override
-	public int maxTurnY() 
-	{
-		return !this.hasTarget() ? 3 : 5;
-	}
-	
-	@Override
-	public int targetSettingInterval() 
-	{
-		return 10;
-	}
-	
-	@Override
-	public Vec3 getMoveRadius()
-	{
-		return new Vec3(150, 30, 150);
-	}
-	
 	public void setWantedPos(Vec3 pos)
 	{
 		this.entityData.set(WANTED_POS, pos);
+		EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.15F, 0, 20);
 	}
 	
 	public Vec3 getWantedPos()

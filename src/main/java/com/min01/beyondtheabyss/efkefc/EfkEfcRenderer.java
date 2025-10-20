@@ -35,13 +35,13 @@ public class EfkEfcRenderer
 	
     public final Map<String, Object> globalProperties;
     public final List<EfkEfcEmitter> emitters = new ArrayList<>();
-	
-	public EfkEfcRenderer(List<EfkEfcNode> nodes, Map<String, Object> globalProperties)
+
+	public EfkEfcRenderer(List<EfkEfcNode> nodes, Map<String, Object> globalProperties, int tickCount, float partialTicks)
 	{
         this.globalProperties = globalProperties;
         for(EfkEfcNode node : nodes)
         {
-            this.emitters.add(new EfkEfcEmitter(node));
+            this.emitters.add(new EfkEfcEmitter(node, tickCount + partialTicks));
         }
 	}
 	
@@ -131,7 +131,7 @@ public class EfkEfcRenderer
 	    
 	    if(timeOffset != null)
 	    {
-	    	offset = Integer.parseInt((String) timeOffset.get("Center"));
+	    	offset = Integer.parseInt((String) timeOffset.get("Center")) / 2;
 	    }
 	    
 	    if(generationTime != null)
@@ -201,7 +201,7 @@ public class EfkEfcRenderer
 	    if(currentTick >= emitter.lastSpawnTick + spawnRate)
 	    {
 	    	boolean canEmit = infinity ? true : emitter.efkefcGenerated < maxGen;
-		    if(canEmit)
+		    if(canEmit && currentTick >= emitter.genTick + offset)
 		    {
 		    	emitter.efkefcList.add(new EfkEfc(currentTick, lifeTime, location, rotation, scale, types));
 	            emitter.efkefcGenerated++;
@@ -235,205 +235,202 @@ public class EfkEfcRenderer
 	    	Vector3f easingLocEnd = loc[4];
 	    	
 	    	Camera camera = this.minecraft.gameRenderer.getMainCamera();
+
+	    	float age = currentTick - efkefc.generatedTick;
+	    	float ageT = Mth.clamp(age / efkefc.life, 0.0F, 1.0F);
 	    	
-	    	if(currentTick > offset)
+	    	stack.pushPose();
+	    	
+	    	Vector3f finalLoc = new Vector3f();
+	    	
+	    	if(types.contains("FixedLocation")) 
 	    	{
-		    	float age = currentTick - efkefc.generatedTick;
-		    	float ageT = Mth.clamp(age / efkefc.life, 0.0F, 1.0F);
-		    	
-		    	stack.pushPose();
-		    	
-		    	Vector3f finalLoc = new Vector3f();
-		    	
-		    	if(types.contains("FixedLocation")) 
-		    	{
-		    		finalLoc.add(fixedLoc);
-		    	}
-		    	
-		    	if(types.contains("PVALocation")) 
-		    	{
-		    	    Vector3f pos = new Vector3f(pvaLocVelocity).mul(age).add(pvaLoc);
-		    	    finalLoc.add(pos);
-		    	}
-		    	
-		    	if(types.contains("EasingLocation")) 
-		    	{
-		    		float easedT = this.easing(ageT, this.easing(easingPosSpeed.x, easingPosSpeed.y));
-		    		Vector3f l = this.get2Point(easedT, easingLocStart, easingLocEnd);
-		    		finalLoc.add(l);
-		    	}
-		    	
-	    		stack.translate(finalLoc.x, finalLoc.y, finalLoc.z);
-		    	
-		    	Vector3f finalRot = new Vector3f();
-		    	
-		    	if(types.contains("FixedRotation")) 
-		    	{
-		    		finalRot.add(fixedRot);
-		    	}
-
-		    	if(types.contains("PVARotation")) 
-		    	{
-		    	    Vector3f rt = new Vector3f(pvaRot).add(pvaRotVelocity);
-		    	    finalRot.set(rt);
-		    	}
-		    	
-		    	if(types.contains("EasingRotation")) 
-		    	{
-		    		float easedT = this.easing(ageT, this.easing(easingRotSpeed.x, easingRotSpeed.y));
-		    		Vector3f r = this.get2Point(easedT, easingRotStart, easingRotEnd);
-		    	    finalRot.add(r);
-		    	}
-
-		    	if(billboardType == 0)
-		    	{
-		    		stack.mulPose(camera.rotation());
-		    	}
-		    	else if(billboardType == 1)
-		    	{
-		    	    stack.mulPose(Axis.XP.rotationDegrees(finalRot.x));
-		    	    stack.mulPose(Axis.YP.rotationDegrees(finalRot.y));
-		    	    stack.mulPose(Axis.ZP.rotationDegrees(finalRot.z));
-		    		stack.mulPose(Axis.YP.rotationDegrees(-camera.getYRot()));
-		    	}
-		    	else if(billboardType == 2)
-		    	{
-		    	    stack.mulPose(Axis.XP.rotationDegrees(finalRot.x));
-		    	    stack.mulPose(Axis.YP.rotationDegrees(finalRot.y));
-		    	    stack.mulPose(Axis.ZP.rotationDegrees(finalRot.z));
-		    	}
-		    	else if(billboardType == 3)
-		    	{
-		    	    stack.mulPose(camera.rotation());
-		    	    stack.mulPose(Axis.ZP.rotationDegrees(finalRot.z));
-		    	}
-		    	
-		    	Vector3f finalSize = new Vector3f(1);
-		    	
-		    	if(typeList.contains("FixedScale")) 
-		    	{
-		    		finalSize.mul(fixedSize);
-		    	}
-		    	
-		    	if(typeList.contains("PVAScale")) 
-		    	{
-		    	    Vector3f sz = new Vector3f(pvaSizeVelocity).mul(age).add(pvaSize);
-		    	    finalSize.mul(sz);
-		    	}
-		    	
-		    	if(typeList.contains("EasingScale"))
-		    	{
-		    		float easedT = this.easing(ageT, this.easing(easingScaleSpeed.x, easingScaleSpeed.y));
-		    		Vector3f s = this.get2Point(easedT, easingSizeStart, easingSizeEnd);
-		    		finalSize.mul(s);
-		    	}
-		    	
-		    	stack.scale(finalSize.x, finalSize.y, finalSize.z);
-		    	
-		    	if(rendererCommonValues != null)
-		    	{
-		    	    String textureName = rendererCommonValues.get("ColorTexture").toString().split("/")[1].toLowerCase();
-		    	    ResourceLocation texture = new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/" + textureName);
-		    	    
-		    	    int fadeIn = this.getFadeIn(rendererCommonValues);
-		    	    int fadeOut = this.getFadeOut(rendererCommonValues);
-		    	    
-		    	    String blendType = (String) rendererCommonValues.get("AlphaBlend");
-		    	    int alphaBlend = 0;
-		    	    
-		    	    if(blendType != null)
-		    	    {
-		    	    	alphaBlend = Integer.parseInt(blendType);
-		    	    }
-		    		
-		    	    RenderType render = alphaBlend == 2 ? BTARenderType.additive(texture) : BTARenderType.blend(texture);
-			    	
-			    	float alpha = 1.0F;
-
-			    	if(fadeIn > 0.0F && age < fadeIn)
-			    	{
-			    	    float t = age / fadeIn;
-			    	    alpha *= this.fade(0.0F, 1.0F, t, 0, 0);
-			    	}
-
-			    	if(fadeOut > 0.0F && age > efkefc.life - fadeOut)
-			    	{
-			    	    float t = (age - (efkefc.life - fadeOut)) / fadeOut;
-			    	    alpha *= this.fade(1.0F, 0.0F, t, 0, 0);
-			    	}
-			    	
-		    	    if(renderType.equals("Sprite"))
-		    	    {
-				    	Vector4f col = new Vector4f(1);
-
-				    	col.w *= alpha;
-				    	
-				    	if(typeList.contains("FixedColor")) 
-				    	{
-				    		float r = colors[0].x;
-				    		float g = colors[0].y;
-				    		float b = colors[0].z;
-				    		float a = colors[0].w;
-					    	col.set(r / 255, g / 255, b / 255, a / 255);
-				    	}
-				    	
-				    	if(typeList.contains("EasingColor"))
-				    	{
-				    		float easedT = this.easing(ageT, this.easing(easingColorSpeed.x, easingColorSpeed.y));
-				    		Vector4f c = this.get2Point(easedT, easingStartColors[0], easingEndColors[0]);
-					    	col.set(c.x / 255, c.y / 255, c.z / 255, c.w / 255);
-				    	}
-				    	
-				    	Vector4f[] color = new Vector4f[] {col, col, col, col};
-				    	
-				    	this.drawQuad(stack, bufferSource.getBuffer(render), coords, color, LightTexture.FULL_BRIGHT);
-		    	    }
-		    	    else if(renderType.equals("Ring"))
-		    	    {
-			    		float easedT = this.easing(ageT, this.easing(0, 0));
-			    		
-			    		Vector2f outerRadiusEasingStart = outerRadius[3];
-			    		Vector2f outerRadiusEasingEnd = outerRadius[4];
-
-			    		Vector2f innerRadiusEasingStart = innerRadius[3];
-			    		Vector2f innerRadiusEasingEnd = innerRadius[4];
-
-				    	Vector4f innerCol = new Vector4f(1);
-				    	Vector4f centerCol = new Vector4f(1);
-				    	Vector4f outerCol = new Vector4f(1);
-
-				    	innerCol.w *= alpha;
-				    	centerCol.w *= alpha;
-				    	outerCol.w *= alpha;
-
-			    		Vector4f innerColor = this.get2Point(easedT, innerEasingColors[0], innerEasingColors[1]);
-			    		Vector4f centerColor = this.get2Point(easedT, centerEasingColors[0], centerEasingColors[1]);
-			    		Vector4f outerColor = this.get2Point(easedT, outerEasingColors[0], outerEasingColors[1]);
-			    		
-				    	if(types.contains("EasingColorInner"))
-				    	{
-					    	innerCol.set(innerColor.x / 255, innerColor.y / 255, innerColor.z / 255, innerColor.w / 255);
-				    	}
-				    	
-				    	if(types.contains("EasingColorCenter"))
-				    	{
-					    	centerCol.set(centerColor.x / 255, centerColor.y / 255, centerColor.z / 255, centerColor.w / 255);
-				    	}
-				    	
-				    	if(types.contains("EasingColorOuter"))
-				    	{
-					    	outerCol.set(outerColor.x / 255, outerColor.y / 255, outerColor.z / 255, outerColor.w / 255);
-				    	}
-			    		
-			    		Vector2f outer = this.get2Point(easedT, outerRadiusEasingStart, outerRadiusEasingEnd);
-			    		Vector2f inner = this.get2Point(easedT, innerRadiusEasingStart, innerRadiusEasingEnd);
-			    		
-		    	    	BTAClientUtil.drawRing(inner.x, outer.x, inner.y, outer.y, centerRatio, vertexCount, stack, bufferSource, innerCol, centerCol, outerCol, LightTexture.FULL_BRIGHT, render, Vec3.ZERO);
-		    	    }
-		    	}
-		    	
-		    	stack.popPose();
+	    		finalLoc.add(fixedLoc);
 	    	}
+	    	
+	    	if(types.contains("PVALocation")) 
+	    	{
+	    	    Vector3f pos = new Vector3f(pvaLocVelocity).mul(age).add(pvaLoc);
+	    	    finalLoc.add(pos);
+	    	}
+	    	
+	    	if(types.contains("EasingLocation")) 
+	    	{
+	    		float easedT = this.easing(ageT, this.easing(easingPosSpeed.x, easingPosSpeed.y));
+	    		Vector3f l = this.get2Point(easedT, easingLocStart, easingLocEnd);
+	    		finalLoc.add(l);
+	    	}
+	    	
+    		stack.translate(finalLoc.x, finalLoc.y, finalLoc.z);
+	    	
+	    	Vector3f finalRot = new Vector3f();
+	    	
+	    	if(types.contains("FixedRotation")) 
+	    	{
+	    		finalRot.add(fixedRot);
+	    	}
+
+	    	if(types.contains("PVARotation")) 
+	    	{
+	    	    Vector3f rt = new Vector3f(pvaRot).add(pvaRotVelocity);
+	    	    finalRot.set(rt);
+	    	}
+	    	
+	    	if(types.contains("EasingRotation")) 
+	    	{
+	    		float easedT = this.easing(ageT, this.easing(easingRotSpeed.x, easingRotSpeed.y));
+	    		Vector3f r = this.get2Point(easedT, easingRotStart, easingRotEnd);
+	    	    finalRot.add(r);
+	    	}
+
+	    	if(billboardType == 0)
+	    	{
+	    		stack.mulPose(camera.rotation());
+	    	}
+	    	else if(billboardType == 1)
+	    	{
+	    	    stack.mulPose(Axis.XP.rotationDegrees(finalRot.x));
+	    	    stack.mulPose(Axis.YP.rotationDegrees(finalRot.y));
+	    	    stack.mulPose(Axis.ZP.rotationDegrees(finalRot.z));
+	    		stack.mulPose(Axis.YP.rotationDegrees(-camera.getYRot()));
+	    	}
+	    	else if(billboardType == 2)
+	    	{
+	    	    stack.mulPose(Axis.XP.rotationDegrees(finalRot.x));
+	    	    stack.mulPose(Axis.YP.rotationDegrees(finalRot.y));
+	    	    stack.mulPose(Axis.ZP.rotationDegrees(finalRot.z));
+	    	}
+	    	else if(billboardType == 3)
+	    	{
+	    	    stack.mulPose(camera.rotation());
+	    	    stack.mulPose(Axis.ZP.rotationDegrees(finalRot.z));
+	    	}
+	    	
+	    	Vector3f finalSize = new Vector3f(1);
+	    	
+	    	if(typeList.contains("FixedScale")) 
+	    	{
+	    		finalSize.mul(fixedSize);
+	    	}
+	    	
+	    	if(typeList.contains("PVAScale")) 
+	    	{
+	    	    Vector3f sz = new Vector3f(pvaSizeVelocity).mul(age).add(pvaSize);
+	    	    finalSize.mul(sz);
+	    	}
+	    	
+	    	if(typeList.contains("EasingScale"))
+	    	{
+	    		float easedT = this.easing(ageT, this.easing(easingScaleSpeed.x, easingScaleSpeed.y));
+	    		Vector3f s = this.get2Point(easedT, easingSizeStart, easingSizeEnd);
+	    		finalSize.mul(s);
+	    	}
+	    	
+	    	stack.scale(finalSize.x, finalSize.y, finalSize.z);
+	    	
+	    	if(rendererCommonValues != null)
+	    	{
+	    	    String textureName = rendererCommonValues.get("ColorTexture").toString().split("/")[1].toLowerCase();
+	    	    ResourceLocation texture = new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/" + textureName);
+	    	    
+	    	    int fadeIn = this.getFadeIn(rendererCommonValues);
+	    	    int fadeOut = this.getFadeOut(rendererCommonValues);
+	    	    
+	    	    String blendType = (String) rendererCommonValues.get("AlphaBlend");
+	    	    int alphaBlend = 0;
+	    	    
+	    	    if(blendType != null)
+	    	    {
+	    	    	alphaBlend = Integer.parseInt(blendType);
+	    	    }
+	    		
+	    	    RenderType render = alphaBlend == 2 ? BTARenderType.additive(texture) : BTARenderType.blend(texture);
+		    	
+		    	float alpha = 1.0F;
+
+		    	if(fadeIn > 0.0F && age < fadeIn)
+		    	{
+		    	    float t = age / fadeIn;
+		    	    alpha *= this.fade(0.0F, 1.0F, t, 0, 0);
+		    	}
+
+		    	if(fadeOut > 0.0F && age > efkefc.life - fadeOut)
+		    	{
+		    	    float t = (age - (efkefc.life - fadeOut)) / fadeOut;
+		    	    alpha *= this.fade(1.0F, 0.0F, t, 0, 0);
+		    	}
+		    	
+	    	    if(renderType.equals("Sprite"))
+	    	    {
+			    	Vector4f col = new Vector4f(1);
+
+			    	col.w *= alpha;
+			    	
+			    	if(typeList.contains("FixedColor")) 
+			    	{
+			    		float r = colors[0].x;
+			    		float g = colors[0].y;
+			    		float b = colors[0].z;
+			    		float a = colors[0].w;
+				    	col.set(r / 255, g / 255, b / 255, a / 255);
+			    	}
+			    	
+			    	if(typeList.contains("EasingColor"))
+			    	{
+			    		float easedT = this.easing(ageT, this.easing(easingColorSpeed.x, easingColorSpeed.y));
+			    		Vector4f c = this.get2Point(easedT, easingStartColors[0], easingEndColors[0]);
+				    	col.set(c.x / 255, c.y / 255, c.z / 255, c.w / 255);
+			    	}
+			    	
+			    	Vector4f[] color = new Vector4f[] {col, col, col, col};
+			    	
+			    	this.drawQuad(stack, bufferSource.getBuffer(render), coords, color, LightTexture.FULL_BRIGHT);
+	    	    }
+	    	    else if(renderType.equals("Ring"))
+	    	    {
+		    		float easedT = this.easing(ageT, this.easing(0, 0));
+		    		
+		    		Vector2f outerRadiusEasingStart = outerRadius[3];
+		    		Vector2f outerRadiusEasingEnd = outerRadius[4];
+
+		    		Vector2f innerRadiusEasingStart = innerRadius[3];
+		    		Vector2f innerRadiusEasingEnd = innerRadius[4];
+
+			    	Vector4f innerCol = new Vector4f(1);
+			    	Vector4f centerCol = new Vector4f(1);
+			    	Vector4f outerCol = new Vector4f(1);
+
+			    	innerCol.w *= alpha;
+			    	centerCol.w *= alpha;
+			    	outerCol.w *= alpha;
+
+		    		Vector4f innerColor = this.get2Point(easedT, innerEasingColors[0], innerEasingColors[1]);
+		    		Vector4f centerColor = this.get2Point(easedT, centerEasingColors[0], centerEasingColors[1]);
+		    		Vector4f outerColor = this.get2Point(easedT, outerEasingColors[0], outerEasingColors[1]);
+		    		
+			    	if(types.contains("EasingColorInner"))
+			    	{
+				    	innerCol.set(innerColor.x / 255, innerColor.y / 255, innerColor.z / 255, innerColor.w / 255);
+			    	}
+			    	
+			    	if(types.contains("EasingColorCenter"))
+			    	{
+				    	centerCol.set(centerColor.x / 255, centerColor.y / 255, centerColor.z / 255, centerColor.w / 255);
+			    	}
+			    	
+			    	if(types.contains("EasingColorOuter"))
+			    	{
+				    	outerCol.set(outerColor.x / 255, outerColor.y / 255, outerColor.z / 255, outerColor.w / 255);
+			    	}
+		    		
+		    		Vector2f outer = this.get2Point(easedT, outerRadiusEasingStart, outerRadiusEasingEnd);
+		    		Vector2f inner = this.get2Point(easedT, innerRadiusEasingStart, innerRadiusEasingEnd);
+		    		
+	    	    	BTAClientUtil.drawRing(inner.x, outer.x, inner.y, outer.y, centerRatio, vertexCount, stack, bufferSource, innerCol, centerCol, outerCol, LightTexture.FULL_BRIGHT, render, Vec3.ZERO);
+	    	    }
+	    	}
+	    	
+	    	stack.popPose();
 	    }
 	    
 	    if(emitter.childrens != null) 
@@ -1017,16 +1014,18 @@ public class EfkEfcRenderer
     	public final List<EfkEfc> efkefcList = new ArrayList<>();
     	public float efkefcGenerated;
     	public float lastSpawnTick;
+    	public float genTick;
     	public EfkEfcNode node;
     	
-    	public EfkEfcEmitter(EfkEfcNode node)
+    	public EfkEfcEmitter(EfkEfcNode node, float genTick)
     	{
     		this.node = node;
+    		this.genTick = genTick;
             if(node.children != null)
             {
                 for(EfkEfcNode childNode : node.children) 
                 {
-                    this.childrens.add(new EfkEfcEmitter(childNode));
+                    this.childrens.add(new EfkEfcEmitter(childNode, genTick));
                 }
             }
     	}

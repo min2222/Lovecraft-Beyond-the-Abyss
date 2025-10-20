@@ -30,7 +30,6 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, SetDialogueScreenPacket.class, SetDialogueScreenPacket::encode, SetDialogueScreenPacket::new, SetDialogueScreenPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateSynchedEntityDataPacket.class, UpdateSynchedEntityDataPacket::encode, UpdateSynchedEntityDataPacket::new, UpdateSynchedEntityDataPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationPacket.class, UpdatePlayerAnimationPacket::encode, UpdatePlayerAnimationPacket::new, UpdatePlayerAnimationPacket.Handler::onMessage);
-		CHANNEL.registerMessage(ID++, UpdateServerItemPacket.class, UpdateServerItemPacket::encode, UpdateServerItemPacket::new, UpdateServerItemPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateAbyssPortalPosPacket.class, UpdateAbyssPortalPosPacket::encode, UpdateAbyssPortalPosPacket::new, UpdateAbyssPortalPosPacket.Handler::onMessage);
 	}
 	

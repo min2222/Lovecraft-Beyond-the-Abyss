@@ -17,6 +17,7 @@ import com.min01.beyondtheabyss.capabilities.IPlayerAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.world.BTAWorlds;
@@ -24,7 +25,6 @@ import com.min01.beyondtheabyss.world.BTAWorlds;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -65,7 +65,6 @@ public class BTAUtil
 {
 	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
-    public static final String TICK_COUNT = "TickCount";
     
     public static float distanceToXZ(Entity entity, Entity target)
     {
@@ -192,10 +191,25 @@ public class BTAUtil
 		}
 	}
 	
-    public static void tickPlayerAnimation(Entity player)
+    public static void tickItemAnimation(Player player)
+    {
+		for(int i = 0; i < player.getInventory().getContainerSize(); i++)
+		{
+			ItemStack stack = player.getInventory().getItem(i);
+			if(stack.getItem() instanceof IAnimatableItem)
+			{
+				stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
+				{
+					t.tick(player, stack);
+				});
+			}
+		}
+    }
+    
+    public static void tickPlayerAnimation(LivingEntity player)
     {
 		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-		cap.tick();
+		cap.tick(player);
     }
     
     public static void setPlayerAnimationState(Entity player, int state)
@@ -228,16 +242,10 @@ public class BTAUtil
 		return cap.getAnimationTick();
     }
 	
-    public static int getTickCount(ItemStack stack)
+    public static int getItemTickCount(ItemStack stack)
     {
-        CompoundTag tag = stack.getTag();
-        return tag != null ? tag.getInt(TICK_COUNT) : 0;
-    }
-
-    public static void setTickCount(ItemStack stack, int tickCount)
-    {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putInt(TICK_COUNT, tickCount);
+		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
+		return cap.getTickCount();
     }
 	
     public static void setItemAnimationState(ItemStack stack, int state)

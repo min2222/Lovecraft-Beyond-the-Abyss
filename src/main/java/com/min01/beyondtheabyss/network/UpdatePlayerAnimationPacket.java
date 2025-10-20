@@ -15,31 +15,31 @@ public class UpdatePlayerAnimationPacket
 {
 	public final UUID uuid;
 	public final int animationState;
+	public final int prevAimationState;
 	public final int animationTick;
-	public final boolean isState;
 
-	public UpdatePlayerAnimationPacket(UUID uuid, int animationState, int animationTick, boolean isState) 
+	public UpdatePlayerAnimationPacket(UUID uuid, int animationState, int prevAimationState, int animationTick) 
 	{
 		this.uuid = uuid;
 		this.animationState = animationState;
+		this.prevAimationState = prevAimationState;
 		this.animationTick = animationTick;
-		this.isState = isState;
 	}
 
 	public UpdatePlayerAnimationPacket(FriendlyByteBuf buf)
 	{
 		this.uuid = buf.readUUID();
 		this.animationState = buf.readInt();
+		this.prevAimationState = buf.readInt();
 		this.animationTick = buf.readInt();
-		this.isState = buf.readBoolean();
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
 		buf.writeUUID(this.uuid);
 		buf.writeInt(this.animationState);
+		buf.writeInt(this.prevAimationState);
 		buf.writeInt(this.animationTick);
-		buf.writeBoolean(this.isState);
 	}
 
 	public static class Handler 
@@ -57,14 +57,9 @@ public class UpdatePlayerAnimationPacket
 						{
 							player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
 							{
-								if(message.isState)
-								{
-									t.setAnimationState(message.animationState);
-								}
-								else
-								{
-									t.setAnimationTick(message.animationTick);
-								}
+								t.setAnimationState(message.animationState);
+								t.setPrevAnimationState(message.prevAimationState);
+								t.setAnimationTick(message.animationTick);
 							});
 						}
 					});

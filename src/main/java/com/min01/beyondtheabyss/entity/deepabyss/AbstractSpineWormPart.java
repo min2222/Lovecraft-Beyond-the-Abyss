@@ -1,13 +1,11 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractWormPart;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractSpineWormPart extends AbstractWormPart<AbstractSpineWormPart>
+public abstract class AbstractSpineWormPart extends AbstractDeepAbyssWormPart<AbstractSpineWormPart>
 {
 	public AbstractSpineWormPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
@@ -42,5 +40,11 @@ public abstract class AbstractSpineWormPart extends AbstractWormPart<AbstractSpi
 	public float getSegmentDistance(int index) 
 	{
 		return 1.0F;
+	}
+	
+	@Override
+	public boolean skipInvisiblePart() 
+	{
+		return false;
 	}
 }

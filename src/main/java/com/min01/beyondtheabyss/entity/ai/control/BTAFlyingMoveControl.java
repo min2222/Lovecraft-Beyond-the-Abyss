@@ -79,7 +79,7 @@ public class BTAFlyingMoveControl extends MoveControl
         for(int i = 0; i < 10; i++)
         {
         	Vec3 pos = BTAUtil.getSpreadPosition(this.mob, radius);
-        	HitResult hitResult = this.mob.level.clip(new ClipContext(this.mob.position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob));
+        	HitResult hitResult = world.clip(new ClipContext(this.mob.position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob));
         	if(hitResult instanceof BlockHitResult blockHit)
         	{
                 BlockPos targetPos = blockHit.getBlockPos();

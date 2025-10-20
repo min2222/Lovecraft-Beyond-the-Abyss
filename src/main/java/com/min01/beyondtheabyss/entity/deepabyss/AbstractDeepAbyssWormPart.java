@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity;
+package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -23,14 +23,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends AbstractOwnableBTAMonster<T>
+public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormPart<T>> extends AbstractOwnableDeepAbyssMonster<T>
 {
-	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Boolean> UNLOADED = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Boolean> UNLOADED = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.BOOLEAN);
 	public Worm[] worms;
 	
-	public AbstractWormPart(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public AbstractDeepAbyssWormPart(EntityType<? extends Monster> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 	}
@@ -71,7 +71,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		}
 		else if(!this.isHead() && !this.isUnloaded())
 		{
-			//FIXME dune devourer discard;
+			//FIXME forneus discard;
 			this.discard();
 		}
 	}
@@ -207,9 +207,15 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	}
 	
 	@Override
+	public boolean canSwim() 
+	{
+		return super.canSwim() && this.isHead();
+	}
+	
+	@Override
 	public boolean isAlliedTo(Entity p_20355_)
 	{
-		return super.isAlliedTo(p_20355_) || p_20355_ == this.getHead() || (p_20355_ instanceof AbstractWormPart<?> worm && worm.getHead() == this.getHead());
+		return super.isAlliedTo(p_20355_) || p_20355_ == this.getHead() || (p_20355_ instanceof AbstractDeepAbyssWormPart<?> worm && worm.getHead() == this.getHead());
 	}
 	
 	public void setUnloaded(boolean value)
