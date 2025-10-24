@@ -21,7 +21,7 @@ public class CorpseAnglerAmbushGoal extends BasicBTASkillGoal<EntityCorpseAngler
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.getAnimationState() == 3 && BTAUtil.distanceToXZ(this.mob.getTarget(), this.mob) <= 2.5F;
+		return super.canUse() && this.mob.getAnimationState() == 3 && this.mob.posArray[0] != null && this.mob.getTarget().position().distanceTo(this.mob.posArray[0]) <= 3.5F;
 	}
 
 	@Override

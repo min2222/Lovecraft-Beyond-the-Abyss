@@ -79,7 +79,7 @@ public class EfkEfcRenderer
 	    
 	    int maxGen = 1;
 	    int offset = 0;
-	    int billboardType = 2;
+	    int billboardType = 0;
 	    int vertexCount = 3;
 	    float spawnRate = 1;
 	    float centerRatio = 0.5F;

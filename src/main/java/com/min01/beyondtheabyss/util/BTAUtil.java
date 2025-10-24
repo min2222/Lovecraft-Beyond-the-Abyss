@@ -85,12 +85,12 @@ public class BTAUtil
 		BoundingBox boundingBox = template.getBoundingBox(blockPos, rotation, blockPos1, mirror);
 		BlockPos blockPos2 = boundingBox.getCenter();
 		int i = chunkGenerator.getBaseHeight(blockPos2.getX(), blockPos2.getZ(), types, heightAccessor, randomState);
-		int j = findSuitableY(random, chunkGenerator, i, piece.getBoundingBox(), heightAccessor, randomState);
+		int j = findSuitableY(types, random, chunkGenerator, i, piece.getBoundingBox(), heightAccessor, randomState);
 		consumer.accept(j);
 	}
 	
 	//copied from RuinedPortalStructure
-	public static int findSuitableY(RandomSource p_229267_, ChunkGenerator p_229268_, int p_229271_, BoundingBox p_229273_, LevelHeightAccessor p_229274_, RandomState p_229275_)
+	public static int findSuitableY(Heightmap.Types types, RandomSource p_229267_, ChunkGenerator p_229268_, int p_229271_, BoundingBox p_229273_, LevelHeightAccessor p_229274_, RandomState p_229275_)
 	{
 		int j = p_229274_.getMinBuildHeight() + 15;
 		int i = p_229271_;
@@ -99,15 +99,19 @@ public class BTAUtil
 		{
 			return p_229268_.getBaseColumn(p_229280_.getX(), p_229280_.getZ(), p_229274_, p_229275_);
 		}).collect(Collectors.toList());
-		Heightmap.Types heightmap$types = Heightmap.Types.WORLD_SURFACE_WG;
 		int l;
 		for(l = i; l > j; --l) 
 		{
 			int i1 = 0;
 			for(NoiseColumn noisecolumn : list)
 			{
+				//fix for ceiling dimension like deep abyss
+				if(l > 150)
+				{
+					continue;
+				}
 				BlockState blockstate = noisecolumn.getBlock(l);
-				if(heightmap$types.isOpaque().test(blockstate)) 
+				if(types.isOpaque().test(blockstate)) 
 				{
 					++i1;
 					if(i1 == 3)

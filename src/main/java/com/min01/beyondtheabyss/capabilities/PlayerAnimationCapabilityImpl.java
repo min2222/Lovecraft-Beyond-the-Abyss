@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
+import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePlayerAnimationPacket;
@@ -78,10 +78,10 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 				}
 				if(this.getAnimationState() == 4 && entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get())) 
 				{
-					//FIXME send nbt tag to client;
 					ItemStack stack = entity.getItemInHand(entity.getUsedItemHand());
 					SkeletalGunbladeItem.setLaserVisible(stack, false);
 					SkeletalGunbladeItem.setLaserLength(stack, 0);
+					SkeletalGunbladeItem.setCharge(stack, 0);
 				}
 				this.setAnimationState(0);
 				this.setAnimationTick(0);

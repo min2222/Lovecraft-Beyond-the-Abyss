@@ -7,6 +7,7 @@ import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -17,6 +18,7 @@ import com.mojang.math.Axis;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -32,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent.OverlayType;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -98,6 +101,21 @@ public class ClientEventHandlerForge
     }
     
     @SubscribeEvent
+    public static void onMovementInputUpdate(MovementInputUpdateEvent event)
+    {
+    	Player player = event.getEntity();
+    	Input input = event.getInput();
+    	if(!player.isPassenger()) 
+    	{
+    		if(player.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && BTAUtil.getPlayerAnimationState(player) == 4)
+    		{
+        		input.leftImpulse *= 0.2F;
+        		input.forwardImpulse *= 0.2F;
+    		}
+    	}
+    }
+    
+    @SubscribeEvent
     public static void onRenderBlockScreenEffect(RenderBlockScreenEffectEvent event)
     {
     	Player player = event.getPlayer();
@@ -144,7 +162,7 @@ public class ClientEventHandlerForge
 	public static void onRenderHand(RenderHandEvent event)
 	{
 		ItemStack itemStack = event.getItemStack();
-		if(itemStack.getItem() instanceof IAnimatableItem item)
+		if(itemStack.getItem() instanceof IAnimatableItem item && item.isFirstPersonAnim())
 		{
 			PoseStack stack = event.getPoseStack();
 			MultiBufferSource bufferSource = event.getMultiBufferSource();

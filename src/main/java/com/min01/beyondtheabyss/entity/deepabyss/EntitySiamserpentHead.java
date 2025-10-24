@@ -343,7 +343,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-        Structure structure = pServerLevel.registryAccess().registryOrThrow(Registries.STRUCTURE).get(BTAStructures.Keys.LARGE_FOSSIL);
+        Structure structure = pServerLevel.registryAccess().registryOrThrow(Registries.STRUCTURE).get(BTAStructures.Keys.GIANT_FOSSIL);
 		ServerLevel level = pServerLevel.getLevel();
 		boolean isFossil = level.structureManager().getStructureWithPieceAt(pPos, structure).isValid();
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40 && isFossil;

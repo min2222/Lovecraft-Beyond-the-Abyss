@@ -35,7 +35,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityCorpseAngler extends AbstractDeepAbyssMonster
@@ -62,6 +61,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	public EntityCorpseAngler(EntityType<? extends Monster> p_21683_, Level p_21684_) 
 	{
 		super(p_21683_, p_21684_);
+		this.posArray = new Vec3[1];
 		this.xpReward = this.random.nextInt(10);
 		this.noCulling = true;
 	}
@@ -167,7 +167,8 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 				}
 				else
 				{
-					Vec3 pos = Vec3.atBottomCenterOf(this.level.getHeightmapPos(Types.OCEAN_FLOOR_WG, this.blockPosition()).above());
+					BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above();
+					Vec3 pos = Vec3.atBottomCenterOf(floorPos);
 					if(this.getNavigation().isDone())
 					{
 						this.getNavigation().moveTo(pos.x, pos.y, pos.z, 0.25F);

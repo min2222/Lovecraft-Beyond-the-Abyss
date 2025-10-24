@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.item.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
 import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
-import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -38,6 +38,14 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	{
  		if(p_108830_.getItem() instanceof SkeletalGunbladeItem)
 		{
+ 			if(p_108831_.firstPerson() || p_108831_ == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || p_108831_ == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) 
+ 			{
+ 				this.modelGunblade.EnergyRay.visible = SkeletalGunbladeItem.isLaserVisible(p_108830_);
+ 			}
+ 			else
+ 			{
+ 				this.modelGunblade.EnergyRay.visible = false;
+ 			}
 	        p_108832_.pushPose();
 	        p_108832_.translate(0.5F, 0.6F, 0.3F);
 	        p_108832_.scale(-1.0F, -1.0F, 1.0F);

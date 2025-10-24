@@ -9,7 +9,7 @@
 				{
 					"biome": "beyondtheabyss:purgatory",
 					"parameters": {
-						"temperature": 2,
+						"temperature": 0,
 						"humidity": 0,
 						"continentalness": 0,
 						"erosion": 0,

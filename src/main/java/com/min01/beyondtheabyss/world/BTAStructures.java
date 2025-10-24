@@ -5,8 +5,8 @@ import com.min01.beyondtheabyss.world.structure.HutStructure;
 import com.min01.beyondtheabyss.world.structure.HutStructurePiece;
 import com.min01.beyondtheabyss.world.structure.deepabyss.DeepAbyssPortalStructure;
 import com.min01.beyondtheabyss.world.structure.deepabyss.DeepAbyssPortalStructurePiece;
-import com.min01.beyondtheabyss.world.structure.deepabyss.LargeFossilStructure;
-import com.min01.beyondtheabyss.world.structure.deepabyss.LargeFossilStructurePiece;
+import com.min01.beyondtheabyss.world.structure.deepabyss.GiantFossilStructure;
+import com.min01.beyondtheabyss.world.structure.deepabyss.GiantFossilStructurePiece;
 import com.min01.beyondtheabyss.world.structure.deepabyss.SpireHollowStructure;
 import com.min01.beyondtheabyss.world.structure.deepabyss.SpireHollowStructurePiece;
 
@@ -26,17 +26,17 @@ public class BTAStructures
 
     public static final RegistryObject<StructureType<SpireHollowStructure>> SPIRE_HOLLOW = STRUCTURE_TYPES.register("spire_hollow", () -> () -> SpireHollowStructure.CODEC);
     public static final RegistryObject<StructureType<HutStructure>> HUT = STRUCTURE_TYPES.register("hut", () -> () -> HutStructure.CODEC);
-    public static final RegistryObject<StructureType<LargeFossilStructure>> LARGE_FOSSIL = STRUCTURE_TYPES.register("large_fossil", () -> () -> LargeFossilStructure.CODEC);
+    public static final RegistryObject<StructureType<GiantFossilStructure>> GIANT_FOSSIL = STRUCTURE_TYPES.register("giant_fossil", () -> () -> GiantFossilStructure.CODEC);
     public static final RegistryObject<StructureType<DeepAbyssPortalStructure>> DEEP_ABYSS_PORTAL = STRUCTURE_TYPES.register("deep_abyss_portal", () -> () -> DeepAbyssPortalStructure.CODEC);
     
     public static final RegistryObject<StructurePieceType.StructureTemplateType> HUT_PIECE = STRUCTURE_PIECE_TYPES.register("hut_piece", () -> HutStructurePiece::new);
     public static final RegistryObject<StructurePieceType> SPIRE_HOLLOW_PIECE = STRUCTURE_PIECE_TYPES.register("spire_hollow_piece", () -> SpireHollowStructurePiece::new);
-    public static final RegistryObject<StructurePieceType.StructureTemplateType> LARGE_FOSSIL_PIECE = STRUCTURE_PIECE_TYPES.register("large_fossil_piece", () -> LargeFossilStructurePiece::new);
+    public static final RegistryObject<StructurePieceType.StructureTemplateType> GIANT_FOSSIL_PIECE = STRUCTURE_PIECE_TYPES.register("giant_fossil_piece", () -> GiantFossilStructurePiece::new);
     public static final RegistryObject<StructurePieceType.StructureTemplateType> DEEP_ABYSS_PORTAL_PIECE = STRUCTURE_PIECE_TYPES.register("deep_abyss_portal_piece", () -> DeepAbyssPortalStructurePiece::new);
 
     public static class Keys
     {
-    	public static final ResourceKey<Structure> LARGE_FOSSIL = createKey("large_fossil");
+    	public static final ResourceKey<Structure> GIANT_FOSSIL = createKey("giant_fossil");
     	
     	private static ResourceKey<Structure> createKey(String name) 
     	{

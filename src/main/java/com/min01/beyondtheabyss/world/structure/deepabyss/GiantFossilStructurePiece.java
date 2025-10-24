@@ -15,19 +15,19 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnorePr
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
-public class LargeFossilStructurePiece extends TemplateStructurePiece 
+public class GiantFossilStructurePiece extends TemplateStructurePiece 
 {
 	public static final RandomSource RAND = RandomSource.create();
 	public static final StructurePlaceSettings SETTINGS = new StructurePlaceSettings().addProcessor(BlockIgnoreProcessor.AIR).setRotation(Util.getRandom(Rotation.values(), RAND));
 	
-    public LargeFossilStructurePiece(StructureTemplateManager p_227555_, ResourceLocation p_227556_, BlockPos p_227557_) 
+    public GiantFossilStructurePiece(StructureTemplateManager p_227555_, ResourceLocation p_227556_, BlockPos p_227557_) 
     {
-    	super(BTAStructures.LARGE_FOSSIL_PIECE.get(), 0, p_227555_, p_227556_, p_227556_.toString(), SETTINGS, p_227557_);
+    	super(BTAStructures.GIANT_FOSSIL_PIECE.get(), 0, p_227555_, p_227556_, p_227556_.toString(), SETTINGS, p_227557_);
     }
 
-    public LargeFossilStructurePiece(StructureTemplateManager p_227561_, CompoundTag p_227562_) 
+    public GiantFossilStructurePiece(StructureTemplateManager p_227561_, CompoundTag p_227562_) 
     {
-    	super(BTAStructures.LARGE_FOSSIL_PIECE.get(), p_227562_, p_227561_, (p_227589_) -> 
+    	super(BTAStructures.GIANT_FOSSIL_PIECE.get(), p_227562_, p_227561_, (p_227589_) -> 
     	{
     		return SETTINGS;
     	});

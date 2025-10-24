@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
+import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateItemAnimationPacket;

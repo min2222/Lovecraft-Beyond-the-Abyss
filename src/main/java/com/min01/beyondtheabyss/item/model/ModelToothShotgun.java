@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.item.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.item.animation.ToothShotgunAnimation;
-import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
+import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 

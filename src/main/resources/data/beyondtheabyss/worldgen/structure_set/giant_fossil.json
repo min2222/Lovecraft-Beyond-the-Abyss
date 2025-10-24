@@ -2,13 +2,13 @@
 	"placement": {
 		"type": "minecraft:random_spread",
 		"salt": 239768939,
-		"separation": 16,
-		"spacing": 20
+		"separation": 1,
+		"spacing": 10
 	},
 	"structures": [
 		{
-			"structure": "beyondtheabyss:large_fossil",
-			"weight": 20
+			"structure": "beyondtheabyss:giant_fossil",
+			"weight": 1
 		}
 	]
 }

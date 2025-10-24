@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.animation.PlayerAnimation;
-import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
+import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -39,7 +39,8 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     private void setupAnimTail(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
     }
     
     @Override
@@ -51,7 +52,8 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     	this.animate(entity, ToothShotgunItem.SHOTGUN_RUNNING, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_RUNNING, ageInTicks);
     	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD_TO_RUN, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD_TO_RUN, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
     }
     
 	@Override

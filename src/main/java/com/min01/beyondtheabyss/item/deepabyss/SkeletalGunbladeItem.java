@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.item.weapon;
+package com.min01.beyondtheabyss.item.deepabyss;
 
 import java.util.function.Consumer;
 
@@ -6,6 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.item.renderer.BTAItemRenderer;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateSkeletalGunbladeItemPacket;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -29,6 +31,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
     public static final String GUNBLADE_OPEN = "GunbladeOpen";
     public static final String GUNBLADE_CLOSE = "GunbladeClose";
     public static final String GUNBLADE_CHARGE = "GunbladeCharge";
+    public static final String GUNBLADE_SHOOT_LIGHT = "GunbladeShootLight";
     public static final String GUNBLADE_SHOOT = "GunbladeShoot";
     
 	public SkeletalGunbladeItem(Item.Properties properties) 
@@ -83,7 +86,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	@Override
 	public void onUseTick(Level p_41428_, LivingEntity p_41429_, ItemStack p_41430_, int p_41431_) 
 	{
-		if(getCharge(p_41430_) < 3 && p_41431_ % 25 == 0 && p_41429_.level.isClientSide)
+		if(getCharge(p_41430_) < 3 && p_41431_ % 25 == 0 && p_41428_.isClientSide)
 		{
 			setCharge(p_41430_, getCharge(p_41430_) + 1);
 		}
@@ -92,14 +95,28 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	@Override
 	public void onStopUsing(ItemStack stack, LivingEntity entity, int count)
 	{
-		if(getCharge(stack) > 0)
+		if(getCharge(stack) > 0 && entity.level.isClientSide)
 		{
 			BTAUtil.setPlayerAnimationState(entity, 4);
-			BTAUtil.setPlayerAnimationTick(entity, 40);
+			BTAUtil.setPlayerAnimationTick(entity, 95);
 			setLaserVisible(stack, true);
 			setLaserLength(stack, 100);
-			setCharge(stack, 0);
+			BTANetwork.sendToServer(new UpdateSkeletalGunbladeItemPacket(stack, entity.getUUID()));
 		}
+	}
+	
+	public void onStopUsingServer(ItemStack stack, LivingEntity entity)
+	{
+		BTAUtil.setPlayerAnimationState(entity, 4);
+		BTAUtil.setPlayerAnimationTick(entity, 95);
+		setLaserVisible(stack, true);
+		setLaserLength(stack, 100);
+	}
+	
+	@Override
+	public boolean isFirstPersonAnim()
+	{
+		return true;
 	}
 	
 	@Override

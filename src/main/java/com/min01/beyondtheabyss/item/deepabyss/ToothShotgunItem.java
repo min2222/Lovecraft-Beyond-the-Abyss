@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.item.weapon;
+package com.min01.beyondtheabyss.item.deepabyss;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -183,5 +183,11 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	public Vec3 getOffset() 
 	{
 		return new Vec3(0.0F, 4.0F, -5.0F);
+	}
+	
+	@Override
+	public boolean isFirstPersonAnim() 
+	{
+		return true;
 	}
 }

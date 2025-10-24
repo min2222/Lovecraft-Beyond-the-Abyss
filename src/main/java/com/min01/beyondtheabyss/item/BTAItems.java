@@ -10,12 +10,12 @@ import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.item.armor.FelmetalDivingSetItem;
+import com.min01.beyondtheabyss.item.deepabyss.FelmetalDivingSetItem;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
-import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.item.weapon.ToothShotgunItem;
+import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

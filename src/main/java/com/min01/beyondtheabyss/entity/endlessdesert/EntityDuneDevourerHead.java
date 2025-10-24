@@ -87,15 +87,17 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 			{
 				if(!this.getBlockStateOn().isAir())
 				{
-					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 150);
+					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
 					Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
 					this.setWantedPos(groundPos.add(0, 20, 0));
+					EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.15F, 0, 20);
 				}
 				else
 				{
-					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 150);
+					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
 					Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
-					this.setWantedPos(groundPos.subtract(0, 20, 0));
+					this.setWantedPos(groundPos.subtract(0, 80, 0));
+					EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.15F, 0, 20);
 				}
 			}
 			
@@ -149,7 +151,6 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 	public void setWantedPos(Vec3 pos)
 	{
 		this.entityData.set(WANTED_POS, pos);
-		EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.15F, 0, 20);
 	}
 	
 	public Vec3 getWantedPos()

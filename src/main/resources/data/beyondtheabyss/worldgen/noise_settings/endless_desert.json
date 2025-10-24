@@ -1,7 +1,7 @@
 {
 	"aquifers_enabled": true,
 	"default_block": {
-		"Name": "minecraft:sandstone"
+		"Name": "minecraft:sand"
 	},
 	"default_fluid": {
 		"Name": "minecraft:lava",
@@ -24,9 +24,9 @@
 			"xz_scale": 1,
 			"y_scale": 0.5
 		},
-		"continents": "minecraft:overworld/continents",
-		"depth": "minecraft:overworld/depth",
-		"erosion": "minecraft:overworld/erosion",
+		"continents": "minecraft:overworld_large_biomes/continents",
+		"depth": "minecraft:overworld_large_biomes/depth",
+		"erosion": "minecraft:overworld_large_biomes/erosion",
 		"final_density": {
 			"type": "minecraft:min",
 			"argument1": {
@@ -220,10 +220,10 @@
 												"type": "minecraft:quarter_negative",
 												"argument": {
 													"type": "minecraft:mul",
-													"argument1": "minecraft:overworld/depth",
+													"argument1": "minecraft:overworld_large_biomes/depth",
 													"argument2": {
 														"type": "minecraft:cache_2d",
-														"argument": "minecraft:overworld/factor"
+														"argument": "minecraft:overworld_large_biomes/factor"
 													}
 												}
 											}
@@ -247,7 +247,7 @@
 		"ridges": "minecraft:overworld/ridges",
 		"temperature": {
 			"type": "minecraft:shifted_noise",
-			"noise": "minecraft:temperature",
+			"noise": "minecraft:temperature_large",
 			"shift_x": "minecraft:shift_x",
 			"shift_y": 0,
 			"shift_z": "minecraft:shift_z",
@@ -256,7 +256,7 @@
 		},
 		"vegetation": {
 			"type": "minecraft:shifted_noise",
-			"noise": "minecraft:vegetation",
+			"noise": "minecraft:vegetation_large",
 			"shift_x": "minecraft:shift_x",
 			"shift_y": 0,
 			"shift_z": "minecraft:shift_z",
@@ -439,6 +439,25 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"type": "minecraft:condition",
+				"if_true": {
+					"type": "minecraft:vertical_gradient",
+					"false_at_and_above": {
+						"absolute": 8
+					},
+					"random_name": "minecraft:sandstone",
+					"true_at_and_below": {
+						"absolute": 0
+					}
+				},
+				"then_run": {
+					"type": "minecraft:block",
+					"result_state": {
+						"Name": "minecraft:sandstone"
+					}
 				}
 			}
 		]

@@ -118,11 +118,11 @@ public class BTABlocks
     public static final RegistryObject<Block> BONE_TORCH = BLOCKS.register("bone_torch", () -> new BoneTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50886_) -> 
     {
         return 14;
-    }).sound(SoundType.BONE_BLOCK)));
+    }).sound(SoundType.BONE_BLOCK).pushReaction(PushReaction.DESTROY)));
     public static final RegistryObject<Block> BONE_WALL_TORCH = BLOCKS.register("bone_wall_torch", () -> new BoneWallTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_152607_) ->
     {
         return 14;
-    }).sound(SoundType.BONE_BLOCK).lootFrom(BONE_TORCH)));
+    }).sound(SoundType.BONE_BLOCK).lootFrom(BONE_TORCH).pushReaction(PushReaction.DESTROY)));
     public static final RegistryObject<Block> BONE_LEVER = BLOCKS.register("bone_lever", () -> new BoneLeverBlock(BlockBehaviour.Properties.of().noCollission().strength(0.5F).sound(SoundType.BONE_BLOCK)));
     public static final RegistryObject<Block> CHAIN_TRAP = BLOCKS.register("chain_trap", () -> new ChainTrapBlock());
     public static final RegistryObject<Block> BIOCRAFTER = BLOCKS.register("biocrafter", () -> new BiocrafterBlock());

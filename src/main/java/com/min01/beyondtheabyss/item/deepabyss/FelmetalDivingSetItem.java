@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.item.armor;
+package com.min01.beyondtheabyss.item.deepabyss;
 
 import java.util.function.Consumer;
 

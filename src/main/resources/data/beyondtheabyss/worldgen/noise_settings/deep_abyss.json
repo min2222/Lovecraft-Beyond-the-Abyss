@@ -21,7 +21,15 @@
 		"fluid_level_floodedness": 0,
 		"fluid_level_spread": 0,
 		"lava": 0,
-		"temperature": "beyondtheabyss:deep_abyss/circular",
+		"temperature": {
+			"type": "minecraft:shifted_noise",
+			"noise": "minecraft:temperature",
+			"shift_x": "minecraft:shift_x",
+			"shift_y": 0,
+			"shift_z": "minecraft:shift_z",
+			"xz_scale": 0.25,
+			"y_scale": 0
+		},
 		"vegetation": {
 			"type": "minecraft:shifted_noise",
 			"noise": "minecraft:vegetation",
@@ -185,37 +193,6 @@
 							"type": "minecraft:block",
 							"result_state": {
 								"Name": "beyondtheabyss:compact_rot_soil"
-							}
-						}
-					]
-				}
-			},
-			{
-				"type": "minecraft:condition",
-				"if_true": {
-					"type": "minecraft:biome",
-					"biome_is": [
-						"beyondtheabyss:wailing_reef"
-					]
-				},
-				"then_run": {
-					"type": "minecraft:sequence",
-					"sequence": [
-						{
-							"type": "minecraft:condition",
-							"if_true": {
-								"type": "minecraft:y_above",
-								"anchor": {
-									"above_bottom": 40
-								},
-								"surface_depth_multiplier": 0,
-								"add_stone_depth": true
-							},
-							"then_run": {
-								"type": "minecraft:block",
-								"result_state": {
-									"Name": "minecraft:stone"
-								}
 							}
 						}
 					]

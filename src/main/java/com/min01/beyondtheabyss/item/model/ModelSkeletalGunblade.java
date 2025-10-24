@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.item.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.item.animation.SkeletalGunbladeAnimation;
-import com.min01.beyondtheabyss.item.weapon.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -23,7 +23,7 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 	private final ModelPart root;
 	private final ModelPart SkeletalGunblade;
 	private final ModelPart Blade;
-	private final ModelPart EnergyRay;
+	public final ModelPart EnergyRay;
 	private final ModelPart InnerRay;
 
 	public ModelSkeletalGunblade(ModelPart root)
@@ -94,7 +94,6 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_OPEN, SkeletalGunbladeAnimation.GUNBLADE_OPEN, ageInTicks);
 		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_CLOSE, SkeletalGunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
-		this.EnergyRay.visible = SkeletalGunbladeItem.isLaserVisible(stack);
 		this.EnergyRay.zScale += SkeletalGunbladeItem.getLaserLength(stack);
 		this.InnerRay.z += 0.5F;
 	}
