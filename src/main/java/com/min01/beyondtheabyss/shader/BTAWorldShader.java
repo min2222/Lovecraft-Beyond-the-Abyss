@@ -2,6 +2,9 @@ package com.min01.beyondtheabyss.shader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -14,6 +17,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -39,14 +43,18 @@ public class BTAWorldShader
     private final boolean useCustomSampler;
     private final String samplerName;
     
-    private final int volumeWidth = 64;
-    private final int volumeHeight = 64;
-    private final int volumeDepth = 64;
-    
-    private final NativeImage volumeImage = new NativeImage(NativeImage.Format.LUMINANCE, this.volumeWidth, this.volumeHeight * this.volumeDepth, false);
+    private NativeImage volumeImage;
     
     private int volumeTextureId = -1;
+    private int volumeWidth = 64;
+    private int volumeHeight = 64;
+    private int volumeDepth = 64;
+    
     private BlockPos lastVolumeCenter = null;
+    private int lastChunkRenderDist;
+
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ConcurrentLinkedQueue<List<BlockPos>> queue = new ConcurrentLinkedQueue<>();
     
     public static final List<BTAWorldShader> WORLD_SHADERS = new ArrayList<>();
     
@@ -96,58 +104,94 @@ public class BTAWorldShader
 			}
 		}
     }
-	
-	public void update(Vec3 centerPos)
-	{
-	    if(this.volumeTextureId == -1) 
-	    {
-	    	this.volumeTextureId = GlStateManager._genTexture();
-	        RenderSystem.bindTexture(this.volumeTextureId);
-	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
-	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL12.GL_TEXTURE_WRAP_R, GL12.GL_CLAMP_TO_EDGE);
-	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-	        GL11.glTexParameteri(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-	    }
 
-	    BlockPos centerBlockPos = BlockPos.containing(centerPos);
+    public void update(Vec3 centerPos)
+    {
+    	if(BTAClientUtil.MC.screen != null)
+    	{
+    		return;
+    	}
+    	
+    	int dist = BTAClientUtil.MC.options.renderDistance().get();
+    	if(this.volumeImage == null || this.lastChunkRenderDist != dist)
+    	{
+		    int volume = dist * 16;
+		    this.volumeWidth = volume;
+		    this.volumeHeight = volume;
+		    this.volumeDepth = volume;
+		    this.lastChunkRenderDist = dist;
+            this.volumeImage = new NativeImage(NativeImage.Format.LUMINANCE, this.volumeWidth, this.volumeHeight * this.volumeDepth, false);
+    	}
+    	
+    	if(this.volumeTextureId == -1)
+        {
+        	this.volumeTextureId = TextureUtil.generateTextureId();
+            RenderSystem.bindTexture(this.volumeTextureId);
+            GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+            GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+            GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL12.GL_TEXTURE_WRAP_R, GL12.GL_CLAMP_TO_EDGE);
+            GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+            GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        }
 	    
-	    if(this.lastVolumeCenter != null && centerBlockPos.distSqr(this.lastVolumeCenter) < 16 * 16)
-	    {
-	        return;
-	    }
-	    
-	    this.lastVolumeCenter = centerBlockPos;
+        BlockPos centerBlockPos = BlockPos.containing(centerPos);
+        
+        this.lastVolumeCenter = centerBlockPos;
+        
+        this.executor.submit(() -> 
+        {
+            try 
+            {
+                List<BlockPos> list = new ArrayList<>();
+                BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-	    BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-	    
-	    for(int z = 0; z < this.volumeDepth; z++)
-	    {
-	        for(int y = 0; y < this.volumeHeight; y++) 
-	        {
-	            for(int x = 0; x < this.volumeWidth; x++) 
-	            {
-	                int worldX = this.lastVolumeCenter.getX() - this.volumeWidth / 2 + x;
-	                int worldY = this.lastVolumeCenter.getY() - this.volumeHeight / 2 + y;
-	                int worldZ = this.lastVolumeCenter.getZ() - this.volumeDepth / 2 + z;
-	                mutablePos.set(worldX, worldY, worldZ);
+                for(int z = 0; z < this.volumeDepth; z++) 
+                {
+                    for(int y = 0; y < this.volumeHeight; y++) 
+                    {
+                        for(int x = 0; x < this.volumeWidth; x++) 
+                        {
+                            int worldX = this.lastVolumeCenter.getX() - this.volumeWidth / 2 + x;
+                            int worldY = this.lastVolumeCenter.getY() - this.volumeHeight / 2 + y;
+                            int worldZ = this.lastVolumeCenter.getZ() - this.volumeDepth / 2 + z;
+                            mutablePos.set(worldX, worldY, worldZ);
+                            
+                            int imageX = x;
+                            int imageY = (z * this.volumeHeight) + y;
 
-	                boolean canApply = this.sampler.apply(BTAClientUtil.MC.level, mutablePos);
-	                byte density = (byte)(canApply ? 255 : 0);
-	                
-	                int imageX = x;
-	                int imageY = (z * this.volumeHeight) + y;
-	                
-	                this.volumeImage.setPixelLuminance(imageX, imageY, density);
-	            }
-	        }
-	    }
+                            boolean canApply = BTAClientUtil.MC.level != null && this.sampler.apply(BTAClientUtil.MC.level, mutablePos);
+                            int density = canApply ? 255 : 0;
 
-	    RenderSystem.bindTexture(this.volumeTextureId);
-	    RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 1);
-	    GL12.glTexImage3D(GL12.GL_TEXTURE_3D, 0, GL30.GL_R8, this.volumeWidth, this.volumeHeight, this.volumeDepth, 0, GL11.GL_RED, GL11.GL_UNSIGNED_BYTE, this.volumeImage.pixels);
-	    RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
-	}
+                            list.add(new BlockPos(imageX, imageY, density));
+                        }
+                    }
+                }
+                this.queue.add(list);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        });
+
+        List<BlockPos> list = this.queue.poll();
+
+        if(list != null)
+        {
+            for(BlockPos blockPos : list)
+            {
+            	if(blockPos.getX() < this.volumeImage.getWidth() && blockPos.getY() < this.volumeImage.getHeight())
+            	{
+                    this.volumeImage.setPixelLuminance(blockPos.getX(), blockPos.getY(), (byte) blockPos.getZ());
+            	}
+            }
+
+            RenderSystem.bindTexture(this.volumeTextureId);
+            RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 1);
+            GL12.glTexImage3D(GL12.GL_TEXTURE_3D, 0, GL30.GL_R8, this.volumeWidth, this.volumeHeight, this.volumeDepth, 0, GL11.GL_RED, GL11.GL_UNSIGNED_BYTE, this.volumeImage.pixels);
+            RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
+        }
+    }
 	
 	public void apply(PoseStack mtx, float frameTime, Camera camera)
 	{

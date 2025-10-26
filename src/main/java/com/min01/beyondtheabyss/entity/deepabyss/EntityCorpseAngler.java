@@ -39,7 +39,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 {
-	public static final EntityDataAccessor<Integer> BURROW_COOLDOWN = SynchedEntityData.defineId(AbstractBTAMonster.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> BURROW_COOLDOWN = SynchedEntityData.defineId(EntityCorpseAngler.class, EntityDataSerializers.INT);
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState openMouthAnimationState = new SmoothAnimationState();

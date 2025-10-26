@@ -131,7 +131,7 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	@Override
 	public int maxTurnY()
 	{
-		return 1;
+		return 2;
 	}
 	
 	@Override

@@ -143,7 +143,7 @@ public abstract class AbstractBTAFlyingMonster extends AbstractAnimatableFlyingM
 		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
 		float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
 		this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.maxTurnX()));
-		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, (float)this.maxTurnY()));
+		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, this.maxTurnY()));
 		this.setYHeadRot(this.getYRot());
 		this.xRotO = this.getXRot();
 		this.yRotO = this.getYRot();

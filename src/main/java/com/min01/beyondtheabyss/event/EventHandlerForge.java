@@ -73,7 +73,7 @@ public class EventHandlerForge
 	
     public static void copyRegionFiles(MinecraftServer server)
     {
-        if(server == null || server.isDedicatedServer()) 
+        if(server == null) 
         	return;
 	    Path baseDir = FMLPaths.CONFIGDIR.get().resolve("beyondtheabyss");
 	    File baseDirFile = baseDir.toFile();

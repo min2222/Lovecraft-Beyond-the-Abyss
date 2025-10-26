@@ -30,7 +30,7 @@ public class OverseerMissileGoal extends BasicBTASkillGoal<EntityOverseer>
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && BTAUtil.distanceToXZ(this.mob, this.mob.getTarget()) <= 8.0F;
+		return super.canUse() && BTAUtil.distanceToXZ(this.mob, this.mob.getTarget()) <= 12.0F;
 	}
 
 	@Override
