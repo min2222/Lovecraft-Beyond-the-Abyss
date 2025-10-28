@@ -1,6 +1,8 @@
 package com.min01.beyondtheabyss.blockentity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.block.deepabyss.BiocrafterBlock;
+import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BiocrafterBlockEntity extends BlockEntity
 {
-	public int animationTick;
+	public final SmoothAnimationState processingAnimationState = new SmoothAnimationState();
 	public int tickCount;
 	
 	public BiocrafterBlockEntity(BlockPos p_155229_, BlockState p_155230_)
@@ -21,22 +23,18 @@ public class BiocrafterBlockEntity extends BlockEntity
 	public static void update(Level level, BlockPos pos, BlockState state, BiocrafterBlockEntity crafter)
 	{
 		++crafter.tickCount;
+		crafter.processingAnimationState.updateWhen(state.getValue(BiocrafterBlock.PROCESSING), crafter.tickCount);
 	}
 	
 	@Override
 	protected void saveAdditional(CompoundTag p_187471_)
 	{
 		super.saveAdditional(p_187471_);
-		p_187471_.putInt("AnimationTick", this.animationTick);
 	}
 	
 	@Override
 	public void load(CompoundTag p_155245_)
 	{
 		super.load(p_155245_);
-		if(p_155245_.contains("AnimationTick"))
-		{
-			this.animationTick = p_155245_.getInt("AnimationTick");
-		}
 	}
 }

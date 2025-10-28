@@ -88,6 +88,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.SolomonRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SplittedFulgastraRenderer;
+import com.min01.beyondtheabyss.gui.screen.BiocrafterScreen;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
@@ -98,6 +99,7 @@ import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.world.BTABiomes;
+import com.min01.beyondtheabyss.world.BTAMenuTypes;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.effects.DeepAbyssDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.effects.MirroredCityDimensionSpecialEffects;
@@ -105,6 +107,7 @@ import com.min01.beyondtheabyss.world.effects.MoonDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.effects.OuterSpaceDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.effects.PurgatoryDimensionSpecialEffects;
 
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -125,6 +128,7 @@ public class ClientEventHandler
     @SubscribeEvent
     public static void onFMLClientSetup(FMLClientSetupEvent event)
     {
+    	MenuScreens.register(BTAMenuTypes.BIOCRATER.get(), BiocrafterScreen::new);
         BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
         BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
         BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);

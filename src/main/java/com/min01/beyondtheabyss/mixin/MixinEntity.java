@@ -74,6 +74,26 @@ public abstract class MixinEntity implements IDynamicLight
 	
 	@Unique
 	private LongOpenHashSet trackedLitChunkPos = new LongOpenHashSet();
+    
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void tick(CallbackInfo ci)
+    {
+    	Entity entity = Entity.class.cast(this);
+		if(entity instanceof ItemEntity item)
+		{
+			if(item.level.dimension() == BTAWorlds.DEEP_ABYSS)
+			{
+				item.setDeltaMovement(item.getDeltaMovement().subtract(0, 0.01F, 0));
+			}
+		}
+		if(MirroredCityUtil.isUpsideDown(entity))
+		{
+			GravityCapabilityImpl cap = GravityChangerAPI.getGravityComponent(entity);
+			cap.noAnimation = true;
+			cap.noPositionAdjust = true;
+			cap.applyGravityDirectionEffect(Direction.UP, null, Double.MAX_VALUE);
+		}
+    }
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void tickTail(CallbackInfo ci) 
@@ -96,12 +116,6 @@ public abstract class MixinEntity implements IDynamicLight
 					this.setBTADynamicLightEnabled(false);
 				}
 			}
-		}
-		if(MirroredCityUtil.isUpsideDown(Entity.class.cast(this)))
-		{
-			GravityCapabilityImpl cap = GravityChangerAPI.getGravityComponent(Entity.class.cast(this));
-			cap.noAnimation = true;
-			cap.applyGravityDirectionEffect(Direction.UP, null, Double.MAX_VALUE);
 		}
 		BTAUtil.updateGravity(Entity.class.cast(this));
 	}
@@ -294,19 +308,6 @@ public abstract class MixinEntity implements IDynamicLight
         {
             cir.setReturnValue(multipart.getCompoundBoundingBox(cir.getReturnValue()));
         }
-    }
-    
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private void tick(CallbackInfo ci)
-    {
-    	Entity entity = Entity.class.cast(this);
-		if(entity instanceof ItemEntity item)
-		{
-			if(item.level.dimension() == BTAWorlds.DEEP_ABYSS)
-			{
-				item.setDeltaMovement(item.getDeltaMovement().subtract(0, 0.01F, 0));
-			}
-		}
     }
 
     @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)

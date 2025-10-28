@@ -44,6 +44,6 @@ public abstract class HierarchicalItemModel extends Model
 	protected void animate(ItemStack stack, String name, AnimationDefinition definition, float ageInTicks)
 	{
 		SmoothAnimationState state = BTAUtil.getItemAnimationStateByName(stack, name);
-		state.animateItem(stack, name, this, definition, ageInTicks);
+		state.animateItem(this, definition, ageInTicks);
 	}
 }

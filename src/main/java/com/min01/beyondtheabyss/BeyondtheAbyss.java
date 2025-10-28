@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.world.BTAChunkGenerators;
 import com.min01.beyondtheabyss.world.BTADensityFunctions;
 import com.min01.beyondtheabyss.world.BTAFeatures;
+import com.min01.beyondtheabyss.world.BTAMenuTypes;
 import com.min01.beyondtheabyss.world.BTAStructures;
 import com.min01.beyondtheabyss.world.BTASurfaceRules;
 import com.min01.beyondtheabyss.world.BTAWorldCarvers;
@@ -61,6 +62,7 @@ public class BeyondtheAbyss
 		BTAWorldCarvers.WORLD_CARVERS.register(bus);
 		BTADensityFunctions.DENSITY_FUNCTIONS.register(bus);
 		BTAEnchantments.ENCHANTMENTS.register(bus);
+		BTAMenuTypes.MENU_TYPES.register(bus);
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");

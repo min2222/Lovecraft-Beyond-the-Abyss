@@ -46,6 +46,25 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	public void tick(Entity player, ItemStack stack) 
 	{
 		this.tickCount++;
+
+		if(this.getAnimationTick() > 0)
+		{
+			this.setAnimationTick(this.getAnimationTick() - 1);
+		}
+		else
+		{
+			if(stack.is(BTAItems.SKELETAL_GUNBLADE.get())) 
+			{
+				if(this.getAnimationState() != 1 && this.getAnimationState() != 2)
+				{
+					this.setAnimationState(0);
+				}
+			}
+			else
+			{
+				this.setAnimationState(0);
+			}
+		}
 		
 		if(player.level.isClientSide)
 		{
@@ -60,24 +79,6 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 		}
 		else
 		{
-			if(this.getAnimationTick() > 0)
-			{
-				this.setAnimationTick(this.getAnimationTick() - 1);
-			}
-			else
-			{
-				if(stack.is(BTAItems.SKELETAL_GUNBLADE.get())) 
-				{
-					if(this.getAnimationState() != 1 && this.getAnimationState() != 2)
-					{
-						this.setAnimationState(0);
-					}
-				}
-				else
-				{
-					this.setAnimationState(0);
-				}
-			}
 			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new UpdateItemAnimationPacket(stack, player.getUUID(), this.animationState, this.animationTick));
 		}
 	}

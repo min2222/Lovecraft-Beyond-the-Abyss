@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.animation.PlayerAnimation;
+import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -41,6 +42,12 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SWING, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
+    	
+    	if(entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && BTAUtil.getPlayerAnimationState(entity) == 4)
+    	{
+    		
+    	}
     }
     
     @Override
@@ -54,6 +61,7 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
+    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SWING, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
     }
     
 	@Override
@@ -76,7 +84,7 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
 	public void animate(T entity, String name, AnimationDefinition definition, float ageInTicks)
 	{
 		SmoothAnimationState state = BTAUtil.getPlayerAnimationStateByName(entity, name);
-		state.animatePlayer(entity, name, PlayerModel.class.cast(this), definition, ageInTicks);
+		state.animatePlayer(PlayerModel.class.cast(this), definition, ageInTicks);
 	}
 	
 	public void setupMap()

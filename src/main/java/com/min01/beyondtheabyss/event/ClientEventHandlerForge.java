@@ -107,10 +107,18 @@ public class ClientEventHandlerForge
     	Input input = event.getInput();
     	if(!player.isPassenger()) 
     	{
-    		if(player.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && BTAUtil.getPlayerAnimationState(player) == 4)
+    		if(player.isHolding(BTAItems.SKELETAL_GUNBLADE.get()))
     		{
-        		input.leftImpulse *= 0.2F;
-        		input.forwardImpulse *= 0.2F;
+    			if(BTAUtil.getPlayerAnimationState(player) == 4)
+    			{
+            		input.leftImpulse *= 0.2F;
+            		input.forwardImpulse *= 0.2F;
+    			}
+    			if(BTAUtil.getPlayerAnimationState(player) == 5)
+    			{
+            		input.leftImpulse *= 0.0F;
+            		input.forwardImpulse *= 0.0F;
+    			}
     		}
     	}
     }

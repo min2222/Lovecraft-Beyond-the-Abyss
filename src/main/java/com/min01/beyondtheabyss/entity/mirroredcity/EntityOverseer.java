@@ -35,6 +35,7 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 150.0F)
+    			.add(Attributes.ARMOR, 10.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.8F)
     			.add(Attributes.FLYING_SPEED, 0.8F)
         		.add(Attributes.ATTACK_DAMAGE, 15.0F)

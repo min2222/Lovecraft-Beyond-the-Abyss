@@ -173,7 +173,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
-	implementation fg.deobf("curse.maven:gravity-api-forge-1283915:7104761")
+	implementation fg.deobf("curse.maven:gravity-api-forge-1283915:7158202")
     
     runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:5589681")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:4586218")

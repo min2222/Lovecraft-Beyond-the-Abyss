@@ -3,6 +3,8 @@ package com.min01.beyondtheabyss.misc;
 import org.joml.Vector3f;
 
 import com.min01.beyondtheabyss.animation.KeyframePlayerAnimations;
+import com.min01.beyondtheabyss.block.animation.KeyframeBlockAnimations;
+import com.min01.beyondtheabyss.block.model.HierarchicalBlockModel;
 import com.min01.beyondtheabyss.item.animation.KeyframeItemAnimations;
 import com.min01.beyondtheabyss.item.model.HierarchicalItemModel;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
@@ -14,7 +16,6 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -52,7 +53,7 @@ public class SmoothAnimationState extends AnimationState
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public <T extends LivingEntity> void animatePlayer(T entity, String name, PlayerModel<T> model, AnimationDefinition definition, float ageInTicks) 
+	public <T extends LivingEntity> void animatePlayer(PlayerModel<T> model, AnimationDefinition definition, float ageInTicks) 
 	{
 		this.updateTime(ageInTicks, 1.0F);
 		this.ifStarted(t -> 
@@ -63,13 +64,24 @@ public class SmoothAnimationState extends AnimationState
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void animateItem(ItemStack stack, String name, HierarchicalItemModel model, AnimationDefinition definition, float ageInTicks) 
+	public void animateItem(HierarchicalItemModel model, AnimationDefinition definition, float ageInTicks) 
 	{
 		this.updateTime(ageInTicks, 1.0F);
 		this.ifStarted(t -> 
 		{
 			float totalFactor = this.factor(BTAClientUtil.MC.getFrameTime());
 			KeyframeItemAnimations.animate(model, definition, t.getAccumulatedTime(), 1.0F - totalFactor, ANIMATION_VECTOR_CACHE);
+		});
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void animateBlock(HierarchicalBlockModel<?> model, AnimationDefinition definition, float ageInTicks) 
+	{
+		this.updateTime(ageInTicks, 1.0F);
+		this.ifStarted(t -> 
+		{
+			float totalFactor = this.factor(BTAClientUtil.MC.getFrameTime());
+			KeyframeBlockAnimations.animate(model, definition, t.getAccumulatedTime(), 1.0F - totalFactor, ANIMATION_VECTOR_CACHE);
 		});
 	}
 

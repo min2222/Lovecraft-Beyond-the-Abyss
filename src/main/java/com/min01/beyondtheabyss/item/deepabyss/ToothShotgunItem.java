@@ -135,6 +135,12 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
     {
         return 1;
     }
+    
+    @Override
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) 
+    {
+    	return true;
+    }
 
     @Override
     public boolean isEnchantable(ItemStack stack)

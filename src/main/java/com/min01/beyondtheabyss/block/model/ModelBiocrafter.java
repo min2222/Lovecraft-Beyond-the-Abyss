@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.block.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.block.animation.BiocrafterAnimation;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -72,6 +73,7 @@ public class ModelBiocrafter extends HierarchicalBlockModel<BiocrafterBlockEntit
 	public void setupAnim(BiocrafterBlockEntity blockEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
+		blockEntity.processingAnimationState.animateBlock(this, BiocrafterAnimation.BIOCRAFTER_PROCESSING, ageInTicks);
 	}
 	
 	@Override

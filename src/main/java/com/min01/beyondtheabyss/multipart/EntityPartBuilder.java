@@ -54,7 +54,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 	{
 		if(this.entity.level.isClientSide)
 		{
-			Vec3 pos = this.entity.getPosition(partialTick);
+			Vec3 pos = this.entity.position();
 	        double posX = pos.x;
 	        double posY = pos.y;
 	        double posZ = pos.z;

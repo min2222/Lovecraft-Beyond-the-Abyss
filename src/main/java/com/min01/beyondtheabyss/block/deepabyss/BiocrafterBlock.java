@@ -4,12 +4,19 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
+import com.min01.beyondtheabyss.world.inventory.BiocrafterMenu;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -30,6 +37,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -37,13 +45,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class BiocrafterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final BooleanProperty PROCESSING = BooleanProperty.create("processing");
 	public static final EnumProperty<BiocrafterPart> BIOCRAFTER_PART = EnumProperty.create("biocrafter_part", BiocrafterPart.class);
 	protected static final VoxelShape AABB = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 12.0D, 15.0D);
 	
 	public BiocrafterBlock()
 	{
 		super(BlockBehaviour.Properties.copy(Blocks.CRAFTING_TABLE).noOcclusion());
-		this.registerDefaultState(this.stateDefinition.any().setValue(BIOCRAFTER_PART, BiocrafterPart.LOWER));
+		this.registerDefaultState(this.stateDefinition.any().setValue(BIOCRAFTER_PART, BiocrafterPart.LOWER).setValue(PROCESSING, false));
 	}
 	
 	@Override
@@ -57,9 +66,32 @@ public class BiocrafterBlock extends BaseEntityBlock implements SimpleWaterlogge
 	}
 	
 	@Override
+	public InteractionResult use(BlockState p_52233_, Level p_52234_, BlockPos p_52235_, Player p_52236_, InteractionHand p_52237_, BlockHitResult p_52238_) 
+	{
+		if(p_52234_.isClientSide) 
+		{
+			return InteractionResult.SUCCESS;
+		} 
+		else 
+		{
+			p_52236_.openMenu(p_52233_.getMenuProvider(p_52234_, p_52235_));
+			return InteractionResult.CONSUME;
+		}
+	}
+
+	@Override
+	public MenuProvider getMenuProvider(BlockState p_52240_, Level p_52241_, BlockPos p_52242_) 
+	{
+		return new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) -> 
+		{
+			return new BiocrafterMenu(p_52229_, p_52230_, ContainerLevelAccess.create(p_52241_, p_52242_));
+		}, Component.translatable("container.biocrafter"));
+	}
+	
+	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> p_152043_) 
 	{
-		p_152043_.add(BIOCRAFTER_PART, WATERLOGGED);
+		p_152043_.add(BIOCRAFTER_PART, WATERLOGGED, PROCESSING);
 	}
 	
 	@Override
@@ -78,7 +110,11 @@ public class BiocrafterBlock extends BaseEntityBlock implements SimpleWaterlogge
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153273_, BlockState p_153274_, BlockEntityType<T> p_153275_)
     {
-        return createTicker(p_153273_, p_153275_, BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get());
+		if(p_153274_.getValue(BIOCRAFTER_PART) == BiocrafterPart.LOWER)
+		{
+	        return createTicker(p_153273_, p_153275_, BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get());
+		}
+		return null;
     }
 
     @Nullable

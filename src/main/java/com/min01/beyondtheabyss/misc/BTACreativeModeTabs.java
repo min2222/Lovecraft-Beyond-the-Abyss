@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.enchantment.BTAEnchantments;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.BasicBTAFoodItem;
 
@@ -66,11 +67,12 @@ public class BTACreativeModeTabs
     					output.accept(item.get());
     				}
     			}
+    			BTAEnchantments.addAllEnchantsToCreativeTab(output, BTAEnchantments.TOOTH_SHOTGUN);
     		}).build());
     
     public static final RegistryObject<CreativeModeTab> MIRRORED_CITY = CREATIVE_MODE_TAB.register("mirrored_city", () -> CreativeModeTab.builder()
     		.title(Component.translatable("itemGroup.mirrored_city"))
-    		.icon(() -> new ItemStack(BTAItems.OVERSEER_SPAWN_EGG.get()))
+    		.icon(() -> new ItemStack(Items.REDSTONE_LAMP))
     		.displayItems((enabledFeatures, output) -> 
     		{
     			for(RegistryObject<Item> item : BTAItems.MIRRORED_CITY_ITEMS.getEntries())

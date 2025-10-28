@@ -27,6 +27,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -176,25 +177,19 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			if(this.getAnimationState() == 3)
 			{
 				List<LivingEntity> arrayList = new ArrayList<>();
-	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.getEyePosition(), 0.0F, -0.25F, 0.5F);
-				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), startPos, 0.0F, 0.0F, 100.0F);
+	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.getEyePosition(), 0.0F, -0.05F, -0.25F);
+				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), startPos, 0.0F, 0.0F, 300.0F);
 				HitResult hitResult = this.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 	        	Vec3 hitPos = hitResult.getLocation();
 	            Vec3 targetPos = hitPos.subtract(startPos);
 	            Vec3 normalizedPos = targetPos.normalize();
-	            float dist = (float) startPos.distanceTo(hitPos);
+	            int dist = (int) Mth.floor(targetPos.length());
 				this.setBeamLength(dist);
 	            for(int i = 1; i < dist; ++i)
 	            {
 	            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
 	            	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != this && !t.isAlliedTo(this));
-	            	list.forEach(t -> 
-	            	{
-	            		if(!arrayList.contains(t))
-	            		{
-	            			arrayList.add(t);
-	            		}
-	            	});
+            		arrayList.addAll(list);
 	            }
 	            arrayList.forEach(t -> 
 	            {

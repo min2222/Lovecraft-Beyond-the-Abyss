@@ -197,5 +197,6 @@
 	"message.beyondtheabyss.solomoncall1": "To have vanquished the Ender Dragon...",
 	"message.beyondtheabyss.solomoncall2": "Perchance, it is within thy power.",
 	"message.beyondtheabyss.solomoncall3": "Come to where I reside.",
-	"message.beyondtheabyss.solomoncall4": "%1$s"
+	"message.beyondtheabyss.solomoncall4": "%1$s",
+	"container.biocrafter": "Biocrafter"
 }
