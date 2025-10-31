@@ -167,7 +167,7 @@ public abstract class MixinEntity implements IDynamicLight
 		}
 		if(Entity.class.cast(this) instanceof EntitySubmarine submarine)
 		{
-	    	Vec3 lightPos = BTAUtil.getLookPos(submarine.getRotationVector(), submarine.position(), 0.0F, 2.0F, 6.0F);
+	    	Vec3 lightPos = BTAUtil.getLookPos(submarine.getRotationVector(), submarine.position(), 0.0F, 2.0F, 8.0F);
 	    	HitResult result = submarine.level.clip(new ClipContext(submarine.position(), lightPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, submarine));
 	    	return result.getLocation();
 		}

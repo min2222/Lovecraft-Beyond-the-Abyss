@@ -332,11 +332,6 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
             headPitch *= -1.0F;
             realHeadRot *= -1.0F;
         }
-        
-        if(entity instanceof IMultipart multipart && multipart.rotateHead())
-        {
-        	return multipart.headRotation(entity, new Vec2(headPitch, realHeadRot));
-        }
 
         return new Vec2(headPitch, realHeadRot);
     }
@@ -410,13 +405,6 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
         if(this.isInWater() && !this.entity.isInWater())
         {
         	rotation.mul(Axis.ZP.rotationDegrees(90.0F));
-        }
-    	
-        if(entity instanceof IMultipart multipart && multipart.rotateHead())
-        {
-            Vec2 headRot = this.defaultHeadRotation(entity, partialTick);
-        	rotation.mul(Axis.YP.rotationDegrees(headRot.y));
-        	rotation.mul(Axis.XP.rotationDegrees(-headRot.x));
         }
 
         return new QuaternionD((double)rotation.x, (double)rotation.y, (double)rotation.z, (double)rotation.w);

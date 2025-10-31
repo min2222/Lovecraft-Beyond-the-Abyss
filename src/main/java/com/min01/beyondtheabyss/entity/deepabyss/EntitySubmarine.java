@@ -96,41 +96,6 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 			this.partBuilder.tick(1.0F);
 		}
 		
-		if(this.getAnimationTick() > 0)
-		{
-			this.setAnimationTick(this.getAnimationTick() - 1);
-		}
-		
-		if(this.isControlledByLocalInstance())
-		{
-	    	if(this.getFirstPassenger() instanceof Player player)
-	    	{
-	    		if(this.isInWater())
-	    		{
-	            	Vec3 motion = this.getDeltaMovement();
-	            	boolean jumping = ObfuscationReflectionHelper.getPrivateValue(LivingEntity.class, player, "f_20899_");
-	                if(player.xxa != 0 || player.zza != 0)
-	                {
-	                	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 15));
-	                	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 15));
-	                	Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), Vec3.ZERO, 0.0F, 0.0F, 2.5F);
-	                	motion = motion.add(lookPos);
-	                }
-	            	if(jumping)
-	            	{
-	            		motion = motion.add(0, 1.5F, 0);
-	            	}
-	            	this.setDeltaMovement(motion.scale(0.1F));
-	    		}
-	    	}
-	    	
-	    	this.move(MoverType.SELF, this.getDeltaMovement());
-		}
-		else
-		{
-			this.setDeltaMovement(Vec3.ZERO);
-		}
-		
         if(this.level.isClientSide) 
         {
         	this.openHatchAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
@@ -138,6 +103,42 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
             ++this.glowingTicks;
             this.brightness += (0.0F - this.brightness) * 0.8F;
         }
+		
+		if(this.getAnimationTick() > 0)
+		{
+			this.setAnimationTick(this.getAnimationTick() - 1);
+		}
+		
+    	if(this.getFirstPassenger() instanceof Player player)
+    	{
+    		if(this.isInWater() && this.isControlledByLocalInstance())
+    		{
+            	Vec3 motion = this.getDeltaMovement();
+            	boolean jumping = ObfuscationReflectionHelper.getPrivateValue(LivingEntity.class, player, "f_20899_");
+                if(player.xxa != 0 || player.zza != 0)
+                {
+                	this.setXRot(BTAUtil.rotlerp(this.getXRot(), player.getXRot(), 15));
+                	this.setYRot(BTAUtil.rotlerp(this.getYRot(), player.getYRot(), 15));
+                	Vec3 lookPos = BTAUtil.getLookPos(this.getRotationVector(), Vec3.ZERO, 0.0F, 0.0F, 2.5F);
+                	motion = motion.add(lookPos);
+                }
+            	if(jumping)
+            	{
+            		motion = motion.add(0, 1.5F, 0);
+            	}
+            	this.setDeltaMovement(motion.scale(0.1F));
+    		}
+    		else
+    		{
+    			this.setDeltaMovement(Vec3.ZERO);
+    		}
+    		if(player.isShiftKeyDown())
+    		{
+    			player.stopRiding();
+    		}
+    	}
+    	
+    	this.move(MoverType.SELF, this.getDeltaMovement());
     }
 	
 	@Override
@@ -227,7 +228,7 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	@Override
 	public List<String> getCollidePart()
 	{
-		return List.of("bottom", "r_wall", "l_wall", "back", "hatch", "top", "front");
+		return List.of("bottom", "r_wall", "l_wall", "back", "hatch", "top_part1", "top_part2", "top_part3","top_part4", "front");
 	}
 	
 	@Override

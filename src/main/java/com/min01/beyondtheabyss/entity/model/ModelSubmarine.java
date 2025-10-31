@@ -123,7 +123,15 @@ public class ModelSubmarine extends HierarchicalModel<EntitySubmarine>
 		r_leg.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(48, 370).mirror().addBox(-28.5F, -38.5F, -46.5F, 7.0F, 18.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false)
 		.texOffs(48, 370).mirror().addBox(-28.5F, -38.5F, -7.5F, 7.0F, 18.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-3.24F, 34.6579F, 23.5F, 0.0F, 0.0F, 0.829F));
 
-		submarine.addOrReplaceChild("top", CubeListBuilder.create().texOffs(0, 80).addBox(-20.5F, -3.5F, -35.0F, 41.0F, 7.0F, 70.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -22.5F, 0.0F));
+		PartDefinition top = submarine.addOrReplaceChild("top", CubeListBuilder.create().texOffs(0, 80).addBox(-20.5F, -3.5F, -35.0F, 41.0F, 7.0F, 70.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -22.5F, 0.0F));
+
+		top.addOrReplaceChild("top_part1", CubeListBuilder.create().texOffs(388, 484).addBox(-20.5F, -26.0F, 14.0F, 41.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 22.5F, 0.0F));
+
+		top.addOrReplaceChild("top_part2", CubeListBuilder.create().texOffs(374, 477).addBox(-20.5F, -26.0F, -35.0F, 41.0F, 7.0F, 28.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 22.5F, 0.0F));
+
+		top.addOrReplaceChild("top_part3", CubeListBuilder.create().texOffs(381, 484).addBox(-20.5F, -26.0F, -7.0F, 10.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 22.5F, 0.0F));
+
+		top.addOrReplaceChild("top_part4", CubeListBuilder.create().texOffs(412, 484).addBox(10.5F, -26.0F, -7.0F, 10.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 22.5F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}

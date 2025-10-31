@@ -28,13 +28,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -81,25 +79,9 @@ public class ClientEventHandlerForge
                 event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
         	}
         	
-            if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine submarine)
+            if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine && event.getCamera().isDetached())
             {
-            	if(event.getCamera().isDetached())
-            	{
-            		event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
-            	}
-            	else
-            	{
-            		double partialTick = event.getPartialTick();
-            		float partialTicks = BTAClientUtil.MC.getFrameTime();
-            		double x = Mth.lerp(partialTick, submarine.xo, submarine.getX());
-            		double y = Mth.lerp(partialTick, submarine.yo, submarine.getY());
-            		double z = Mth.lerp(partialTick, submarine.zo, submarine.getZ());
-            		float yRot = Mth.rotLerp(partialTicks, submarine.yRotO, submarine.getYRot());
-                    float xRot = Mth.lerp(partialTicks, submarine.xRotO, submarine.getXRot());
-            		Vec3 pos = new Vec3(x, y, z);
-            		Vec3 lookPos = BTAUtil.getLookPos(new Vec2(xRot, yRot), pos, 0.0F, 1.75F + 1.5F, 2.0F);
-            		event.getCamera().setPosition(lookPos);
-            	}
+        		event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
             }
         }
     }

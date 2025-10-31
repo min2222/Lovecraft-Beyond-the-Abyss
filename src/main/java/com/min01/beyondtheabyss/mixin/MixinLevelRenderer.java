@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.annotation.Nullable;
 
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -20,6 +19,7 @@ import com.min01.beyondtheabyss.lights.LevelRendererAccessor;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -51,11 +51,12 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
         Player player = BTAClientUtil.MC.player;
         if(player != null)
         {
-            if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine submarine && !BTAClientUtil.MC.gameRenderer.getMainCamera().isDetached())
+            if(player.getVehicle() instanceof EntitySubmarine submarine && !BTAClientUtil.MC.gameRenderer.getMainCamera().isDetached())
             {
         		float yRot = Mth.rotLerp(frameTime, submarine.yRotO, submarine.getYRot());
                 float xRot = Mth.lerp(frameTime, submarine.xRotO, submarine.getXRot());
-                mtx.mulPose(new Quaternionf().rotationZYX(0.0F, (float) Math.toRadians(yRot), (float) Math.toRadians(xRot)));
+                mtx.mulPose(Axis.YP.rotationDegrees((float) Math.toRadians(-yRot + 180.0F)));
+                mtx.mulPose(Axis.XP.rotationDegrees((float) Math.toRadians(-xRot)));
             }
         }
 	}
