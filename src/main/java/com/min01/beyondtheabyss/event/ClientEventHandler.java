@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.event;
 
+import java.util.Objects;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.model.ModelBiocrafter;
@@ -67,6 +69,7 @@ import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
 import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ToothBulletRenderer;
+import com.min01.beyondtheabyss.entity.renderer.layer.StoneSkinLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.DuneDevourerBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.DuneDevourerHeadRenderer;
@@ -91,7 +94,6 @@ import com.min01.beyondtheabyss.entity.renderer.living.SplittedFulgastraRenderer
 import com.min01.beyondtheabyss.gui.screen.BiocrafterScreen;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
-import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.model.ModelFelmetalDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelFlashlight;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
@@ -108,9 +110,13 @@ import com.min01.beyondtheabyss.world.effects.OuterSpaceDimensionSpecialEffects;
 import com.min01.beyondtheabyss.world.effects.PurgatoryDimensionSpecialEffects;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -134,9 +140,10 @@ public class ClientEventHandler
         BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);
         BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
         BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
-        ItemProperties.register(BTAItems.GUIDING_CLAM.get(), new ResourceLocation("open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        ItemProperties.register(BTAItems.CLAM_OF_GUIDANCE.get(), new ResourceLocation("open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
-        	return GuidingClamItem.isOpen(p_174585_) ? 1.0F : 0.0F;
+        	//TODO;
+        	return 0.0F;
         });
         ItemProperties.register(BTAItems.FLASHLIGHT.get(), new ResourceLocation("on"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
         {
@@ -145,7 +152,7 @@ public class ClientEventHandler
         BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, t -> BTAShaders.getPlainFog(), (t, u) -> t.getBiome(u).is(BTABiomes.FOGGY_PLAINS) && t.canSeeSky(u), true, "Fog");
         //TODO weather system;
         BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, t -> BTAShaders.getFog());
-        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, t -> BTAShaders.getSandstorm(), (t, u) -> t.canSeeSky(u), true, "Sand");
+        //BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, t -> BTAShaders.getSandstorm(), (t, u) -> t.canSeeSky(u), true, "Sand");
     }
     
     @SubscribeEvent
@@ -284,4 +291,19 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelSkeletalGunblade.LAYER_LOCATION, ModelSkeletalGunblade::createBodyLayer);
     	event.registerLayerDefinition(ModelToothShotgun.LAYER_LOCATION, ModelToothShotgun::createBodyLayer);
     }
+    
+	@SubscribeEvent
+	public static void onAddLayers(EntityRenderersEvent.AddLayers event)
+	{
+		event.getSkins().forEach(renderer -> 
+		{
+			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
+			addLayers(Objects.requireNonNull(skin));
+		});
+	}
+	
+	private static <T extends LivingEntity, M extends EntityModel<T>> void addLayers(LivingEntityRenderer<T, M> renderer)
+	{
+		renderer.addLayer(new StoneSkinLayer<>(renderer));
+	}
 }

@@ -5,6 +5,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+import net.minecraft.world.phys.Vec3;
 
 public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 {
@@ -20,6 +21,7 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	{
 		super.start();
 		this.mob.setAnimationState(1);
+		this.mob.setCanLook(true);
 	}
 	
 	@Override
@@ -31,7 +33,7 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	@Override
 	public boolean canUse()
 	{
-		return super.canUse() && this.mob.getBurrowCooldown() > 0 && this.mob.distanceTo(this.mob.getTarget()) <= 8.0F;
+		return super.canUse() && this.mob.canMove() && this.mob.distanceTo(this.mob.getTarget()) <= 8.0F;
 	}
 	
 	@Override
@@ -58,15 +60,24 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 		super.tick();
 		if(this.mob.getTarget() != null)
 		{
-			this.mob.lookAt(Anchor.EYES, this.mob.getTarget().getEyePosition());
 			if(this.mob.getAnimationTick() <= this.getSkillUsingTime() - this.getSkillWarmupTime())
 			{
-				this.mob.getNavigation().moveTo(this.mob.getTarget(), 1.5F);
-				this.canContinueToUse = this.mob.distanceTo(this.mob.getTarget()) >= 4.0F;
+				Vec3 lookPos = BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 20);
+				this.mob.setLastLookPos(lookPos);
+				this.mob.setDeltaMovement(BTAUtil.fromToVector(this.mob.position(), lookPos, 0.5F));
 				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 1.5F))
 				{
+					this.canContinueToUse = false;
 					this.mob.doHurtTarget(this.mob.getTarget());
 				}
+				else if(this.mob.distanceTo(this.mob.getTarget()) >= 12.0F)
+				{
+					this.canContinueToUse = false;
+				}
+			}
+			else
+			{
+				this.mob.lookAt(Anchor.EYES, this.mob.getTarget().getEyePosition());
 			}
 		}
 	}
@@ -75,8 +86,11 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	public void stop() 
 	{
 		super.stop();
+		this.mob.getNavigation().stop();
+		this.mob.setDeltaMovement(Vec3.ZERO);
 		this.mob.setAnimationState(2);
 		this.mob.setAnimationTick(20);
+		this.mob.setLastLookPos(Vec3.ZERO);
 		this.mob.setUsingSkill(true);
 		this.canContinueToUse = true;
 	}

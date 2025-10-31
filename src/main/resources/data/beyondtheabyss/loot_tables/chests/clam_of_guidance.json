@@ -6,7 +6,7 @@
 			"entries": [
 				{
 					"type": "minecraft:item",
-					"name": "beyondtheabyss:guiding_clam",
+					"name": "beyondtheabyss:clam_of_guidance",
 					"conditions": [
 						{
 							"condition": "minecraft:random_chance",

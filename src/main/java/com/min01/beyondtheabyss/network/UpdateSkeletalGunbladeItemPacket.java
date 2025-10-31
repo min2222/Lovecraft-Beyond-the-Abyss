@@ -61,7 +61,7 @@ public class UpdateSkeletalGunbladeItemPacket
 		                {
 		                	if(to.getItem() instanceof SkeletalGunbladeItem item)
 		                	{
-		                		item.onStopUsingServer(to, living);
+		                		item.releaseUsingServer(to, living);
 		                	}
 		                }
 					}

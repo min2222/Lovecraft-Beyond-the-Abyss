@@ -330,12 +330,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		return 1;
 	}
 	
-	@Override
-	public boolean rotateHead() 
-	{
-		return true;
-	}
-	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
         Structure structure = pServerLevel.registryAccess().registryOrThrow(Registries.STRUCTURE).get(BTAStructures.Keys.GIANT_FOSSIL);

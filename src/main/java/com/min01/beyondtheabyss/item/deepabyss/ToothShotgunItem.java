@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -192,7 +193,7 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	}
 	
 	@Override
-	public boolean isFirstPersonAnim() 
+	public boolean isFirstPersonAnim(ItemStack stack, Entity entity) 
 	{
 		return true;
 	}

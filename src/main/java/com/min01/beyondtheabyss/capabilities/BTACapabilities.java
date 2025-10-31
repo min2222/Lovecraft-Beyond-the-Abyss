@@ -18,6 +18,7 @@ public class BTACapabilities
 {
 	public static final Capability<IItemAnimationCapability> ITEM_ANIMATION = CapabilityManager.get(new CapabilityToken<>() {});
 	public static final Capability<IPlayerAnimationCapability> PLAYER_ANIMATION = CapabilityManager.get(new CapabilityToken<>() {});
+	public static final Capability<IPlayerTickCountCapability> PLAYER_TICKCOUNT = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	public static void attachItemStackCapability(AttachCapabilitiesEvent<ItemStack> e)
 	{
@@ -25,8 +26,7 @@ public class BTACapabilities
 		{
 			LazyOptional<IItemAnimationCapability> inst = LazyOptional.of(() -> 
 			{
-				ItemAnimationCapabilityImpl i = new ItemAnimationCapabilityImpl();
-				return i;
+				return new ItemAnimationCapabilityImpl();
 			});
 
 			@Nonnull
@@ -58,8 +58,7 @@ public class BTACapabilities
 			{
 				LazyOptional<IPlayerAnimationCapability> inst = LazyOptional.of(() -> 
 				{
-					PlayerAnimationCapabilityImpl i = new PlayerAnimationCapabilityImpl();
-					return i;
+					return new PlayerAnimationCapabilityImpl();
 				});
 
 				@Nonnull
@@ -67,6 +66,32 @@ public class BTACapabilities
 				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
 				{
 					return PLAYER_ANIMATION.orEmpty(capability, this.inst.cast());
+				}
+
+				@Override
+				public CompoundTag serializeNBT() 
+				{
+					return this.inst.orElseThrow(NullPointerException::new).serializeNBT();
+				}
+
+				@Override
+				public void deserializeNBT(CompoundTag nbt)
+				{
+					this.inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
+				}
+			});
+			e.addCapability(IPlayerTickCountCapability.ID, new ICapabilitySerializable<CompoundTag>() 
+			{
+				LazyOptional<IPlayerTickCountCapability> inst = LazyOptional.of(() -> 
+				{
+					return new PlayerTickCountCapabilityImpl();
+				});
+
+				@Nonnull
+				@Override
+				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) 
+				{
+					return PLAYER_TICKCOUNT.orEmpty(capability, this.inst.cast());
 				}
 
 				@Override

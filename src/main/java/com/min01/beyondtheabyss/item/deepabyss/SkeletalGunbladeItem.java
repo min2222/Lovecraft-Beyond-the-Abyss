@@ -116,9 +116,9 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	}
 	
 	@Override
-	public void onStopUsing(ItemStack stack, LivingEntity entity, int count)
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int p_41415_) 
 	{
-		if(getCharge(stack) > 0 && entity.level.isClientSide)
+		if(getCharge(stack) > 0 && level.isClientSide)
 		{
 			BTAUtil.setPlayerAnimationState(entity, 4);
 			BTAUtil.setPlayerAnimationTick(entity, 95);
@@ -127,7 +127,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 		}
 	}
 	
-	public void onStopUsingServer(ItemStack stack, LivingEntity entity)
+	public void releaseUsingServer(ItemStack stack, LivingEntity entity)
 	{
 		BTAUtil.setPlayerAnimationState(entity, 4);
 		BTAUtil.setPlayerAnimationTick(entity, 95);
@@ -140,9 +140,9 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
     }
 	
 	@Override
-	public boolean isFirstPersonAnim()
+	public boolean isFirstPersonAnim(ItemStack stack, Entity entity)
 	{
-		return true;
+		return BTAUtil.getPlayerAnimationState(entity) != 0;
 	}
 	
 	@Override

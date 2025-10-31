@@ -14,8 +14,10 @@ import com.google.common.collect.ImmutableList;
 import com.min01.beyondtheabyss.capabilities.BTACapabilities;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.IPlayerAnimationCapability;
+import com.min01.beyondtheabyss.capabilities.IPlayerTickCountCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
+import com.min01.beyondtheabyss.capabilities.PlayerTickCountCapabilityImpl;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -208,6 +210,18 @@ public class BTAUtil
 				});
 			}
 		}
+    }
+    
+    public static void tickPlayerTickCount(LivingEntity player)
+    {
+		IPlayerTickCountCapability cap = player.getCapability(BTACapabilities.PLAYER_TICKCOUNT).orElse(new PlayerTickCountCapabilityImpl());
+		cap.tick(player);
+    }
+    
+    public static int getPlayerTickCount(LivingEntity player)
+    {
+		IPlayerTickCountCapability cap = player.getCapability(BTACapabilities.PLAYER_TICKCOUNT).orElse(new PlayerTickCountCapabilityImpl());
+		return cap.getPlayerTickCount();
     }
     
     public static void tickPlayerAnimation(LivingEntity player)

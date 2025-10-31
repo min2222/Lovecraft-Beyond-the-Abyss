@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.effect;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.deepabyss.CoordinationEffect;
 import com.min01.beyondtheabyss.effect.deepabyss.DisorderEffect;
+import com.min01.beyondtheabyss.effect.deepabyss.StoneSkinEffect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -20,6 +21,7 @@ public class BTAEffects
 	public static final RegistryObject<MobEffect> AIR_SWIM = EFFECTS.register("air_swim", () -> new BasicBTAEffect(MobEffectCategory.BENEFICIAL, 3407871));
 	public static final RegistryObject<MobEffect> DISORDER = EFFECTS.register("disorder", () -> new DisorderEffect());
 	public static final RegistryObject<MobEffect> COORDINATION = EFFECTS.register("coordination", () -> new CoordinationEffect());
+	public static final RegistryObject<MobEffect> STONE_SKIN = EFFECTS.register("stone_skin", () -> new StoneSkinEffect());
 	
 	public static final RegistryObject<Potion> DISORDER_POTION = POTIONS.register("disorder", () -> new Potion(new MobEffectInstance(DISORDER.get(), 1)));
 	public static final RegistryObject<Potion> STRONG_DISORDER_POTION = POTIONS.register("strong_disorder", () -> new Potion(new MobEffectInstance(DISORDER.get(), 1, 1)));

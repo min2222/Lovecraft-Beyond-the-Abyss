@@ -3,5 +3,5 @@
 	"biomes": "#minecraft:is_deep_ocean",
 	"spawn_overrides": {
 	},
-	"step": "raw_generation"
+	"step": "surface_structures"
 }

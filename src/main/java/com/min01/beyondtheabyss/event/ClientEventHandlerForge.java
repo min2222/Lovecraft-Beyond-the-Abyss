@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.event;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
@@ -25,12 +26,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,7 +51,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.FORGE)
 public class ClientEventHandlerForge 
 {
-	public static final AtomicReference<BlockPos> ABYSS_PORTAL_POS = new AtomicReference<>(BlockPos.ZERO);
+	public static final Map<ResourceKey<Level>, BlockPos> ABYSS_PORTAL_POS = new HashMap<>();
+	public static final Map<ResourceKey<Level>, Boolean> ABYSS_PORTAL_ACTIVATED = new HashMap<>();
 	
     @SubscribeEvent
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
@@ -145,23 +149,29 @@ public class ClientEventHandlerForge
 	    	Vec3 camPos = cam.getPosition();
 	    	PoseStack stack = event.getPoseStack();
 	    	MultiBufferSource bufferSource = BTAClientUtil.MC.renderBuffers().bufferSource();
+	    	ResourceKey<Level> dimension = BTAClientUtil.MC.level.dimension();
 	    	float partialTicks = event.getPartialTick();
-	    	if(!ABYSS_PORTAL_POS.get().equals(BlockPos.ZERO))
+	    	if(ABYSS_PORTAL_POS.containsKey(dimension) && ABYSS_PORTAL_ACTIVATED.containsKey(dimension))
 	    	{
-	    		Vec3 pos = Vec3.atBottomCenterOf(ABYSS_PORTAL_POS.get());
-	            float time = (BTAClientUtil.MC.level.getGameTime() + partialTicks) / 20.0F;
-		    	stack.pushPose();
-		    	stack.translate(pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z);
-		    	stack.translate(0, 6.5F, 0);
-		    	stack.mulPose(Axis.XP.rotationDegrees(90.0F));
-		    	Vec3 color = new Vec3(0.0F, 1.0F, 0.4F);
-		    	RenderType renderType1 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/water.png"));
-		    	RenderType renderType2 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics2.png"));
-		    	RenderType renderType3 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics.png"));
-	            BTAClientUtil.drawTorus(3.5F, 3.5F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType1, time, Vec3.ZERO);
-	            BTAClientUtil.drawTorus(3.505F, 3.505F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType2, time, Vec3.ZERO);
-	            BTAClientUtil.drawTorus(3.51F, 3.51F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType3, time, Vec3.ZERO);
-		    	stack.popPose();
+	    		BlockPos blockPos = ABYSS_PORTAL_POS.get(dimension);
+	    		boolean isActivated = ABYSS_PORTAL_ACTIVATED.get(dimension);
+		    	if(!blockPos.equals(BlockPos.ZERO) && isActivated)
+		    	{
+		    		Vec3 pos = Vec3.atBottomCenterOf(blockPos);
+		            float time = (BTAClientUtil.MC.level.getGameTime() + partialTicks) / 20.0F;
+			    	stack.pushPose();
+			    	stack.translate(pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z);
+			    	stack.translate(0, 7.5F, 0);
+			    	stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+			    	Vec3 color = new Vec3(0.0F, 1.0F, 0.4F);
+			    	RenderType renderType1 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/water.png"));
+			    	RenderType renderType2 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics2.png"));
+			    	RenderType renderType3 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics.png"));
+		            BTAClientUtil.drawTorus(3.5F, 3.5F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType1, time, Vec3.ZERO);
+		            BTAClientUtil.drawTorus(3.505F, 3.505F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType2, time, Vec3.ZERO);
+		            BTAClientUtil.drawTorus(3.51F, 3.51F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType3, time, Vec3.ZERO);
+			    	stack.popPose();
+		    	}
 	    	}
     	}
     }
@@ -169,24 +179,24 @@ public class ClientEventHandlerForge
 	@SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event)
 	{
-		ItemStack itemStack = event.getItemStack();
-		if(itemStack.getItem() instanceof IAnimatableItem item && item.isFirstPersonAnim())
+		ItemStack stack = event.getItemStack();
+		AbstractClientPlayer player = BTAClientUtil.MC.player;
+		if(stack.getItem() instanceof IAnimatableItem item && item.isFirstPersonAnim(stack, player))
 		{
-			PoseStack stack = event.getPoseStack();
+			PoseStack poseStack = event.getPoseStack();
 			MultiBufferSource bufferSource = event.getMultiBufferSource();
-			renderPlayerArm(stack, bufferSource, event.getPackedLight(), HumanoidArm.RIGHT, itemStack, item, event.getPartialTick());
-			renderPlayerArm(stack, bufferSource, event.getPackedLight(), HumanoidArm.LEFT, itemStack, item, event.getPartialTick());
+			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.RIGHT, stack, item, event.getPartialTick());
+			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.LEFT, stack, item, event.getPartialTick());
 			event.setCanceled(true);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void renderPlayerArm(PoseStack stack, MultiBufferSource bufferSource, int packedLight, HumanoidArm arm, ItemStack itemStack, IAnimatableItem item, float partialTicks)
+	public static void renderPlayerArm(AbstractClientPlayer player, PoseStack stack, MultiBufferSource bufferSource, int packedLight, HumanoidArm arm, ItemStack itemStack, IAnimatableItem item, float partialTicks)
 	{
 		stack.pushPose();
 		Vec3 offset = item.getOffset();
 		boolean flag = arm != HumanoidArm.LEFT;
-		AbstractClientPlayer player = BTAClientUtil.MC.player;
 		RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
 		PlayerRenderer renderer = (PlayerRenderer) BTAClientUtil.MC.getEntityRenderDispatcher().<AbstractClientPlayer>getRenderer(player);
 		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));

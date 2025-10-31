@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,6 +18,9 @@ import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.misc.BTATags;
+import com.min01.beyondtheabyss.misc.ChatTicker;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateStoneSkinEffectPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTASavedData;
@@ -29,12 +33,14 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.DistanceManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +51,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
@@ -55,6 +63,7 @@ import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.living.LivingDrownEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -65,6 +74,8 @@ import net.minecraftforge.fml.loading.FMLPaths;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, bus = Bus.FORGE)
 public class EventHandlerForge 
 {
+	public static final Map<ResourceKey<Level>, ChatTicker> CHAT_MAP = new HashMap<>();
+	
     @SubscribeEvent
     public static void onServerAboutToStart(ServerAboutToStartEvent event) 
     {
@@ -108,12 +119,51 @@ public class EventHandlerForge
 	}
     
     @SubscribeEvent
+    public static void onMobEffectAdded(MobEffectEvent.Added event) 
+    {
+    	LivingEntity living = event.getEntity();
+    	MobEffectInstance instance = event.getEffectInstance();
+    	if(instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
+    	{
+    		BTANetwork.sendToAll(new UpdateStoneSkinEffectPacket(living.getUUID(), instance.getAmplifier(), instance.getDuration(), false));
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onMobEffectRemove(MobEffectEvent.Remove event) 
+    {
+    	LivingEntity living = event.getEntity();
+    	MobEffectInstance instance = event.getEffectInstance();
+    	if(instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
+    	{
+    		BTANetwork.sendToAll(new UpdateStoneSkinEffectPacket(living.getUUID(), instance.getAmplifier(), instance.getDuration(), true));
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onMobEffectExpired(MobEffectEvent.Expired event) 
+    {
+    	LivingEntity living = event.getEntity();
+    	MobEffectInstance instance = event.getEffectInstance();
+    	if(instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
+    	{
+    		BTANetwork.sendToAll(new UpdateStoneSkinEffectPacket(living.getUUID(), instance.getAmplifier(), instance.getDuration(), true));
+    	}
+    }
+    
+    @SubscribeEvent
     public static void onLevelTick(LevelTickEvent event)
     {
     	if(event.level instanceof ServerLevel serverLevel)
     	{
-    		if(event.phase == TickEvent.Phase.END)
+    		if(event.phase == TickEvent.Phase.START)
     		{
+    			if(CHAT_MAP.containsKey(serverLevel.dimension()))
+    			{
+    				ChatTicker ticker = CHAT_MAP.get(serverLevel.dimension());
+    				ticker.tick();
+    			}
+    			CHAT_MAP.values().removeIf(t -> t.tickCount > 120);
     			EntityTickList list = serverLevel.entityTickList;
     			list.forEach(t ->
     			{
@@ -136,7 +186,6 @@ public class EventHandlerForge
     	LivingEntity entity = event.getEntity();
     	if(entity.level.dimension() == BTAWorlds.MOON || entity.level.dimension() == BTAWorlds.OUTER_SPACE)
     	{
-    		//TODO can breath if wear space helmet;
     		event.setCanBreathe(false);
     	}
     }
@@ -181,22 +230,39 @@ public class EventHandlerForge
     	if(level.dimension() == Level.OVERWORLD && !level.isClientSide && event.getEntity() instanceof Player player)
     	{
     		BTASavedData data = BTASavedData.get(level);
+			Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
+			BlockPos blockPos = player.blockPosition();
+			ServerLevel serverLevel = (ServerLevel) level;
 			if(data.getHutPos().equals(BlockPos.ZERO))
 			{
-				Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
 				HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.HUT).map((p_214491_) -> 
 				{
 					return HolderSet.direct(p_214491_);
 				}).get();
-				BlockPos blockpos = player.blockPosition();
-				ServerLevel serverlevel = (ServerLevel) level;
 				Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
-				Pair<BlockPos, Holder<Structure>> pair = serverlevel.getChunkSource().getGenerator().findNearestMapStructure(serverlevel, holderset, blockpos, 100, false);
+				Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
 				stopwatch.stop();
 				if(pair != null)
 				{
 					data.setHutPos(pair.getFirst());
 					data.setHutGenerated(true);
+				}
+			}
+			if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
+			{
+				HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL).map((p_214491_) -> 
+				{
+					return HolderSet.direct(p_214491_);
+				}).get();
+				Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
+				Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
+				stopwatch.stop();
+				if(pair != null)
+				{
+					BlockPos pos = pair.getFirst().offset(13, 0, 1);
+		    		int y = BTAUtil.getGroundPos(serverLevel, pos.getX(), pos.getY() + 100, pos.getZ(), -1).getY();
+					data.setAbyssPortalPos(level.dimension(), new BlockPos(pos.getX(), y - 14, pos.getZ()));
+					data.setAbyssPortalActivated(level.dimension(), false);
 				}
 			}
     	}
@@ -207,6 +273,7 @@ public class EventHandlerForge
 	{
 		BTAUtil.tickItemAnimation(event.player);
 		BTAUtil.tickPlayerAnimation(event.player);
+		BTAUtil.tickPlayerTickCount(event.player);
 	}
 	
     @SubscribeEvent
@@ -214,7 +281,7 @@ public class EventHandlerForge
     {
         if(event.getName().toString().matches("minecraft:chests/buried_treasure")) 
         {
-        	event.getTable().addPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootTableReference.lootTableReference(BTALootTables.GUIDING_CLAM)).build());
+        	event.getTable().addPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootTableReference.lootTableReference(BTALootTables.CLAM_OF_GUIDANCE)).build());
         }
     }
 
@@ -226,6 +293,26 @@ public class EventHandlerForge
 		{
 			entity.setOnGround(false);
 			entity.resetFallDistance();
+		}
+		BTASavedData data = BTASavedData.get(entity.level);
+		if(data != null)
+		{
+			if(!data.getAbyssPortalPos().equals(BlockPos.ZERO) && data.isAbyssPortalActivated())
+			{
+				BlockPos portalPos = data.getAbyssPortalPos().above();
+				Vec3 pos = Vec3.atCenterOf(portalPos);
+				AABB aabb1 = new AABB(-2.5F, 0.0F, -0.5F, 2.5F, 13.0F, 0.5F).move(portalPos);
+				AABB aabb2 = new AABB(-6.5F, -2.5F, -0.5F, 6.5F, 2.5F, 0.5F).move(portalPos.above(7));
+				AABB corner1 = new AABB(-1.0F, -1.5F, -0.5F, 1.0F, 1.5F, 0.5F).move(pos.add(3.5F, 11.0F, 0.0F));
+				AABB corner2 = new AABB(-1.0F, -1.5F, -0.5F, 1.0F, 1.5F, 0.5F).move(pos.add(-3.5F, 11.0F, 0.0F));
+				AABB corner3 = new AABB(-1.5F, -1.5F, -0.5F, 1.5F, 1.5F, 0.5F).move(pos.add(3.5F, 3.0F, 0.0F));
+				AABB corner4 = new AABB(-1.5F, -1.5F, -0.5F, 1.5F, 1.5F, 0.5F).move(pos.add(-3.5F, 3.0F, 0.0F));
+				boolean corners = entity.getBoundingBox().intersects(corner1) || entity.getBoundingBox().intersects(corner2) || entity.getBoundingBox().intersects(corner3) || entity.getBoundingBox().intersects(corner4);
+				if(entity.getBoundingBox().intersects(aabb1) || entity.getBoundingBox().intersects(aabb2) || corners)
+				{
+					BTAUtil.teleportEntityToDimension(entity, entity.getServer().getLevel(BTAWorlds.DEEP_ABYSS), BlockPos.containing(0, 100, 0));
+				}
+			}
 		}
 	}
     

@@ -9,17 +9,19 @@ import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
+import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.item.deepabyss.ClamOfGuidanceItem;
 import com.min01.beyondtheabyss.item.deepabyss.FelmetalDivingSetItem;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
-import com.min01.beyondtheabyss.item.deepabyss.GuidingClamItem;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
@@ -51,7 +53,7 @@ public class BTAItems
 	//spawn eggs
 	public static final RegistryObject<Item> SOLOMON_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "solomon_spawn_egg", () -> BTAEntities.SOLOMON.get(), 5588543, 4339505);
 	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "ghidruth_spawn_egg", () -> BTAEntities.GHIDRUTH.get(), 862018, 10239048);
-	public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
+	//public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
 	public static final RegistryObject<Item> GNASHER_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "gnasher_spawn_egg", () -> BTAEntities.GNASHER.get(), 1318679, 3019282);
 	public static final RegistryObject<Item> SIAMSERPENT_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "siamserpent_spawn_egg", () -> BTAEntities.SIAMSERPENT_HEAD.get(), 7035974, 9537638);
 	public static final RegistryObject<Item> SPINE_WORM_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "spine_worm_spawn_egg", () -> BTAEntities.SPINE_WORM_HEAD.get(), 4068636, 15131359);
@@ -88,13 +90,13 @@ public class BTAItems
 	public static final RegistryObject<Item> FELMETAL_DIVING_BOOTS = DEEP_ABYSS_ITEMS.register("felmetal_diving_boots", () -> new FelmetalDivingSetItem(ArmorItem.Type.BOOTS));
 	
 	//misc
-	public static final RegistryObject<Item> GUIDING_CLAM = DEEP_ABYSS_ITEMS.register("guiding_clam", () -> new GuidingClamItem());
+	public static final RegistryObject<Item> CLAM_OF_GUIDANCE = DEEP_ABYSS_ITEMS.register("clam_of_guidance", () -> new ClamOfGuidanceItem());
 	public static final RegistryObject<Item> HEART_OF_FORNEUS = DEEP_ABYSS_ITEMS.register("heart_of_forneus", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> FLYING_FISH = DEEP_ABYSS_ITEMS.register("flying_fish", () -> new FlyingFishItem());
 	
 	//foods
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.5F).build(), true));
-	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("cooked_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(9).saturationMod(1.0F).build(), false));
+	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("cooked_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(9).saturationMod(1.0F).effect(() -> new MobEffectInstance(BTAEffects.STONE_SKIN.get(), 1200, 0), 1.0F).build(), false));
 	public static final RegistryObject<Item> RAW_GNASHER = DEEP_ABYSS_ITEMS.register("raw_gnasher", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build()));
 	public static final RegistryObject<Item> COOKED_GNASHER = DEEP_ABYSS_ITEMS.register("cooked_gnasher", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build()));
 	

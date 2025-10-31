@@ -235,13 +235,9 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	{
 		if(this.isMutated(MutationType.MUTATE_HEAD))
 		{
-			return 85;
+			return 10;
 		}
-		else if(this.isConsume())
-		{
-			return 75;
-		}
-		return !this.hasTarget() ? 55 : 65;
+		return !this.hasTarget() ? 3 : 5;
 	}
 	
 	@Override

@@ -12,6 +12,7 @@ public class BTAResourceKeys
 	public static class BTAStructures
 	{
 		public static final ResourceKey<Structure> HUT = create("hut");
+		public static final ResourceKey<Structure> DEEP_ABYSS_PORTAL = create("deep_abyss_portal");
 		
 		private static ResourceKey<Structure> create(String name) 
 		{

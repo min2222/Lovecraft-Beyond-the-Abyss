@@ -71,7 +71,8 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 80.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.65F)
-        		.add(Attributes.FOLLOW_RANGE, 30.0F)
+        		.add(Attributes.FOLLOW_RANGE, 60.0F)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F)
         		.add(Attributes.ATTACK_DAMAGE, 8.0F);
     }
     
@@ -293,11 +294,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	@Override
 	public int maxTurnY() 
 	{
-		if(this.getAnimationState() == 1)
-		{
-			return 7;
-		}
-		return 5;
+		return 8;
 	}
 	
 	@Override

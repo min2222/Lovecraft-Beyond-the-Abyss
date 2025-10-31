@@ -4,45 +4,44 @@ import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
-public class UpdateAbyssPortalPosPacket 
+public class UpdateAbyssPortalActivationPacket 
 {
 	public final ResourceKey<Level> dimension;
-	public final BlockPos pos;
+	public final boolean isActivated;
 
-	public UpdateAbyssPortalPosPacket(ResourceKey<Level> dimension, BlockPos pos) 
+	public UpdateAbyssPortalActivationPacket(ResourceKey<Level> dimension, boolean isActivated) 
 	{
 		this.dimension = dimension;
-		this.pos = pos;
+		this.isActivated = isActivated;
 	}
 
-	public UpdateAbyssPortalPosPacket(FriendlyByteBuf buf)
+	public UpdateAbyssPortalActivationPacket(FriendlyByteBuf buf)
 	{
 		this.dimension = buf.readResourceKey(Registries.DIMENSION);
-		this.pos = buf.readBlockPos();
+		this.isActivated = buf.readBoolean();
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
 		buf.writeResourceKey(this.dimension);
-		buf.writeBlockPos(this.pos);
+		buf.writeBoolean(this.isActivated);
 	}
 
 	public static class Handler 
 	{
-		public static boolean onMessage(UpdateAbyssPortalPosPacket message, Supplier<NetworkEvent.Context> ctx)
+		public static boolean onMessage(UpdateAbyssPortalActivationPacket message, Supplier<NetworkEvent.Context> ctx)
 		{
 			ctx.get().enqueueWork(() ->
 			{
 				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					ClientEventHandlerForge.ABYSS_PORTAL_POS.put(message.dimension, message.pos);
+					ClientEventHandlerForge.ABYSS_PORTAL_ACTIVATED.put(message.dimension, message.isActivated);
 				}
 			});
 			ctx.get().setPacketHandled(true);

@@ -1,0 +1,20 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "beyondtheabyss:item/clam_of_guidance_0"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"open": 1
+			},
+			"model": "beyondtheabyss:item/clam_of_guidance_1"
+		},
+		{
+			"predicate": {
+				"open": 2
+			},
+			"model": "beyondtheabyss:item/clam_of_guidance_2"
+		}
+	]
+}

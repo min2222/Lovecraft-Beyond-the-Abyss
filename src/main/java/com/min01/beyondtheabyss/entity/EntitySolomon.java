@@ -9,7 +9,9 @@ import com.min01.beyondtheabyss.network.UpdateSynchedEntityDataPacket;
 import com.min01.beyondtheabyss.world.BTASavedData;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -67,7 +69,7 @@ public class EntitySolomon extends AbstractBTACreature implements IDialogue, ISy
     	this.entityData.define(IS_TALKING, false);
     	this.entityData.define(CHAT_INDEX, 0);
     	this.entityData.define(PREV_CHAT_INDEX, 0);
-    	this.entityData.define(KEY_ITEM, BTAItems.GUIDING_CLAM.get().getDefaultInstance());
+    	this.entityData.define(KEY_ITEM, BTAItems.CLAM_OF_GUIDANCE.get().getDefaultInstance());
     }
 
 	@Override
@@ -116,6 +118,14 @@ public class EntitySolomon extends AbstractBTACreature implements IDialogue, ISy
 			{
 				this.setCanTalk(true);
 				data.setDragonKilled(false);
+			}
+			if(!this.getKeyItem().is(BTAItems.CLAM_OF_GUIDANCE.get()))
+			{
+				ItemStack stack = BTAItems.CLAM_OF_GUIDANCE.get().getDefaultInstance();
+				BlockPos pos = data.getAbyssPortalPos();
+				//TODO temp mechanic;
+				stack.getOrCreateTag().put("PortalPos", NbtUtils.writeBlockPos(pos));
+				this.setKeyItem(stack);
 			}
 		}
 		

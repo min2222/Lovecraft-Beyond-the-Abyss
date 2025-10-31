@@ -47,7 +47,7 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 60.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.4F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.45F)
     			.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
 
@@ -89,6 +89,19 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 		{
 			super.push(p_21294_);
 		}
+	}
+	
+	@Override
+	protected void updateWalkAnimation(float p_268283_) 
+	{
+		float f = Math.min(p_268283_ * 16.0F, 1.0F);
+		this.walkAnimation.update(f, 0.4F);
+	}
+	
+	@Override
+	public float moveSpeed() 
+	{
+		return 0.35F;
 	}
 	
 	@Override

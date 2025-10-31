@@ -58,30 +58,44 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	public void tick(LivingEntity entity) 
 	{
 		ItemStack stack = entity.getItemInHand(entity.getUsedItemHand());
-		if(entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && this.getAnimationState() == 4)
+		if(entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()))
 		{
-			List<LivingEntity> arrayList = new ArrayList<>();
-        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(entity.getXRot(), entity.getYHeadRot()), entity.getEyePosition(), 0.0F, -0.25F, 0.5F);
-			Vec3 lookPos = BTAUtil.getLookPos(new Vec2(entity.getXRot(), entity.getYHeadRot()), startPos, 0.0F, 0.0F, 50.0F);
-			HitResult hitResult = entity.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
-        	Vec3 hitPos = hitResult.getLocation();
-            Vec3 targetPos = hitPos.subtract(startPos);
-            Vec3 normalizedPos = targetPos.normalize();
-            int dist = (int) Mth.floor(targetPos.length());
-            if(entity.level.isClientSide)
-            {
-                SkeletalGunbladeItem.setLaserLength(stack, dist);
-            }
-            for(int i = 1; i < dist; ++i)
-            {
-            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
-            	List<LivingEntity> list = entity.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != entity && !t.isAlliedTo(entity));
-        		arrayList.addAll(list);
-            }
-            arrayList.forEach(t -> 
-            {
-            	t.hurt(entity.damageSources().indirectMagic(entity, entity), 6.0F);
-            });
+			if(this.getAnimationState() == 4)
+			{
+				List<LivingEntity> arrayList = new ArrayList<>();
+	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(entity.getXRot(), entity.getYHeadRot()), entity.getEyePosition(), 0.0F, -0.25F, 0.5F);
+				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(entity.getXRot(), entity.getYHeadRot()), startPos, 0.0F, 0.0F, 50.0F);
+				HitResult hitResult = entity.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+	        	Vec3 hitPos = hitResult.getLocation();
+	            Vec3 targetPos = hitPos.subtract(startPos);
+	            Vec3 normalizedPos = targetPos.normalize();
+	            int dist = (int) Mth.floor(targetPos.length());
+	            if(entity.level.isClientSide)
+	            {
+	                SkeletalGunbladeItem.setLaserLength(stack, dist);
+	            }
+	            for(int i = 1; i < dist; ++i)
+	            {
+	            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
+	            	List<LivingEntity> list = entity.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != entity && !t.isAlliedTo(entity));
+	        		arrayList.addAll(list);
+	            }
+	            arrayList.forEach(t -> 
+	            {
+	            	t.hurt(entity.damageSources().indirectMagic(entity, entity), 6.0F);
+	            });
+			}
+			if(this.getAnimationState() == 5 && this.getAnimationTick() == 20)
+			{
+				float size = 1.5F;
+				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(entity.getXRot(), entity.getYHeadRot()), entity.getEyePosition(), 0, 0, 1.5F);
+				AABB aabb = new AABB(-size, -size, -size, size, size, size).move(lookPos);
+				List<LivingEntity> list = entity.level.getEntitiesOfClass(LivingEntity.class, aabb, t -> t != entity && !t.isAlliedTo(entity));
+				list.forEach(t -> 
+				{
+					t.hurt(entity.damageSources().mobAttack(entity), 8.0F);
+				});
+			}
 		}
 		if(entity.isSprinting() && this.getAnimationState() == 0 && this.getPrevAnimationState() != 2 && entity.isHolding(BTAItems.TOOTH_SHOTGUN.get()))
 		{

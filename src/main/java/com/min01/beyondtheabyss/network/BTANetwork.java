@@ -31,7 +31,9 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdateSynchedEntityDataPacket.class, UpdateSynchedEntityDataPacket::encode, UpdateSynchedEntityDataPacket::new, UpdateSynchedEntityDataPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationPacket.class, UpdatePlayerAnimationPacket::encode, UpdatePlayerAnimationPacket::new, UpdatePlayerAnimationPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateAbyssPortalPosPacket.class, UpdateAbyssPortalPosPacket::encode, UpdateAbyssPortalPosPacket::new, UpdateAbyssPortalPosPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateAbyssPortalActivationPacket.class, UpdateAbyssPortalActivationPacket::encode, UpdateAbyssPortalActivationPacket::new, UpdateAbyssPortalActivationPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateSkeletalGunbladeItemPacket.class, UpdateSkeletalGunbladeItemPacket::encode, UpdateSkeletalGunbladeItemPacket::new, UpdateSkeletalGunbladeItemPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateStoneSkinEffectPacket.class, UpdateStoneSkinEffectPacket::encode, UpdateStoneSkinEffectPacket::new, UpdateStoneSkinEffectPacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 
