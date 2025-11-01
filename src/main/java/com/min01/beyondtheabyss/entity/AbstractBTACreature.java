@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-public abstract class AbstractBTACreature extends AbstractAnimatableCreature implements IMultipart
+public abstract class AbstractBTACreature extends AbstractAnimatableCreature implements IMultipart, IBTAMob
 {
 	public final EntityPartBuilder<? extends AbstractBTACreature> partBuilder;
 	
@@ -95,7 +95,6 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 			if(this.getBTAMobType().lookTarget && this.canLook())
 			{
 				this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
-				//this.getLookControl().setLookAt(this.getTarget(), 360.0F, 360.0F);
 			}
 		}
 	}

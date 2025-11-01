@@ -8,7 +8,6 @@ import com.min01.beyondtheabyss.network.SetDialogueScreenPacket;
 import com.min01.beyondtheabyss.network.UpdateSynchedEntityDataPacket;
 import com.min01.beyondtheabyss.world.BTASavedData;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -131,7 +130,7 @@ public class EntitySolomon extends AbstractBTACreature implements IDialogue, ISy
 		
 		if(this.player != null)
 		{
-			this.lookAt(Anchor.EYES, this.player.getEyePosition());
+			this.getLookControl().setLookAt(this.player, 100.0F, 100.0F);
 		}
 	}
 	

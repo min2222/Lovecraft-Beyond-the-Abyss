@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractBTAMonster extends AbstractAnimatableMonster implements IMultipart
+public abstract class AbstractBTAMonster extends AbstractAnimatableMonster implements IMultipart, IBTAMob
 {
 	public static final EntityDataAccessor<Vec3> LAST_LOOK_POS = SynchedEntityData.defineId(AbstractBTAMonster.class, BTAEntityDataSerializers.VEC3.get());
 	
@@ -128,13 +128,10 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 		if(this.canLook())
 		{
 			this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
-			//this.getLookControl().setLookAt(this.getTarget(), 360.0F, 360.0F);
 		}
 		else if(!this.getLastLookPos().equals(Vec3.ZERO))
 		{
 			this.lookAt(Anchor.EYES, this.getLastLookPos());
-			//Vec3 pos = this.getLastLookPos();
-			//this.getLookControl().setLookAt(pos.x, pos.y, pos.z, 360.0F, 360.0F);
 		}
 	}
 	
