@@ -30,7 +30,7 @@ public class BTAFlyingMoveControl extends MoveControl
 		IBTAMob mob = (IBTAMob) this.mob;
 		if(this.operation == MoveControl.Operation.MOVE_TO || mob.ignoreOperation()) 
 		{
-	        if(this.mob.tickCount % mob.targetSettingInterval() == 0 || this.targetPos.equals(Vec3.ZERO))
+	        if(this.mob.tickCount % mob.targetSettingInterval() == 0 || this.targetPos.equals(Vec3.ZERO) || this.targetPos.subtract(this.mob.position()).length() <= 2.5F)
 	        {
 	        	this.generateNewTarget();
 	        }
@@ -48,7 +48,7 @@ public class BTAFlyingMoveControl extends MoveControl
 				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, mob.maxTurnY()));
 				this.mob.yBodyRot = this.mob.getYRot();
 				this.mob.yHeadRot = this.mob.getYRot();
-				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.FLYING_SPEED));
 				this.mob.setSpeed(f1 * mob.moveSpeed());
 				double d4 = Math.sqrt(d0 * d0 + d2 * d2);
 				if(Math.abs(d1) > (double) 1.0E-5F || Math.abs(d4) > (double) 1.0E-5F) 

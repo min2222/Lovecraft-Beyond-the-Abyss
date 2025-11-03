@@ -8,9 +8,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class FlyingMonster extends Monster
+public abstract class AbstractFlyingMonster extends Monster
 {
-	public FlyingMonster(EntityType<? extends Monster> p_33002_, Level p_33003_) 
+	public AbstractFlyingMonster(EntityType<? extends Monster> p_33002_, Level p_33003_) 
 	{
 		super(p_33002_, p_33003_);
 	}

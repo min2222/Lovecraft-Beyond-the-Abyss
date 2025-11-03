@@ -12,7 +12,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractAnimatableFlyingMonster extends FlyingMonster implements IAnimatable, IPosArray
+public abstract class AbstractAnimatableFlyingMonster extends AbstractFlyingMonster implements IAnimatable, IPosArray
 {
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractAnimatableFlyingMonster.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(AbstractAnimatableFlyingMonster.class, EntityDataSerializers.INT);
@@ -85,11 +85,6 @@ public abstract class AbstractAnimatableFlyingMonster extends FlyingMonster impl
     	navigation.setCanPassDoors(true);
     	return navigation;
     }
-	
-	public boolean canLookAround()
-	{
-		return !this.hasTarget();
-	}
 	
 	public boolean canRandomFly()
 	{

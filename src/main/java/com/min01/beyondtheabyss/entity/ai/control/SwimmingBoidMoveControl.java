@@ -40,7 +40,7 @@ public class SwimmingBoidMoveControl extends BoidMoveControl
 		{
         	if(!this.forceTarget)
         	{
-    	        if(this.mob.tickCount % mob.targetSettingInterval() == 0 || this.targetPos.equals(Vec3.ZERO))
+    	        if(this.mob.tickCount % mob.targetSettingInterval() == 0 || this.targetPos.equals(Vec3.ZERO) || this.targetPos.subtract(this.mob.position()).length() <= 2.5F)
     	        {
     	        	this.generateNewTarget();
     	        }

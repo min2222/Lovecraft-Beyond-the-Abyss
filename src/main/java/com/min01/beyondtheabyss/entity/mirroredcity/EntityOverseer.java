@@ -71,6 +71,7 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 		{
 			this.openAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
 		}
+		
 	    Vec3 movement = this.getDeltaMovement();
 	    float speed = (float) movement.length();
 	    if(speed > 0.01F) 

@@ -38,11 +38,11 @@ public class BTAFlyingLookControl extends LookControl
 			this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, this.mob.yBodyRot, this.yMaxRotSpeed);
 		}
 		float f = Mth.wrapDegrees(this.mob.yHeadRot - this.mob.yBodyRot);
-		if(f < (float) (-mob.maxTurnY())) 
+		if(f < -mob.maxTurnY()) 
 		{
 			this.mob.yBodyRot -= 4.0F;
 		} 
-		else if(f > (float) mob.maxTurnY())
+		else if(f > mob.maxTurnY())
 		{
 			this.mob.yBodyRot += 4.0F;
 		}

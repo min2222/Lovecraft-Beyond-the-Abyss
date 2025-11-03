@@ -39,7 +39,7 @@ public class BTASwimmingMoveControl extends MoveControl
 		}
 		if(this.operation == MoveControl.Operation.MOVE_TO || mob.ignoreOperation()) 
 		{
-			if(this.mob.tickCount % mob.targetSettingInterval() == 0)
+			if(this.mob.tickCount % mob.targetSettingInterval() == 0 || this.targetPos.equals(Vec3.ZERO) || this.targetPos.subtract(this.mob.position()).length() <= 2.5F)
 			{
 				this.generateNewTarget();
 			}
