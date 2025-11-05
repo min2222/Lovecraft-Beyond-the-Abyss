@@ -15,7 +15,7 @@
 			]
 		},
 		{
-			"name": "beyondtheabyss:copy",
+			"name": "blit",
 			"intarget": "swap",
 			"outtarget": "minecraft:main"
 		}

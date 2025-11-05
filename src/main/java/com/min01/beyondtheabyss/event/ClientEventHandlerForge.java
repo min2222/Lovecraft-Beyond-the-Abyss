@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.event;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
+import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -155,6 +157,13 @@ public class ClientEventHandlerForge
 			    	stack.popPose();
 		    	}
 	    	}
+    	}
+    	if(event.getStage() == Stage.AFTER_WEATHER)
+    	{
+    		new ArrayList<>(BTAWorldShader.WORLD_SHADERS).forEach(t -> 
+    		{
+    			t.render(event.getPoseStack(), event.getPartialTick(), event.getCamera());
+    		});
     	}
     }
     
