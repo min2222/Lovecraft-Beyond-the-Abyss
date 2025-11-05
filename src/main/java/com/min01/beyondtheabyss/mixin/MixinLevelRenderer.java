@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.mixin;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nullable;
 
 import org.joml.Matrix4f;
@@ -14,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.lights.DynamicLights;
 import com.min01.beyondtheabyss.lights.LevelRendererAccessor;
+import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -29,7 +32,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
-@Mixin(LevelRenderer.class)
+@Mixin(value = LevelRenderer.class, priority = -15000)
 public abstract class MixinLevelRenderer implements LevelRendererAccessor
 {
     @Nullable
@@ -56,6 +59,15 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
                 mtx.mulPose(Axis.XP.rotationDegrees((float) Math.toRadians(-xRot)));
             }
         }
+	}
+	
+	@Inject(at = @At(value = "TAIL"), method = "renderLevel")
+	private void renderLevelTail(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
+	{
+		new ArrayList<>(BTAWorldShader.WORLD_SHADERS).forEach(t -> 
+		{
+			t.render(mtx, frameTime, camera);
+		});
 	}
 	
 	@Inject(at = @At("TAIL"), method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", cancellable = true)

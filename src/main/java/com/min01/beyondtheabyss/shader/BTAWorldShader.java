@@ -35,26 +35,26 @@ import net.minecraft.world.phys.Vec3;
 
 public class BTAWorldShader
 {
-	private final Matrix4f inverseMat = new Matrix4f();
+	public final Matrix4f inverseMat = new Matrix4f();
 
-    private final ResourceKey<Level> world;
-    private final Function<ResourceKey<Level>, ExtendedPostChain> shader;
-    private final BiFunction<Level, BlockPos, Boolean> sampler;
-    private final boolean useCustomSampler;
-    private final String samplerName;
+	public final ResourceKey<Level> world;
+	public final Function<ResourceKey<Level>, ExtendedPostChain> shader;
+	public final BiFunction<Level, BlockPos, Boolean> sampler;
+    public final boolean useCustomSampler;
+    public final String samplerName;
     
-    private NativeImage volumeImage;
+    public NativeImage volumeImage;
     
-    private int volumeTextureId = -1;
-    private int volumeWidth = 64;
-    private int volumeHeight = 64;
-    private int volumeDepth = 64;
+    public int volumeTextureId = -1;
+    public int volumeWidth = 64;
+    public int volumeHeight = 64;
+    public int volumeDepth = 64;
     
-    private BlockPos lastVolumeCenter = null;
-    private int lastChunkRenderDist;
+    public BlockPos lastVolumeCenter = null;
+    public int lastChunkRenderDist;
 
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final ConcurrentLinkedQueue<List<BlockPos>> queue = new ConcurrentLinkedQueue<>();
+    public final ExecutorService executor = Executors.newSingleThreadExecutor();
+    public final ConcurrentLinkedQueue<List<BlockPos>> queue = new ConcurrentLinkedQueue<>();
     
     public static final List<BTAWorldShader> WORLD_SHADERS = new ArrayList<>();
     
@@ -92,7 +92,6 @@ public class BTAWorldShader
 				mtx.pushPose();
 				if(this.useCustomSampler)
 				{
-					this.update(camPos);
 					this.apply(mtx, frameTime, camera);
 				}
 				else

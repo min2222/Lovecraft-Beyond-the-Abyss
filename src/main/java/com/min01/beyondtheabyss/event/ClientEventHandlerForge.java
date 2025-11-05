@@ -44,6 +44,7 @@ import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -125,6 +126,25 @@ public class ClientEventHandlerForge
     }
     
     @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) 
+    {
+        if(event.phase == TickEvent.Phase.START && BTAClientUtil.MC.player != null && BTAClientUtil.MC.level != null) 
+        {
+        	if(!BTAClientUtil.MC.isPaused())
+        	{
+        		for(BTAWorldShader shader : new ArrayList<>(BTAWorldShader.WORLD_SHADERS))
+        		{
+        			if(!shader.useCustomSampler || BTAClientUtil.MC.level.dimension() != shader.world)
+        			{
+        				continue;
+        			}
+        			shader.update(BTAClientUtil.MC.gameRenderer.getMainCamera().getPosition());
+        		}
+        	}
+        }
+    }
+    
+    @SubscribeEvent
     public static void onRenderLevelStage(RenderLevelStageEvent event)
     {
     	if(event.getStage() == Stage.AFTER_ENTITIES)
@@ -157,13 +177,6 @@ public class ClientEventHandlerForge
 			    	stack.popPose();
 		    	}
 	    	}
-    	}
-    	if(event.getStage() == Stage.AFTER_WEATHER)
-    	{
-    		new ArrayList<>(BTAWorldShader.WORLD_SHADERS).forEach(t -> 
-    		{
-    			t.render(event.getPoseStack(), event.getPartialTick(), event.getCamera());
-    		});
     	}
     }
     
