@@ -19,6 +19,7 @@
 		"MixinLocalPlayer",
 		"MixinPlayerModel",
 		"MixinEntityRenderDispatcher",
+		"MixinResource",
 		"gravity.MixinBlock",
 		"gravity.MixinBlockRenderDispatcher",
 		"gravity.MixinBlockEntityRenderDispatcher",

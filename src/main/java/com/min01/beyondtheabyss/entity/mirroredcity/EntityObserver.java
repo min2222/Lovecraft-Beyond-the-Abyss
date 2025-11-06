@@ -5,11 +5,15 @@ import com.min01.beyondtheabyss.entity.ai.control.FlyingBoidMoveControl;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 public class EntityObserver extends AbstractBTAFlyingMonster
 {
@@ -53,4 +57,9 @@ public class EntityObserver extends AbstractBTAFlyingMonster
 	{
 		return true;
 	}
+	
+	public static boolean checkObserverSpawnRules(EntityType<? extends AbstractBTAFlyingMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+		return pServerLevel.getBlockState(pPos.below()).isAir() && pServerLevel.getBlockState(pPos.above()).isAir() && pPos.getY() <= 10 && pPos.getY() >= -10;
+    }
 }

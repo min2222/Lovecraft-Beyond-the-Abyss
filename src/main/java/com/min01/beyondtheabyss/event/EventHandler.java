@@ -100,6 +100,8 @@ public class EventHandler
      	event.register(BTAEntities.MUTAVORE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityMutavore::checkMutavoreSpawnRules, Operation.AND);
      	event.register(BTAEntities.FULGASTRA.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityFulgastra::checkFulgastraSpawnRules, Operation.AND);
      	event.register(BTAEntities.NECROSHELL.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityNecroshell::checkNecroshellSpawnRules, Operation.AND);
+     	
+     	event.register(BTAEntities.OBSERVER.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityObserver::checkObserverSpawnRules, Operation.AND);
     }
     
     @SubscribeEvent
