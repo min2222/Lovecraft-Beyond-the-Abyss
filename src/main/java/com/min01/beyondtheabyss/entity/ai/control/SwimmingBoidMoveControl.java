@@ -71,7 +71,7 @@ public class SwimmingBoidMoveControl extends BoidMoveControl
 					{
 						float f3 = -((float) (Mth.atan2(d1, d4) * (double) (180.0F / (float) Math.PI)));
 						f3 = Mth.clamp(Mth.wrapDegrees(f3), (float) (-mob.maxTurnX()), (float) mob.maxTurnX());
-						this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f3, mob.maxTurnX()));
+						this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f3, 5.0F));
 					}
 					float f6 = Mth.cos(this.mob.getXRot() * ((float) Math.PI / 180.0F));
 					float f4 = Mth.sin(this.mob.getXRot() * ((float) Math.PI / 180.0F));

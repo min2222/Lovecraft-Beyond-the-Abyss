@@ -7,7 +7,6 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.AABB;
 
 public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 {
@@ -33,7 +32,7 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.distanceTo(this.mob.getTarget()) <= 12.0F;
+		return super.canUse() && this.mob.distanceTo(this.mob.getTarget()) <= 8.0F;
 	}
 
 	@Override
@@ -41,14 +40,12 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 	{
 		if(this.mob.posArray[0] != null)
 		{
-			float size = 3.5F; 
-			AABB aabb = new AABB(-size, -size, -size, size, size, size);
-			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, aabb.move(this.mob.posArray[0]), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(t -> t != this.mob && !t.isAlliedTo(this.mob)));
+			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(8.0F), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(t -> t != this.mob && !t.isAlliedTo(this.mob)));
 			list.forEach(t -> 
 			{
 				if(this.mob.doHurtTarget(t))
 				{
-					t.addDeltaMovement(BTAUtil.fromToVector(this.mob.posArray[0], t.position(), 2.5F));
+					t.addDeltaMovement(BTAUtil.fromToVector(this.mob.position(), t.position(), 4.5F));
 				}
 			});
 		}

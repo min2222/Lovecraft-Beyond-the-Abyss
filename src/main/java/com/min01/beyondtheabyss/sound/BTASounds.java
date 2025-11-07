@@ -12,13 +12,13 @@ public class BTASounds
 {
 	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, BeyondtheAbyss.MODID);
 	
-	public static final RegistryObject<SoundEvent> GHIDRUTH_HURT = registerSound("ghidruth_hurt");
+	public static final RegistryObject<SoundEvent> GHIDRUTH_HURT = registerFixedSound("ghidruth_hurt", 10.0F);
 	public static final RegistryObject<SoundEvent> GHIDRUTH_AMBIENT = registerFixedSound("ghidruth_ambient", 30.0F);
 	public static final RegistryObject<SoundEvent> GHIDRUTH_STUN = registerFixedSound("ghidruth_stun", 30.0F);
 	public static final RegistryObject<SoundEvent> GHIDRUTH_EYE_FLASH = registerFixedSound("ghidruth_eye_flash", 30.0F);
 	public static final RegistryObject<SoundEvent> GHIDRUTH_CHARGE_START = registerFixedSound("ghidruth_charge_start", 30.0F);
 	public static final RegistryObject<SoundEvent> GHIDRUTH_CHARGE_LOOP = registerFixedSound("ghidruth_charge_loop", 30.0F);
-	public static final RegistryObject<SoundEvent> GHIDRUTH_BITE = registerSound("ghidruth_bite");
+	public static final RegistryObject<SoundEvent> GHIDRUTH_BITE = registerFixedSound("ghidruth_bite", 10.0F);
 	public static final RegistryObject<SoundEvent> GHIDRUTH_AWAKEN = registerFixedSound("ghidruth_awaken", 30.0F);
 	public static final RegistryObject<SoundEvent> GUNBLADE_BLADE_TO_GUN = registerSound("gunblade_blade_to_gun");
 	public static final RegistryObject<SoundEvent> GUNBLADE_GUN_TO_BLADE = registerSound("gunblade_gun_to_blade");

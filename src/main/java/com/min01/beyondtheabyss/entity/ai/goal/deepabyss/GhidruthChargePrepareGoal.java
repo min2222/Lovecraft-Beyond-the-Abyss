@@ -31,10 +31,7 @@ public class GhidruthChargePrepareGoal extends AbstractGhidruthSkillGoal
 	@Override
 	protected void performSkill() 
 	{
-		if(this.mob.getTarget() != null)
-		{
-			this.mob.setLastLookPos(BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 100));
-		}
+		this.mob.setLastLookPos(BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 30));
 	}
 	
 	@Override

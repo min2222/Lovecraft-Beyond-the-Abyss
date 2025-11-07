@@ -25,7 +25,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -44,9 +43,8 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	public final SmoothAnimationState tailSwingRightAnimationState = new SmoothAnimationState(0.999F);
 	public final SmoothAnimationState tailSwingLeftAnimationState = new SmoothAnimationState(0.999F);
 	public final SmoothAnimationState chargePrepareAnimationState = new SmoothAnimationState();
-	public final SmoothAnimationState chargeAnimationState = new SmoothAnimationState();
-	public final SmoothAnimationState stunnedAnimationState = new SmoothAnimationState(0.9999F);
-	public final SmoothAnimationState stunLoopAnimationState = new SmoothAnimationState(0.9999F);
+	public final SmoothAnimationState stunnedAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState stunLoopAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState stunEndAnimationState = new SmoothAnimationState();
 	
 	public int stunTick;
@@ -65,9 +63,9 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 300.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 1.0F)
-        		.add(Attributes.ATTACK_DAMAGE, 16.0F)
-        		.add(Attributes.FOLLOW_RANGE, 200.0F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.95F)
+        		.add(Attributes.ATTACK_DAMAGE, 20.0F)
+        		.add(Attributes.FOLLOW_RANGE, 100.0F)
         		.add(Attributes.ARMOR, 20.0F)
         		.add(Attributes.ARMOR_TOUGHNESS, 20.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F);
@@ -115,6 +113,11 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     {
     	super.tick();
     	
+    	if(!this.level.isClientSide)
+    	{
+            this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+    	}
+    	
     	if(this.level.isClientSide)
     	{
     		this.biteRightAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
@@ -122,7 +125,6 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     		this.tailSwingRightAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
     		this.tailSwingLeftAnimationState.updateWhen(this.isUsingSkill(4), this.tickCount);
     		this.chargePrepareAnimationState.updateWhen(this.isUsingSkill(5), this.tickCount);
-    		this.chargeAnimationState.updateWhen(this.getAnimationState() == 0 && this.isCharge(), this.tickCount);
     		this.stunnedAnimationState.updateWhen(this.isUsingSkill(6), this.tickCount);
     		this.stunLoopAnimationState.updateWhen(this.getAnimationState() == 0 && this.isStun(), this.tickCount);
     		this.stunEndAnimationState.updateWhen(this.isUsingSkill(7), this.tickCount);
@@ -130,7 +132,6 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
         
     	if(this.isStun())
     	{
-    		this.setDeltaMovement(Vec3.ZERO);
     		if(this.getAnimationTick() <= 0)
     		{
         		this.stunTick++;
@@ -140,10 +141,11 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
         		}
         		else if(this.getAnimationState() == 0)
         		{
-        			if(this.stunTick >= 100)
+        			if(this.stunTick >= 150)
         			{
             			this.setAnimationState(7);
             			this.setAnimationTick(25);
+        				this.playSound(BTASounds.GHIDRUTH_AWAKEN.get());
         			}
         		}
         		else if(this.getAnimationState() == 7)
@@ -151,15 +153,20 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     				this.setCanLook(true);
     				this.setCanMove(true);
     				this.setStun(false);
-    				this.playSound(BTASounds.GHIDRUTH_AWAKEN.get());
     				this.stunTick = 0;
         		}
     		}
     	}
+
+		if(this.getTarget() != null && !this.isCharge() && !this.isStun())
+		{
+			this.lookTarget();
+			this.moveToTarget();
+		}
     	
     	if(this.isCharge())
     	{
-    		if(this.horizontalCollision)
+    		if(this.horizontalCollision || this.verticalCollision)
     		{
 				this.setCharge(false);
 				this.setCanLook(false);
@@ -171,25 +178,27 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 				this.setDeltaMovement(Vec3.ZERO);
 				EntityBTACameraShake.cameraShake(this.level, this.position(), 100.0F, 0.35F, 0, 25);
 				this.playSound(BTASounds.GHIDRUTH_STUN.get());
+				this.getNavigation().stop();
 				this.chargeTick = 0;
     		}
     		else if(!this.getLastLookPos().equals(Vec3.ZERO))
     		{
     			this.chargeTick++;
-    			if(this.position().distanceTo(this.getLastLookPos()) <= 3.0F || this.chargeTick >= 200)
+    			if(this.position().distanceTo(this.getLastLookPos()) <= 4.0F || this.chargeTick >= 200)
     			{
     				this.setCharge(false);
     				this.setCanLook(true);
     				this.setCanMove(true);
     				this.setLastLookPos(Vec3.ZERO);
     				this.setDeltaMovement(Vec3.ZERO);
+    				this.getNavigation().stop();
     				this.chargeTick = 0;
     			}
     			else
     			{
     				Vec3 pos = this.getLastLookPos();
-    				this.getNavigation().moveTo(pos.x, pos.y, pos.z, 2.0F);
-            		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5F), t -> t != this && !t.isAlliedTo(this));
+    				this.getNavigation().moveTo(pos.x, pos.y, pos.z, 2.5F);
+            		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3.5F), t -> t != this && !t.isAlliedTo(this));
             		list.forEach(t ->
             		{
             			this.doHurtTarget(t);
@@ -199,11 +208,11 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     	}
     }
     
-	@Override
-	protected void doPush(Entity p_20971_)
-	{
-		
-	}
+    @Override
+    public boolean isEffectiveAi()
+    {
+    	return super.isEffectiveAi() && !this.isStun();
+    }
 	
 	@Override
 	public void push(double p_20286_, double p_20287_, double p_20288_) 
@@ -216,11 +225,12 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     {
     	if(this.isStun())
     	{
-    		p_21017_ *= 3.0F;
+        	this.walkAnimation.setSpeed(0.0F);
+    		p_21017_ *= 2.0F;
     	}
     	else if(!p_21016_.is(DamageTypeTags.BYPASSES_ARMOR) && !p_21016_.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
     	{
-    		p_21017_ *= 0.3F;
+    		p_21017_ *= 0.1F;
     	}
     	return super.hurt(p_21016_, p_21017_);
     }
@@ -271,13 +281,6 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     public Vec3 getMoveRadius()
     {
     	return new Vec3(40, 10, 40);
-    }
-    
-    @Override
-    protected void customServerAiStep() 
-    {
-    	super.customServerAiStep();
-        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
     }
     
     @Override

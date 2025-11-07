@@ -167,15 +167,11 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		entity.tailSwingRightAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);
 		entity.tailSwingLeftAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_TAIL_SWING_LEFT, ageInTicks);
 		entity.chargePrepareAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_CHARGE_PREPARE, ageInTicks);
-		entity.chargeAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_CHARGE, ageInTicks);
 		entity.stunnedAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUNNED, ageInTicks);
 		entity.stunLoopAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUN_LOOP, ageInTicks);
 		entity.stunEndAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUN_END, ageInTicks);
 		
-		float factor = entity.chargeAnimationState.factor(BTAClientUtil.MC.getFrameTime());
-		
-		this.animateWalk(GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount * factor, 1.0F, 2.5F);
-		this.animateWalk(GhidruthAnimation.GHIDRUTH_CHARGE, limbSwing, Math.max(limbSwingAmount - factor, 0.0F), 1.0F, 2.5F);
+		this.animateWalk(GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, entity.isCharge() ? 2.5F : 1.0F, 2.5F);
 		
 	    head.getChild("right_eye_light").visible = entity.isCharge();
 	    head.getChild("left_eye_light").visible = entity.isCharge();

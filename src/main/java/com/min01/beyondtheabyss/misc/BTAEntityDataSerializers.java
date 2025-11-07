@@ -19,11 +19,11 @@ public class BTAEntityDataSerializers
 	public static final RegistryObject<EntityDataSerializer<Vec2>> VEC2 = SERIALIZERS.register("serializer_vec2", () -> EntityDataSerializer.simple(BTAEntityDataSerializers::writeVec2, BTAEntityDataSerializers::readVec2));
 	public static final RegistryObject<EntityDataSerializer<Double>> DOUBLE = SERIALIZERS.register("serializer_double", () -> EntityDataSerializer.simple((t, u) -> t.writeDouble(u), t -> t.readDouble()));
 	
-	public static ByteBuf writeVec3(FriendlyByteBuf buf, Vec3 vec)
+	public static ByteBuf writeVec3(FriendlyByteBuf buf, Vec3 vec3)
 	{
-		buf.writeDouble(vec.x);
-		buf.writeDouble(vec.y);
-		buf.writeDouble(vec.z);
+		buf.writeDouble(vec3.x);
+		buf.writeDouble(vec3.y);
+		buf.writeDouble(vec3.z);
 		return buf;
 	}
 	
@@ -32,10 +32,10 @@ public class BTAEntityDataSerializers
 		return new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}
 	
-	public static ByteBuf writeVec2(FriendlyByteBuf buf, Vec2 vec)
+	public static ByteBuf writeVec2(FriendlyByteBuf buf, Vec2 vec2)
 	{
-		buf.writeFloat(vec.x);
-		buf.writeFloat(vec.y);
+		buf.writeFloat(vec2.x);
+		buf.writeFloat(vec2.y);
 		return buf;
 	}
 	
