@@ -181,19 +181,13 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	@Override
 	protected void doPush(Entity p_20971_)
 	{
-		if(!this.isHiding())
-		{
-			super.doPush(p_20971_);
-		}
+		
 	}
 	
 	@Override
 	public void push(double p_20286_, double p_20287_, double p_20288_) 
 	{
-		if(!this.isHiding())
-		{
-			super.push(p_20286_, p_20287_, p_20288_);
-		}
+		
 	}
 	
 	public void setHiding(boolean value)

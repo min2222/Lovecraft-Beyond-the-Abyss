@@ -13,12 +13,20 @@ public abstract class AbstractSiamserpentSkillGoal extends BasicBTASkillGoal<Ent
 	@Override
 	public boolean canUse() 
 	{
-		return ((super.canUse() && this.mob.isHead()) || this.getClass() == this.mob.goal) && !this.mob.isDormant();
+		if(!this.mob.isHead())
+		{
+			return false;
+		}
+		if(this.mob.isDormant())
+		{
+			return false;
+		}
+		return super.canUse() || this.getClass() == this.mob.goal;
 	}
 	
 	public boolean isOtherHeadDormant()
 	{
-		return this.mob.getHead() != null && ((EntitySiamserpentHead) this.mob.getHead()).isDormant();
+		return this.mob.getHead() instanceof EntitySiamserpentHead head && head.isDormant();
 	}
 	
 	@Override

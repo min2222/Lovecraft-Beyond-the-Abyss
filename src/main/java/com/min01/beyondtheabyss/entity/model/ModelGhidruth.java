@@ -113,16 +113,16 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 
 		PartDefinition Fin = Body.addOrReplaceChild("Fin", CubeListBuilder.create(), PartPose.offset(0.0F, -23.0452F, 57.7228F));
 
-		Fin.addOrReplaceChild("cube_r35", CubeListBuilder.create().texOffs(265, 274).addBox(-4.5F, -33.0F, -13.5F, 9.0F, 68.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -20.8614F, 17.3908F, -0.6981F, 0.0F, 0.0F));
+		Fin.addOrReplaceChild("cube_r35", CubeListBuilder.create().texOffs(265, 274).addBox(-4.5F, -33.0F, -13.5F, 9.0F, 68.0F, 27.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -20.8615F, 17.3908F, -0.6981F, 0.0F, 0.0F));
 
 		Fin.addOrReplaceChild("cube_r36", CubeListBuilder.create().texOffs(144, 357).addBox(-4.5F, -11.0F, -9.5F, 9.0F, 24.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -58.6706F, 43.8948F, -0.6981F, 0.0F, 0.0F));
 
 		PartDefinition RearBody = Body.addOrReplaceChild("RearBody", CubeListBuilder.create().texOffs(0, 134).addBox(-19.5F, -17.1341F, -3.0242F, 39.0F, 41.0F, 70.0F, new CubeDeformation(0.0F))
 		.texOffs(177, 4).addBox(0.0F, -28.1341F, -0.0242F, 0.0F, 11.0F, 67.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -5.751F, 82.9001F));
 
-		RearBody.addOrReplaceChild("cube_r37", CubeListBuilder.create().texOffs(274, 154).mirror().addBox(-55.9111F, -3.5421F, -23.4224F, 50.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, 12.1923F, 57.7432F, 0.2943F, 0.6534F, 0.3822F));
+		RearBody.addOrReplaceChild("cube_r37", CubeListBuilder.create().texOffs(274, 154).mirror().addBox(-55.9111F, -3.5421F, -23.4225F, 50.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, 12.1923F, 57.7432F, 0.2943F, 0.6534F, 0.3822F));
 
-		RearBody.addOrReplaceChild("cube_r38", CubeListBuilder.create().texOffs(274, 154).addBox(5.9111F, -3.5421F, -23.4224F, 50.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 12.1923F, 57.7432F, 0.2943F, -0.6534F, -0.3822F));
+		RearBody.addOrReplaceChild("cube_r38", CubeListBuilder.create().texOffs(274, 154).addBox(5.9111F, -3.5421F, -23.4225F, 50.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 12.1923F, 57.7432F, 0.2943F, -0.6534F, -0.3822F));
 
 		PartDefinition Tail = RearBody.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(171, 199).addBox(-11.8133F, -13.2595F, -10.299F, 23.0F, 28.0F, 47.0F, new CubeDeformation(0.0F)), PartPose.offset(0.3133F, -0.8746F, 67.1947F));
 
@@ -158,12 +158,27 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 	public void setupAnim(EntityGhidruth entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("ghidruth"), netHeadYaw, headPitch);
-		this.animateWalk(GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, 1.0F, 5.5F);
 		ModelPart ghidruth = this.root.getChild("ghidruth");
 	    ModelPart head = ghidruth.getChild("Head");
-	    head.getChild("right_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
-	    head.getChild("left_eye_light").visible = entity.getAnimationState() == 3 || entity.getAnimationState() == 4;
+		BTAClientUtil.animateHead(ghidruth, netHeadYaw, headPitch);
+		
+		entity.biteRightAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_BITE_RIGHT, ageInTicks);
+		entity.biteLeftAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_BITE_LEFT, ageInTicks);
+		entity.tailSwingRightAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);
+		entity.tailSwingLeftAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_TAIL_SWING_LEFT, ageInTicks);
+		entity.chargePrepareAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_CHARGE_PREPARE, ageInTicks);
+		entity.chargeAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_CHARGE, ageInTicks);
+		entity.stunnedAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUNNED, ageInTicks);
+		entity.stunLoopAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUN_LOOP, ageInTicks);
+		entity.stunEndAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUN_END, ageInTicks);
+		
+		float factor = entity.chargeAnimationState.factor(BTAClientUtil.MC.getFrameTime());
+		
+		this.animateWalk(GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount * factor, 1.0F, 2.5F);
+		this.animateWalk(GhidruthAnimation.GHIDRUTH_CHARGE, limbSwing, Math.max(limbSwingAmount - factor, 0.0F), 1.0F, 2.5F);
+		
+	    head.getChild("right_eye_light").visible = entity.isCharge();
+	    head.getChild("left_eye_light").visible = entity.isCharge();
 	}
 
 	@Override

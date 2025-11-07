@@ -55,10 +55,10 @@ public class OuterSpaceDimensionSpecialEffects extends DimensionSpecialEffects
 		this.createStars();
 		this.createLightSky();
 		
-		float range = 1000.0F;
+		float range = 360.0F;
 		for(int i = 0; i < LOCATIONS.length; i++)
 		{
-			SCALES[i] = Mth.nextFloat(this.random, 5.0F, 40.0F);
+			SCALES[i] = Mth.nextFloat(this.random, 5.0F, 25.0F);
 			ROTATIONS[i] = new Vec3(Mth.nextFloat(this.random, -range, range), Mth.nextFloat(this.random, -range, range), Mth.nextFloat(this.random, -range, range));
 		}
 	}

@@ -34,11 +34,17 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdateAbyssPortalActivationPacket.class, UpdateAbyssPortalActivationPacket::encode, UpdateAbyssPortalActivationPacket::new, UpdateAbyssPortalActivationPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateSkeletalGunbladeItemPacket.class, UpdateSkeletalGunbladeItemPacket::encode, UpdateSkeletalGunbladeItemPacket::new, UpdateSkeletalGunbladeItemPacket.Handler::onMessage);
 		CHANNEL.registerMessage(ID++, UpdateStoneSkinEffectPacket.class, UpdateStoneSkinEffectPacket::encode, UpdateStoneSkinEffectPacket::new, UpdateStoneSkinEffectPacket.Handler::onMessage);
+		CHANNEL.registerMessage(ID++, UpdateBossBarPacket.class, UpdateBossBarPacket::encode, UpdateBossBarPacket::new, UpdateBossBarPacket.Handler::onMessage);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 
     {
     	CHANNEL.sendToServer(message);
+    }
+    
+    public static <MSG> void sendNonLocal(MSG msg, ServerPlayer player) 
+    {
+        CHANNEL.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
     
     public static <MSG> void sendToAll(MSG message)

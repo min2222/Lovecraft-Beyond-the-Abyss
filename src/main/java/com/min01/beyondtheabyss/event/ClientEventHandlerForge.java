@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
@@ -11,6 +12,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
+import com.min01.beyondtheabyss.misc.BTABossBarType;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -20,6 +22,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import net.minecraft.client.Camera;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.LightTexture;
@@ -28,8 +31,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -37,6 +42,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent.OverlayType;
@@ -45,6 +51,7 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -54,6 +61,11 @@ public class ClientEventHandlerForge
 {
 	public static final Map<ResourceKey<Level>, BlockPos> ABYSS_PORTAL_POS = new HashMap<>();
 	public static final Map<ResourceKey<Level>, Boolean> ABYSS_PORTAL_ACTIVATED = new HashMap<>();
+	
+    public static final Map<UUID, BTABossBarType> BOSS_BAR_MAP = new HashMap<>();
+    public static final Map<UUID, Entity> BOSS_MAP = new HashMap<>();
+    public static final ResourceLocation GHIDRUTH_BOSS_BAR_FRAME_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_frame.png");
+    public static final ResourceLocation GHIDRUTH_BOSS_BAR_BAR_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_bar.png");
 	
     @SubscribeEvent
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
@@ -225,4 +237,31 @@ public class ClientEventHandlerForge
 		}
 		stack.popPose();
 	}
+	
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onBossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event)
+    {
+        if(BOSS_BAR_MAP.containsKey(event.getBossEvent().getId()))
+        {
+            PoseStack poseStack = event.getGuiGraphics().pose();
+            Component component = event.getBossEvent().getName();
+            int i = BTAClientUtil.MC.getWindow().getGuiScaledWidth();
+            int j = event.getY();
+            int progressScaled = (int)(event.getBossEvent().getProgress() * 131.0F);
+            int l = BTAClientUtil.MC.font.width(component);
+            int i1 = i / 2 - l / 2;
+            int j1 = j + 20;
+            event.setCanceled(true);
+            poseStack.pushPose();
+            poseStack.translate(i1 / 6.45F, j - 30, 0);
+            event.getGuiGraphics().blit(GHIDRUTH_BOSS_BAR_FRAME_TEXTURE, event.getX(), event.getY(), 0, 0, 130, 39, 130, 39);
+            event.getGuiGraphics().blit(GHIDRUTH_BOSS_BAR_BAR_TEXTURE, event.getX(), event.getY(), 0, 0, progressScaled, 39, 130, 39);
+            poseStack.popPose();
+            poseStack.pushPose();
+            poseStack.translate(i1, j1, 0);
+            BTAClientUtil.MC.font.drawInBatch(component.getVisualOrderText(), 0.0F, 0.0F, 16777215, true, poseStack.last().pose(), BTAClientUtil.MC.renderBuffers().bufferSource(), Font.DisplayMode.POLYGON_OFFSET, 0, LightTexture.FULL_BRIGHT);
+            poseStack.popPose();
+            event.setIncrement(event.getIncrement() + 7);
+        }
+    }
 }
