@@ -8,8 +8,8 @@ import java.util.UUID;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.config.BTAConfig;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
-import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTABossBarType;
@@ -94,7 +94,7 @@ public class ClientEventHandlerForge
                 event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
         	}
         	
-            if(player.isPassenger() && player.getVehicle() instanceof EntitySubmarine && event.getCamera().isDetached())
+            if(player.getVehicle() instanceof EntitySubmarine && event.getCamera().isDetached())
             {
         		event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
             }

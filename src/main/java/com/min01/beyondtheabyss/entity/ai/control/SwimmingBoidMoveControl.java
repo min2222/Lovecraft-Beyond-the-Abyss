@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity.ai.control;
 
+import java.util.List;
+
 import com.min01.beyondtheabyss.entity.IBTAMob;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -45,7 +47,7 @@ public class SwimmingBoidMoveControl extends BoidMoveControl
     	        	this.generateNewTarget();
     	        }
         	}
-			this.boid.tick();
+			this.boid.update(List.of(), true, true, true, 10.0F, 0.3F);
 	        this.stayInWater();
 			Vec3 direction = this.mob.getDeltaMovement();
 			double d0 = direction.x;
@@ -143,7 +145,7 @@ public class SwimmingBoidMoveControl extends BoidMoveControl
     
     public float amount() 
     {
-        float amount = 0.05F;
+        float amount = 0.01F;
         float dY = Mth.abs((float) this.mob.getDeltaMovement().y);
         if(dY > amount) 
         {

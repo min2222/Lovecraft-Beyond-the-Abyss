@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity.ai.control;
 import java.util.List;
 
 import com.min01.beyondtheabyss.entity.IBTAMob;
-import com.min01.beyondtheabyss.misc.FlyingBoid;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -20,12 +19,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class FlyingBoidMoveControl extends BoidMoveControl 
 {
-	public final FlyingBoid flyingBoid;
-	
 	public FlyingBoidMoveControl(Mob mob)
 	{
 		super(mob);
-		this.flyingBoid = new FlyingBoid(mob);
 	}
 
 	@Override
@@ -41,7 +37,7 @@ public class FlyingBoidMoveControl extends BoidMoveControl
 		        	this.generateNewTarget();
 		        }
 	    	}
-			this.flyingBoid.update(List.of(), true, true, true, 10.0F, 0.3F);
+			this.boid.update(List.of(), true, true, true, 10.0F, 0.3F);
 			Vec3 direction = this.mob.getDeltaMovement();
 			double d0 = direction.x;
 			double d1 = direction.y;

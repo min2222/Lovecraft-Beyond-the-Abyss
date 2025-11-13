@@ -4,18 +4,26 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.EntityFallingStone;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthChargePrepareGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
-import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.misc.BTABossBarType;
 import com.min01.beyondtheabyss.misc.BTABossEvent;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.particle.DustCloudParticle;
 import com.min01.beyondtheabyss.sound.BTASounds;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,7 +38,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityGhidruth extends AbstractDeepAbyssMonster
@@ -180,6 +190,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 				this.playSound(BTASounds.GHIDRUTH_STUN.get());
 				this.getNavigation().stop();
 				this.chargeTick = 0;
+				this.fallStones();
     		}
     		else if(!this.getLastLookPos().equals(Vec3.ZERO))
     		{
@@ -205,6 +216,55 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
             		});
     			}
     		}
+    	}
+    }
+    
+    public void fallStones()
+    {
+    	this.level.broadcastEntityEvent(this, (byte) 99);
+    	for(int i = 0; i < this.random.nextInt(20, 35); i++)
+    	{
+    		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 2, 15));
+    		HitResult result = this.level.clip(new ClipContext(this.position(), spreadPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+    		Vec3 pos = result.getLocation();
+    		BlockPos ceilingPos = BTAUtil.getCeilingPos(this.level, pos.x, this.getY(), pos.z, -1);
+    		EntityFallingStone stone = new EntityFallingStone(BTAEntities.FALLING_STONE.get(), this.level);
+    		stone.setOwner(this);
+    		stone.setPos(Vec3.atCenterOf(ceilingPos.below()));
+    		stone.setBlockState(this.level.getBlockState(ceilingPos));
+    		stone.setRotation(this.random.nextFloat() * 270.0F);
+    		stone.setDelay(this.random.nextInt(15, 60));
+    		this.level.addFreshEntity(stone);
+    	}
+    }
+    
+    @Override
+    public void handleEntityEvent(byte p_21375_) 
+    {
+    	super.handleEntityEvent(p_21375_);
+    	if(p_21375_ == 99)
+    	{
+        	for(int i = 0; i < this.random.nextInt(20, 35); i++)
+        	{
+        		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 2, 15));
+        		HitResult result = this.level.clip(new ClipContext(this.position(), spreadPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        		Vec3 pos = result.getLocation();
+        		BlockPos ceilingPos = BTAUtil.getCeilingPos(this.level, pos.x, this.getY(), pos.z, -1);
+        		BlockPos below = ceilingPos.below(2);
+        		for(int j = 0; j < 150; j++)
+        		{
+    				this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.level.getBlockState(ceilingPos)), below.getX(), below.getY(), below.getZ(), this.random.nextGaussian() * 0.5F, 0.0F, this.random.nextGaussian() * 0.5F);
+        		}
+        	}
+        	
+        	for(int i = 0; i < this.random.nextInt(10, 20); i++)
+        	{
+        		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 4, 15));
+        		for(int j = 0; j < 10; j++)
+        		{
+        			this.level.addParticle(new DustCloudParticle.DustCloudParticleOption(BTABlocks.ABYSSALITH.get().defaultBlockState(), 1.5F), spreadPos.x, spreadPos.y, spreadPos.z, this.random.nextGaussian() * 0.5F, this.random.nextGaussian() * 0.5F, this.random.nextGaussian() * 0.5F);
+        		}
+        	}
     	}
     }
     

@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.endlessdesert;
 
 import com.min01.beyondtheabyss.entity.AbstractWormPart;
-import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 

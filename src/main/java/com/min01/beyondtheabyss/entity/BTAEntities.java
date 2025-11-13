@@ -23,7 +23,6 @@ import com.min01.beyondtheabyss.entity.endlessdesert.EntityDuneDevourerHead;
 import com.min01.beyondtheabyss.entity.endlessdesert.EntityDuneDevourerTail;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityObserver;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
-import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.projectile.EntityEnergyBall;
 import com.min01.beyondtheabyss.entity.projectile.EntityForneusMagic;
 import com.min01.beyondtheabyss.entity.projectile.EntityMissile;
@@ -47,6 +46,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityBTACameraShake>> BTA_CAMERA_SHAKE = registerEntity("bta_camera_shake", EntityType.Builder.<EntityBTACameraShake>of(EntityBTACameraShake::new, MobCategory.MISC).sized(0.0F, 0.0F));
 	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = registerEntity("submarine", createBuilder(EntitySubmarine::new, MobCategory.MISC).sized(6.0F, 6.0F));
 	public static final RegistryObject<EntityType<EntityChainTrapMaw>> CHAIN_TRAP_MAW = registerEntity("chain_trap_maw", createBuilder(EntityChainTrapMaw::new, MobCategory.MISC).sized(0.25F, 0.25F));
+	public static final RegistryObject<EntityType<EntityFallingStone>> FALLING_STONE = registerEntity("falling_stone", createBuilder(EntityFallingStone::new, MobCategory.MISC).sized(1.0F, 1.0F));
 
 	//projectile
 	public static final RegistryObject<EntityType<EntityForneusMagic>> FORNEUS_MAGIC = registerEntity("forneus_magic", EntityType.Builder.<EntityForneusMagic>of(EntityForneusMagic::new, MobCategory.MISC).sized(0.5F, 0.5F));

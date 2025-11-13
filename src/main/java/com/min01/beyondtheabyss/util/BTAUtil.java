@@ -551,6 +551,19 @@ public class BTAUtil
 		return new Vec3(f, f1, f2).scale(distance);
 	}
 	
+	@SuppressWarnings("deprecation")
+	public static BlockPos getCeilingPos(BlockGetter pLevel, double pX, double startY, double pZ, int aboveY)
+    {
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, startY, pZ);
+        do
+        {
+        	blockpos$mutable.move(Direction.UP);
+        }
+        while((pLevel.getBlockState(blockpos$mutable).isAir() || pLevel.getBlockState(blockpos$mutable).liquid() || !pLevel.getBlockState(blockpos$mutable).isCollisionShapeFullBlock(pLevel, blockpos$mutable)) && blockpos$mutable.getY() < pLevel.getMaxBuildHeight());
+        BlockPos pos = blockpos$mutable.above().above(aboveY);
+        return pos;
+    }
+	
  	@SuppressWarnings("deprecation")
 	public static Vec3 getGroundPosAbove(BlockGetter pLevel, double pX, double startY, double pZ)
  	{

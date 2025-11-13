@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.endlessdesert;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;

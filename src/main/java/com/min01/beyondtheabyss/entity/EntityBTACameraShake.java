@@ -1,7 +1,6 @@
-package com.min01.beyondtheabyss.entity.misc;
+package com.min01.beyondtheabyss.entity;
 
 import com.min01.beyondtheabyss.config.BTAConfig;
-import com.min01.beyondtheabyss.entity.BTAEntities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;

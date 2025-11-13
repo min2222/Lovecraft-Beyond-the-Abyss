@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.item.deepabyss;
 import java.util.List;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.world.BTASavedData;
 

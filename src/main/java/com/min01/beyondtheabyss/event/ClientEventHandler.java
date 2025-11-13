@@ -24,7 +24,7 @@ import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
 import com.min01.beyondtheabyss.efkefc.EfkEfcLoader;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.misc.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
@@ -62,6 +62,7 @@ import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel;
 import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel2;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
+import com.min01.beyondtheabyss.entity.renderer.FallingStoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
 import com.min01.beyondtheabyss.entity.renderer.MissileRenderer;
 import com.min01.beyondtheabyss.entity.renderer.MutavoreCystRenderer;
@@ -98,6 +99,8 @@ import com.min01.beyondtheabyss.item.model.ModelFelmetalDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelFlashlight;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
 import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
+import com.min01.beyondtheabyss.particle.BTAParticles;
+import com.min01.beyondtheabyss.particle.DustCloudParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.world.BTABiomes;
@@ -183,7 +186,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
 	{
-		
+		event.registerSpriteSet(BTAParticles.DUST_CLOUD.get(), DustCloudParticle.Provider::new);
 	}
     
 	@SubscribeEvent
@@ -200,6 +203,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
     	event.registerEntityRenderer(BTAEntities.SUBMARINE.get(), SubmarineRenderer::new);
     	event.registerEntityRenderer(BTAEntities.CHAIN_TRAP_MAW.get(), ChainTrapMawRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.FALLING_STONE.get(), FallingStoneRenderer::new);
     	
     	//projectile
     	event.registerEntityRenderer(BTAEntities.FORNEUS_MAGIC.get(), ForneusMagicRenderer::new);
