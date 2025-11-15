@@ -165,25 +165,23 @@ public class BTAItems
 	//tools
 	public static final RegistryObject<Item> FLASHLIGHT = DEEP_ABYSS_ITEMS.register("flashlight", () -> new FlashlightItem());
 	
-	//accessories
-	
-	public static RegistryObject<Item> registerSpawnEgg(DeferredRegister<Item> register, String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
+	public static RegistryObject<Item> registerSpawnEgg(DeferredRegister<Item> registry, String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{
-		return register.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties()));
+		return registry.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties()));
 	}
 	
-	public static RegistryObject<Item> registerNoRotationLimitBlockItem(DeferredRegister<Item> register, String name, Supplier<Block> block, Item.Properties properties)
+	public static RegistryObject<Item> registerNoRotationLimitBlockItem(DeferredRegister<Item> registry, String name, Supplier<Block> block, Item.Properties properties)
 	{
-		return register.register(name, () -> new CustomRendererBlockItem(block.get(), properties, () -> new NoRotationLimitBlockEntity(BlockPos.ZERO, block.get().defaultBlockState())));
+		return registry.register(name, () -> new CustomRendererBlockItem(block.get(), properties, () -> new NoRotationLimitBlockEntity(BlockPos.ZERO, block.get().defaultBlockState())));
 	}
 	
-	public static RegistryObject<Item> registerCustomRendererBlockItem(DeferredRegister<Item> register, String name, Supplier<Block> block, Supplier<BlockEntity> blockEntity, Item.Properties properties)
+	public static RegistryObject<Item> registerCustomRendererBlockItem(DeferredRegister<Item> registry, String name, Supplier<Block> block, Supplier<BlockEntity> blockEntity, Item.Properties properties)
 	{
-		return register.register(name, () -> new CustomRendererBlockItem(block.get(), properties, blockEntity));
+		return registry.register(name, () -> new CustomRendererBlockItem(block.get(), properties, blockEntity));
 	}
 	
-	public static RegistryObject<Item> registerBlockItem(DeferredRegister<Item> register, String name, Supplier<Block> block, Item.Properties properties)
+	public static RegistryObject<Item> registerBlockItem(DeferredRegister<Item> registry, String name, Supplier<Block> block, Item.Properties properties)
 	{
-		return register.register(name, () -> new BlockItem(block.get(), properties));
+		return registry.register(name, () -> new BlockItem(block.get(), properties));
 	}
 }

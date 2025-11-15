@@ -84,7 +84,7 @@ public class EfkEfcRenderer
 	    float spawnRate = 1;
 	    float centerRatio = 0.5F;
 	    
-	    String renderType = "";
+	    String renderType = "Sprite";
 	    
 	    boolean infinity = false;
 	    

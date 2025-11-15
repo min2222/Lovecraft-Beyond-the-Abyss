@@ -54,13 +54,13 @@ public class FlashlightItem extends Item
 	
     public static boolean isOn(ItemStack stack)
     {
-        CompoundTag compoundtag = stack.getTag();
-        return compoundtag != null ? compoundtag.getBoolean(ON) : false;
+        CompoundTag tag = stack.getTag();
+        return tag != null ? tag.getBoolean(ON) : false;
     }
 
     public static void setOn(ItemStack stack, boolean on)
     {
-        CompoundTag compoundtag = stack.getOrCreateTag();
-        compoundtag.putBoolean(ON, on);
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putBoolean(ON, on);
     }
 }

@@ -260,7 +260,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
         	for(int i = 0; i < this.random.nextInt(10, 20); i++)
         	{
         		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 4, 15));
-        		for(int j = 0; j < 10; j++)
+        		for(int j = 0; j < 30; j++)
         		{
         			this.level.addParticle(new DustCloudParticle.DustCloudParticleOption(BTABlocks.ABYSSALITH.get().defaultBlockState(), 1.5F), spreadPos.x, spreadPos.y, spreadPos.z, this.random.nextGaussian() * 0.5F, this.random.nextGaussian() * 0.5F, this.random.nextGaussian() * 0.5F);
         		}

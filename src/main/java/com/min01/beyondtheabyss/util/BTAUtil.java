@@ -349,7 +349,6 @@ public class BTAUtil
     
 	public static Vec3 getSpreadPosition(Level level, Vec3 startPos, double range)
 	{
-
         double x = startPos.x + (level.random.nextDouble() - level.random.nextDouble()) * range + 0.5D;
         double y = startPos.y + (level.random.nextDouble() - level.random.nextDouble()) * range + 0.5D;
         double z = startPos.z + (level.random.nextDouble() - level.random.nextDouble()) * range + 0.5D;
