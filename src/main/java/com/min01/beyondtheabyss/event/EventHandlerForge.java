@@ -123,7 +123,7 @@ public class EventHandlerForge
     {
     	LivingEntity living = event.getEntity();
     	MobEffectInstance instance = event.getEffectInstance();
-    	if(instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
+    	if(instance != null && instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
     	{
     		BTANetwork.sendToAll(new UpdateStoneSkinEffectPacket(living.getUUID(), instance.getAmplifier(), instance.getDuration(), false));
     	}
@@ -134,7 +134,7 @@ public class EventHandlerForge
     {
     	LivingEntity living = event.getEntity();
     	MobEffectInstance instance = event.getEffectInstance();
-    	if(instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
+    	if(instance != null && instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
     	{
     		BTANetwork.sendToAll(new UpdateStoneSkinEffectPacket(living.getUUID(), instance.getAmplifier(), instance.getDuration(), true));
     	}
@@ -145,7 +145,7 @@ public class EventHandlerForge
     {
     	LivingEntity living = event.getEntity();
     	MobEffectInstance instance = event.getEffectInstance();
-    	if(instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
+    	if(instance != null && instance.getEffect() == BTAEffects.STONE_SKIN.get() && !living.level.isClientSide)
     	{
     		BTANetwork.sendToAll(new UpdateStoneSkinEffectPacket(living.getUUID(), instance.getAmplifier(), instance.getDuration(), true));
     	}
