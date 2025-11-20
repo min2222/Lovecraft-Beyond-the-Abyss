@@ -5,32 +5,25 @@ import java.util.function.Supplier;
 import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 public class UpdateAbyssPortalPosPacket 
 {
-	public final ResourceKey<Level> dimension;
 	public final BlockPos pos;
 
-	public UpdateAbyssPortalPosPacket(ResourceKey<Level> dimension, BlockPos pos) 
+	public UpdateAbyssPortalPosPacket(BlockPos pos) 
 	{
-		this.dimension = dimension;
 		this.pos = pos;
 	}
 
 	public UpdateAbyssPortalPosPacket(FriendlyByteBuf buf)
 	{
-		this.dimension = buf.readResourceKey(Registries.DIMENSION);
 		this.pos = buf.readBlockPos();
 	}
 
 	public void encode(FriendlyByteBuf buf)
 	{
-		buf.writeResourceKey(this.dimension);
 		buf.writeBlockPos(this.pos);
 	}
 
@@ -42,7 +35,7 @@ public class UpdateAbyssPortalPosPacket
 			{
 				if(ctx.get().getDirection().getReceptionSide().isClient()) 
 				{
-					ClientEventHandlerForge.ABYSS_PORTAL_POS.put(message.dimension, message.pos);
+					ClientEventHandlerForge.ABYSS_PORTAL_POS.set(message.pos);
 				}
 			});
 			ctx.get().setPacketHandled(true);

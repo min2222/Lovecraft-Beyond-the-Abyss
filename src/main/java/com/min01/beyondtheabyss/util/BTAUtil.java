@@ -42,6 +42,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.StructureBlockEntity;
@@ -312,16 +313,28 @@ public class BTAUtil
 		return (float) ((SIMPLEX_NOISE.getValue((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
 	}
 	
+	public static BlockPos getSpecificGroundPos(BlockGetter pLevel, double pX, double startY, double pZ, Block block)
+    {
+        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(pX, startY, pZ);
+        do
+        {
+        	blockPos.move(Direction.DOWN);
+        }
+        while(!pLevel.getBlockState(blockPos).is(block) && blockPos.getY() > pLevel.getMinBuildHeight());
+        BlockPos pos = blockPos.below();
+        return pos;
+    }
+	
 	@SuppressWarnings("deprecation")
 	public static BlockPos getGroundPos(BlockGetter pLevel, double pX, double startY, double pZ, int belowY)
     {
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, startY, pZ);
+        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(pX, startY, pZ);
         do
         {
-        	blockpos$mutable.move(Direction.DOWN);
+        	blockPos.move(Direction.DOWN);
         }
-        while((pLevel.getBlockState(blockpos$mutable).isAir() || pLevel.getBlockState(blockpos$mutable).liquid() || !pLevel.getBlockState(blockpos$mutable).isCollisionShapeFullBlock(pLevel, blockpos$mutable)) && blockpos$mutable.getY() > pLevel.getMinBuildHeight());
-        BlockPos pos = blockpos$mutable.below().below(belowY);
+        while((pLevel.getBlockState(blockPos).isAir() || pLevel.getBlockState(blockPos).liquid() || !pLevel.getBlockState(blockPos).isCollisionShapeFullBlock(pLevel, blockPos)) && blockPos.getY() > pLevel.getMinBuildHeight());
+        BlockPos pos = blockPos.below().below(belowY);
         return pos;
     }
 	
@@ -553,28 +566,24 @@ public class BTAUtil
 	@SuppressWarnings("deprecation")
 	public static BlockPos getCeilingPos(BlockGetter pLevel, double pX, double startY, double pZ, int aboveY)
     {
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, startY, pZ);
+        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(pX, startY, pZ);
         do
         {
-        	blockpos$mutable.move(Direction.UP);
+        	blockPos.move(Direction.UP);
         }
-        while((pLevel.getBlockState(blockpos$mutable).isAir() || pLevel.getBlockState(blockpos$mutable).liquid() || !pLevel.getBlockState(blockpos$mutable).isCollisionShapeFullBlock(pLevel, blockpos$mutable)) && blockpos$mutable.getY() < pLevel.getMaxBuildHeight());
-        BlockPos pos = blockpos$mutable.above().above(aboveY);
-        return pos;
+        while((pLevel.getBlockState(blockPos).isAir() || pLevel.getBlockState(blockPos).liquid() || !pLevel.getBlockState(blockPos).isCollisionShapeFullBlock(pLevel, blockPos)) && blockPos.getY() < pLevel.getMaxBuildHeight());
+        return blockPos.above().above(aboveY);
     }
 	
  	@SuppressWarnings("deprecation")
 	public static Vec3 getGroundPosAbove(BlockGetter pLevel, double pX, double startY, double pZ)
  	{
- 		BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, startY, pZ);
+ 		BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(pX, startY, pZ);
  		do
  		{
- 			blockpos$mutable.move(Direction.DOWN);
+ 			blockPos.move(Direction.DOWN);
  		} 
- 		while((pLevel.getBlockState(blockpos$mutable).isAir() || pLevel.getBlockState(blockpos$mutable).liquid() || !pLevel.getBlockState(blockpos$mutable).isCollisionShapeFullBlock(pLevel, blockpos$mutable)) && blockpos$mutable.getY() > pLevel.getMinBuildHeight());
- 		
- 		BlockPos blockpos = blockpos$mutable.above();
- 
- 		return Vec3.atCenterOf(blockpos);
+ 		while((pLevel.getBlockState(blockPos).isAir() || pLevel.getBlockState(blockPos).liquid() || !pLevel.getBlockState(blockPos).isCollisionShapeFullBlock(pLevel, blockPos)) && blockPos.getY() > pLevel.getMinBuildHeight());
+ 		return Vec3.atCenterOf(blockPos.above());
  	}
 }

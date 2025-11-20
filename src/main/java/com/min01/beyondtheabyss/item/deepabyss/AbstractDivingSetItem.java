@@ -19,29 +19,20 @@ import net.minecraftforge.common.ForgeMod;
 public abstract class AbstractDivingSetItem extends ArmorItem
 {
 	public static final String OXYGEN = "Oxygen";
-	public Multimap<Attribute, AttributeModifier> map;
-	public final float swimSpeed;
+	public final Multimap<Attribute, AttributeModifier> attributeModifiers;
+	
 	public AbstractDivingSetItem(ArmorMaterial material, ArmorItem.Type type, float swimSpeed) 
 	{
 		super(material, type, new Item.Properties());
-		this.swimSpeed = swimSpeed;
+		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+		builder.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(UUID.randomUUID(), "Swim Speed", swimSpeed, AttributeModifier.Operation.ADDITION));
+		this.attributeModifiers = builder.build();
 	}
 	
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack)
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot p_41388_)
 	{
-		if(slot == EquipmentSlot.FEET && this.type.getSlot() == EquipmentSlot.FEET)
-		{
-			if(this.map == null)
-			{
-				ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-				builder.putAll(super.getAttributeModifiers(EquipmentSlot.FEET, stack));
-				builder.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(UUID.randomUUID(), "Swim Speed", this.swimSpeed, AttributeModifier.Operation.ADDITION));
-				this.map = builder.build();
-			}
-			return this.map;
-		}
-		return super.getAttributeModifiers(slot, stack);
+		return p_41388_ == EquipmentSlot.FEET ? this.attributeModifiers : super.getDefaultAttributeModifiers(p_41388_);
 	}
 	
 	@Override

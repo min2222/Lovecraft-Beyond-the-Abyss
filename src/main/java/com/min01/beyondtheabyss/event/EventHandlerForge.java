@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import com.google.common.base.Stopwatch;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -20,6 +21,8 @@ import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.misc.ChatTicker;
 import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateAbyssPortalActivationPacket;
+import com.min01.beyondtheabyss.network.UpdateAbyssPortalPosPacket;
 import com.min01.beyondtheabyss.network.UpdateStoneSkinEffectPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -226,46 +229,54 @@ public class EventHandlerForge
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) 
     {
-    	Level level = (Level) event.getLevel();
-    	if(level.dimension() == Level.OVERWORLD && !level.isClientSide && event.getEntity() instanceof Player player)
-    	{
+    	Level level = event.getLevel();
+		if(event.getEntity() instanceof Player player)
+		{
     		BTASavedData data = BTASavedData.get(level);
-			Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
-			BlockPos blockPos = player.blockPosition();
-			ServerLevel serverLevel = (ServerLevel) level;
-			if(data.getHutPos().equals(BlockPos.ZERO))
+			if(data != null)
 			{
-				HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.HUT).map((p_214491_) -> 
-				{
-					return HolderSet.direct(p_214491_);
-				}).get();
-				Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
-				Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
-				stopwatch.stop();
-				if(pair != null)
-				{
-					data.setHutPos(pair.getFirst());
-					data.setHutGenerated(true);
-				}
+				BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(data.isAbyssPortalActivated()));
+				BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(data.getAbyssPortalPos()));
+		    	if(level.dimension() == Level.OVERWORLD && !level.isClientSide)
+		    	{
+					Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
+					BlockPos blockPos = player.blockPosition();
+					ServerLevel serverLevel = (ServerLevel) level;
+					if(data.getHutPos().equals(BlockPos.ZERO))
+					{
+						HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.HUT).map((p_214491_) -> 
+						{
+							return HolderSet.direct(p_214491_);
+						}).get();
+						Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
+						Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
+						stopwatch.stop();
+						if(pair != null)
+						{
+							data.setHutPos(pair.getFirst());
+							data.setHutGenerated(true);
+						}
+					}
+					if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
+					{
+						HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL).map((p_214491_) -> 
+						{
+							return HolderSet.direct(p_214491_);
+						}).get();
+						Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
+						Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
+						stopwatch.stop();
+						if(pair != null)
+						{
+							BlockPos pos = pair.getFirst().offset(13, 0, 1);
+				    		int y = BTAUtil.getSpecificGroundPos(serverLevel, pos.getX(), pos.getY() + 50, pos.getZ(), BTABlocks.ORIVINE.get()).getY();
+							data.setAbyssPortalPos(new BlockPos(pos.getX(), y + 1, pos.getZ()));
+							data.setAbyssPortalActivated(false);
+						}
+					}
+		    	}
 			}
-			if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
-			{
-				HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL).map((p_214491_) -> 
-				{
-					return HolderSet.direct(p_214491_);
-				}).get();
-				Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
-				Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
-				stopwatch.stop();
-				if(pair != null)
-				{
-					BlockPos pos = pair.getFirst().offset(13, 0, 1);
-		    		int y = BTAUtil.getGroundPos(serverLevel, pos.getX(), pos.getY() + 100, pos.getZ(), -1).getY();
-					data.setAbyssPortalPos(level.dimension(), new BlockPos(pos.getX(), y - 14, pos.getZ()));
-					data.setAbyssPortalActivated(level.dimension(), false);
-				}
-			}
-    	}
+		}
     }
     
 	@SubscribeEvent

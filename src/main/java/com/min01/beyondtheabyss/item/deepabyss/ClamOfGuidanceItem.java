@@ -48,7 +48,7 @@ public class ClamOfGuidanceItem extends Item
 			{
 				level.setBlockAndUpdate(pos, BTABlocks.ENERGIZED_ORIVINE.get().defaultBlockState());
 				EntityBTACameraShake.cameraShake(level, Vec3.atBottomCenterOf(blockPos), 100, 0.05F, 10, 40);
-				data.setAbyssPortalActivated(level.dimension(), true);
+				data.setAbyssPortalActivated(true);
 				if(!player.getAbilities().instabuild)
 				{
 					stack.shrink(1);

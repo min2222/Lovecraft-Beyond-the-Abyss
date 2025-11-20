@@ -32,6 +32,13 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 		CompoundTag nbt = new CompoundTag();
 		nbt.putInt("AnimationTick", this.animationTick);
 		nbt.putInt("AnimationState", this.animationState);
+		this.gunBladeOpenAnimationState.write(SkeletalGunbladeItem.GUNBLADE_OPEN, nbt);
+		this.gunBladeCloseAnimationState.write(SkeletalGunbladeItem.GUNBLADE_CLOSE, nbt);
+		this.freakyAnimationState.write(ToothShotgunItem.FREAKY, nbt);
+		this.reloadAnimationState.write(ToothShotgunItem.RELOAD, nbt);
+		this.shootAnimationState.write(ToothShotgunItem.SHOOT, nbt);
+		this.emptyAnimationState.write(ToothShotgunItem.EMPTY, nbt);
+		this.empty2AnimationState.write(ToothShotgunItem.EMPTY2, nbt);
 		return nbt;
 	}
 
@@ -40,6 +47,13 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	{
 		this.animationTick = nbt.getInt("AnimationTick");
 		this.animationState = nbt.getInt("AnimationState");
+		this.gunBladeOpenAnimationState.read(SkeletalGunbladeItem.GUNBLADE_OPEN, nbt);
+		this.gunBladeCloseAnimationState.read(SkeletalGunbladeItem.GUNBLADE_CLOSE, nbt);
+		this.freakyAnimationState.read(ToothShotgunItem.FREAKY, nbt);
+		this.reloadAnimationState.read(ToothShotgunItem.RELOAD, nbt);
+		this.shootAnimationState.read(ToothShotgunItem.SHOOT, nbt);
+		this.emptyAnimationState.read(ToothShotgunItem.EMPTY, nbt);
+		this.empty2AnimationState.read(ToothShotgunItem.EMPTY2, nbt);
 	}
 	
 	@Override

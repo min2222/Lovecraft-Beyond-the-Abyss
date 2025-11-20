@@ -57,7 +57,6 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     	this.animate(entity, ToothShotgunItem.SHOTGUN_FIRE, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_FIRE, ageInTicks);
     	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD, ageInTicks);
     	this.animate(entity, ToothShotgunItem.SHOTGUN_RUNNING, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_RUNNING, ageInTicks);
-    	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD_TO_RUN, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD_TO_RUN, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);

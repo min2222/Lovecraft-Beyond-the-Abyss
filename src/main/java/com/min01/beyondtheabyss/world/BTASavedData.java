@@ -7,7 +7,6 @@ import com.min01.beyondtheabyss.network.UpdateAbyssPortalPosPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -27,20 +26,20 @@ public class BTASavedData extends SavedData
         if(level instanceof ServerLevel serverLevel) 
         {
             DimensionDataStorage storage = serverLevel.getDataStorage();
-            BTASavedData data = storage.computeIfAbsent(t -> load(serverLevel, t), BTASavedData::new, NAME);
+            BTASavedData data = storage.computeIfAbsent(BTASavedData::load, BTASavedData::new, NAME);
             return data;
         }
         return null;
     }
 
-    public static BTASavedData load(Level level, CompoundTag nbt) 
+    public static BTASavedData load(CompoundTag nbt) 
     {
     	BTASavedData data = new BTASavedData();
     	data.setHutGenerated(nbt.getBoolean("isHutGenerated"));
     	data.setDragonKilled(nbt.getBoolean("isDragonKilled"));
-    	data.setAbyssPortalActivated(level.dimension(), nbt.getBoolean("isAbyssPortalActivated"));
+    	data.setAbyssPortalActivated(nbt.getBoolean("isAbyssPortalActivated"));
     	data.setHutPos(NbtUtils.readBlockPos(nbt.getCompound("HutPos")));
-    	data.setAbyssPortalPos(level.dimension(), NbtUtils.readBlockPos(nbt.getCompound("AbyssPortalPos")));
+    	data.setAbyssPortalPos(NbtUtils.readBlockPos(nbt.getCompound("AbyssPortalPos")));
         return data;
     }
 	
@@ -55,10 +54,10 @@ public class BTASavedData extends SavedData
 		return nbt;
 	}
 	
-	public void setAbyssPortalActivated(ResourceKey<Level> dimension, boolean value)
+	public void setAbyssPortalActivated(boolean value)
 	{
 		this.isAbyssPortalActivated = value;
-		BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(dimension, value));
+		BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(value));
 		this.setDirty();
 	}
 	
@@ -85,10 +84,10 @@ public class BTASavedData extends SavedData
 		return this.hutPos;
 	}
 	
-	public void setAbyssPortalPos(ResourceKey<Level> dimension, BlockPos value)
+	public void setAbyssPortalPos(BlockPos value)
 	{
 		this.abyssPortalPos = value;
-		BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(dimension, value));
+		BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(value));
 		this.setDirty();
 	}
 	
