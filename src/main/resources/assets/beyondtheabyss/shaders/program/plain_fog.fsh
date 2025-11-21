@@ -9,7 +9,6 @@ uniform ivec2 iResolution;
 uniform vec2 OutSize;
 uniform float iTime;
 
-uniform vec3 VolumeCenter;
 uniform vec3 VolumeSize;
 uniform vec3 CameraPos;
 
@@ -31,8 +30,7 @@ float noise(vec2 coord) {
 }
 
 float getDensity(vec3 worldPos) {
-    vec3 localPos = worldPos - VolumeCenter;
-    vec3 tex_coord = (localPos / VolumeSize) + 0.5;
+    vec3 tex_coord = (worldPos / VolumeSize) + 0.5;
 
     if (any(lessThan(tex_coord, vec3(0.0))) || any(greaterThan(tex_coord, vec3(1.0)))) {
         return 0.0;
@@ -49,9 +47,8 @@ float getDensity(vec3 worldPos) {
 }
 
 void main() {
-    vec3 ro_camera_space = near_4.xyz / near_4.w;
-    vec3 ro = ro_camera_space + CameraPos;
-    vec3 rd = normalize(far_4.xyz / far_4.w - ro_camera_space);
+    vec3 ro = near_4.xyz / near_4.w;
+    vec3 rd = normalize(far_4.xyz / far_4.w - ro);
     
 	vec3 fogColor = vec3(0.7, 0.75, 0.8);
 	float fogDensity = 0.0025;

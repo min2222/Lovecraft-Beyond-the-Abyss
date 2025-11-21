@@ -9,9 +9,7 @@ uniform ivec2 iResolution;
 uniform vec2 OutSize;
 uniform float iTime;
 
-uniform vec3 VolumeCenter;
 uniform vec3 VolumeSize;
-uniform vec3 CameraPos;
 
 in vec2 texCoord;
 in vec4 near_4;
@@ -28,8 +26,7 @@ float linearizeDepth(float depth) {
 }
 
 float getDensity(vec3 worldPos) {
-    vec3 localPos = worldPos - VolumeCenter;
-    vec3 tex_coord = (localPos / VolumeSize) + 0.5;
+    vec3 tex_coord = (worldPos / VolumeSize) + 0.5;
 
     if (any(lessThan(tex_coord, vec3(0.0))) || any(greaterThan(tex_coord, vec3(1.0)))) {
         return 0.0;
@@ -116,9 +113,8 @@ float march(vec3 ro, vec3 rd, out float drift, vec2 scUV, float timeX, float tim
 }
 
 void main() {
-    vec3 ro_camera_space = near_4.xyz / near_4.w;
-    vec3 ro = ro_camera_space + CameraPos;
-    vec3 rd = normalize(far_4.xyz / far_4.w - ro_camera_space);
+    vec3 ro = near_4.xyz / near_4.w;
+    vec3 rd = normalize(far_4.xyz / far_4.w - ro);
 
     float depth = linearizeDepth(texture(DepthSampler, texCoord).r);
 

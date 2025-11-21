@@ -5,8 +5,6 @@ import java.util.Random;
 import org.joml.Vector4f;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.efkefc.EfkEfcLoader;
-import com.min01.beyondtheabyss.efkefc.EfkEfcRenderer;
 import com.min01.beyondtheabyss.entity.projectile.EntityForneusMagic;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -46,13 +44,6 @@ public class ForneusMagicRenderer extends EntityRenderer<EntityForneusMagic>
 		        p_114488_.mulPose(Axis.YP.rotationDegrees(-p_114485_.rot.y));
 		        p_114488_.mulPose(Axis.XP.rotationDegrees(p_114485_.rot.x));
 		    }
-	        EfkEfcRenderer renderer = EfkEfcLoader.getEfkEfcRenderer(p_114485_, "ripple", p_114487_);
-	        if(renderer != null)
-	        {
-	        	p_114488_.pushPose();
-	        	renderer.render(p_114488_, p_114489_, p_114485_.tickCount, p_114487_);
-	        	p_114488_.popPose();
-	        }
 	        BTAClientUtil.drawCylinder(p_114485_.cylRadius, p_114485_.cylLength, 24, p_114488_, p_114489_, color, LightTexture.FULL_BRIGHT, RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/water.png")), Vec3.ZERO, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F);
 		    BTAClientUtil.drawCylinder(p_114485_.cylRadius + 0.05F, p_114485_.cylLength, 24, p_114488_, p_114489_, color2, LightTexture.FULL_BRIGHT, RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics2.png")), Vec3.ZERO, 0.5F, 1.5F, 0.5F, 0.35F, 1.0F, time / 1.5F);
 		    BTAClientUtil.drawCylinder(p_114485_.cylRadius + 0.1F, p_114485_.cylLength, 24, p_114488_, p_114489_, color2, LightTexture.FULL_BRIGHT, RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics.png")), Vec3.ZERO, 0.5F, 1.5F, 0.5F, 0.35F, 1.0F, time);

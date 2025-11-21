@@ -55,8 +55,8 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
             {
         		float yRot = Mth.rotLerp(frameTime, submarine.yRotO, submarine.getYRot());
                 float xRot = Mth.lerp(frameTime, submarine.xRotO, submarine.getXRot());
-                mtx.mulPose(Axis.YP.rotationDegrees((float) Math.toRadians(-yRot + 180.0F)));
-                mtx.mulPose(Axis.XP.rotationDegrees((float) Math.toRadians(-xRot)));
+                mtx.mulPose(Axis.YP.rotationDegrees(-yRot + 180.0F));
+                mtx.mulPose(Axis.XP.rotationDegrees(-xRot));
             }
         }
 	}

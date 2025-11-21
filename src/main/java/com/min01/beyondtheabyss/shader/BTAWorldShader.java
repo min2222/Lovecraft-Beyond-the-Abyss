@@ -2,9 +2,6 @@ package com.min01.beyondtheabyss.shader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -40,22 +37,17 @@ public class BTAWorldShader
 	public final ResourceKey<Level> world;
 	public final Function<ResourceKey<Level>, ExtendedPostChain> shader;
 	public final BiFunction<Level, BlockPos, Boolean> sampler;
-    public final boolean useCustomSampler;
+    public final boolean is3DSampler;
     public final String samplerName;
     
     public NativeImage volumeImage;
     
     public int volumeTextureId = -1;
-    public int volumeWidth = 64;
-    public int volumeHeight = 64;
-    public int volumeDepth = 64;
     
-    public BlockPos lastVolumeCenter = null;
-    public int lastChunkRenderDist;
+    public static final int VOLUME_WIDTH = 16;
+    public static final int VOLUME_HEIGHT = 16;
+    public static final int VOLUME_DEPTH = 16;
 
-    public final ExecutorService executor = Executors.newSingleThreadExecutor();
-    public final ConcurrentLinkedQueue<List<BlockPos>> queue = new ConcurrentLinkedQueue<>();
-    
     public static final List<BTAWorldShader> WORLD_SHADERS = new ArrayList<>();
     
     public BTAWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader)
@@ -63,12 +55,12 @@ public class BTAWorldShader
     	this(world, shader, null, false, "");
 	}
     
-    public BTAWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, BlockPos, Boolean> sampler, boolean useCustomSampler, String samplerName) 
+    public BTAWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, BlockPos, Boolean> sampler, boolean is3DSampler, String samplerName) 
     {
     	this.world = world;
     	this.shader = shader;
     	this.sampler = sampler;
-    	this.useCustomSampler = useCustomSampler;
+    	this.is3DSampler = is3DSampler;
     	this.samplerName = samplerName;
 	}
     
@@ -90,109 +82,70 @@ public class BTAWorldShader
 			if(dimension == this.world)
 			{
 				mtx.pushPose();
-				if(this.useCustomSampler)
+				if(this.is3DSampler)
 				{
-					this.apply(mtx, frameTime, camera);
+					this.apply(mtx, frameTime);
 				}
 				else
 				{
 					mtx.translate(pos.x, pos.y, pos.z);
-					this.apply(mtx, frameTime, camera);
+					this.apply(mtx, frameTime);
 				}
 				mtx.popPose();
 			}
 		}
     }
 
-    public void update(Vec3 centerPos)
+    public int getOrCreateVolumeTextureId(PoseStack stack)
     {
-    	if(BTAClientUtil.MC.screen != null)
-    	{
-    		return;
-    	}
-    	
-    	int dist = BTAClientUtil.MC.options.renderDistance().get();
-    	if(this.volumeImage == null || this.lastChunkRenderDist != dist)
-    	{
-		    int volume = dist * 16;
-		    this.volumeWidth = volume;
-		    this.volumeHeight = volume;
-		    this.volumeDepth = volume;
-		    this.lastChunkRenderDist = dist;
-            this.volumeImage = new NativeImage(NativeImage.Format.LUMINANCE, this.volumeWidth, this.volumeHeight * this.volumeDepth, false);
-    	}
-    	
-    	if(this.volumeTextureId == -1)
+        if(this.volumeTextureId == -1)
         {
-        	this.volumeTextureId = TextureUtil.generateTextureId();
+            this.volumeTextureId = TextureUtil.generateTextureId();
             RenderSystem.bindTexture(this.volumeTextureId);
             GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
             GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
             GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL12.GL_TEXTURE_WRAP_R, GL12.GL_CLAMP_TO_EDGE);
             GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
             GlStateManager._texParameter(GL12.GL_TEXTURE_3D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        }
-	    
-        BlockPos centerBlockPos = BlockPos.containing(centerPos);
-        
-        this.lastVolumeCenter = centerBlockPos;
-        
-        this.executor.submit(() -> 
-        {
-            try 
+            this.volumeImage = new NativeImage(NativeImage.Format.LUMINANCE, VOLUME_WIDTH, VOLUME_HEIGHT * VOLUME_DEPTH, false);
+
+            BlockPos blockPos = BlockPos.containing(BTAClientUtil.MC.gameRenderer.getMainCamera().getPosition());
+            BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+            
+            for(int z = 0; z < VOLUME_DEPTH; z++) 
             {
-                List<BlockPos> list = new ArrayList<>();
-                BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-
-                for(int z = 0; z < this.volumeDepth; z++) 
+                for(int y = 0; y < VOLUME_HEIGHT; y++) 
                 {
-                    for(int y = 0; y < this.volumeHeight; y++) 
+                    for(int x = 0; x < VOLUME_WIDTH; x++) 
                     {
-                        for(int x = 0; x < this.volumeWidth; x++) 
-                        {
-                            int worldX = this.lastVolumeCenter.getX() - this.volumeWidth / 2 + x;
-                            int worldY = this.lastVolumeCenter.getY() - this.volumeHeight / 2 + y;
-                            int worldZ = this.lastVolumeCenter.getZ() - this.volumeDepth / 2 + z;
-                            mutablePos.set(worldX, worldY, worldZ);
-                            
-                            int imageX = x;
-                            int imageY = (z * this.volumeHeight) + y;
-
-                            boolean canApply = BTAClientUtil.MC.level != null && this.sampler.apply(BTAClientUtil.MC.level, mutablePos);
-                            int density = canApply ? 255 : 0;
-
-                            list.add(new BlockPos(imageX, imageY, density));
-                        }
+                        int worldX = blockPos.getX() - VOLUME_WIDTH / 2 + x;
+                        int worldY = blockPos.getY() - VOLUME_HEIGHT / 2 + y;
+                        int worldZ = blockPos.getZ() - VOLUME_DEPTH / 2 + z;
+                        
+                        mutablePos.set(worldX, worldY, worldZ);
+                        
+                        int imageX = x;
+                        int imageY = (z * VOLUME_HEIGHT) + y;
+                        
+                        boolean canApply = BTAClientUtil.MC.level != null && this.sampler.apply(BTAClientUtil.MC.level, mutablePos);
+                        int density = canApply ? 255 : 0;
+                        
+                    	if(imageX < this.volumeImage.getWidth() && imageY < this.volumeImage.getHeight())
+                    	{
+                            this.volumeImage.setPixelLuminance(imageX, imageY, (byte) density);
+                    	}
                     }
                 }
-                this.queue.add(list);
             }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        });
-
-        List<BlockPos> list = this.queue.poll();
-
-        if(list != null)
-        {
-            for(BlockPos blockPos : list)
-            {
-            	if(blockPos.getX() < this.volumeImage.getWidth() && blockPos.getY() < this.volumeImage.getHeight())
-            	{
-                    this.volumeImage.setPixelLuminance(blockPos.getX(), blockPos.getY(), (byte) blockPos.getZ());
-            	}
-            }
-
             RenderSystem.bindTexture(this.volumeTextureId);
             RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 1);
-            GL12.glTexImage3D(GL12.GL_TEXTURE_3D, 0, GL30.GL_R8, this.volumeWidth, this.volumeHeight, this.volumeDepth, 0, GL11.GL_RED, GL11.GL_UNSIGNED_BYTE, this.volumeImage.pixels);
+            GL12.glTexImage3D(GL12.GL_TEXTURE_3D, 0, GL30.GL_R8, VOLUME_WIDTH, VOLUME_HEIGHT, VOLUME_DEPTH, 0, GL11.GL_RED, GL11.GL_UNSIGNED_BYTE, this.volumeImage.pixels);
             RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
         }
+        return this.volumeTextureId;
     }
 	
-	public void apply(PoseStack mtx, float frameTime, Camera camera)
+	public void apply(PoseStack mtx, float frameTime)
 	{
 		Minecraft minecraft = BTAClientUtil.MC;
 
@@ -203,16 +156,10 @@ public class BTAWorldShader
 		{
 			shader.safeGetUniform("iResolution").set(minecraft.getWindow().getWidth(), minecraft.getWindow().getHeight());
 			shader.setSampler("ImageSampler", () -> minecraft.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
-			if(!this.samplerName.equals(""))
+			if(this.is3DSampler)
 			{
-				Vec3 cameraPos = camera.getPosition();
-	            shader.setSampler(this.samplerName + "VolumeSampler", () -> this.volumeTextureId);
-	            if(this.lastVolumeCenter != null)
-	            {
-	                shader.safeGetUniform("VolumeCenter").set((float)this.lastVolumeCenter.getX(), (float)this.lastVolumeCenter.getY(), (float)this.lastVolumeCenter.getZ());
-	            }
-	            shader.safeGetUniform("VolumeSize").set((float)this.volumeWidth, (float)this.volumeHeight, (float)this.volumeDepth);
-	            shader.safeGetUniform("CameraPos").set((float)cameraPos.x, (float)cameraPos.y, (float)cameraPos.z);
+	            shader.setSampler(this.samplerName + "VolumeSampler", () -> this.getOrCreateVolumeTextureId(mtx));
+                shader.safeGetUniform("VolumeSize").set((float)VOLUME_WIDTH, (float)VOLUME_HEIGHT, (float)VOLUME_DEPTH);
 			}
 			shader.safeGetUniform("InverseTransformMatrix").set(getInverseTransformMatrix(this.inverseMat, mtx.last().pose()));
 			shader.safeGetUniform("iTime").set((((float) (minecraft.level.getGameTime() % 2400000)) + frameTime) / 20.0F);
@@ -231,9 +178,9 @@ public class BTAWorldShader
     	registerWorldShader(world, shader, null, false, "");
     }
 	
-    public static void registerWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, BlockPos, Boolean> sampler, boolean useCustomSampler, String samplerName)
+    public static void registerWorldShader(ResourceKey<Level> world, Function<ResourceKey<Level>, ExtendedPostChain> shader, BiFunction<Level, BlockPos, Boolean> sampler, boolean is3DSampler, String samplerName)
     {
-    	BTAWorldShader worldShader = new BTAWorldShader(world, shader, sampler, useCustomSampler, samplerName);
+    	BTAWorldShader worldShader = new BTAWorldShader(world, shader, sampler, is3DSampler, samplerName);
     	WORLD_SHADERS.add(worldShader);
     }
 }

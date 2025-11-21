@@ -60,8 +60,8 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntitySolomon>> SOLOMON = registerEntity("solomon", createBuilder(EntitySolomon::new, MobCategory.CREATURE).sized(0.75F, 2.0F));
 	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerEntity("ghidruth", createBuilder(EntityGhidruth::new, MobCategory.WATER_CREATURE).sized(5.2F, 4.5F));
 	public static final RegistryObject<EntityType<EntityGnasher>> GNASHER = registerEntity("gnasher", createBuilder(EntityGnasher::new, MobCategory.WATER_CREATURE).sized(0.875F, 0.75F));
-	public static final RegistryObject<EntityType<EntitySiamserpentHead>> SIAMSERPENT_HEAD = registerEntity("siamserpent_head", createBuilder(EntitySiamserpentHead::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F).setTrackingRange(100).setUpdateInterval(1));
- 	public static final RegistryObject<EntityType<EntitySiamserpentBone>> SIAMSERPENT_BONE = registerEntity("siamserpent_bone", createBuilder(EntitySiamserpentBone::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F).setTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntitySiamserpentHead>> SIAMSERPENT_HEAD = registerEntity("siamserpent_head", createBuilder(EntitySiamserpentHead::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F).setUpdateInterval(1));
+ 	public static final RegistryObject<EntityType<EntitySiamserpentBone>> SIAMSERPENT_BONE = registerEntity("siamserpent_bone", createBuilder(EntitySiamserpentBone::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F).setUpdateInterval(1));
 	public static final RegistryObject<EntityType<EntitySpineWormHead>> SPINE_WORM_HEAD = registerEntity("spine_worm_head", createBuilder(EntitySpineWormHead::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
 	public static final RegistryObject<EntityType<EntitySpineWormBody>> SPINE_WORM_BODY = registerEntity("spine_worm_body", createBuilder(EntitySpineWormBody::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
 	public static final RegistryObject<EntityType<EntityGloomfish>> GLOOMFISH = registerEntity("gloomfish", createBuilder(EntityGloomfish::new, MobCategory.WATER_CREATURE).sized(0.4F, 0.4F));
@@ -70,16 +70,16 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityFulgastra>> FULGASTRA = registerEntity("fulgastra", createBuilder(EntityFulgastra::new, MobCategory.WATER_CREATURE).sized(4.875F, 1.5625F));
 	public static final RegistryObject<EntityType<EntitySplittedFulgastra>> SPLITTED_FULGASTRA = registerEntity("splitted_fulgastra", createBuilder(EntitySplittedFulgastra::new, MobCategory.WATER_CREATURE).sized(1.625F, 1.4375F));
 	public static final RegistryObject<EntityType<EntityNecroshell>> NECROSHELL = registerEntity("necroshell", createBuilder(EntityNecroshell::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
-	public static final RegistryObject<EntityType<EntityForneusHead>> FORNEUS_HEAD = registerEntity("forneus_head", createBuilder(EntityForneusHead::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
-	public static final RegistryObject<EntityType<EntityForneusBody>> FORNEUS_BODY = registerEntity("forneus_body", createBuilder(EntityForneusBody::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
-	public static final RegistryObject<EntityType<EntityForneusTail>> FORNEUS_TAIL = registerEntity("forneus_tail", createBuilder(EntityForneusTail::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityForneusHead>> FORNEUS_HEAD = registerEntity("forneus_head", createBuilder(EntityForneusHead::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityForneusBody>> FORNEUS_BODY = registerEntity("forneus_body", createBuilder(EntityForneusBody::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityForneusTail>> FORNEUS_TAIL = registerEntity("forneus_tail", createBuilder(EntityForneusTail::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100).setUpdateInterval(1));
 	
 	public static final RegistryObject<EntityType<EntityOverseer>> OVERSEER = registerEntity("overseer", createBuilder(EntityOverseer::new, MobCategory.MONSTER).sized(4.0F, 1.75F));
 	public static final RegistryObject<EntityType<EntityObserver>> OBSERVER = registerEntity("observer", createBuilder(EntityObserver::new, MobCategory.MONSTER).sized(0.4375F, 0.4375F));
 	
-	public static final RegistryObject<EntityType<EntityDuneDevourerHead>> DUNE_DEVOURER_HEAD = registerEntity("dune_devourer_head", createBuilder(EntityDuneDevourerHead::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
-	public static final RegistryObject<EntityType<EntityDuneDevourerBody>> DUNE_DEVOURER_BODY = registerEntity("dune_devourer_body", createBuilder(EntityDuneDevourerBody::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
-	public static final RegistryObject<EntityType<EntityDuneDevourerTail>> DUNE_DEVOURER_TAIL = registerEntity("dune_devourer_tail", createBuilder(EntityDuneDevourerTail::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityDuneDevourerHead>> DUNE_DEVOURER_HEAD = registerEntity("dune_devourer_head", createBuilder(EntityDuneDevourerHead::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityDuneDevourerBody>> DUNE_DEVOURER_BODY = registerEntity("dune_devourer_body", createBuilder(EntityDuneDevourerBody::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityDuneDevourerTail>> DUNE_DEVOURER_TAIL = registerEntity("dune_devourer_tail", createBuilder(EntityDuneDevourerTail::new, MobCategory.MONSTER).sized(5.0F, 6.25F).fireImmune().clientTrackingRange(100).setUpdateInterval(1));
 	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{

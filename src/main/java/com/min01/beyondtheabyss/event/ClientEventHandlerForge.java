@@ -148,11 +148,11 @@ public class ClientEventHandlerForge
             	{
             		for(BTAWorldShader shader : new ArrayList<>(BTAWorldShader.WORLD_SHADERS))
             		{
-            			if(!shader.useCustomSampler || BTAClientUtil.MC.level.dimension() != shader.world)
+            			if(!shader.is3DSampler || BTAClientUtil.MC.level.dimension() != shader.world)
             			{
             				continue;
             			}
-            			shader.update(BTAClientUtil.MC.gameRenderer.getMainCamera().getPosition());
+            			shader.volumeTextureId = -1;
             		}
             	}
         	}

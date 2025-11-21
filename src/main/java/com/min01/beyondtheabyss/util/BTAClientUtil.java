@@ -82,37 +82,6 @@ public class BTAClientUtil
         return new BakedQuad(newVertices, quad.getTintIndex(), quad.getDirection(), quad.getSprite(), quad.isShade());
     }
 	
-	public static Vector3f unprojectScreenToWorld(float screenX, float screenY, float depth, Matrix4f viewMatrix, Matrix4f projMatrix, int screenWidth, int screenHeight) 
-	{
-		float ndcX = (screenX / screenWidth) * 2.0F - 1.0F;
-		float ndcY = 1.0F - (screenY / screenHeight) * 2.0F;
-		float ndcZ = depth * 2.0F - 1.0F;
-		
-		Vector4f clipPos = new Vector4f(ndcX, ndcY, ndcZ, 1.0F);
-		
-		Matrix4f invProj = new Matrix4f(projMatrix).invert();
-		Vector4f viewPos = invProj.transform(clipPos);
-		viewPos.div(viewPos.w);
-		
-		Matrix4f invView = new Matrix4f(viewMatrix).invert();
-		Vector4f worldPos = invView.transform(viewPos);
-		worldPos.div(worldPos.w);
-	
-		return new Vector3f(worldPos.x, worldPos.y, worldPos.z);
-	}
-	
-	public static Vector3f projectWorldToScreen(Vector3f worldPos, Matrix4f viewMatrix, Matrix4f projMatrix, int screenWidth, int screenHeight) 
-	{
-	    Vector4f clipPos = projMatrix.transform(viewMatrix.transform(new Vector4f(worldPos, 1.0F)));
-	    clipPos.x /= clipPos.w;
-	    clipPos.y /= clipPos.w;
-	    clipPos.z /= clipPos.w;
-	    float screenX = (clipPos.x * 0.5F + 0.5F) * screenWidth;
-	    float screenY = (1.0F - (clipPos.y * 0.5F + 0.5F)) * screenHeight;
-	    float depth = clipPos.z * 0.5F + 0.5F;
-	    return new Vector3f(screenX, screenY, depth);
-	}
-	
 	public static void drawTorus(float majorRadius, float minorRadiusX, float minorRadiusY, int majorSegments, int minorSegments, float scrollSpeed, PoseStack stack, MultiBufferSource buffer, Vec3 color, float alpha, int light, RenderType renderType, double time, Vec3 center) 
 	{
 		VertexConsumer vertexBuffer = buffer.getBuffer(renderType);

@@ -22,7 +22,6 @@ import com.min01.beyondtheabyss.blockentity.renderer.BiocrafterRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.ChainTrapRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
-import com.min01.beyondtheabyss.efkefc.EfkEfcLoader;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
@@ -193,7 +192,6 @@ public class ClientEventHandler
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event)
 	{
 		event.registerReloadListener(new BTAShaders());
-		event.registerReloadListener(new EfkEfcLoader());
 	}
 	
     @SubscribeEvent
