@@ -26,11 +26,13 @@ import com.min01.beyondtheabyss.network.UpdateAbyssPortalPosPacket;
 import com.min01.beyondtheabyss.network.UpdateStoneSkinEffectPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
+import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTASavedData;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.Util;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -47,7 +49,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.entity.EntityTickList;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.Fluids;
@@ -68,6 +73,7 @@ import net.minecraftforge.event.entity.living.LivingDrownEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -120,6 +126,38 @@ public class EventHandlerForge
 	        e.printStackTrace();
 	    }
 	}
+    
+    @SubscribeEvent
+    public static void onChunkUnLoad(ChunkEvent.Unload event)
+    {
+    	ChunkAccess chunk = event.getChunk();
+    	LevelAccessor level = chunk.getWorldForge();
+    	if(level instanceof ClientLevel clientLevel)
+    	{
+    		if(clientLevel.dimension() == BTAWorlds.EVERGREEN)
+    		{
+    			ClientEventHandlerForge.CHUNK_LIST.removeIf(t -> t.equals(chunk.getPos()));
+    		}
+    	}
+    }
+    
+    @SubscribeEvent
+    public static void onChunkLoad(ChunkEvent.Load event)
+    {
+    	ChunkAccess chunk = event.getChunk();
+    	LevelAccessor level = chunk.getWorldForge();
+    	if(level instanceof ClientLevel clientLevel)
+    	{
+    		if(clientLevel.dimension() == BTAWorlds.EVERGREEN)
+    		{
+    			ChunkPos chunkPos = chunk.getPos();
+    			if(level.getBiome(chunkPos.getWorldPosition()).is(BTABiomes.FOGGY_PLAINS))
+    			{
+        			ClientEventHandlerForge.CHUNK_LIST.add(chunkPos);
+    			}
+    		}
+    	}
+    }
     
     @SubscribeEvent
     public static void onMobEffectAdded(MobEffectEvent.Added event) 

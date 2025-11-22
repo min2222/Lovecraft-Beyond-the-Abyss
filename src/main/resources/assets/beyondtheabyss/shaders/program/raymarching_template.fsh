@@ -27,5 +27,5 @@ void main() {
     
     vec3 col = texture(DiffuseSampler, texCoord).xyz;
 
-	fragColor = vec4( col, 1.0 );
+	fragColor = vec4(col, 1.0);
 }

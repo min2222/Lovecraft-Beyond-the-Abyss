@@ -2,7 +2,6 @@
 
 uniform sampler2D DiffuseSampler;
 uniform sampler2D DepthSampler;
-uniform sampler2D ImageSampler;
 
 uniform ivec2 iResolution;
 uniform vec2 OutSize;
@@ -26,19 +25,13 @@ float noise(vec2 coord) {
 }
 
 void main() {
-	vec3 origin = near_4.xyz/near_4.w;  //ray's origin
-    vec3 far3 = far_4.xyz/far_4.w;
-    vec3 dir = far3 - origin;
-    dir = normalize(dir);        //ray's direction
-	
-	vec3 ro = origin;
-	vec3 rd = dir;
+    vec3 ro = near_4.xyz / near_4.w;
+    vec3 rd = normalize(far_4.xyz / far_4.w - ro);
 	
 	vec3 fogColor = vec3(0.7, 0.75, 0.8);
 	float fogDensity = 0.025;
     
     vec3 col = texture(DiffuseSampler, texCoord).xyz;
-
 	float depth = texture(DepthSampler, texCoord).r;
     
     // Linearize the depth

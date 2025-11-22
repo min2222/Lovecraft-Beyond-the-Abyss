@@ -102,7 +102,6 @@ import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.particle.DustCloudParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
-import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTAMenuTypes;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.effects.DeepAbyssDimensionSpecialEffects;
@@ -151,11 +150,8 @@ public class ClientEventHandler
         {
         	return FlashlightItem.isOn(p_174585_) ? 1.0F : 0.0F;
         });
-        BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, t -> BTAShaders.getPlainFog(), (t, u) -> t.getBiome(u).is(BTABiomes.FOGGY_PLAINS) && t.canSeeSky(u), true, "Fog");
         //TODO weather system;
         BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, t -> BTAShaders.getFog());
-        //BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, t -> BTAShaders.getSandstorm(), (t, u) -> t.canSeeSky(u), true, "Sand");
-        
         /*try
         {
         	AESUtil.encryptFiles(".png");

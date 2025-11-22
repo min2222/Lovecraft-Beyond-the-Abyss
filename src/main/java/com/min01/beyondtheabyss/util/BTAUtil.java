@@ -69,6 +69,20 @@ public class BTAUtil
 	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
     
+	@SuppressWarnings("unchecked")
+	public static Iterable<Entity> getAllEntities(Level level)
+	{
+		try 
+		{
+			LevelEntityGetter<Entity> entities = (LevelEntityGetter<Entity>) GET_ENTITY.invoke(level);
+			return entities.getAll();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
     public static float distanceToXZ(Entity entity, Entity target)
     {
         float f = (float)(entity.getX() - target.getX());

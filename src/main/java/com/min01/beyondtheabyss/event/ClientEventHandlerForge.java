@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -15,7 +16,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTABossBarType;
-import com.min01.beyondtheabyss.shader.BTAWorldShader;
+import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -40,6 +41,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
@@ -66,6 +69,8 @@ public class ClientEventHandlerForge
     public static final Map<UUID, Entity> BOSS_MAP = new HashMap<>();
     public static final ResourceLocation GHIDRUTH_BOSS_BAR_FRAME_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_frame.png");
     public static final ResourceLocation GHIDRUTH_BOSS_BAR_BAR_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_bar.png");
+    
+    public static final List<ChunkPos> CHUNK_LIST = new ArrayList<>();
 	
     @SubscribeEvent
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
@@ -142,24 +147,11 @@ public class ClientEventHandlerForge
     {
         if(event.phase == TickEvent.Phase.START) 
         {
-        	if(BTAClientUtil.MC.player != null && BTAClientUtil.MC.level != null)
-        	{
-            	if(!BTAClientUtil.MC.isPaused())
-            	{
-            		for(BTAWorldShader shader : new ArrayList<>(BTAWorldShader.WORLD_SHADERS))
-            		{
-            			if(!shader.is3DSampler || BTAClientUtil.MC.level.dimension() != shader.world)
-            			{
-            				continue;
-            			}
-            			shader.volumeTextureId = -1;
-            		}
-            	}
-        	}
-        	else
+        	if(BTAClientUtil.MC.player == null || BTAClientUtil.MC.level == null)
         	{
         		ABYSS_PORTAL_POS.set(BlockPos.ZERO);
         		ABYSS_PORTAL_ACTIVATED.set(false);
+        		CHUNK_LIST.clear();
         	}
         }
     }
@@ -192,6 +184,21 @@ public class ClientEventHandlerForge
 	            BTAClientUtil.drawTorus(3.505F, 3.505F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType2, time, Vec3.ZERO);
 	            BTAClientUtil.drawTorus(3.51F, 3.51F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType3, time, Vec3.ZERO);
 		    	stack.popPose();
+	    	}
+	    	
+	    	for(ChunkPos chunkPos : new ArrayList<>(CHUNK_LIST))
+	    	{
+	    		BlockPos worldPos = chunkPos.getWorldPosition();
+	    		AABB aabb = new AABB(-8, -64, -8, 8, 256, 8);
+	    		if(!BTAClientUtil.MC.levelRenderer.getFrustum().isVisible(aabb.move(worldPos)))
+	    		{
+	    			continue;
+	    		}
+	    		stack.pushPose();
+	    		Vec3 pos = Vec3.atBottomCenterOf(worldPos);
+		    	stack.translate(pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z);
+	    		BTAClientUtil.drawBox(aabb, stack, bufferSource, Vec3.ZERO, LightTexture.FULL_BRIGHT, 1, BTARenderType.plainFog(new ResourceLocation("textures/block/ice.png")));
+	    		stack.popPose();
 	    	}
     	}
     }

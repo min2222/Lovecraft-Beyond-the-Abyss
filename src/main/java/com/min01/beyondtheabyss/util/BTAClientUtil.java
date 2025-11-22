@@ -9,6 +9,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import com.min01.beyondtheabyss.entity.IMultiModel;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -30,8 +31,14 @@ import net.minecraft.world.phys.Vec3;
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
+	public static final Matrix4f INVERSE_MAT = new Matrix4f();
 	public static final int VERTEX_SIZE_INTS = DefaultVertexFormat.BLOCK.getIntegerSize();
-    
+	
+	public static Matrix4f getInverseTransformMatrix(Matrix4f outMat, Matrix4f modelView)
+    {
+		return outMat.identity().mul(RenderSystem.getProjectionMatrix()).mul(modelView).invert();
+    }
+	
     public static BakedQuad transform(BakedQuad quad, PoseStack poseStack, boolean flipWindingOrder) 
     {
         int[] originalVertices = quad.getVertices();
@@ -296,6 +303,7 @@ public class BTAClientUtil
         float maxV = maxY - minY;
         float minU = minZ - maxZ;
         float minV = minY - maxY;
+        
         // X+
         vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(minU, maxV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(1.0F, 0.0F, 0F).endVertex();
         vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(1.0F, 0.0F, 0F).endVertex();
@@ -312,6 +320,7 @@ public class BTAClientUtil
         maxV = maxY - minY;
         minU = minX - maxX;
         minV = minY - maxY;
+        
         // Z-
         vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(minU, maxV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(0.0F, 0.0F, -1.0F).endVertex();
         vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(0.0F, 0.0F, -1.0F).endVertex();
@@ -324,11 +333,11 @@ public class BTAClientUtil
         vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(maxU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(0.0F, 0.0F, 1.0F).endVertex();
         vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(maxU, maxV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(0.0F, 0.0F, 1.0F).endVertex();
 
-
         maxU = maxZ - minZ;
         maxV = maxX - minX;
         minU = minZ - maxZ;
         minV = minX - maxX;
+        
         // Y+
         vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(0.0F, 1.0F, 0.0F).endVertex();
         vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(maxU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(0.0F, 1.0F, 0.0F).endVertex();
