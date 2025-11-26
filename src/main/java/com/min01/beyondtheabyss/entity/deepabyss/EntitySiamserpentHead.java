@@ -189,7 +189,10 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	            {
 	            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
 	            	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != this && !t.isAlliedTo(this));
-            		arrayList.addAll(list);
+	            	if(!arrayList.containsAll(list))
+	            	{
+	            		arrayList.addAll(list);
+	            	}
 	            }
 	            arrayList.forEach(t -> 
 	            {

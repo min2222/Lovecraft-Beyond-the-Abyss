@@ -48,64 +48,67 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	public ToothShotgunItem(Properties p_41383_)
 	{
 		super(p_41383_);
-	}
+	}	
 	
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_)
 	{
-        ItemStack ammo = this.findAmmo(p_41433_);
 		ItemStack stack = p_41433_.getItemInHand(p_41434_);
-		int goldenChance = stack.getEnchantmentLevel(BTAEnchantments.GOLDEN_TOOTH.get()) * 2;
-		int brittle = stack.getEnchantmentLevel(BTAEnchantments.BRITTLE.get());
-		int fracture = stack.getEnchantmentLevel(BTAEnchantments.FRACTURE.get());
-		if(getAmmo(stack) > 0 || p_41433_.getAbilities().instabuild)
+		if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
 		{
-        	for(int i = 0; i < 4; i++)
-        	{
-        		EntityToothBullet bullet = new EntityToothBullet(p_41432_, p_41433_);
-        		bullet.shootFromRotation(p_41433_, p_41433_.getXRot(), p_41433_.yHeadRot, 0.0F, 2.0F, 4.0F);
-        		if(goldenChance > 0)
-        		{
-        			bullet.setGolden(Math.random() <= goldenChance / 10.0F);
-        		}
-        		bullet.setMaxShrapnelCount(bullet.getMaxShrapnelCount() + brittle);
-        		bullet.setFracture(fracture > 0);
-        		p_41432_.addFreshEntity(bullet);
-        	}
-			BTAUtil.setItemAnimationState(stack, 3);
-			BTAUtil.setItemAnimationTick(stack, 30);
-			BTAUtil.setPlayerAnimationState(p_41433_, 1);
-			BTAUtil.setPlayerAnimationTick(p_41433_, 20);
-	    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 15);
-	    	if(!p_41433_.getAbilities().instabuild)
-	    	{
-	        	setAmmo(stack, getAmmo(stack) - 1);
-	    	}
-		}
-		else if(!ammo.isEmpty())
-		{
-			BTAUtil.setItemAnimationState(stack, 2);
-			BTAUtil.setItemAnimationTick(stack, 40);
-	    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
-        	if(!p_41433_.getAbilities().instabuild)
-        	{
-                ammo.shrink(2);
-        	}
-        	setAmmo(stack, getAmmo(stack) + 2);
-		}
-		else if(p_41432_.isClientSide)
-		{
-			if(p_41432_.random.nextBoolean())
+	        ItemStack ammo = this.findAmmo(p_41433_);
+			int goldenChance = stack.getEnchantmentLevel(BTAEnchantments.GOLDEN_TOOTH.get()) * 2;
+			int brittle = stack.getEnchantmentLevel(BTAEnchantments.BRITTLE.get());
+			int fracture = stack.getEnchantmentLevel(BTAEnchantments.FRACTURE.get());
+			if(getAmmo(stack) > 0 || p_41433_.getAbilities().instabuild)
 			{
-				BTAUtil.setItemAnimationState(stack, 5);
-				BTAUtil.setItemAnimationTick(stack, 10);
-		    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 5);
+	        	for(int i = 0; i < 4; i++)
+	        	{
+	        		EntityToothBullet bullet = new EntityToothBullet(p_41432_, p_41433_);
+	        		bullet.shootFromRotation(p_41433_, p_41433_.getXRot(), p_41433_.yHeadRot, 0.0F, 2.0F, 4.0F);
+	        		if(goldenChance > 0)
+	        		{
+	        			bullet.setGolden(Math.random() <= goldenChance / 10.0F);
+	        		}
+	        		bullet.setMaxShrapnelCount(bullet.getMaxShrapnelCount() + brittle);
+	        		bullet.setFracture(fracture > 0);
+	        		p_41432_.addFreshEntity(bullet);
+	        	}
+				BTAUtil.setItemAnimationState(stack, 3);
+				BTAUtil.setItemAnimationTick(stack, 30);
+				BTAUtil.setPlayerAnimationState(p_41433_, 1);
+				BTAUtil.setPlayerAnimationTick(p_41433_, 20);
+		    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 15);
+		    	if(!p_41433_.getAbilities().instabuild)
+		    	{
+		        	setAmmo(stack, getAmmo(stack) - 1);
+		    	}
 			}
-			else
+			else if(!ammo.isEmpty())
 			{
-				BTAUtil.setItemAnimationState(stack, 4);
-				BTAUtil.setItemAnimationTick(stack, 16);
-		    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 8);
+				BTAUtil.setItemAnimationState(stack, 2);
+				BTAUtil.setItemAnimationTick(stack, 40);
+		    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
+	        	if(!p_41433_.getAbilities().instabuild)
+	        	{
+	                ammo.shrink(2);
+	        	}
+	        	setAmmo(stack, getAmmo(stack) + 2);
+			}
+			else if(p_41432_.isClientSide)
+			{
+				if(p_41432_.random.nextBoolean())
+				{
+					BTAUtil.setItemAnimationState(stack, 5);
+					BTAUtil.setItemAnimationTick(stack, 10);
+			    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 5);
+				}
+				else
+				{
+					BTAUtil.setItemAnimationState(stack, 4);
+					BTAUtil.setItemAnimationTick(stack, 16);
+			    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 8);
+				}
 			}
 		}
 		return InteractionResultHolder.pass(stack);

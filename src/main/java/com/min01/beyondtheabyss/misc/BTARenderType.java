@@ -27,10 +27,30 @@ public class BTARenderType extends RenderType
     	BTAClientUtil.MC.getMainRenderTarget().bindWrite(false);
     });
 	
+	public static final RenderStateShard.OutputStateShard BLOOM_OUTPUT = new RenderStateShard.OutputStateShard("bloom_target", () -> 
+    {
+        RenderTarget target = BTAEntityEffect.BLOOM.entityTarget;
+        if(target != null) 
+        {
+            target.copyDepthFrom(BTAClientUtil.MC.getMainRenderTarget());
+            target.bindWrite(false);
+        }
+    }, 
+    () ->
+    {
+    	BTAClientUtil.MC.getMainRenderTarget().bindWrite(false);
+    });
+	
 	public BTARenderType(String p_173178_, VertexFormat p_173179_, Mode p_173180_, int p_173181_, boolean p_173182_, boolean p_173183_, Runnable p_173184_, Runnable p_173185_)
 	{
 		super(p_173178_, p_173179_, p_173180_, p_173181_, p_173182_, p_173183_, p_173184_, p_173185_);
 	}
+	
+    public static RenderType bloom(ResourceLocation texture) 
+    {
+    	RenderStateShard.TextureStateShard renderstateshard$texturestateshard = new RenderStateShard.TextureStateShard(texture, false, false);
+    	return create("bloom", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_EYES_SHADER).setTextureState(renderstateshard$texturestateshard).setTransparencyState(ADDITIVE_TRANSPARENCY).setWriteMaskState(COLOR_WRITE).setOutputState(BLOOM_OUTPUT).createCompositeState(false));
+    }
 	
     public static RenderType plainFog(ResourceLocation texture) 
     {

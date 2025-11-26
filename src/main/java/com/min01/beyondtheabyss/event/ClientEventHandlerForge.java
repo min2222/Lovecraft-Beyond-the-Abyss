@@ -256,20 +256,17 @@ public class ClientEventHandlerForge
         {
             PoseStack poseStack = event.getGuiGraphics().pose();
             Component component = event.getBossEvent().getName();
-            int i = BTAClientUtil.MC.getWindow().getGuiScaledWidth();
-            int j = event.getY();
-            int progressScaled = (int)(event.getBossEvent().getProgress() * 131.0F);
-            int l = BTAClientUtil.MC.font.width(component);
-            int i1 = i / 2 - l / 2;
-            int j1 = j + 20;
+            int width = BTAClientUtil.MC.getWindow().getGuiScaledWidth();
+            int y = event.getY();
+            int progressScaled = (int)(event.getBossEvent().getProgress() * 127.0F);
+            int componentWidth = BTAClientUtil.MC.font.width(component);
+            int x = width / 2 - componentWidth / 2;
             event.setCanceled(true);
             poseStack.pushPose();
-            poseStack.translate(i1 / 6.45F, j - 30, 0);
+            poseStack.translate(x / 6.45F, y - 30, 0);
             event.getGuiGraphics().blit(GHIDRUTH_BOSS_BAR_FRAME_TEXTURE, event.getX(), event.getY(), 0, 0, 130, 39, 130, 39);
             event.getGuiGraphics().blit(GHIDRUTH_BOSS_BAR_BAR_TEXTURE, event.getX(), event.getY(), 0, 0, progressScaled, 39, 130, 39);
-            poseStack.popPose();
-            poseStack.pushPose();
-            poseStack.translate(i1, j1, 0);
+            poseStack.translate(x - 25.0F, y + 45.0F, 0);
             BTAClientUtil.MC.font.drawInBatch(component.getVisualOrderText(), 0.0F, 0.0F, 16777215, true, poseStack.last().pose(), BTAClientUtil.MC.renderBuffers().bufferSource(), Font.DisplayMode.POLYGON_OFFSET, 0, LightTexture.FULL_BRIGHT);
             poseStack.popPose();
             event.setIncrement(event.getIncrement() + 7);

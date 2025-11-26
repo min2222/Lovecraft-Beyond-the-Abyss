@@ -13,7 +13,6 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.PlayerModel;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,21 +45,6 @@ public class SmoothAnimationState extends AnimationState
 	    this.factor += (target - this.factor) * lerpSpeed;
 	    this.factor = Mth.clamp(this.factor, 0.0F, 1.0F);
 	    this.animateWhen(this.factor <= this.threshold + 0.0001F, tickCount);
-	}
-	
-	public void write(String name, CompoundTag nbt)
-	{
-		CompoundTag tag = new CompoundTag();
-		tag.putFloat("Factor", this.factor);
-		tag.putFloat("FactorOld", this.factorOld);
-		nbt.put(name, tag);
-	}
-	
-	public void read(String name, CompoundTag nbt)
-	{
-		CompoundTag tag = nbt.getCompound(name);
-		this.factor = tag.getFloat("Factor");
-		this.factorOld = tag.getFloat("FactorOld");
 	}
 	
 	public float factor(float partialTicks)

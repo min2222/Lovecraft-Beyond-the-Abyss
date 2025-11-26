@@ -51,34 +51,37 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	{
 		ItemStack stack = p_41433_.getItemInHand(p_41434_);
 		boolean isGunMode = isGunMode(stack);
-		if(p_41433_.isShiftKeyDown())
+		if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
 		{
-			if(isGunMode)
+			if(p_41433_.isShiftKeyDown())
 			{
-				BTAUtil.setItemAnimationState(stack, 2);
-				BTAUtil.setItemAnimationTick(stack, 40);
-	        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
-	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
+				if(isGunMode)
+				{
+					BTAUtil.setItemAnimationState(stack, 2);
+					BTAUtil.setItemAnimationTick(stack, 40);
+		        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
+		        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
+				}
+				else
+				{
+					BTAUtil.setItemAnimationState(stack, 1);
+					BTAUtil.setItemAnimationTick(stack, 40);
+		        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
+		        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
+				}
+	        	setGunMode(stack, !isGunMode);
 			}
 			else
 			{
-				BTAUtil.setItemAnimationState(stack, 1);
-				BTAUtil.setItemAnimationTick(stack, 40);
-	        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
-	        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
-			}
-        	setGunMode(stack, !isGunMode);
-		}
-		else
-		{
-			if(isGunMode)
-			{
-	        	p_41433_.playSound(BTASounds.GUNBLADE_CHARGE.get());
-				p_41433_.startUsingItem(p_41434_);
-				if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
+				if(isGunMode)
 				{
-					BTAUtil.setPlayerAnimationState(p_41433_, 3);
-					BTAUtil.setPlayerAnimationTick(p_41433_, 72000);
+		        	p_41433_.playSound(BTASounds.GUNBLADE_CHARGE.get());
+					p_41433_.startUsingItem(p_41434_);
+					if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
+					{
+						BTAUtil.setPlayerAnimationState(p_41433_, 3);
+						BTAUtil.setPlayerAnimationTick(p_41433_, 72000);
+					}
 				}
 			}
 		}

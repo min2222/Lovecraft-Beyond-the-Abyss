@@ -77,7 +77,10 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	            {
 	            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
 	            	List<LivingEntity> list = entity.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != entity && !t.isAlliedTo(entity));
-	        		arrayList.addAll(list);
+	            	if(!arrayList.containsAll(list))
+	            	{
+	            		arrayList.addAll(list);
+	            	}
 	            }
 	            arrayList.forEach(t -> 
 	            {

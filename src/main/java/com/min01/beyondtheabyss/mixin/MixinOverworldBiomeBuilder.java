@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
@@ -27,9 +26,6 @@ public class MixinOverworldBiomeBuilder
     @Inject(method = "addBiomes", at = @At("HEAD"), cancellable = true)
     private void addBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> p_187176_, CallbackInfo ci)
     {
-    	if(!SharedConstants.debugGenerateSquareTerrainWithoutNoise) 
-    	{
-
-    	}
+    	
     }
 }

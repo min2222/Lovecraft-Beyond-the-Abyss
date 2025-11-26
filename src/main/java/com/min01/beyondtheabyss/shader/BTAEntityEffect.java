@@ -20,6 +20,7 @@ public class BTAEntityEffect
 {
 	public static final List<BTAEntityEffect> EFFECTS = new ArrayList<>();
 	public static final BTAEntityEffect PLAIN_FOG = new BTAEntityEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/plain_fog.json"));
+	public static final BTAEntityEffect BLOOM = new BTAEntityEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/bloom.json"));
 	
 	public RenderTarget entityTarget;
 	public PostChain entityEffect;
