@@ -93,7 +93,7 @@ public class ChainTrapBlock extends FaceAttachedHorizontalDirectionalBlock imple
 	@Override
 	public void neighborChanged(BlockState p_57457_, Level p_57458_, BlockPos p_57459_, Block p_57460_, BlockPos p_57461_, boolean p_57462_)
 	{
-		p_57458_.setBlockAndUpdate(p_57459_, p_57457_.setValue(OPENED, p_57458_.hasNeighborSignal(p_57461_)));
+		p_57458_.setBlockAndUpdate(p_57459_, p_57457_.setValue(OPENED, p_57458_.hasNeighborSignal(p_57459_)));
 	}
 
 	@Override

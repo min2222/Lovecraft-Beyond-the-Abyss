@@ -131,19 +131,19 @@ public class BTABlocks
     
     public static final RegistryObject<Block> MOLTEN_STONE = BLOCKS.register("molten_stone", () -> new MagmaBlock(BlockBehaviour.Properties.copy(Blocks.MAGMA_BLOCK)));
     
-    public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, BTABlocks.RIFTWELLING_ALTAR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 
-    		BTABlocks.FANG_SKULL.get(),
-    		BTABlocks.LARGE_SKULL.get(),
-    		BTABlocks.BONE_PILES.get(),
-    		BTABlocks.SITTING_SKELETON.get(),
-       		BTABlocks.FALLEN_SKELETON.get(),
-    		BTABlocks.BONE_TORCH.get(),
-    		BTABlocks.BONE_WALL_TORCH.get(),
-    		BTABlocks.BONE_WALL_TORCH.get(),
-    		BTABlocks.BONE_LEVER.get()).build(null));
+    		FANG_SKULL.get(),
+    		LARGE_SKULL.get(),
+    		BONE_PILES.get(),
+    		SITTING_SKELETON.get(),
+       		FALLEN_SKELETON.get(),
+    		BONE_TORCH.get(),
+    		BONE_WALL_TORCH.get(),
+    		BONE_WALL_TORCH.get(),
+    		BONE_LEVER.get()).build(null));
     public static final RegistryObject<BlockEntityType<AnimatableBlockEntity>> ANIMATABLE_BLOCK_ENTITY = BLOCK_ENTITIES.register("animatable", () -> BlockEntityType.Builder.of(AnimatableBlockEntity::new, 
-    		BTABlocks.GLARING_BARNACLE.get()).build(null));
-    public static final RegistryObject<BlockEntityType<ChainTrapBlockEntity>> CHAIN_TRAP_BLOCK_ENTITY = BLOCK_ENTITIES.register("chain_trap", () -> BlockEntityType.Builder.of(ChainTrapBlockEntity::new, BTABlocks.CHAIN_TRAP.get()).build(null));
-    public static final RegistryObject<BlockEntityType<BiocrafterBlockEntity>> BIOCRAFTER_BLOCK_ENTITY = BLOCK_ENTITIES.register("biocrafter", () -> BlockEntityType.Builder.of(BiocrafterBlockEntity::new, BTABlocks.BIOCRAFTER.get()).build(null));
+    		GLARING_BARNACLE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ChainTrapBlockEntity>> CHAIN_TRAP_BLOCK_ENTITY = BLOCK_ENTITIES.register("chain_trap", () -> BlockEntityType.Builder.of(ChainTrapBlockEntity::new, CHAIN_TRAP.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BiocrafterBlockEntity>> BIOCRAFTER_BLOCK_ENTITY = BLOCK_ENTITIES.register("biocrafter", () -> BlockEntityType.Builder.of(BiocrafterBlockEntity::new, BIOCRAFTER.get()).build(null));
 }
