@@ -26,9 +26,13 @@ float noise(vec2 coord) {
 
 void main() {
 	vec3 fogColor = vec3(0.7, 0.75, 0.8);
-	float fogDensity = 0.0025;
+	float fogDensity = 0.025;
     
-    vec3 col = texture(SceneSampler, texCoord).xyz;
+    vec4 col = texture(DiffuseSampler, texCoord);
+    vec4 scene = texture(SceneSampler, texCoord);
+    vec3 bg = scene.xyz;
+    float alpha = col.a;
+    float sceneAlpha = scene.a;
 	float depth = texture(DepthSampler, texCoord).r;
     
     // Linearize the depth
@@ -39,7 +43,7 @@ void main() {
     float fogFactor = 1.0 - exp(-fogDensity * linearDepth * (1.0 + noiseValue * 0.1));
     
     // Mix the original color with the fog color
-    col = mix(col, fogColor, fogFactor);
+    bg = mix(bg, fogColor, fogFactor);
     
-    fragColor = vec4(col, texture(DiffuseSampler, texCoord).a);
+    fragColor = vec4(bg, alpha);
 }
