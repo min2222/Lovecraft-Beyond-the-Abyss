@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.entity.renderer.living;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.model.ModelGhidruth;
-import com.min01.beyondtheabyss.entity.renderer.layer.BloomLayer;
+import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
@@ -20,8 +20,8 @@ public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 	public GhidruthRenderer(Context p_174304_)
 	{
 		super(p_174304_, new ModelGhidruth(p_174304_.bakeLayer(ModelGhidruth.LAYER_LOCATION)), 0.5F);
-		this.addLayer(new BloomLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_layer.png")));
-		this.addLayer(new BloomLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_dash_eye_layer.png")));
+		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_layer.png")));
+		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_dash_eye_layer.png")));
 	}
 	
 	@Override
