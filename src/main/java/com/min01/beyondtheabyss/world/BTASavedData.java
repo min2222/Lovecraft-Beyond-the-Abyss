@@ -17,6 +17,7 @@ public class BTASavedData extends SavedData
 	public static final String NAME = "bta_data";
 	protected boolean isHutGenerated;
 	protected boolean isDragonKilled;
+	protected boolean isGhidruthSpawned;
 	protected boolean isAbyssPortalActivated;
 	protected BlockPos hutPos = BlockPos.ZERO;
 	protected BlockPos abyssPortalPos = BlockPos.ZERO;
@@ -38,6 +39,7 @@ public class BTASavedData extends SavedData
     	data.setHutGenerated(nbt.getBoolean("isHutGenerated"));
     	data.setDragonKilled(nbt.getBoolean("isDragonKilled"));
     	data.setAbyssPortalActivated(nbt.getBoolean("isAbyssPortalActivated"));
+    	data.setGhidruthSpawned(nbt.getBoolean("isGhidruthSpawned"));
     	data.setHutPos(NbtUtils.readBlockPos(nbt.getCompound("HutPos")));
     	data.setAbyssPortalPos(NbtUtils.readBlockPos(nbt.getCompound("AbyssPortalPos")));
         return data;
@@ -49,6 +51,7 @@ public class BTASavedData extends SavedData
 		nbt.putBoolean("isHutGenerated", this.isHutGenerated);
 		nbt.putBoolean("isDragonKilled", this.isDragonKilled);
 		nbt.putBoolean("isAbyssPortalActivated", this.isAbyssPortalActivated);
+		nbt.putBoolean("isGhidruthSpawned", this.isGhidruthSpawned);
 		nbt.put("HutPos", NbtUtils.writeBlockPos(this.hutPos));
 		nbt.put("AbyssPortalPos", NbtUtils.writeBlockPos(this.abyssPortalPos));
 		return nbt;
@@ -70,6 +73,12 @@ public class BTASavedData extends SavedData
 	public void setDragonKilled(boolean value)
 	{
 		this.isDragonKilled = value;
+		this.setDirty();
+	}
+	
+	public void setGhidruthSpawned(boolean value)
+	{
+		this.isGhidruthSpawned = value;
 		this.setDirty();
 	}
 	
@@ -109,5 +118,10 @@ public class BTASavedData extends SavedData
 	public boolean isDragonKilled()
 	{
 		return this.isDragonKilled;
+	}
+	
+	public boolean isGhidruthSpawned()
+	{
+		return this.isGhidruthSpawned;
 	}
 }

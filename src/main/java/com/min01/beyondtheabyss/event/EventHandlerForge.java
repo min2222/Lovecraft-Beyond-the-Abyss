@@ -14,6 +14,8 @@ import com.google.common.base.Stopwatch;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.effect.BTAEffects;
+import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTALootTables;
@@ -60,6 +62,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.LootTableLoadEvent;
@@ -320,9 +323,26 @@ public class EventHandlerForge
 	@SubscribeEvent
 	public static void onPlayerTick(PlayerTickEvent event)
 	{
-		BTAUtil.tickItemAnimation(event.player);
-		BTAUtil.tickPlayerAnimation(event.player);
-		BTAUtil.tickPlayerTickCount(event.player);
+		Player player = event.player;
+		BTAUtil.tickItemAnimation(player);
+		BTAUtil.tickPlayerAnimation(player);
+		BTAUtil.tickPlayerTickCount(player);
+		if(!player.level.isClientSide && player.level.getBiome(player.blockPosition()).is(BTABiomes.SPIRE_HOLLOW) && player.getY() <= -30 && player.level.dimension() == BTAWorlds.DEEP_ABYSS && !player.isSpectator() && !player.getAbilities().instabuild)
+		{
+			BTASavedData data = BTASavedData.get(player.level);
+			if(!data.isGhidruthSpawned())
+			{
+				if(Math.random() <= 0.01)
+				{
+					float yRot = player.level.random.nextFloat() * 360.0F;
+					Vec3 lookPos = BTAUtil.getLookPos(new Vec2(0.0F, player.getYHeadRot() + yRot), player.position(), 0, 0, player.level.random.nextInt(25, 30));
+					EntityGhidruth ghidruth = new EntityGhidruth(BTAEntities.GHIDRUTH.get(), player.level);
+					ghidruth.setPos(lookPos);
+					player.level.addFreshEntity(ghidruth);
+					data.setGhidruthSpawned(true);
+				}
+			}
+		}
 	}
 	
     @SubscribeEvent
