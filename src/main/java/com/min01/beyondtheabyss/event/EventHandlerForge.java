@@ -43,11 +43,11 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.DistanceManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -55,7 +55,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.entity.EntityTickList;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -208,18 +207,14 @@ public class EventHandlerForge
     				ticker.tick();
     			}
     			CHAT_MAP.values().removeIf(t -> t.tickCount > 120);
-    			EntityTickList list = serverLevel.entityTickList;
-    			list.forEach(t ->
-    			{
-    				if(!t.isRemoved() && t.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+				for(Entity entity : BTAUtil.getAllEntities(serverLevel))
+				{
+    				if(!entity.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
     				{
-    					DistanceManager manager = serverLevel.getChunkSource().chunkMap.getDistanceManager();
-    					if(!manager.inEntityTickingRange(t.chunkPosition().toLong())) 
-    					{
-    						serverLevel.getChunkSource().updateChunkForced(t.chunkPosition(), true);
-    					}
+    					continue;
     				}
-    			});
+					serverLevel.getChunkSource().updateChunkForced(entity.chunkPosition(), true);
+    			}
     		}
     	}
     }
