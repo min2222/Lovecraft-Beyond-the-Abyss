@@ -5,11 +5,14 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
+import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -71,8 +74,24 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 		}
 		else if(!this.isHead() && !this.isUnloaded())
 		{
-			//FIXME forneus discard;
-			this.discard();
+			if(!this.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+			{
+				this.discard();
+			}
+		}
+		if(this.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+		{
+			if(!this.level.isClientSide)
+			{
+				if(this.getHead() == null)
+				{
+					if(!this.isHead() && !this.isUnloaded())
+					{
+						BTANetwork.sendToAll(new ClientboundRemoveEntitiesPacket(this.getId()));
+						this.discard();
+					}
+				}
+			}
 		}
 	}
 	
