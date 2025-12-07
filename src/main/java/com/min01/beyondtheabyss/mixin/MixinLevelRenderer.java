@@ -13,14 +13,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.lights.DynamicLights;
 import com.min01.beyondtheabyss.lights.LevelRendererAccessor;
 import com.min01.beyondtheabyss.shader.BTAEntityEffect;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -28,8 +26,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -67,17 +63,6 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	{
 		BTAClientUtil.MC.getProfiler().incrementCounter("dynamic_lighting");
 	    DynamicLights.get().updateAll(LevelRenderer.class.cast(this));
-        Player player = BTAClientUtil.MC.player;
-        if(player != null)
-        {
-            if(player.getVehicle() instanceof EntitySubmarine submarine && !BTAClientUtil.MC.gameRenderer.getMainCamera().isDetached())
-            {
-        		float yRot = Mth.rotLerp(frameTime, submarine.yRotO, submarine.getYRot());
-                float xRot = Mth.lerp(frameTime, submarine.xRotO, submarine.getXRot());
-                mtx.mulPose(Axis.YP.rotationDegrees(-yRot + 180.0F));
-                mtx.mulPose(Axis.XP.rotationDegrees(-xRot));
-            }
-        }
 	}
 	
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/OutlineBufferSource;endOutlineBatch()V", shift = At.Shift.BEFORE))
