@@ -20,9 +20,9 @@ public class SplittedFulgastraLayer extends GlowingLayer<EntitySplittedFulgastra
 	}
 
 	@Override
-	public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, EntitySplittedFulgastra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float p_117358_) 
+	public void render(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, EntitySplittedFulgastra entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
 	{
     	ResourceLocation texture = entity.isCharged() ? LAYER_TEXTURE_CHARGED : LAYER_TEXTURE;
-		this.coloredGlowingModelCopyLayerRender(this.getParentModel(), this.model, texture, poseStack, bufferSource, packedLight, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, p_117358_, 1.0F, 1.0F, 1.0F);
+		this.coloredGlowingModelCopyLayerRender(this.getParentModel(), this.model, texture, poseStack, bufferIn, packedLightIn, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, 1.0F, 1.0F, 1.0F);
 	}
 }

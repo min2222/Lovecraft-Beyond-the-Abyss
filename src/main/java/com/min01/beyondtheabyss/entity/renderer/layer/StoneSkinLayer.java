@@ -23,12 +23,12 @@ public class StoneSkinLayer<T extends LivingEntity, M extends EntityModel<T>> ex
     }
 
 	@Override
-	public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float p_117358_)
+	public void render(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
 	{
     	if(entity.hasEffect(BTAEffects.STONE_SKIN.get()))
     	{
-            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucent(this.getTexture(entity)));
-            this.getParentModel().renderToBuffer(poseStack, vertexConsumer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexConsumer = bufferIn.getBuffer(RenderType.entityTranslucent(this.getTexture(entity)));
+            this.getParentModel().renderToBuffer(poseStack, vertexConsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
     	}
     }
     

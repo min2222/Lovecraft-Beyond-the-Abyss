@@ -18,7 +18,7 @@ public class SubmarineLayer extends GlowingLayer<EntitySubmarine, ModelSubmarine
 	}
 	
 	@Override
-	public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, EntitySubmarine entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float p_117358_) 
+	public void render(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, EntitySubmarine entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		if(entity.getFirstPassenger() != null)
 		{
@@ -26,7 +26,7 @@ public class SubmarineLayer extends GlowingLayer<EntitySubmarine, ModelSubmarine
 	        float strength = 0.5F + Mth.clamp(((float) Math.cos((entity.glowingTicks + ageInTicks) * 0.1F)) - 0.5F, -0.5F, 0.5F);
 	        strength += Mth.lerp(ageInTicks, entity.brightnessOld, entity.brightness) * Mth.PI;
 	        strength = Mth.clamp(strength, 0.1F, 1.0F);
-			this.coloredGlowingModelCopyLayerRender(this.getParentModel(), this.model, texture, poseStack, bufferSource, packedLight, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, p_117358_, strength, strength, strength);
+			this.coloredGlowingModelCopyLayerRender(this.getParentModel(), this.model, texture, poseStack, bufferIn, packedLightIn, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, strength, strength, strength);
 		}
 	}
 }

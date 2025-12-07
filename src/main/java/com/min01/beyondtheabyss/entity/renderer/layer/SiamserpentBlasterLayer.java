@@ -20,15 +20,15 @@ public class SiamserpentBlasterLayer extends GlowingLayer<EntitySiamserpentHead,
 	}
     
 	@Override
-	public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, EntitySiamserpentHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float p_117358_) 
+	public void render(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, EntitySiamserpentHead entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		if(!entity.isDormant() && !entity.isDisabled())
 		{
 	    	ResourceLocation texture = TEXTURE_BLASTER;
-			this.coloredGlowingModelCopyLayerRender(this.getParentModel(), this.model, texture, poseStack, bufferSource, packedLight, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, p_117358_, 1.0F, 1.0F, 1.0F);
+			this.coloredGlowingModelCopyLayerRender(this.getParentModel(), this.model, texture, poseStack, bufferIn, packedLightIn, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, 1.0F, 1.0F, 1.0F);
 	    	this.model.root().getChild("SiamserpentBlaster").getChild("RayofEnergy").visible = entity.getAnimationState() == 3;
 	    	this.model.root().getChild("SiamserpentBlaster").getChild("InnerRay").visible = entity.getAnimationState() == 3;
-			this.coloredGlowingModelCopyLayerRender(this.getParentModel(), this.model, TEXTURE_BLASTER_LASER, poseStack, bufferSource, packedLight, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, p_117358_, 0.7F, 0.7F, 0.7F);
+			this.coloredGlowingModelCopyLayerRender(this.getParentModel(), this.model, TEXTURE_BLASTER_LASER, poseStack, bufferIn, packedLightIn, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, 0.7F, 0.7F, 0.7F);
 		}
 	}
 }
