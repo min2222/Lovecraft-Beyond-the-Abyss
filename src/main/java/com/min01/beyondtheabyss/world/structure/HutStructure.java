@@ -11,6 +11,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -37,26 +38,34 @@ public class HutStructure extends Structure
 	@Override
 	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext p_227387_)
 	{
-		BTASavedData data = BTASavedData.get(ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD));
-		if(!data.isHutGenerated())
+		return onTopOfChunkCenter(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, (p_227390_) -> 
 		{
-			return onTopOfChunkCenter(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, (p_227390_) -> 
+			StructureTemplateManager manager = p_227387_.structureTemplateManager();
+			ChunkPos chunkPos = p_227387_.chunkPos();
+			BlockPos blockPos = chunkPos.getWorldPosition();
+			RandomSource random = p_227387_.random();
+			Rotation rotation = Util.getRandom(Rotation.values(), random);
+			StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
+			HutStructurePiece piece = new HutStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
+			BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, piece, template, rotation, Mirror.NONE, t -> 
 			{
-				StructureTemplateManager manager = p_227387_.structureTemplateManager();
-				ChunkPos chunkPos = p_227387_.chunkPos();
-				BlockPos blockPos = chunkPos.getWorldPosition();
-				RandomSource random = p_227387_.random();
-				Rotation rotation = Util.getRandom(Rotation.values(), random);
-				StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
-				HutStructurePiece piece = new HutStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
-				BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, piece, template, rotation, Mirror.NONE, t -> 
-				{
-					piece.move(0, t + 2, 0);
-				});
-				p_227390_.addPiece(piece);
+				piece.move(0, t + 2, 0);
 			});
-		}
-		return Optional.empty();
+			
+			ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
+			if(level != null)
+			{
+				BTASavedData data = BTASavedData.get(level);
+				if(data != null)
+				{
+					if(data.getHutPos().equals(BlockPos.ZERO))
+					{
+						p_227390_.addPiece(piece);
+						data.setHutPos(blockPos);
+					}
+				}
+			}
+		});
 	}
 	
 	@Override

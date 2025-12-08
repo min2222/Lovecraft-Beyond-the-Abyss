@@ -15,7 +15,6 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 public class BTASavedData extends SavedData
 {
 	public static final String NAME = "bta_data";
-	protected boolean isHutGenerated;
 	protected boolean isDragonKilled;
 	protected boolean isGhidruthSpawned;
 	protected boolean isAbyssPortalActivated;
@@ -36,7 +35,6 @@ public class BTASavedData extends SavedData
     public static BTASavedData load(CompoundTag nbt) 
     {
     	BTASavedData data = new BTASavedData();
-    	data.setHutGenerated(nbt.getBoolean("isHutGenerated"));
     	data.setDragonKilled(nbt.getBoolean("isDragonKilled"));
     	data.setAbyssPortalActivated(nbt.getBoolean("isAbyssPortalActivated"));
     	data.setGhidruthSpawned(nbt.getBoolean("isGhidruthSpawned"));
@@ -48,7 +46,6 @@ public class BTASavedData extends SavedData
 	@Override
 	public CompoundTag save(CompoundTag nbt)
 	{
-		nbt.putBoolean("isHutGenerated", this.isHutGenerated);
 		nbt.putBoolean("isDragonKilled", this.isDragonKilled);
 		nbt.putBoolean("isAbyssPortalActivated", this.isAbyssPortalActivated);
 		nbt.putBoolean("isGhidruthSpawned", this.isGhidruthSpawned);
@@ -61,12 +58,6 @@ public class BTASavedData extends SavedData
 	{
 		this.isAbyssPortalActivated = value;
 		BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(value));
-		this.setDirty();
-	}
-	
-	public void setHutGenerated(boolean value)
-	{
-		this.isHutGenerated = value;
 		this.setDirty();
 	}
 	
@@ -108,11 +99,6 @@ public class BTASavedData extends SavedData
 	public boolean isAbyssPortalActivated()
 	{
 		return this.isAbyssPortalActivated;
-	}
-	
-	public boolean isHutGenerated()
-	{
-		return this.isHutGenerated;
 	}
 	
 	public boolean isDragonKilled()

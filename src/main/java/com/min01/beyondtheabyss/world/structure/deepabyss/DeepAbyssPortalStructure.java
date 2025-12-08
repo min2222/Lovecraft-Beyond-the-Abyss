@@ -10,6 +10,7 @@ import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Mirror;
@@ -35,22 +36,29 @@ public class DeepAbyssPortalStructure extends Structure
 	@Override
 	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext p_227387_)
 	{
-		BTASavedData data = BTASavedData.get(ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD));
-		if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
+		ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
+		if(level != null)
 		{
-			return onTopOfChunkCenter(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, (p_227390_) -> 
+			BTASavedData data = BTASavedData.get(level);
+			if(data != null)
 			{
-				StructureTemplateManager manager = p_227387_.structureTemplateManager();
-				ChunkPos chunkPos = p_227387_.chunkPos();
-				BlockPos blockPos = chunkPos.getWorldPosition();
-				StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
-				DeepAbyssPortalStructurePiece piece = new DeepAbyssPortalStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
-				BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, piece, template, Rotation.NONE, Mirror.NONE, t -> 
+				if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
 				{
-					piece.move(0, t, 0);
-				});
-				p_227390_.addPiece(piece);
-			});
+					return onTopOfChunkCenter(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, (p_227390_) -> 
+					{
+						StructureTemplateManager manager = p_227387_.structureTemplateManager();
+						ChunkPos chunkPos = p_227387_.chunkPos();
+						BlockPos blockPos = chunkPos.getWorldPosition();
+						StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
+						DeepAbyssPortalStructurePiece piece = new DeepAbyssPortalStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
+						BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, piece, template, Rotation.NONE, Mirror.NONE, t -> 
+						{
+							piece.move(0, t, 0);
+						});
+						p_227390_.addPiece(piece);
+					});
+				}
+			}
 		}
 		return Optional.empty();
 	}

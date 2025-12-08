@@ -276,21 +276,6 @@ public class EventHandlerForge
 					Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
 					BlockPos blockPos = player.blockPosition();
 					ServerLevel serverLevel = (ServerLevel) level;
-					if(data.getHutPos().equals(BlockPos.ZERO))
-					{
-						HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.HUT).map((p_214491_) -> 
-						{
-							return HolderSet.direct(p_214491_);
-						}).get();
-						Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
-						Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
-						stopwatch.stop();
-						if(pair != null)
-						{
-							data.setHutPos(pair.getFirst());
-							data.setHutGenerated(true);
-						}
-					}
 					if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
 					{
 						HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL).map((p_214491_) -> 
