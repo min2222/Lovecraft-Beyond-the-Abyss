@@ -271,8 +271,6 @@ public class EventHandlerForge
     		BTASavedData data = BTASavedData.get(level);
 			if(data != null)
 			{
-				BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(data.isAbyssPortalActivated()));
-				BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(data.getAbyssPortalPos()));
 		    	if(level.dimension() == Level.OVERWORLD && !level.isClientSide)
 		    	{
 					Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
@@ -309,6 +307,11 @@ public class EventHandlerForge
 							data.setAbyssPortalPos(new BlockPos(pos.getX(), y + 1, pos.getZ()));
 							data.setAbyssPortalActivated(false);
 						}
+					}
+					else
+					{
+						BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(data.isAbyssPortalActivated()));
+						BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(data.getAbyssPortalPos()));
 					}
 		    	}
 			}

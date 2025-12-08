@@ -5,6 +5,7 @@ import java.util.List;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTASavedData;
 
 import net.minecraft.ChatFormatting;
@@ -44,6 +45,9 @@ public class ClamOfGuidanceItem extends Item
 		if(data != null)
 		{
 			BlockPos blockPos = data.getAbyssPortalPos().offset(0, 0, 7);
+    		int y = BTAUtil.getSpecificGroundPos(level, blockPos.getX(), blockPos.getY() + 100, blockPos.getZ(), BTABlocks.ORIVINE.get()).getY();
+			blockPos = BlockPos.containing(blockPos.getX(), y - 1, blockPos.getZ());
+			System.out.println(blockPos);
 			if(pos.equals(blockPos) && !data.isAbyssPortalActivated())
 			{
 				level.setBlockAndUpdate(pos, BTABlocks.ENERGIZED_ORIVINE.get().defaultBlockState());

@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
+import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
@@ -167,6 +168,8 @@ public class ClientEventHandlerForge
 	    	MultiBufferSource bufferSource = BTAClientUtil.MC.renderBuffers().bufferSource();
 	    	float partialTicks = event.getPartialTick();
     		BlockPos blockPos = ABYSS_PORTAL_POS.get();
+    		int y = BTAUtil.getSpecificGroundPos(BTAClientUtil.MC.level, blockPos.getX(), blockPos.getY() + 100, blockPos.getZ(), BTABlocks.ORIVINE.get()).getY();
+			blockPos = BlockPos.containing(blockPos.getX(), y, blockPos.getZ());
     		boolean isActivated = ABYSS_PORTAL_ACTIVATED.get();
 	    	if(!blockPos.equals(BlockPos.ZERO) && isActivated)
 	    	{
@@ -174,7 +177,7 @@ public class ClientEventHandlerForge
 	            float time = (BTAClientUtil.MC.level.getGameTime() + partialTicks) / 20.0F;
 		    	stack.pushPose();
 		    	stack.translate(pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z);
-		    	stack.translate(0, 7.5F, 0);
+		    	stack.translate(0, -5.5F, 0);
 		    	stack.mulPose(Axis.XP.rotationDegrees(90.0F));
 		    	Vec3 color = new Vec3(0.0F, 1.0F, 0.4F);
 		    	RenderType renderType1 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/water.png"));
