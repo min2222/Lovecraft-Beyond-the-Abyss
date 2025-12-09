@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
-import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
@@ -16,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -87,7 +87,10 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 				{
 					if(!this.isHead() && !this.isUnloaded())
 					{
-						BTANetwork.sendToAll(new ClientboundRemoveEntitiesPacket(this.getId()));
+				    	for(ServerPlayer player : this.getServer().getPlayerList().getPlayers()) 
+				    	{
+				    		player.connection.send(new ClientboundRemoveEntitiesPacket(this.getId()));
+				    	}
 						this.discard();
 					}
 				}
