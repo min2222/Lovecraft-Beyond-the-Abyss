@@ -8,6 +8,8 @@ import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
@@ -135,6 +137,7 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
     		if(player.isShiftKeyDown())
     		{
     			player.stopRiding();
+    			this.setDeltaMovement(Vec3.ZERO);
     		}
     	}
     	
@@ -245,7 +248,11 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
         {
         	if(part.equals("controller") && this.getFirstPassenger() == null)
         	{
-    			player.startRiding(this);
+    			if(this.level.isClientSide)
+    			{
+        			player.startRiding(this);
+    				BTANetwork.sendToServer(new UpdateVehiclePacket(player, this));
+    			}
         	}
         	if(part.equals("hatch") || part.equals("valve"))
         	{

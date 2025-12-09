@@ -21,11 +21,15 @@ import net.minecraft.resources.ResourceLocation;
 public class ModelSubmarine extends HierarchicalModel<EntitySubmarine> 
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "submarine"), "main");
-	private final ModelPart root;
+	public final ModelPart root;
+	public final ModelPart submarine;
+	public final ModelPart controller;
 
 	public ModelSubmarine(ModelPart root) 
 	{
 		this.root = root.getChild("root");
+		this.submarine = this.root.getChild("submarine");
+		this.controller = this.submarine.getChild("controller");
 	}
 
 	public static LayerDefinition createBodyLayer()

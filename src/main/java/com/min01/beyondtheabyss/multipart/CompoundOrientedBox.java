@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+//https://github.com/CERBON-MODS/CERBONs-API/blob/1.20.1/src/main/java/com/cerbon/cerbons_api/api/multipart_entities/util/CompoundOrientedBox.java
 public class CompoundOrientedBox extends AABB implements Iterable<OrientedBox> 
 {
     public final Collection<OrientedBox> boxes;

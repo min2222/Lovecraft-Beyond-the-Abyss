@@ -34,6 +34,11 @@ public class BTAClientUtil
 	public static final Matrix4f INVERSE_MAT = new Matrix4f();
 	public static final int VERTEX_SIZE_INTS = DefaultVertexFormat.BLOCK.getIntegerSize();
 	
+	public static boolean isFirstPersonPlayer(Entity entity)
+	{
+		return entity.equals(MC.cameraEntity) && MC.options.getCameraType().isFirstPerson();
+	}
+	
 	public static Matrix4f getInverseTransformMatrix(Matrix4f outMat, Matrix4f modelView)
     {
 		return outMat.identity().mul(RenderSystem.getProjectionMatrix()).mul(modelView).invert();

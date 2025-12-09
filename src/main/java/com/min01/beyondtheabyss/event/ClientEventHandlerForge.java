@@ -53,7 +53,9 @@ import net.minecraftforge.client.event.RenderBlockScreenEffectEvent.OverlayType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -72,6 +74,21 @@ public class ClientEventHandlerForge
     public static final ResourceLocation GHIDRUTH_BOSS_BAR_BAR_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_bar.png");
     
     public static final List<ChunkPos> CHUNK_LIST = new ArrayList<>();
+	public static final List<UUID> RENDERER_LIST = new ArrayList<>();
+	
+	@SubscribeEvent
+	public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event)
+	{
+        if(RENDERER_LIST.contains(event.getEntity().getUUID()))
+        {
+            if(!BTAClientUtil.isFirstPersonPlayer(event.getEntity())) 
+            {
+                MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post<>(event.getEntity(), event.getRenderer(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight()));
+                event.setCanceled(true);
+            }
+            RENDERER_LIST.remove(event.getEntity().getUUID());
+        }
+	}
 	
     @SubscribeEvent
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
