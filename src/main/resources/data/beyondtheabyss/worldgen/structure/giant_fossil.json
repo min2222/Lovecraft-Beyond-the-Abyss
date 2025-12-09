@@ -1,7 +1,8 @@
 {
 	"type": "beyondtheabyss:giant_fossil",
 	"biomes": "beyondtheabyss:death_valley",
+	"terrain_adaptation": "beard_thin",
 	"spawn_overrides": {
 	},
-	"step": "raw_generation"
+	"step": "surface_structures"
 }
