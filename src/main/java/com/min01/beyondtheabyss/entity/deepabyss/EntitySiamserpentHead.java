@@ -205,17 +205,16 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public void moveToTarget() 
 	{
-		if(this.isUsingSkill())
+		if(this.getAnimationState() == 0)
 		{
-			this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-		}
-		else if(this.wantedPos.equals(Vec3.ZERO) || this.wantedPos.subtract(this.position()).length() <= 3.5F || this.tickCount % 60 == 0)
-		{
-			Vec3 pos = BTAUtil.getSpreadPosition(this.getTarget(), 6);
-			if(this.getTarget().position().distanceTo(pos) <= 6.0F && !this.isDormant() && !this.isDisabled())
+			if(this.wantedPos.equals(Vec3.ZERO) || this.wantedPos.subtract(this.position()).length() <= 3.5F || this.tickCount % 60 == 0)
 			{
-				this.wantedPos = pos;
-				this.getNavigation().moveTo(pos.x, pos.y, pos.z, 1.5F);
+				Vec3 pos = BTAUtil.getSpreadPosition(this.getTarget(), 6);
+				if(this.getTarget().position().distanceTo(pos) <= 6.0F && !this.isDormant() && !this.isDisabled())
+				{
+					this.wantedPos = pos;
+					this.getNavigation().moveTo(pos.x, pos.y, pos.z, 1.5F);
+				}
 			}
 		}
 	}
@@ -223,7 +222,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public void lookTarget() 
 	{
-		if(this.isUsingSkill())
+		if(this.getAnimationState() != 0)
 		{
 			super.lookTarget();
 		}

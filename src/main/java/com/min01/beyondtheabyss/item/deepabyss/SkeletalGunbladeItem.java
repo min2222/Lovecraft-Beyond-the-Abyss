@@ -77,15 +77,13 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 				{
 		        	p_41433_.playSound(BTASounds.GUNBLADE_CHARGE.get());
 					p_41433_.startUsingItem(p_41434_);
-					if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
-					{
-						BTAUtil.setPlayerAnimationState(p_41433_, 3);
-						BTAUtil.setPlayerAnimationTick(p_41433_, 72000);
-					}
+					BTAUtil.setPlayerAnimationState(p_41433_, 3);
+					BTAUtil.setPlayerAnimationTick(p_41433_, 72000);
 				}
 			}
+			return InteractionResultHolder.consume(stack);
 		}
-		return InteractionResultHolder.consume(stack);
+		return InteractionResultHolder.fail(stack);
 	}
 	
 	@Override
@@ -116,6 +114,26 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 			BTAUtil.setPlayerAnimationTick(entity, 40);
 		}
 		return true;
+	}
+	
+	@Override
+	public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_)
+	{
+		if(!p_41408_ && getCharge(p_41404_) > 0)
+		{
+			stop(p_41404_, p_41406_);
+		}
+	}
+	
+	public static void stop(ItemStack stack, Entity entity)
+	{
+		setLaserVisible(stack, false);
+		setLaserLength(stack, 0);
+		setCharge(stack, 0);
+		if(entity instanceof Player player)
+		{
+			player.getCooldowns().addCooldown(stack.getItem(), 100);
+		}
 	}
 	
 	@Override

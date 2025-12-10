@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -101,6 +102,10 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 		}
 		if(this.getAnimationTick() > 0)
 		{
+			if(!(entity.getItemInHand(entity.getUsedItemHand()).getItem() instanceof IAnimatableItem))
+			{
+				this.setAnimationTick(0);
+			}
 			this.setAnimationTick(this.getAnimationTick() - 1);
 		}
 		else
@@ -109,9 +114,7 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 			{
 				if(this.getAnimationState() == 4 && entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get())) 
 				{
-					SkeletalGunbladeItem.setLaserVisible(stack, false);
-					SkeletalGunbladeItem.setLaserLength(stack, 0);
-					SkeletalGunbladeItem.setCharge(stack, 0);
+					SkeletalGunbladeItem.stop(stack, entity);
 				}
 			}
 			this.setAnimationState(0);

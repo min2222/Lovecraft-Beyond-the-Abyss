@@ -13,7 +13,7 @@ public abstract class AbstractSiamserpentSkillGoal extends BasicBTASkillGoal<Ent
 	@Override
 	public boolean canUse() 
 	{
-		if(!this.mob.isHead())
+		if(!this.mob.isHead() && this.mob.goal == null)
 		{
 			return false;
 		}

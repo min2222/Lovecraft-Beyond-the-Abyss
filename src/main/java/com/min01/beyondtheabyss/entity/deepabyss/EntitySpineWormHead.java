@@ -1,5 +1,8 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -7,9 +10,6 @@ import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
-import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -23,6 +23,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -41,6 +42,8 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	public static final EntityDataAccessor<Direction> ATTACHED_DIRECTION = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.DIRECTION);
 	public static final EntityDataAccessor<BlockPos> ATTACHED_POS = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.BLOCK_POS);
 	public static final EntityDataAccessor<Integer> COOLDOWN = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Optional<UUID>> TARGET_UUID = SynchedEntityData.defineId(EntitySpineWormHead.class, EntityDataSerializers.OPTIONAL_UUID);
+	
 	public KinematicChain chain;
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
@@ -52,7 +55,6 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		this.setCanMove(false);
 		this.setCanLook(false);
 		this.xpReward = this.random.nextInt(15);
-		this.posArray = new Vec3[1];
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -72,6 +74,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
     	this.entityData.define(ATTACHED_DIRECTION, Direction.DOWN);
     	this.entityData.define(ATTACHED_POS, this.blockPosition());
     	this.entityData.define(COOLDOWN, 100);
+    	this.entityData.define(TARGET_UUID, Optional.empty());
     }
 
 	@Override
@@ -143,40 +146,24 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 			this.chain.setOldPosAndRot();
 			this.chain.tickBobbit();
 
-			if(this.getTarget() != null && this.canExtend())
+			if(this.canExtend())
 			{
-				if(!this.getTarget().isPassenger())
+				if(this.getTarget() != null && !this.getTarget().isPassenger() && !this.isVehicle())
 				{
-					this.posArray[0] = this.getTarget().position();
-					BTANetwork.sendToAll(new UpdatePosArrayPacket(this, this.getTarget().position(), 0));
-				}
-			}
-
-			if(!this.level.isClientSide && this.getTarget() == null)
-			{
-				this.posArray[0] = Vec3.ZERO;
-				BTANetwork.sendToAll(new UpdatePosArrayPacket(this, Vec3.ZERO, 0));
-			}
-			
-			if(this.posArray[0] != null && this.canExtend())
-			{
-				if(this.posArray[0].subtract(this.position()).length() <= 0.5F)
-				{
-					this.chain.setTarget(Vec3.ZERO);
-					this.setCooldown(100);
-					if(this.getTarget() != null)
+					Vec3 pos = this.getTarget().position();
+					if(pos.subtract(this.position()).length() <= 0.5F)
 					{
 						this.getTarget().startRiding(this);
-						BTANetwork.sendToAll(new UpdateVehiclePacket(this.getTarget(), this));
+						this.chain.setTarget(Vec3.ZERO);
+						this.setCooldown(100);
+					}
+					else
+					{
+						this.chain.setTarget(pos);
 					}
 				}
-				else if(!this.posArray[0].equals(Vec3.ZERO) && !this.isVehicle())
-				{
-					this.chain.setTarget(this.posArray[0]);
-				}
 			}
-			
-			if(this.getCooldown() > 0)
+			else
 			{
 				this.setCooldown(this.getCooldown() - 1);
 			}
@@ -202,6 +189,30 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 			this.yHeadRotO = rot.y;
 			this.yBodyRotO = rot.y;
 		}
+	}
+	
+	@Override
+	public void setTarget(LivingEntity p_21544_) 
+	{
+		if(p_21544_ == null)
+		{
+			this.entityData.set(TARGET_UUID, Optional.empty());
+		}
+		else
+		{
+			this.entityData.set(TARGET_UUID, Optional.of(p_21544_.getUUID()));
+		}
+		super.setTarget(p_21544_);
+	}
+	
+	@Override
+	public LivingEntity getTarget()
+	{
+		if(this.entityData.get(TARGET_UUID).isPresent())
+		{
+			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(TARGET_UUID).get());
+		}
+		return super.getTarget();
 	}
 	
 	@Override

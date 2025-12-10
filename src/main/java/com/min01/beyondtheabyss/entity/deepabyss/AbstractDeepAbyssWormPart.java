@@ -255,11 +255,23 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 		this.entityData.set(HEAD_UUID, Optional.of(p_37263_.getUUID()));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Nullable
 	public T getHead() 
 	{
 		if(this.entityData.get(HEAD_UUID).isPresent()) 
 		{
+			if(this.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+			{
+				for(Entity entity : BTAUtil.getAllEntities(this.level))
+				{
+					if(!entity.getUUID().equals(this.entityData.get(HEAD_UUID).get()))
+					{
+						continue;
+					}
+					return (T) entity;
+				}
+			}
 			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(HEAD_UUID).get());
 		}
 		return null;
