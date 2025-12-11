@@ -35,6 +35,7 @@
 	"spawn_costs": {
 	},
 	"carvers": {
+		"air": "beyondtheabyss:spire_hollow"
 	},
 	"features": [
 		[
