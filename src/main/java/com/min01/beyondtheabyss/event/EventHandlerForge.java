@@ -368,7 +368,9 @@ public class EventHandlerForge
 		{
 			if(!data.getAbyssPortalPos().equals(BlockPos.ZERO) && data.isAbyssPortalActivated())
 			{
-				BlockPos portalPos = data.getAbyssPortalPos().above();
+				BlockPos portalPos = data.getAbyssPortalPos();
+	    		int y = BTAUtil.getSpecificGroundPos(entity.level, portalPos.getX(), portalPos.getY() + 100, portalPos.getZ(), BTABlocks.ORIVINE.get()).getY();
+	    		portalPos = BlockPos.containing(portalPos.getX(), y - 13, portalPos.getZ());
 				Vec3 pos = Vec3.atCenterOf(portalPos);
 				AABB aabb1 = new AABB(-2.5F, 0.0F, -0.5F, 2.5F, 13.0F, 0.5F).move(portalPos);
 				AABB aabb2 = new AABB(-6.5F, -2.5F, -0.5F, 6.5F, 2.5F, 0.5F).move(portalPos.above(7));
