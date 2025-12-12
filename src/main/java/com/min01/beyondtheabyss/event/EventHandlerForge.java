@@ -135,7 +135,7 @@ public class EventHandlerForge
     {
     	ChunkAccess chunk = event.getChunk();
     	Level level = (Level) chunk.getWorldForge();
-    	if(level.isClientSide())
+    	if(level.isClientSide)
     	{
     		if(level.dimension() == BTAWorlds.EVERGREEN)
     		{
@@ -149,7 +149,7 @@ public class EventHandlerForge
     {
     	ChunkAccess chunk = event.getChunk();
     	Level level = (Level) chunk.getWorldForge();
-    	if(level.isClientSide())
+    	if(level.isClientSide)
     	{
     		if(level.dimension() == BTAWorlds.EVERGREEN)
     		{

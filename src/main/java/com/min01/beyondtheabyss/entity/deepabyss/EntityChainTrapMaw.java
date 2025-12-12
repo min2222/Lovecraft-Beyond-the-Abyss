@@ -18,6 +18,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -70,9 +71,9 @@ public class EntityChainTrapMaw extends Entity
 				}
 				Entity target = this.getTarget();
 				this.chain.setTarget(target.getEyePosition());
-				if(this.distanceTo(target) <= 1.0F)
+				if(this.distanceTo(target) <= 2.0F && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target))
 				{
-					this.getTarget().setDeltaMovement(BTAUtil.fromToVector(target.position(), pos, 0.1F));
+					target.setDeltaMovement(BTAUtil.fromToVector(target.position(), pos, 0.1F));
 					if(target instanceof ServerPlayer player)
 					{
 		    			player.connection.send(new ClientboundSetEntityMotionPacket(target));
