@@ -46,7 +46,13 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     	
     	if(entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && BTAUtil.getPlayerAnimationState(entity) == 4)
     	{
-    		
+    		ModelPart head = PlayerModel.class.cast(this).head;
+    		Pair<ModelPart, ModelPart> left = this.modelMap.get("LeftArm");
+    		Pair<ModelPart, ModelPart> right = this.modelMap.get("RightArm");
+    		BTAClientUtil.copyRotFrom(left.getLeft(), head, true);
+    		BTAClientUtil.copyRotFrom(left.getRight(), head, true);
+    		BTAClientUtil.copyRotFrom(right.getLeft(), head, false);
+    		BTAClientUtil.copyRotFrom(right.getRight(), head, false);
     	}
     }
     

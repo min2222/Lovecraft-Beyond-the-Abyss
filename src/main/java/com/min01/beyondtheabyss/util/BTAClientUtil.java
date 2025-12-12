@@ -34,6 +34,18 @@ public class BTAClientUtil
 	public static final Matrix4f INVERSE_MAT = new Matrix4f();
 	public static final int VERTEX_SIZE_INTS = DefaultVertexFormat.BLOCK.getIntegerSize();
 	
+	public static void copyRotFrom(ModelPart part, ModelPart from, boolean isLeft)
+	{
+		if(isLeft)
+		{
+			part.xRot += from.xRot;
+		}
+		else
+		{
+			part.yRot += from.xRot;
+		}
+	}
+	   
 	public static boolean isFirstPersonPlayer(Entity entity)
 	{
 		return entity.equals(MC.cameraEntity) && MC.options.getCameraType().isFirstPerson();

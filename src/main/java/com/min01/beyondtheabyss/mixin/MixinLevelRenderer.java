@@ -30,7 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
-@Mixin(value = LevelRenderer.class, priority = -15000)
+@Mixin(value = LevelRenderer.class, priority = -10000)
 public abstract class MixinLevelRenderer implements LevelRendererAccessor
 {
     @Nullable

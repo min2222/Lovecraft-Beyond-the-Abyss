@@ -35,7 +35,6 @@ import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.Util;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -53,8 +52,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.Fluids;
@@ -62,6 +61,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
@@ -134,10 +134,10 @@ public class EventHandlerForge
     public static void onChunkUnLoad(ChunkEvent.Unload event)
     {
     	ChunkAccess chunk = event.getChunk();
-    	LevelAccessor level = chunk.getWorldForge();
-    	if(level instanceof ClientLevel clientLevel)
+    	Level level = (Level) chunk.getWorldForge();
+    	if(level.isClientSide())
     	{
-    		if(clientLevel.dimension() == BTAWorlds.EVERGREEN)
+    		if(level.dimension() == BTAWorlds.EVERGREEN)
     		{
     			ClientEventHandlerForge.CHUNK_LIST.removeIf(t -> t.equals(chunk.getPos()));
     		}
@@ -148,10 +148,10 @@ public class EventHandlerForge
     public static void onChunkLoad(ChunkEvent.Load event)
     {
     	ChunkAccess chunk = event.getChunk();
-    	LevelAccessor level = chunk.getWorldForge();
-    	if(level instanceof ClientLevel clientLevel)
+    	Level level = (Level) chunk.getWorldForge();
+    	if(level.isClientSide())
     	{
-    		if(clientLevel.dimension() == BTAWorlds.EVERGREEN)
+    		if(level.dimension() == BTAWorlds.EVERGREEN)
     		{
     			ChunkPos chunkPos = chunk.getPos();
     			if(level.getBiome(chunkPos.getWorldPosition()).is(BTABiomes.FOGGY_PLAINS) && BTAConfig.worldShaders.get())
@@ -336,7 +336,8 @@ public class EventHandlerForge
 					float yRot = player.level.random.nextFloat() * 360.0F;
 					Vec3 lookPos = BTAUtil.getLookPos(new Vec2(0.0F, player.getYHeadRot() + yRot), player.position(), 0, 0, player.level.random.nextInt(25, 30));
 					EntityGhidruth ghidruth = new EntityGhidruth(BTAEntities.GHIDRUTH.get(), player.level);
-					ghidruth.setPos(lookPos);
+					HitResult result = player.level.clip(new ClipContext(player.position(), lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+					ghidruth.setPos(result.getLocation());
 					player.level.addFreshEntity(ghidruth);
 					data.setGhidruthSpawned(true);
 				}
