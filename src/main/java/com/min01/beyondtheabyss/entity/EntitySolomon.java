@@ -115,16 +115,25 @@ public class EntitySolomon extends AbstractBTACreature implements IDialogue, ISy
 			BTASavedData data = BTASavedData.get(server.getLevel(Level.OVERWORLD));
 			if(data.isDragonKilled())
 			{
-				this.setCanTalk(true);
-				data.setDragonKilled(false);
+				if(!this.canTalk())
+				{
+					this.setCanTalk(true);
+				}
+			}
+			else
+			{
+				this.setCanTalk(false);
 			}
 			if(!this.getKeyItem().is(BTAItems.CLAM_OF_GUIDANCE.get()))
 			{
 				ItemStack stack = BTAItems.CLAM_OF_GUIDANCE.get().getDefaultInstance();
 				BlockPos pos = data.getAbyssPortalPos();
-				//TODO temp mechanic;
-				stack.getOrCreateTag().put("PortalPos", NbtUtils.writeBlockPos(pos));
-				this.setKeyItem(stack);
+				if(!pos.equals(BlockPos.ZERO))
+				{
+					//TODO temp mechanic;
+					stack.getOrCreateTag().put("PortalPos", NbtUtils.writeBlockPos(pos));
+					this.setKeyItem(stack);
+				}
 			}
 		}
 		

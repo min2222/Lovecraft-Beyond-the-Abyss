@@ -36,36 +36,31 @@ public class DeepAbyssPortalStructure extends Structure
 	@Override
 	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext p_227387_)
 	{
-		return onTopOfChunkCenter(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, (p_227390_) -> 
+		ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
+		if(level != null)
 		{
-			StructureTemplateManager manager = p_227387_.structureTemplateManager();
-			ChunkPos chunkPos = p_227387_.chunkPos();
-			BlockPos blockPos = chunkPos.getWorldPosition();
-			StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
-			DeepAbyssPortalStructurePiece piece = new DeepAbyssPortalStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
-			BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-			BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, piece, template, Rotation.NONE, Mirror.NONE, t -> 
+			BTASavedData data = BTASavedData.get(level);
+			if(data != null)
 			{
-				piece.move(0, t, 0);
-				mutable.set(blockPos.getX(), t, blockPos.getZ());
-			});
-
-			ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
-			if(level != null)
-			{
-				BTASavedData data = BTASavedData.get(level);
-				if(data != null)
+				if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
 				{
-					if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
+					return onTopOfChunkCenter(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, (p_227390_) -> 
 					{
+						StructureTemplateManager manager = p_227387_.structureTemplateManager();
+						ChunkPos chunkPos = p_227387_.chunkPos();
+						BlockPos blockPos = chunkPos.getWorldPosition();
+						StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
+						DeepAbyssPortalStructurePiece piece = new DeepAbyssPortalStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
+						BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, piece, template, Rotation.NONE, Mirror.NONE, t -> 
+						{
+							piece.move(0, t, 0);
+						});
 						p_227390_.addPiece(piece);
-						BlockPos pos = mutable.offset(13, 0, 1);
-						data.setAbyssPortalPos(pos);
-						data.setAbyssPortalActivated(false);
-					}
+					});
 				}
 			}
-		});
+		}
+		return Optional.empty();
 	}
 	
 	@Override

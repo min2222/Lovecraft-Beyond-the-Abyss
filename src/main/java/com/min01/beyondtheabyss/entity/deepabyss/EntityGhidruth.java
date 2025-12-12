@@ -31,6 +31,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -40,8 +41,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class EntityGhidruth extends AbstractDeepAbyssMonster
 {
@@ -118,7 +121,8 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     	this.goalSelector.addGoal(0, new GhidruthChargePrepareGoal(this));
     }
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void tick()
     {
     	super.tick();
@@ -214,6 +218,35 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
             		{
             			this.doHurtTarget(t);
             		});
+    			}
+    		}
+    	}
+    	else if(!this.level.isClientSide)
+    	{
+    		if(this.tickCount % 5 == 0)
+    		{
+    			if(ForgeEventFactory.getMobGriefingEvent(this.level, this)) 
+    			{
+                    boolean flag = false;
+                    for(int x = (int) -this.getBbWidth(); x <= this.getBbWidth(); ++x)
+                    {
+                    	for(int z = (int) -this.getBbWidth(); z <= this.getBbWidth(); ++z)
+                    	{
+                    		for(int y = 1; y <= this.getBbHeight(); ++y) 
+                    		{
+                    			BlockPos pos = this.blockPosition().offset(x, y, z);
+                    			BlockState state = this.level.getBlockState(pos);
+                    			if(!state.liquid() && !state.is(BlockTags.DRAGON_IMMUNE) && !state.is(BlockTags.FIRE) && state.canEntityDestroy(this.level, pos, this) && ForgeEventFactory.onEntityDestroyBlock(this, pos, state)) 
+                    			{
+                    				flag = this.level.destroyBlock(pos, true, this) || flag;
+                    			}
+                    		}
+                    	}
+                    }
+                    if(flag) 
+                    {
+                    	this.level.levelEvent(null, 1022, this.blockPosition(), 0);
+                    }
     			}
     		}
     	}

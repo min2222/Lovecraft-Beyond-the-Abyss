@@ -38,7 +38,7 @@ public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration>
 	    double stepSize = 0.15;
 	    int steps = (int)(length / stepSize);
 
-	    if(level.getBlockState(origin.below()).is(BTABlocks.ABYSSALITH.get()) && origin.getY() >= 20)
+	    if(level.getBlockState(origin.below()).is(BTABlocks.ABYSSALITH.get()) && origin.getY() >= 20 && origin.getY() < 150)
 	    {
 		    for(int i = 0; i < steps; i++)
 		    {

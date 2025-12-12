@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -37,7 +38,7 @@ public class BTAWorldShader
     	ClientLevel level = BTAClientUtil.MC.level;
 		ResourceKey<Level> dimension = level.dimension();
 		Entity camEntity = BTAClientUtil.MC.cameraEntity;
-		if(camEntity != null)
+		if(camEntity != null && BTAConfig.worldShaders.get())
 		{
 			double x = Mth.lerp((double)frameTime, camEntity.xOld, camEntity.getX());
 			double y = Mth.lerp((double)frameTime, camEntity.yOld, camEntity.getY());

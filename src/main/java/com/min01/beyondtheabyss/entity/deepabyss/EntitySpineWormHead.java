@@ -10,6 +10,8 @@ import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -153,7 +155,11 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 					Vec3 pos = this.getTarget().position();
 					if(pos.subtract(this.position()).length() <= 0.5F)
 					{
-						this.getTarget().startRiding(this);
+						if(this.level.isClientSide)
+						{
+							this.getTarget().startRiding(this);
+		    				BTANetwork.sendToServer(new UpdateVehiclePacket(this.getTarget(), this));
+						}
 						this.chain.setTarget(Vec3.ZERO);
 						this.setCooldown(100);
 					}

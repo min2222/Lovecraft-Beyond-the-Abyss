@@ -10,13 +10,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.base.Stopwatch;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTALootTables;
+import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.misc.ChatTicker;
 import com.min01.beyondtheabyss.network.BTANetwork;
@@ -28,9 +32,15 @@ import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTASavedData;
 import com.min01.beyondtheabyss.world.BTAWorlds;
+import com.mojang.datafixers.util.Pair;
 
+import net.minecraft.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -46,6 +56,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
@@ -143,7 +154,7 @@ public class EventHandlerForge
     		if(clientLevel.dimension() == BTAWorlds.EVERGREEN)
     		{
     			ChunkPos chunkPos = chunk.getPos();
-    			if(level.getBiome(chunkPos.getWorldPosition()).is(BTABiomes.FOGGY_PLAINS))
+    			if(level.getBiome(chunkPos.getWorldPosition()).is(BTABiomes.FOGGY_PLAINS) && BTAConfig.worldShaders.get())
     			{
         			ClientEventHandlerForge.CHUNK_LIST.add(chunkPos);
     			}
@@ -256,14 +267,49 @@ public class EventHandlerForge
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) 
     {
     	Level level = event.getLevel();
-		if(event.getEntity() instanceof Player)
+		if(event.getEntity() instanceof Player player)
 		{
     		BTASavedData data = BTASavedData.get(level);
 			if(data != null)
 			{
 		    	if(level.dimension() == Level.OVERWORLD && !level.isClientSide)
 		    	{
-					if(!data.getAbyssPortalPos().equals(BlockPos.ZERO))
+					Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
+					BlockPos blockPos = player.blockPosition();
+					ServerLevel serverLevel = (ServerLevel) level;
+					if(data.getHutPos().equals(BlockPos.ZERO))
+					{
+						HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.HUT).map((p_214491_) -> 
+						{
+							return HolderSet.direct(p_214491_);
+						}).get();
+						Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
+						Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
+						stopwatch.stop();
+						if(pair != null)
+						{
+							BlockPos pos = pair.getFirst();
+							data.setHutPos(BTAUtil.getGroundPos(serverLevel, pos.getX(), pos.getY() + 50, pos.getZ(), -1));
+						}
+					}
+					if(data.getAbyssPortalPos().equals(BlockPos.ZERO))
+					{
+						HolderSet<Structure> holderset = registry.getHolder(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL).map((p_214491_) -> 
+						{
+							return HolderSet.direct(p_214491_);
+						}).get();
+						Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
+						Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, holderset, blockPos, 100, false);
+						stopwatch.stop();
+						if(pair != null)
+						{
+							BlockPos pos = pair.getFirst().offset(13, 0, 1);
+				    		int y = BTAUtil.getSpecificGroundPos(serverLevel, pos.getX(), pos.getY() + 50, pos.getZ(), BTABlocks.ORIVINE.get()).getY();
+							data.setAbyssPortalPos(new BlockPos(pos.getX(), y + 1, pos.getZ()));
+							data.setAbyssPortalActivated(false);
+						}
+					}
+					else
 					{
 						BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(data.isAbyssPortalActivated()));
 						BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(data.getAbyssPortalPos()));

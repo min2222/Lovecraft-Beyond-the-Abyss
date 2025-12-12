@@ -38,34 +38,33 @@ public class HutStructure extends Structure
 	@Override
 	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext p_227387_)
 	{
-		return onTopOfChunkCenter(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, (p_227390_) -> 
+		ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
+		if(level != null)
 		{
-			StructureTemplateManager manager = p_227387_.structureTemplateManager();
-			ChunkPos chunkPos = p_227387_.chunkPos();
-			BlockPos blockPos = chunkPos.getWorldPosition();
-			RandomSource random = p_227387_.random();
-			Rotation rotation = Util.getRandom(Rotation.values(), random);
-			StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
-			HutStructurePiece piece = new HutStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
-			BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, piece, template, rotation, Mirror.NONE, t -> 
+			BTASavedData data = BTASavedData.get(level);
+			if(data != null)
 			{
-				piece.move(0, t + 2, 0);
-			});
-			
-			ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
-			if(level != null)
-			{
-				BTASavedData data = BTASavedData.get(level);
-				if(data != null)
+				if(data.getHutPos().equals(BlockPos.ZERO))
 				{
-					if(data.getHutPos().equals(BlockPos.ZERO))
+					return onTopOfChunkCenter(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, (p_227390_) -> 
 					{
+						StructureTemplateManager manager = p_227387_.structureTemplateManager();
+						ChunkPos chunkPos = p_227387_.chunkPos();
+						BlockPos blockPos = chunkPos.getWorldPosition();
+						RandomSource random = p_227387_.random();
+						Rotation rotation = Util.getRandom(Rotation.values(), random);
+						StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
+						HutStructurePiece piece = new HutStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
+						BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, piece, template, rotation, Mirror.NONE, t -> 
+						{
+							piece.move(0, t + 2, 0);
+						});
 						p_227390_.addPiece(piece);
-						data.setHutPos(blockPos);
-					}
+					});
 				}
 			}
-		});
+		}
+		return Optional.empty();
 	}
 	
 	@Override

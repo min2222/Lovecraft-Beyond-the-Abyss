@@ -10,6 +10,7 @@ public class BTAConfig
 	public static final ForgeConfigSpec CONFIG_SPEC;
 
 	public static ForgeConfigSpec.BooleanValue cameraShakes;
+	public static ForgeConfigSpec.BooleanValue worldShaders;
     
     static 
     {
@@ -21,7 +22,8 @@ public class BTAConfig
     public BTAConfig(ForgeConfigSpec.Builder config) 
     {
     	config.push("Client Settings");
-    	BTAConfig.cameraShakes = config.comment("disable/enable camera shakes in various place").define("cameraShakes", true);
+    	cameraShakes = config.comment("disable/enable camera shakes in various place").define("cameraShakes", true);
+    	worldShaders = config.comment("disable/enable shader effect in specific dimensions").define("worldShaders", true);
         config.pop();
     }
 }

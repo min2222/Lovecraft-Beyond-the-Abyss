@@ -18,6 +18,7 @@ import com.min01.beyondtheabyss.lights.LevelRendererAccessor;
 import com.min01.beyondtheabyss.shader.BTAEntityEffect;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Camera;
@@ -77,6 +78,7 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
 	@Inject(at = @At(value = "TAIL"), method = "renderLevel")
 	private void renderLevelTail(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
 	{
+		RenderSystem.depthMask(false);
 		new ArrayList<>(BTAWorldShader.WORLD_SHADERS).forEach(t -> 
 		{
 			t.render(mtx, frameTime, camera);
@@ -86,6 +88,7 @@ public abstract class MixinLevelRenderer implements LevelRendererAccessor
     	{
     		t.doEntityEffect();
     	});
+		RenderSystem.depthMask(true);
 	}
 	
 	@Inject(at = @At("TAIL"), method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", cancellable = true)
