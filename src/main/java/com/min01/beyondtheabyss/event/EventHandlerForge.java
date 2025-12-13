@@ -50,10 +50,12 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.Fluids;
@@ -315,6 +317,14 @@ public class EventHandlerForge
 						BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(data.getAbyssPortalPos()));
 					}
 		    	}
+			}
+		}
+		//TODO temp fix
+		if(event.getEntity() instanceof FallingBlockEntity fallingBlock)
+		{
+			if(fallingBlock.getBlockState().is(Blocks.SAND) && fallingBlock.level.dimension() == BTAWorlds.ENDLESS_DESERT)
+			{
+				event.setCanceled(true);
 			}
 		}
     }
