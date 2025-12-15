@@ -16,7 +16,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-@Mixin(LocalPlayer.class)
+@Mixin(value = LocalPlayer.class, priority = -10000)
 public abstract class MixinLocalPlayer extends AbstractClientPlayer 
 {
 	public MixinLocalPlayer(ClientLevel p_250460_, GameProfile p_249912_) 

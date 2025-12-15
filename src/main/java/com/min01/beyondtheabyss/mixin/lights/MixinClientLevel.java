@@ -12,7 +12,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 
-@Mixin(ClientLevel.class)
+@Mixin(value = ClientLevel.class, priority = -10000)
 public abstract class MixinClientLevel
 {
 	@Shadow

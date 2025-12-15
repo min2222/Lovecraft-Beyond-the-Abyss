@@ -26,7 +26,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 
-@Mixin(BlockRenderDispatcher.class)
+@Mixin(value = BlockRenderDispatcher.class, priority = -10000)
 public class MixinBlockRenderDispatcher 
 {
 	@Shadow

@@ -29,7 +29,7 @@ public class BTACreativeModeTabs
     		{
     			for(RegistryObject<Item> item : BTAItems.DEEP_ABYSS_ITEMS.getEntries())
     			{
-      				if(item.get() instanceof ForgeSpawnEggItem && item != BTAItems.SOLOMON_SPAWN_EGG)
+      				if(item.get() instanceof ForgeSpawnEggItem && item != BTAItems.MYSTERIOUS_GUY_SPAWN_EGG)
     				{
     					output.accept(item.get());
     				}

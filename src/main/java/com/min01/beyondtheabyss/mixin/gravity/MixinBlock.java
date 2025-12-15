@@ -14,7 +14,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-@Mixin(Block.class)
+@Mixin(value = Block.class, priority = -10000)
 public class MixinBlock 
 {
 	@Inject(method = "shouldRenderFace", at = @At("RETURN"), cancellable = true)

@@ -57,7 +57,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityMissile>> MISSILE = registerEntity("missile", EntityType.Builder.<EntityMissile>of(EntityMissile::new, MobCategory.MISC).sized(0.75F, 0.75F));
 
 	//living
-	public static final RegistryObject<EntityType<EntitySolomon>> SOLOMON = registerEntity("solomon", createBuilder(EntitySolomon::new, MobCategory.CREATURE).sized(0.75F, 2.0F));
+	public static final RegistryObject<EntityType<EntityMysteriousGuy>> MYSTERIOUS_GUY = registerEntity("myterious_guy", createBuilder(EntityMysteriousGuy::new, MobCategory.CREATURE).sized(0.75F, 2.0F));
 	public static final RegistryObject<EntityType<EntityGhidruth>> GHIDRUTH = registerEntity("ghidruth", createBuilder(EntityGhidruth::new, MobCategory.WATER_CREATURE).clientTrackingRange(100).sized(5.2F, 4.5F));
 	public static final RegistryObject<EntityType<EntityGnasher>> GNASHER = registerEntity("gnasher", createBuilder(EntityGnasher::new, MobCategory.WATER_CREATURE).sized(0.875F, 0.75F));
 	public static final RegistryObject<EntityType<EntitySiamserpentHead>> SIAMSERPENT_HEAD = registerEntity("siamserpent_head", createBuilder(EntitySiamserpentHead::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F).clientTrackingRange(100));

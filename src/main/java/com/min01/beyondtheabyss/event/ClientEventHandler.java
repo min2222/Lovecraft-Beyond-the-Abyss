@@ -51,7 +51,7 @@ import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
-import com.min01.beyondtheabyss.entity.model.ModelSolomon;
+import com.min01.beyondtheabyss.entity.model.ModelMysteriousGuy;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSplittedFulgastra;
@@ -87,7 +87,7 @@ import com.min01.beyondtheabyss.entity.renderer.living.ObserverRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.OverseerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentMiddleBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentSlasherRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.SolomonRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.MysteriousGuyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SplittedFulgastraRenderer;
@@ -207,7 +207,7 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.MUTAVORE_CYST.get(), MutavoreCystRenderer::new);
     	
     	//living
-    	event.registerEntityRenderer(BTAEntities.SOLOMON.get(), SolomonRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.MYSTERIOUS_GUY.get(), MysteriousGuyRenderer::new);
     	event.registerEntityRenderer(BTAEntities.GHIDRUTH.get(), GhidruthRenderer::new);
     	event.registerEntityRenderer(BTAEntities.GNASHER.get(), GnasherRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SIAMSERPENT_HEAD.get(), SiamserpentSlasherRenderer::new);
@@ -237,7 +237,7 @@ public class ClientEventHandler
     public static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
     	//entities
-    	event.registerLayerDefinition(ModelSolomon.LAYER_LOCATION, ModelSolomon::createBodyLayer);
+    	event.registerLayerDefinition(ModelMysteriousGuy.LAYER_LOCATION, ModelMysteriousGuy::createBodyLayer);
     	event.registerLayerDefinition(ModelGhidruth.LAYER_LOCATION, ModelGhidruth::createBodyLayer);
     	event.registerLayerDefinition(ModelSubmarine.LAYER_LOCATION, ModelSubmarine::createBodyLayer);
     	event.registerLayerDefinition(ModelGnasher.LAYER_LOCATION, ModelGnasher::createBodyLayer);

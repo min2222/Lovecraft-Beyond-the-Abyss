@@ -235,6 +235,12 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	}
 	
 	@Override
+	public List<String> getIgnorePart() 
+	{
+		return List.of("top_part0");
+	}
+	
+	@Override
 	public boolean isPickable()
 	{
 		return true;
@@ -253,6 +259,7 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
         			player.startRiding(this);
     				BTANetwork.sendToServer(new UpdateVehiclePacket(player, this));
     			}
+				return InteractionResult.SUCCESS;
         	}
         	if(part.equals("hatch") || part.equals("valve"))
         	{
@@ -262,11 +269,11 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
     				this.setAnimationState(state);
         			this.setHatchOpened(!this.hatchOpened());
         			this.setAnimationTick(30);
+        			return InteractionResult.SUCCESS;
     			}
         	}
-			return InteractionResult.SUCCESS;
         }
-		return super.interact(player, hand);
+		return InteractionResult.FAIL;
 	}
 	
     @Override

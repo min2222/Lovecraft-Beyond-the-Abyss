@@ -10,7 +10,7 @@ import com.min01.beyondtheabyss.lights.DynamicLights;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 
-@Mixin(Minecraft.class)
+@Mixin(value = Minecraft.class, priority = -10000)
 public class MixinMinecraft
 {
 	@Inject(method = "updateLevelInEngines", at = @At("HEAD"))

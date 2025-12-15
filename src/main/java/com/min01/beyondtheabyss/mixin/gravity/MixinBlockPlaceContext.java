@@ -18,7 +18,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
-@Mixin(BlockPlaceContext.class)
+@Mixin(value = BlockPlaceContext.class, priority = -10000)
 public abstract class MixinBlockPlaceContext extends UseOnContext
 {
 	public MixinBlockPlaceContext(Level p_43713_, Player p_43714_, InteractionHand p_43715_, ItemStack p_43716_, BlockHitResult p_43717_) 

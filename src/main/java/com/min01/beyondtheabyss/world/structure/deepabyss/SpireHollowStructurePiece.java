@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 
 public class SpireHollowStructurePiece extends AbstractCaveGenerationStructurePiece
 {
-    
     public SpireHollowStructurePiece(BlockPos chunkCorner, BlockPos holeCenter, int bowlHeight, int bowlRadius)
     {
         super(BTAStructures.SPIRE_HOLLOW_PIECE.get(), chunkCorner, holeCenter, bowlHeight, bowlRadius);

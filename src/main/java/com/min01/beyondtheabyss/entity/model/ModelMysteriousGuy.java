@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.EntitySolomon;
+import com.min01.beyondtheabyss.entity.EntityMysteriousGuy;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -17,15 +17,15 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class ModelSolomon extends HierarchicalModel<EntitySolomon>
+public class ModelMysteriousGuy extends HierarchicalModel<EntityMysteriousGuy>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "solomon"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "mysterious_guy"), "main");
 	private final ModelPart root;
 	private final ModelPart robe;
 	private final ModelPart head;
 	private final ModelPart open_robe;
 
-	public ModelSolomon(ModelPart root)
+	public ModelMysteriousGuy(ModelPart root)
 	{
 		this.root = root.getChild("root");
 		this.robe = this.root.getChild("robe");
@@ -68,7 +68,7 @@ public class ModelSolomon extends HierarchicalModel<EntitySolomon>
 	}
 
 	@Override
-	public void setupAnim(EntitySolomon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
+	public void setupAnim(EntityMysteriousGuy entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		BTAClientUtil.animateHead(this.head, netHeadYaw, headPitch);

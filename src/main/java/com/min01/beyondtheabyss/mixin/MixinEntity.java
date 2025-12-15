@@ -54,7 +54,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
-@Mixin(Entity.class)
+@Mixin(value = Entity.class, priority = -10000)
 public abstract class MixinEntity implements IDynamicLight
 {
 	@Unique

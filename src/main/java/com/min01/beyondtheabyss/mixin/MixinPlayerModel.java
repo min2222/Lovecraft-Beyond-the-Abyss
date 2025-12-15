@@ -25,7 +25,7 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.LivingEntity;
 
-@Mixin(PlayerModel.class)
+@Mixin(value = PlayerModel.class, priority = -10000)
 public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPlayerModel<T>
 {
 	private Map<String, Pair<ModelPart, ModelPart>> modelMap = new HashMap<>();

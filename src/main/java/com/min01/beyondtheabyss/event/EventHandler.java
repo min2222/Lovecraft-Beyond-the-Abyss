@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.event;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.EntitySolomon;
+import com.min01.beyondtheabyss.entity.EntityMysteriousGuy;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityForneusHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
@@ -60,7 +60,7 @@ public class EventHandler
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) 
     {
-    	event.put(BTAEntities.SOLOMON.get(), EntitySolomon.createAttributes().build());
+    	event.put(BTAEntities.MYSTERIOUS_GUY.get(), EntityMysteriousGuy.createAttributes().build());
     	
     	//deep abyss
     	event.put(BTAEntities.GHIDRUTH.get(), EntityGhidruth.createAttributes().build());
@@ -109,7 +109,7 @@ public class EventHandler
     {
     	if(event.getTabKey() == CreativeModeTabs.SPAWN_EGGS)
     	{
-    		event.accept(BTAItems.SOLOMON_SPAWN_EGG.get());
+    		event.accept(BTAItems.MYSTERIOUS_GUY_SPAWN_EGG.get());
     	}
     }
 }

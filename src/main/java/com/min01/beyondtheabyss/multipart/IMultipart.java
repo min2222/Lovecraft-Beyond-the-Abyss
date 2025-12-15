@@ -15,6 +15,11 @@ public interface IMultipart
 		return List.of();
 	}
 	
+	default List<String> getIgnorePart()
+	{
+		return List.of();
+	}
+	
 	default boolean skipInvisiblePart()
 	{
 		return true;

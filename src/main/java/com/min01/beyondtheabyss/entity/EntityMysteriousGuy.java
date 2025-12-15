@@ -38,17 +38,17 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkDirection;
 
-public class EntitySolomon extends AbstractBTACreature implements IDialogue, ISynchedEntityData
+public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogue, ISynchedEntityData
 {
-	public static final EntityDataAccessor<Boolean> CAN_TALK = SynchedEntityData.defineId(EntitySolomon.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_TALKING = SynchedEntityData.defineId(EntitySolomon.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> CHAT_INDEX = SynchedEntityData.defineId(EntitySolomon.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> PREV_CHAT_INDEX = SynchedEntityData.defineId(EntitySolomon.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<ItemStack> KEY_ITEM = SynchedEntityData.defineId(EntitySolomon.class, EntityDataSerializers.ITEM_STACK);
+	public static final EntityDataAccessor<Boolean> CAN_TALK = SynchedEntityData.defineId(EntityMysteriousGuy.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_TALKING = SynchedEntityData.defineId(EntityMysteriousGuy.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> CHAT_INDEX = SynchedEntityData.defineId(EntityMysteriousGuy.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> PREV_CHAT_INDEX = SynchedEntityData.defineId(EntityMysteriousGuy.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<ItemStack> KEY_ITEM = SynchedEntityData.defineId(EntityMysteriousGuy.class, EntityDataSerializers.ITEM_STACK);
 	
 	public Player player;
 	
-	public EntitySolomon(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public EntityMysteriousGuy(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
 	{
 		super(p_21683_, p_21684_);
 	}
@@ -74,7 +74,7 @@ public class EntitySolomon extends AbstractBTACreature implements IDialogue, ISy
 	@Override
 	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
 	{
-    	EntityPartBuilder<EntitySolomon> partBuilder = new EntityPartBuilder<EntitySolomon>(this);
+    	EntityPartBuilder<EntityMysteriousGuy> partBuilder = new EntityPartBuilder<EntityMysteriousGuy>(this);
     	return partBuilder;
 	}
 
@@ -94,7 +94,7 @@ public class EntitySolomon extends AbstractBTACreature implements IDialogue, ISy
 			@Override
 			public boolean canUse()
 			{
-				return super.canUse() && EntitySolomon.this.player == null;
+				return super.canUse() && EntityMysteriousGuy.this.player == null;
 			}
 		});
 	}
@@ -150,7 +150,7 @@ public class EntitySolomon extends AbstractBTACreature implements IDialogue, ISy
 		{
 			if(p_21472_ instanceof ServerPlayer player)
 			{
-				BTANetwork.CHANNEL.sendTo(new SetDialogueScreenPacket("solomon", 5, this), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+				BTANetwork.CHANNEL.sendTo(new SetDialogueScreenPacket("mysterious_guy", 5, this), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 			}
 			if(!this.level.isClientSide)
 			{

@@ -17,7 +17,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
 
-@Mixin(SwimNodeEvaluator.class)
+@Mixin(value = SwimNodeEvaluator.class, priority = -10000)
 public abstract class MixinSwimNodeEvaluator extends NodeEvaluator
 {
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"), method = "getBlockPathType(Lnet/minecraft/world/level/BlockGetter;IIILnet/minecraft/world/entity/Mob;)Lnet/minecraft/world/level/pathfinder/BlockPathTypes;")

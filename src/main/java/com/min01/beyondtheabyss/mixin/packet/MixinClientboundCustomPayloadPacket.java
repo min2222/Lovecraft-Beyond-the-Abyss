@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 
-@Mixin(ClientboundCustomPayloadPacket.class)
+@Mixin(value = ClientboundCustomPayloadPacket.class, priority = -10000)
 public class MixinClientboundCustomPayloadPacket
 {
     @ModifyConstant(method = {"<init>*"}, constant = @Constant(intValue = 1048576))

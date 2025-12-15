@@ -206,8 +206,10 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
         String name = this.getModelPartName(model.root(), part);
         EntityBounds.EntityPartInfoBuilder partInfo = builder.add(name);
         boolean isCollide = this.entity.getCollidePart().contains(name) || collide;
+        boolean isIgnore = this.entity.getIgnorePart().contains(name);
     	partInfo.setCollide(isCollide);
     	boolean flag = this.entity.skipInvisiblePart() ? part.visible : true;
+    	flag = flag && !isIgnore;
     	if(flag)
     	{
             if(parent != null)

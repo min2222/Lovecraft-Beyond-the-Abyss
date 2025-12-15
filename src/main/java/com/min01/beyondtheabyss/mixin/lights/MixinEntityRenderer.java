@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 
-@Mixin(EntityRenderer.class)
+@Mixin(value = EntityRenderer.class, priority = -10000)
 public class MixinEntityRenderer<T extends Entity>
 {
 	@Inject(method = "getBlockLightLevel", at = @At("RETURN"), cancellable = true)

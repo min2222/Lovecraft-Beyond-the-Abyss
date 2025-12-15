@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 //FIXME bed blocks culling issue;
-@Mixin(BlockEntityRenderDispatcher.class)
+@Mixin(value = BlockEntityRenderDispatcher.class, priority = -10000)
 public class MixinBlockEntityRenderDispatcher
 {
 	@Inject(method = "setupAndRender", at = @At("HEAD"), cancellable = true)

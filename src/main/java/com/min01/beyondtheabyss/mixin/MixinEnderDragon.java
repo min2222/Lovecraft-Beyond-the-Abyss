@@ -10,7 +10,7 @@ import com.min01.beyondtheabyss.misc.ChatTicker;
 
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 
-@Mixin(EnderDragon.class)
+@Mixin(value = EnderDragon.class, priority = -10000)
 public class MixinEnderDragon
 {
 	@Inject(at = @At(value = "HEAD"), method = "kill")

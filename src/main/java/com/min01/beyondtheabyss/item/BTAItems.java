@@ -51,7 +51,7 @@ public class BTAItems
 	public static final DeferredRegister<Item> OUTER_SPACE_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
 	
 	//spawn eggs
-	public static final RegistryObject<Item> SOLOMON_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "solomon_spawn_egg", () -> BTAEntities.SOLOMON.get(), 5588543, 4339505);
+	public static final RegistryObject<Item> MYSTERIOUS_GUY_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "myterious_guy_spawn_egg", () -> BTAEntities.MYSTERIOUS_GUY.get(), 5588543, 4339505);
 	public static final RegistryObject<Item> GHIDRUTH_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "ghidruth_spawn_egg", () -> BTAEntities.GHIDRUTH.get(), 862018, 10239048);
 	//public static final RegistryObject<Item> FORNEUS_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "forneus_spawn_egg", () -> BTAEntities.FORNEUS_HEAD.get(), 0, 0);
 	public static final RegistryObject<Item> GNASHER_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "gnasher_spawn_egg", () -> BTAEntities.GNASHER.get(), 1318679, 3019282);
