@@ -5,7 +5,9 @@ import java.util.List;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.misc.BTAResourceKeys.BTAStructures;
 import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.world.BTAPortalTracker;
 import com.min01.beyondtheabyss.world.BTASavedData;
 
 import net.minecraft.ChatFormatting;
@@ -44,14 +46,14 @@ public class ClamOfGuidanceItem extends Item
 		BTASavedData data = BTASavedData.get(level);
 		if(data != null)
 		{
-			BlockPos blockPos = data.getAbyssPortalPos().offset(0, 0, 7);
+			BlockPos blockPos = data.getStructurePos(BTAStructures.DEEP_ABYSS_PORTAL).offset(0, 0, 7);
     		int y = BTAUtil.getSpecificGroundPos(level, blockPos.getX(), blockPos.getY() + 100, blockPos.getZ(), BTABlocks.ORIVINE.get()).getY();
 			blockPos = BlockPos.containing(blockPos.getX(), y - 1, blockPos.getZ());
-			if(pos.equals(blockPos) && !data.isAbyssPortalActivated())
+			if(pos.equals(blockPos) && !data.isPortalActivated(BTAPortalTracker.DEEP_ABYSS_PORTAL))
 			{
 				level.setBlockAndUpdate(pos, BTABlocks.ENERGIZED_ORIVINE.get().defaultBlockState());
 				EntityBTACameraShake.cameraShake(level, Vec3.atBottomCenterOf(blockPos), 100, 0.05F, 10, 40);
-				data.setAbyssPortalActivated(true);
+				data.setPortalActivated(BTAPortalTracker.DEEP_ABYSS_PORTAL, true);
 				if(!player.getAbilities().instabuild)
 				{
 					stack.shrink(1);

@@ -21,16 +21,13 @@ import com.min01.beyondtheabyss.entity.endlessdesert.EntityDuneDevourerHead;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityObserver;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.misc.BTABossTracker;
+import com.min01.beyondtheabyss.world.BTAPortalTracker;
+import com.min01.beyondtheabyss.world.BTAStructureFinder;
 
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
@@ -46,15 +43,10 @@ public class EventHandler
 	@SubscribeEvent
 	public static void onFMLCommonSetup(FMLCommonSetupEvent event)
 	{
-		ItemStack awkward = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD);
-		ItemStack disorder = PotionUtils.setPotion(new ItemStack(Items.POTION), BTAEffects.DISORDER_POTION.get());
-		ItemStack strongDisorder = PotionUtils.setPotion(new ItemStack(Items.POTION), BTAEffects.STRONG_DISORDER_POTION.get());
-		ItemStack coordination = PotionUtils.setPotion(new ItemStack(Items.POTION), BTAEffects.COORDINATION_POTION.get());
-		ItemStack strongCoordination = PotionUtils.setPotion(new ItemStack(Items.POTION), BTAEffects.STRONG_COORDINATION_POTION.get());
-		BrewingRecipeRegistry.addRecipe(Ingredient.of(awkward), Ingredient.of(BTAItems.GNASHER_EYE.get()), disorder);
-		BrewingRecipeRegistry.addRecipe(Ingredient.of(disorder), Ingredient.of(Items.GLOWSTONE_DUST), strongDisorder);
-		BrewingRecipeRegistry.addRecipe(Ingredient.of(disorder), Ingredient.of(Items.GLISTERING_MELON_SLICE), coordination);
-		BrewingRecipeRegistry.addRecipe(Ingredient.of(coordination), Ingredient.of(Items.GLOWSTONE_DUST), strongCoordination);
+		BTAEffects.init();
+		BTAStructureFinder.init();
+		BTAPortalTracker.init();
+		BTABossTracker.init();
 	}
 	
     @SubscribeEvent

@@ -35,6 +35,8 @@ mixin {
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+jarJar.enable()
+
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
@@ -137,9 +139,9 @@ repositories {
 
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
-    // flatDir {
-    //     dir 'libs'
-    // }
+    flatDir {
+		dir 'libs'
+    }
 	
 	maven {
         name = "CurseForge"
@@ -150,10 +152,6 @@ repositories {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
         url = "https://modmaven.dev"
-    }
-    
-    maven {
-        url = "https://maven.theillusivec4.top/"
     }
     
    	maven {
@@ -173,10 +171,12 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
-	implementation fg.deobf("curse.maven:gravity-api-forge-1283915:7158202")
+	implementation fg.deobf("com.min01.solomonlib:solomonlib:1.0.0")
+    jarJar(group: 'com.min01.solomonlib', name: 'solomonlib', version: '[1.0.0]')
     
     runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:5589681")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:4586218")
+    runtimeOnly fg.deobf("curse.maven:tslatentitystatus-tes-830420:7126708")
     
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}"))

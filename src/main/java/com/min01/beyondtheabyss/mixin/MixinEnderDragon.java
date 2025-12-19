@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.event.EventHandlerForge;
-import com.min01.beyondtheabyss.misc.ChatTicker;
+import com.min01.beyondtheabyss.misc.BTAChatTracker;
 
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 
@@ -30,7 +30,7 @@ public class MixinEnderDragon
 		EnderDragon dragon = EnderDragon.class.cast(this);
 		if(dragon.getDragonFight() != null && !dragon.getDragonFight().hasPreviouslyKilledDragon())
 		{
-			EventHandlerForge.CHAT_MAP.put(dragon.level.dimension(), new ChatTicker(dragon));
+			EventHandlerForge.CHAT_MAP.put(dragon.level.dimension(), new BTAChatTracker(dragon));
 		}
 	}
 }

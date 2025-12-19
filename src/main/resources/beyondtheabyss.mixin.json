@@ -10,22 +10,14 @@
 		"MixinEnderDragon",
 		"packet.MixinFriendlyByteBuf",
 		"packet.MixinCompressionDecoder",
-		"packet.MixinClientboundCustomPayloadPacket",
-		"gravity.MixinBlockStateBase",
-		"gravity.MixinBlockPlaceContext"
+		"packet.MixinClientboundCustomPayloadPacket"
 	],
 	"client": [
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
 		"MixinPlayerModel",
 		"MixinEntityRenderDispatcher",
-		"MixinResource",
-		"gravity.MixinBlock",
-		"gravity.MixinBlockRenderDispatcher",
-		"gravity.MixinBlockEntityRenderDispatcher",
-		"lights.MixinEntityRenderer",
-		"lights.MixinClientLevel",
-		"lights.MixinMinecraft"
+		"MixinResource"
 	],
 	"server": [
 	],

@@ -10,13 +10,13 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterShotG
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherChargeGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherSlashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.beyondtheabyss.world.BTAStructures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -334,7 +334,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	
 	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-        Structure structure = pServerLevel.registryAccess().registryOrThrow(Registries.STRUCTURE).get(BTAStructures.Keys.GIANT_FOSSIL);
+        Structure structure = pServerLevel.registryAccess().registryOrThrow(Registries.STRUCTURE).get(BTAResourceKeys.BTAStructures.GIANT_FOSSIL);
 		ServerLevel level = pServerLevel.getLevel();
 		boolean isFossil = level.structureManager().getStructureWithPieceAt(pPos, structure).isValid();
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40 && isFossil;

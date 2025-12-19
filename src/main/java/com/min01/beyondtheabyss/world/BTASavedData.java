@@ -1,14 +1,22 @@
 package com.min01.beyondtheabyss.world;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.min01.beyondtheabyss.misc.BTABossTracker;
+import com.min01.beyondtheabyss.misc.BTABossTracker.BTABossState;
+import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateAbyssPortalActivationPacket;
 import com.min01.beyondtheabyss.network.UpdateAbyssPortalPosPacket;
+import com.min01.beyondtheabyss.world.BTAPortalTracker.BTAPortal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
@@ -16,10 +24,7 @@ public class BTASavedData extends SavedData
 {
 	public static final String NAME = "bta_data";
 	protected boolean isDragonKilled;
-	protected boolean isGhidruthSpawned;
-	protected boolean isAbyssPortalActivated;
-	protected BlockPos hutPos = BlockPos.ZERO;
-	protected BlockPos abyssPortalPos = BlockPos.ZERO;
+	protected final Map<ResourceKey<Structure>, BlockPos> structureMap = new HashMap<>();
 	
     public static BTASavedData get(Level level)
     {
@@ -36,10 +41,9 @@ public class BTASavedData extends SavedData
     {
     	BTASavedData data = new BTASavedData();
     	data.setDragonKilled(nbt.getBoolean("isDragonKilled"));
-    	data.setAbyssPortalActivated(nbt.getBoolean("isAbyssPortalActivated"));
-    	data.setGhidruthSpawned(nbt.getBoolean("isGhidruthSpawned"));
-    	data.setHutPos(NbtUtils.readBlockPos(nbt.getCompound("HutPos")));
-    	data.setAbyssPortalPos(NbtUtils.readBlockPos(nbt.getCompound("AbyssPortalPos")));
+    	BTAPortalTracker.load(data, nbt);
+    	BTAStructureFinder.load(data, nbt);
+    	BTABossTracker.load(data, nbt);
         return data;
     }
 	
@@ -47,18 +51,10 @@ public class BTASavedData extends SavedData
 	public CompoundTag save(CompoundTag nbt)
 	{
 		nbt.putBoolean("isDragonKilled", this.isDragonKilled);
-		nbt.putBoolean("isAbyssPortalActivated", this.isAbyssPortalActivated);
-		nbt.putBoolean("isGhidruthSpawned", this.isGhidruthSpawned);
-		nbt.put("HutPos", NbtUtils.writeBlockPos(this.hutPos));
-		nbt.put("AbyssPortalPos", NbtUtils.writeBlockPos(this.abyssPortalPos));
+		BTAPortalTracker.save(nbt);
+		BTAStructureFinder.save(nbt, this.structureMap);
+    	BTABossTracker.save(nbt);
 		return nbt;
-	}
-	
-	public void setAbyssPortalActivated(boolean value)
-	{
-		this.isAbyssPortalActivated = value;
-		BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(value));
-		this.setDirty();
 	}
 	
 	public void setDragonKilled(boolean value)
@@ -67,47 +63,62 @@ public class BTASavedData extends SavedData
 		this.setDirty();
 	}
 	
-	public void setGhidruthSpawned(boolean value)
-	{
-		this.isGhidruthSpawned = value;
-		this.setDirty();
-	}
-	
-	public void setHutPos(BlockPos value)
-	{
-		this.hutPos = value;
-		this.setDirty();
-	}
-	
-	public BlockPos getHutPos()
-	{
-		return this.hutPos;
-	}
-	
-	public void setAbyssPortalPos(BlockPos value)
-	{
-		this.abyssPortalPos = value;
-		BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(value));
-		this.setDirty();
-	}
-	
-	public BlockPos getAbyssPortalPos()
-	{
-		return this.abyssPortalPos;
-	}
-	
-	public boolean isAbyssPortalActivated()
-	{
-		return this.isAbyssPortalActivated;
-	}
-	
 	public boolean isDragonKilled()
 	{
 		return this.isDragonKilled;
 	}
 	
-	public boolean isGhidruthSpawned()
+	public void setStructurePos(ResourceKey<Structure> structure, BlockPos pos)
 	{
-		return this.isGhidruthSpawned;
+		this.structureMap.put(structure, pos);
+		if(structure == BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL)
+		{
+			//TODO temp;
+			BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(pos));
+		}
+		this.setDirty();
+	}
+	
+	public BlockPos getStructurePos(ResourceKey<Structure> structure)
+	{
+		return this.structureMap.getOrDefault(structure, BlockPos.ZERO);
+	}
+	
+	public void setPortalActivated(BTAPortal portal, boolean value)
+	{
+		portal.setActivated(value);
+		if(portal == BTAPortalTracker.DEEP_ABYSS_PORTAL)
+		{
+			//TODO temp;
+			BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(value));
+		}
+		this.setDirty();
+	}
+	
+	public boolean isPortalActivated(BTAPortal portal)
+	{
+		return portal.isActivated();
+	}
+	
+	public void setBossSpawned(BTABossState state, boolean value)
+	{
+		state.setSpawned(value);
+		this.setDirty();
+	}
+	
+	public boolean isBossSpawned(BTABossState state)
+	{
+		return state.isSpawned();
+	}
+	
+	public void setBossDefeated(BTABossState state, boolean value)
+	{
+		state.setDefeated(value);
+		this.setDirty();
+	}
+	
+	public boolean isBossDefeated(BTABossState state)
+	{
+		return state.isDefeated();
 	}
 }

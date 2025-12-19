@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.entity;
 
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.SetDialogueScreenPacket;
@@ -68,7 +69,7 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
     	this.entityData.define(IS_TALKING, false);
     	this.entityData.define(CHAT_INDEX, 0);
     	this.entityData.define(PREV_CHAT_INDEX, 0);
-    	this.entityData.define(KEY_ITEM, BTAItems.CLAM_OF_GUIDANCE.get().getDefaultInstance());
+    	this.entityData.define(KEY_ITEM, ItemStack.EMPTY);
     }
 
 	@Override
@@ -127,7 +128,7 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
 			if(!this.getKeyItem().is(BTAItems.CLAM_OF_GUIDANCE.get()))
 			{
 				ItemStack stack = BTAItems.CLAM_OF_GUIDANCE.get().getDefaultInstance();
-				BlockPos pos = data.getAbyssPortalPos();
+				BlockPos pos = data.getStructurePos(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL);
 				if(!pos.equals(BlockPos.ZERO))
 				{
 					//TODO temp mechanic;
@@ -150,7 +151,7 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
 		{
 			if(p_21472_ instanceof ServerPlayer player)
 			{
-				BTANetwork.CHANNEL.sendTo(new SetDialogueScreenPacket("mysterious_guy", 5, this), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+				BTANetwork.CHANNEL.sendTo(new SetDialogueScreenPacket("chat", 5, this), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 			}
 			if(!this.level.isClientSide)
 			{

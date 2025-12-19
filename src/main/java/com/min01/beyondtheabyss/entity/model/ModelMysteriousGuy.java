@@ -38,9 +38,9 @@ public class ModelMysteriousGuy extends HierarchicalModel<EntityMysteriousGuy>
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, -4.0F, 0.0F));
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition robe = root.addOrReplaceChild("robe", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, -3.0F, -3.0F, 12.0F, 29.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 2.0F, 0.0F));
+		PartDefinition robe = root.addOrReplaceChild("robe", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, -3.0F, -3.0F, 12.0F, 29.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -26.0F, 0.0F));
 
 		PartDefinition head = robe.addOrReplaceChild("head", CubeListBuilder.create().texOffs(30, 35).addBox(-4.0F, -5.0F, -8.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, -1.0F, 1.0F));
 

@@ -20,7 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-@Mixin(value = EntityRenderDispatcher.class, priority = -10000)
+@Mixin(value = EntityRenderDispatcher.class, priority = -20000)
 public class MixinEntityRenderDispatcher
 {
     @Inject(method = "renderHitbox", at = @At("RETURN"))

@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.misc;
 
+import com.min01.beyondtheabyss.misc.BTAResourceKeys.BTAStructures;
 import com.min01.beyondtheabyss.world.BTASavedData;
 
 import net.minecraft.core.BlockPos;
@@ -11,12 +12,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-public class ChatTicker 
+public class BTAChatTracker 
 {
 	public final LivingEntity entity;
 	public int tickCount;
 	
-	public ChatTicker(LivingEntity entity)
+	public BTAChatTracker(LivingEntity entity)
 	{
 		this.entity = entity;
 	}
@@ -29,30 +30,30 @@ public class ChatTicker
 		if(server != null)
 		{
 			BTASavedData data = BTASavedData.get(server.getLevel(Level.OVERWORLD));
-			if(!data.getHutPos().equals(BlockPos.ZERO))
+			BlockPos pos = data.getStructurePos(BTAStructures.HUT);
+			if(!pos.equals(BlockPos.ZERO))
 			{
 				for(ServerPlayer player : server.getPlayerList().getPlayers())
 				{
-					BlockPos pos = data.getHutPos();
 					Component mysteriousGuy = Component.translatable("message.beyondtheabyss.mysterious_guy");
 					if(this.tickCount == 0)
 					{
-						Component component = Component.translatable("message.beyondtheabyss.mysterious_guycall1");
+						Component component = Component.translatable("message.beyondtheabyss.call1");
 						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), mysteriousGuy));
 					}
 					if(this.tickCount == 40)
 					{
-						Component component = Component.translatable("message.beyondtheabyss.mysterious_guycall2");
+						Component component = Component.translatable("message.beyondtheabyss.call2");
 						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), mysteriousGuy));
 					}
 					if(this.tickCount == 80)
 					{
-						Component component = Component.translatable("message.beyondtheabyss.mysterious_guycall3");
+						Component component = Component.translatable("message.beyondtheabyss.call3");
 						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), mysteriousGuy));
 					}
 					if(this.tickCount == 120)
 					{
-						Component component = Component.translatable("message.beyondtheabyss.mysterious_guycall4", "x: " + pos.getX() + ", z: " + pos.getZ());
+						Component component = Component.translatable("message.beyondtheabyss.call4", "x: " + pos.getX() + ", z: " + pos.getZ());
 						player.sendChatMessage(new OutgoingChatMessage.Disguised(component), false, ChatType.bind(ChatType.CHAT, player.level.registryAccess(), mysteriousGuy));
 						data.setDragonKilled(true);
 					}

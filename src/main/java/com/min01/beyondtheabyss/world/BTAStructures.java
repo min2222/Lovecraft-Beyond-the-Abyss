@@ -11,9 +11,6 @@ import com.min01.beyondtheabyss.world.structure.deepabyss.SpireHollowStructure;
 import com.min01.beyondtheabyss.world.structure.deepabyss.SpireHollowStructurePiece;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -33,14 +30,4 @@ public class BTAStructures
     public static final RegistryObject<StructurePieceType> SPIRE_HOLLOW_PIECE = STRUCTURE_PIECE_TYPES.register("spire_hollow_piece", () -> SpireHollowStructurePiece::new);
     public static final RegistryObject<StructurePieceType.StructureTemplateType> GIANT_FOSSIL_PIECE = STRUCTURE_PIECE_TYPES.register("giant_fossil_piece", () -> GiantFossilStructurePiece::new);
     public static final RegistryObject<StructurePieceType.StructureTemplateType> DEEP_ABYSS_PORTAL_PIECE = STRUCTURE_PIECE_TYPES.register("deep_abyss_portal_piece", () -> DeepAbyssPortalStructurePiece::new);
-
-    public static class Keys
-    {
-    	public static final ResourceKey<Structure> GIANT_FOSSIL = createKey("giant_fossil");
-    	
-    	private static ResourceKey<Structure> createKey(String name) 
-    	{
-    		return ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(BeyondtheAbyss.MODID, name));
-    	}
-    }
 }

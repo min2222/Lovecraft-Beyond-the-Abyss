@@ -18,7 +18,16 @@
 		},
 		"sky_color": 15570512,
 		"water_color": 4159204,
-		"water_fog_color": 329011
+		"water_fog_color": 329011,
+		"particle": {
+			"options": {
+				"type": "minecraft:falling_dust",
+				"value": {
+					"Name": "minecraft:sand"
+				}
+			},
+			"probability": 0.005
+		}
 	},
 	"features": [
 		[

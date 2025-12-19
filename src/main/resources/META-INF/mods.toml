@@ -9,7 +9,7 @@ modLoader="javafml" #mandatory
 loaderVersion="[47,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
-license="All Rights Reserved"
+license="GPLv3 License"
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
@@ -42,9 +42,6 @@ authors="min01" #optional
 description='''a cthulhu mythos inspired horror dimension exploration mod'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 
-[mods."lithium:options"]
-"mixin.math.fast_blockpos"=false
-
 [[dependencies.beyondtheabyss]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
@@ -57,12 +54,6 @@ description='''a cthulhu mythos inspired horror dimension exploration mod'''
     # AFTER - This mod is loaded AFTER the dependency
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT, or SERVER
-    side="BOTH"
-[[dependencies.beyondtheabyss]]
-    modId="gravityapi"
-    mandatory=true
-    versionRange="[1.0.0,)"
-    ordering="NONE"
     side="BOTH"
 # Here's another dependency
 [[dependencies.beyondtheabyss]]
