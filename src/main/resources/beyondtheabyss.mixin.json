@@ -2,15 +2,11 @@
 	"required": true,
 	"minVersion": "0.8",
 	"package": "com.min01.beyondtheabyss.mixin",
-	"plugin": "com.min01.beyondtheabyss.misc.BTAMixinPlugin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"MixinEntity",
 		"MixinSwimNodeEvaluator",
-		"MixinEnderDragon",
-		"packet.MixinFriendlyByteBuf",
-		"packet.MixinCompressionDecoder",
-		"packet.MixinClientboundCustomPayloadPacket"
+		"MixinEnderDragon"
 	],
 	"client": [
 		"MixinLevelRenderer",

@@ -11,6 +11,7 @@ import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.solomonlib.misc.IDynamicLightEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -26,13 +27,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
-public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> implements IMultipart
+public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> implements IMultipart, IDynamicLightEntity
 {
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(EntitySubmarine.class, EntityDataSerializers.INT);
@@ -238,6 +241,20 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	public List<String> getIgnorePart() 
 	{
 		return List.of("top_part0");
+	}
+	
+	@Override
+	public Vec3 getDynamicLightPos()
+	{
+    	Vec3 lightPos = BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 2.0F, 8.0F);
+    	HitResult result = this.level.clip(new ClipContext(this.position(), lightPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
+    	return result.getLocation();
+	}
+	
+	@Override
+	public boolean shouldUpdateDynamicLight()
+	{
+		return this.getFirstPassenger() != null;
 	}
 	
 	@Override
