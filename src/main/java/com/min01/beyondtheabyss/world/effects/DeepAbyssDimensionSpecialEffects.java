@@ -11,19 +11,19 @@ public class DeepAbyssDimensionSpecialEffects extends DimensionSpecialEffects
 	}
 
 	@Override
-	public Vec3 getBrightnessDependentFogColor(Vec3 p_108908_, float p_108909_)
+	public Vec3 getBrightnessDependentFogColor(Vec3 pFogColor, float pBrightness)
 	{
-		return p_108908_.multiply((double)(p_108909_ * 0.94F + 0.06F), (double)(p_108909_ * 0.94F + 0.06F), (double)(p_108909_ * 0.91F + 0.09F));
+		return pFogColor.multiply((double)(pBrightness * 0.94F + 0.06F), (double)(pBrightness * 0.94F + 0.06F), (double)(pBrightness * 0.91F + 0.09F));
 	}
 
 	@Override
-	public boolean isFoggyAt(int p_108905_, int p_108906_)
+	public boolean isFoggyAt(int pX, int pY)
 	{
 		return false;
 	}
 	
 	@Override
-	public float[] getSunriseColor(float p_108872_, float p_108873_) 
+	public float[] getSunriseColor(float pTimeOfDay, float pPartialTicks) 
 	{
 		return null;
 	}

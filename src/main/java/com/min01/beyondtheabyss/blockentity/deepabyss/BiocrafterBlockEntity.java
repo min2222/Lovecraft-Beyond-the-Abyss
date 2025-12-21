@@ -15,9 +15,9 @@ public class BiocrafterBlockEntity extends BlockEntity
 	public final SmoothAnimationState processingAnimationState = new SmoothAnimationState();
 	public int tickCount;
 	
-	public BiocrafterBlockEntity(BlockPos p_155229_, BlockState p_155230_)
+	public BiocrafterBlockEntity(BlockPos pPos, BlockState pBlockState)
 	{
-		super(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), p_155229_, p_155230_);
+		super(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), pPos, pBlockState);
 	}
 	
 	public static void update(Level level, BlockPos pos, BlockState state, BiocrafterBlockEntity crafter)
@@ -27,14 +27,14 @@ public class BiocrafterBlockEntity extends BlockEntity
 	}
 	
 	@Override
-	protected void saveAdditional(CompoundTag p_187471_)
+	protected void saveAdditional(CompoundTag pTag)
 	{
-		super.saveAdditional(p_187471_);
+		super.saveAdditional(pTag);
 	}
 	
 	@Override
-	public void load(CompoundTag p_155245_)
+	public void load(CompoundTag pTag)
 	{
-		super.load(p_155245_);
+		super.load(pTag);
 	}
 }

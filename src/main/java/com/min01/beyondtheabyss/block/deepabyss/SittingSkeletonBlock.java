@@ -12,11 +12,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SittingSkeletonBlock extends AbstractMultiPartSkeletonBlock
 {
-	protected static final VoxelShape X_AXIS_AABB = Block.box(0.0D, 0.0D, 1.0D, 16.0D, 16.0D, 15.0D);
-	protected static final VoxelShape Z_AXIS_AABB = Block.box(1.0D, 0.0D, 0.0D, 15.0D, 16.0D, 16.0D);
+	public static final VoxelShape X_AXIS_AABB = Block.box(0.0D, 0.0D, 1.0D, 16.0D, 16.0D, 15.0D);
+	public static final VoxelShape Z_AXIS_AABB = Block.box(1.0D, 0.0D, 0.0D, 15.0D, 16.0D, 16.0D);
 	
-	protected static final VoxelShape X_AXIS_UPPER_AABB = Block.box(2.0D, 0.0D, 4.0D, 13.0D, 7.0D, 12.0D);
-	protected static final VoxelShape Z_AXIS_UPPER_AABB = Block.box(4.0D, 0.0D, 0.0D, 12.0D, 7.0D, 13.0D);
+	public static final VoxelShape X_AXIS_UPPER_AABB = Block.box(2.0D, 0.0D, 4.0D, 13.0D, 7.0D, 12.0D);
+	public static final VoxelShape Z_AXIS_UPPER_AABB = Block.box(4.0D, 0.0D, 0.0D, 12.0D, 7.0D, 13.0D);
 	
 	public SittingSkeletonBlock()
 	{
@@ -24,10 +24,10 @@ public class SittingSkeletonBlock extends AbstractMultiPartSkeletonBlock
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) 
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
-		Direction direction = p_60555_.getValue(FACING);
-		SkeletonPart part = p_60555_.getValue(SKELETON_PART);
+		Direction direction = pState.getValue(FACING);
+		SkeletonPart part = pState.getValue(SKELETON_PART);
 		if(part == SkeletonPart.UPPER)
 		{
 			if(direction == Direction.EAST || direction == Direction.WEST)
@@ -47,9 +47,9 @@ public class SittingSkeletonBlock extends AbstractMultiPartSkeletonBlock
 	}
 	
 	@Override
-	public Direction getNeighbourDirection(SkeletonPart p_49534_, Direction p_49535_) 
+	public Direction getNeighbourDirection(SkeletonPart part, Direction direction) 
 	{
-		return p_49534_ == SkeletonPart.LOWER ? Direction.UP : Direction.DOWN;
+		return part == SkeletonPart.LOWER ? Direction.UP : Direction.DOWN;
 	}
 	
 	@Override

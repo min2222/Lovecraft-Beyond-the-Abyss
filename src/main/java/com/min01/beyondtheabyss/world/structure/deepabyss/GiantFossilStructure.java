@@ -24,34 +24,34 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class GiantFossilStructure extends Structure
 {
 	public static final Codec<GiantFossilStructure> CODEC = simpleCodec(GiantFossilStructure::new);
-	public static final ResourceLocation RIB_LOCATION = new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/giant_rib");
-	public static final ResourceLocation SKULL_LOCATION = new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/giant_skull");
-	public static final ResourceLocation SPINE_LOCATION = new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/giant_spine");
+	public static final ResourceLocation RIB_LOCATION = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "deepabyss/giant_rib");
+	public static final ResourceLocation SKULL_LOCATION = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "deepabyss/giant_skull");
+	public static final ResourceLocation SPINE_LOCATION = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "deepabyss/giant_spine");
 	
-	public GiantFossilStructure(StructureSettings p_226558_)
+	public GiantFossilStructure(StructureSettings pSettings)
 	{
-		super(p_226558_);
+		super(pSettings);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext p_227387_)
+	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext pContext)
 	{
-		return onTopOfChunkCenter(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, (p_227390_) -> 
+		return onTopOfChunkCenter(pContext, Heightmap.Types.OCEAN_FLOOR_WG, builder -> 
 		{
-			StructureTemplateManager manager = p_227387_.structureTemplateManager();
-			ChunkPos chunkPos = p_227387_.chunkPos();
+			StructureTemplateManager manager = pContext.structureTemplateManager();
+			ChunkPos chunkPos = pContext.chunkPos();
 			BlockPos blockPos = chunkPos.getWorldPosition();
-			RandomSource random = p_227387_.random();
+			RandomSource random = pContext.random();
 			Rotation rotation = Util.getRandom(Rotation.values(), random);
 			ResourceLocation location = Util.getRandom(List.of(RIB_LOCATION, SKULL_LOCATION, SPINE_LOCATION), random);
 			StructureTemplate template = manager.getOrCreate(location);
 			GiantFossilStructurePiece piece = new GiantFossilStructurePiece(manager, location, blockPos);
-			BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, piece, template, rotation, Mirror.NONE, t -> 
+			BTAUtil.moveStructurePiece(pContext, Heightmap.Types.OCEAN_FLOOR_WG, piece, template, rotation, Mirror.NONE, t -> 
 			{
 				piece.move(0, t, 0);
 			});
-			p_227390_.addPiece(piece);
+			builder.addPiece(piece);
 		});
 	}
 	

@@ -45,19 +45,19 @@ public class PurgatoryDimensionSpecialEffects extends DimensionSpecialEffects
 	}
 
 	@Override
-	public Vec3 getBrightnessDependentFogColor(Vec3 p_108908_, float p_108909_)
+	public Vec3 getBrightnessDependentFogColor(Vec3 pFogColor, float pBrightness)
 	{
-		return p_108908_.multiply((double)(p_108909_ * 0.94F + 0.06F), (double)(p_108909_ * 0.94F + 0.06F), (double)(p_108909_ * 0.91F + 0.09F));
+		return pFogColor.multiply((double)(pBrightness * 0.94F + 0.06F), (double)(pBrightness * 0.94F + 0.06F), (double)(pBrightness * 0.91F + 0.09F));
 	}
 
 	@Override
-	public boolean isFoggyAt(int p_108905_, int p_108906_)
+	public boolean isFoggyAt(int pX, int pY)
 	{
 		return false;
 	}
 	
 	@Override
-	public float[] getSunriseColor(float p_108872_, float p_108873_) 
+	public float[] getSunriseColor(float pTimeOfDay, float pPartialTicks) 
 	{
 		return null;
 	}
@@ -134,17 +134,17 @@ public class PurgatoryDimensionSpecialEffects extends DimensionSpecialEffects
 		VertexBuffer.unbind();
 	}
 
-	private static BufferBuilder.RenderedBuffer buildSkyDisc(BufferBuilder p_234268_, float p_234269_)
+	private static BufferBuilder.RenderedBuffer buildSkyDisc(BufferBuilder pBuilder, float pY)
 	{
-		float f = Math.signum(p_234269_) * 512.0F;
+		float f = Math.signum(pY) * 512.0F;
 		RenderSystem.setShader(GameRenderer::getPositionShader);
-		p_234268_.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION);
-		p_234268_.vertex(0.0D, (double)p_234269_, 0.0D).endVertex();
+		pBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION);
+		pBuilder.vertex(0.0D, (double)pY, 0.0D).endVertex();
 		for(int i = -180; i <= 180; i += 45) 
 		{
-			p_234268_.vertex((double)(f * Mth.cos((float)i * ((float)Math.PI / 180.0F))), (double)p_234269_, (double)(512.0F * Mth.sin((float)i * ((float)Math.PI / 180.0F)))).endVertex();
+			pBuilder.vertex((double)(f * Mth.cos((float)i * ((float)Math.PI / 180.0F))), (double)pY, (double)(512.0F * Mth.sin((float)i * ((float)Math.PI / 180.0F)))).endVertex();
 		}
-		return p_234268_.end();
+		return pBuilder.end();
 	}
 	
 	private void createStars() 
@@ -164,10 +164,10 @@ public class PurgatoryDimensionSpecialEffects extends DimensionSpecialEffects
 		VertexBuffer.unbind();
 	}
 	
-	private BufferBuilder.RenderedBuffer drawStars(BufferBuilder p_234260_)
+	private BufferBuilder.RenderedBuffer drawStars(BufferBuilder pBuilder)
 	{
 		RandomSource randomsource = RandomSource.create(10842L);
-		p_234260_.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+		pBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 
 		for(int i = 0; i < 1500; ++i)
 		{
@@ -205,10 +205,10 @@ public class PurgatoryDimensionSpecialEffects extends DimensionSpecialEffects
 					double d24 = 0.0D * d12 - d21 * d13;
 					double d25 = d24 * d9 - d22 * d10;
 					double d26 = d22 * d9 + d24 * d10;
-					p_234260_.vertex(d5 + d25, d6 + d23, d7 + d26).endVertex();
+					pBuilder.vertex(d5 + d25, d6 + d23, d7 + d26).endVertex();
 				}
 			}
 		}
-		return p_234260_.end();
+		return pBuilder.end();
 	}
 }

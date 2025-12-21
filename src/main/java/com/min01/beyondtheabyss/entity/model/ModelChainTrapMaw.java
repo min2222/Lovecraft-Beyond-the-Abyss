@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelChainTrapMaw extends HierarchicalModel<EntityChainTrapMaw> 
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "chain_trap_maw"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "chain_trap_maw"), "main");
 	private final ModelPart ChainMaw;
 
 	public ModelChainTrapMaw(ModelPart root)

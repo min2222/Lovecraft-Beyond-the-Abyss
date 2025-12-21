@@ -21,7 +21,6 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	{
 		super.start();
 		this.mob.setAnimationState(1);
-		this.mob.setCanLook(true);
 	}
 	
 	@Override
@@ -43,7 +42,7 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	}
 
 	@Override
-	protected void performSkill()
+	public void performSkill()
 	{
 		
 	}
@@ -64,7 +63,7 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 			{
 				Vec3 lookPos = BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 20);
 				this.mob.setLastLookPos(lookPos);
-				this.mob.setDeltaMovement(BTAUtil.fromToVector(this.mob.position(), lookPos, 0.5F));
+				this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), lookPos, 0.5F));
 				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 1.5F))
 				{
 					this.canContinueToUse = false;
@@ -96,19 +95,19 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	}
 
 	@Override
-	protected int getSkillUsingTime() 
+	public int getSkillUsingTime() 
 	{
 		return 120;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 60;
 	}
 
 	@Override
-	protected int getSkillUsingInterval()
+	public int getSkillUsingInterval()
 	{
 		return 110;
 	}

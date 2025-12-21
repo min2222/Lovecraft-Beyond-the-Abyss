@@ -24,39 +24,39 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implement
 {
 	public final ModelSubmarine model;
 	
-	public SubmarineRenderer(Context p_174008_)
+	public SubmarineRenderer(Context pContext)
 	{
-		super(p_174008_);
-		this.model = new ModelSubmarine(p_174008_.bakeLayer(ModelSubmarine.LAYER_LOCATION));
+		super(pContext);
+		this.model = new ModelSubmarine(pContext.bakeLayer(ModelSubmarine.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntitySubmarine p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_) 
+	public void render(EntitySubmarine pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
-		p_114488_.pushPose();
-		float yRot = Mth.rotLerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot());
-		float xRot = Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot());
-		p_114488_.scale(-1.0F, -1.0F, 1.0F);
-		p_114488_.translate(0.0F, -1.5F, 0.0F);
-		if(p_114485_.getFirstPassenger() != null)
+		pPoseStack.pushPose();
+		float yRot = Mth.rotLerp(pPartialTick, pEntity.yRotO, pEntity.getYRot());
+		float xRot = Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot());
+		pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+		pPoseStack.translate(0.0F, -1.5F, 0.0F);
+		if(pEntity.getFirstPassenger() != null)
 		{
-			boolean flag = p_114485_.getFirstPassenger() instanceof Player ? !BTAClientUtil.MC.options.getCameraType().isFirstPerson() : true;
-			if(flag && p_114485_.isAlive())
+			boolean flag = pEntity.getFirstPassenger() instanceof Player ? !BTAClientUtil.MC.options.getCameraType().isFirstPerson() : true;
+			if(flag && pEntity.isAlive())
 			{
-				p_114488_.pushPose();
-				EntityRenderer<? super Entity> entityRenderer = BTAClientUtil.MC.getEntityRenderDispatcher().getRenderer(p_114485_.getFirstPassenger());
-				ClientEventHandlerForge.RENDERER_LIST.remove(p_114485_.getFirstPassenger().getUUID());
-				this.transform(p_114488_);
-				p_114488_.mulPose(Axis.XN.rotationDegrees(180.0F));
-	            p_114488_.mulPose(Axis.YN.rotationDegrees(360.0F - Mth.lerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot())));
-				entityRenderer.render(p_114485_.getFirstPassenger(), 0, p_114487_, p_114488_, p_114489_, p_114490_);
-				ClientEventHandlerForge.RENDERER_LIST.add(p_114485_.getFirstPassenger().getUUID());
-				p_114488_.popPose();
+				pPoseStack.pushPose();
+				EntityRenderer<? super Entity> entityRenderer = BTAClientUtil.MC.getEntityRenderDispatcher().getRenderer(pEntity.getFirstPassenger());
+				ClientEventHandlerForge.RENDERER_LIST.remove(pEntity.getFirstPassenger().getUUID());
+				this.transform(pPoseStack);
+				pPoseStack.mulPose(Axis.XN.rotationDegrees(180.0F));
+	            pPoseStack.mulPose(Axis.YN.rotationDegrees(360.0F - Mth.lerp(pPartialTick, pEntity.yRotO, pEntity.getYRot())));
+				entityRenderer.render(pEntity.getFirstPassenger(), 0, pPartialTick, pPoseStack, pBuffer, pPackedLight);
+				ClientEventHandlerForge.RENDERER_LIST.add(pEntity.getFirstPassenger().getUUID());
+				pPoseStack.popPose();
 			}
 		}
-		this.model.setupAnim(p_114485_, 0, 0, p_114485_.tickCount + p_114487_, yRot + 180.0F, xRot);
-		this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		p_114488_.popPose();
+		this.model.setupAnim(pEntity, 0, 0, pEntity.tickCount + pPartialTick, yRot + 180.0F, xRot);
+		this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pPoseStack.popPose();
 	}
 	
 	public void transform(PoseStack stack)
@@ -74,8 +74,8 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implement
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntitySubmarine p_114482_) 
+	public ResourceLocation getTextureLocation(EntitySubmarine pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/submarine.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/submarine.png");
 	}
 }

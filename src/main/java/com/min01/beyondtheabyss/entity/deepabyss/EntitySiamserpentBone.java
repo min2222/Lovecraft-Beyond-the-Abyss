@@ -12,7 +12,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -22,14 +21,15 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
 	
-	public EntitySiamserpentBone(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public EntitySiamserpentBone(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
+		this.xpReward = this.random.nextInt(15);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes()
+        return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 60.0F)
         		.add(Attributes.FOLLOW_RANGE, 45.0F);
     }
@@ -55,7 +55,7 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(DamageSource p_33034_) 
+	protected SoundEvent getHurtSound(DamageSource pDamageSource) 
 	{
 		return BTASounds.SIAMSERPENT_HURT.get();
 	}
@@ -67,19 +67,19 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_37265_) 
+	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.addAdditionalSaveData(p_37265_);
-		p_37265_.putInt("Variant", this.getVariant());
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putInt("Variant", this.getVariant());
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_37262_) 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.readAdditionalSaveData(p_37262_);
-		if(p_37262_.contains("Variant"))
+		super.readAdditionalSaveData(pCompound);
+		if(pCompound.contains("Variant"))
 		{
-			this.setVariant(p_37262_.getInt("Variant"));
+			this.setVariant(pCompound.getInt("Variant"));
 		}
 	}
 	

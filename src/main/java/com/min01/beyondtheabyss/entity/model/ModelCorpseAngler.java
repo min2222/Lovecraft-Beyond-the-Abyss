@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec2;
 
 public class ModelCorpseAngler extends HierarchicalModel<EntityCorpseAngler>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "corpse_angler"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "corpse_angler"), "main");
 	private final ModelPart root;
 
 	public ModelCorpseAngler(ModelPart root)

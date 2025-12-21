@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -91,13 +90,13 @@ public class BTAUtil
         return Mth.sqrt(f * f + f2 * f2);
     }
     
-	public static void moveStructurePiece(Structure.GenerationContext p_227387_, Heightmap.Types types, StructurePiece piece, StructureTemplate template, Rotation rotation, Mirror mirror, Consumer<Integer> consumer)
+	public static void moveStructurePiece(Structure.GenerationContext pContext, Heightmap.Types types, StructurePiece piece, StructureTemplate template, Rotation rotation, Mirror mirror, Consumer<Integer> consumer)
 	{
-		ChunkPos chunkPos = p_227387_.chunkPos();
-		ChunkGenerator chunkGenerator = p_227387_.chunkGenerator();
-		RandomSource random = p_227387_.random();
-		RandomState randomState = p_227387_.randomState();
-		LevelHeightAccessor heightAccessor = p_227387_.heightAccessor();
+		ChunkPos chunkPos = pContext.chunkPos();
+		ChunkGenerator chunkGenerator = pContext.chunkGenerator();
+		RandomSource random = pContext.random();
+		RandomState randomState = pContext.randomState();
+		LevelHeightAccessor heightAccessor = pContext.heightAccessor();
 		BlockPos blockPos = chunkPos.getWorldPosition();
 		BlockPos blockPos1 = new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2);
 		BoundingBox boundingBox = template.getBoundingBox(blockPos, rotation, blockPos1, mirror);
@@ -108,15 +107,16 @@ public class BTAUtil
 	}
 	
 	//copied from RuinedPortalStructure
-	public static int findSuitableY(Heightmap.Types types, RandomSource p_229267_, ChunkGenerator p_229268_, int p_229271_, BoundingBox p_229273_, LevelHeightAccessor p_229274_, RandomState p_229275_)
+	public static int findSuitableY(Heightmap.Types types, RandomSource pRandom, ChunkGenerator pChunkGenerator, int pHeight, BoundingBox pBox, LevelHeightAccessor pLevel, RandomState pRandomState)
 	{
-		int j = p_229274_.getMinBuildHeight() + 15;
-		int i = p_229271_;
-		List<BlockPos> list1 = ImmutableList.of(new BlockPos(p_229273_.minX(), 0, p_229273_.minZ()), new BlockPos(p_229273_.maxX(), 0, p_229273_.minZ()), new BlockPos(p_229273_.minX(), 0, p_229273_.maxZ()), new BlockPos(p_229273_.maxX(), 0, p_229273_.maxZ()));
-		List<NoiseColumn> list = list1.stream().map((p_229280_) -> 
+		int j = pLevel.getMinBuildHeight() + 15;
+		int i = pHeight;
+		List<BlockPos> list1 = ImmutableList.of(new BlockPos(pBox.minX(), 0, pBox.minZ()), new BlockPos(pBox.maxX(), 0, pBox.minZ()), new BlockPos(pBox.minX(), 0, pBox.maxZ()), new BlockPos(pBox.maxX(), 0, pBox.maxZ()));
+		List<NoiseColumn> list = list1.stream().map(t ->
 		{
-			return p_229268_.getBaseColumn(p_229280_.getX(), p_229280_.getZ(), p_229274_, p_229275_);
+			return pChunkGenerator.getBaseColumn(t.getX(), t.getZ(), pLevel, pRandomState);
 		}).collect(Collectors.toList());
+		
 		int l;
 		for(l = i; l > j; --l) 
 		{
@@ -163,52 +163,6 @@ public class BTAUtil
 			if(entity.getDeltaMovement().y <= 0.0D)
 			{
 				entity.setDeltaMovement(entity.getDeltaMovement().x, 0.0, entity.getDeltaMovement().z);
-			}
-		}
-	}
-	
-	public static void createBallWithStep(Level level, Vec3 pos, double velocity, int size, int step, BiConsumer<Vec3, Vec3> consumer)
-	{
-		RandomSource random = level.random;
-		for(int i = -size; i <= size; i += step) 
-		{
-			for(int j = -size; j <= size; j += step) 
-			{
-				for(int k = -size; k <= size; k += step) 
-				{
-					double d3 = (double) j + (random.nextDouble() - random.nextDouble()) * 0.5D;
-					double d4 = (double) i + (random.nextDouble() - random.nextDouble()) * 0.5D;
-					double d5 = (double) k + (random.nextDouble() - random.nextDouble()) * 0.5D;
-					double d6 = Math.sqrt(d3 * d3 + d4 * d4 + d5 * d5) / velocity + random.nextGaussian() * 0.05D;
-					consumer.accept(pos, new Vec3(d3 / d6, d4 / d6, d5 / d6));
-					if(i != -size && i != size && j != -size && j != size)
-					{
-						k += size * 2 - 1;
-					}
-				}
-			}
-		}
-	}
-	
-	public static void createBall(Level level, Vec3 pos, double velocity, int size, BiConsumer<Vec3, Vec3> consumer)
-	{
-		RandomSource random = level.random;
-		for(int i = -size; i <= size; ++i) 
-		{
-			for(int j = -size; j <= size; ++j) 
-			{
-				for(int k = -size; k <= size; ++k) 
-				{
-					double d3 = (double) j + (random.nextDouble() - random.nextDouble()) * 0.5D;
-					double d4 = (double) i + (random.nextDouble() - random.nextDouble()) * 0.5D;
-					double d5 = (double) k + (random.nextDouble() - random.nextDouble()) * 0.5D;
-					double d6 = Math.sqrt(d3 * d3 + d4 * d4 + d5 * d5) / velocity + random.nextGaussian() * 0.05D;
-					consumer.accept(pos, new Vec3(d3 / d6, d4 / d6, d5 / d6));
-					if(i != -size && i != size && j != -size && j != size)
-					{
-						k += size * 2 - 1;
-					}
-				}
 			}
 		}
 	}
@@ -328,29 +282,32 @@ public class BTAUtil
 		return (float) ((SIMPLEX_NOISE.getValue((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
 	}
 	
-	public static BlockPos getSpecificGroundPos(BlockGetter pLevel, double pX, double startY, double pZ, Block block)
+	public static BlockPos getSpecificGroundPos(BlockGetter level, double x, double startY, double z, Block block)
     {
-        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(pX, startY, pZ);
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startY, z);
         do
         {
-        	blockPos.move(Direction.DOWN);
+        	mutablePos.move(Direction.DOWN);
         }
-        while(!pLevel.getBlockState(blockPos).is(block) && blockPos.getY() > pLevel.getMinBuildHeight());
-        BlockPos pos = blockPos.below();
-        return pos;
+        while(!level.getBlockState(mutablePos).is(block) && mutablePos.getY() > level.getMinBuildHeight());
+        return mutablePos.immutable();
     }
 	
-	@SuppressWarnings("deprecation")
-	public static BlockPos getGroundPos(BlockGetter pLevel, double pX, double startY, double pZ, int belowY)
+	public static Vec3 getGroundPosVec3(BlockGetter level, double x, double startY, double z)
+	{
+		BlockPos blockPos = getGroundPos(level, x, startY, z);
+		return Vec3.atCenterOf(blockPos);
+	}
+	
+	public static BlockPos getGroundPos(BlockGetter level, double x, double startY, double z)
     {
-        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(pX, startY, pZ);
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startY, z);
         do
         {
-        	blockPos.move(Direction.DOWN);
+        	mutablePos.move(Direction.DOWN);
         }
-        while((pLevel.getBlockState(blockPos).isAir() || pLevel.getBlockState(blockPos).liquid() || !pLevel.getBlockState(blockPos).isCollisionShapeFullBlock(pLevel, blockPos)) && blockPos.getY() > pLevel.getMinBuildHeight());
-        BlockPos pos = blockPos.below().below(belowY);
-        return pos;
+        while((level.getBlockState(mutablePos).isAir() || !level.getFluidState(mutablePos).isEmpty() || !level.getBlockState(mutablePos).isCollisionShapeFullBlock(level, mutablePos)) && mutablePos.getY() > level.getMinBuildHeight());
+        return mutablePos.immutable();
     }
 	
 	public static String getMultiPart(EntityBounds bounds, Player player)
@@ -464,58 +421,25 @@ public class BTAUtil
 		return null;
 	}
 	
-	public static float rotlerp(float p_24992_, float p_24993_, float p_24994_)
-	{
-		float f = Mth.wrapDegrees(p_24993_ - p_24992_);
-		
-		if(f > p_24994_) 
-		{
-			f = p_24994_;
-		}
-
-		if(f < -p_24994_) 
-		{
-			f = -p_24994_;
-		}
-
-		float f1 = p_24992_ + f;
-		
-		if(f1 < 0.0F)
-		{
-			f1 += 360.0F;
-		}
-		else if(f1 > 360.0F)
-		{
-			f1 -= 360.0F;
-		}
-		
-		return f1;
-	}
+    public static float rotlerp(float start, float end, float maxStep) 
+    {
+        float delta = Mth.wrapDegrees(end - start);
+        float clampedDelta = Mth.clamp(delta, -maxStep, maxStep);
+        return Mth.wrapDegrees(start + clampedDelta);
+    }
 	
-	public static Vec3 moveToEntity(Vec3 from, Vec3 to, Entity mover, Entity target, float multiplier)
-	{
-		double d0 = from.x - to.x;
-		double d1 = from.y - to.y;
-		double d2 = from.z - to.z;
-		double d3 = -d0 / (multiplier * mover.distanceTo(target));
-		double d4 = -d1 / (multiplier * mover.distanceTo(target));
-		double d5 = -d2 / (multiplier * mover.distanceTo(target));
-		return new Vec3(d3, d4, d5);
-	}
-	
-	public static Vec3 fromToVector(Vec3 from, Vec3 to, float scale)
+	public static Vec3 getVelocityTowards(Vec3 from, Vec3 to, float speed)
 	{
 		Vec3 motion = to.subtract(from).normalize();
-		return motion.scale(scale);
+		return motion.scale(speed);
 	}
 	
-	public static Vec3 fromToVector(Vec3 from, Vec3 to)
+	public static Vec3 getVelocityTowards(Vec3 from, Vec3 to)
 	{
-		Vec3 motion = to.subtract(from).normalize();
-		return motion;
+		return getVelocityTowards(from, to, 1.0F);
 	}
 	
-	public static Vec3 fromToPos(Vec3 from, Vec3 to)
+	public static Vec3 getPosTowards(Vec3 from, Vec3 to)
 	{
 		Vec3 pos = to.subtract(from);
 		return pos;
@@ -569,36 +493,15 @@ public class BTAUtil
     	double d0 = owner.distanceToSqr(target.getX(), target.getY(), target.getZ());
     	return d0 <= getMeleeAttackRangeSqr(owner, target, multiplier);
     }
-
-	public static Vec3 getLookPos(float xRot, float yRot, float yPos, double distance)
-	{
-		float f = -Mth.sin(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
-		float f1 = -Mth.sin((xRot + yPos) * ((float)Math.PI / 180F));
-		float f2 = Mth.cos(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
-		return new Vec3(f, f1, f2).scale(distance);
-	}
 	
-	@SuppressWarnings("deprecation")
-	public static BlockPos getCeilingPos(BlockGetter pLevel, double pX, double startY, double pZ, int aboveY)
+	public static BlockPos getCeilingPos(BlockGetter level, double x, double startY, double z)
     {
-        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(pX, startY, pZ);
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startY, z);
         do
         {
-        	blockPos.move(Direction.UP);
+        	mutablePos.move(Direction.UP);
         }
-        while((pLevel.getBlockState(blockPos).isAir() || pLevel.getBlockState(blockPos).liquid() || !pLevel.getBlockState(blockPos).isCollisionShapeFullBlock(pLevel, blockPos)) && blockPos.getY() < pLevel.getMaxBuildHeight());
-        return blockPos.above().above(aboveY);
+        while((level.getBlockState(mutablePos).isAir() || !level.getFluidState(mutablePos).isEmpty() || !level.getBlockState(mutablePos).isCollisionShapeFullBlock(level, mutablePos)) && mutablePos.getY() < level.getMaxBuildHeight());
+        return mutablePos.immutable();
     }
-	
- 	@SuppressWarnings("deprecation")
-	public static Vec3 getGroundPosAbove(BlockGetter pLevel, double pX, double startY, double pZ)
- 	{
- 		BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(pX, startY, pZ);
- 		do
- 		{
- 			blockPos.move(Direction.DOWN);
- 		} 
- 		while((pLevel.getBlockState(blockPos).isAir() || pLevel.getBlockState(blockPos).liquid() || !pLevel.getBlockState(blockPos).isCollisionShapeFullBlock(pLevel, blockPos)) && blockPos.getY() > pLevel.getMinBuildHeight());
- 		return Vec3.atCenterOf(blockPos.above());
- 	}
 }

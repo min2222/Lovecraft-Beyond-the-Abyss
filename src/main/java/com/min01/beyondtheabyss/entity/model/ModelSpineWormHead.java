@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelSpineWormHead extends HierarchicalModel<EntitySpineWormHead>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "spine_worm_head"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "spine_worm_head"), "main");
 	private final ModelPart root;
 
 	public ModelSpineWormHead(ModelPart root) 

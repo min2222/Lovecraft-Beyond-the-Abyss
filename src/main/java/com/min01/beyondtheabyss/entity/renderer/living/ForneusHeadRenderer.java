@@ -11,26 +11,26 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ForneusHeadRenderer extends MobRenderer<EntityForneusHead, ModelForneusHead>
 {
-	public ForneusHeadRenderer(Context p_174304_)
+	public ForneusHeadRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelForneusHead(p_174304_.bakeLayer(ModelForneusHead.LAYER_LOCATION)), 0.0F);
+		super(pContext, new ModelForneusHead(pContext.bakeLayer(ModelForneusHead.LAYER_LOCATION)), 0.0F);
 	}
 	
 	@Override
-	protected void scale(EntityForneusHead p_115314_, PoseStack p_115315_, float p_115316_)
+	protected void scale(EntityForneusHead pLivingEntity, PoseStack pPoseStack, float pPartialTickTime)
 	{
-		p_115315_.scale(1.5F, 1.5F, 1.5F);
+		pPoseStack.scale(1.5F, 1.5F, 1.5F);
 	}
 	
 	@Override
-	protected float getFlipDegrees(EntityForneusHead p_115337_) 
+	protected float getFlipDegrees(EntityForneusHead pLivingEntity) 
 	{
 		return 0.0F;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityForneusHead p_115812_)
+	public ResourceLocation getTextureLocation(EntityForneusHead pEntity)
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/forneus.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/forneus.png");
 	}
 }

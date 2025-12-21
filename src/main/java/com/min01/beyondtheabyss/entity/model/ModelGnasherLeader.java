@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelGnasherLeader extends HierarchicalModel<EntityGnasher>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "gnasher_leader"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "gnasher_leader"), "main");
 	private final ModelPart root;
 
 	public ModelGnasherLeader(ModelPart root) 

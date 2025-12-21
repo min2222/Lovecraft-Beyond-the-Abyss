@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelSiamserpentSlasher extends HierarchicalModel<EntitySiamserpentHead>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "siamserpent_slasher"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "siamserpent_slasher"), "main");
 	private final ModelPart root;
 
 	public ModelSiamserpentSlasher(ModelPart root) 

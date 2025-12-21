@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelSiamserpentBlaster extends ModelSiamserpentSlasher
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "siamserpent_blaster"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "siamserpent_blaster"), "main");
 	private final ModelPart root;
 
 	public ModelSiamserpentBlaster(ModelPart root) 
@@ -71,7 +71,6 @@ public class ModelSiamserpentBlaster extends ModelSiamserpentSlasher
 		entity.rayChargeAnimationState.animate(this, SiamserpentAnimation.BlasterAnimation.BLASTER_CHARGE, ageInTicks);
 		entity.rayStartAnimationState.animate(this, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_START, ageInTicks);
 		entity.rayLoopAnimationState.animate(this, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_LOOP, ageInTicks);
-		entity.rayEndAnimationState.animate(this, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOOT_END, ageInTicks);
 		entity.blasterShotAnimationState.animate(this, SiamserpentAnimation.BlasterAnimation.BLASTER_SHOT, ageInTicks);
 		entity.blasterDisabledAnimationState.animate(this, SiamserpentAnimation.BlasterAnimation.BLASTER_DISABLED, ageInTicks);
 	}

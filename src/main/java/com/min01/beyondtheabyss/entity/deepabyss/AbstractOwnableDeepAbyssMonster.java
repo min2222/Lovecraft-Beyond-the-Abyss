@@ -21,9 +21,9 @@ public abstract class AbstractOwnableDeepAbyssMonster<T extends AbstractDeepAbys
 {
 	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractOwnableDeepAbyssMonster.class, EntityDataSerializers.OPTIONAL_UUID);
 	
-	public AbstractOwnableDeepAbyssMonster(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public AbstractOwnableDeepAbyssMonster(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 	
 	@Override
@@ -34,22 +34,22 @@ public abstract class AbstractOwnableDeepAbyssMonster<T extends AbstractDeepAbys
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_37265_) 
+	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.addAdditionalSaveData(p_37265_);
+		super.addAdditionalSaveData(pCompound);
 		if(this.entityData.get(OWNER_UUID).isPresent())
 		{
-			p_37265_.putUUID("Owner", this.entityData.get(OWNER_UUID).get());
+			pCompound.putUUID("Owner", this.entityData.get(OWNER_UUID).get());
 		}
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_37262_) 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.readAdditionalSaveData(p_37262_);
-		if(p_37262_.hasUUID("Owner")) 
+		super.readAdditionalSaveData(pCompound);
+		if(pCompound.hasUUID("Owner")) 
 		{
-			this.entityData.set(OWNER_UUID, Optional.of(p_37262_.getUUID("Owner")));
+			this.entityData.set(OWNER_UUID, Optional.of(pCompound.getUUID("Owner")));
 		}
 	}
 	

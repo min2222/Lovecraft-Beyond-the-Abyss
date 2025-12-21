@@ -29,7 +29,7 @@ public class SiamserpentBlasterShotGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	protected void performSkill() 
+	public void performSkill() 
 	{
 		EntityEnergyBall ball = new EntityEnergyBall(this.mob.level, this.mob);
     	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.mob.getXRot(), this.mob.getYHeadRot()), this.mob.getEyePosition(), 0.0F, -0.25F, 0.5F);
@@ -47,19 +47,19 @@ public class SiamserpentBlasterShotGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	protected int getSkillUsingTime() 
+	public int getSkillUsingTime() 
 	{
 		return 35;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 10;
 	}
 
 	@Override
-	protected int getSkillUsingInterval() 
+	public int getSkillUsingInterval() 
 	{
 		return 100;
 	}

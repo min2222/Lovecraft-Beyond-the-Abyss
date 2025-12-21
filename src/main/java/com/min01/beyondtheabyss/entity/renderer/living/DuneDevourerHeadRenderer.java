@@ -10,20 +10,20 @@ import net.minecraft.resources.ResourceLocation;
 
 public class DuneDevourerHeadRenderer extends MobRenderer<EntityDuneDevourerHead, ModelDuneDevourerHead>
 {
-	public DuneDevourerHeadRenderer(Context p_174304_)
+	public DuneDevourerHeadRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelDuneDevourerHead(p_174304_.bakeLayer(ModelDuneDevourerHead.LAYER_LOCATION)), 0.0F);
+		super(pContext, new ModelDuneDevourerHead(pContext.bakeLayer(ModelDuneDevourerHead.LAYER_LOCATION)), 0.0F);
 	}
 	
 	@Override
-	protected float getFlipDegrees(EntityDuneDevourerHead p_115337_) 
+	protected float getFlipDegrees(EntityDuneDevourerHead pLivingEntity) 
 	{
 		return 0.0F;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityDuneDevourerHead p_115812_)
+	public ResourceLocation getTextureLocation(EntityDuneDevourerHead pEntity)
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/dune_devourer.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/dune_devourer.png");
 	}
 }

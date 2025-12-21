@@ -24,40 +24,40 @@ public class FallingStoneRenderer extends EntityRenderer<EntityFallingStone>
 {
 	private final BlockRenderDispatcher dispatcher;
 	
-	public FallingStoneRenderer(Context p_174008_)
+	public FallingStoneRenderer(Context pContext)
 	{
-		super(p_174008_);
-		this.dispatcher = p_174008_.getBlockRenderDispatcher();
+		super(pContext);
+		this.dispatcher = pContext.getBlockRenderDispatcher();
 	}
 	
 	@Override
-	public void render(EntityFallingStone p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_)
+	public void render(EntityFallingStone pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
 	{
-		BlockState state = p_114485_.getBlockState();
+		BlockState state = pEntity.getBlockState();
 		if(state.getRenderShape() == RenderShape.MODEL) 
 		{
-			Level level = p_114485_.level;
-			if(state != level.getBlockState(p_114485_.blockPosition()) && state.getRenderShape() != RenderShape.INVISIBLE) 
+			Level level = pEntity.level;
+			if(state != level.getBlockState(pEntity.blockPosition()) && state.getRenderShape() != RenderShape.INVISIBLE) 
 			{
-				p_114488_.pushPose();
-				BlockPos pos = BlockPos.containing(p_114485_.getX(), p_114485_.getBoundingBox().maxY, p_114485_.getZ());
-				p_114488_.mulPose(Axis.ZP.rotationDegrees(p_114485_.getRotation()));
-				p_114488_.mulPose(Axis.YP.rotationDegrees(p_114485_.getRotation()));
-				p_114488_.mulPose(Axis.XP.rotationDegrees(p_114485_.getRotation()));
-				p_114488_.translate(-0.5F, 0.0F, -0.5F);
+				pPoseStack.pushPose();
+				BlockPos pos = BlockPos.containing(pEntity.getX(), pEntity.getBoundingBox().maxY, pEntity.getZ());
+				pPoseStack.mulPose(Axis.ZP.rotationDegrees(pEntity.getRotation()));
+				pPoseStack.mulPose(Axis.YP.rotationDegrees(pEntity.getRotation()));
+				pPoseStack.mulPose(Axis.XP.rotationDegrees(pEntity.getRotation()));
+				pPoseStack.translate(-0.5F, 0.0F, -0.5F);
 				BakedModel model = this.dispatcher.getBlockModel(state);
-				for(RenderType renderType : model.getRenderTypes(state, RandomSource.create(state.getSeed(p_114485_.blockPosition())), ModelData.EMPTY))
+				for(RenderType renderType : model.getRenderTypes(state, RandomSource.create(state.getSeed(pEntity.blockPosition())), ModelData.EMPTY))
 				{
 					renderType = RenderTypeHelper.getMovingBlockRenderType(renderType);
-					this.dispatcher.getModelRenderer().tesselateBlock(level, model, state, pos, p_114488_, p_114489_.getBuffer(renderType), false, RandomSource.create(), state.getSeed(p_114485_.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+					this.dispatcher.getModelRenderer().tesselateBlock(level, model, state, pos, pPoseStack, pBuffer.getBuffer(renderType), false, RandomSource.create(), state.getSeed(pEntity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
 				}
-				p_114488_.popPose();
+				pPoseStack.popPose();
 			}
 		}
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityFallingStone p_114482_)
+	public ResourceLocation getTextureLocation(EntityFallingStone pEntity)
 	{
 		return null;
 	}

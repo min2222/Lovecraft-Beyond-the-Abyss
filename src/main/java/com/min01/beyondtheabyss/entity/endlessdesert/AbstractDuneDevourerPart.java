@@ -16,9 +16,9 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 {
 	public boolean inWall;
 	
-	public AbstractDuneDevourerPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public AbstractDuneDevourerPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.noPhysics = true;
 		this.setNoGravity(true);
 		this.setNoAi(!this.isHead());
@@ -49,11 +49,11 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 	}
 	
 	@Override
-	protected void doPush(Entity p_21294_)
+	protected void doPush(Entity pEntity)
 	{
-		if(!(p_21294_ instanceof AbstractDuneDevourerPart))
+		if(!(pEntity instanceof AbstractDuneDevourerPart))
 		{
-			super.doPush(p_21294_);
+			super.doPush(pEntity);
 		}
 	}
 	
@@ -76,7 +76,7 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 	}
 	
 	@Override
-	public boolean removeWhenFarAway(double p_21542_) 
+	public boolean removeWhenFarAway(double pDistanceToClosestPlayer) 
 	{
 		return false;
 	}

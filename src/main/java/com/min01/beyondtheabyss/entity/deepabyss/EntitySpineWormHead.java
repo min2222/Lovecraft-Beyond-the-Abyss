@@ -3,6 +3,8 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -10,8 +12,6 @@ import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
@@ -26,7 +26,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -51,9 +50,9 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState holdingAnimationState = new SmoothAnimationState();
 	
-	public EntitySpineWormHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntitySpineWormHead(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.setCanMove(false);
 		this.setCanLook(false);
 		this.xpReward = this.random.nextInt(15);
@@ -61,7 +60,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes()
+        return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 30.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.0F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F)
@@ -155,11 +154,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 					Vec3 pos = this.getTarget().position();
 					if(pos.subtract(this.position()).length() <= 0.5F)
 					{
-						if(this.level.isClientSide)
-						{
-							this.getTarget().startRiding(this);
-		    				BTANetwork.sendToServer(new UpdateVehiclePacket(this.getTarget(), this));
-						}
+						this.getTarget().startRiding(this);
 						this.chain.setTarget(Vec3.ZERO);
 						this.setCooldown(100);
 					}
@@ -198,17 +193,17 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	}
 	
 	@Override
-	public void setTarget(LivingEntity p_21544_) 
+	public void setTarget(LivingEntity pTarget) 
 	{
-		if(p_21544_ == null)
+		if(pTarget == null)
 		{
 			this.entityData.set(TARGET_UUID, Optional.empty());
 		}
 		else
 		{
-			this.entityData.set(TARGET_UUID, Optional.of(p_21544_.getUUID()));
+			this.entityData.set(TARGET_UUID, Optional.of(pTarget.getUUID()));
 		}
-		super.setTarget(p_21544_);
+		super.setTarget(pTarget);
 	}
 	
 	@Override
@@ -235,24 +230,25 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	}
 	
 	@Override
-	public boolean hurt(DamageSource p_21016_, float p_21017_)
+	public boolean hurt(DamageSource pSource, float pAmount)
 	{
-		if(this.isVehicle() && p_21017_ >= 3.0F)
+		if(this.isVehicle() && pAmount >= 3.0F)
 		{
 			this.getFirstPassenger().stopRiding();
 		}
-		return super.hurt(p_21016_, p_21017_);
+		return super.hurt(pSource, pAmount);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) 
 	{
 		BlockPos attachPos = this.blockPosition();
-		if(p_21436_ == MobSpawnType.NATURAL)
+		
+		if(pReason == MobSpawnType.NATURAL)
 		{
-			BlockPos blockPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above();
-			if(!p_21434_.getBlockState(blockPos).is(Blocks.WATER))
+			BlockPos blockPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
+			if(!pLevel.getBlockState(blockPos).is(Blocks.WATER))
 			{
 				blockPos = blockPos.above();
 			}
@@ -265,6 +261,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		Direction direction = this.tryAttach();
 		this.setAttachedPos(attachPos);
 		this.setAttachedDirection(direction);
+		
 		switch(direction)
 		{
 		case DOWN:
@@ -322,10 +319,10 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 			this.level.addFreshEntity(body);
 		}
 		
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
-	public static boolean checkSpineWormSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkSpineWormSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
@@ -344,31 +341,31 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	}
     
     @Override
-    public void addAdditionalSaveData(CompoundTag p_21484_) 
+    public void addAdditionalSaveData(CompoundTag pCompound) 
     {
-    	super.addAdditionalSaveData(p_21484_);
-    	p_21484_.putInt("AttachedDirection", this.getAttachedDirection().ordinal());
-    	p_21484_.putInt("AttachedPosX", this.getAttachedPos().getX());
-    	p_21484_.putInt("AttachedPosY", this.getAttachedPos().getY());
-    	p_21484_.putInt("AttachedPosZ", this.getAttachedPos().getZ());
-    	p_21484_.putInt("Cooldown", this.getCooldown());
+    	super.addAdditionalSaveData(pCompound);
+    	pCompound.putInt("AttachedDirection", this.getAttachedDirection().ordinal());
+    	pCompound.putInt("AttachedPosX", this.getAttachedPos().getX());
+    	pCompound.putInt("AttachedPosY", this.getAttachedPos().getY());
+    	pCompound.putInt("AttachedPosZ", this.getAttachedPos().getZ());
+    	pCompound.putInt("Cooldown", this.getCooldown());
     }
     
     @Override
-    public void readAdditionalSaveData(CompoundTag p_21450_)
+    public void readAdditionalSaveData(CompoundTag pCompound)
     {
-    	super.readAdditionalSaveData(p_21450_);
-    	if(p_21450_.contains("AttachedDirection"))
+    	super.readAdditionalSaveData(pCompound);
+    	if(pCompound.contains("AttachedDirection"))
     	{
-    		this.setAttachedDirection(Direction.values()[p_21450_.getInt("AttachedDirection")]);
+    		this.setAttachedDirection(Direction.values()[pCompound.getInt("AttachedDirection")]);
     	}
-    	if(p_21450_.contains("AttachedPosX") && p_21450_.contains("AttachedPosY") && p_21450_.contains("AttachedPosZ"))
+    	if(pCompound.contains("AttachedPosX") && pCompound.contains("AttachedPosY") && pCompound.contains("AttachedPosZ"))
     	{
-    		this.setAttachedPos(new BlockPos(p_21450_.getInt("AttachedPosX"), p_21450_.getInt("AttachedPosY"), p_21450_.getInt("AttachedPosZ")));
+    		this.setAttachedPos(new BlockPos(pCompound.getInt("AttachedPosX"), pCompound.getInt("AttachedPosY"), pCompound.getInt("AttachedPosZ")));
     	}
-    	if(p_21450_.contains("Cooldown"))
+    	if(pCompound.contains("Cooldown"))
     	{
-    		this.setCooldown(p_21450_.getInt("Cooldown"));
+    		this.setCooldown(pCompound.getInt("Cooldown"));
     	}
     }
     

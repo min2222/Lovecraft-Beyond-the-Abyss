@@ -29,9 +29,9 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 	public static final EntityDataAccessor<Integer> CYST_TYPE = SynchedEntityData.defineId(EntityMutavoreCyst.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> IS_SHRAPNEL = SynchedEntityData.defineId(EntityMutavoreCyst.class, EntityDataSerializers.BOOLEAN);
 	
-	public EntityMutavoreCyst(EntityType<?> p_19870_, Level p_19871_) 
+	public EntityMutavoreCyst(EntityType<?> pEntityType, Level pLevel) 
 	{
-		super(p_19870_, p_19871_);
+		super(pEntityType, pLevel);
 	}
 	
 	@Override
@@ -71,13 +71,13 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 	}
 	
 	@Override
-	public EntityDimensions getDimensions(Pose p_19975_) 
+	public EntityDimensions getDimensions(Pose pPose) 
 	{
 		if(this.isShrapnel())
 		{
 			return EntityDimensions.fixed(0.1F, 0.1F);
 		}
-		return super.getDimensions(p_19975_);
+		return super.getDimensions(pPose);
 	}
 	
 	protected void updateRotation() 
@@ -88,17 +88,17 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 		this.setYRot(lerpRotation(this.yRotO, (float)(Mth.atan2(vec3.x, vec3.z) * (double)(180.0F / (float)Math.PI))));
 	}
 	
-	protected static float lerpRotation(float p_37274_, float p_37275_) 
+	protected static float lerpRotation(float pCurrentRotation, float pTargetRotation) 
 	{
-		while(p_37275_ - p_37274_ < -180.0F) 
+		while(pTargetRotation - pCurrentRotation < -180.0F) 
 		{
-			p_37274_ -= 360.0F;
+			pCurrentRotation -= 360.0F;
 		}
-		while(p_37275_ - p_37274_ >= 180.0F) 
+		while(pTargetRotation - pCurrentRotation >= 180.0F)
 		{
-			p_37274_ += 360.0F;
+			pCurrentRotation += 360.0F;
 		}
-		return Mth.lerp(0.2F, p_37274_, p_37275_);
+		return Mth.lerp(0.2F, pCurrentRotation, pTargetRotation);
 	}
 	
 	@Override
@@ -108,9 +108,9 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 	}
 	
 	@Override
-	public void push(Entity p_20293_) 
+	public void push(Entity pEntity) 
 	{
-		if(!(p_20293_ instanceof EntityMutavore))
+		if(!(pEntity instanceof EntityMutavore))
 		{
 			if(!this.isShrapnel())
 			{
@@ -118,7 +118,7 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 			}
 			else
 			{
-				p_20293_.hurt(BTADamageSource.causeShrapnelDamage(this.level.registryAccess(), this), 0.5F);
+				pEntity.hurt(BTADamageSource.causeShrapnelDamage(this.level.registryAccess(), this), 0.5F);
 			}
 		}
 	}
@@ -140,7 +140,7 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 			}
 			cyst.setShrapnel(true);
 			cyst.setPos(this.position());
-			cyst.setDeltaMovement(BTAUtil.fromToVector(cyst.position(), spreadPos, 0.3F));
+			cyst.setDeltaMovement(BTAUtil.getVelocityTowards(cyst.position(), spreadPos, 0.3F));
 			Vec2 rot = BTAUtil.lookAt(cyst.position(), spreadPos);
 			cyst.setXRot(rot.x);
 			cyst.setYRot(rot.y);
@@ -151,19 +151,19 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_37265_)
+	public void addAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.addAdditionalSaveData(p_37265_);
-		p_37265_.putInt("CystType", this.getCystType());
-		p_37265_.putBoolean("isShrapnel", this.isShrapnel());
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putInt("CystType", this.getCystType());
+		pCompound.putBoolean("isShrapnel", this.isShrapnel());
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_37262_)
+	public void readAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.readAdditionalSaveData(p_37262_);
-		this.setCystType(p_37262_.getInt("CystType"));
-		this.setShrapnel(p_37262_.getBoolean("isShrapnel"));
+		super.readAdditionalSaveData(pCompound);
+		this.setCystType(pCompound.getInt("CystType"));
+		this.setShrapnel(pCompound.getBoolean("isShrapnel"));
 	}
 	
 	public void setShrapnel(boolean value)

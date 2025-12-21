@@ -4,8 +4,8 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
-import com.min01.beyondtheabyss.network.UpdateAltarItemPacket;
 import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateAltarItemPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -30,30 +30,30 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.PacketDistributor;
 
 public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	
 	public RiftwellingAltarBlock() 
 	{
-		super(BlockBehaviour.Properties.of().strength(-1.0F, 3600000.0F).lightLevel(value -> 15).noLootTable().isValidSpawn((p_61031_, p_61032_, p_61033_, p_61034_) -> false).noOcclusion());
+		super(BlockBehaviour.Properties.of().strength(-1.0F, 3600000.0F).lightLevel(value -> 15).noLootTable().isValidSpawn((pState, pLevel, pPos, pValue) -> false).noOcclusion());
 	}
 	
 	@Override
-	public RenderShape getRenderShape(BlockState p_49232_)
+	public RenderShape getRenderShape(BlockState pState)
 	{
 		return RenderShape.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_)
+	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState)
 	{
-		return new RiftwellingAltarBlockEntity(p_153215_, p_153216_);
+		return new RiftwellingAltarBlockEntity(pPos, pState);
 	}
 	
 	@Override
-	public InteractionResult use(BlockState p_60503_, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult p_60508_) 
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) 
 	{
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
@@ -74,7 +74,7 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 			
 			if(!world.isClientSide)
 			{
-				BTANetwork.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateAltarItemPacket(player, stack, pos));
+				BTANetwork.sendToAll(new UpdateAltarItemPacket(stack, pos));
 			}
 			
 			if(!player.getAbilities().instabuild)
@@ -103,35 +103,35 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 	
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153273_, BlockState p_153274_, BlockEntityType<T> p_153275_)
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType)
     {
-        return createTicker(p_153273_, p_153275_, BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get());
+        return createTicker(pLevel, pBlockEntityType, BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get());
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<RiftwellingAltarBlockEntity> p_151990_)
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level pLevel, BlockEntityType<T> pServerType, BlockEntityType<RiftwellingAltarBlockEntity> pClientType)
     {
-        return createTickerHelper(p_151989_, p_151990_, RiftwellingAltarBlockEntity::update);
+        return createTickerHelper(pServerType, pClientType, RiftwellingAltarBlockEntity::update);
     }
     
     @Override
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_152019_)
+    public BlockState getStateForPlacement(BlockPlaceContext pContext)
     {
-    	LevelAccessor level = p_152019_.getLevel();
-    	BlockPos pos = p_152019_.getClickedPos();
+    	LevelAccessor level = pContext.getLevel();
+    	BlockPos pos = pContext.getClickedPos();
     	return this.defaultBlockState().setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
     }
     
     @Override
-    public FluidState getFluidState(BlockState p_152045_)
+    public FluidState getFluidState(BlockState pState)
     {
-    	return p_152045_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    	return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
-    	p_152043_.add(WATERLOGGED);
+    	pBuilder.add(WATERLOGGED);
     }
 }

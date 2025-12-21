@@ -1,8 +1,9 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -28,9 +30,9 @@ public class EntityForneusHead extends AbstractForneusPart
 	public static final EntityDataAccessor<Vec3> WANTED_POS = SynchedEntityData.defineId(EntityForneusHead.class, BTAEntityDataSerializers.VEC3.get());
 	public KinematicChain chain;
 	
-	public EntityForneusHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityForneusHead(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.xpReward = 1000 + this.random.nextInt(1000);
 		this.posArray = new Vec3[1];
 	}
@@ -91,7 +93,8 @@ public class EntityForneusHead extends AbstractForneusPart
 			this.chain.tick();
 			this.chain.rotLerp = true;
 			
-			Vec3 pos = ((BTASwimmingMoveControl)this.moveControl).getTargetPos();
+			MoveControl moveControl = this.getMoveControl();
+			Vec3 pos = new Vec3(moveControl.getWantedX(), moveControl.getWantedY(), moveControl.getWantedZ());
 			if(!pos.equals(Vec3.ZERO))
 			{
 				this.setWantedPos(pos);
@@ -118,7 +121,7 @@ public class EntityForneusHead extends AbstractForneusPart
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag)
 	{
 		AbstractForneusPart prev = this;
 		for(int i = 1; i < this.getChainLength(); i++)
@@ -143,7 +146,7 @@ public class EntityForneusHead extends AbstractForneusPart
 				this.level.addFreshEntity(tail);
 			}
 		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
 	@Override
@@ -156,18 +159,6 @@ public class EntityForneusHead extends AbstractForneusPart
 	public int maxTurnY() 
 	{
 		return !this.hasTarget() ? 3 : 5;
-	}
-	
-	@Override
-	public int targetSettingInterval() 
-	{
-		return 10;
-	}
-	
-	@Override
-	public Vec3 getMoveRadius()
-	{
-		return new Vec3(150, 30, 150);
 	}
 	
 	public void setWantedPos(Vec3 pos)

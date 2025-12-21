@@ -25,9 +25,9 @@ public class UpdatePartPacket
 	public float yRot;
 	public float zRot;
 
-	public UpdatePartPacket(Entity entity, String name, float x, float y, float z, float xRot, float yRot, float zRot) 
+	public UpdatePartPacket(UUID entityUUID, String name, float x, float y, float z, float xRot, float yRot, float zRot) 
 	{
-		this.entityUUID = entity.getUUID();
+		this.entityUUID = entityUUID;
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -37,19 +37,12 @@ public class UpdatePartPacket
 		this.zRot = zRot;
 	}
 
-	public UpdatePartPacket(FriendlyByteBuf buf)
+	public static UpdatePartPacket read(FriendlyByteBuf buf)
 	{
-		this.entityUUID = buf.readUUID();
-		this.name = buf.readUtf();
-		this.x = buf.readFloat();
-		this.y = buf.readFloat();
-		this.z = buf.readFloat();
-		this.xRot = buf.readFloat();
-		this.yRot = buf.readFloat();
-		this.zRot = buf.readFloat();
+		return new UpdatePartPacket(buf.readUUID(), buf.readUtf(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeUUID(this.entityUUID);
 		buf.writeUtf(this.name);
@@ -61,27 +54,24 @@ public class UpdatePartPacket
 		buf.writeFloat(this.zRot);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdatePartPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdatePartPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isServer())
 			{
-				if(ctx.get().getDirection().getReceptionSide().isServer())
+				Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
+				if(entity instanceof IMultipart multipart) 
 				{
-					Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
-					if(entity instanceof IMultipart multipart) 
+					Part part = multipart.getPartBuilder().partMap.get(message.name);
+					if(part != null)
 					{
-						Part part = multipart.getPartBuilder().partMap.get(message.name);
-						if(part != null)
-						{
-							part.tick(message.x, message.y, message.z, message.xRot, message.yRot, message.zRot);
-						}
+						part.tick(message.x, message.y, message.z, message.xRot, message.yRot, message.zRot);
 					}
 				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

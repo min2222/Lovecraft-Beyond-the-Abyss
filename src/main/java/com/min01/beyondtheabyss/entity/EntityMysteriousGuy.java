@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
@@ -49,9 +51,9 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
 	
 	public Player player;
 	
-	public EntityMysteriousGuy(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public EntityMysteriousGuy(EntityType<? extends PathfinderMob> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -101,9 +103,9 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
 	}
 	
 	@Override
-	public void setDeltaMovement(Vec3 p_20257_)
+	public void setDeltaMovement(Vec3 pDeltaMovement)
 	{
-		super.setDeltaMovement(new Vec3(0, p_20257_.y, 0));
+		super.setDeltaMovement(new Vec3(0, pDeltaMovement.y, 0));
 	}
 	
 	@Override
@@ -145,67 +147,67 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
 	}
 	
 	@Override
-	protected InteractionResult mobInteract(Player p_21472_, InteractionHand p_21473_)
+	protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand)
 	{
 		if(this.canTalk() && !this.isTalking())
 		{
-			if(p_21472_ instanceof ServerPlayer player)
+			if(pPlayer instanceof ServerPlayer player)
 			{
-				BTANetwork.CHANNEL.sendTo(new SetDialogueScreenPacket("chat", 5, this), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+				BTANetwork.CHANNEL.sendTo(new SetDialogueScreenPacket("chat", 5, this.getUUID()), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 			}
 			if(!this.level.isClientSide)
 			{
-				this.player = p_21472_;
+				this.player = pPlayer;
 			}
 			this.setTalking(true);
 		}
-		return super.mobInteract(p_21472_, p_21473_);
+		return super.mobInteract(pPlayer, pHand);
 	}
 	
 	@Override
-	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	public boolean hurt(DamageSource pSource, float pAmount) 
 	{
-		if(!p_21016_.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+		if(!pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
 		{
 			return false;
 		}
-		return super.hurt(p_21016_, p_21017_);
+		return super.hurt(pSource, pAmount);
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_21484_)
+	public void addAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.addAdditionalSaveData(p_21484_);
-		p_21484_.putBoolean("CanTalk", this.canTalk());
-		p_21484_.putBoolean("isTalking", this.isTalking());
-		p_21484_.putInt("ChatIndex", this.getChatIndex());
-		p_21484_.putInt("PrevChatIndex", this.getPrevChatIndex());
-		p_21484_.put("KeyItem", this.getKeyItem().save(new CompoundTag()));
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putBoolean("CanTalk", this.canTalk());
+		pCompound.putBoolean("isTalking", this.isTalking());
+		pCompound.putInt("ChatIndex", this.getChatIndex());
+		pCompound.putInt("PrevChatIndex", this.getPrevChatIndex());
+		pCompound.put("KeyItem", this.getKeyItem().save(new CompoundTag()));
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_21450_) 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.readAdditionalSaveData(p_21450_);
-		this.setCanTalk(p_21450_.getBoolean("CanTalk"));
-		this.setTalking(p_21450_.getBoolean("isTalking"));
-		this.setChatIndex(p_21450_.getInt("ChatIndex"));
-		this.setPrevChatIndex(p_21450_.getInt("PrevChatIndex"));
-		if(p_21450_.contains("KeyItem", 10))
+		super.readAdditionalSaveData(pCompound);
+		this.setCanTalk(pCompound.getBoolean("CanTalk"));
+		this.setTalking(pCompound.getBoolean("isTalking"));
+		this.setChatIndex(pCompound.getInt("ChatIndex"));
+		this.setPrevChatIndex(pCompound.getInt("PrevChatIndex"));
+		if(pCompound.contains("KeyItem", 10))
 		{
-			this.setKeyItem(ItemStack.of(p_21450_.getCompound("KeyItem")));
+			this.setKeyItem(ItemStack.of(pCompound.getCompound("KeyItem")));
 		}
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) 
 	{
-		if(p_21436_ == MobSpawnType.SPAWN_EGG)
+		if(pReason == MobSpawnType.SPAWN_EGG)
 		{
 			this.setCanTalk(true);
 		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
 	@Override
@@ -213,7 +215,7 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
 	{
 		if(chatIndex == 4)
 		{
-			BTANetwork.sendToServer(new UpdateSynchedEntityDataPacket(1, this));
+			BTANetwork.sendToServer(new UpdateSynchedEntityDataPacket(1, this.getUUID()));
 		}
 	}
 	
@@ -222,11 +224,11 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
 	{
 		if(chatIndex == 5)
 		{
-			BTANetwork.sendToServer(new UpdateSynchedEntityDataPacket(0, this));
+			BTANetwork.sendToServer(new UpdateSynchedEntityDataPacket(0, this.getUUID()));
 		}
 		else
 		{
-			BTANetwork.sendToServer(new UpdateSynchedEntityDataPacket(2, this));
+			BTANetwork.sendToServer(new UpdateSynchedEntityDataPacket(2, this.getUUID()));
 		}
 	}
 	

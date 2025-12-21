@@ -19,9 +19,9 @@ import net.minecraft.world.item.ItemStack;
 @Mixin(value = LocalPlayer.class, priority = -10000)
 public abstract class MixinLocalPlayer extends AbstractClientPlayer 
 {
-	public MixinLocalPlayer(ClientLevel p_250460_, GameProfile p_249912_) 
+	public MixinLocalPlayer(ClientLevel pClientLevel, GameProfile pGameProfile)
 	{
-		super(p_250460_, p_249912_);
+		super(pClientLevel, pGameProfile);
 	}
 
 	@Inject(at = @At("HEAD"), method = "updateIsUnderwater", cancellable = true)

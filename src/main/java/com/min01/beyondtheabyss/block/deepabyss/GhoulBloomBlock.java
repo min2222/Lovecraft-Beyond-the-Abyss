@@ -25,7 +25,7 @@ public class GhoulBloomBlock extends SeagrassBlock
 {
 	//GrowingPlantHeadBlock
 	public static final BooleanProperty GROWN = BooleanProperty.create("grown");
-	protected static final VoxelShape AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+	public static final VoxelShape AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 	
 	public GhoulBloomBlock()
 	{
@@ -34,15 +34,15 @@ public class GhoulBloomBlock extends SeagrassBlock
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) 
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
 		return AABB;
 	}
 	
 	@Override
-	protected boolean mayPlaceOn(BlockState p_54991_, BlockGetter p_54992_, BlockPos p_54993_) 
+	protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) 
 	{
-		return p_54991_.isFaceSturdy(p_54992_, p_54993_, Direction.UP) && p_54991_.is(BTABlocks.ROT_SOIL.get());
+		return pState.isFaceSturdy(pLevel, pPos, Direction.UP) && pState.is(BTABlocks.ROT_SOIL.get());
 	}
 	
 	@Override
@@ -52,17 +52,17 @@ public class GhoulBloomBlock extends SeagrassBlock
 	}
 	
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> p_49915_) 
+	protected void createBlockStateDefinition(Builder<Block, BlockState> pBuilder) 
 	{
-		p_49915_.add(GROWN);
+		pBuilder.add(GROWN);
 	}
 	
 	@Override
-	public void performBonemeal(ServerLevel p_222423_, RandomSource p_222424_, BlockPos p_222425_, BlockState p_222426_) 
+	public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) 
 	{
-		if(!p_222426_.getValue(GROWN))
+		if(!pState.getValue(GROWN))
 		{
-			p_222423_.setBlock(p_222425_, p_222426_.setValue(GROWN, true), 2);
+			pLevel.setBlock(pPos, pState.setValue(GROWN, true), 2);
 		}
 	}
 }

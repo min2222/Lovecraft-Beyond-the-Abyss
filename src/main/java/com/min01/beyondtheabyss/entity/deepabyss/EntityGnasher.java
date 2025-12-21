@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.ILeader;
 import com.min01.beyondtheabyss.entity.ai.control.SwimmingBoidMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -25,7 +26,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -40,7 +40,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGnasher extends AbstractDeepAbyssMonster
+public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<EntityGnasher>
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DISPERSE = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
@@ -48,19 +48,19 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	
 	public final SmoothAnimationState biteAnimationState = new SmoothAnimationState();
 	
-	public EntityGnasher(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public EntityGnasher(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(6);
-		this.moveControl = new SwimmingBoidMoveControl(this, 0.1F, false);
+		this.moveControl = new SwimmingBoidMoveControl(this, true);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes()
+        return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 15.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.8F)
-        		.add(Attributes.ATTACK_DAMAGE, 2.5F)
+        		.add(Attributes.ATTACK_DAMAGE, 3.5F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
 
@@ -98,9 +98,9 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public EntityDimensions getDimensions(Pose p_21047_) 
+	public EntityDimensions getDimensions(Pose pPose)
 	{
-		return this.isLeader() ? EntityDimensions.scalable(1.25F, 1.0F) : super.getDimensions(p_21047_);
+		return this.isLeader() ? EntityDimensions.scalable(1.25F, 1.0F) : super.getDimensions(pPose);
 	}
     
     @Override
@@ -113,18 +113,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
         if(this.level.isClientSide)
         {
         	this.biteAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
-        }
-        
-        if(!this.level.isClientSide && this.moveControl instanceof SwimmingBoidMoveControl boid)
-        {
-        	if(this.getTarget() != null)
-        	{
-        		boid.setForceTarget(this.getTarget().position());
-        	}
-        	else
-        	{
-        		boid.setForceTarget(false);
-        	}
         }
 		
 		if(this.getLeader() != null)
@@ -139,24 +127,25 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 			{
 				if(this.canMove() && this.canLook())
 				{
-					if(this.distanceTo(this.getLeader()) <= 3.0F)
+					if(this.distanceTo(leader) <= 5.0F)
 					{
-						this.getLeader().setDisperse(false);
+						leader.setDisperse(false);
 						this.setDisperse(false);
 						this.switchControl(true);
 					}
 					else
 					{
-						this.getNavigation().moveTo(this.getLeader(), 1.0F);
+						this.getMoveControl().setWantedPosition(leader.getX(), leader.getY(), leader.getZ(), 1.5F);
+						this.getNavigation().moveTo(leader, 1.0F);
 					}
 				}
 				else
 				{
-					if(this.distanceTo(this.getLeader()) >= 6.0F)
+					if(this.distanceTo(leader) >= 6.0F)
 					{
-						this.getLeader().setCanMove(true);
-						this.getLeader().setCanLook(true);
-						this.getLeader().switchControl(true);
+						leader.setCanMove(true);
+						leader.setCanLook(true);
+						leader.switchControl(true);
 						this.setCanMove(true);
 						this.setCanLook(true);
 					}
@@ -166,13 +155,13 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
     }
     
     @Override
-    public boolean hurt(DamageSource p_21016_, float p_21017_) 
+    public boolean hurt(DamageSource pSource, float pAmount) 
     {
-    	if(this.isLeader() && !this.isDisperse() && p_21016_.getDirectEntity() != null)
+    	if(this.isLeader() && !this.isDisperse() && pSource.getDirectEntity() != null)
     	{
-    		this.disperse(p_21016_.getDirectEntity().position());
+    		this.disperse(pSource.getDirectEntity().position());
     	}
-    	return super.hurt(p_21016_, p_21017_);
+    	return super.hurt(pSource, pAmount);
     }
     
     public void disperse(Vec3 pos)
@@ -193,7 +182,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
     {
     	if(isBoid)
     	{
-    		this.moveControl = new SwimmingBoidMoveControl(this, 0.1F, false);
+    		this.moveControl = new SwimmingBoidMoveControl(this, true);
     	}
     	else
     	{
@@ -208,38 +197,38 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	}
 	
     @Override
-    public void addAdditionalSaveData(CompoundTag p_21484_)
+    public void addAdditionalSaveData(CompoundTag pCompound)
     {
-    	super.addAdditionalSaveData(p_21484_);
-    	p_21484_.putBoolean("isLeader", this.isLeader());
+    	super.addAdditionalSaveData(pCompound);
+    	pCompound.putBoolean("isLeader", this.isLeader());
 		if(this.entityData.get(LEADER_UUID).isPresent())
 		{
-			p_21484_.putUUID("Leader", this.entityData.get(LEADER_UUID).get());
+			pCompound.putUUID("Leader", this.entityData.get(LEADER_UUID).get());
 		}
     }
     
     @Override
-    public void readAdditionalSaveData(CompoundTag p_21450_) 
+    public void readAdditionalSaveData(CompoundTag pCompound) 
     {
-    	super.readAdditionalSaveData(p_21450_);
-		this.setLeader(p_21450_.getBoolean("isLeader"));
-		if(p_21450_.hasUUID("Leader")) 
+    	super.readAdditionalSaveData(pCompound);
+		this.setLeader(pCompound.getBoolean("isLeader"));
+		if(pCompound.hasUUID("Leader")) 
 		{
-			this.entityData.set(LEADER_UUID, Optional.of(p_21450_.getUUID("Leader")));
+			this.entityData.set(LEADER_UUID, Optional.of(pCompound.getUUID("Leader")));
 		}
     }
 	
 	@SuppressWarnings("deprecation")
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, @Nullable SpawnGroupData p_21437_, @Nullable CompoundTag p_21438_) 
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) 
 	{
 		if(Math.random() <= 0.1F)
 		{
 			this.setLeader(true);
 			this.setHealth(30.0F);
 		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
 	@Override
@@ -249,12 +238,12 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public boolean ignoreOperation() 
+	public boolean canSwim() 
 	{
-		return true;
+		return !this.isDisperse();
 	}
 	
-	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
@@ -267,11 +256,13 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
     	this.entityData.set(IS_LEADER, value);
     }
 
+    @Override
     public boolean isLeader()
     {
     	return this.entityData.get(IS_LEADER);
     }
 	
+    @Override
 	public void setLeader(EntityGnasher leader)
 	{
 		if(leader == null) 
@@ -285,6 +276,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
 	}
 	
 	@Nullable
+	@Override
 	public EntityGnasher getLeader() 
 	{
 		if(this.entityData.get(LEADER_UUID).isPresent()) 
@@ -303,10 +295,4 @@ public class EntityGnasher extends AbstractDeepAbyssMonster
     {
     	return this.entityData.get(IS_DISPERSE);
     }
-	
-	@Override
-	public boolean canSwim() 
-	{
-		return super.canSwim() && !this.isDisperse();
-	}
 }

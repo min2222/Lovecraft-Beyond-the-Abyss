@@ -21,35 +21,35 @@ public abstract class AbstractRotatedBoneBlock extends HorizontalDirectionalBloc
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
-	public AbstractRotatedBoneBlock(Properties p_49795_) 
+	public AbstractRotatedBoneBlock(Properties pProperties) 
 	{
-		super(p_49795_.dynamicShape().noOcclusion().requiresCorrectToolForDrops().sound(SoundType.BONE_BLOCK));
+		super(pProperties.dynamicShape().noOcclusion().requiresCorrectToolForDrops().sound(SoundType.BONE_BLOCK));
 	}
 	
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext p_49820_) 
+	public BlockState getStateForPlacement(BlockPlaceContext pContext) 
 	{
-    	Direction direction = p_49820_.getHorizontalDirection().getOpposite();
-    	LevelAccessor level = p_49820_.getLevel();
-    	BlockPos blockPos = p_49820_.getClickedPos();
+    	Direction direction = pContext.getHorizontalDirection().getOpposite();
+    	LevelAccessor level = pContext.getLevel();
+    	BlockPos blockPos = pContext.getClickedPos();
 		return this.defaultBlockState().setValue(FACING, direction).setValue(WATERLOGGED, level.getFluidState(blockPos).getType() == Fluids.WATER);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState p_154341_, BlockGetter p_154342_, BlockPos p_154343_, PathComputationType p_154344_) 
+	public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) 
 	{
 		return false;
 	}
 	
     @Override
-    public FluidState getFluidState(BlockState p_152045_)
+    public FluidState getFluidState(BlockState pState)
     {
-    	return p_152045_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    	return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
-    	p_152043_.add(WATERLOGGED, FACING);
+    	pBuilder.add(WATERLOGGED, FACING);
     }
 }

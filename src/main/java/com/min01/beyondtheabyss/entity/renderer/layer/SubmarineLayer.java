@@ -22,7 +22,7 @@ public class SubmarineLayer extends GlowingLayer<EntitySubmarine, ModelSubmarine
 	{
 		if(entity.getFirstPassenger() != null)
 		{
-			ResourceLocation texture = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/submarine_layer.png");
+			ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/submarine_layer.png");
 	        float strength = 0.5F + Mth.clamp(((float) Math.cos((entity.glowingTicks + ageInTicks) * 0.1F)) - 0.5F, -0.5F, 0.5F);
 	        strength += Mth.lerp(ageInTicks, entity.brightnessOld, entity.brightness) * Mth.PI;
 	        strength = Mth.clamp(strength, 0.1F, 1.0F);

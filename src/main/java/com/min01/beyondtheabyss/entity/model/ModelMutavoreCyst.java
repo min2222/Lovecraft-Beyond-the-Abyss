@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelMutavoreCyst extends EntityModel<EntityMutavoreCyst>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "mutavore_cyst"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "mutavore_cyst"), "main");
 	private final ModelPart cyst;
 	private final ModelPart mine;
 	private final ModelPart mine2;

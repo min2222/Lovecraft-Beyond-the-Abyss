@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class ModelGlaringBarnacle extends HierarchicalBlockModel<AnimatableBlockEntity>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "glaring_barnacle"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "glaring_barnacle"), "main");
 	private final ModelPart GlaringBarnacle;
 	private final ModelPart Up;
 	private final ModelPart Cirrifront;

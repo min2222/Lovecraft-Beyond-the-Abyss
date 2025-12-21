@@ -47,7 +47,7 @@ public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 	}
 
 	@Override
-	protected void performSkill() 
+	public void performSkill() 
 	{
 		
 	}
@@ -64,13 +64,13 @@ public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 	}
 
 	@Override
-	protected int getSkillUsingTime() 
+	public int getSkillUsingTime() 
 	{
 		return 15;
 	}
 
 	@Override
-	protected int getSkillUsingInterval() 
+	public int getSkillUsingInterval() 
 	{
 		return 100;
 	}

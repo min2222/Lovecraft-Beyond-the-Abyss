@@ -8,7 +8,6 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore.MutationType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -38,9 +37,9 @@ public class MutavoreConsumingGoal extends Goal
 		{
 			return false;
 		}
-		if(this.mob.tickCount % 20 == 1 && this.itemUUID == null)
+		if(this.mob.tickCount % 60 == 1 && this.itemUUID == null)
 		{
-			List<ItemEntity> list = this.mob.getConsumableItems(this.mob.getBoundingBox().inflate(5.0F));
+			List<ItemEntity> list = this.mob.getConsumableItems(this.mob.getBoundingBox().inflate(10.0F));
 			if(!list.isEmpty())
 			{
 				this.itemUUID = list.get(0).getUUID();
@@ -68,8 +67,8 @@ public class MutavoreConsumingGoal extends Goal
 		Entity entity = BTAUtil.getEntityByUUID(this.mob.level, this.itemUUID);
 		if(entity != null)
 		{
-			this.mob.getNavigation().moveTo(entity, 0.85F);
-			this.mob.lookAt(Anchor.FEET, entity.position());
+			this.mob.getMoveControl().setWantedPosition(entity.getX(), entity.getY(), entity.getZ(), 1.25F);
+			this.mob.getLookControl().setLookAt(entity, 100.0F, 100.0F);
 		}
 	}
 	

@@ -34,7 +34,7 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.distanceTo(this.mob.getTarget()) >= 12.0F;
+		return super.canUse() && this.mob.distanceTo(this.mob.getTarget()) <= 14.0F;
 	}
 	
 	@Override
@@ -42,16 +42,16 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	{
 		if(this.mob.getAnimationTick() <= this.getSkillUsingTime() - 10 && this.mob.getTarget() != null) 
 		{
-			if(this.mob.tickCount % 5 == 0)
+			if(this.mob.tickCount % 4 == 0)
 			{
 				this.mob.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
-				for(int i = 0; i < 3; i++)
+				for(int i = 0; i < 5; i++)
 				{
 					EntityPutridBubble bubble = new EntityPutridBubble(BTAEntities.PUTRID_BUBBLE.get(), this.mob.level);
 					bubble.setOwner(this.mob);
 					Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.mob.getXRot(), this.mob.getYHeadRot()), this.mob.position(), 0, 1.0F, 3.5F);
 					bubble.setPos(lookPos.add(this.mob.level.random.nextFloat() * 0.1F, this.mob.level.random.nextFloat() * 0.1F, this.mob.level.random.nextFloat() * 0.1F));
-					bubble.setDeltaMovement(BTAUtil.fromToVector(bubble.position(), BTAUtil.getSpreadPosition(this.mob.getTarget(), 2.5F), 0.35F));
+					bubble.setDeltaMovement(BTAUtil.getVelocityTowards(bubble.position(), BTAUtil.getSpreadPosition(this.mob.getTarget(), 2.5F), 0.65F));
 					bubble.lookAt(Anchor.EYES, this.mob.getTarget().getEyePosition());
 					this.mob.level.addFreshEntity(bubble);
 				}
@@ -60,7 +60,7 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	}
 
 	@Override
-	protected void performSkill()
+	public void performSkill()
 	{
 		this.mob.setAnimationState(2);
 	}
@@ -73,19 +73,19 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	}
 
 	@Override
-	protected int getSkillUsingTime() 
+	public int getSkillUsingTime() 
 	{
 		return 80;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 70;
 	}
 
 	@Override
-	protected int getSkillUsingInterval()
+	public int getSkillUsingInterval()
 	{
 		return 120;
 	}

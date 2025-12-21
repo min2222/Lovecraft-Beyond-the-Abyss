@@ -23,9 +23,9 @@ public class EntityFallingStone extends ThrowableProjectile
 	public static final EntityDataAccessor<Float> ROTATION = SynchedEntityData.defineId(EntityFallingStone.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Integer> DELAY = SynchedEntityData.defineId(EntityFallingStone.class, EntityDataSerializers.INT);
 	
-	public EntityFallingStone(EntityType<? extends ThrowableProjectile> p_19870_, Level p_19871_) 
+	public EntityFallingStone(EntityType<? extends ThrowableProjectile> pEntityType, Level pLevel) 
 	{
-		super(p_19870_, p_19871_);
+		super(pEntityType, pLevel);
 	}
 	
 	@Override
@@ -37,9 +37,9 @@ public class EntityFallingStone extends ThrowableProjectile
 	}
 	
 	@Override
-	protected void onHit(HitResult p_37260_) 
+	protected void onHit(HitResult pResult) 
 	{
-		super.onHit(p_37260_);
+		super.onHit(pResult);
 		BlockState state = this.getBlockState();
 		if(!state.isAir() && this.tickCount >= 10 + this.getDelay())
 		{
@@ -93,10 +93,10 @@ public class EntityFallingStone extends ThrowableProjectile
 	}
 	
 	@Override
-	public void handleEntityEvent(byte p_19882_) 
+	public void handleEntityEvent(byte pId) 
 	{
-		super.handleEntityEvent(p_19882_);
-		if(p_19882_ == 99)
+		super.handleEntityEvent(pId);
+		if(pId == 99)
 		{
 			for(int i = 0; i < 60; ++i) 
 			{
@@ -106,21 +106,21 @@ public class EntityFallingStone extends ThrowableProjectile
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_37265_)
+	public void addAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.addAdditionalSaveData(p_37265_);
-		p_37265_.put("BlockState", NbtUtils.writeBlockState(this.getBlockState()));
-		p_37265_.putFloat("Rotation", this.getRotation());
-		p_37265_.putInt("Delay", this.getDelay());
+		super.addAdditionalSaveData(pCompound);
+		pCompound.put("BlockState", NbtUtils.writeBlockState(this.getBlockState()));
+		pCompound.putFloat("Rotation", this.getRotation());
+		pCompound.putInt("Delay", this.getDelay());
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_37262_)
+	public void readAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.readAdditionalSaveData(p_37262_);
-		this.setBlockState(NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), p_37262_.getCompound("BlockState")));
-		this.setRotation(p_37262_.getFloat("Rotation"));
-		this.setDelay(p_37262_.getInt("Delay"));
+		super.readAdditionalSaveData(pCompound);
+		this.setBlockState(NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), pCompound.getCompound("BlockState")));
+		this.setRotation(pCompound.getFloat("Rotation"));
+		this.setDelay(pCompound.getInt("Delay"));
 	}
 	
 	public void setDelay(int index)

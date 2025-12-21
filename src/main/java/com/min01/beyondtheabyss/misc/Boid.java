@@ -4,26 +4,31 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
+import com.min01.beyondtheabyss.entity.ILeader;
 import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.Vec3;
 
 //https://github.com/TheCymaera/minecraft-boids/tree/master
 public class Boid
 {
 	public final Mob mob;
+	public final boolean isLeader;
 	public final List<Boid> boids = new ArrayList<>();
 	public List<? extends Mob> nearbyMobs = new ArrayList<>();
 	
 	public Vec3 velocity = Vec3.ZERO;
     public Vec3 target = Vec3.ZERO;
 
-	public Boid(Mob mob)
+	public Boid(Mob mob, boolean isLeader)
 	{
 		this.mob = mob;
+		this.isLeader = isLeader;
 		this.velocity = new Vec3(Math.random(), Math.random(), Math.random());
 	}
 
@@ -76,9 +81,12 @@ public class Boid
 		}
 		
 		this.mob.addDeltaMovement(this.velocity.scale(0.05F));
+		Vec3 pos = this.mob.position().add(this.mob.getDeltaMovement());
+		this.mob.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, 1.0F);
 	}
 	
-    public void tickNearbyMobs()
+    @SuppressWarnings("unchecked")
+	public void tickNearbyMobs()
     {
     	if(this.mob.tickCount % 60 == 0 || this.nearbyMobs.isEmpty())
     	{
@@ -98,14 +106,36 @@ public class Boid
     	        	this.boids.add(boid);
             	}
         	}
+        	if(this.isLeader)
+        	{
+        		if(!(mob instanceof ILeader<?> leader) || !leader.isLeader())
+        		{
+        			continue;
+        		}
+        		ILeader<Mob> mob1 = (ILeader<Mob>) this.mob;
+        		if(mob1.getLeader() == null && !mob1.isLeader())
+        		{
+            		mob1.setLeader(mob);
+        		}
+        	}
         }
         
-        if(!this.nearbyMobs.isEmpty() && this.nearbyMobs.get(0).getMoveControl() instanceof BoidMoveControl boid)
+        if(!this.nearbyMobs.isEmpty())
         {
-        	Vec3 targetPos = boid.targetPos;
-        	if(!targetPos.equals(Vec3.ZERO))
+        	Mob mob = this.nearbyMobs.get(0);
+        	if(this.isLeader)
         	{
-        		this.target = targetPos;
+        		Optional<? extends Mob> optional = this.nearbyMobs.stream().filter(t -> t instanceof ILeader<?> leader && leader.isLeader()).findFirst();
+        		if(optional.isPresent())
+        		{
+        			mob = optional.get();
+        		}
+        	}
+        	MoveControl moveControl = mob.getMoveControl();
+        	Vec3 wantedPos = new Vec3(moveControl.getWantedX(), moveControl.getWantedY(), moveControl.getWantedZ());
+        	if(!wantedPos.equals(Vec3.ZERO))
+        	{
+            	this.target = wantedPos;
         	}
         }
     }

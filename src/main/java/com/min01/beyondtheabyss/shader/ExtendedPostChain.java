@@ -15,14 +15,14 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 public class ExtendedPostChain extends PostChain
 {
-	public ExtendedPostChain(TextureManager p_110018_, ResourceManager p_110019_, RenderTarget p_110020_, ResourceLocation p_110021_) throws IOException, JsonSyntaxException
+	public ExtendedPostChain(TextureManager pTextureManager, ResourceManager pResourceManager, RenderTarget pScreenTarget, ResourceLocation pName) throws IOException, JsonSyntaxException
 	{
-		super(p_110018_, p_110019_, p_110020_, p_110021_);
+		super(pTextureManager, pResourceManager, pScreenTarget, pName);
 	}
 	
 	public ExtendedPostChain(String domain, String name) throws JsonSyntaxException, IOException
 	{
-		this(BTAClientUtil.MC.getTextureManager(), BTAClientUtil.MC.getResourceManager(), BTAClientUtil.MC.getMainRenderTarget(), new ResourceLocation(domain, "shaders/post/" + name + ".json"));
+		this(BTAClientUtil.MC.getTextureManager(), BTAClientUtil.MC.getResourceManager(), BTAClientUtil.MC.getMainRenderTarget(), ResourceLocation.fromNamespaceAndPath(domain, "shaders/post/" + name + ".json"));
 		this.resize(BTAClientUtil.MC.getWindow().getWidth(), BTAClientUtil.MC.getWindow().getHeight());
 	}
 

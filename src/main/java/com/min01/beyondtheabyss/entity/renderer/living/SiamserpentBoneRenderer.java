@@ -10,21 +10,21 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SiamserpentBoneRenderer extends MobRenderer<EntitySiamserpentBone, ModelSiamserpentBone>
 {
-	public SiamserpentBoneRenderer(Context p_174304_)
+	public SiamserpentBoneRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelSiamserpentBone(p_174304_.bakeLayer(ModelSiamserpentBone.LAYER_LOCATION)), 0.0F);
+		super(pContext, new ModelSiamserpentBone(pContext.bakeLayer(ModelSiamserpentBone.LAYER_LOCATION)), 0.0F);
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntitySiamserpentBone p_114482_) 
+	public ResourceLocation getTextureLocation(EntitySiamserpentBone pEntity) 
 	{
-		switch(p_114482_.getVariant())
+		switch(pEntity.getVariant())
 		{
 		case 0:
-			return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_bone_fins.png");
+			return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_bone_fins.png");
 		case 1:
-			return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_bone_arms.png");
+			return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_bone_arms.png");
 		}
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_bone_fins.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_bone_fins.png");
 	}
 }

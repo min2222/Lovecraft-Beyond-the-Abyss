@@ -31,15 +31,15 @@ public class BTAArmorMaterial implements ArmorMaterial
 	}
 
 	@Override
-	public int getDurabilityForType(ArmorItem.Type p_40484_) 
+	public int getDurabilityForType(ArmorItem.Type type)
 	{
-		return this.durability[p_40484_.getSlot().getIndex()];
+		return this.durability[type.getSlot().getIndex()];
 	}
 
 	@Override
-	public int getDefenseForType(ArmorItem.Type p_40487_)
+	public int getDefenseForType(ArmorItem.Type type)
 	{
-		return this.slotProtections[p_40487_.getSlot().getIndex()];
+		return this.slotProtections[type.getSlot().getIndex()];
 	}
 
 	@Override

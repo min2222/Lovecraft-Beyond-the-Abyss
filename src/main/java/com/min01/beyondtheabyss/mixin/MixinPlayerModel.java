@@ -31,7 +31,7 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
 	private Map<String, Pair<ModelPart, ModelPart>> modelMap = new HashMap<>();
 	
     @Inject(at = @At("HEAD"), method = "setupAnim", cancellable = true)
-    private void setupAnim(T p_103395_, float p_103396_, float p_103397_, float p_103398_, float p_103399_, float p_103400_, CallbackInfo ci)
+    private void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {	
     	this.setupMap();
     }
@@ -78,7 +78,7 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
 	@Override
 	public Optional<Pair<ModelPart, ModelPart>> getAnyDescendantWithName(String name) 
 	{
-		return this.root().getAllParts().findFirst().map((p_233397_) ->
+		return this.root().getAllParts().findFirst().map(t ->
 		{
 			return this.modelMap.get(name);
 		});

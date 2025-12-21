@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelForneusBody extends HierarchicalModel<EntityForneusBody>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "forneus_body"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "forneus_body"), "main");
 	private final ModelPart root;
 	private final ModelPart body;
 

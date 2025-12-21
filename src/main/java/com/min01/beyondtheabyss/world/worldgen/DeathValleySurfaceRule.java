@@ -15,7 +15,7 @@ public class DeathValleySurfaceRule extends SurfaceRules
 	public static record StateRule(BlockState state) implements SurfaceRules.SurfaceRule
 	{
 		@Override
-		public BlockState tryApply(int p_189721_, int p_189722_, int p_189723_) 
+		public BlockState tryApply(int pX, int pY, int pZ) 
 		{
 			if(this.state.is(BTABlocks.ROT_SOIL.get()))
 			{

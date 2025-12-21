@@ -57,9 +57,9 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 
 	public final EntityPartBuilder<EntitySubmarine> partBuilder;
     
-	public EntitySubmarine(EntityType<? extends Entity> p_19870_, Level p_19871_)
+	public EntitySubmarine(EntityType<? extends Entity> pEntityType, Level pLevel)
 	{
-		super(p_19870_, p_19871_);
+		super(pEntityType, pLevel);
 		this.noCulling = true;
 		this.partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
 	}
@@ -155,13 +155,13 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	}
 	
 	@Override
-	public void lerpTo(double p_38299_, double p_38300_, double p_38301_, float p_38302_, float p_38303_, int p_38304_, boolean p_38305_)
+	public void lerpTo(double pX, double pY, double pZ, float pYRot, float pXRot, int pLerpSteps, boolean pTeleport)
 	{
-		this.lerpX = p_38299_;
-		this.lerpY = p_38300_;
-		this.lerpZ = p_38301_;
-		this.lerpYRot = (double)p_38302_;
-		this.lerpXRot = (double)p_38303_;
+		this.lerpX = pX;
+		this.lerpY = pY;
+		this.lerpZ = pZ;
+		this.lerpYRot = (double)pYRot;
+		this.lerpXRot = (double)pXRot;
 		this.lerpSteps = 10;
 	}
 	
@@ -216,19 +216,19 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
     }
     
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity p_20123_) 
+    public Vec3 getDismountLocationForPassenger(LivingEntity pPassenger) 
     {
     	return new Vec3(this.getX(), this.getBoundingBox().minY + 2.0F, this.getZ());
     }
     
     @Override
-    public boolean hurt(DamageSource p_21016_, float p_21017_)
+    public boolean hurt(DamageSource pSource, float pAmount)
     {
-    	if(!p_21016_.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+    	if(!pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
     	{
     		return false;
     	}
-    	return super.hurt(p_21016_, p_21017_);
+    	return super.hurt(pSource, pAmount);
     }
 	
 	@Override
@@ -274,7 +274,7 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
     			if(this.level.isClientSide)
     			{
         			player.startRiding(this);
-    				BTANetwork.sendToServer(new UpdateVehiclePacket(player, this));
+    				BTANetwork.sendToServer(new UpdateVehiclePacket(player.getId(), this.getId()));
     			}
 				return InteractionResult.SUCCESS;
         	}
@@ -294,19 +294,19 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	}
 	
     @Override
-    public void readAdditionalSaveData(CompoundTag p_21450_) 
+    public void readAdditionalSaveData(CompoundTag pCompound) 
     {
-    	super.readAdditionalSaveData(p_21450_);
-    	this.setAnimationTick(p_21450_.getInt("AnimationTick"));
-    	this.setAnimationState(p_21450_.getInt("AnimationState"));
+    	super.readAdditionalSaveData(pCompound);
+    	this.setAnimationTick(pCompound.getInt("AnimationTick"));
+    	this.setAnimationState(pCompound.getInt("AnimationState"));
     }
     
     @Override
-    public void addAdditionalSaveData(CompoundTag p_21484_) 
+    public void addAdditionalSaveData(CompoundTag pCompound) 
     {
-    	super.addAdditionalSaveData(p_21484_);
-    	p_21484_.putInt("AnimationTick", this.getAnimationTick());
-    	p_21484_.putInt("AnimationState", this.getAnimationState());
+    	super.addAdditionalSaveData(pCompound);
+    	pCompound.putInt("AnimationTick", this.getAnimationTick());
+    	pCompound.putInt("AnimationState", this.getAnimationState());
     }
     
     public void setAnimationTick(int value)

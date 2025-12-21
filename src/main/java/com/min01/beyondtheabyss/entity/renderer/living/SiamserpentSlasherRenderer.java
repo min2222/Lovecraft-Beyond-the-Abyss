@@ -16,29 +16,29 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SiamserpentSlasherRenderer extends MobRenderer<EntitySiamserpentHead, ModelSiamserpentSlasher> implements IMultiModel<EntitySiamserpentHead>
 {
-	private static final ResourceLocation TEXTURE_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher.png");
-	private static final ResourceLocation DISABLED_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_disabled.png");
-	private static final ResourceLocation DORMANT_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_dormant.png");
+	private static final ResourceLocation TEXTURE_SLASHER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher.png");
+	private static final ResourceLocation DISABLED_SLASHER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_disabled.png");
+	private static final ResourceLocation DORMANT_SLASHER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_dormant.png");
 
 	private final SiamserpentBlasterRenderer blasterRenderer;
 	
-	public SiamserpentSlasherRenderer(Context p_174304_)
+	public SiamserpentSlasherRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelSiamserpentSlasher(p_174304_.bakeLayer(ModelSiamserpentSlasher.LAYER_LOCATION)), 0.0F);
+		super(pContext, new ModelSiamserpentSlasher(pContext.bakeLayer(ModelSiamserpentSlasher.LAYER_LOCATION)), 0.0F);
 		this.addLayer(new SiamserpentSlasherLayer(this, this.model));
-		this.blasterRenderer = new SiamserpentBlasterRenderer(p_174304_);
+		this.blasterRenderer = new SiamserpentBlasterRenderer(pContext);
 	}
 	
 	@Override
-	public void render(EntitySiamserpentHead p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
+	public void render(EntitySiamserpentHead pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
-		if(p_115455_.getHeadType() == HeadType.BLASTER)
+		if(pEntity.getHeadType() == HeadType.BLASTER)
 		{
-			this.blasterRenderer.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+			this.blasterRenderer.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
 		}
 		else
 		{
-			super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+			super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
 		}
 	}
 	
@@ -53,8 +53,8 @@ public class SiamserpentSlasherRenderer extends MobRenderer<EntitySiamserpentHea
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntitySiamserpentHead p_114482_) 
+	public ResourceLocation getTextureLocation(EntitySiamserpentHead pEntity) 
 	{
-		return p_114482_.isDisabled() ? DISABLED_SLASHER : p_114482_.isDormant() ? DORMANT_SLASHER : TEXTURE_SLASHER;
+		return pEntity.isDisabled() ? DISABLED_SLASHER : pEntity.isDormant() ? DORMANT_SLASHER : TEXTURE_SLASHER;
 	}
 }

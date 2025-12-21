@@ -19,8 +19,8 @@ public class StoneSkinEffect extends BasicBTAEffect
 	}
 	
 	@Override
-	public double getAttributeModifierValue(int p_19430_, AttributeModifier p_19431_)
+	public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier)
 	{
-		return 4 * (p_19430_ + 1);
+		return 4 * (pAmplifier + 1);
 	}
 }

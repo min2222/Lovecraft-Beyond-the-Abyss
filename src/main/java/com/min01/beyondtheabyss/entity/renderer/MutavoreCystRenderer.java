@@ -20,41 +20,41 @@ public class MutavoreCystRenderer extends EntityRenderer<EntityMutavoreCyst>
 	public final ModelMutavoreCyst model;
 	public final ModelCystShrapnel shrapnelModel;
 	
-	public MutavoreCystRenderer(Context p_174008_) 
+	public MutavoreCystRenderer(Context pContext) 
 	{
-		super(p_174008_);
-		this.model = new ModelMutavoreCyst(p_174008_.bakeLayer(ModelMutavoreCyst.LAYER_LOCATION));
-		this.shrapnelModel = new ModelCystShrapnel(p_174008_.bakeLayer(ModelCystShrapnel.LAYER_LOCATION));
+		super(pContext);
+		this.model = new ModelMutavoreCyst(pContext.bakeLayer(ModelMutavoreCyst.LAYER_LOCATION));
+		this.shrapnelModel = new ModelCystShrapnel(pContext.bakeLayer(ModelCystShrapnel.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntityMutavoreCyst p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_) 
+	public void render(EntityMutavoreCyst pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
-		if(p_114485_.isShrapnel())
+		if(pEntity.isShrapnel())
 		{
-			p_114488_.pushPose();
-			p_114488_.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot())));
-			p_114488_.mulPose(Axis.XP.rotationDegrees(Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot())));
-			p_114488_.scale(-1.0F, -1.0F, 1.0F);
-			p_114488_.scale(1.25F, 1.25F, 1.25F);
-			p_114488_.translate(0.0F, -1.5F, 0.0F);
-			this.shrapnelModel.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/cyst_shrapnel.png"))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-			p_114488_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(pPartialTick, pEntity.yRotO, pEntity.getYRot())));
+			pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.scale(1.25F, 1.25F, 1.25F);
+			pPoseStack.translate(0.0F, -1.5F, 0.0F);
+			this.shrapnelModel.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/cyst_shrapnel.png"))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			pPoseStack.popPose();
 		}
 		else
 		{
-			p_114488_.pushPose();
-			p_114488_.scale(-1.0F, -1.0F, 1.0F);
-			p_114488_.translate(0.0F, -1.5F, 0.0F);
-			this.model.setupAnim(p_114485_, 0, 0, 0, 0, 0);
-			this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-			p_114488_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.5F, 0.0F);
+			this.model.setupAnim(pEntity, 0, 0, 0, 0, 0);
+			this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			pPoseStack.popPose();
 		}
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityMutavoreCyst p_114482_)
+	public ResourceLocation getTextureLocation(EntityMutavoreCyst pEntity)
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/mutavore.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/mutavore.png");
 	}
 }

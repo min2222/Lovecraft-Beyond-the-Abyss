@@ -30,12 +30,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -81,9 +78,9 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public final SmoothAnimationState mutate4AnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState mutateHeadAnimationState = new SmoothAnimationState();
 	
-	public EntityMutavore(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityMutavore(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(25);
 		this.posArray = new Vec3[4];
 		this.noCulling = true;
@@ -91,7 +88,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes()
+        return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 150.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.65F)
         		.add(Attributes.FOLLOW_RANGE, 50.0F)
@@ -107,7 +104,8 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     	this.goalSelector.addGoal(0, new MutavoreTongueGoal(this));
     	this.goalSelector.addGoal(0, new MutavoreConsumingGoal(this));
     	this.goalSelector.addGoal(0, new MutavoreLaunchMineGoal(this));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<EntityGnasher>(this, EntityGnasher.class, false, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, EntityGnasher.class, false, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, EntityGloomfish.class, false, false));
     }
 
 	@Override
@@ -195,7 +193,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 			{
 				MutationType type = Util.getRandom(types, this.random);
 				ItemEntity item = list.get(0);
-				this.playSound(SoundEvents.PLAYER_BURP);
+				this.playSound(SoundEvents.GENERIC_EAT);
 				item.discard();
 				this.doMutation(type, true);
 			}
@@ -203,31 +201,20 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	protected void updateWalkAnimation(float p_268283_) 
+	protected void updateWalkAnimation(float pPartialTick) 
 	{
-		float f = Math.min(p_268283_ * 10.0F, 1.0F);
+		float f = Math.min(pPartialTick * 10.0F, 1.0F);
 		this.walkAnimation.update(f, 0.4F);
 	}
 	
 	@Override
-	public boolean canBeAffected(MobEffectInstance p_21197_)
+	public boolean canBeAffected(MobEffectInstance pEffectInstance)
 	{
-		if(p_21197_.getEffect() == MobEffects.POISON)
+		if(pEffectInstance.getEffect() == MobEffects.POISON)
 		{
 			return false;
 		}
-		return super.canBeAffected(p_21197_);
-	}
-	
-	@Override
-	public void moveToTarget()
-	{
-		double speed = !this.hasTarget() ? this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) : 0.75F;
-		if(this.isMutated(MutationType.MUTATE_L_ARM) || this.isMutated(MutationType.MUTATE_R_ARM))
-		{
-			speed = 0.95F;
-		}
-		this.getNavigation().moveTo(this.getTarget(), speed);
+		return super.canBeAffected(pEffectInstance);
 	}
 	
 	@Override
@@ -235,9 +222,9 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	{
 		if(this.isMutated(MutationType.MUTATE_HEAD))
 		{
-			return 10;
+			return 75;
 		}
-		return !this.hasTarget() ? 3 : 5;
+		return 50;
 	}
 	
 	@Override
@@ -245,46 +232,40 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	{
 		if(this.isMutated(MutationType.MUTATE_HEAD))
 		{
-			return 7;
+			return 13;
 		}
-		else if(this.isConsume())
+		return 8;
+	}
+	
+	@Override
+	public float moveSpeed()
+	{
+		if(this.isMutated(MutationType.MUTATE_L_ARM) || this.isMutated(MutationType.MUTATE_R_ARM))
 		{
-			return 6;
+			return 0.085F;
 		}
-		return !this.hasTarget() ? 3 : 4;
+		return super.moveSpeed();
 	}
 	
 	@Override
-	public boolean canSwim() 
+	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
-		return super.canSwim() && !this.isConsume();
+		super.addAdditionalSaveData(pCompound);
+		pCompound.put("Mutation", this.getMutation());
+		pCompound.put("Cyst", this.getCyst());
+		pCompound.putBoolean("isConsume", this.isConsume());
 	}
 	
 	@Override
-	public LookControl getSwimmingLookControl() 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		return new MutavoreLookControl(this);
+		super.readAdditionalSaveData(pCompound);
+		this.setMutation(pCompound.getCompound("Mutation"));
+		this.setCyst(pCompound.getCompound("Cyst"));
+		this.setConsume(pCompound.getBoolean("isConsume"));
 	}
 	
-	@Override
-	public void addAdditionalSaveData(CompoundTag p_21484_) 
-	{
-		super.addAdditionalSaveData(p_21484_);
-		p_21484_.put("Mutation", this.getMutation());
-		p_21484_.put("Cyst", this.getCyst());
-		p_21484_.putBoolean("isConsume", this.isConsume());
-	}
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag p_21450_) 
-	{
-		super.readAdditionalSaveData(p_21450_);
-		this.setMutation(p_21450_.getCompound("Mutation"));
-		this.setCyst(p_21450_.getCompound("Cyst"));
-		this.setConsume(p_21450_.getBoolean("isConsume"));
-	}
-	
-	public static boolean checkMutavoreSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkMutavoreSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
@@ -354,23 +335,6 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public CompoundTag getMutation()
 	{
 		return this.entityData.get(MUTATION);
-	}
-	
-	public static class MutavoreLookControl extends SmoothSwimmingLookControl
-	{
-		public MutavoreLookControl(Mob p_148061_) 
-		{
-			super(p_148061_, 10);
-		}
-		
-		@Override
-		public void tick() 
-		{
-			if(!((EntityMutavore) this.mob).isConsume())
-			{
-				super.tick();
-			}
-		}
 	}
 	
 	public static enum MutationType implements StringRepresentable

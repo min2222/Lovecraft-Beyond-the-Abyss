@@ -17,9 +17,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 public class EntityObserver extends AbstractBTAFlyingMonster
 {
-	public EntityObserver(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public EntityObserver(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(3);
 		this.moveControl = new FlyingBoidMoveControl(this);
 	}
@@ -52,13 +52,7 @@ public class EntityObserver extends AbstractBTAFlyingMonster
 		return true;
 	}
 	
-	@Override
-	public boolean ignoreOperation() 
-	{
-		return true;
-	}
-	
-	public static boolean checkObserverSpawnRules(EntityType<? extends AbstractBTAFlyingMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkObserverSpawnRules(EntityType<? extends AbstractBTAFlyingMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).isAir() && pServerLevel.getBlockState(pPos.above()).isAir() && pPos.getY() <= 10 && pPos.getY() >= -10;
     }

@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.block.deepabyss.GhoulBloomBlock;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -14,42 +13,25 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 public class DeathValleyGhoulBloomPatchFeature extends Feature<NoneFeatureConfiguration>
 {
-	public DeathValleyGhoulBloomPatchFeature(Codec<NoneFeatureConfiguration> p_65786_) 
+	public DeathValleyGhoulBloomPatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
-		super(p_65786_);
+		super(pCodec);
 	}
 	
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159749_)
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext)
 	{
-		WorldGenLevel level = p_159749_.level();
-		BlockPos pos = p_159749_.origin();
-		RandomSource random = p_159749_.random();
+		WorldGenLevel level = pContext.level();
+		BlockPos pos = pContext.origin();
+		RandomSource random = pContext.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
 			if(random.nextBoolean())
 			{
-				this.placeGhoulBloom(level, pos, false);
-				return true;
-			}
-			else if(level.getFluidState(pos.above()).is(FluidTags.WATER))
-			{
-				this.placeGhoulBloom(level, pos, true);
+	 			level.setBlock(pos, BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.GROWN, true), 2);
 				return true;
 			}
 		}
 		return false;
-	}
-	
-	public void placeGhoulBloom(WorldGenLevel level, BlockPos pos, boolean isTall)
-	{
-		if(!isTall)
-		{
- 			level.setBlock(pos, BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.GROWN, true), 2);
-		}
-		else
-		{
-			
-		}
 	}
 }

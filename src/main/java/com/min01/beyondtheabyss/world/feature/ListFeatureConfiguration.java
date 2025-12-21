@@ -10,12 +10,12 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 
 public class ListFeatureConfiguration implements FeatureConfiguration
 {
-	public static final Codec<ListFeatureConfiguration> CODEC = RecordCodecBuilder.create((p_159816_) ->
+	public static final Codec<ListFeatureConfiguration> CODEC = RecordCodecBuilder.create(builder ->
 	{
-		return p_159816_.group(ResourceLocation.CODEC.listOf().fieldOf("structures").forGetter((p_159830_) ->
+		return builder.group(ResourceLocation.CODEC.listOf().fieldOf("structures").forGetter(t ->
 		{
-			return p_159830_.structures;
-		})).apply(p_159816_, ListFeatureConfiguration::new);
+			return t.structures;
+		})).apply(builder, ListFeatureConfiguration::new);
 	});
 	   
 	public final List<ResourceLocation> structures;

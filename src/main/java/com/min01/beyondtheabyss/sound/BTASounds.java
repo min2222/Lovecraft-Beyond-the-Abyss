@@ -24,19 +24,19 @@ public class BTASounds
 	public static final RegistryObject<SoundEvent> GUNBLADE_GUN_TO_BLADE = registerSound("gunblade_gun_to_blade");
 	public static final RegistryObject<SoundEvent> GUNBLADE_SWING = registerSound("gunblade_swing");
 	public static final RegistryObject<SoundEvent> GUNBLADE_CHARGE = registerSound("gunblade_charge");
-	public static final RegistryObject<SoundEvent> SIAMSERPENT_AMBIENT = registerSound("siamserpent_ambient");
+	public static final RegistryObject<SoundEvent> SIAMSERPENT_AMBIENT = registerFixedSound("siamserpent_ambient", 10.0F);
 	public static final RegistryObject<SoundEvent> SIAMSERPENT_HURT = registerSound("siamserpent_hurt");
 	public static final RegistryObject<SoundEvent> SIAMSERPENT_DEATH = registerSound("siamserpent_death");
-	public static final RegistryObject<SoundEvent> SIAMSERPENT_BEAM_CHARGE = registerSound("siamserpent_beam_charge");
-	public static final RegistryObject<SoundEvent> SIAMSERPENT_BEAM_SHOOT = registerSound("siamserpent_beam_shoot");
+	public static final RegistryObject<SoundEvent> SIAMSERPENT_BEAM_CHARGE = registerFixedSound("siamserpent_beam_charge", 15.0F);
+	public static final RegistryObject<SoundEvent> SIAMSERPENT_BEAM_SHOOT = registerFixedSound("siamserpent_beam_shoot", 15.0F);
 	
-	private static RegistryObject<SoundEvent> registerFixedSound(String name, float range) 
+	public static RegistryObject<SoundEvent> registerFixedSound(String name, float range) 
 	{
-		return SOUNDS.register(name, () -> SoundEvent.createFixedRangeEvent(new ResourceLocation(BeyondtheAbyss.MODID, name), 16.0F * range));
+		return SOUNDS.register(name, () -> SoundEvent.createFixedRangeEvent(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, name), 16.0F * range));
     }
 	
-	private static RegistryObject<SoundEvent> registerSound(String name) 
+	public static RegistryObject<SoundEvent> registerSound(String name) 
 	{
-		return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(BeyondtheAbyss.MODID, name)));
+		return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, name)));
     }
 }

@@ -33,33 +33,33 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 {
-    public static final Codec<MirroredCityChunkGenerator> CODEC = RecordCodecBuilder.create((p_255585_) ->
+    public static final Codec<MirroredCityChunkGenerator> CODEC = RecordCodecBuilder.create(builder ->
     {
-    	return p_255585_.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter((p_255584_) -> 
+    	return builder.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter(t -> 
     	{
-    		return p_255584_.biomeSource;
-    	}), NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((p_224278_) -> 
+    		return t.biomeSource;
+    	}), NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(t -> 
     	{
-    		return p_224278_.settings;
-    	})).apply(p_255585_, p_255585_.stable(MirroredCityChunkGenerator::new));
+    		return t.settings;
+    	})).apply(builder, builder.stable(MirroredCityChunkGenerator::new));
     });
 	
-	public MirroredCityChunkGenerator(BiomeSource p_224208_, Holder<NoiseGeneratorSettings> p_224209_) 
+	public MirroredCityChunkGenerator(BiomeSource pBiomeSource, Holder<NoiseGeneratorSettings> holder) 
 	{
-		super(p_224208_, p_224209_);
+		super(pBiomeSource, holder);
 	}
 	
 	@Override
-	public CompletableFuture<ChunkAccess> fillFromNoise(Executor p_224312_, Blender p_224313_, RandomState p_224314_, StructureManager p_224315_, ChunkAccess p_224316_) 
+	public CompletableFuture<ChunkAccess> fillFromNoise(Executor pExecutor, Blender pBlender, RandomState pRandom, StructureManager pStructureManager, ChunkAccess pChunk) 
 	{
-		return CompletableFuture.completedFuture(p_224316_);
+		return CompletableFuture.completedFuture(pChunk);
 	}
 
 	@Override
-	public void buildSurface(WorldGenRegion p_224232_, StructureManager p_224233_, RandomState p_224234_, ChunkAccess chunk) 
+	public void buildSurface(WorldGenRegion pLevel, StructureManager pStructureManager, RandomState pRandom, ChunkAccess pChunk) 
 	{
-	    int chunkX = chunk.getPos().x;
-	    int chunkZ = chunk.getPos().z;
+	    int chunkX = pChunk.getPos().x;
+	    int chunkZ = pChunk.getPos().z;
 	    String fileName = "r." + (chunkX >> 5) + "." + (chunkZ >> 5) + ".mca";
         File regionDir = new File(FMLPaths.CONFIGDIR.get().toFile(), "beyondtheabyss/region");
         File regionFile = new File(regionDir, fileName);
@@ -67,15 +67,15 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 	    {
 	        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 	        ServerLevel world = server.getLevel(BTAWorlds.MIRRORED_CITY);
-            try(DataInputStream input = region.getChunkDataInputStream(chunk.getPos())) 
+            try(DataInputStream input = region.getChunkDataInputStream(pChunk.getPos())) 
             {
 	            CompoundTag nbt = NbtIo.read(input);
 	            ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
 	            ProtoChunk cityChunk = ChunkSerializer.read(world.getLevel(), world.getLevel().getPoiManager(), chunkPos, nbt);
-	            for(int i = 0; i < chunk.getSections().length; i++)
+	            for(int i = 0; i < pChunk.getSections().length; i++)
 	            {
 	                LevelChunkSection from = cityChunk.getSections()[i];
-	                LevelChunkSection to = chunk.getSections()[i];
+	                LevelChunkSection to = pChunk.getSections()[i];
 	                if(from != null && to != null) 
 	                {
 	                    for(int y = 0; y < 16; y++) 
@@ -97,11 +97,11 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 	                }
 	            }
 	            
-	            int maxChunkHeight = chunk.getSections().length * 16;
+	            int maxChunkHeight = pChunk.getSections().length * 16;
 	            int minY = world.getMinBuildHeight();
 	            int maxY = world.getMaxBuildHeight();
 	            int offsetY = 10;
-	            for(int sectionIndex = 0; sectionIndex < chunk.getSections().length; sectionIndex++) 
+	            for(int sectionIndex = 0; sectionIndex < pChunk.getSections().length; sectionIndex++) 
 	            {
 	                LevelChunkSection from = cityChunk.getSections()[sectionIndex];
 	                if(from == null) 
@@ -116,7 +116,7 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 	                    	continue;
 	                    int newSectionIndex = newWorldY / 16;
 	                    int newY = newWorldY % 16;
-	                    LevelChunkSection to = chunk.getSections()[newSectionIndex];
+	                    LevelChunkSection to = pChunk.getSections()[newSectionIndex];
 	                    if(to == null) 
 	                    	continue;
 	                    for(int z = 0; z < 16; z++) 

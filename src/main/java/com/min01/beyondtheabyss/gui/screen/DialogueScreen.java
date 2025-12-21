@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.gui.screen;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.IDialogue;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -14,7 +15,7 @@ import net.minecraft.world.entity.Entity;
 
 public class DialogueScreen extends Screen
 {
-	public static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/dialogue.png");
+	public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/gui/dialogue.png");
 	
 	public final String key;
 	public final int maxIndex;
@@ -84,16 +85,16 @@ public class DialogueScreen extends Screen
 	}
 	
 	@Override
-	public void render(GuiGraphics p_281549_, int p_281550_, int p_282878_, float p_282465_)
+	public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick)
 	{
 	    int textureWidth = 176;
 	    int textureHeight = 94;
 	    int blitX = (this.width / 2) - (textureWidth / 2);
 	    int blitY = (this.height / 2) - (textureHeight / 10);
-	    p_281549_.blit(TEXTURE, blitX, blitY, 0, 0, textureWidth, textureHeight);
+	    pGuiGraphics.blit(TEXTURE, blitX, blitY, 0, 0, textureWidth, textureHeight);
 	    int textX = blitX + 10;
 	    int textY = blitY + 10;
-	    super.render(p_281549_, p_281550_, p_282878_, p_282465_);
+	    super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
 	    String text = Component.translatable("message.beyondtheabyss." + this.key + this.chatIndex).getString();
 	    long currentTime = Util.getMillis();
 	    if(currentTime - this.lastUpdate >= 100)
@@ -106,7 +107,7 @@ public class DialogueScreen extends Screen
 	    }
 	    this.textIndex = Mth.clamp(this.textIndex, 0, text.length());
 	    String sub = text.substring(0, this.textIndex);
-	    p_281549_.drawWordWrap(this.font, Component.literal(sub), textX, textY, 160, -1);
+	    pGuiGraphics.drawWordWrap(this.font, Component.literal(sub).withStyle(ChatFormatting.BLACK), textX, textY, 160, -1);
 	}
 	
 	@Override
@@ -123,7 +124,7 @@ public class DialogueScreen extends Screen
 		}
 		
 		@Override
-		protected void renderWidget(GuiGraphics p_281670_, int p_282682_, int p_281714_, float p_282542_)
+		protected void renderWidget(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick)
 		{
 		    int textureWidth = this.isHovered ? 23 : 22;
 		    int textureHeight = this.isHovered ? 16 : 15;
@@ -133,11 +134,11 @@ public class DialogueScreen extends Screen
 
 		    if(this.isHovered)
 		    {
-		        p_281670_.blit(TEXTURE, blitX, blitY, 177, 73, 23, 16);
+		    	pGuiGraphics.blit(TEXTURE, blitX, blitY, 177, 73, 23, 16);
 		    }
 		    else
 		    {
-		        p_281670_.blit(TEXTURE, blitX, blitY, 149, 74, 22, 15);
+		    	pGuiGraphics.blit(TEXTURE, blitX, blitY, 149, 74, 22, 15);
 		    }
 		}
 	}

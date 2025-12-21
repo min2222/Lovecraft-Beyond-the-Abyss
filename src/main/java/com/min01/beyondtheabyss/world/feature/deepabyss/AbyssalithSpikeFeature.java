@@ -12,9 +12,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration> 
 {
-	public AbyssalithSpikeFeature(Codec<NoneFeatureConfiguration> p_66003_) 
+	public AbyssalithSpikeFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
-		super(p_66003_);
+		super(pCodec);
 	}
 
 	@Override

@@ -13,7 +13,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -23,14 +22,15 @@ import net.minecraft.world.phys.Vec3;
 public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<EntityFulgastra>
 {
 	public static final EntityDataAccessor<Boolean> IS_CHARGED = SynchedEntityData.defineId(EntitySplittedFulgastra.class, EntityDataSerializers.BOOLEAN);
-	
+
+	public final SmoothAnimationState swimAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState chargingAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState shockingAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState closedAnimationState = new SmoothAnimationState();
 	
-	public EntitySplittedFulgastra(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntitySplittedFulgastra(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 	
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes()
+        return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 5.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.65F)
     			.add(Attributes.FOLLOW_RANGE, 30.0F);
@@ -77,13 +77,14 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 		this.getNavigation().stop();
 		if(this.level.isClientSide)
 		{
+			this.swimAnimationState.updateWhen(true, this.tickCount);
 			this.chargingAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
 			this.shockingAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.closedAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
 		}
 		if(this.getAnimationState() == 3 && this.getOwner() != null && this.isInWater())
 		{
-			this.setDeltaMovement(BTAUtil.fromToVector(this.position(), this.getOwner().position(), 0.25F));
+			this.setDeltaMovement(BTAUtil.getVelocityTowards(this.position(), this.getOwner().position(), 0.25F));
 			if(this.distanceTo(this.getOwner()) <= 2.0F)
 			{
 				this.discard();
@@ -99,11 +100,11 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 	}
 	
 	@Override
-	public void push(Entity p_21294_) 
+	public void push(Entity pEntity) 
 	{
-		if(!(p_21294_ instanceof EntityFulgastra) && !(p_21294_ instanceof EntitySplittedFulgastra))
+		if(!(pEntity instanceof EntityFulgastra) && !(pEntity instanceof EntitySplittedFulgastra))
 		{
-			super.push(p_21294_);
+			super.push(pEntity);
 		}
 	}
 	
@@ -114,17 +115,17 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_21484_) 
+	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.addAdditionalSaveData(p_21484_);
-		p_21484_.putBoolean("isCharged", this.isCharged());
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putBoolean("isCharged", this.isCharged());
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_21450_) 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.readAdditionalSaveData(p_21450_);
-		this.setCharged(p_21450_.getBoolean("isCharged"));
+		super.readAdditionalSaveData(pCompound);
+		this.setCharged(pCompound.getBoolean("isCharged"));
 	}
 	
 	public void setCharged(boolean value)

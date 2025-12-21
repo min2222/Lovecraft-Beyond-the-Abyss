@@ -12,9 +12,9 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<AbstractForneusPart>
 {
-	public AbstractForneusPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public AbstractForneusPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.noPhysics = true;
 		this.setNoGravity(true);
 		this.setNoAi(!this.isHead());
@@ -51,11 +51,11 @@ public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<Abst
 	}
 	
 	@Override
-	protected void doPush(Entity p_21294_)
+	protected void doPush(Entity pEntity)
 	{
-		if(!(p_21294_ instanceof AbstractForneusPart))
+		if(!(pEntity instanceof AbstractForneusPart))
 		{
-			super.doPush(p_21294_);
+			super.doPush(pEntity);
 		}
 	}
 	

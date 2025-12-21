@@ -33,13 +33,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEntityRenderer<T>
 {
-    private static final ResourceLocation FANG_SKULL_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/fang_skull.png");
-    private static final ResourceLocation LARGE_SKULL_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/large_skull.png");
-    private static final ResourceLocation BONE_PILES_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/bone_piles.png");
-    private static final ResourceLocation SITTING_SKELETON_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/sitting_skeleton.png");
-    private static final ResourceLocation FALLEN_SKELETON_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/fallen_skeleton.png");
-    private static final ResourceLocation BONE_TORCH_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/bone_torch.png");
-    private static final ResourceLocation BONE_LEVER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/bone_lever.png");
+    private static final ResourceLocation FANG_SKULL_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/fang_skull.png");
+    private static final ResourceLocation LARGE_SKULL_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/large_skull.png");
+    private static final ResourceLocation BONE_PILES_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/bone_piles.png");
+    private static final ResourceLocation SITTING_SKELETON_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/sitting_skeleton.png");
+    private static final ResourceLocation FALLEN_SKELETON_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/fallen_skeleton.png");
+    private static final ResourceLocation BONE_TORCH_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/bone_torch.png");
+    private static final ResourceLocation BONE_LEVER_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/bone_lever.png");
     
     private final ModelFangSkull fangSkullModel;
     private final ModelLargeSkull largeSkullModel;
@@ -51,122 +51,122 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
     private final ModelBoneLever boneLeverModel;
     private final ModelBoneLeverOn boneLeverOnModel;
     
-	public NoRotationLimitRenderer(BlockEntityRendererProvider.Context p_172550_)
+	public NoRotationLimitRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.fangSkullModel = new ModelFangSkull(p_172550_.bakeLayer(ModelFangSkull.LAYER_LOCATION));
-		this.largeSkullModel = new ModelLargeSkull(p_172550_.bakeLayer(ModelLargeSkull.LAYER_LOCATION));
-		this.bonePilesModel = new ModelBonePiles(p_172550_.bakeLayer(ModelBonePiles.LAYER_LOCATION));
-		this.sittingSkeletonModel = new ModelSittingSkeleton(p_172550_.bakeLayer(ModelSittingSkeleton.LAYER_LOCATION));
-		this.fallenSkeletonModel = new ModelFallenSkeleton(p_172550_.bakeLayer(ModelFallenSkeleton.LAYER_LOCATION));
-		this.boneTorchModel = new ModelBoneTorch(p_172550_.bakeLayer(ModelBoneTorch.LAYER_LOCATION));
-		this.boneWallTorchModel = new ModelBoneWallTorch(p_172550_.bakeLayer(ModelBoneWallTorch.LAYER_LOCATION));
-		this.boneLeverModel = new ModelBoneLever(p_172550_.bakeLayer(ModelBoneLever.LAYER_LOCATION));
-		this.boneLeverOnModel = new ModelBoneLeverOn(p_172550_.bakeLayer(ModelBoneLeverOn.LAYER_LOCATION));
+		this.fangSkullModel = new ModelFangSkull(pContext.bakeLayer(ModelFangSkull.LAYER_LOCATION));
+		this.largeSkullModel = new ModelLargeSkull(pContext.bakeLayer(ModelLargeSkull.LAYER_LOCATION));
+		this.bonePilesModel = new ModelBonePiles(pContext.bakeLayer(ModelBonePiles.LAYER_LOCATION));
+		this.sittingSkeletonModel = new ModelSittingSkeleton(pContext.bakeLayer(ModelSittingSkeleton.LAYER_LOCATION));
+		this.fallenSkeletonModel = new ModelFallenSkeleton(pContext.bakeLayer(ModelFallenSkeleton.LAYER_LOCATION));
+		this.boneTorchModel = new ModelBoneTorch(pContext.bakeLayer(ModelBoneTorch.LAYER_LOCATION));
+		this.boneWallTorchModel = new ModelBoneWallTorch(pContext.bakeLayer(ModelBoneWallTorch.LAYER_LOCATION));
+		this.boneLeverModel = new ModelBoneLever(pContext.bakeLayer(ModelBoneLever.LAYER_LOCATION));
+		this.boneLeverOnModel = new ModelBoneLeverOn(pContext.bakeLayer(ModelBoneLeverOn.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(T p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
+	public void render(T pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) 
 	{
-		BlockState blockState = p_112307_.getBlockState();
+		BlockState blockState = pBlockEntity.getBlockState();
 		if(blockState.is(BTABlocks.FANG_SKULL.get()))
 		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(FANG_SKULL_TEXTURE));
-			this.fangSkullModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-			p_112309_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.translate(0.5F, 0.5F, 0.5F);
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.0F, 0.0F);
+			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), pPoseStack);
+			VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(FANG_SKULL_TEXTURE));
+			this.fangSkullModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			pPoseStack.popPose();
 		}
 		else if(blockState.is(BTABlocks.LARGE_SKULL.get()))
 		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(LARGE_SKULL_TEXTURE));
-			this.largeSkullModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-			p_112309_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.translate(0.5F, 0.5F, 0.5F);
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.0F, 0.0F);
+			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), pPoseStack);
+			VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(LARGE_SKULL_TEXTURE));
+			this.largeSkullModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			pPoseStack.popPose();
 		}
 		else if(blockState.is(BTABlocks.BONE_PILES.get()))
 		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(BONE_PILES_TEXTURE));
-			this.bonePilesModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-			p_112309_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.translate(0.5F, 0.5F, 0.5F);
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.0F, 0.0F);
+			this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), pPoseStack);
+			VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(BONE_PILES_TEXTURE));
+			this.bonePilesModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			pPoseStack.popPose();
 		}
 		else if(blockState.is(BTABlocks.SITTING_SKELETON.get()))
 		{
 			if(blockState.getValue(AbstractMultiPartSkeletonBlock.SKELETON_PART) == SkeletonPart.LOWER)
 			{
-				p_112309_.pushPose();
-				p_112309_.translate(0.5F, 0.5F, 0.5F);
-				p_112309_.scale(-1.0F, -1.0F, 1.0F);
-				p_112309_.translate(0.0F, -1.0F, 0.0F);
-				this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
-				VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(SITTING_SKELETON_TEXTURE));
-				this.sittingSkeletonModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-				p_112309_.popPose();
+				pPoseStack.pushPose();
+				pPoseStack.translate(0.5F, 0.5F, 0.5F);
+				pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+				pPoseStack.translate(0.0F, -1.0F, 0.0F);
+				this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), pPoseStack);
+				VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(SITTING_SKELETON_TEXTURE));
+				this.sittingSkeletonModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+				pPoseStack.popPose();
 			}
 		}
 		else if(blockState.is(BTABlocks.FALLEN_SKELETON.get()))
 		{
 			if(blockState.getValue(AbstractMultiPartSkeletonBlock.SKELETON_PART) == SkeletonPart.LOWER)
 			{
-				p_112309_.pushPose();
-				p_112309_.translate(0.5F, 0.5F, 0.5F);
-				p_112309_.scale(-1.0F, -1.0F, 1.0F);
-				p_112309_.translate(0.0F, -1.0F, 0.0F);
-				this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), p_112309_);
-				VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(FALLEN_SKELETON_TEXTURE));
-				this.fallenSkeletonModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-				p_112309_.popPose();
+				pPoseStack.pushPose();
+				pPoseStack.translate(0.5F, 0.5F, 0.5F);
+				pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+				pPoseStack.translate(0.0F, -1.0F, 0.0F);
+				this.rotate(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), pPoseStack);
+				VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(FALLEN_SKELETON_TEXTURE));
+				this.fallenSkeletonModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+				pPoseStack.popPose();
 			}
 		}
 		else if(blockState.is(BTABlocks.BONE_TORCH.get()))
 		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(BONE_TORCH_TEXTURE));
-			this.boneTorchModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-			p_112309_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.translate(0.5F, 0.5F, 0.5F);
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.0F, 0.0F);
+			VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(BONE_TORCH_TEXTURE));
+			this.boneTorchModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			pPoseStack.popPose();
 		}
 		else if(blockState.is(BTABlocks.BONE_WALL_TORCH.get()))
 		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(BONE_TORCH_TEXTURE));
-			this.rotate(blockState.getValue(WallTorchBlock.FACING), p_112309_);
-			this.boneWallTorchModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-			p_112309_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.translate(0.5F, 0.5F, 0.5F);
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.0F, 0.0F);
+			VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(BONE_TORCH_TEXTURE));
+			this.rotate(blockState.getValue(WallTorchBlock.FACING), pPoseStack);
+			this.boneWallTorchModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			pPoseStack.popPose();
 		}
 		else if(blockState.is(BTABlocks.BONE_LEVER.get()))
 		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			this.rotate(blockState.getValue(LeverBlock.FACE), blockState.getValue(LeverBlock.FACING), p_112309_);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(BONE_LEVER_TEXTURE));
+			pPoseStack.pushPose();
+			pPoseStack.translate(0.5F, 0.5F, 0.5F);
+			this.rotate(blockState.getValue(LeverBlock.FACE), blockState.getValue(LeverBlock.FACING), pPoseStack);
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.0F, 0.0F);
+			VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(BONE_LEVER_TEXTURE));
 			if(blockState.getValue(LeverBlock.POWERED))
 			{
-				this.boneLeverOnModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+				this.boneLeverOnModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			}
 			else
 			{
-				this.boneLeverModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+				this.boneLeverModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 			}
-			p_112309_.popPose();
+			pPoseStack.popPose();
 		}
 	}
 	

@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity.endlessdesert;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
@@ -30,9 +32,9 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 	
 	public KinematicChain chain;
 	
-	public EntityDuneDevourerHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityDuneDevourerHead(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 
     public static AttributeSupplier.Builder createAttributes()
@@ -88,14 +90,14 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 				if(!this.getBlockStateOn().isAir())
 				{
 					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
-					Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
+					Vec3 groundPos = BTAUtil.getGroundPosVec3(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
 					this.setWantedPos(groundPos.add(0, 20, 0));
 					EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.15F, 0, 20);
 				}
 				else
 				{
 					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
-					Vec3 groundPos = BTAUtil.getGroundPosAbove(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
+					Vec3 groundPos = BTAUtil.getGroundPosVec3(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
 					this.setWantedPos(groundPos.subtract(0, 80, 0));
 					EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.15F, 0, 20);
 				}
@@ -120,7 +122,7 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag)
 	{
 		AbstractDuneDevourerPart prev = this;
 		for(int i = 1; i < this.getChainLength(); i++)
@@ -145,7 +147,7 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 				this.level.addFreshEntity(tail);
 			}
 		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
 	public void setWantedPos(Vec3 pos)

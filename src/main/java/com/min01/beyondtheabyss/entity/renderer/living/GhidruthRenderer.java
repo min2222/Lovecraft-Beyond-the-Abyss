@@ -17,31 +17,31 @@ import net.minecraft.world.phys.Vec3;
 
 public class GhidruthRenderer extends MobRenderer<EntityGhidruth, ModelGhidruth>
 {
-	public GhidruthRenderer(Context p_174304_)
+	public GhidruthRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelGhidruth(p_174304_.bakeLayer(ModelGhidruth.LAYER_LOCATION)), 0.5F);
-		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_layer.png")));
-		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth_dash_eye_layer.png")));
+		super(pContext, new ModelGhidruth(pContext.bakeLayer(ModelGhidruth.LAYER_LOCATION)), 0.5F);
+		this.addLayer(new GlowingLayer<>(this, this.model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/ghidruth_layer.png")));
+		this.addLayer(new GlowingLayer<>(this, this.model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/ghidruth_dash_eye_layer.png")));
 	}
 	
 	@Override
-	protected void scale(EntityGhidruth p_115314_, PoseStack p_115315_, float p_115316_)
+	protected void scale(EntityGhidruth pLivingEntity, PoseStack pPoseStack, float pPartialTickTime)
 	{
-		p_115315_.scale(1.5F, 1.5F, 1.5F);
+		pPoseStack.scale(1.5F, 1.5F, 1.5F);
 	}
 	
 	@Override
-	public void render(EntityGhidruth p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
+	public void render(EntityGhidruth pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
-		super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
-		Vec3 tailPos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), new Vec3(0, p_115455_.yBodyRot, 0), new String[] {"ghidruth", "Head", "Body", "RearBody"});
-		p_115455_.posArray[0] = tailPos;
-		BTANetwork.sendToServer(new UpdatePosArrayPacket(p_115455_, tailPos, 0));
+		super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+		Vec3 tailPos = BTAClientUtil.getWorldPosition(pEntity, this.model.root(), new Vec3(0, pEntity.yBodyRot, 0), new String[] {"ghidruth", "Head", "Body", "RearBody"});
+		pEntity.posArray[0] = tailPos;
+		BTANetwork.sendToServer(new UpdatePosArrayPacket(pEntity.getUUID(), tailPos, 0));
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityGhidruth p_115812_)
+	public ResourceLocation getTextureLocation(EntityGhidruth pEntity)
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/ghidruth.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/ghidruth.png");
 	}
 }

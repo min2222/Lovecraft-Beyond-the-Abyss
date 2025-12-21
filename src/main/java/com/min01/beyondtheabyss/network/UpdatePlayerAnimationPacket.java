@@ -26,15 +26,12 @@ public class UpdatePlayerAnimationPacket
 		this.animationTick = animationTick;
 	}
 
-	public UpdatePlayerAnimationPacket(FriendlyByteBuf buf)
+	public static UpdatePlayerAnimationPacket read(FriendlyByteBuf buf)
 	{
-		this.uuid = buf.readUUID();
-		this.animationState = buf.readInt();
-		this.prevAimationState = buf.readInt();
-		this.animationTick = buf.readInt();
+		return new UpdatePlayerAnimationPacket(buf.readUUID(), buf.readInt(), buf.readInt(), buf.readInt());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeUUID(this.uuid);
 		buf.writeInt(this.animationState);
@@ -42,31 +39,28 @@ public class UpdatePlayerAnimationPacket
 		buf.writeInt(this.animationTick);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdatePlayerAnimationPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdatePlayerAnimationPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isClient()) 
 			{
-				if(ctx.get().getDirection().getReceptionSide().isClient()) 
+				BTAUtil.getClientLevel(level -> 
 				{
-					BTAUtil.getClientLevel(level -> 
+					Entity entity = BTAUtil.getEntityByUUID(level, message.uuid);
+					if(entity instanceof Player player)
 					{
-						Entity entity = BTAUtil.getEntityByUUID(level, message.uuid);
-						if(entity instanceof Player player)
+						player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
 						{
-							player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
-							{
-								t.setAnimationState(message.animationState);
-								t.setPrevAnimationState(message.prevAimationState);
-								t.setAnimationTick(message.animationTick);
-							});
-						}
-					});
-				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+							t.setAnimationState(message.animationState);
+							t.setPrevAnimationState(message.prevAimationState);
+							t.setAnimationTick(message.animationTick);
+						});
+					}
+				});
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

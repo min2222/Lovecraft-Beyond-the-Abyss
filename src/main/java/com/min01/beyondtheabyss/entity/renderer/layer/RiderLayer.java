@@ -17,9 +17,9 @@ import net.minecraft.world.entity.player.Player;
 
 public class RiderLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M>
 {
-	public RiderLayer(RenderLayerParent<T, M> p_117346_) 
+	public RiderLayer(RenderLayerParent<T, M> pRenderer) 
 	{
-		super(p_117346_);
+		super(pRenderer);
 	}
 	
 	@Override

@@ -28,9 +28,9 @@ public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<
 
 	public Class<? extends AbstractBTASkillGoal<?>> goal;
 	
-	public AbstractSiamserpentPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public AbstractSiamserpentPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 	
 	@Override
@@ -43,11 +43,11 @@ public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<
 	}
 	
 	@Override
-	protected void doPush(Entity p_21294_)
+	protected void doPush(Entity pEntity)
 	{
-		if(!(p_21294_ instanceof AbstractSiamserpentPart))
+		if(!(pEntity instanceof AbstractSiamserpentPart))
 		{
-			super.doPush(p_21294_);
+			super.doPush(pEntity);
 		}
 	}
 	
@@ -97,33 +97,33 @@ public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_37265_) 
+	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.addAdditionalSaveData(p_37265_);
+		super.addAdditionalSaveData(pCompound);
 		if(this.entityData.get(OWNER_UUID2).isPresent())
 		{
-			p_37265_.putUUID("Owner2", this.entityData.get(OWNER_UUID2).get());
+			pCompound.putUUID("Owner2", this.entityData.get(OWNER_UUID2).get());
 		}
 		if(this.entityData.get(HEAD_UUID2).isPresent())
 		{
-			p_37265_.putUUID("Head2", this.entityData.get(HEAD_UUID2).get());
+			pCompound.putUUID("Head2", this.entityData.get(HEAD_UUID2).get());
 		}
-		p_37265_.putBoolean("isSwap", this.isSwap());
+		pCompound.putBoolean("isSwap", this.isSwap());
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_37262_) 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.readAdditionalSaveData(p_37262_);
-		if(p_37262_.hasUUID("Owner2")) 
+		super.readAdditionalSaveData(pCompound);
+		if(pCompound.hasUUID("Owner2")) 
 		{
-			this.entityData.set(OWNER_UUID2, Optional.of(p_37262_.getUUID("Owner2")));
+			this.entityData.set(OWNER_UUID2, Optional.of(pCompound.getUUID("Owner2")));
 		}
-		if(p_37262_.hasUUID("Head2")) 
+		if(pCompound.hasUUID("Head2")) 
 		{
-			this.entityData.set(HEAD_UUID2, Optional.of(p_37262_.getUUID("Head2")));
+			this.entityData.set(HEAD_UUID2, Optional.of(pCompound.getUUID("Head2")));
 		}
-		this.setSwap(p_37262_.getBoolean("isSwap"));
+		this.setSwap(pCompound.getBoolean("isSwap"));
 	}
 	
 	@Override
@@ -158,9 +158,9 @@ public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<
 		return null;
 	}
 	
-	public void setHead2(AbstractSiamserpentPart p_37263_)
+	public void setHead2(AbstractSiamserpentPart head2)
 	{
-		this.entityData.set(HEAD_UUID2, Optional.of(p_37263_.getUUID()));
+		this.entityData.set(HEAD_UUID2, Optional.of(head2.getUUID()));
 	}
 	
 	@Nullable

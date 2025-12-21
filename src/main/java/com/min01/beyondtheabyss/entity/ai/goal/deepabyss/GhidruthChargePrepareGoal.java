@@ -29,7 +29,7 @@ public class GhidruthChargePrepareGoal extends AbstractGhidruthSkillGoal
 	}
 
 	@Override
-	protected void performSkill() 
+	public void performSkill() 
 	{
 		this.mob.setLastLookPos(BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 100));
 	}
@@ -46,19 +46,19 @@ public class GhidruthChargePrepareGoal extends AbstractGhidruthSkillGoal
 	}
 
 	@Override
-	protected int getSkillUsingTime()
+	public int getSkillUsingTime()
 	{
 		return 20;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 10;
 	}
 
 	@Override
-	protected int getSkillUsingInterval() 
+	public int getSkillUsingInterval() 
 	{
 		return 600;
 	}

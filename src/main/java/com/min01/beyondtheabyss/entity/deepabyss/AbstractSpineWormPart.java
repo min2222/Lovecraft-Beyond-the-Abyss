@@ -7,13 +7,13 @@ import net.minecraft.world.level.Level;
 
 public abstract class AbstractSpineWormPart extends AbstractDeepAbyssWormPart<AbstractSpineWormPart>
 {
-	public AbstractSpineWormPart(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public AbstractSpineWormPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 	
 	@Override
-	protected void doPush(Entity p_21294_)
+	protected void doPush(Entity pEntity)
 	{
 		
 	}

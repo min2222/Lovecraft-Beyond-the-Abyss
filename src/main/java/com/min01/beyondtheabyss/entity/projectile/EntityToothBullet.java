@@ -27,21 +27,21 @@ public class EntityToothBullet extends ThrowableProjectile
 	public static final EntityDataAccessor<Integer> SHRAPNEL_TYPE = SynchedEntityData.defineId(EntityToothBullet.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> MAX_SHRAPNEL_COUNT = SynchedEntityData.defineId(EntityToothBullet.class, EntityDataSerializers.INT);
 	
-	public EntityToothBullet(EntityType<? extends EntityToothBullet> p_37391_, Level p_37392_) 
+	public EntityToothBullet(EntityType<? extends EntityToothBullet> pEntityType, Level pLevel) 
 	{
-		super(p_37391_, p_37392_);
+		super(pEntityType, pLevel);
 		this.setNoGravity(true);
 	}
 
-	public EntityToothBullet(Level p_37399_, LivingEntity p_37400_) 
+	public EntityToothBullet(Level pLevel, LivingEntity pShooter) 
 	{
-		super(BTAEntities.TOOTH_BULLET.get(), p_37400_, p_37399_);
+		super(BTAEntities.TOOTH_BULLET.get(), pShooter, pLevel);
 		this.setNoGravity(true);
 	}
 
-	public EntityToothBullet(Level p_37394_, double p_37395_, double p_37396_, double p_37397_)
+	public EntityToothBullet(Level pLevel, double pX, double pY, double pZ)
 	{
-		super(BTAEntities.TOOTH_BULLET.get(), p_37395_, p_37396_, p_37397_, p_37394_);
+		super(BTAEntities.TOOTH_BULLET.get(), pX, pY, pZ, pLevel);
 		this.setNoGravity(true);
 	}
 
@@ -56,16 +56,16 @@ public class EntityToothBullet extends ThrowableProjectile
 	}
 	
 	@Override
-	protected void onHitEntity(EntityHitResult p_37259_)
+	protected void onHitEntity(EntityHitResult pResult)
 	{
-		Entity entity = p_37259_.getEntity();
+		Entity entity = pResult.getEntity();
 		if(entity != this.getOwner())
 		{
 			float damage = this.isShrapnel() ? 1.5F : 3.0F;
 			if(this.isGolden())
 			{
 				damage = 4.5F;
-				if(((LivingEntity)entity).getArmorCoverPercentage() <= 0.0F)
+				if(entity instanceof LivingEntity living && living.getArmorCoverPercentage() <= 0.0F)
 				{
 					damage = 6.0F;
 				}
@@ -74,7 +74,7 @@ public class EntityToothBullet extends ThrowableProjectile
 			{
 				damage = 0.5F;
 			}
-			DamageSource source = this.isGolden() ? BTADamageSource.causeGoldenToothDamage(this.level.registryAccess(), this) : BTADamageSource.causeToothDamage(this.level.registryAccess(), this);
+			DamageSource source = this.isGolden() ? BTADamageSource.causeGoldenToothDamage(this.level.registryAccess(), this.getOwner()) : BTADamageSource.causeToothDamage(this.level.registryAccess(), this.getOwner());
 			if(this.getOwner() != null)
 			{
 				if(!entity.isAlliedTo(this.getOwner()))
@@ -100,9 +100,9 @@ public class EntityToothBullet extends ThrowableProjectile
 	}
 	
 	@Override
-	protected void onHitBlock(BlockHitResult p_37258_) 
+	protected void onHitBlock(BlockHitResult pResult) 
 	{
-		super.onHitBlock(p_37258_);
+		super.onHitBlock(pResult);
 		this.breakToShrapnel();
 		this.playSound(SoundEvents.TURTLE_EGG_CRACK);
 		this.discard();
@@ -140,7 +140,7 @@ public class EntityToothBullet extends ThrowableProjectile
 				bullet.setShrapnel(true);
 				bullet.setShrapnelType(this.random.nextInt(1, 3));
 				bullet.setPos(this.position());
-				bullet.setDeltaMovement(BTAUtil.fromToVector(bullet.position(), spreadPos));
+				bullet.setDeltaMovement(BTAUtil.getVelocityTowards(bullet.position(), spreadPos));
 				this.level.addFreshEntity(bullet);
 			}
 		}
@@ -157,25 +157,25 @@ public class EntityToothBullet extends ThrowableProjectile
 	}
 	
 	@Override
-	protected void addAdditionalSaveData(CompoundTag p_37265_) 
+	protected void addAdditionalSaveData(CompoundTag pCompoundTag) 
 	{
-		super.addAdditionalSaveData(p_37265_);
-		p_37265_.putBoolean("isGolden", this.isGolden());
-		p_37265_.putBoolean("isShrapnel", this.isShrapnel());
-		p_37265_.putBoolean("isFracture", this.isFracture());
-		p_37265_.putInt("ShrapnelType", this.getShrapnelType());
-		p_37265_.putInt("MaxShrapnelCount", this.getMaxShrapnelCount());
+		super.addAdditionalSaveData(pCompoundTag);
+		pCompoundTag.putBoolean("isGolden", this.isGolden());
+		pCompoundTag.putBoolean("isShrapnel", this.isShrapnel());
+		pCompoundTag.putBoolean("isFracture", this.isFracture());
+		pCompoundTag.putInt("ShrapnelType", this.getShrapnelType());
+		pCompoundTag.putInt("MaxShrapnelCount", this.getMaxShrapnelCount());
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag p_37262_)
+	protected void readAdditionalSaveData(CompoundTag pCompoundTag)
 	{
-		super.readAdditionalSaveData(p_37262_);
-		this.setGolden(p_37262_.getBoolean("isGolden"));
-		this.setShrapnel(p_37262_.getBoolean("isShrapnel"));
-		this.setFracture(p_37262_.getBoolean("isFracture"));
-		this.setShrapnelType(p_37262_.getInt("ShrapnelType"));
-		this.setMaxShrapnelCount(p_37262_.getInt("MaxShrapnelCount"));
+		super.readAdditionalSaveData(pCompoundTag);
+		this.setGolden(pCompoundTag.getBoolean("isGolden"));
+		this.setShrapnel(pCompoundTag.getBoolean("isShrapnel"));
+		this.setFracture(pCompoundTag.getBoolean("isFracture"));
+		this.setShrapnelType(pCompoundTag.getInt("ShrapnelType"));
+		this.setMaxShrapnelCount(pCompoundTag.getInt("MaxShrapnelCount"));
 	}
 	
 	@Override

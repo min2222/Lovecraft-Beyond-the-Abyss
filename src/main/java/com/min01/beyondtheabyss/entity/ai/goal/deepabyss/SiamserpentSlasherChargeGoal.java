@@ -31,7 +31,7 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	protected void performSkill() 
+	public void performSkill() 
 	{
 		this.mob.setAnimationState(8);
 		this.mob.setCanLook(false);
@@ -47,7 +47,7 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 		super.tick();
 		if(!this.mob.getLastLookPos().equals(Vec3.ZERO))
 		{
-			this.mob.setDeltaMovement(BTAUtil.fromToVector(this.mob.position(), this.mob.getLastLookPos()));
+			this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), this.mob.getLastLookPos()));
 			if(this.mob.getTarget() != null)
 			{
 				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4))
@@ -77,19 +77,19 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	protected int getSkillUsingTime() 
+	public int getSkillUsingTime() 
 	{
 		return 100;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 45;
 	}
 
 	@Override
-	protected int getSkillUsingInterval() 
+	public int getSkillUsingInterval() 
 	{
 		return 150;
 	}

@@ -21,29 +21,29 @@ public class RafflesiaAnemoneBlock extends FaceAttachedHorizontalDirectionalBloc
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
-	protected static final VoxelShape FLOOR_AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
-	protected static final VoxelShape CEILING_AABB = Block.box(2.0D, 12.0D, 2.0D, 14.0D, 16.0D, 14.0D);
-	protected static final VoxelShape EAST_AABB = Block.box(0.0D, 2.0D, 2.0D, 4.0D, 14.0D, 14.0D);
-	protected static final VoxelShape NORTH_AABB = Block.box(2.0D, 2.0D, 12.0D, 14.0D, 14.0D, 16.0D);
-	protected static final VoxelShape SOUTH_AABB = Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 4.0D);
-	protected static final VoxelShape WEST_AABB = Block.box(12.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D);
+	public static final VoxelShape FLOOR_AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
+	public static final VoxelShape CEILING_AABB = Block.box(2.0D, 12.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+	public static final VoxelShape EAST_AABB = Block.box(0.0D, 2.0D, 2.0D, 4.0D, 14.0D, 14.0D);
+	public static final VoxelShape NORTH_AABB = Block.box(2.0D, 2.0D, 12.0D, 14.0D, 14.0D, 16.0D);
+	public static final VoxelShape SOUTH_AABB = Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 4.0D);
+	public static final VoxelShape WEST_AABB = Block.box(12.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D);
 	
-	public RafflesiaAnemoneBlock(Properties p_154496_)
+	public RafflesiaAnemoneBlock(Properties pProperties)
 	{
-		super(p_154496_);
+		super(pProperties);
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
 	{
-		switch(p_60555_.getValue(FACE))
+		switch(pState.getValue(FACE))
 		{
 		case CEILING:
 			return CEILING_AABB;
 		case FLOOR:
 			return FLOOR_AABB;
 		case WALL:
-			switch(p_60555_.getValue(FACING))
+			switch(pState.getValue(FACING))
 			{
 			case EAST:
 				return EAST_AABB;
@@ -62,24 +62,24 @@ public class RafflesiaAnemoneBlock extends FaceAttachedHorizontalDirectionalBloc
 	}
 	
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext p_54302_)
+	public BlockState getStateForPlacement(BlockPlaceContext pContext)
 	{
-		BlockState state = super.getStateForPlacement(p_54302_);
-		BlockPos pos = p_54302_.getClickedPos();
-		Level level = p_54302_.getLevel();
+		BlockState state = super.getStateForPlacement(pContext);
+		BlockPos pos = pContext.getClickedPos();
+		Level level = pContext.getLevel();
 		FluidState fluidState = level.getFluidState(pos);
 		return state != null ? state.setValue(WATERLOGGED, fluidState.is(FluidTags.WATER)) : state;
 	}
 	
     @Override
-    public FluidState getFluidState(BlockState p_152045_)
+    public FluidState getFluidState(BlockState pState)
     {
-    	return p_152045_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    	return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
     }
 	
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_54663_) 
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) 
 	{
-		p_54663_.add(FACE, FACING, WATERLOGGED);
+		pBuilder.add(FACE, FACING, WATERLOGGED);
 	}
 }

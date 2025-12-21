@@ -23,27 +23,27 @@ public abstract class OneTimePlacedStructure extends Structure
 {
 	public ServerLevel level;
 	
-	public OneTimePlacedStructure(StructureSettings p_226558_) 
+	public OneTimePlacedStructure(StructureSettings pSettings) 
 	{
-		super(p_226558_);
+		super(pSettings);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void afterPlace(WorldGenLevel p_226560_, StructureManager p_226561_, ChunkGenerator p_226562_, RandomSource p_226563_, BoundingBox p_226564_, ChunkPos p_226565_, PiecesContainer p_226566_)
+	public void afterPlace(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pChunkGenerator, RandomSource pRandom, BoundingBox pBoundingBox, ChunkPos pChunkPos, PiecesContainer pPieces)
 	{
-		if(p_226560_ instanceof ServerLevel level)
+		if(pLevel instanceof ServerLevel level)
 		{
 			this.level = level;
 		}
-		else if(p_226560_ instanceof WorldGenRegion region)
+		else if(pLevel instanceof WorldGenRegion region)
 		{
 			this.level = region.getLevel();
 		}
 	}
 	
 	@Override
-	public Optional<GenerationStub> findValidGenerationPoint(GenerationContext p_263060_)
+	public Optional<GenerationStub> findValidGenerationPoint(GenerationContext pContext)
 	{
 		//TODO find a way to get proper level instead of always use overworld;
 		ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
@@ -55,7 +55,7 @@ public abstract class OneTimePlacedStructure extends Structure
 				return Optional.empty();
 			}
 		}
-		return super.findValidGenerationPoint(p_263060_);
+		return super.findValidGenerationPoint(pContext);
 	}
 	
 	public abstract ResourceKey<Structure> getStructureKey();

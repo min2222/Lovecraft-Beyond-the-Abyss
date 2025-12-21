@@ -16,7 +16,6 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 
-//https://github.com/BobMowzie/MowziesMobs/blob/master/src/main/java/com/bobmowzie/mowziesmobs/server/ai/MMPathNavigateGround.java
 public class BTAGroundPathNavigation extends GroundPathNavigation
 {
     protected static final float EPSILON = 1.0E-8F;
@@ -164,20 +163,24 @@ public class BTAGroundPathNavigation extends GroundPathNavigation
                     BlockPathTypes below = this.nodeEvaluator.getBlockPathType(this.level, x, y0 - 1, z);
                     BlockPathTypes in = this.nodeEvaluator.getBlockPathType(this.level, x, y0, z, this.mob);
                     float priority = this.mob.getPathfindingMalus(in);
-                    if(!this.mob.fireImmune() && this.mob.getMobType() != MobType.WATER)
+                    if(this.mob.getMobType() != MobType.WATER)
                     {
-                        if(below == BlockPathTypes.WATER || below == BlockPathTypes.LAVA || below == BlockPathTypes.OPEN)
+                        if(below == BlockPathTypes.WATER)
                         {
                         	return false;
                         }
+                    }
+                    if(below == BlockPathTypes.OPEN)
+                    {
+                    	return false;
                     }
                     if(priority < 0.0F || priority >= 8.0F)
                     {
                     	return false;
                     }
-                    if(!this.mob.fireImmune())
+                    if(!this.mob.getType().fireImmune())
                     {
-                        if(in == BlockPathTypes.DAMAGE_FIRE || in == BlockPathTypes.DANGER_FIRE || in == BlockPathTypes.DAMAGE_OTHER) 
+                        if(in == BlockPathTypes.DAMAGE_FIRE || in == BlockPathTypes.DANGER_FIRE || in == BlockPathTypes.DAMAGE_OTHER || below == BlockPathTypes.LAVA) 
                         {
                         	return false;
                         }

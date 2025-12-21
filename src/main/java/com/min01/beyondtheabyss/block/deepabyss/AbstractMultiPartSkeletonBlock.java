@@ -20,57 +20,56 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 {
 	public static final EnumProperty<SkeletonPart> SKELETON_PART = EnumProperty.create("skeleton_part", SkeletonPart.class);
 	
-	public AbstractMultiPartSkeletonBlock(Properties p_49795_)
+	public AbstractMultiPartSkeletonBlock(Properties pProperties)
 	{
-		super(p_49795_);
+		super(pProperties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(SKELETON_PART, SkeletonPart.LOWER));
 	}
 	
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> p_152043_) 
+	protected void createBlockStateDefinition(Builder<Block, BlockState> pBuilder) 
 	{
-		super.createBlockStateDefinition(p_152043_);
-		p_152043_.add(SKELETON_PART);
+		super.createBlockStateDefinition(pBuilder);
+		pBuilder.add(SKELETON_PART);
 	}
 	
 	@Override
-	public void playerWillDestroy(Level p_49505_, BlockPos p_49506_, BlockState p_49507_, Player p_49508_) 
+	public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) 
 	{
-		if(!p_49505_.isClientSide)
+		if(!pLevel.isClientSide)
 		{
-			SkeletonPart skeletonPart = p_49507_.getValue(SKELETON_PART);
-			BlockPos blockPos = p_49506_.relative(this.getNeighbourDirection(skeletonPart, p_49507_.getValue(FACING)));
-			BlockState blockState = p_49505_.getBlockState(blockPos);
+			SkeletonPart skeletonPart = pState.getValue(SKELETON_PART);
+			BlockPos blockPos = pPos.relative(this.getNeighbourDirection(skeletonPart, pState.getValue(FACING)));
+			BlockState blockState = pLevel.getBlockState(blockPos);
 			if(blockState.is(this))
 			{
-				p_49505_.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 35);
-				p_49505_.levelEvent(p_49508_, 2001, blockPos, Block.getId(blockState));
+				pLevel.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 35);
+				pLevel.levelEvent(pPlayer, 2001, blockPos, Block.getId(blockState));
 			}
 		}
 
-		super.playerWillDestroy(p_49505_, p_49506_, p_49507_, p_49508_);
+		super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
 	}
 	
-	public Direction getNeighbourDirection(SkeletonPart p_49534_, Direction p_49535_)
+	public Direction getNeighbourDirection(SkeletonPart part, Direction direction)
 	{
-		return p_49534_ == SkeletonPart.LOWER ? p_49535_.getOpposite() : p_49535_;
+		return part == SkeletonPart.LOWER ? direction.getOpposite() : direction;
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void setPlacedBy(Level p_49499_, BlockPos p_49500_, BlockState p_49501_, @Nullable LivingEntity p_49502_, ItemStack p_49503_) 
+	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) 
 	{
-		super.setPlacedBy(p_49499_, p_49500_, p_49501_, p_49502_, p_49503_);
-		if(!p_49499_.isClientSide)
+		if(!pLevel.isClientSide)
 		{
-			Direction direction = this.getPartDirection(p_49501_);
-			BlockPos blockPos = p_49500_.relative(direction);
-			boolean flag = p_49499_.isEmptyBlock(blockPos) || p_49499_.getBlockState(blockPos).liquid();
+			Direction direction = this.getPartDirection(pState);
+			BlockPos blockPos = pPos.relative(direction);
+			boolean flag = pLevel.isEmptyBlock(blockPos) || pLevel.getBlockState(blockPos).liquid();
 			if(flag)
 			{
-				p_49499_.setBlock(blockPos, p_49501_.setValue(SKELETON_PART, SkeletonPart.UPPER).setValue(WATERLOGGED, p_49499_.getFluidState(blockPos).getType() == Fluids.WATER), 3);
-				p_49499_.blockUpdated(p_49500_, Blocks.AIR);
-				p_49501_.updateNeighbourShapes(p_49499_, p_49500_, 3);
+				pLevel.setBlock(blockPos, pState.setValue(SKELETON_PART, SkeletonPart.UPPER).setValue(WATERLOGGED, pLevel.getFluidState(blockPos).getType() == Fluids.WATER), 3);
+				pLevel.blockUpdated(pPos, Blocks.AIR);
+				pState.updateNeighbourShapes(pLevel, pPos, 3);
 			}
 		}
 	}
@@ -87,9 +86,9 @@ public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationL
 
 		private final String name;
 		   
-		private SkeletonPart(String p_61339_)
+		private SkeletonPart(String name)
 		{
-			this.name = p_61339_;
+			this.name = name;
 		}
 
 		@Override

@@ -13,26 +13,26 @@ import net.minecraft.resources.ResourceLocation;
 
 public class GloomfishRenderer extends MobRenderer<EntityGloomfish, ModelGloomfish>
 {
-	public GloomfishRenderer(Context p_174304_)
+	public GloomfishRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelGloomfish(p_174304_.bakeLayer(ModelGloomfish.LAYER_LOCATION)), 0.0F);
-		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gloomfish_layer.png")));
+		super(pContext, new ModelGloomfish(pContext.bakeLayer(ModelGloomfish.LAYER_LOCATION)), 0.0F);
+		this.addLayer(new GlowingLayer<>(this, this.model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/gloomfish_layer.png")));
 	}
 	
 	@Override
-	protected void setupRotations(EntityGloomfish p_116226_, PoseStack p_116227_, float p_116228_, float p_116229_, float p_116230_) 
+	protected void setupRotations(EntityGloomfish pEntityLiving, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) 
 	{
-		super.setupRotations(p_116226_, p_116227_, p_116228_, p_116229_, p_116230_);
-		if(!p_116226_.isInWater()) 
+		super.setupRotations(pEntityLiving, pPoseStack, pAgeInTicks, pRotationYaw, pPartialTicks);
+		if(!pEntityLiving.isInWater()) 
 		{
- 			p_116227_.translate(0.25F, 0.0F, 0.0F);
-			p_116227_.mulPose(Axis.ZP.rotationDegrees(90.0F));
+			pPoseStack.translate(0.25F, 0.0F, 0.0F);
+ 			pPoseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
 		}
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityGloomfish p_115812_) 
+	public ResourceLocation getTextureLocation(EntityGloomfish pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gloomfish.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/gloomfish.png");
 	}
 }

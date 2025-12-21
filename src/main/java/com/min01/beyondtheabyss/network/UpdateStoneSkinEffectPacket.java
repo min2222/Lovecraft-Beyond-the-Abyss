@@ -27,15 +27,12 @@ public class UpdateStoneSkinEffectPacket
 		this.remove = remove;
 	}
 
-	public UpdateStoneSkinEffectPacket(FriendlyByteBuf buf)
+	public static UpdateStoneSkinEffectPacket read(FriendlyByteBuf buf)
 	{
-		this.entityUUID = buf.readUUID();
-		this.amplifier = buf.readInt();
-		this.duration = buf.readInt();
-		this.remove = buf.readBoolean();
+		return new UpdateStoneSkinEffectPacket(buf.readUUID(), buf.readInt(), buf.readInt(), buf.readBoolean());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeUUID(this.entityUUID);
 		buf.writeInt(this.amplifier);
@@ -43,33 +40,30 @@ public class UpdateStoneSkinEffectPacket
 		buf.writeBoolean(this.remove);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdateStoneSkinEffectPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdateStoneSkinEffectPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isClient())
 			{
-				if(ctx.get().getDirection().getReceptionSide().isClient())
+				BTAUtil.getClientLevel(level -> 
 				{
-					BTAUtil.getClientLevel(level -> 
+					Entity entity = BTAUtil.getEntityByUUID(level, message.entityUUID);
+					if(entity instanceof LivingEntity living) 
 					{
-						Entity entity = BTAUtil.getEntityByUUID(level, message.entityUUID);
-						if(entity instanceof LivingEntity living) 
+						if(!message.remove)
 						{
-							if(!message.remove)
-							{
-								living.addEffect(new MobEffectInstance(BTAEffects.STONE_SKIN.get(), message.duration, message.amplifier));
-							}
-							else if(living.hasEffect(BTAEffects.STONE_SKIN.get()))
-							{
-								living.removeEffect(BTAEffects.STONE_SKIN.get());
-							}
+							living.addEffect(new MobEffectInstance(BTAEffects.STONE_SKIN.get(), message.duration, message.amplifier));
 						}
-					});
-				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+						else if(living.hasEffect(BTAEffects.STONE_SKIN.get()))
+						{
+							living.removeEffect(BTAEffects.STONE_SKIN.get());
+						}
+					}
+				});
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

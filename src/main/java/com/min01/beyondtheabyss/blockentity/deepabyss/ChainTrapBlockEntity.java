@@ -31,10 +31,10 @@ public class ChainTrapBlockEntity extends BlockEntity
 {
 	public List<UUID> chainedEntities = new ArrayList<>();
 	public List<UUID> chains = new ArrayList<>();
-	
-	public ChainTrapBlockEntity(BlockPos p_155229_, BlockState p_155230_) 
+
+	public ChainTrapBlockEntity(BlockPos pPos, BlockState pBlockState)
 	{
-		super(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), p_155229_, p_155230_);
+		super(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), pPos, pBlockState);
 	}
 	
 	public static void update(Level level, BlockPos pos, BlockState state, ChainTrapBlockEntity trap)

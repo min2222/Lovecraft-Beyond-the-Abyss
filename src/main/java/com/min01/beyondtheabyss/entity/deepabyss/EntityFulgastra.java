@@ -30,9 +30,9 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 	public final SmoothAnimationState splittingAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState reformingAnimationState = new SmoothAnimationState();
 	
-	public EntityFulgastra(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityFulgastra(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(10);
 	}
 
@@ -83,42 +83,45 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public void push(Entity p_21294_) 
+	public void push(Entity pEntity) 
 	{
-		if(!(p_21294_ instanceof EntityFulgastra) && !(p_21294_ instanceof EntitySplittedFulgastra))
+		if(!(pEntity instanceof EntityFulgastra) && !(pEntity instanceof EntitySplittedFulgastra))
 		{
-			super.push(p_21294_);
+			super.push(pEntity);
 		}
 	}
 	
 	@Override
-	protected void updateWalkAnimation(float p_268283_) 
+	protected void updateWalkAnimation(float pPartialTick) 
 	{
-		float f = Math.min(p_268283_ * 16.0F, 1.0F);
+		float f = Math.min(pPartialTick * 16.0F, 1.0F);
 		this.walkAnimation.update(f, 0.4F);
 	}
 	
 	@Override
-	public float moveSpeed() 
+	public void moveToTarget() 
 	{
-		return 0.35F;
+		if(this.getAnimationState() != 1)
+		{
+			super.moveToTarget();
+		}
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_21484_) 
+	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.addAdditionalSaveData(p_21484_);
-		p_21484_.putBoolean("isCharged", this.isCharged());
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putBoolean("isCharged", this.isCharged());
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_21450_) 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.readAdditionalSaveData(p_21450_);
-		this.setCharged(p_21450_.getBoolean("isCharged"));
+		super.readAdditionalSaveData(pCompound);
+		this.setCharged(pCompound.getBoolean("isCharged"));
 	}
 	
-	public static boolean checkFulgastraSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkFulgastraSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }

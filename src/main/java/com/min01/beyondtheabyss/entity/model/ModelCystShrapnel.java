@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelCystShrapnel extends EntityModel<EntityMutavoreCyst>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "cyst_shrapnel"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "cyst_shrapnel"), "main");
 	private final ModelPart shrapnel;
 
 	public ModelCystShrapnel(ModelPart root)

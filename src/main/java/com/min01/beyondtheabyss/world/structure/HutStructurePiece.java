@@ -21,25 +21,25 @@ public class HutStructurePiece extends TemplateStructurePiece
 {
 	public static final StructurePlaceSettings SETTINGS = new StructurePlaceSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 	
-    public HutStructurePiece(StructureTemplateManager p_227555_, ResourceLocation p_227556_, BlockPos p_227557_) 
+    public HutStructurePiece(StructureTemplateManager pStructureTemplateManager, ResourceLocation pLocation, BlockPos pTemplatePosition) 
     {
-    	super(BTAStructures.HUT_PIECE.get(), 0, p_227555_, p_227556_, p_227556_.toString(), SETTINGS, p_227557_);
+    	super(BTAStructures.HUT_PIECE.get(), 0, pStructureTemplateManager, pLocation, pLocation.toString(), SETTINGS, pTemplatePosition);
     }
 
-    public HutStructurePiece(StructureTemplateManager p_227561_, CompoundTag p_227562_) 
+    public HutStructurePiece(StructureTemplateManager pStructureTemplateManager, CompoundTag pTag) 
     {
-    	super(BTAStructures.HUT_PIECE.get(), p_227562_, p_227561_, (p_227589_) -> 
+    	super(BTAStructures.HUT_PIECE.get(), pTag, pStructureTemplateManager, pPlaceSettingsFactory -> 
     	{
     		return SETTINGS;
     	});
     }
 
     @Override
-    public void postProcess(WorldGenLevel p_226899_, StructureManager p_226900_, ChunkGenerator p_226901_, RandomSource p_226902_, BoundingBox p_226903_, ChunkPos p_226904_, BlockPos p_226905_) 
+    public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) 
     {
-    	super.postProcess(p_226899_, p_226900_, p_226901_, p_226902_, p_226903_, p_226904_, p_226905_);
+    	super.postProcess(pLevel, pStructureManager, pGenerator, pRandom, pBox, pChunkPos, pPos);
     	/*List<StructureTemplate.StructureBlockInfo> list = this.placeSettings.getRandomPalette(this.template.palettes, this.templatePosition).blocks();
-        for(StructureTemplate.StructureBlockInfo info : StructureTemplate.processBlockInfos(p_226899_, this.templatePosition, p_226905_, this.placeSettings, list, this.template)) 
+        for(StructureTemplate.StructureBlockInfo info : StructureTemplate.processBlockInfos(pLevel, this.templatePosition, pPos, this.placeSettings, list, this.template)) 
         {
         	//TODO prevent block destroyed;
         	//BlockPos pos = info.pos();
@@ -47,7 +47,7 @@ public class HutStructurePiece extends TemplateStructurePiece
     }
 
 	@Override
-	protected void handleDataMarker(String p_226906_, BlockPos p_226907_, ServerLevelAccessor p_226908_, RandomSource p_226909_, BoundingBox p_226910_) 
+	protected void handleDataMarker(String pName, BlockPos pPos, ServerLevelAccessor pLevel, RandomSource pRandom, BoundingBox pBox) 
 	{
 		
 	}

@@ -15,41 +15,37 @@ public class UpdateSynchedEntityDataPacket
 	public final int id;
 	public final UUID entityUUID;
 
-	public UpdateSynchedEntityDataPacket(int id, Entity entity)
+	public UpdateSynchedEntityDataPacket(int id, UUID uuid)
 	{
 		this.id = id;
-		this.entityUUID = entity.getUUID();
+		this.entityUUID = uuid;
 	}
 
-	public UpdateSynchedEntityDataPacket(FriendlyByteBuf buf)
+	public static UpdateSynchedEntityDataPacket read(FriendlyByteBuf buf)
 	{
-		this.id = buf.readInt();
-		this.entityUUID = buf.readUUID();
+		return new UpdateSynchedEntityDataPacket(buf.readInt(), buf.readUUID());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeInt(this.id);
 		buf.writeUUID(this.entityUUID);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdateSynchedEntityDataPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdateSynchedEntityDataPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isServer()) 
 			{
-				if(ctx.get().getDirection().getReceptionSide().isServer()) 
+				Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
+				if(entity instanceof ISynchedEntityData data)
 				{
-					Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
-					if(entity instanceof ISynchedEntityData data)
-					{
-						data.onHandle(message.id);
-					}
+					data.onHandle(message.id);
 				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

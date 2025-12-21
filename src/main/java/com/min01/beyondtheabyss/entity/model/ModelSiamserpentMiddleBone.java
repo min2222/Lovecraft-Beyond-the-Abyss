@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelSiamserpentMiddleBone extends HierarchicalModel<EntitySiamserpentBone> 
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "siamserpent_middle_bone"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "siamserpent_middle_bone"), "main");
 	private final ModelPart root;
 
 	public ModelSiamserpentMiddleBone(ModelPart root) 

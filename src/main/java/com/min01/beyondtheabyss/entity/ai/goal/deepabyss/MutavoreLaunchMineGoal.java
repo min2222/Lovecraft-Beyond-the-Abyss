@@ -40,7 +40,7 @@ public class MutavoreLaunchMineGoal extends BasicBTASkillGoal<EntityMutavore>
 	}
 
 	@Override
-	protected void performSkill()
+	public void performSkill()
 	{
 		List<Integer> cysts = Lists.newArrayList(0, 1, 2, 3);
 		cysts.removeIf(t -> !this.mob.hasCyst(t));
@@ -51,26 +51,26 @@ public class MutavoreLaunchMineGoal extends BasicBTASkillGoal<EntityMutavore>
 			cyst.setOwner(this.mob);
 			cyst.setCystType(type);
 			cyst.setPos(this.mob.posArray[type]);
-			cyst.setDeltaMovement(BTAUtil.fromToVector(this.mob.position(), cyst.position(), 0.15F));
+			cyst.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), cyst.position(), 0.15F));
 			this.mob.level.addFreshEntity(cyst);
 			this.mob.removeCyst(type);
 		}
 	}
 
 	@Override
-	protected int getSkillUsingTime() 
+	public int getSkillUsingTime() 
 	{
 		return 1;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 1;
 	}
 
 	@Override
-	protected int getSkillUsingInterval()
+	public int getSkillUsingInterval()
 	{
 		return 80;
 	}

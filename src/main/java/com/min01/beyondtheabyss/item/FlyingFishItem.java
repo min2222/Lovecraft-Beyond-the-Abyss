@@ -2,6 +2,8 @@ package com.min01.beyondtheabyss.item;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.effect.BTAEffects;
 
 import net.minecraft.ChatFormatting;
@@ -24,16 +26,16 @@ public class FlyingFishItem extends Item
 	}
 	
 	@Override
-	public InteractionResult interactLivingEntity(ItemStack p_41398_, Player p_41399_, LivingEntity p_41400_, InteractionHand p_41401_) 
+	public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) 
 	{
-		p_41400_.addEffect(new MobEffectInstance(BTAEffects.AIR_SWIM.get(), 100000, 0));
+		pInteractionTarget.addEffect(new MobEffectInstance(BTAEffects.AIR_SWIM.get(), 100000, 0));
 		return InteractionResult.SUCCESS;
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack p_41421_, Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_)
+	public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) 
 	{
-		p_41423_.add(Component.translatable("item.beyondtheabyss.flying_fish.desc1").withStyle(ChatFormatting.AQUA));
-		p_41423_.add(Component.translatable("item.beyondtheabyss.flying_fish.desc2").withStyle(ChatFormatting.AQUA));
+		pTooltipComponents.add(Component.translatable("item.beyondtheabyss.flying_fish.desc1").withStyle(ChatFormatting.AQUA));
+		pTooltipComponents.add(Component.translatable("item.beyondtheabyss.flying_fish.desc2").withStyle(ChatFormatting.AQUA));
 	}
 }

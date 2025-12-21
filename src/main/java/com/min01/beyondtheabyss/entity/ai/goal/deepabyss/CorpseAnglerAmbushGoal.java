@@ -21,11 +21,11 @@ public class CorpseAnglerAmbushGoal extends BasicBTASkillGoal<EntityCorpseAngler
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.getAnimationState() == 3 && this.mob.posArray[0] != null && this.mob.getTarget().position().distanceTo(this.mob.posArray[0]) <= 3.5F;
+		return super.canUse() && this.mob.getAnimationState() == 3 && this.mob.posArray[0] != null && this.mob.getTarget().position().distanceTo(this.mob.posArray[0]) <= 2.5F;
 	}
 
 	@Override
-	protected void performSkill()
+	public void performSkill()
 	{
 		if(this.mob.getTarget() != null)
 		{
@@ -41,23 +41,25 @@ public class CorpseAnglerAmbushGoal extends BasicBTASkillGoal<EntityCorpseAngler
 	{
 		super.stop();
 		this.mob.setAnimationState(0);
-		this.mob.setBurrowCooldown(100);
+		this.mob.setBurrowCooldown(200);
+		this.mob.setCanMove(true);
+		this.mob.setCanLook(true);
 	}
 
 	@Override
-	protected int getSkillUsingTime()
+	public int getSkillUsingTime()
 	{
 		return 30;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 15;
 	}
 
 	@Override
-	protected int getSkillUsingInterval()
+	public int getSkillUsingInterval()
 	{
 		return 100;
 	}

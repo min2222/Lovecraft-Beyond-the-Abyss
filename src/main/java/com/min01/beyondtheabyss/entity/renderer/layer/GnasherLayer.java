@@ -11,6 +11,6 @@ public class GnasherLayer extends GlowingLayer<EntityGnasher, ModelGnasher>
 {
 	public GnasherLayer(RenderLayerParent<EntityGnasher, ModelGnasher> renderer, ModelGnasher model) 
 	{
-		super(renderer, model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher_layer.png"));
+		super(renderer, model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/gnasher_layer.png"));
 	}
 }

@@ -47,27 +47,27 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_)
+	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
 	{
-		ItemStack stack = p_41433_.getItemInHand(p_41434_);
+		ItemStack stack = pPlayer.getItemInHand(pUsedHand);
 		boolean isGunMode = isGunMode(stack);
-		if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
+		if(BTAUtil.getPlayerAnimationState(pPlayer) == 0)
 		{
-			if(p_41433_.isShiftKeyDown())
+			if(pPlayer.isShiftKeyDown())
 			{
 				if(isGunMode)
 				{
 					BTAUtil.setItemAnimationState(stack, 2);
 					BTAUtil.setItemAnimationTick(stack, 40);
-		        	p_41433_.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
-		        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
+					pPlayer.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
+					pPlayer.getCooldowns().addCooldown(stack.getItem(), 20);
 				}
 				else
 				{
 					BTAUtil.setItemAnimationState(stack, 1);
 					BTAUtil.setItemAnimationTick(stack, 40);
-		        	p_41433_.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
-		        	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
+					pPlayer.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
+					pPlayer.getCooldowns().addCooldown(stack.getItem(), 20);
 				}
 	        	setGunMode(stack, !isGunMode);
 			}
@@ -75,10 +75,10 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 			{
 				if(isGunMode)
 				{
-		        	p_41433_.playSound(BTASounds.GUNBLADE_CHARGE.get());
-					p_41433_.startUsingItem(p_41434_);
-					BTAUtil.setPlayerAnimationState(p_41433_, 3);
-					BTAUtil.setPlayerAnimationTick(p_41433_, 72000);
+					pPlayer.playSound(BTASounds.GUNBLADE_CHARGE.get());
+					pPlayer.startUsingItem(pUsedHand);
+					BTAUtil.setPlayerAnimationState(pPlayer, 3);
+					BTAUtil.setPlayerAnimationTick(pPlayer, 72000);
 				}
 			}
 			return InteractionResultHolder.consume(stack);
@@ -87,11 +87,11 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	}
 	
 	@Override
-	public void onUseTick(Level p_41428_, LivingEntity p_41429_, ItemStack p_41430_, int p_41431_) 
+	public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) 
 	{
-		if(getCharge(p_41430_) < 3 && p_41431_ % 25 == 0 && p_41428_.isClientSide)
+		if(getCharge(pStack) < 3 && pRemainingUseDuration % 25 == 0 && pLevel.isClientSide)
 		{
-			setCharge(p_41430_, getCharge(p_41430_) + 1);
+			setCharge(pStack, getCharge(pStack) + 1);
 		}
 	}
 	
@@ -117,11 +117,11 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	}
 	
 	@Override
-	public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_)
+	public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected)
 	{
-		if(!p_41408_ && getCharge(p_41404_) > 0)
+		if(!pIsSelected && getCharge(pStack) > 0)
 		{
-			stop(p_41404_, p_41406_);
+			stop(pStack, pEntity);
 		}
 	}
 	
@@ -137,7 +137,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	}
 	
 	@Override
-	public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int p_41415_) 
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int pTimeCharged)
 	{
 		if(getCharge(stack) > 0 && level.isClientSide)
 		{
@@ -167,9 +167,9 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	}
 	
 	@Override
-	public int getUseDuration(ItemStack p_41454_) 
+	public int getUseDuration(ItemStack pStack) 
 	{
-		if(isGunMode(p_41454_))
+		if(isGunMode(pStack))
 		{
 			return 72000;
 		}

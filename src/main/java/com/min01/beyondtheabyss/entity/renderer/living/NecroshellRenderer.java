@@ -10,18 +10,18 @@ import net.minecraft.resources.ResourceLocation;
 
 public class NecroshellRenderer extends MobRenderer<EntityNecroshell, ModelNecroshell>
 {
-	public NecroshellRenderer(Context p_174304_) 
+	public NecroshellRenderer(Context pContext) 
 	{
-		super(p_174304_, new ModelNecroshell(p_174304_.bakeLayer(ModelNecroshell.LAYER_LOCATION)), 0.5F);
+		super(pContext, new ModelNecroshell(pContext.bakeLayer(ModelNecroshell.LAYER_LOCATION)), 0.5F);
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityNecroshell p_114482_) 
+	public ResourceLocation getTextureLocation(EntityNecroshell pEntity) 
 	{
-		if(p_114482_.isSlasherShell())
+		if(pEntity.isSlasherShell())
 		{
-			return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/necroshell_slasher.png");
+			return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/necroshell_slasher.png");
 		}
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/necroshell_blaster.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/necroshell_blaster.png");
 	}
 }

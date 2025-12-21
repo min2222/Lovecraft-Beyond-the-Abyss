@@ -24,9 +24,9 @@ public class CustomRendererBlockItem extends BlockItem
 {
 	private final Supplier<BlockEntity> blockEntity;
 	
-	public CustomRendererBlockItem(Block p_40565_, Properties p_40566_, Supplier<BlockEntity> blockEntity) 
+	public CustomRendererBlockItem(Block pBlock, Properties pProperties, Supplier<BlockEntity> blockEntity) 
 	{
-		super(p_40565_, p_40566_);
+		super(pBlock, pProperties);
 		this.blockEntity = blockEntity;
 	}
 
@@ -44,24 +44,24 @@ public class CustomRendererBlockItem extends BlockItem
 	}
 	
 	@Override
-	protected boolean placeBlock(BlockPlaceContext p_40561_, BlockState p_40562_)
+	protected boolean placeBlock(BlockPlaceContext pContext, BlockState pState)
 	{
-		if(p_40562_.getBlock() instanceof AbstractMultiPartSkeletonBlock || p_40562_.getBlock() instanceof BiocrafterBlock)
+		if(pState.getBlock() instanceof AbstractMultiPartSkeletonBlock || pState.getBlock() instanceof BiocrafterBlock)
 		{
-			return p_40561_.getLevel().setBlock(p_40561_.getClickedPos(), p_40562_, 26);
+			return pContext.getLevel().setBlock(pContext.getClickedPos(), pState, 26);
 		}
-		return super.placeBlock(p_40561_, p_40562_);
+		return super.placeBlock(pContext, pState);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public InteractionResult place(BlockPlaceContext p_40577_) 
+	public InteractionResult place(BlockPlaceContext pContext) 
 	{
-		Level level = p_40577_.getLevel();
-		BlockPos pos = p_40577_.getClickedPos();
+		Level level = pContext.getLevel();
+		BlockPos pos = pContext.getClickedPos();
 		if(this.getBlock() instanceof AbstractMultiPartSkeletonBlock skeleton)
 		{
-			Direction direction = skeleton.getPartDirection(skeleton.getStateForPlacement(p_40577_));
+			Direction direction = skeleton.getPartDirection(skeleton.getStateForPlacement(pContext));
 			BlockPos blockpos = pos.relative(direction);
 			boolean flag = !level.isEmptyBlock(blockpos) && !level.getBlockState(blockpos).liquid();
 			if(flag)
@@ -78,6 +78,6 @@ public class CustomRendererBlockItem extends BlockItem
 				return InteractionResult.FAIL;
 			}
 		}
-		return super.place(p_40577_);
+		return super.place(pContext);
 	}
 }	

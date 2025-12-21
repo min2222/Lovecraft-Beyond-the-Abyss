@@ -12,21 +12,21 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SplittedFulgastraRenderer extends MobRenderer<EntitySplittedFulgastra, ModelSplittedFulgastra>
 {
-	public SplittedFulgastraRenderer(Context p_174304_)
+	public SplittedFulgastraRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelSplittedFulgastra(p_174304_.bakeLayer(ModelSplittedFulgastra.LAYER_LOCATION)), 0.5F);
+		super(pContext, new ModelSplittedFulgastra(pContext.bakeLayer(ModelSplittedFulgastra.LAYER_LOCATION)), 0.5F);
 		this.addLayer(new SplittedFulgastraLayer(this, this.model));
 	}
 	
 	@Override
-	protected RenderType getRenderType(EntitySplittedFulgastra p_115322_, boolean p_115323_, boolean p_115324_, boolean p_115325_) 
+	protected RenderType getRenderType(EntitySplittedFulgastra pLivingEntity, boolean pBodyVisible, boolean pTranslucent, boolean pGlowing) 
 	{
-		return RenderType.entityTranslucent(this.getTextureLocation(p_115322_));
+		return RenderType.entityTranslucent(this.getTextureLocation(pLivingEntity));
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntitySplittedFulgastra p_115812_) 
+	public ResourceLocation getTextureLocation(EntitySplittedFulgastra pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/splitted_fulgastra.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/splitted_fulgastra.png");
 	}
 }

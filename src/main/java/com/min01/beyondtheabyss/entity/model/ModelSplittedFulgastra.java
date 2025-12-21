@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelSplittedFulgastra extends HierarchicalModel<EntitySplittedFulgastra>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "splitted_fulgastra"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "splitted_fulgastra"), "main");
 	private final ModelPart root;
 
 	public ModelSplittedFulgastra(ModelPart root)
@@ -74,7 +74,7 @@ public class ModelSplittedFulgastra extends HierarchicalModel<EntitySplittedFulg
 	public void setupAnim(EntitySplittedFulgastra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animateWalk(SplittedFulgastraAnimation.FULGASTRA_SWIM, limbSwing, limbSwingAmount, 2.5F, 2.5F);
+		entity.swimAnimationState.animate(this, SplittedFulgastraAnimation.FULGASTRA_SWIM, ageInTicks);
 		entity.chargingAnimationState.animate(this, SplittedFulgastraAnimation.FULGASTRA_CHARGING, ageInTicks);
 		entity.shockingAnimationState.animate(this, SplittedFulgastraAnimation.FULGASTRA_SHOCKING, ageInTicks);
 		entity.closedAnimationState.animate(this, SplittedFulgastraAnimation.FULGASTRA_CLOSED, ageInTicks);

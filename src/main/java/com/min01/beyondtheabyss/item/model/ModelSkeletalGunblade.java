@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModelSkeletalGunblade extends HierarchicalItemModel
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "skeletal_gunblade"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "skeletal_gunblade"), "main");
 	private final ModelPart root;
 	private final ModelPart SkeletalGunblade;
 	private final ModelPart Blade;

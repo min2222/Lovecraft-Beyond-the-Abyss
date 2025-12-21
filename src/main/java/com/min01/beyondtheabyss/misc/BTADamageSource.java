@@ -12,12 +12,12 @@ import net.minecraft.world.entity.Entity;
 
 public class BTADamageSource
 {
-    public static final ResourceKey<DamageType> GHIDRUTH_FLESH = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "ghidruth_flesh"));
-    public static final ResourceKey<DamageType> ELECTRONIC = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "electronic"));
-    public static final ResourceKey<DamageType> PUTRID = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "putrid"));
-    public static final ResourceKey<DamageType> TOOTH = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "tooth"));
-    public static final ResourceKey<DamageType> GOLDEN_TOOTH = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "golden_tooth"));
-    public static final ResourceKey<DamageType> SHRAPNEL = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, "shrapnel"));
+    public static final ResourceKey<DamageType> GHIDRUTH_FLESH = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "ghidruth_flesh"));
+    public static final ResourceKey<DamageType> ELECTRONIC = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "electronic"));
+    public static final ResourceKey<DamageType> PUTRID = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "putrid"));
+    public static final ResourceKey<DamageType> TOOTH = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "tooth"));
+    public static final ResourceKey<DamageType> GOLDEN_TOOTH = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "golden_tooth"));
+    public static final ResourceKey<DamageType> SHRAPNEL = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "shrapnel"));
     
     public static DamageSource causeGhidruthFleshDamage(RegistryAccess registryAccess)
     {

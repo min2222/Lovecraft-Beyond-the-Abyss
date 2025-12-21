@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ToothvinePlantBlock extends KelpPlantBlock
 {
-	protected static final VoxelShape AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+	public static final VoxelShape AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 	public static final EnumProperty<VineState> VINE_STATE = EnumProperty.create("state", VineState.class);
 	
 	public ToothvinePlantBlock()
@@ -35,9 +35,9 @@ public class ToothvinePlantBlock extends KelpPlantBlock
 	}
 	
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext p_53868_)
+	public BlockState getStateForPlacement(BlockPlaceContext pContext)
 	{
-		return super.getStateForPlacement(p_53868_).setValue(VINE_STATE, this.getVineState(p_53868_.getClickedPos(), p_53868_.getLevel()));
+		return super.getStateForPlacement(pContext).setValue(VINE_STATE, this.getVineState(pContext.getClickedPos(), pContext.getLevel()));
 	}
 	
 	public VineState getVineState(BlockPos pos, Level level) 
@@ -61,13 +61,13 @@ public class ToothvinePlantBlock extends KelpPlantBlock
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> p_49915_) 
+	protected void createBlockStateDefinition(Builder<Block, BlockState> pBuilder) 
 	{
-		p_49915_.add(VINE_STATE);
+		pBuilder.add(VINE_STATE);
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) 
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
 		return AABB;
 	}
@@ -80,9 +80,9 @@ public class ToothvinePlantBlock extends KelpPlantBlock
 
 		private final String name;
 		
-		private VineState(String p_61339_)
+		private VineState(String name)
 		{
-			this.name = p_61339_;
+			this.name = name;
 		}
 
 		@Override

@@ -21,7 +21,7 @@ import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
 public abstract class MixinSwimNodeEvaluator extends NodeEvaluator
 {
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"), method = "getBlockPathType(Lnet/minecraft/world/level/BlockGetter;IIILnet/minecraft/world/entity/Mob;)Lnet/minecraft/world/level/pathfinder/BlockPathTypes;")
-	private boolean getBlockPathType(FluidState instance, TagKey<Fluid> p_205071_)
+	private boolean getBlockPathType(FluidState instance, TagKey<Fluid> pTag)
 	{
 		if(this.mob.hasEffect(BTAEffects.AIR_SWIM.get()))
 		{
@@ -29,14 +29,14 @@ public abstract class MixinSwimNodeEvaluator extends NodeEvaluator
 		}
 		else
 		{
-			return instance.is(p_205071_);
+			return instance.is(pTag);
 		}
 	}
 	
 	@Inject(at = @At("TAIL"), method = "getBlockPathType(Lnet/minecraft/world/level/BlockGetter;IIILnet/minecraft/world/entity/Mob;)Lnet/minecraft/world/level/pathfinder/BlockPathTypes;", cancellable = true)
-	private void getBlockPathType(BlockGetter p_77472_, int p_77473_, int p_77474_, int p_77475_, Mob p_77476_, CallbackInfoReturnable<BlockPathTypes> ci)
+	private void getBlockPathType(BlockGetter pLevel, int pX, int pY, int pZ, Mob pMob, CallbackInfoReturnable<BlockPathTypes> ci)
 	{
-		if(p_77476_.hasEffect(BTAEffects.AIR_SWIM.get()))
+		if(pMob.hasEffect(BTAEffects.AIR_SWIM.get()))
 		{
 			ci.setReturnValue(BlockPathTypes.WATER);
 		}

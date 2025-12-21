@@ -15,8 +15,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class JawBoneBlock extends AbstractRotatedBoneBlock
 {
-	protected static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
-	protected static final VoxelShape Y_AABB = Block.box(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	public static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
+	public static final VoxelShape Y_AABB = Block.box(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 	
 	public static final BooleanProperty UP = BooleanProperty.create("up");
 	
@@ -26,9 +26,9 @@ public class JawBoneBlock extends AbstractRotatedBoneBlock
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) 
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
-		if(p_60555_.getValue(UP))
+		if(pState.getValue(UP))
 		{
 			return Y_AABB;
 		}
@@ -36,15 +36,15 @@ public class JawBoneBlock extends AbstractRotatedBoneBlock
 	}
 	
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext p_49820_) 
+	public BlockState getStateForPlacement(BlockPlaceContext pContext) 
 	{
-		return super.getStateForPlacement(p_49820_).setValue(UP, p_49820_.getClickedFace().getOpposite().equals(Direction.UP));
+		return super.getStateForPlacement(pContext).setValue(UP, pContext.getClickedFace().getOpposite().equals(Direction.UP));
 	}
 	
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> p_152043_)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> pBuilder)
 	{
-		super.createBlockStateDefinition(p_152043_);
-		p_152043_.add(UP);
+		super.createBlockStateDefinition(pBuilder);
+		pBuilder.add(UP);
 	}
 }

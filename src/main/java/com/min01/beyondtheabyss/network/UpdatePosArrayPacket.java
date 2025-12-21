@@ -18,55 +18,50 @@ public class UpdatePosArrayPacket
 	private final int array;
 	private final Vec3 pos;
 
-	public UpdatePosArrayPacket(Entity entity, Vec3 pos, int array) 
+	public UpdatePosArrayPacket(UUID entityUUID, Vec3 pos, int array) 
 	{
-		this.entityUUID = entity.getUUID();
+		this.entityUUID = entityUUID;
 		this.pos = pos;
 		this.array = array;
 	}
 
-	public UpdatePosArrayPacket(FriendlyByteBuf buf)
+	public static UpdatePosArrayPacket read(FriendlyByteBuf buf)
 	{
-		this.entityUUID = buf.readUUID();
-		this.pos = BTAEntityDataSerializers.readVec3(buf);
-		this.array = buf.readInt();
+		return new UpdatePosArrayPacket(buf.readUUID(), BTAEntityDataSerializers.readVec3(buf), buf.readInt());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeUUID(this.entityUUID);
 		BTAEntityDataSerializers.writeVec3(buf, this.pos);
 		buf.writeInt(this.array);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdatePosArrayPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdatePosArrayPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isClient())
 			{
-				if(ctx.get().getDirection().getReceptionSide().isClient())
+				BTAUtil.getClientLevel(t -> 
 				{
-					BTAUtil.getClientLevel(t -> 
-					{
-						Entity entity = BTAUtil.getEntityByUUID(t, message.entityUUID);
-						if(entity instanceof IPosArray mob) 
-						{
-							mob.getPosArray()[message.array] = message.pos;
-						}
-					});
-				}
-				else
-				{
-					Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
+					Entity entity = BTAUtil.getEntityByUUID(t, message.entityUUID);
 					if(entity instanceof IPosArray mob) 
 					{
 						mob.getPosArray()[message.array] = message.pos;
 					}
+				});
+			}
+			else
+			{
+				Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
+				if(entity instanceof IPosArray mob) 
+				{
+					mob.getPosArray()[message.array] = message.pos;
 				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

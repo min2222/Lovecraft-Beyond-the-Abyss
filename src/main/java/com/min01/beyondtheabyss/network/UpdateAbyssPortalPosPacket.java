@@ -17,29 +17,26 @@ public class UpdateAbyssPortalPosPacket
 		this.pos = pos;
 	}
 
-	public UpdateAbyssPortalPosPacket(FriendlyByteBuf buf)
+	public static UpdateAbyssPortalPosPacket read(FriendlyByteBuf buf)
 	{
-		this.pos = buf.readBlockPos();
+		return new UpdateAbyssPortalPosPacket(buf.readBlockPos());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(this.pos);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdateAbyssPortalPosPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdateAbyssPortalPosPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isClient()) 
 			{
-				if(ctx.get().getDirection().getReceptionSide().isClient()) 
-				{
-					ClientEventHandlerForge.ABYSS_PORTAL_POS.set(message.pos);
-				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+				ClientEventHandlerForge.ABYSS_PORTAL_POS.set(message.pos);
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

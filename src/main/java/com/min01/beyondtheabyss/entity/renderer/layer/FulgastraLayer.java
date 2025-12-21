@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class FulgastraLayer extends GlowingLayer<EntityFulgastra, ModelFulgastra>
 {
-	private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/fulgastra_layer.png");
-	private static final ResourceLocation LAYER_TEXTURE_CHARGED = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/charged_fulgastra_layer.png");
+	private static final ResourceLocation LAYER_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/fulgastra_layer.png");
+	private static final ResourceLocation LAYER_TEXTURE_CHARGED = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/charged_fulgastra_layer.png");
 	
 	public FulgastraLayer(RenderLayerParent<EntityFulgastra, ModelFulgastra> renderer, ModelFulgastra model) 
 	{

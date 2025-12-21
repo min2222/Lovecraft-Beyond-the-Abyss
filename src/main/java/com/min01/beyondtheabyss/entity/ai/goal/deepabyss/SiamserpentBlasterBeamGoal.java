@@ -25,7 +25,7 @@ public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	protected void performSkill() 
+	public void performSkill() 
 	{
 		this.mob.setAnimationState(1);
 		this.mob.playSound(BTASounds.SIAMSERPENT_BEAM_CHARGE.get());
@@ -47,19 +47,19 @@ public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	protected int getSkillUsingTime() 
+	public int getSkillUsingTime() 
 	{
 		return 45;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 5;
 	}
 
 	@Override
-	protected int getSkillUsingInterval() 
+	public int getSkillUsingInterval() 
 	{
 		return 250;
 	}

@@ -43,6 +43,7 @@ import com.min01.beyondtheabyss.entity.model.ModelGnasherLeader;
 import com.min01.beyondtheabyss.entity.model.ModelMissile;
 import com.min01.beyondtheabyss.entity.model.ModelMutavore;
 import com.min01.beyondtheabyss.entity.model.ModelMutavoreCyst;
+import com.min01.beyondtheabyss.entity.model.ModelMysteriousGuy;
 import com.min01.beyondtheabyss.entity.model.ModelNecroshell;
 import com.min01.beyondtheabyss.entity.model.ModelObserver;
 import com.min01.beyondtheabyss.entity.model.ModelOverseer;
@@ -51,7 +52,6 @@ import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
-import com.min01.beyondtheabyss.entity.model.ModelMysteriousGuy;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormBody;
 import com.min01.beyondtheabyss.entity.model.ModelSpineWormHead;
 import com.min01.beyondtheabyss.entity.model.ModelSplittedFulgastra;
@@ -62,7 +62,6 @@ import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel2;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.FallingStoneRenderer;
-import com.min01.beyondtheabyss.entity.renderer.ForneusMagicRenderer;
 import com.min01.beyondtheabyss.entity.renderer.MissileRenderer;
 import com.min01.beyondtheabyss.entity.renderer.MutavoreCystRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
@@ -82,12 +81,12 @@ import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GloomfishRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GnasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.MutavoreRenderer;
+import com.min01.beyondtheabyss.entity.renderer.living.MysteriousGuyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.NecroshellRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.ObserverRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.OverseerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentMiddleBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentSlasherRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.MysteriousGuyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SplittedFulgastraRenderer;
@@ -141,14 +140,14 @@ public class ClientEventHandler
         BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);
         BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
         BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
-        ItemProperties.register(BTAItems.CLAM_OF_GUIDANCE.get(), new ResourceLocation("open"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        ItemProperties.register(BTAItems.CLAM_OF_GUIDANCE.get(), ResourceLocation.parse("open"), (pStack, pLevel, pEntity, pSeed) ->
         {
         	//TODO;
         	return 0.0F;
         });
-        ItemProperties.register(BTAItems.FLASHLIGHT.get(), new ResourceLocation("on"), (p_174585_, p_174586_, p_174587_, p_174588_) ->
+        ItemProperties.register(BTAItems.FLASHLIGHT.get(), ResourceLocation.parse("on"), (pStack, pLevel, pEntity, pSeed) ->
         {
-        	return FlashlightItem.isOn(p_174585_) ? 1.0F : 0.0F;
+        	return FlashlightItem.isOn(pStack) ? 1.0F : 0.0F;
         });
         //TODO weather system;
         BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, t -> BTAShaders.getFog());
@@ -165,11 +164,11 @@ public class ClientEventHandler
     @SubscribeEvent
     public static void onRegisterDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event)
     {
-    	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "deep_abyss"), new DeepAbyssDimensionSpecialEffects());
-     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "mirrored_city"), new MirroredCityDimensionSpecialEffects());
-     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "moon"), new MoonDimensionSpecialEffects());
-     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "purgatory"), new PurgatoryDimensionSpecialEffects());
-     	event.register(new ResourceLocation(BeyondtheAbyss.MODID, "outer_space"), new OuterSpaceDimensionSpecialEffects());
+    	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "deep_abyss"), new DeepAbyssDimensionSpecialEffects());
+     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "mirrored_city"), new MirroredCityDimensionSpecialEffects());
+     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "moon"), new MoonDimensionSpecialEffects());
+     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "purgatory"), new PurgatoryDimensionSpecialEffects());
+     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "outer_space"), new OuterSpaceDimensionSpecialEffects());
     }
     
     @SubscribeEvent
@@ -200,7 +199,6 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.FALLING_STONE.get(), FallingStoneRenderer::new);
     	
     	//projectile
-    	event.registerEntityRenderer(BTAEntities.FORNEUS_MAGIC.get(), ForneusMagicRenderer::new);
     	event.registerEntityRenderer(BTAEntities.ENERGY_BALL.get(), EnergyBallRenderer::new);
     	event.registerEntityRenderer(BTAEntities.PUTRID_BUBBLE.get(), PutridBubbleRenderer::new);
     	event.registerEntityRenderer(BTAEntities.TOOTH_BULLET.get(), ToothBulletRenderer::new);
@@ -299,6 +297,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelToothShotgun.LAYER_LOCATION, ModelToothShotgun::createBodyLayer);
     }
     
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void onAddLayers(EntityRenderersEvent.AddLayers event)
 	{

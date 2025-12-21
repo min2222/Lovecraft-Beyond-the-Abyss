@@ -20,16 +20,15 @@ public class GhidruthFleshItem extends BasicBTAFoodItem
 	}
 	
 	@Override
-	public ItemStack finishUsingItem(ItemStack p_41409_, Level p_41410_, LivingEntity p_41411_) 
+	public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) 
 	{		
-		if(p_41411_ instanceof Player player && !player.getAbilities().instabuild) 
+		if(pLivingEntity instanceof Player player && !player.getAbilities().instabuild) 
 		{
 			if(this.isRaw)
 			{
-				p_41411_.hurt(BTADamageSource.causeGhidruthFleshDamage(p_41410_.registryAccess()), 0.5F);
+				pLivingEntity.hurt(BTADamageSource.causeGhidruthFleshDamage(pLevel.registryAccess()), 0.5F);
 			}
-			p_41409_.shrink(1);
 		}
-		return super.finishUsingItem(p_41409_, p_41410_, p_41411_);
+		return super.finishUsingItem(pStack, pLevel, pLivingEntity);
 	}
 }

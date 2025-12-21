@@ -23,27 +23,27 @@ public class AnimatableBlockRenderer implements BlockEntityRenderer<AnimatableBl
 {
     private final ModelGlaringBarnacle barnacleModel;
     
-	public AnimatableBlockRenderer(BlockEntityRendererProvider.Context p_172550_)
+	public AnimatableBlockRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.barnacleModel = new ModelGlaringBarnacle(p_172550_.bakeLayer(ModelGlaringBarnacle.LAYER_LOCATION));
+		this.barnacleModel = new ModelGlaringBarnacle(pContext.bakeLayer(ModelGlaringBarnacle.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(AnimatableBlockEntity p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
+	public void render(AnimatableBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) 
 	{
-		BlockState blockState = p_112307_.getBlockState();
+		BlockState blockState = pBlockEntity.getBlockState();
 		if(blockState.is(BTABlocks.GLARING_BARNACLE.get()))
 		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			this.rotate(blockState.getValue(GlaringBarnacleBlock.FACE), blockState.getValue(GlaringBarnacleBlock.FACING), p_112309_);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.0F, 0.0F);
-			ResourceLocation texture = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/glaring_barnacle.png");
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(texture));
-			this.barnacleModel.setupAnim(p_112307_, 0, 0, p_112308_ + p_112307_.tickCount, 0, 0);
-			this.barnacleModel.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-			p_112309_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.translate(0.5F, 0.5F, 0.5F);
+			this.rotate(blockState.getValue(GlaringBarnacleBlock.FACE), blockState.getValue(GlaringBarnacleBlock.FACING), pPoseStack);
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.0F, 0.0F);
+			ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/glaring_barnacle.png");
+			VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(texture));
+			this.barnacleModel.setupAnim(pBlockEntity, 0, 0, pPartialTick + pBlockEntity.tickCount, 0, 0);
+			this.barnacleModel.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			pPoseStack.popPose();
 		}
 	}
 	

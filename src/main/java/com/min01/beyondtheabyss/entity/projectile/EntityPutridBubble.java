@@ -28,21 +28,21 @@ public class EntityPutridBubble extends ThrowableProjectile
 	
 	public int explosionTick;
 	
-	public EntityPutridBubble(EntityType<? extends EntityPutridBubble> p_37391_, Level p_37392_) 
+	public EntityPutridBubble(EntityType<? extends EntityPutridBubble> pEntityType, Level pLevel) 
 	{
-		super(p_37391_, p_37392_);
+		super(pEntityType, pLevel);
 		this.setNoGravity(true);
 	}
 
-	public EntityPutridBubble(Level p_37399_, LivingEntity p_37400_) 
+	public EntityPutridBubble(Level pLevel, LivingEntity pShooter) 
 	{
-		super(BTAEntities.PUTRID_BUBBLE.get(), p_37400_, p_37399_);
+		super(BTAEntities.PUTRID_BUBBLE.get(), pShooter, pLevel);
 		this.setNoGravity(true);
 	}
 
-	public EntityPutridBubble(Level p_37394_, double p_37395_, double p_37396_, double p_37397_)
+	public EntityPutridBubble(Level pLevel, double pX, double pY, double pZ)
 	{
-		super(BTAEntities.PUTRID_BUBBLE.get(), p_37395_, p_37396_, p_37397_, p_37394_);
+		super(BTAEntities.PUTRID_BUBBLE.get(), pX, pY, pZ, pLevel);
 		this.setNoGravity(true);
 	}
 
@@ -53,19 +53,19 @@ public class EntityPutridBubble extends ThrowableProjectile
 	}
 	
 	@Override
-	protected void onHitEntity(EntityHitResult p_37259_)
+	protected void onHitEntity(EntityHitResult pResult)
 	{
-		Entity entity = p_37259_.getEntity();
-		if(entity != this.getOwner())
+		Entity entity = pResult.getEntity();
+		if(this.getOwner() != null && entity != this.getOwner())
 		{
 			this.setExplode(true);
 		}
 	}
 	
 	@Override
-	protected void onHitBlock(BlockHitResult p_37258_) 
+	protected void onHitBlock(BlockHitResult pResult) 
 	{
-		super.onHitBlock(p_37258_);
+		super.onHitBlock(pResult);
 		this.setExplode(true);
 	}
 	
@@ -81,7 +81,11 @@ public class EntityPutridBubble extends ThrowableProjectile
 			if(1.0F - tick <= 0.0F)
 			{
 				this.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
-				List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F), t -> !(t instanceof EntityMutavore) && this.getOwner() != null ? !t.isAlliedTo(this.getOwner()) && t != this.getOwner() : true);
+				List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F), t -> 
+				{
+					boolean flag = this.getOwner() != null ? !t.isAlliedTo(this.getOwner()) : true;
+					return !(t instanceof EntityMutavore) && flag;
+				});
 				list.forEach(t -> 
 				{
 					if(t.hurt(BTADamageSource.causePutridDamage(this.level.registryAccess(), this), 1.5F))
@@ -95,19 +99,19 @@ public class EntityPutridBubble extends ThrowableProjectile
 	}
 	
 	@Override
-	protected void addAdditionalSaveData(CompoundTag p_37265_) 
+	protected void addAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.addAdditionalSaveData(p_37265_);
-		p_37265_.putBoolean("isExplode", this.isExplode());
-		p_37265_.putInt("ExplosionTick", this.explosionTick);
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putBoolean("isExplode", this.isExplode());
+		pCompound.putInt("ExplosionTick", this.explosionTick);
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag p_37262_)
+	protected void readAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.readAdditionalSaveData(p_37262_);
-		this.setExplode(p_37262_.getBoolean("isExplode"));
-		this.explosionTick = p_37262_.getInt("ExplosionTick");
+		super.readAdditionalSaveData(pCompound);
+		this.setExplode(pCompound.getBoolean("isExplode"));
+		this.explosionTick = pCompound.getInt("ExplosionTick");
 	}
 	
 	@Override

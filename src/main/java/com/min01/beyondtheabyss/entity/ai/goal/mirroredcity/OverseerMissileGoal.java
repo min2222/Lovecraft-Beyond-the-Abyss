@@ -34,7 +34,7 @@ public class OverseerMissileGoal extends BasicBTASkillGoal<EntityOverseer>
 	}
 
 	@Override
-	protected void performSkill()
+	public void performSkill()
 	{
 		EntityMissile missile = new EntityMissile(this.mob.level, this.mob);
 		Vec3 lookPos = BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, -2.5F);
@@ -50,19 +50,19 @@ public class OverseerMissileGoal extends BasicBTASkillGoal<EntityOverseer>
 	}
 
 	@Override
-	protected int getSkillUsingTime()
+	public int getSkillUsingTime()
 	{
 		return 20;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime()
+	public int getSkillWarmupTime()
 	{
 		return 1;
 	}
 
 	@Override
-	protected int getSkillUsingInterval() 
+	public int getSkillUsingInterval() 
 	{
 		return 60;
 	}

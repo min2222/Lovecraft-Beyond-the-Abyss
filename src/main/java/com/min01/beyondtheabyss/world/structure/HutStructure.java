@@ -25,31 +25,31 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class HutStructure extends OneTimePlacedStructure
 {
 	public static final Codec<HutStructure> CODEC = simpleCodec(HutStructure::new);
-	public static final ResourceLocation STRUCTURE_LOCATION = new ResourceLocation(BeyondtheAbyss.MODID, "hut");
+	public static final ResourceLocation STRUCTURE_LOCATION = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "hut");
 	
-	public HutStructure(StructureSettings p_226558_)
+	public HutStructure(StructureSettings pSettings)
 	{
-		super(p_226558_);
+		super(pSettings);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext p_227387_)
+	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext pContext)
 	{
-		return onTopOfChunkCenter(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, (p_227390_) -> 
+		return onTopOfChunkCenter(pContext, Heightmap.Types.WORLD_SURFACE_WG, builder -> 
 		{
-			StructureTemplateManager manager = p_227387_.structureTemplateManager();
-			ChunkPos chunkPos = p_227387_.chunkPos();
+			StructureTemplateManager manager = pContext.structureTemplateManager();
+			ChunkPos chunkPos = pContext.chunkPos();
 			BlockPos blockPos = chunkPos.getWorldPosition();
-			RandomSource random = p_227387_.random();
+			RandomSource random = pContext.random();
 			Rotation rotation = Util.getRandom(Rotation.values(), random);
 			StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
 			HutStructurePiece piece = new HutStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
-			BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.WORLD_SURFACE_WG, piece, template, rotation, Mirror.NONE, t -> 
+			BTAUtil.moveStructurePiece(pContext, Heightmap.Types.WORLD_SURFACE_WG, piece, template, rotation, Mirror.NONE, t -> 
 			{
 				piece.move(0, t + 2, 0);
 			});
-			p_227390_.addPiece(piece);
+			builder.addPiece(piece);
 		});
 	}
 	

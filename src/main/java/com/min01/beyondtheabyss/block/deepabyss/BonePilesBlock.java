@@ -11,7 +11,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BonePilesBlock extends AbstractNoRotationLimitBoneBlock
 {
-	protected static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 11.0D, 16.0D);
+	public static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 11.0D, 16.0D);
 	
 	public BonePilesBlock()
 	{
@@ -19,7 +19,7 @@ public class BonePilesBlock extends AbstractNoRotationLimitBoneBlock
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) 
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
 		return AABB;
 	}

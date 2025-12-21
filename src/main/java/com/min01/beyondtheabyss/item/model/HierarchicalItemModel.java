@@ -20,28 +20,28 @@ public abstract class HierarchicalItemModel extends Model
 		super(RenderType::entityCutoutNoCull);
 	}
 	
-	public abstract void setupAnim(ItemStack p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_);
+	public abstract void setupAnim(ItemStack stack, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch);
 
 	@Override
-	public void renderToBuffer(PoseStack p_170625_, VertexConsumer p_170626_, int p_170627_, int p_170628_, float p_170629_, float p_170630_, float p_170631_, float p_170632_) 
+	public void renderToBuffer(PoseStack pPoseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, float pRed, float pGreen, float pBlue, float pAlpha)
 	{
-		this.root().render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+		this.root().render(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
 	}
 
-	public abstract ModelPart root();
+	public abstract ModelPart root();	
 
 	public Optional<ModelPart> getAnyDescendantWithName(String name) 
 	{
-		return this.root().getAllParts().filter((p_233400_) -> 
+		return this.root().getAllParts().filter(t -> 
 		{
-			return p_233400_.hasChild(name);
-		}).findFirst().map((p_233397_) ->
+			return t.hasChild(name);
+		}).findFirst().map(t ->
 		{
-			return p_233397_.getChild(name);
+			return t.getChild(name);
 		});
 	}
 
-	protected void animate(ItemStack stack, String name, AnimationDefinition definition, float ageInTicks)
+	public void animate(ItemStack stack, String name, AnimationDefinition definition, float ageInTicks)
 	{
 		SmoothAnimationState state = BTAUtil.getItemAnimationStateByName(stack, name);
 		state.animateItem(this, definition, ageInTicks);

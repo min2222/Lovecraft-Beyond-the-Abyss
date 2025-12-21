@@ -1,7 +1,6 @@
 package com.min01.beyondtheabyss.entity.mirroredcity;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAFlyingMonster;
-import com.min01.beyondtheabyss.entity.ai.control.BTAFlyingMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.mirroredcity.OverseerMissileGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -23,12 +22,11 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	
 	public final SmoothAnimationState openAnimationState = new SmoothAnimationState();
 	
-	public EntityOverseer(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityOverseer(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(30);
 		this.noCulling = true;
-		this.setCanLook(false);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -40,7 +38,7 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
     			.add(Attributes.FLYING_SPEED, 0.8F)
         		.add(Attributes.ATTACK_DAMAGE, 15.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 100.0F)
-        		.add(Attributes.FOLLOW_RANGE, 50.0F);
+        		.add(Attributes.FOLLOW_RANGE, 150.0F);
     }
     
     @Override
@@ -84,7 +82,7 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	        this.rollAngle *= 0.9F;
 	    }
 	    
-	    BlockPos groundPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above();
+	    BlockPos groundPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ()).above();
 	    if(this.onGround() || this.blockPosition().distSqr(groundPos) <= 150.0F)
 	    {
 	    	this.addDeltaMovement(new Vec3(0.0F, 0.005F, 0.0F));
@@ -104,24 +102,23 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	}
 	
 	@Override
-	public int targetSettingInterval() 
-	{
-		return 100;
-	}
-	
-	@Override
 	public void moveToTarget()
 	{
-		Vec3 pos = this.getTarget().getEyePosition();
-		Vec3 target = new Vec3(pos.x, this.getY(), pos.z);
-		this.getNavigation().moveTo(target.x, target.y, target.z, 1.5F);
-		((BTAFlyingMoveControl) this.moveControl).setTargetPos(target);
+		if(this.canMove())
+		{
+			Vec3 targetPos = this.getTarget().getEyePosition();
+			Vec3 pos = new Vec3(targetPos.x, this.getY(), targetPos.z);
+			this.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, 1.0F);
+		}
 	}
 	
 	@Override
-	public Vec3 getMoveRadius() 
+	public void lookAtTarget() 
 	{
-		return new Vec3(50, 20, 50);
+		if(this.canLook())
+		{
+			this.getLookControl().setLookAt(this.getTarget(), 30.0F, 0.0F);
+		}
 	}
 	
 	@Override
@@ -133,13 +130,7 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	@Override
 	public int maxTurnY()
 	{
-		return 2;
-	}
-	
-	@Override
-	public boolean ignoreOperation() 
-	{
-		return true;
+		return 4;
 	}
 	
 	@Override
@@ -149,15 +140,9 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	}
 	
 	@Override
-	public boolean removeWhenFarAway(double p_21542_)
+	public boolean removeWhenFarAway(double pDistanceToClosestPlayer)
 	{
 		return false;
-	}
-	
-	@Override
-	public boolean canRandomFly()
-	{
-		return true;
 	}
 	
 	public float getRollAngle()

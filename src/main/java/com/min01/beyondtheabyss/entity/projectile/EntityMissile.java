@@ -15,21 +15,21 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class EntityMissile extends ThrowableProjectile
 {
-	public EntityMissile(EntityType<? extends EntityMissile> p_37391_, Level p_37392_) 
+	public EntityMissile(EntityType<? extends EntityMissile> pEntityType, Level pLevel) 
 	{
-		super(p_37391_, p_37392_);
+		super(pEntityType, pLevel);
 		this.setNoGravity(true);
 	}
 
-	public EntityMissile(Level p_37399_, LivingEntity p_37400_) 
+	public EntityMissile(Level pLevel, LivingEntity pShooter) 
 	{
-		super(BTAEntities.MISSILE.get(), p_37400_, p_37399_);
+		super(BTAEntities.MISSILE.get(), pShooter, pLevel);
 		this.setNoGravity(true);
 	}
 
-	public EntityMissile(Level p_37394_, double p_37395_, double p_37396_, double p_37397_)
+	public EntityMissile(Level pLevel, double pX, double pY, double pZ)
 	{
-		super(BTAEntities.MISSILE.get(), p_37395_, p_37396_, p_37397_, p_37394_);
+		super(BTAEntities.MISSILE.get(), pX, pY, pZ, pLevel);
 		this.setNoGravity(true);
 	}
 	
@@ -40,9 +40,9 @@ public class EntityMissile extends ThrowableProjectile
 	}
 	
 	@Override
-	protected void onHitEntity(EntityHitResult p_37259_)
+	protected void onHitEntity(EntityHitResult pResult)
 	{
-		Entity entity = p_37259_.getEntity();
+		Entity entity = pResult.getEntity();
 		if(entity != this.getOwner())
 		{
 			if(this.getOwner() != null)
@@ -60,9 +60,9 @@ public class EntityMissile extends ThrowableProjectile
 	}
 	
 	@Override
-	protected void onHitBlock(BlockHitResult p_37258_) 
+	protected void onHitBlock(BlockHitResult pResult) 
 	{
-		super.onHitBlock(p_37258_);
+		super.onHitBlock(pResult);
 		this.explode();
 	}
 	
@@ -85,7 +85,7 @@ public class EntityMissile extends ThrowableProjectile
 			Mob mob = (Mob) this.getOwner();
 			if(mob.getTarget() != null)
 			{
-				this.addDeltaMovement(BTAUtil.fromToVector(this.position(), mob.getTarget().getEyePosition(), 0.15F));
+				this.addDeltaMovement(BTAUtil.getVelocityTowards(this.position(), mob.getTarget().getEyePosition(), 0.15F));
 			}
 		}
 	}

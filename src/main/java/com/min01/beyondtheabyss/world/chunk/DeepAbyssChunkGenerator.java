@@ -12,24 +12,24 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 
 public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
 {
-    public static final Codec<DeepAbyssChunkGenerator> CODEC = RecordCodecBuilder.create((p_255585_) ->
+    public static final Codec<DeepAbyssChunkGenerator> CODEC = RecordCodecBuilder.create(builder ->
     {
-    	return p_255585_.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter((p_255584_) -> 
+    	return builder.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter(t -> 
     	{
-    		return p_255584_.biomeSource;
-    	}), NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((p_224278_) -> 
+    		return t.biomeSource;
+    	}), NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(t -> 
     	{
-    		return p_224278_.settings;
-    	})).apply(p_255585_, p_255585_.stable(DeepAbyssChunkGenerator::new));
+    		return t.settings;
+    	})).apply(builder, builder.stable(DeepAbyssChunkGenerator::new));
     });
 
-	public DeepAbyssChunkGenerator(BiomeSource p_224208_, Holder<NoiseGeneratorSettings> p_224209_) 
+	public DeepAbyssChunkGenerator(BiomeSource pBiomeSource, Holder<NoiseGeneratorSettings> holder) 
 	{
-		super(p_224208_, p_224209_);
-		Aquifer.FluidStatus fluidStatus = new Aquifer.FluidStatus(p_224209_.value().seaLevel(), p_224209_.value().defaultFluid());
+		super(pBiomeSource, holder);
+		Aquifer.FluidStatus fluidStatus = new Aquifer.FluidStatus(holder.value().seaLevel(), holder.value().defaultFluid());
 		this.globalFluidPicker = Suppliers.memoize(() -> 
 		{
-			return (p_224274_, p_224275_, p_224276_) -> 
+			return (pX, pY, pZ) -> 
 			{
 				return fluidStatus;
 			};

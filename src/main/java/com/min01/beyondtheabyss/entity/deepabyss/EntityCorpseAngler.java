@@ -2,6 +2,8 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerAmbushGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerDashGoal;
@@ -25,7 +27,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -58,17 +59,17 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	
 	public static final List<String> LIST = List.of("Up", "Jaw2", "Tails", "TailEdge", "Body2", "Left", "Right");
 	
-	public EntityCorpseAngler(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public EntityCorpseAngler(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.posArray = new Vec3[1];
-		this.xpReward = this.random.nextInt(10);
+		this.xpReward = this.random.nextInt(20);
 		this.noCulling = true;
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes()
+        return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 80.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.65F)
         		.add(Attributes.FOLLOW_RANGE, 60.0F)
@@ -142,7 +143,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
     	WormChain.tick(this.worm6, this.worm5, 0.0F, speed);
     	
 		DeepAbyssUtil.fishFlopping(this);
-		boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
+		
 		if(this.level.isClientSide)
 		{
 			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
@@ -152,6 +153,8 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 			this.unburrowAnimationState.updateWhen(this.getAnimationState() == 4, this.tickCount);
 			this.ambushAnimationState.updateWhen(this.getAnimationState() == 5, this.tickCount);
 		}
+		
+		boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
 		if(this.getAnimationState() == 0 && this.isInWater())
 		{
 			if(this.getBurrowCooldown() <= 0)
@@ -168,17 +171,25 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 				}
 				else
 				{
-					BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above();
+					BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
 					Vec3 pos = Vec3.atBottomCenterOf(floorPos);
-					if(this.getNavigation().isDone())
+					if(this.position().distanceTo(pos) <= 8.0F)
 					{
-						this.getNavigation().moveTo(pos.x, pos.y, pos.z, 0.25F);
+						this.getMoveControl().setWantedPosition(floorPos.getX(), floorPos.getY(), floorPos.getZ(), 1.0F);
 					}
 				}
 			}
 		}
+
 		if(this.getAnimationState() == 3)
 		{
+			this.worm.setXRot(0.0F);
+			this.worm1.setXRot(0.0F);
+			this.worm2.setXRot(10.0F);
+			this.worm3.setXRot(10.0F);
+			this.worm4.setXRot(10.0F);
+			this.worm5.setXRot(0.0F);
+			this.worm6.setXRot(0.0F);
 			this.getNavigation().stop();
 			if(this.getAnimationTick() > 0)
 			{
@@ -206,22 +217,22 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		}
 	}
 	
-	public static boolean checkCorpseAnglerSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkCorpseAnglerSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag)
 	{
-		if(p_21436_ == MobSpawnType.NATURAL)
+		if(pReason == MobSpawnType.NATURAL)
 		{
-			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above();
+			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
 			Vec3 pos = Vec3.atBottomCenterOf(floorPos);
 			this.moveTo(pos);
 		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
 	public void spawnParticle()
@@ -234,7 +245,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 			double range = this.getBbWidth() * 2;
             double x = this.getX() + (this.random.nextDouble() - this.random.nextDouble()) * range + 0.5D;
             double z = this.getZ() + (this.random.nextDouble() - this.random.nextDouble()) * range + 0.5D;
-			this.level.addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.getBlockStateOn()), x, this.getY(), z, motionX, motionY, motionZ);
+			this.level.addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.level.getBlockState(this.blockPosition().below())), x, this.getY(), z, motionX, motionY, motionZ);
 		}
 	}
 	
@@ -245,18 +256,18 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	}
 	
     @Override
-    protected void updateWalkAnimation(float p_268283_)
+    protected void updateWalkAnimation(float pPartialTick)
     {
-        float f = Math.min(p_268283_ * 20.0F, 1.0F);
+        float f = Math.min(pPartialTick * 20.0F, 1.0F);
         this.walkAnimation.update(f, 0.4F);
     }
 	
 	@Override
-	protected void doPush(Entity p_21294_)
+	protected void doPush(Entity pEntity)
 	{
 		if(this.getAnimationState() != 3)
 		{
-			super.doPush(p_21294_);
+			super.doPush(pEntity);
 		}
 	}
 	
@@ -267,9 +278,9 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public boolean hurt(DamageSource p_21016_, float p_21017_) 
+	public boolean hurt(DamageSource pSource, float pAmount) 
 	{
-		if(p_21016_.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
+		if(pSource.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
 		{
 	        String part = BTAUtil.getMultiPart(this.getBounds(), player);
 	        if(part != null && LIST.contains(part))
@@ -278,7 +289,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 				this.setAnimationTick(20);
 	        }
 		}
-		return super.hurt(p_21016_, p_21017_);
+		return super.hurt(pSource, pAmount);
 	}
     
 	@Override
@@ -298,17 +309,17 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_21484_)
+	public void addAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.addAdditionalSaveData(p_21484_);
-		p_21484_.putInt("BurrowCooldown", this.getBurrowCooldown());
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putInt("BurrowCooldown", this.getBurrowCooldown());
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_21450_)
+	public void readAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.readAdditionalSaveData(p_21450_);
-		this.setBurrowCooldown(p_21450_.getInt("BurrowCooldown"));
+		super.readAdditionalSaveData(pCompound);
+		this.setBurrowCooldown(pCompound.getInt("BurrowCooldown"));
 	}
 	
 	public void setBurrowCooldown(int cooldown)

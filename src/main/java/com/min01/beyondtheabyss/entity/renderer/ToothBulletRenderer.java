@@ -21,57 +21,57 @@ public class ToothBulletRenderer extends EntityRenderer<EntityToothBullet>
 	public final ModelToothBullet model;
 	public final ModelToothBulletShrapnel shrapnelModel;
 	public final ModelToothBulletShrapnel2 shrapnelModel2;
-	public ToothBulletRenderer(Context p_174008_) 
+	public ToothBulletRenderer(Context pContext) 
 	{
-		super(p_174008_);
-		this.model = new ModelToothBullet(p_174008_.bakeLayer(ModelToothBullet.LAYER_LOCATION));
-		this.shrapnelModel = new ModelToothBulletShrapnel(p_174008_.bakeLayer(ModelToothBulletShrapnel.LAYER_LOCATION));
-		this.shrapnelModel2 = new ModelToothBulletShrapnel2(p_174008_.bakeLayer(ModelToothBulletShrapnel2.LAYER_LOCATION));
+		super(pContext);
+		this.model = new ModelToothBullet(pContext.bakeLayer(ModelToothBullet.LAYER_LOCATION));
+		this.shrapnelModel = new ModelToothBulletShrapnel(pContext.bakeLayer(ModelToothBulletShrapnel.LAYER_LOCATION));
+		this.shrapnelModel2 = new ModelToothBulletShrapnel2(pContext.bakeLayer(ModelToothBulletShrapnel2.LAYER_LOCATION));
 	}
 
 	@Override
-	public void render(EntityToothBullet p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_) 
+	public void render(EntityToothBullet pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
-		if(p_114485_.isShrapnel()) 
+		if(pEntity.isShrapnel()) 
 		{
-			p_114488_.pushPose();
-			p_114488_.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot())));
-			p_114488_.mulPose(Axis.XP.rotationDegrees(Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot())));
-			p_114488_.scale(-1.0F, -1.0F, 1.0F);
-			p_114488_.translate(0.0F, -1.5F, 0.0F);
-			if(p_114485_.getShrapnelType() == 2)
+			pPoseStack.pushPose();
+			pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(pPartialTick, pEntity.yRotO, pEntity.getYRot())));
+			pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.5F, 0.0F);
+			if(pEntity.getShrapnelType() == 2)
 			{
-				this.shrapnelModel2.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				this.shrapnelModel2.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
 			else
 			{
-				this.shrapnelModel.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				this.shrapnelModel.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
-			p_114488_.popPose();
+			pPoseStack.popPose();
 		}
 		else
 		{
-			p_114488_.pushPose();
-			p_114488_.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot())));
-			p_114488_.mulPose(Axis.XP.rotationDegrees(Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot())));
-			p_114488_.scale(-1.0F, -1.0F, 1.0F);
-			p_114488_.translate(0.0F, -1.5F, 0.0F);
-			this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-			p_114488_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(pPartialTick, pEntity.yRotO, pEntity.getYRot())));
+			pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.5F, 0.0F);
+			this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			pPoseStack.popPose();
 		}
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityToothBullet p_114482_)
+	public ResourceLocation getTextureLocation(EntityToothBullet pEntity)
 	{
-		if(p_114482_.isShrapnel())
+		if(pEntity.isShrapnel())
 		{
-			return new ResourceLocation(String.format("%s:textures/entity/tooth_bullet_shrapnel%d.png", BeyondtheAbyss.MODID, p_114482_.getShrapnelType()));
+			return ResourceLocation.parse(String.format("%s:textures/entity/tooth_bullet_shrapnel%d.png", BeyondtheAbyss.MODID, pEntity.getShrapnelType()));
 		}
-		else if(p_114482_.isGolden())
+		else if(pEntity.isGolden())
 		{
-			return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/golden_tooth_bullet.png");
+			return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/golden_tooth_bullet.png");
 		}
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/tooth_bullet.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/tooth_bullet.png");
 	}
 }

@@ -27,11 +27,11 @@ public class FulgastraSplitGoal extends BasicBTASkillGoal<EntityFulgastra>
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.getHealth() > 10;
+		return super.canUse() && this.mob.getHealth() > 10 && this.mob.distanceTo(this.mob.getTarget()) <= 14.0F;
 	}
 
 	@Override
-	protected void performSkill() 
+	public void performSkill() 
 	{
 		int count = this.mob.getRandom().nextInt(8, 10);
 		if(count * 5 >= this.mob.getHealth())
@@ -46,7 +46,7 @@ public class FulgastraSplitGoal extends BasicBTASkillGoal<EntityFulgastra>
 			EntitySplittedFulgastra splitted = new EntitySplittedFulgastra(BTAEntities.SPLITTED_FULGASTRA.get(), this.mob.level);
 			splitted.setOwner(this.mob);
 			splitted.setPos(lookPos);
-			splitted.setDeltaMovement(BTAUtil.fromToVector(splitted.position(), endPos, 1.5F));
+			splitted.setDeltaMovement(BTAUtil.getVelocityTowards(splitted.position(), endPos, 1.5F));
 			this.mob.level.addFreshEntity(splitted);
 		}
 		this.mob.setHealth(this.mob.getHealth() - (count * 5));
@@ -62,13 +62,13 @@ public class FulgastraSplitGoal extends BasicBTASkillGoal<EntityFulgastra>
 	}
 
 	@Override
-	protected int getSkillUsingTime()
+	public int getSkillUsingTime()
 	{
 		return 20;
 	}
 
 	@Override
-	protected int getSkillUsingInterval()
+	public int getSkillUsingInterval()
 	{
 		return 100;
 	}

@@ -10,9 +10,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityForneusBody extends AbstractForneusPart
 {
-	public EntityForneusBody(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityForneusBody(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 
 	@Override

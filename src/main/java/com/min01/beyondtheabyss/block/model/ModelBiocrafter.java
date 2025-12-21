@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelBiocrafter extends HierarchicalBlockModel<BiocrafterBlockEntity>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "biocrafter"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "biocrafter"), "main");
 	private final ModelPart root;
 
 	public ModelBiocrafter(ModelPart root) 

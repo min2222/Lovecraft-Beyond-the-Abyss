@@ -11,11 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SiamserpentSlasherLayer extends GlowingLayer<EntitySiamserpentHead, ModelSiamserpentSlasher>
 {
-	private static final ResourceLocation TEXTURE_SLASHER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_layer.png");
+	private static final ResourceLocation TEXTURE_SLASHER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_layer.png");
 	
-	public SiamserpentSlasherLayer(RenderLayerParent<EntitySiamserpentHead, ModelSiamserpentSlasher> p_117346_, ModelSiamserpentSlasher model)
+	public SiamserpentSlasherLayer(RenderLayerParent<EntitySiamserpentHead, ModelSiamserpentSlasher> renderer, ModelSiamserpentSlasher model)
 	{
-		super(p_117346_, model, null);
+		super(renderer, model, null);
 	}
     
 	@Override

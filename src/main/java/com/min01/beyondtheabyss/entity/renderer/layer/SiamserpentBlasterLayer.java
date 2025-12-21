@@ -11,12 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SiamserpentBlasterLayer extends GlowingLayer<EntitySiamserpentHead, ModelSiamserpentBlaster>
 {
-	private static final ResourceLocation TEXTURE_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_layer.png");
-	private static final ResourceLocation TEXTURE_BLASTER_LASER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_laser.png");
+	private static final ResourceLocation TEXTURE_BLASTER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_layer.png");
+	private static final ResourceLocation TEXTURE_BLASTER_LASER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_laser.png");
 	
-	public SiamserpentBlasterLayer(RenderLayerParent<EntitySiamserpentHead, ModelSiamserpentBlaster> p_117346_, ModelSiamserpentBlaster model)
+	public SiamserpentBlasterLayer(RenderLayerParent<EntitySiamserpentHead, ModelSiamserpentBlaster> renderer, ModelSiamserpentBlaster model)
 	{
-		super(p_117346_, model, null);
+		super(renderer, model, null);
 	}
     
 	@Override

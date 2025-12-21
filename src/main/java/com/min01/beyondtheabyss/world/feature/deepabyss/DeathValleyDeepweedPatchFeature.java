@@ -11,16 +11,16 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 public class DeathValleyDeepweedPatchFeature extends Feature<NoneFeatureConfiguration>
 {
-	public DeathValleyDeepweedPatchFeature(Codec<NoneFeatureConfiguration> p_65786_) 
+	public DeathValleyDeepweedPatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
-		super(p_65786_);
+		super(pCodec);
 	}
 	
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159749_)
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext)
 	{
-		WorldGenLevel level = p_159749_.level();
-		BlockPos pos = p_159749_.origin();
+		WorldGenLevel level = pContext.level();
+		BlockPos pos = pContext.origin();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
 			level.setBlock(pos, BTABlocks.DEEPWEED.get().defaultBlockState(), 2);

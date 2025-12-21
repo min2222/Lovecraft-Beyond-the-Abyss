@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec2;
 
 public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "mutavore"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "mutavore"), "main");
 	private final ModelPart root;
 	private final ModelPart body;
 	private final ModelPart mound;

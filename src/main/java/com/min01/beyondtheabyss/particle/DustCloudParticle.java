@@ -39,6 +39,7 @@ public class DustCloudParticle extends TextureSheetParticle
 {
     public static final Object2IntMap<String> TEXTURES_TO_COLOR = new Object2IntOpenHashMap<>();
     private float initialAlpha = 0.5F;
+    
     protected DustCloudParticle(ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float size, BlockState state) 
     {
         super(world, x, y, z, xSpeed, ySpeed, zSpeed);
@@ -173,28 +174,28 @@ public class DustCloudParticle extends TextureSheetParticle
 		public static final ParticleOptions.Deserializer<DustCloudParticleOption> DESERIALIZER = new ParticleOptions.Deserializer<DustCloudParticleOption>() 
         {
 			@Override
-			public DustCloudParticleOption fromCommand(ParticleType<DustCloudParticleOption> p_123733_, StringReader reader) throws CommandSyntaxException 
+			public DustCloudParticleOption fromCommand(ParticleType<DustCloudParticleOption> pParticleType, StringReader pReader) throws CommandSyntaxException 
 			{
-                reader.expect(' ');
-                float size = reader.readFloat();
-                reader.expect(' ');
-                BlockState state = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), reader, false).blockState();
+				pReader.expect(' ');
+                float size = pReader.readFloat();
+                pReader.expect(' ');
+                BlockState state = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), pReader, false).blockState();
                 return new DustCloudParticleOption(state, size);
 			}
 
 			@Override
-			public DustCloudParticleOption fromNetwork(ParticleType<DustCloudParticleOption> p_123735_, FriendlyByteBuf p_123736_)
+			public DustCloudParticleOption fromNetwork(ParticleType<DustCloudParticleOption> pParticleType, FriendlyByteBuf pBuffer)
 			{
-				return new DustCloudParticleOption(p_123736_.readById(Block.BLOCK_STATE_REGISTRY), p_123736_.readFloat());
+				return new DustCloudParticleOption(pBuffer.readById(Block.BLOCK_STATE_REGISTRY), pBuffer.readFloat());
 			}
         };
         
         private final BlockState state;
     	private final float size;
     	
-		public DustCloudParticleOption(BlockState p_123630_, float size)
+		public DustCloudParticleOption(BlockState state, float size)
 		{
-			this.state = p_123630_;
+			this.state = state;
 			this.size = size;
 		}
         
@@ -205,10 +206,10 @@ public class DustCloudParticle extends TextureSheetParticle
 		}
 
 		@Override
-		public void writeToNetwork(FriendlyByteBuf p_123732_)
+		public void writeToNetwork(FriendlyByteBuf pBuffer)
 		{
-			p_123732_.writeId(GameData.getBlockStateIDMap(), this.state);
-			p_123732_.writeFloat(this.size);
+			pBuffer.writeId(GameData.getBlockStateIDMap(), this.state);
+			pBuffer.writeFloat(this.size);
 		}
 
 		@Override

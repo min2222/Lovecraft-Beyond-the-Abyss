@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
@@ -33,9 +35,9 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 	public static final EntityDataAccessor<Boolean> UNLOADED = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.BOOLEAN);
 	public Worm[] worms;
 	
-	public AbstractDeepAbyssWormPart(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public AbstractDeepAbyssWormPart(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 	
 	@Override
@@ -96,6 +98,18 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 				}
 			}
 		}
+	}
+	
+	@Override
+	protected void playStepSound(BlockPos pPos, BlockState pState) 
+	{
+		
+	}
+	
+	@Override
+	protected void playSwimSound(float pVolume) 
+	{
+		
 	}
 	
 	public void tickWorms(T head)
@@ -163,52 +177,52 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 	}
 	
     @Override
-    public boolean hurt(DamageSource p_21016_, float p_21017_) 
+    public boolean hurt(DamageSource pSource, float pAmount) 
     {
     	if(!this.isHead())
     	{
-        	if(!this.isInvulnerableTo(p_21016_) && this.getOwner() != null)
+        	if(!this.isInvulnerableTo(pSource) && this.getOwner() != null)
         	{
-        		this.getOwner().hurt(p_21016_, p_21017_);
+        		this.getOwner().hurt(pSource, pAmount);
         	}
         	return false;
     	}
-    	return super.hurt(p_21016_, p_21017_);
+    	return super.hurt(pSource, pAmount);
     }
     
     @Override
-    public boolean isInvulnerableTo(DamageSource p_20122_)
+    public boolean isInvulnerableTo(DamageSource pSource)
     {
-    	return super.isInvulnerableTo(p_20122_) || p_20122_.is(DamageTypes.IN_WALL) || p_20122_.is(DamageTypeTags.IS_FALL);
+    	return super.isInvulnerableTo(pSource) || pSource.is(DamageTypes.IN_WALL) || pSource.is(DamageTypeTags.IS_FALL);
     }
     
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_37265_) 
+	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.addAdditionalSaveData(p_37265_);
-		p_37265_.putInt("Index", this.getIndex());
-		p_37265_.putBoolean("Unloaded", this.isUnloaded());
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putInt("Index", this.getIndex());
+		pCompound.putBoolean("Unloaded", this.isUnloaded());
 		if(this.entityData.get(HEAD_UUID).isPresent())
 		{
-			p_37265_.putUUID("Head", this.entityData.get(HEAD_UUID).get());
+			pCompound.putUUID("Head", this.entityData.get(HEAD_UUID).get());
 		}
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_37262_) 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.readAdditionalSaveData(p_37262_);
-		if(p_37262_.contains("Index"))
+		super.readAdditionalSaveData(pCompound);
+		if(pCompound.contains("Index"))
 		{
-			this.setIndex(p_37262_.getInt("Index"));
+			this.setIndex(pCompound.getInt("Index"));
 		}
-		if(p_37262_.hasUUID("Head")) 
+		if(pCompound.hasUUID("Head")) 
 		{
-			this.entityData.set(HEAD_UUID, Optional.of(p_37262_.getUUID("Head")));
+			this.entityData.set(HEAD_UUID, Optional.of(pCompound.getUUID("Head")));
 		}
-		if(p_37262_.contains("Unloaded"))
+		if(pCompound.contains("Unloaded"))
 		{
-			this.setUnloaded(p_37262_.getBoolean("Unloaded"));
+			this.setUnloaded(pCompound.getBoolean("Unloaded"));
 		}
 	}
 	
@@ -235,9 +249,9 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 	}
 	
 	@Override
-	public boolean isAlliedTo(Entity p_20355_)
+	public boolean isAlliedTo(Entity pEntity)
 	{
-		return super.isAlliedTo(p_20355_) || p_20355_ == this.getHead() || (p_20355_ instanceof AbstractDeepAbyssWormPart<?> worm && worm.getHead() == this.getHead());
+		return super.isAlliedTo(pEntity) || pEntity == this.getHead() || (pEntity instanceof AbstractDeepAbyssWormPart<?> worm && worm.getHead() == this.getHead());
 	}
 	
 	public void setUnloaded(boolean value)
@@ -250,9 +264,9 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 		return this.entityData.get(UNLOADED);
 	}
 	
-	public void setHead(T p_37263_)
+	public void setHead(T head)
 	{
-		this.entityData.set(HEAD_UUID, Optional.of(p_37263_.getUUID()));
+		this.entityData.set(HEAD_UUID, Optional.of(head.getUUID()));
 	}
 	
 	@SuppressWarnings("unchecked")

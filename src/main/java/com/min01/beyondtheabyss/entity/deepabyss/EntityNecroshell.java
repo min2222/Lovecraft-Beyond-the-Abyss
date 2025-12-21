@@ -2,9 +2,12 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellAttackGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellHidingGoal;
+import com.min01.beyondtheabyss.entity.ai.navigation.BTAGroundPathNavigation;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -23,7 +26,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -41,9 +44,9 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	public final SmoothAnimationState hideAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState unhideAnimationState = new SmoothAnimationState();
 	
-	public EntityNecroshell(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityNecroshell(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(5);
 		this.setMaxUpStep(1);
 	}
@@ -52,9 +55,10 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 40.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.45F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.15F)
         		.add(Attributes.FOLLOW_RANGE, 10.0F)
         		.add(Attributes.ATTACK_DAMAGE, 4.0F)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 5.0F)
         		.add(Attributes.ARMOR, 6.0F);
     }
 
@@ -77,14 +81,6 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	protected void registerGoals() 
 	{
 		super.registerGoals();
-		this.goalSelector.addGoal(8, new RandomStrollGoal(this, 0.5F)
-		{
-			@Override
-			public boolean canUse()
-			{
-				return super.canUse() && EntityNecroshell.this.canRandomStroll();
-			}
-		});
 		this.goalSelector.addGoal(0, new NecroshellAttackGoal(this));
 		this.goalSelector.addGoal(0, new NecroshellHidingGoal(this));
 	}
@@ -116,7 +112,7 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	@Override
 	public BTAMobType getBTAMobType()
 	{
-		return BTAMobType.HOSTILE;
+		return BTAMobType.NETURAL;
 	}
 	
 	@Override
@@ -132,9 +128,21 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public boolean canRandomStroll() 
+	public boolean canSwim() 
 	{
-		return super.canRandomStroll() && !this.isHiding();
+		return false;
+	}
+	
+	@Override
+	protected PathNavigation createNavigation(Level pLevel) 
+	{
+		return new BTAGroundPathNavigation(this, pLevel);
+	}
+	
+	@Override
+	public boolean canMoveAround() 
+	{
+		return super.canMoveAround() && !this.isHiding();
 	}
 	
 	@Override
@@ -145,47 +153,47 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_)
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag)
 	{
 		this.setShellType(this.random.nextInt(0, 2));
-		if(p_21436_ == MobSpawnType.NATURAL)
+		if(pReason == MobSpawnType.NATURAL)
 		{
-			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ(), 0).above(2);
+			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ()).above();
 			Vec3 pos = Vec3.atBottomCenterOf(floorPos);
 			this.moveTo(pos);
 		}
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
-	public static boolean checkNecroshellSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkNecroshellSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_21484_)
+	public void addAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.addAdditionalSaveData(p_21484_);
-		p_21484_.putInt("ShellType", this.getShellType());
-		p_21484_.putBoolean("isHiding", this.isHiding());
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putInt("ShellType", this.getShellType());
+		pCompound.putBoolean("isHiding", this.isHiding());
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_21450_)
+	public void readAdditionalSaveData(CompoundTag pCompound)
 	{
-		super.readAdditionalSaveData(p_21450_);
-		this.setShellType(p_21450_.getInt("ShellType"));
-		this.setHiding(p_21450_.getBoolean("isHiding"));
+		super.readAdditionalSaveData(pCompound);
+		this.setShellType(pCompound.getInt("ShellType"));
+		this.setHiding(pCompound.getBoolean("isHiding"));
 	}
 	
 	@Override
-	protected void doPush(Entity p_20971_)
+	protected void doPush(Entity pEntity)
 	{
 		
 	}
 	
 	@Override
-	public void push(double p_20286_, double p_20287_, double p_20288_) 
+	public void push(double pX, double pY, double pZ) 
 	{
 		
 	}

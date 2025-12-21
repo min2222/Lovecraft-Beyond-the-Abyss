@@ -20,45 +20,45 @@ import net.minecraft.world.item.ItemDisplayContext;
 
 public class RiftwellingAltarRenderer implements BlockEntityRenderer<RiftwellingAltarBlockEntity>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar.png");
-    private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar_layer.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar.png");
+    private static final ResourceLocation LAYER_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar_layer.png");
     
 	private final ModelRiftwellingAltar model;
 	
-	public RiftwellingAltarRenderer(BlockEntityRendererProvider.Context p_172550_)
+	public RiftwellingAltarRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.model = new ModelRiftwellingAltar(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
+		this.model = new ModelRiftwellingAltar(pContext.bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
 	}
 
 	@Override
-	public void render(RiftwellingAltarBlockEntity p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
+	public void render(RiftwellingAltarBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) 
 	{
-		p_112309_.pushPose();
-		p_112309_.translate(0.5F, 0.5F, 0.5F);
-		p_112309_.scale(-1.0F, -1.0F, 1.0F);
-		p_112309_.translate(0.0F, -1.0F, 0.0F);
-		VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
-		this.model.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		p_112309_.popPose();
+		pPoseStack.pushPose();
+		pPoseStack.translate(0.5F, 0.5F, 0.5F);
+		pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+		pPoseStack.translate(0.0F, -1.0F, 0.0F);
+		VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+		this.model.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pPoseStack.popPose();
 
-		p_112309_.pushPose();
-		p_112309_.translate(0.5F, 0.5F, 0.5F);
-		p_112309_.scale(-1.0F, -1.0F, 1.0F);
-		p_112309_.translate(0.0F, -1.0F, 0.0F);
-		VertexConsumer eyeConsumer = p_112310_.getBuffer(RenderType.eyes(LAYER_TEXTURE));
-		this.model.renderToBuffer(p_112309_, eyeConsumer, p_112311_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		p_112309_.popPose();
+		pPoseStack.pushPose();
+		pPoseStack.translate(0.5F, 0.5F, 0.5F);
+		pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+		pPoseStack.translate(0.0F, -1.0F, 0.0F);
+		VertexConsumer eyeConsumer = pBuffer.getBuffer(RenderType.eyes(LAYER_TEXTURE));
+		this.model.renderToBuffer(pPoseStack, eyeConsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pPoseStack.popPose();
 		
-		if(!p_112307_.getItem().isEmpty())
+		if(!pBlockEntity.getItem().isEmpty())
 		{
-			float tick = BTAClientUtil.MC.player.tickCount + p_112308_;
-			p_112309_.pushPose();
-			p_112309_.scale(0.5F, 0.5F, 0.5F);
-			p_112309_.translate(1.0F, 3.0F, 1.0F);
-			p_112309_.translate(0, 0.05F * Mth.sin(tick / 15), 0);
-			p_112309_.mulPose(Axis.YP.rotationDegrees(tick));
-			BTAClientUtil.MC.getItemRenderer().renderStatic(p_112307_.getItem(), ItemDisplayContext.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, p_112309_, p_112310_, p_112307_.getLevel(), 0);
-			p_112309_.popPose();
+			float tick = BTAClientUtil.MC.player.tickCount + pPartialTick;
+			pPoseStack.pushPose();
+			pPoseStack.scale(0.5F, 0.5F, 0.5F);
+			pPoseStack.translate(1.0F, 3.0F, 1.0F);
+			pPoseStack.translate(0, 0.05F * Mth.sin(tick / 15), 0);
+			pPoseStack.mulPose(Axis.YP.rotationDegrees(tick));
+			BTAClientUtil.MC.getItemRenderer().renderStatic(pBlockEntity.getItem(), ItemDisplayContext.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, pPoseStack, pBuffer, pBlockEntity.getLevel(), 0);
+			pPoseStack.popPose();
 		}
 	}
 }

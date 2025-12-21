@@ -68,7 +68,7 @@ public class BTAWorldShader
 		if(shader != null)
 		{
 			shader.safeGetUniform("iResolution").set(minecraft.getWindow().getWidth(), minecraft.getWindow().getHeight());
-			shader.setSampler("ImageSampler", () -> minecraft.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
+			shader.setSampler("ImageSampler", () -> minecraft.getTextureManager().getTexture(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
 			shader.safeGetUniform("InverseTransformMatrix").set(BTAClientUtil.getInverseTransformMatrix(BTAClientUtil.INVERSE_MAT, mtx.last().pose()));
 			shader.safeGetUniform("iTime").set((((float) (minecraft.level.getGameTime() % 2400000)) + frameTime) / 20.0F);
 			shaderChain.process(frameTime);

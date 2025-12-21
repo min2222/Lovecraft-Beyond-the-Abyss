@@ -10,20 +10,20 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class AbstractNoRotationLimitBoneBlock extends AbstractRotatedBoneBlock implements EntityBlock
 {
-	public AbstractNoRotationLimitBoneBlock(Properties p_49795_) 
+	public AbstractNoRotationLimitBoneBlock(Properties pProperties) 
 	{
-		super(p_49795_);
+		super(pProperties);
 	}
 	
 	@Override
-	public RenderShape getRenderShape(BlockState p_49232_)
+	public RenderShape getRenderShape(BlockState pState)
 	{
 		return RenderShape.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) 
+	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) 
 	{
-		return new NoRotationLimitBlockEntity(p_153215_, p_153216_);
+		return new NoRotationLimitBlockEntity(pPos, pState);
 	}
 }

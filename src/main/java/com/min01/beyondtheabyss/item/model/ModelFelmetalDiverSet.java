@@ -18,7 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class ModelFelmetalDiverSet<T extends LivingEntity> extends HumanoidModel<T> 
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "felmetal_diver_set"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "felmetal_diver_set"), "main");
 	private final ModelPart all;
 	public final ModelPart Body;
 	public final ModelPart Head;

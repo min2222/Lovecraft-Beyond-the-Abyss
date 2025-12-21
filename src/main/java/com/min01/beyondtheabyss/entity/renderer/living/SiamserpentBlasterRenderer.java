@@ -11,19 +11,19 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SiamserpentBlasterRenderer extends MobRenderer<EntitySiamserpentHead, ModelSiamserpentBlaster>
 {
-	private static final ResourceLocation TEXTURE_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster.png");
-	private static final ResourceLocation DISABLED_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_disabled.png");
-	private static final ResourceLocation DORMANT_BLASTER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_dormant.png");
+	private static final ResourceLocation TEXTURE_BLASTER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster.png");
+	private static final ResourceLocation DISABLED_BLASTER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_disabled.png");
+	private static final ResourceLocation DORMANT_BLASTER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_blaster_dormant.png");
 
-	public SiamserpentBlasterRenderer(Context p_174304_)
+	public SiamserpentBlasterRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelSiamserpentBlaster(p_174304_.bakeLayer(ModelSiamserpentBlaster.LAYER_LOCATION)), 0.0F);
+		super(pContext, new ModelSiamserpentBlaster(pContext.bakeLayer(ModelSiamserpentBlaster.LAYER_LOCATION)), 0.0F);
 		this.addLayer(new SiamserpentBlasterLayer(this, this.model));
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntitySiamserpentHead p_114482_) 
+	public ResourceLocation getTextureLocation(EntitySiamserpentHead pEntity) 
 	{
-		return p_114482_.isDisabled() ? DISABLED_BLASTER : p_114482_.isDormant() ? DORMANT_BLASTER : TEXTURE_BLASTER;
+		return pEntity.isDisabled() ? DISABLED_BLASTER : pEntity.isDormant() ? DORMANT_BLASTER : TEXTURE_BLASTER;
 	}
 }

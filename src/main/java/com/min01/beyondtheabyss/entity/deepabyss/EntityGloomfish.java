@@ -20,10 +20,11 @@ import net.minecraft.world.level.block.Blocks;
 
 public class EntityGloomfish extends AbstractDeepAbyssCreature
 {	
-	public EntityGloomfish(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public EntityGloomfish(EntityType<? extends PathfinderMob> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
-		this.moveControl = new SwimmingBoidMoveControl(this, 0.1F, false);
+		super(pEntityType, pLevel);
+		this.xpReward = 1;
+		this.moveControl = new SwimmingBoidMoveControl(this, false);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -73,12 +74,12 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
 	}
 	
 	@Override
-	public boolean ignoreOperation() 
+	public boolean canSwim() 
 	{
 		return true;
 	}
 	
-	public static boolean checkGloomfishSpawnRules(EntityType<? extends AbstractDeepAbyssCreature> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkGloomfishSpawnRules(EntityType<? extends AbstractDeepAbyssCreature> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }

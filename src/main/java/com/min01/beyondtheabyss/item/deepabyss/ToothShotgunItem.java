@@ -45,41 +45,41 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
         return stack.is(BTATags.BTAItems.TEETH);
     };
     
-	public ToothShotgunItem(Properties p_41383_)
+	public ToothShotgunItem(Properties pProperties)
 	{
-		super(p_41383_);
+		super(pProperties);
 	}	
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_)
+	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
 	{
-		ItemStack stack = p_41433_.getItemInHand(p_41434_);
-		if(BTAUtil.getPlayerAnimationState(p_41433_) == 0)
+		ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+		if(BTAUtil.getPlayerAnimationState(pPlayer) == 0)
 		{
-	        ItemStack ammo = this.findAmmo(p_41433_);
+	        ItemStack ammo = this.findAmmo(pPlayer);
 			int goldenChance = stack.getEnchantmentLevel(BTAEnchantments.GOLDEN_TOOTH.get()) * 2;
 			int brittle = stack.getEnchantmentLevel(BTAEnchantments.BRITTLE.get());
 			int fracture = stack.getEnchantmentLevel(BTAEnchantments.FRACTURE.get());
-			if(getAmmo(stack) > 0 || p_41433_.getAbilities().instabuild)
+			if(getAmmo(stack) > 0 || pPlayer.getAbilities().instabuild)
 			{
 	        	for(int i = 0; i < 4; i++)
 	        	{
-	        		EntityToothBullet bullet = new EntityToothBullet(p_41432_, p_41433_);
-	        		bullet.shootFromRotation(p_41433_, p_41433_.getXRot(), p_41433_.yHeadRot, 0.0F, 2.0F, 4.0F);
+	        		EntityToothBullet bullet = new EntityToothBullet(pLevel, pPlayer);
+	        		bullet.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.yHeadRot, 0.0F, 2.0F, 4.0F);
 	        		if(goldenChance > 0)
 	        		{
 	        			bullet.setGolden(Math.random() <= goldenChance / 10.0F);
 	        		}
 	        		bullet.setMaxShrapnelCount(bullet.getMaxShrapnelCount() + brittle);
 	        		bullet.setFracture(fracture > 0);
-	        		p_41432_.addFreshEntity(bullet);
+	        		pLevel.addFreshEntity(bullet);
 	        	}
 				BTAUtil.setItemAnimationState(stack, 3);
 				BTAUtil.setItemAnimationTick(stack, 30);
-				BTAUtil.setPlayerAnimationState(p_41433_, 1);
-				BTAUtil.setPlayerAnimationTick(p_41433_, 20);
-		    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 15);
-		    	if(!p_41433_.getAbilities().instabuild)
+				BTAUtil.setPlayerAnimationState(pPlayer, 1);
+				BTAUtil.setPlayerAnimationTick(pPlayer, 20);
+		    	pPlayer.getCooldowns().addCooldown(stack.getItem(), 15);
+		    	if(!pPlayer.getAbilities().instabuild)
 		    	{
 		        	setAmmo(stack, getAmmo(stack) - 1);
 		    	}
@@ -88,26 +88,26 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 			{
 				BTAUtil.setItemAnimationState(stack, 2);
 				BTAUtil.setItemAnimationTick(stack, 40);
-		    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 20);
-	        	if(!p_41433_.getAbilities().instabuild)
+		    	pPlayer.getCooldowns().addCooldown(stack.getItem(), 20);
+	        	if(!pPlayer.getAbilities().instabuild)
 	        	{
 	                ammo.shrink(2);
 	        	}
 	        	setAmmo(stack, getAmmo(stack) + 2);
 			}
-			else if(p_41432_.isClientSide)
+			else if(pLevel.isClientSide)
 			{
-				if(p_41432_.random.nextBoolean())
+				if(pLevel.random.nextBoolean())
 				{
 					BTAUtil.setItemAnimationState(stack, 5);
 					BTAUtil.setItemAnimationTick(stack, 10);
-			    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 5);
+			    	pPlayer.getCooldowns().addCooldown(stack.getItem(), 5);
 				}
 				else
 				{
 					BTAUtil.setItemAnimationState(stack, 4);
 					BTAUtil.setItemAnimationTick(stack, 16);
-			    	p_41433_.getCooldowns().addCooldown(stack.getItem(), 8);
+			    	pPlayer.getCooldowns().addCooldown(stack.getItem(), 8);
 				}
 			}
 		}

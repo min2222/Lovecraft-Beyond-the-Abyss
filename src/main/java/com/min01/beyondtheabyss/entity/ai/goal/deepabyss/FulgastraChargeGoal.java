@@ -27,11 +27,11 @@ public class FulgastraChargeGoal extends BasicBTASkillGoal<EntitySplittedFulgast
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.getAnimationState() == 0 && this.mob.distanceTo(this.mob.getTarget()) <= 4.0F;
+		return super.canUse() && this.mob.getAnimationState() == 0 && (this.mob.distanceTo(this.mob.getTarget()) <= 4.0F || this.mob.getOwner() == null);
 	}
 
 	@Override
-	protected void performSkill() 
+	public void performSkill() 
 	{
 		this.mob.setAnimationState(2);
 		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(5), t -> t != this.mob && !t.isAlliedTo(this.mob) && !(t instanceof EntitySplittedFulgastra) && !(t instanceof EntityFulgastra));
@@ -47,22 +47,23 @@ public class FulgastraChargeGoal extends BasicBTASkillGoal<EntitySplittedFulgast
 		super.stop();
 		this.mob.setAnimationState(3);
 		this.mob.setCharged(false);
+		this.mob.kill();
 	}
 
 	@Override
-	protected int getSkillUsingTime()
+	public int getSkillUsingTime()
 	{
 		return 50;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 20;
 	}
 
 	@Override
-	protected int getSkillUsingInterval()
+	public int getSkillUsingInterval()
 	{
 		return 100;
 	}

@@ -18,35 +18,35 @@ import net.minecraft.world.phys.Vec3;
 
 public class CorpseAnglerRenderer extends MobRenderer<EntityCorpseAngler, ModelCorpseAngler>
 {
-	public CorpseAnglerRenderer(Context p_174304_)
+	public CorpseAnglerRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelCorpseAngler(p_174304_.bakeLayer(ModelCorpseAngler.LAYER_LOCATION)), 0.5F);
-		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/corpse_angler_layer.png")));
+		super(pContext, new ModelCorpseAngler(pContext.bakeLayer(ModelCorpseAngler.LAYER_LOCATION)), 0.5F);
+		this.addLayer(new GlowingLayer<>(this, this.model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/corpse_angler_layer.png")));
 	}
 	
 	@Override
-	public void render(EntityCorpseAngler p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_)
+	public void render(EntityCorpseAngler pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
 	{
-		super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
-		Vec3 pos = BTAClientUtil.getWorldPosition(p_115455_, this.model.root(), new Vec3(0, p_115455_.yBodyRot, 0), "corpse_angler", "angler", "1", "2", "3", "4", "5", "6", "Bait", "Gnasher");
-		p_115455_.posArray[0] = pos;
-		BTANetwork.sendToServer(new UpdatePosArrayPacket(p_115455_, pos, 0));
+		super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+		Vec3 pos = BTAClientUtil.getWorldPosition(pEntity, this.model.root(), new Vec3(0, pEntity.yBodyRot, 0), "corpse_angler", "angler", "1", "2", "3", "4", "5", "6", "Bait", "Gnasher");
+		pEntity.posArray[0] = pos;
+		BTANetwork.sendToServer(new UpdatePosArrayPacket(pEntity.getUUID(), pos, 0));
 	}
 	
 	@Override
-	protected void setupRotations(EntityCorpseAngler p_116226_, PoseStack p_116227_, float p_116228_, float p_116229_, float p_116230_) 
+	protected void setupRotations(EntityCorpseAngler pEntityLiving, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) 
 	{
-		super.setupRotations(p_116226_, p_116227_, p_116228_, p_116229_, p_116230_);
-		if(!p_116226_.isInWater()) 
+		super.setupRotations(pEntityLiving, pPoseStack, pAgeInTicks, pRotationYaw, pPartialTicks);
+		if(!pEntityLiving.isInWater()) 
 		{
-			p_116227_.translate(1.5F, 0.0F, 0.0F);
-			p_116227_.mulPose(Axis.ZP.rotationDegrees(90.0F));
+			pPoseStack.translate(1.5F, 0.0F, 0.0F);
+			pPoseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
 		}
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityCorpseAngler p_115812_) 
+	public ResourceLocation getTextureLocation(EntityCorpseAngler pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/corpse_angler.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/corpse_angler.png");
 	}
 }

@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModelToothShotgun extends HierarchicalItemModel
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "tooth_shotgun"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "tooth_shotgun"), "main");
 	private final ModelPart root;
 
 	public ModelToothShotgun(ModelPart root)

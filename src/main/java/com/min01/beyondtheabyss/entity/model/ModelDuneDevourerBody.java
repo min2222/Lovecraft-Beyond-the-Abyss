@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelDuneDevourerBody extends HierarchicalModel<EntityDuneDevourerBody>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "dune_devourer_body"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "dune_devourer_body"), "main");
 	private final ModelPart root;
 	private final ModelPart dune_devourer;
 

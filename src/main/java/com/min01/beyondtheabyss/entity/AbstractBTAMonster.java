@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity;
 
+import com.min01.beyondtheabyss.entity.ai.goal.LookAtTargetGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.MoveToTargetGoal;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
@@ -7,12 +9,9 @@ import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -27,19 +26,25 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 	
 	public final EntityPartBuilder<? extends AbstractBTAMonster> partBuilder;
 	
-	public AbstractBTAMonster(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public AbstractBTAMonster(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.partBuilder = this.createBuilder();
+	}
+	
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(LAST_LOOK_POS, Vec3.ZERO);
 	}
 	
 	@Override
 	protected void registerGoals() 
 	{
-		if(this.getMobType() != MobType.WATER)
-		{
-			super.registerGoals();
-		}
+		super.registerGoals();
+		this.goalSelector.addGoal(0, new MoveToTargetGoal<>(this));
+		this.goalSelector.addGoal(0, new LookAtTargetGoal<>(this));
         if(this.getBTAMobType().alwaysHostile)
         {
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
@@ -51,28 +56,21 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 	}
 	
 	@Override
-	protected void defineSynchedData()
-	{
-		super.defineSynchedData();
-		this.entityData.define(LAST_LOOK_POS, Vec3.ZERO);
-	}
-	
-	@Override
 	protected boolean shouldDespawnInPeaceful()
 	{
 		return this.getBTAMobType().despawnInPeaceful;
 	}
 	
 	@Override
-	public boolean removeWhenFarAway(double p_21542_) 
+	public boolean removeWhenFarAway(double pDistanceToClosestPlayer) 
 	{
 		return this.getBTAMobType().removeWhenFarAway;
 	}
 	
 	@Override
-	public boolean isPreventingPlayerRest(Player p_33036_) 
+	public boolean isPreventingPlayerRest(Player pPlayer) 
 	{
-		return this.getBTAMobType() == BTAMobType.HOSTILE;
+		return this.getBTAMobType().alwaysHostile;
 	}
 	
 	@Override
@@ -93,8 +91,6 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 		return this.partBuilder;
 	}
 	
-	public abstract EntityPartBuilder<? extends AbstractBTAMonster> createBuilder();
-	
 	@Override
 	public void tick() 
 	{
@@ -104,36 +100,23 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 		{
 			this.partBuilder.tick(1.0F);
 		}
-		
-		if(this.getTarget() != null)
+	}
+	
+	@Override
+	public void lookAtTarget() 
+	{
+		if(this.getLastLookPos().equals(Vec3.ZERO))
 		{
-			if(this.getBTAMobType().moveToTarget && this.canMove())
-			{
-				this.moveToTarget();
-			}
-			if(this.getBTAMobType().lookTarget)
-			{
-				this.lookTarget();
-			}
+			super.lookAtTarget();
+		}
+		else if(this.canMove())
+		{
+			Vec3 pos = this.getLastLookPos();
+			this.getLookControl().setLookAt(pos.x, pos.y, pos.z, 30.0F, 30.0F);
 		}
 	}
 	
-	public void moveToTarget()
-	{
-		this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-	}
-	
-	public void lookTarget()
-	{
-		if(this.canLook())
-		{
-			this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
-		}
-		else if(!this.getLastLookPos().equals(Vec3.ZERO))
-		{
-			this.lookAt(Anchor.EYES, this.getLastLookPos());
-		}
-	}
+	public abstract EntityPartBuilder<? extends AbstractBTAMonster> createBuilder();
 	
 	public abstract BTAMobType getBTAMobType();
 	

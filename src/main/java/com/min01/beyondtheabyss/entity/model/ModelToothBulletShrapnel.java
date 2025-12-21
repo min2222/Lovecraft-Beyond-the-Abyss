@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelToothBulletShrapnel extends EntityModel<EntityToothBullet> 
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "tooth_bullet_shrapnel"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "tooth_bullet_shrapnel"), "main");
 	private final ModelPart Toothbullet;
 
 	public ModelToothBulletShrapnel(ModelPart root)

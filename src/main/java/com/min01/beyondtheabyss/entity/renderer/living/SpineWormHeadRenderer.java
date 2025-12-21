@@ -10,20 +10,20 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SpineWormHeadRenderer extends MobRenderer<EntitySpineWormHead, ModelSpineWormHead>
 {
-	public SpineWormHeadRenderer(Context p_174304_)
+	public SpineWormHeadRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelSpineWormHead(p_174304_.bakeLayer(ModelSpineWormHead.LAYER_LOCATION)), 0.0F);
+		super(pContext, new ModelSpineWormHead(pContext.bakeLayer(ModelSpineWormHead.LAYER_LOCATION)), 0.0F);
 	}
 	
 	@Override
-	protected float getFlipDegrees(EntitySpineWormHead p_115337_) 
+	protected float getFlipDegrees(EntitySpineWormHead pLivingEntity) 
 	{
 		return 0.0F;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntitySpineWormHead p_115812_) 
+	public ResourceLocation getTextureLocation(EntitySpineWormHead pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/spine_worm_head.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/spine_worm_head.png");
 	}
 }

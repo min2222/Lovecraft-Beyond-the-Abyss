@@ -1,16 +1,15 @@
 package com.min01.beyondtheabyss.entity;
 
+import com.min01.beyondtheabyss.entity.ai.goal.LookAtTargetGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.MoveToTargetGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
@@ -21,19 +20,18 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 {
 	public final EntityPartBuilder<? extends AbstractBTACreature> partBuilder;
 	
-	public AbstractBTACreature(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_)
+	public AbstractBTACreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.partBuilder = this.createBuilder();
 	}
 	
 	@Override
 	protected void registerGoals() 
 	{
-		if(this.getMobType() != MobType.WATER)
-		{
-			super.registerGoals();
-		}
+		super.registerGoals();
+		this.goalSelector.addGoal(0, new MoveToTargetGoal<>(this));
+		this.goalSelector.addGoal(0, new LookAtTargetGoal<>(this));
         if(this.getBTAMobType().alwaysHostile)
         {
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
@@ -51,7 +49,7 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 	}
 	
 	@Override
-	public boolean removeWhenFarAway(double p_21542_) 
+	public boolean removeWhenFarAway(double pDistanceToClosestPlayer) 
 	{
 		return this.getBTAMobType().removeWhenFarAway;
 	}
@@ -74,8 +72,6 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 		return this.partBuilder;
 	}
 	
-	public abstract EntityPartBuilder<? extends AbstractBTACreature> createBuilder();
-	
 	@Override
 	public void tick() 
 	{
@@ -85,19 +81,9 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 		{
 			this.partBuilder.tick(1.0F);
 		}
-		
-		if(this.getTarget() != null)
-		{
-			if(this.getBTAMobType().moveToTarget && this.canMove())
-			{
-				this.getNavigation().moveTo(this.getTarget(), this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-			}
-			if(this.getBTAMobType().lookTarget && this.canLook())
-			{
-				this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
-			}
-		}
 	}
+	
+	public abstract EntityPartBuilder<? extends AbstractBTACreature> createBuilder();
 	
 	public abstract BTAMobType getBTAMobType();
 }

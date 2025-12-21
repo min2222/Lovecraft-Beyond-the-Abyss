@@ -17,23 +17,23 @@ public class SiamserpentMiddleBoneRenderer extends MobRenderer<EntitySiamserpent
 {
 	private final SiamserpentBoneRenderer boneRenderer;
 	
-	public SiamserpentMiddleBoneRenderer(Context p_174304_)
+	public SiamserpentMiddleBoneRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelSiamserpentMiddleBone(p_174304_.bakeLayer(ModelSiamserpentMiddleBone.LAYER_LOCATION)), 0.0F);
+		super(pContext, new ModelSiamserpentMiddleBone(pContext.bakeLayer(ModelSiamserpentMiddleBone.LAYER_LOCATION)), 0.0F);
 		this.addLayer(new SiamserpentMiddleBoneLayer(this, this.model));
-		this.boneRenderer = new SiamserpentBoneRenderer(p_174304_);
+		this.boneRenderer = new SiamserpentBoneRenderer(pContext);
 	}
 	
 	@Override
-	public void render(EntitySiamserpentBone p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
+	public void render(EntitySiamserpentBone pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
-		if(p_115455_.getVariant() == 0 || p_115455_.getVariant() == 1)
+		if(pEntity.getVariant() == 0 || pEntity.getVariant() == 1)
 		{
-			this.boneRenderer.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+			this.boneRenderer.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
 		}
 		else
 		{
-			super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+			super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
 		}
 	}
 	
@@ -48,8 +48,8 @@ public class SiamserpentMiddleBoneRenderer extends MobRenderer<EntitySiamserpent
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntitySiamserpentBone p_114482_) 
+	public ResourceLocation getTextureLocation(EntitySiamserpentBone pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_middlebone.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_middlebone.png");
 	}
 }

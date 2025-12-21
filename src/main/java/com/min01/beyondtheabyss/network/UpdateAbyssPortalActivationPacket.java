@@ -16,29 +16,26 @@ public class UpdateAbyssPortalActivationPacket
 		this.isActivated = isActivated;
 	}
 
-	public UpdateAbyssPortalActivationPacket(FriendlyByteBuf buf)
+	public static UpdateAbyssPortalActivationPacket read(FriendlyByteBuf buf)
 	{
-		this.isActivated = buf.readBoolean();
+		return new UpdateAbyssPortalActivationPacket(buf.readBoolean());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeBoolean(this.isActivated);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdateAbyssPortalActivationPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdateAbyssPortalActivationPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isClient()) 
 			{
-				if(ctx.get().getDirection().getReceptionSide().isClient()) 
-				{
-					ClientEventHandlerForge.ABYSS_PORTAL_ACTIVATED.set(message.isActivated);
-				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+				ClientEventHandlerForge.ABYSS_PORTAL_ACTIVATED.set(message.isActivated);
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

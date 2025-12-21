@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 @AutoRegisterCapability
 public interface IPlayerTickCountCapability extends INBTSerializable<CompoundTag>
 {
-	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "player_tickcount");
+	ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "player_tickcount");
 
 	void tick(Entity entity);
 	

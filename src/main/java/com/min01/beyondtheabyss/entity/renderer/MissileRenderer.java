@@ -18,27 +18,27 @@ public class MissileRenderer extends EntityRenderer<EntityMissile>
 {
 	public final ModelMissile model;
 	
-	public MissileRenderer(Context p_174008_) 
+	public MissileRenderer(Context pContext) 
 	{
-		super(p_174008_);
-		this.model = new ModelMissile(p_174008_.bakeLayer(ModelMissile.LAYER_LOCATION));
+		super(pContext);
+		this.model = new ModelMissile(pContext.bakeLayer(ModelMissile.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntityMissile p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_) 
+	public void render(EntityMissile pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
-		p_114488_.pushPose();
-		p_114488_.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(p_114487_, p_114485_.yRotO, p_114485_.getYRot()) + 180.0F));
-		p_114488_.mulPose(Axis.XP.rotationDegrees(Mth.lerp(p_114487_, p_114485_.xRotO, p_114485_.getXRot())));
-		p_114488_.scale(-1.0F, -1.0F, 1.0F);
-		p_114488_.translate(0.0F, -1.5F, 0.0F);
-		this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		p_114488_.popPose();
+		pPoseStack.pushPose();
+		pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(pPartialTick, pEntity.yRotO, pEntity.getYRot()) + 180.0F));
+		pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
+		pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+		pPoseStack.translate(0.0F, -1.5F, 0.0F);
+		this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pPoseStack.popPose();
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityMissile p_114482_)
+	public ResourceLocation getTextureLocation(EntityMissile pEntity)
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/missile.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/missile.png");
 	}
 }

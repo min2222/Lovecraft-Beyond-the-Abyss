@@ -19,9 +19,9 @@ import net.minecraft.world.item.ItemStack;
 public class FlashlightRenderer extends BlockEntityWithoutLevelRenderer
 {
 	private final ModelFlashlight model;
-	private static final ResourceLocation TEXTURE_OFF = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/flashlight_off_in_hand.png");
-	private static final ResourceLocation TEXTURE_ON = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/flashlight_on_in_hand.png");
-	private static final ResourceLocation TEXTURE_LAYER = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/flashlight_layer.png");
+	private static final ResourceLocation TEXTURE_OFF = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/flashlight_off_in_hand.png");
+	private static final ResourceLocation TEXTURE_ON = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/flashlight_on_in_hand.png");
+	private static final ResourceLocation TEXTURE_LAYER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/flashlight_layer.png");
 	
 	public FlashlightRenderer() 
 	{
@@ -30,25 +30,25 @@ public class FlashlightRenderer extends BlockEntityWithoutLevelRenderer
 	}
 	
 	@Override
-	public void renderByItem(ItemStack p_108830_, ItemDisplayContext p_108831_, PoseStack p_108832_, MultiBufferSource p_108833_, int p_108834_, int p_108835_)
+	public void renderByItem(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay)
 	{
-        p_108832_.pushPose();
-        p_108832_.scale(-1.0F, -1.0F, 1.0F);
-        p_108832_.translate(0.0F, -1.5F, 0.0F);
-        p_108832_.translate(-0.5F, 0.0F, 0.5F);
-        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(this.getTexture(p_108830_)), false, p_108830_.hasFoil());
-        this.model.renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
-        p_108832_.popPose();
+        pPoseStack.pushPose();
+        pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+        pPoseStack.translate(0.0F, -1.5F, 0.0F);
+        pPoseStack.translate(-0.5F, 0.0F, 0.5F);
+        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(pBuffer, RenderType.entityCutoutNoCull(this.getTexture(pStack)), false, pStack.hasFoil());
+        this.model.renderToBuffer(pPoseStack, consumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+        pPoseStack.popPose();
         
-        if(FlashlightItem.isOn(p_108830_))
+        if(FlashlightItem.isOn(pStack))
         {
-            p_108832_.pushPose();
-            p_108832_.scale(-1.0F, -1.0F, 1.0F);
-            p_108832_.translate(0.0F, -1.5F, 0.0F);
-            p_108832_.translate(-0.5F, 0.0F, 0.5F);
-            VertexConsumer consumer1 = ItemRenderer.getFoilBufferDirect(p_108833_, BTARenderType.eyesFix(TEXTURE_LAYER), false, p_108830_.hasFoil());
-            this.model.renderToBuffer(p_108832_, consumer1, p_108834_, p_108835_, 0.5F, 0.5F, 0.5F, 1.0F);
-            p_108832_.popPose();
+            pPoseStack.pushPose();
+            pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+            pPoseStack.translate(0.0F, -1.5F, 0.0F);
+            pPoseStack.translate(-0.5F, 0.0F, 0.5F);
+            VertexConsumer consumer1 = ItemRenderer.getFoilBufferDirect(pBuffer, BTARenderType.eyesFix(TEXTURE_LAYER), false, pStack.hasFoil());
+            this.model.renderToBuffer(pPoseStack, consumer1, pPackedLight, pPackedOverlay, 0.5F, 0.5F, 0.5F, 1.0F);
+            pPoseStack.popPose();
         }
 	}
 	

@@ -12,8 +12,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class FangSkullBlock extends AbstractNoRotationLimitBoneBlock
 {
-	protected static final VoxelShape X_AXIS_AABB = Block.box(2.0D, 0.0D, 4.0D, 15.0D, 9.0D, 12.0D);
-	protected static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 0.0D, 2.0D, 12.0D, 9.0D, 15.0D);
+	public static final VoxelShape X_AXIS_AABB = Block.box(2.0D, 0.0D, 4.0D, 15.0D, 9.0D, 12.0D);
+	public static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 0.0D, 2.0D, 12.0D, 9.0D, 15.0D);
 	
 	public FangSkullBlock()
 	{
@@ -21,9 +21,9 @@ public class FangSkullBlock extends AbstractNoRotationLimitBoneBlock
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) 
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
-		Direction direction = p_60555_.getValue(FACING);
+		Direction direction = pState.getValue(FACING);
 		if(direction == Direction.EAST || direction == Direction.WEST)
 		{
 			return X_AXIS_AABB;

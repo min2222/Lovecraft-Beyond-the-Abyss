@@ -5,9 +5,9 @@ import net.minecraft.world.effect.MobEffectCategory;
 
 public class BasicBTAEffect extends MobEffect
 {
-	public BasicBTAEffect(MobEffectCategory p_19451_, int p_19452_) 
+	public BasicBTAEffect(MobEffectCategory pCategory, int pColor) 
 	{
-		super(p_19451_, p_19452_);
+		super(pCategory, pColor);
 	}
 	
 	@Override

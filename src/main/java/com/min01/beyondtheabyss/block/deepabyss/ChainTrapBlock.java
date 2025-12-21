@@ -34,12 +34,12 @@ public class ChainTrapBlock extends FaceAttachedHorizontalDirectionalBlock imple
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final BooleanProperty OPENED = BlockStateProperties.OPEN;
 	
-	protected static final VoxelShape FLOOR_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
-	protected static final VoxelShape CEILING_AABB = Block.box(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 4.0D, 16.0D, 16.0D);
-	protected static final VoxelShape NORTH_AABB = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 4.0D);
-	protected static final VoxelShape WEST_AABB = Block.box(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	public static final VoxelShape FLOOR_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
+	public static final VoxelShape CEILING_AABB = Block.box(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	public static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 4.0D, 16.0D, 16.0D);
+	public static final VoxelShape NORTH_AABB = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);
+	public static final VoxelShape SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 4.0D);
+	public static final VoxelShape WEST_AABB = Block.box(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 	
 	public ChainTrapBlock()
 	{
@@ -48,16 +48,16 @@ public class ChainTrapBlock extends FaceAttachedHorizontalDirectionalBlock imple
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
 	{
-		switch(p_60555_.getValue(FACE))
+		switch(pState.getValue(FACE))
 		{
 		case CEILING:
 			return CEILING_AABB;
 		case FLOOR:
 			return FLOOR_AABB;
 		case WALL:
-			switch(p_60555_.getValue(FACING))
+			switch(pState.getValue(FACING))
 			{
 			case EAST:
 				return EAST_AABB;
@@ -76,59 +76,59 @@ public class ChainTrapBlock extends FaceAttachedHorizontalDirectionalBlock imple
 	}
 	
 	@Override
-	public RenderShape getRenderShape(BlockState p_49232_)
+	public RenderShape getRenderShape(BlockState pState)
 	{
 		return RenderShape.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public void onPlace(BlockState p_57466_, Level p_57467_, BlockPos p_57468_, BlockState p_57469_, boolean p_57470_) 
+	public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) 
 	{
-		if(!p_57469_.is(p_57466_.getBlock()))
+		if(!pOldState.is(pState.getBlock()))
 		{
-			p_57467_.setBlockAndUpdate(p_57468_, p_57466_.setValue(OPENED, p_57467_.hasNeighborSignal(p_57468_)));
+			pLevel.setBlockAndUpdate(pPos, pState.setValue(OPENED, pLevel.hasNeighborSignal(pPos)));
 		}
 	}
 
 	@Override
-	public void neighborChanged(BlockState p_57457_, Level p_57458_, BlockPos p_57459_, Block p_57460_, BlockPos p_57461_, boolean p_57462_)
+	public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston)
 	{
-		p_57458_.setBlockAndUpdate(p_57459_, p_57457_.setValue(OPENED, p_57458_.hasNeighborSignal(p_57459_)));
+		pLevel.setBlockAndUpdate(pPos, pState.setValue(OPENED, pLevel.hasNeighborSignal(pPos)));
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) 
+	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) 
 	{
-		return new ChainTrapBlockEntity(p_153215_, p_153216_);
+		return new ChainTrapBlockEntity(pPos, pState);
 	}
 	
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153273_, BlockState p_153274_, BlockEntityType<T> p_153275_)
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType)
     {
-        return createTicker(p_153273_, p_153275_, BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get());
+        return createTicker(pLevel, pBlockEntityType, BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get());
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<ChainTrapBlockEntity> p_151990_)
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level pLevel, BlockEntityType<T> pServerType, BlockEntityType<ChainTrapBlockEntity> pClientType)
     {
-        return createTickerHelper(p_151989_, p_151990_, ChainTrapBlockEntity::update);
+        return createTickerHelper(pServerType, pClientType, ChainTrapBlockEntity::update);
     }
     
     @SuppressWarnings("unchecked")
 	@Nullable
-    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> p_152133_, BlockEntityType<E> p_152134_, BlockEntityTicker<? super E> p_152135_) 
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> pServerType, BlockEntityType<E> pClientType, BlockEntityTicker<? super E> pTicker)
     {
-    	return p_152134_ == p_152133_ ? (BlockEntityTicker<A>)p_152135_ : null;
+    	return pClientType == pServerType ? (BlockEntityTicker<A>)pTicker : null;
     }
     
     @Override
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_152019_)
+    public BlockState getStateForPlacement(BlockPlaceContext pContext)
     {
-    	Level level = p_152019_.getLevel();
-    	BlockPos pos = p_152019_.getClickedPos();
-    	BlockState state = super.getStateForPlacement(p_152019_);
+    	Level level = pContext.getLevel();
+    	BlockPos pos = pContext.getClickedPos();
+    	BlockState state = super.getStateForPlacement(pContext);
     	if(state != null)
     	{
         	return state.setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(pos).getType() == Fluids.WATER));
@@ -137,14 +137,14 @@ public class ChainTrapBlock extends FaceAttachedHorizontalDirectionalBlock imple
     }
     
     @Override
-    public FluidState getFluidState(BlockState p_152045_)
+    public FluidState getFluidState(BlockState pState)
     {
-    	return p_152045_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    	return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
-    	p_152043_.add(WATERLOGGED, FACING, FACE, OPENED);
+    	pBuilder.add(WATERLOGGED, FACING, FACE, OPENED);
     }
 }

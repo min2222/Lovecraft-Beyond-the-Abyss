@@ -13,9 +13,9 @@ public class RiftwellingAltarBlockEntity extends BlockEntity
 {
 	private ItemStack item;
 	
-	public RiftwellingAltarBlockEntity(BlockPos p_155229_, BlockState p_155230_) 
+	public RiftwellingAltarBlockEntity(BlockPos pPos, BlockState pBlockState)
 	{
-		super(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), p_155229_, p_155230_);
+		super(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), pPos, pBlockState);
 		this.item = ItemStack.EMPTY;
 	}
 	

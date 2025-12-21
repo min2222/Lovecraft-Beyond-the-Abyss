@@ -39,7 +39,7 @@ public class BTAStructureFinder
 		});
 		register(BTAResourceKeys.BTAStructures.HUT, (k, v, s) -> 
 		{
-			v.setStructurePos(BTAResourceKeys.BTAStructures.HUT, BTAUtil.getGroundPos(s, k.getX(), k.getY() + 50, k.getZ(), -1));
+			v.setStructurePos(BTAResourceKeys.BTAStructures.HUT, BTAUtil.getGroundPos(s, k.getX(), k.getY() + 50, k.getZ()));
 		});
 	}
 	

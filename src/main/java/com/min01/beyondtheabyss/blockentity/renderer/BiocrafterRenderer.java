@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.block.deepabyss.BiocrafterBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BiocrafterBlock.BiocrafterPart;
 import com.min01.beyondtheabyss.block.model.ModelBiocrafter;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -19,29 +18,29 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BiocrafterRenderer implements BlockEntityRenderer<BiocrafterBlockEntity>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/block/biocrafter.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/biocrafter.png");
     
 	private final ModelBiocrafter model;
 	
-	public BiocrafterRenderer(BlockEntityRendererProvider.Context p_172550_)
+	public BiocrafterRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.model = new ModelBiocrafter(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelBiocrafter.LAYER_LOCATION));
+		this.model = new ModelBiocrafter(pContext.bakeLayer(ModelBiocrafter.LAYER_LOCATION));
 	}
 
 	@Override
-	public void render(BiocrafterBlockEntity p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) 
+	public void render(BiocrafterBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) 
 	{
-		BlockState blockState = p_112307_.getBlockState();
+		BlockState blockState = pBlockEntity.getBlockState();
 		if(blockState.getValue(BiocrafterBlock.BIOCRAFTER_PART) == BiocrafterPart.LOWER)
 		{
-			p_112309_.pushPose();
-			p_112309_.translate(0.5F, 0.5F, 0.5F);
-			p_112309_.scale(-1.0F, -1.0F, 1.0F);
-			p_112309_.translate(0.0F, -1.01F, 0.0F);
-			VertexConsumer consumer = p_112310_.getBuffer(RenderType.entityTranslucent(TEXTURE));
-			this.model.setupAnim(p_112307_, 0, 0, p_112307_.tickCount + p_112308_, 0, 0);
-			this.model.renderToBuffer(p_112309_, consumer, p_112311_, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-			p_112309_.popPose();
+			pPoseStack.pushPose();
+			pPoseStack.translate(0.5F, 0.5F, 0.5F);
+			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+			pPoseStack.translate(0.0F, -1.01F, 0.0F);
+			VertexConsumer consumer = pBuffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
+			this.model.setupAnim(pBlockEntity, 0, 0, pBlockEntity.tickCount + pPartialTick, 0, 0);
+			this.model.renderToBuffer(pPoseStack, consumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			pPoseStack.popPose();
 		}
 	}
 }

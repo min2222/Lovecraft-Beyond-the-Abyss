@@ -130,17 +130,6 @@ public class SiamserpentAnimation
 					new Keyframe(1.0F, KeyframeAnimations.degreeVec(32.57F, 0.2F, 0.19F), AnimationChannel.Interpolations.LINEAR)
 				))
 				.build();
-
-			public static final AnimationDefinition BLASTER_SHOOT_END = AnimationDefinition.Builder.withLength(0.25F)
-				.addAnimation("Up", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, KeyframeAnimations.degreeVec(-35.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(0.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.addAnimation("Jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-					new Keyframe(0.0F, KeyframeAnimations.degreeVec(32.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(0.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-				))
-				.build();
 			
 			public static final AnimationDefinition BLASTER_DISABLED = AnimationDefinition.Builder.withLength(4.0F).looping()
 					.addAnimation("SiamserpentBlaster", new AnimationChannel(AnimationChannel.Targets.ROTATION, 

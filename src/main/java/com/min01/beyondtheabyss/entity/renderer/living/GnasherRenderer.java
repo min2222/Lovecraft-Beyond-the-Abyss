@@ -18,23 +18,23 @@ public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher> im
 {
 	private final GnasherLeaderRenderer leaderRenderer;
 	
-	public GnasherRenderer(Context p_174008_)
+	public GnasherRenderer(Context pContext)
 	{
-		super(p_174008_, new ModelGnasher(p_174008_.bakeLayer(ModelGnasher.LAYER_LOCATION)), 0.5F);
+		super(pContext, new ModelGnasher(pContext.bakeLayer(ModelGnasher.LAYER_LOCATION)), 0.5F);
 		this.addLayer(new GnasherLayer(this, this.model));
-		this.leaderRenderer = new GnasherLeaderRenderer(p_174008_);
+		this.leaderRenderer = new GnasherLeaderRenderer(pContext);
 	}
 	
 	@Override
-	public void render(EntityGnasher p_115455_, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource p_115459_, int p_115460_) 
+	public void render(EntityGnasher pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
-		if(p_115455_.isLeader())
+		if(pEntity.isLeader())
 		{
-			this.leaderRenderer.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+			this.leaderRenderer.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
 		}
 		else
 		{
-			super.render(p_115455_, p_115456_, p_115457_, p_115458_, p_115459_, p_115460_);
+			super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
 		}
 	}
 	
@@ -49,19 +49,19 @@ public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher> im
 	}
 	
 	@Override
-	protected void setupRotations(EntityGnasher p_116226_, PoseStack p_116227_, float p_116228_, float p_116229_, float p_116230_) 
+	protected void setupRotations(EntityGnasher pEntityLiving, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) 
 	{
-		super.setupRotations(p_116226_, p_116227_, p_116228_, p_116229_, p_116230_);
-		if(!p_116226_.isInWater()) 
+		super.setupRotations(pEntityLiving, pPoseStack, pAgeInTicks, pRotationYaw, pPartialTicks);
+		if(!pEntityLiving.isInWater()) 
 		{
-			p_116227_.translate(0.5F, 0, 0);
-			p_116227_.mulPose(Axis.ZP.rotationDegrees(90.0F));
+			pPoseStack.translate(0.5F, 0, 0);
+			pPoseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
 		}
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityGnasher p_114482_) 
+	public ResourceLocation getTextureLocation(EntityGnasher pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/gnasher.png");
 	}
 }

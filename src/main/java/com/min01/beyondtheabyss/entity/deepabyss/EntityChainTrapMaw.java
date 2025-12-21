@@ -31,9 +31,9 @@ public class EntityChainTrapMaw extends Entity
 	public static final EntityDataAccessor<Integer> CHAIN_LENGTH = SynchedEntityData.defineId(EntityChainTrapMaw.class, EntityDataSerializers.INT);
 	public KinematicChain chain;
 	
-	public EntityChainTrapMaw(EntityType<?> p_19870_, Level p_19871_)
+	public EntityChainTrapMaw(EntityType<?> pEntityType, Level pLevel)
 	{
-		super(p_19870_, p_19871_);
+		super(pEntityType, pLevel);
 		this.noCulling = true;
 	}
 
@@ -73,7 +73,7 @@ public class EntityChainTrapMaw extends Entity
 				this.chain.setTarget(target.getEyePosition());
 				if(this.distanceTo(target) <= 2.0F && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target))
 				{
-					target.setDeltaMovement(BTAUtil.fromToVector(target.position(), pos, 0.1F));
+					target.setDeltaMovement(BTAUtil.getVelocityTowards(target.position(), pos, 0.1F));
 					if(target instanceof ServerPlayer player)
 					{
 		    			player.connection.send(new ClientboundSetEntityMotionPacket(target));
@@ -88,22 +88,22 @@ public class EntityChainTrapMaw extends Entity
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag p_20052_) 
+	protected void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		this.setTrapPos(NbtUtils.readBlockPos(p_20052_.getCompound("TrapPos")));
-		if(p_20052_.hasUUID("Target")) 
+		this.setTrapPos(NbtUtils.readBlockPos(pCompound.getCompound("TrapPos")));
+		if(pCompound.hasUUID("Target")) 
 		{
-			this.entityData.set(TARGET_UUID, Optional.of(p_20052_.getUUID("Target")));
+			this.entityData.set(TARGET_UUID, Optional.of(pCompound.getUUID("Target")));
 		}
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag p_20139_)
+	protected void addAdditionalSaveData(CompoundTag pCompound)
 	{
-		p_20139_.put("TrapPos", NbtUtils.writeBlockPos(this.getTrapPos()));
+		pCompound.put("TrapPos", NbtUtils.writeBlockPos(this.getTrapPos()));
 		if(this.entityData.get(TARGET_UUID).isPresent())
 		{
-			p_20139_.putUUID("Target", this.entityData.get(TARGET_UUID).get());
+			pCompound.putUUID("Target", this.entityData.get(TARGET_UUID).get());
 		}
 	}
 	

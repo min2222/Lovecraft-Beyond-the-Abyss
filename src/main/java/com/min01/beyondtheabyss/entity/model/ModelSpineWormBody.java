@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class ModelSpineWormBody extends HierarchicalModel<EntitySpineWormBody>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "spine_worm_body"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "spine_worm_body"), "main");
 	private final ModelPart root;
 
 	public ModelSpineWormBody(ModelPart root)

@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SplittedFulgastraLayer extends GlowingLayer<EntitySplittedFulgastra, ModelSplittedFulgastra>
 {
-	private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/splitted_fulgastra_layer.png");
-	private static final ResourceLocation LAYER_TEXTURE_CHARGED = new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/charged_splitted_fulgastra_layer.png");
+	private static final ResourceLocation LAYER_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/splitted_fulgastra_layer.png");
+	private static final ResourceLocation LAYER_TEXTURE_CHARGED = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/charged_splitted_fulgastra_layer.png");
 	
 	public SplittedFulgastraLayer(RenderLayerParent<EntitySplittedFulgastra, ModelSplittedFulgastra> renderer, ModelSplittedFulgastra model) 
 	{

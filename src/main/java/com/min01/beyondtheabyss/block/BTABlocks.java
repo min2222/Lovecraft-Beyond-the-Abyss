@@ -115,11 +115,11 @@ public class BTABlocks
     public static final RegistryObject<Block> BONE_STAIRS = BLOCKS.register("bone_stairs", () -> new StairBlock(() -> Blocks.BONE_BLOCK.defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     
     public static final RegistryObject<Block> BONE_LADDER = BLOCKS.register("bone_ladder", () ->  new LadderBlock(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.BONE_BLOCK).noOcclusion()));
-    public static final RegistryObject<Block> BONE_TORCH = BLOCKS.register("bone_torch", () -> new BoneTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50886_) -> 
+    public static final RegistryObject<Block> BONE_TORCH = BLOCKS.register("bone_torch", () -> new BoneTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel(t -> 
     {
         return 14;
     }).sound(SoundType.BONE_BLOCK).pushReaction(PushReaction.DESTROY)));
-    public static final RegistryObject<Block> BONE_WALL_TORCH = BLOCKS.register("bone_wall_torch", () -> new BoneWallTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_152607_) ->
+    public static final RegistryObject<Block> BONE_WALL_TORCH = BLOCKS.register("bone_wall_torch", () -> new BoneWallTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel(t ->
     {
         return 14;
     }).sound(SoundType.BONE_BLOCK).lootFrom(BONE_TORCH).pushReaction(PushReaction.DESTROY)));

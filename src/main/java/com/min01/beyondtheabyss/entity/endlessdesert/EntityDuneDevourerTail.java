@@ -9,9 +9,9 @@ import net.minecraft.world.level.Level;
 
 public class EntityDuneDevourerTail extends AbstractDuneDevourerPart
 {
-	public EntityDuneDevourerTail(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntityDuneDevourerTail(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 	}
 
 	@Override

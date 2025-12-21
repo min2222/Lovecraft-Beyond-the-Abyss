@@ -2,6 +2,8 @@ package com.min01.beyondtheabyss.item.deepabyss;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
@@ -31,18 +33,18 @@ public class ClamOfGuidanceItem extends Item
 	}
 	
 	@Override
-	public boolean isFoil(ItemStack p_41453_)
+	public boolean isFoil(ItemStack pStack)
 	{
 		return true;
 	}
 	
 	@Override
-	public InteractionResult useOn(UseOnContext p_41427_) 
+	public InteractionResult useOn(UseOnContext pContext) 
 	{
-		Level level = p_41427_.getLevel();
-		BlockPos pos = p_41427_.getClickedPos();
-		Player player = p_41427_.getPlayer();
-		ItemStack stack = p_41427_.getItemInHand();
+		Level level = pContext.getLevel();
+		BlockPos pos = pContext.getClickedPos();
+		Player player = pContext.getPlayer();
+		ItemStack stack = pContext.getItemInHand();
 		BTASavedData data = BTASavedData.get(level);
 		if(data != null)
 		{
@@ -61,7 +63,7 @@ public class ClamOfGuidanceItem extends Item
 				return InteractionResult.SUCCESS;
 			}
 		}
-		return super.useOn(p_41427_);
+		return super.useOn(pContext);
 	}
 	
 	@Override
@@ -71,12 +73,12 @@ public class ClamOfGuidanceItem extends Item
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack p_41421_, Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) 
+	public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) 
 	{
-		if(p_41421_.getTag() != null && p_41421_.getTag().contains("PortalPos"))
+		if(pStack.getTag() != null && pStack.getTag().contains("PortalPos"))
 		{
-			BlockPos pos = NbtUtils.readBlockPos(p_41421_.getTag().getCompound("PortalPos"));
-			p_41423_.add(Component.literal(pos.toShortString()).withStyle(ChatFormatting.AQUA));
+			BlockPos pos = NbtUtils.readBlockPos(pStack.getTag().getCompound("PortalPos"));
+			pTooltipComponents.add(Component.literal(pos.toShortString()).withStyle(ChatFormatting.AQUA));
 		}
 	}
 }

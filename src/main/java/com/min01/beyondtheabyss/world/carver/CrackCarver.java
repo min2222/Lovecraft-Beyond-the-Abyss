@@ -19,109 +19,109 @@ import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
 public class CrackCarver extends WorldCarver<CanyonCarverConfiguration>
 {
-	public CrackCarver(Codec<CanyonCarverConfiguration> p_64711_) 
+	public CrackCarver(Codec<CanyonCarverConfiguration> pCodec) 
 	{
-		super(p_64711_);
+		super(pCodec);
 	}
 
 	@Override
-	public boolean isStartChunk(CanyonCarverConfiguration p_224797_, RandomSource p_224798_)
+	public boolean isStartChunk(CanyonCarverConfiguration pConfig, RandomSource pRandom)
 	{
-		return p_224798_.nextFloat() <= p_224797_.probability;
+		return pRandom.nextFloat() <= pConfig.probability;
 	}
 
 	@Override
-	public boolean carve(CarvingContext p_224813_, CanyonCarverConfiguration p_224814_, ChunkAccess p_224815_, Function<BlockPos, Holder<Biome>> p_224816_, RandomSource p_224817_, Aquifer p_224818_, ChunkPos p_224819_, CarvingMask p_224820_) 
+	public boolean carve(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Holder<Biome>> pBiomeAccessor, RandomSource pRandom, Aquifer pAquifer, ChunkPos pChunkPos, CarvingMask pCarvingMask) 
 	{
 		int i = (this.getRange() * 2 - 1) * 16;
-		double d0 = (double) p_224819_.getBlockX(p_224817_.nextInt(16));
-		int j = p_224814_.y.sample(p_224817_, p_224813_);
-		double d1 = (double) p_224819_.getBlockZ(p_224817_.nextInt(16));
-		float f = p_224817_.nextFloat() * ((float) Math.PI * 2.0F);
-		float f1 = p_224814_.verticalRotation.sample(p_224817_);
-		double d2 = (double) p_224814_.yScale.sample(p_224817_);
-		float f2 = p_224814_.shape.thickness.sample(p_224817_);
-		int k = (int) ((float) i * p_224814_.shape.distanceFactor.sample(p_224817_));
-		this.doCarve(p_224813_, p_224814_, p_224815_, p_224816_, p_224817_.nextLong(), p_224818_, d0, (double) j, d1, f2, f, f1, 0, k, d2, 0, p_224820_);
+		double d0 = (double)pChunkPos.getBlockX(pRandom.nextInt(16));
+		int j = pConfig.y.sample(pRandom, pContext);
+		double d1 = (double)pChunkPos.getBlockZ(pRandom.nextInt(16));
+		float f = pRandom.nextFloat() * ((float)Math.PI * 2F);
+		float f1 = pConfig.verticalRotation.sample(pRandom);
+		double d2 = (double)pConfig.yScale.sample(pRandom);
+		float f2 = pConfig.shape.thickness.sample(pRandom);
+		int k = (int)((float)i * pConfig.shape.distanceFactor.sample(pRandom));
+		this.doCarve(pContext, pConfig, pChunk, pBiomeAccessor, pRandom.nextLong(), pAquifer, d0, (double)j, d1, f2, f, f1, 0, k, d2, 0, pCarvingMask);
 		return true;
 	}
 
-	private void doCarve(CarvingContext p_190594_, CanyonCarverConfiguration p_190595_, ChunkAccess p_190596_, Function<BlockPos, Holder<Biome>> p_190597_, long p_190598_, Aquifer p_190599_, double p_190600_, double p_190601_, double p_190602_, float p_190603_, float p_190604_, float p_190605_, int p_190606_, int p_190607_, double p_190608_, int depth, CarvingMask p_190609_) 
+	private void doCarve(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Holder<Biome>> pBiomeAccessor, long pSeed, Aquifer pAquifer, double pX, double pY, double pZ, float pThickness, float pYaw, float pPitch, int pBranchIndex, int pBranchCount, double pHorizontalVerticalRatio, double depth, CarvingMask pCarvingMask) 
 	{
 	    if(depth >= 10)
 	    {
 	        return;
 	    }
 	    
-		RandomSource randomsource = RandomSource.create(p_190598_);
-		float[] afloat = this.initWidthFactors(p_190594_, p_190595_, randomsource);
+		RandomSource randomsource = RandomSource.create(pSeed);
+		float[] afloat = this.initWidthFactors(pContext, pConfig, randomsource);
 		float f = 0.0F;
 		float f1 = 0.0F;
 
-		for(int i = p_190606_; i < p_190607_; ++i)
+		for(int i = pBranchIndex; i < pBranchCount; ++i)
 		{
-	        float progress = (float)i / (float)p_190607_;
+	        float progress = (float)i / (float)pBranchCount;
 	        float sharpnessFactor = 1.0F - Mth.abs(progress - 0.5F) * 2.0F;
-	        double d0 = 1.5D + (double) (sharpnessFactor * p_190603_);
-			double d1 = d0 * p_190608_;
-			d0 *= (double) p_190595_.shape.horizontalRadiusFactor.sample(randomsource);
-			d1 = this.updateVerticalRadius(p_190595_, randomsource, d1, (float) p_190607_, (float) i);
-			float f2 = Mth.cos(p_190605_);
-			float f3 = Mth.sin(p_190605_);
-			p_190600_ += (double) (Mth.cos(p_190604_) * f2);
-			p_190601_ += (double) f3;
-			p_190602_ += (double) (Mth.sin(p_190604_) * f2);
-			p_190605_ *= 0.7F;
-			p_190605_ += f1 * 0.05F;
-			p_190604_ += f * 0.05F;
+	        double d0 = 1.5D + (double) (sharpnessFactor * pThickness);
+			double d1 = d0 * pHorizontalVerticalRatio;
+			d0 *= (double) pConfig.shape.horizontalRadiusFactor.sample(randomsource);
+			d1 = this.updateVerticalRadius(pConfig, randomsource, d1, (float) pBranchCount, (float) i);
+			float f2 = Mth.cos(pPitch);
+			float f3 = Mth.sin(pPitch);
+			pX += (double) (Mth.cos(pYaw) * f2);
+			pY += (double) f3;
+			pZ += (double) (Mth.sin(pYaw) * f2);
+			pPitch *= 0.7F;
+			pPitch += f1 * 0.05F;
+			pYaw += f * 0.05F;
 			f1 *= 0.8F;
 			f *= 0.5F;
 			
-	        if(depth < 10 && i > p_190607_ / 4 && i < p_190607_ * 3 / 4 && randomsource.nextInt(25) == 0) 
+	        if(depth < 10 && i > pBranchCount / 4 && i < pBranchCount * 3 / 4 && randomsource.nextInt(25) == 0) 
 	        {
-	            this.doCarve(p_190594_, p_190595_, p_190596_, p_190597_, randomsource.nextLong(), p_190599_, p_190600_, p_190601_, p_190602_, p_190603_ * 0.6F, p_190604_ + (randomsource.nextFloat() - 0.5F) * 1.8F, p_190605_ * 0.6F + (randomsource.nextFloat() - 0.5F) * 0.4F, 0, p_190607_ * 2 / 3, p_190608_, depth + 1, p_190609_);
+	            this.doCarve(pContext, pConfig, pChunk, pBiomeAccessor, randomsource.nextLong(), pAquifer, pX, pY, pZ, pThickness * 0.6F, pYaw + (randomsource.nextFloat() - 0.5F) * 1.8F, pPitch * 0.6F + (randomsource.nextFloat() - 0.5F) * 0.4F, 0, pBranchCount * 2 / 3, pHorizontalVerticalRatio, depth + 1, pCarvingMask);
 	        }
-	        
-			if(randomsource.nextInt(4) != 0)
-			{
-				if(!canReach(p_190596_.getPos(), p_190600_, p_190602_, i, p_190607_, p_190603_)) 
-				{
-					return;
-				}
-				this.carveEllipsoid(p_190594_, p_190595_, p_190596_, p_190597_, p_190599_, p_190600_, p_190601_, p_190602_, d0, d1, p_190609_, (p_159082_, p_159083_, p_159084_, p_159085_, p_159086_) -> 
-				{
-					return this.shouldSkip(p_159082_, afloat, p_159083_, p_159084_, p_159085_, p_159086_);
-				});
-			}
+			
+	        if(randomsource.nextInt(4) != 0) 
+	        {
+	        	if(!canReach(pChunk.getPos(), pX, pZ, i, pBranchCount, pThickness))
+	        	{
+	        		return;
+	        	}
+	        	this.carveEllipsoid(pContext, pConfig, pChunk, pBiomeAccessor, pAquifer, pX, pY, pZ, d0, d1, pCarvingMask, (ctx, pRelativeX, pRelativeY, pRelativeZ, y) ->
+	        	{
+	        		return this.shouldSkip(ctx, afloat, pRelativeX, pRelativeY, pRelativeZ, y);
+	        	});
+	        }
 		}
 	}
 
-	private float[] initWidthFactors(CarvingContext p_224809_, CanyonCarverConfiguration p_224810_, RandomSource p_224811_) 
+	private float[] initWidthFactors(CarvingContext pContext, CanyonCarverConfiguration pConfig, RandomSource pRandom)
 	{
-		int i = p_224809_.getGenDepth();
+		int i = pContext.getGenDepth();
 		float[] afloat = new float[i];
 		float f = 1.0F;
 		for(int j = 0; j < i; ++j)
 		{
-			if(j == 0 || p_224811_.nextInt(p_224810_.shape.widthSmoothness) == 0)
+			if(j == 0 || pRandom.nextInt(pConfig.shape.widthSmoothness) == 0) 
 			{
-				f = 1.0F + p_224811_.nextFloat() * p_224811_.nextFloat();
+				f = 1.0F + pRandom.nextFloat() * pRandom.nextFloat();
 			}
 			afloat[j] = f * f;
 		}
 		return afloat;
 	}
 
-	private double updateVerticalRadius(CanyonCarverConfiguration p_224800_, RandomSource p_224801_, double p_224802_, float p_224803_, float p_224804_) 
+	private double updateVerticalRadius(CanyonCarverConfiguration pConfig, RandomSource pRandom, double pVerticalRadius, float pBranchCount, float pCurrentBranch) 
 	{
-		float f = 1.0F - Mth.abs(0.5F - p_224804_ / p_224803_) * 2.0F;
-		float f1 = p_224800_.shape.verticalRadiusDefaultFactor + p_224800_.shape.verticalRadiusCenterFactor * f;
-		return (double) f1 * p_224802_ * (double) Mth.randomBetween(p_224801_, 0.75F, 1.0F);
+		float f = 1.0F - Mth.abs(0.5F - pCurrentBranch / pBranchCount) * 2.0F;
+		float f1 = pConfig.shape.verticalRadiusDefaultFactor + pConfig.shape.verticalRadiusCenterFactor * f;
+		return (double)f1 * pVerticalRadius * (double)Mth.randomBetween(pRandom, 0.75F, 1.0F);
 	}
 
-	private boolean shouldSkip(CarvingContext p_159074_, float[] p_159075_, double p_159076_, double p_159077_, double p_159078_, int p_159079_) 
+	private boolean shouldSkip(CarvingContext pContext, float[] pWidthFactors, double pRelativeX, double pRelativeY, double pRelativeZ, int pY) 
 	{
-		int i = p_159079_ - p_159074_.getMinGenY();
-		return (p_159076_ * p_159076_ + p_159078_ * p_159078_) * (double) p_159075_[i - 1] + p_159077_ * p_159077_ / 6.0D >= 1.0D;
+		int i = pY - pContext.getMinGenY();
+		return (pRelativeX * pRelativeX + pRelativeZ * pRelativeZ) * (double)pWidthFactors[i - 1] + pRelativeY * pRelativeY / 6.0D >= 1.0D;
 	}
 }

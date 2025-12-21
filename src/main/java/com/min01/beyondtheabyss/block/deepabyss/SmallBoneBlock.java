@@ -24,9 +24,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class SmallBoneBlock extends RotatedPillarBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	protected static final VoxelShape X_AABB = Block.box(0.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D);
-	protected static final VoxelShape Y_AABB = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
-	protected static final VoxelShape Z_AABB = Block.box(4.0D, 4.0D, 0.0D, 12.0D, 12.0D, 16.0D);
+	public static final VoxelShape X_AABB = Block.box(0.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D);
+	public static final VoxelShape Y_AABB = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
+	public static final VoxelShape Z_AABB = Block.box(4.0D, 4.0D, 0.0D, 12.0D, 12.0D, 16.0D);
 	
 	public SmallBoneBlock() 
 	{
@@ -34,9 +34,9 @@ public class SmallBoneBlock extends RotatedPillarBlock implements SimpleWaterlog
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) 
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
-		switch(p_60555_.getValue(AXIS))
+		switch(pState.getValue(AXIS))
 		{
 		case X:
 			return X_AABB;
@@ -51,29 +51,29 @@ public class SmallBoneBlock extends RotatedPillarBlock implements SimpleWaterlog
 	
     @Override
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_152019_)
+    public BlockState getStateForPlacement(BlockPlaceContext pContext)
     {
-    	LevelAccessor level = p_152019_.getLevel();
-    	BlockPos pos = p_152019_.getClickedPos();
-    	return super.getStateForPlacement(p_152019_).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
+    	LevelAccessor level = pContext.getLevel();
+    	BlockPos pos = pContext.getClickedPos();
+    	return super.getStateForPlacement(pContext).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
     }
     
 	@Override
-	public boolean isPathfindable(BlockState p_154341_, BlockGetter p_154342_, BlockPos p_154343_, PathComputationType p_154344_) 
+	public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) 
 	{
 		return false;
 	}
     
     @Override
-    public FluidState getFluidState(BlockState p_152045_)
+    public FluidState getFluidState(BlockState pState)
     {
-    	return p_152045_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    	return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
-    	super.createBlockStateDefinition(p_152043_);
-    	p_152043_.add(WATERLOGGED);
+    	super.createBlockStateDefinition(pBuilder);
+    	pBuilder.add(WATERLOGGED);
     }
 }

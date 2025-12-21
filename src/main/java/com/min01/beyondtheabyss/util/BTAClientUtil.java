@@ -329,27 +329,14 @@ public class BTAClientUtil
 	
 	//https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/animate/client/util/ModelPartUtils.java#L57
     
-    public static Vec3 getWorldPositionOfMultiPart(Entity entity, ModelPart root, Vec3 rotation, String... modelPartName)
-    {
-    	return getWorldPosition(entity, root, false, rotation, modelPartName);
-    }
-    
     public static Vec3 getWorldPosition(Entity entity, ModelPart root, Vec3 rotation, String... modelPartName)
     {
-    	return getWorldPosition(entity, root, true, rotation, modelPartName);
-    }
-    
-    public static Vec3 getWorldPosition(Entity entity, ModelPart root, boolean translateToEntity, Vec3 rotation, String... modelPartName)
-    {
         PoseStack poseStack = new PoseStack();
-        if(translateToEntity)
-        {
-            float partialTick = MC.getFrameTime();
-            double x = Mth.lerp((double)partialTick, entity.xOld, entity.getX());
-            double y = Mth.lerp((double)partialTick, entity.yOld, entity.getY());
-            double z = Mth.lerp((double)partialTick, entity.zOld, entity.getZ());
-        	poseStack.translate(x, y, z);
-        }
+        float partialTick = MC.getFrameTime();
+        double x = Mth.lerp((double)partialTick, entity.xOld, entity.getX());
+        double y = Mth.lerp((double)partialTick, entity.yOld, entity.getY());
+        double z = Mth.lerp((double)partialTick, entity.zOld, entity.getZ());
+    	poseStack.translate(x, y, z);
         Quaternionf quat = new Quaternionf().rotateXYZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(-rotation.y + 180.0F), (float) Math.toRadians(rotation.z));
         poseStack.mulPose(quat);
         poseStack.scale(-1.0F, -1.0F, 1.0F);

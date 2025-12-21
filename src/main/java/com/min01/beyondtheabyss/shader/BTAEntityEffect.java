@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 public class BTAEntityEffect
 {
 	public static final List<BTAEntityEffect> EFFECTS = new ArrayList<>();
-	public static final BTAEntityEffect PLAIN_FOG = new BTAEntityEffect(new ResourceLocation(BeyondtheAbyss.MODID, "shaders/post/plain_fog.json"));
+	public static final BTAEntityEffect PLAIN_FOG = new BTAEntityEffect(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "shaders/post/plain_fog.json"));
 	
 	public RenderTarget entityTarget;
 	public PostChain entityEffect;
@@ -74,12 +74,12 @@ public class BTAEntityEffect
 		}
 	}
 	
-	public void resize(int p_109488_, int p_109489_) 
+	public void resize(int pWidth, int pHeight)
 	{
 		this.minecraft.levelRenderer.needsUpdate();
 		if(this.entityEffect != null) 
 		{
-			this.entityEffect.resize(p_109488_, p_109489_);
+			this.entityEffect.resize(pWidth, pHeight);
 		}
 	}
 	
@@ -90,7 +90,7 @@ public class BTAEntityEffect
 			EffectInstance shader = this.entityEffect.passes.get(0).getEffect();
 			if(shader != null)
 			{
-				shader.setSampler("ImageSampler", () -> this.minecraft.getTextureManager().getTexture(new ResourceLocation(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
+				shader.setSampler("ImageSampler", () -> this.minecraft.getTextureManager().getTexture(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
 				shader.safeGetUniform("iResolution").set((float) this.minecraft.getWindow().getWidth(), (float) this.minecraft.getWindow().getHeight());
 				shader.safeGetUniform("iTime").set((((float) (this.minecraft.level.getGameTime() % 2400000)) + this.minecraft.getFrameTime()) / 20.0F);
 			}

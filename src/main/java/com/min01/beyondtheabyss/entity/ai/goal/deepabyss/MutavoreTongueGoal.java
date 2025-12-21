@@ -61,7 +61,7 @@ public class MutavoreTongueGoal extends BasicBTASkillGoal<EntityMutavore>
 	}
 
 	@Override
-	protected void performSkill()
+	public void performSkill()
 	{
 		this.mob.setAnimationState(5);
 	}
@@ -75,19 +75,19 @@ public class MutavoreTongueGoal extends BasicBTASkillGoal<EntityMutavore>
 	}
 
 	@Override
-	protected int getSkillUsingTime() 
+	public int getSkillUsingTime() 
 	{
 		return 80;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 70;
 	}
 
 	@Override
-	protected int getSkillUsingInterval()
+	public int getSkillUsingInterval()
 	{
 		return 40;
 	}

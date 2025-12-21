@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class NoRotationLimitBlockEntity extends BlockEntity
 {
-	public NoRotationLimitBlockEntity(BlockPos p_155229_, BlockState p_155230_) 
+	public NoRotationLimitBlockEntity(BlockPos pPos, BlockState pBlockState) 
 	{
-		super(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), p_155229_, p_155230_);
+		super(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), pPos, pBlockState);
 	}
 }

@@ -18,9 +18,9 @@ public class RotSoilBlock extends Block
 	}
 	
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
-    	p_152043_.add(SOIL_TYPE);
+    	pBuilder.add(SOIL_TYPE);
     }
 	
 	public static enum SoilType implements StringRepresentable

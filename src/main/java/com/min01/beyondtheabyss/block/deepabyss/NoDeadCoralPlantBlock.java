@@ -8,13 +8,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class NoDeadCoralPlantBlock extends CoralPlantBlock
 {
-	public NoDeadCoralPlantBlock(Properties p_52176_) 
+	public NoDeadCoralPlantBlock(Properties pProperties) 
 	{
-		super(null, p_52176_);
+		super(null, pProperties);
 	}
 	
 	@Override
-	public void tick(BlockState p_221030_, ServerLevel p_221031_, BlockPos p_221032_, RandomSource p_221033_) 
+	public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) 
 	{
 		
 	}

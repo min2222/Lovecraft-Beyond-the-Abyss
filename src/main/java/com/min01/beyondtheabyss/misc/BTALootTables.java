@@ -6,5 +6,5 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BTALootTables
 {
-	public static final ResourceLocation CLAM_OF_GUIDANCE = new ResourceLocation(BeyondtheAbyss.MODID, "chests/clam_of_guidance");
+	public static final ResourceLocation CLAM_OF_GUIDANCE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "chests/clam_of_guidance");
 }

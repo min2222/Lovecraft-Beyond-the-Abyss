@@ -14,55 +14,51 @@ public class UpdateVehiclePacket
 	public final int rider;
 	public final int vehicle;
 
-	public UpdateVehiclePacket(Entity rider, Entity vehicle) 
+	public UpdateVehiclePacket(int rider, int vehicle) 
 	{
-		this.rider = rider.getId();
-		this.vehicle = vehicle.getId();
+		this.rider = rider;
+		this.vehicle = vehicle;
 	}
 
-	public UpdateVehiclePacket(FriendlyByteBuf buf)
+	public static UpdateVehiclePacket read(FriendlyByteBuf buf)
 	{
-		this.rider = buf.readInt();
-		this.vehicle = buf.readInt();
+		return new UpdateVehiclePacket(buf.readInt(), buf.readInt());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeInt(this.rider);
 		buf.writeInt(this.vehicle);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdateVehiclePacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdateVehiclePacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isClient()) 
 			{
-				if(ctx.get().getDirection().getReceptionSide().isClient()) 
+				BTAUtil.getClientLevel(level -> 
 				{
-					BTAUtil.getClientLevel(level -> 
-					{
-						Entity rider = level.getEntity(message.rider);
-						Entity vehicle = level.getEntity(message.vehicle);
-						if(rider != null && vehicle != null)
-						{
-							rider.startRiding(vehicle);
-						}
-					});
-				}
-				else
-				{
-					Level level = ctx.get().getSender().level;
 					Entity rider = level.getEntity(message.rider);
 					Entity vehicle = level.getEntity(message.vehicle);
 					if(rider != null && vehicle != null)
 					{
 						rider.startRiding(vehicle);
 					}
+				});
+			}
+			else
+			{
+				Level level = ctx.get().getSender().level;
+				Entity rider = level.getEntity(message.rider);
+				Entity vehicle = level.getEntity(message.vehicle);
+				if(rider != null && vehicle != null)
+				{
+					rider.startRiding(vehicle);
 				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

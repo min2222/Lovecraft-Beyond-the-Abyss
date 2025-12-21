@@ -2,15 +2,12 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.misc.BTAMobType;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
@@ -24,10 +21,11 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
 {
-	public AbstractDeepAbyssCreature(EntityType<? extends PathfinderMob> p_21683_, Level p_21684_) 
+	public AbstractDeepAbyssCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+		this.noCulling = this.getBTAMobType() == BTAMobType.BOSS;
 		if(this.isSwimable())
 		{
 			this.moveControl = this.getSwimmingMoveControl();
@@ -39,17 +37,20 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
     protected void registerGoals() 
     {
     	super.registerGoals();
-     	if(this.isSwimable())
-     	{
-     		this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), 40)
-     		{
-     			@Override
-     			public boolean canUse() 
-     			{
-     				return super.canUse() && AbstractDeepAbyssCreature.this.canSwim();
-     			}
-     		});
-     	}
+		this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0F, 50)
+		{
+			@Override
+			public boolean canUse() 
+			{
+				return super.canUse() && AbstractDeepAbyssCreature.this.canSwim();
+			}
+		});
+    }
+    
+    @Override
+    public void registerDefaultGoals() 
+    {
+    	
     }
 	
 	@Override
@@ -59,9 +60,9 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
 	}
     
     @Override
-    protected PathNavigation createNavigation(Level p_27480_) 
+    protected PathNavigation createNavigation(Level pLevel) 
     {
-    	return this.isSwimable() ? new WaterBoundPathNavigation(this, p_27480_) : super.createNavigation(p_27480_);
+    	return new WaterBoundPathNavigation(this, pLevel);
     }
     
     @Override
@@ -119,48 +120,27 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
 	
 	public MoveControl getSwimmingMoveControl()
 	{
-		return new BTASwimmingMoveControl(this, 0.1F, false);
+		return new BTASwimmingMoveControl(this);
 	}
     
     @Override
-    public void travel(Vec3 p_27490_) 
+    public void travel(Vec3 pTravelVector) 
     {
     	if(this.isEffectiveAi() && this.isInWater() && this.isSwimable())
     	{
-    		this.moveRelative(this.getSpeed(), p_27490_);
+    		this.moveRelative(this.getSpeed(), pTravelVector);
     		this.move(MoverType.SELF, this.getDeltaMovement());
     		this.setDeltaMovement(this.getDeltaMovement().scale(0.9F));
     	}
     	else
     	{
-    		super.travel(p_27490_);
+    		super.travel(pTravelVector);
     	}
     }
-
-    @Override
-    public void lookAt(Anchor p_21078_, Vec3 p_21079_) 
-    {
-		Vec3 vec3 = p_21078_.apply(this);
-		double d0 = p_21079_.x - vec3.x;
-		double d1 = p_21079_.y - vec3.y;
-		double d2 = p_21079_.z - vec3.z;
-		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
-		float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
-		this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.maxTurnX()));
-		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, this.maxTurnY()));
-		this.setYHeadRot(this.getYRot());
-		this.xRotO = this.getXRot();
-		this.yRotO = this.getYRot();
-		this.yHeadRotO = this.yHeadRot;
-		this.yBodyRot = this.yHeadRot;
-		this.yBodyRotO = this.yBodyRot;
-    }
 	
-	@Override
 	public boolean canSwim()
 	{
-		return (!this.isUsingSkill() || this.getTarget() == null) && this.getNavigation().isDone();
+		return this.canMove() && !this.hasTarget();
 	}
 	
 	public boolean canBreathOutsideWater()

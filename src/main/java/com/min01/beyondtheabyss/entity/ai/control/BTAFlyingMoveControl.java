@@ -1,24 +1,14 @@
 package com.min01.beyondtheabyss.entity.ai.control;
 
 import com.min01.beyondtheabyss.entity.IBTAMob;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
 public class BTAFlyingMoveControl extends MoveControl 
 {
-	public Vec3 targetPos = Vec3.ZERO;
-	
 	public BTAFlyingMoveControl(Mob mob)
 	{
 		super(mob);
@@ -28,15 +18,11 @@ public class BTAFlyingMoveControl extends MoveControl
 	public void tick() 
 	{
 		IBTAMob mob = (IBTAMob) this.mob;
-		if(this.operation == MoveControl.Operation.MOVE_TO || mob.ignoreOperation()) 
+		if(this.operation == MoveControl.Operation.MOVE_TO) 
 		{
-	        if(this.mob.tickCount % mob.targetSettingInterval() == 0 || this.targetPos.equals(Vec3.ZERO) || this.targetPos.subtract(this.mob.position()).length() <= 2.5F)
-	        {
-	        	this.generateNewTarget();
-	        }
-			double d0 = this.targetPos.x - this.mob.getX();
-			double d1 = this.targetPos.y - this.mob.getY();
-			double d2 = this.targetPos.z - this.mob.getZ();
+			double d0 = this.wantedX - this.mob.getX();
+			double d1 = this.wantedY - this.mob.getY();
+			double d2 = this.wantedZ - this.mob.getZ();
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			if(d3 < (double) 2.5000003E-7F) 
 			{
@@ -71,30 +57,4 @@ public class BTAFlyingMoveControl extends MoveControl
 			this.mob.setZza(0.0F);
 		}
 	}
-    
-    public void generateNewTarget() 
-    {
-        Level world = this.mob.level;
-        Vec3 radius = ((IBTAMob)this.mob).getMoveRadius();
-        for(int i = 0; i < 10; i++)
-        {
-        	Vec3 pos = BTAUtil.getSpreadPosition(this.mob, radius);
-        	HitResult hitResult = world.clip(new ClipContext(this.mob.position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob));
-        	if(hitResult instanceof BlockHitResult blockHit)
-        	{
-                BlockPos targetPos = blockHit.getBlockPos();
-                BlockState blockState = world.getBlockState(targetPos);
-                if(blockState.isAir())
-                {
-                	this.targetPos = blockHit.getLocation();
-                	break;
-                }
-        	}
-        }
-    }
-    
-    public void setTargetPos(Vec3 pos)
-    {
-    	this.targetPos = pos;
-    }
 }

@@ -21,7 +21,7 @@ public class BTATags
 		
 		private static TagKey<EntityType<?>> create(String name) 
 		{
-			return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(BeyondtheAbyss.MODID, name));
+			return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, name));
 		}
 	}
 	
@@ -34,7 +34,7 @@ public class BTATags
 		
 		private static TagKey<Item> create(String name) 
 		{
-			return TagKey.create(Registries.ITEM, new ResourceLocation(BeyondtheAbyss.MODID, name));
+			return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, name));
 		}
 	}
 	
@@ -45,7 +45,7 @@ public class BTATags
 		
 		private static TagKey<Block> create(String name) 
 		{
-			return TagKey.create(Registries.BLOCK, new ResourceLocation(BeyondtheAbyss.MODID, name));
+			return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, name));
 		}
 	}
 }

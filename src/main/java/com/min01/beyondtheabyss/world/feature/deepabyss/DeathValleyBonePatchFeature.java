@@ -15,17 +15,17 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 public class DeathValleyBonePatchFeature extends Feature<NoneFeatureConfiguration>
 {
-	public DeathValleyBonePatchFeature(Codec<NoneFeatureConfiguration> p_65786_) 
+	public DeathValleyBonePatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
-		super(p_65786_);
+		super(pCodec);
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159749_)
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext)
 	{
-		WorldGenLevel level = p_159749_.level();
-		BlockPos pos = p_159749_.origin();
-		RandomSource random = p_159749_.random();
+		WorldGenLevel level = pContext.level();
+		BlockPos pos = pContext.origin();
+		RandomSource random = pContext.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
 			if(random.nextBoolean())

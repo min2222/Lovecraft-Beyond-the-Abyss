@@ -187,20 +187,20 @@ public abstract class MixinEntity
         return new Vec3(moveX, moveY, moveZ);
     }
     
-    private List<OrientedBox> getOBBEntityCollisions(Level level, @Nullable Entity p_186451_, AABB p_186452_) 
+    private List<OrientedBox> getOBBEntityCollisions(Level level, @Nullable Entity pEntity, AABB pCollisionBox) 
     {
-    	if(p_186452_.getSize() < 1.0E-7D)
+    	if(pCollisionBox.getSize() < 1.0E-7D)
         {
         	return List.of();
         } 
         else 
         {
         	Predicate<Entity> predicate = EntitySelector.NO_SPECTATORS.and(t -> t instanceof IMultipart multipart && !multipart.getCollidePart().isEmpty());
-        	if(p_186451_ != null)
+        	if(pEntity != null)
         	{
-        		predicate = predicate.and(t -> !p_186451_.isPassengerOfSameVehicle(t));
+        		predicate = predicate.and(t -> !pEntity.isPassengerOfSameVehicle(t));
         	}
-        	List<Entity> list = level.getEntities(p_186451_, p_186452_.inflate(1.0E-7D), predicate);
+        	List<Entity> list = level.getEntities(pEntity, pCollisionBox.inflate(1.0E-7D), predicate);
         	if(list.isEmpty())
         	{
         		return List.of();

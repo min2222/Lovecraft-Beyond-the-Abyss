@@ -24,29 +24,29 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class DeepAbyssPortalStructure extends OneTimePlacedStructure
 {
 	public static final Codec<DeepAbyssPortalStructure> CODEC = simpleCodec(DeepAbyssPortalStructure::new);
-	public static final ResourceLocation STRUCTURE_LOCATION = new ResourceLocation(BeyondtheAbyss.MODID, "deepabyss/deep_abyss_portal");
+	public static final ResourceLocation STRUCTURE_LOCATION = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "deepabyss/deep_abyss_portal");
 	
-	public DeepAbyssPortalStructure(StructureSettings p_226558_)
+	public DeepAbyssPortalStructure(StructureSettings pSettings)
 	{
-		super(p_226558_);
+		super(pSettings);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext p_227387_)
+	public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext pContext)
 	{
-		return onTopOfChunkCenter(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, (p_227390_) -> 
+		return onTopOfChunkCenter(pContext, Heightmap.Types.OCEAN_FLOOR_WG, builder -> 
 		{
-			StructureTemplateManager manager = p_227387_.structureTemplateManager();
-			ChunkPos chunkPos = p_227387_.chunkPos();
+			StructureTemplateManager manager = pContext.structureTemplateManager();
+			ChunkPos chunkPos = pContext.chunkPos();
 			BlockPos blockPos = chunkPos.getWorldPosition();
 			StructureTemplate template = manager.getOrCreate(STRUCTURE_LOCATION);
 			DeepAbyssPortalStructurePiece piece = new DeepAbyssPortalStructurePiece(manager, STRUCTURE_LOCATION, blockPos);
-			BTAUtil.moveStructurePiece(p_227387_, Heightmap.Types.OCEAN_FLOOR_WG, piece, template, Rotation.NONE, Mirror.NONE, t -> 
+			BTAUtil.moveStructurePiece(pContext, Heightmap.Types.OCEAN_FLOOR_WG, piece, template, Rotation.NONE, Mirror.NONE, t -> 
 			{
 				piece.move(0, t, 0);
 			});
-			p_227390_.addPiece(piece);
+			builder.addPiece(piece);
 		});
 	}
 	

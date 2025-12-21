@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 @AutoRegisterCapability
 public interface IItemAnimationCapability extends INBTSerializable<CompoundTag>
 {
-	ResourceLocation ID = new ResourceLocation(BeyondtheAbyss.MODID, "item_animation");
+	ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "item_animation");
 
 	void tick(Entity player, ItemStack stack);
 	

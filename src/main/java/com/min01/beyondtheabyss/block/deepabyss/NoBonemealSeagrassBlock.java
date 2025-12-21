@@ -15,30 +15,30 @@ public class NoBonemealSeagrassBlock extends SeagrassBlock
 {
 	public final boolean isBlockShape;
 	
-	public NoBonemealSeagrassBlock(Properties p_154496_, boolean isBlockShape) 
+	public NoBonemealSeagrassBlock(Properties pProperties, boolean isBlockShape)
 	{
-		super(p_154496_);
+		super(pProperties);
 		this.isBlockShape = isBlockShape;
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_154525_, BlockGetter p_154526_, BlockPos p_154527_, CollisionContext p_154528_)
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
 		if(this.isBlockShape)
 		{
 			return Shapes.block();
 		}
-		return super.getShape(p_154525_, p_154526_, p_154527_, p_154528_);
+		return super.getShape(pState, pLevel, pPos, pContext);
 	}
 	
 	@Override
-	public boolean isValidBonemealTarget(LevelReader p_255857_, BlockPos p_154511_, BlockState p_154512_, boolean p_154513_) 
+	public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) 
 	{
 		return false;
 	}
 	
 	@Override
-	public void performBonemeal(ServerLevel p_222423_, RandomSource p_222424_, BlockPos p_222425_, BlockState p_222426_)
+	public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState)
 	{
 		
 	}

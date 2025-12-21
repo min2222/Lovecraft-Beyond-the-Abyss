@@ -26,20 +26,28 @@ public abstract class AbstractDivingSetItem extends ArmorItem
 		super(material, type, new Item.Properties());
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		builder.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(UUID.randomUUID(), "Swim Speed", swimSpeed, AttributeModifier.Operation.ADDITION));
+		builder.putAll(this.getDefaultAttributeModifiers(EquipmentSlot.FEET));
 		this.attributeModifiers = builder.build();
 	}
 	
 	@Override
-	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot p_41388_)
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack)
 	{
-		return p_41388_ == EquipmentSlot.FEET ? this.attributeModifiers : super.getDefaultAttributeModifiers(p_41388_);
+		if(slot == this.type.getSlot() && this.type.getSlot() == EquipmentSlot.FEET)
+		{
+			return this.attributeModifiers;
+		}
+		return super.getAttributeModifiers(slot, stack);
 	}
 	
 	@Override
 	public void onArmorTick(ItemStack stack, Level level, Player player) 
 	{
 		//TODO oxygen system;
-		player.setAirSupply(player.getMaxAirSupply());
+		if(this.type == Type.HELMET)
+		{
+			player.setAirSupply(player.getMaxAirSupply());
+		}
 	}
     
     public abstract int getMaxOxygen();

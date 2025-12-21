@@ -14,6 +14,6 @@ public class BTABiomes
 	   
 	public static ResourceKey<Biome> register(String name)
 	{
-		return ResourceKey.create(Registries.BIOME, new ResourceLocation(BeyondtheAbyss.MODID, name));
+		return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, name));
 	}
 }

@@ -65,9 +65,9 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	
 	public final BTABossEvent bossEvent = (BTABossEvent) new BTABossEvent(this.getDisplayName(), BTABossBarType.GHIDRUTH, this).setDarkenScreen(true);
 	
-	public EntityGhidruth(EntityType<? extends Monster> p_33002_, Level p_33003_) 
+	public EntityGhidruth(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_33002_, p_33003_);
+		super(pEntityType, pLevel);
 		this.xpReward = 1000 + this.random.nextInt(100);
 		this.posArray = new Vec3[1];
 	}
@@ -174,7 +174,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 
 		if(this.getTarget() != null && !this.isCharge() && !this.isStun())
 		{
-			this.lookTarget();
+			this.lookAtTarget();
 			this.moveToTarget();
 		}
     	
@@ -260,7 +260,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 2, 15));
     		HitResult result = this.level.clip(new ClipContext(this.position(), spreadPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
     		Vec3 pos = result.getLocation();
-    		BlockPos ceilingPos = BTAUtil.getCeilingPos(this.level, pos.x, this.getY(), pos.z, -1);
+    		BlockPos ceilingPos = BTAUtil.getCeilingPos(this.level, pos.x, this.getY(), pos.z);
     		EntityFallingStone stone = new EntityFallingStone(BTAEntities.FALLING_STONE.get(), this.level);
     		stone.setOwner(this);
     		stone.setPos(Vec3.atCenterOf(ceilingPos.below()));
@@ -272,17 +272,17 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     }
     
     @Override
-    public void handleEntityEvent(byte p_21375_) 
+    public void handleEntityEvent(byte pId) 
     {
-    	super.handleEntityEvent(p_21375_);
-    	if(p_21375_ == 99)
+    	super.handleEntityEvent(pId);
+    	if(pId == 99)
     	{
         	for(int i = 0; i < this.random.nextInt(20, 35); i++)
         	{
         		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 2, 15));
         		HitResult result = this.level.clip(new ClipContext(this.position(), spreadPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         		Vec3 pos = result.getLocation();
-        		BlockPos ceilingPos = BTAUtil.getCeilingPos(this.level, pos.x, this.getY(), pos.z, -1);
+        		BlockPos ceilingPos = BTAUtil.getCeilingPos(this.level, pos.x, this.getY(), pos.z);
         		BlockPos below = ceilingPos.below(2);
         		for(int j = 0; j < 150; j++)
         		{
@@ -308,28 +308,28 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     }
 	
 	@Override
-	public void push(double p_20286_, double p_20287_, double p_20288_) 
+	public void push(double pX, double pY, double pZ) 
 	{
 		
 	}
     
     @Override
-    public boolean hurt(DamageSource p_21016_, float p_21017_) 
+    public boolean hurt(DamageSource pDamageSource, float pAmount) 
     {
     	if(this.isStun())
     	{
         	this.walkAnimation.setSpeed(0.0F);
-    		p_21017_ *= 2.0F;
+        	pAmount *= 2.0F;
     	}
-    	else if(!p_21016_.is(DamageTypeTags.BYPASSES_ARMOR) && !p_21016_.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+    	else if(!pDamageSource.is(DamageTypeTags.BYPASSES_ARMOR) && !pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
     	{
-    		p_21017_ *= 0.1F;
+    		pAmount *= 0.1F;
     	}
-    	return super.hurt(p_21016_, p_21017_);
+    	return super.hurt(pDamageSource, pAmount);
     }
     
     @Override
-    protected SoundEvent getHurtSound(DamageSource p_21239_) 
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) 
     {
     	return BTASounds.GHIDRUTH_HURT.get();
     }
@@ -349,13 +349,13 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     @Override
     public int maxTurnX() 
     {
-    	return !this.hasTarget() ? 55 : 65;
+    	return 65;
     }
 
     @Override
     public int maxTurnY() 
     {
-    	return !this.hasTarget() ? 6 : 8;
+    	return 8;
     }
     
     @Override
@@ -365,35 +365,23 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     }
     
     @Override
-    public int targetSettingInterval()
+    public void addAdditionalSaveData(CompoundTag pCompound) 
     {
-    	return 100;
+    	super.addAdditionalSaveData(pCompound);
+    	pCompound.putBoolean("isCharge", this.isCharge());
+    	pCompound.putBoolean("isStun", this.isStun());
+    	pCompound.putInt("StunTick", this.stunTick);
+    	pCompound.putInt("ChargeTick", this.chargeTick);
     }
     
     @Override
-    public Vec3 getMoveRadius()
+    public void readAdditionalSaveData(CompoundTag pCompound)
     {
-    	return new Vec3(40, 10, 40);
-    }
-    
-    @Override
-    public void addAdditionalSaveData(CompoundTag p_21484_) 
-    {
-    	super.addAdditionalSaveData(p_21484_);
-    	p_21484_.putBoolean("isCharge", this.isCharge());
-    	p_21484_.putBoolean("isStun", this.isStun());
-    	p_21484_.putInt("StunTick", this.stunTick);
-    	p_21484_.putInt("ChargeTick", this.chargeTick);
-    }
-    
-    @Override
-    public void readAdditionalSaveData(CompoundTag p_21450_)
-    {
-    	super.readAdditionalSaveData(p_21450_);
-    	this.setCharge(p_21450_.getBoolean("isCharge"));
-    	this.setStun(p_21450_.getBoolean("isStun"));
-    	this.stunTick = p_21450_.getInt("StunTick");
-    	this.chargeTick = p_21450_.getInt("ChargeTick");
+    	super.readAdditionalSaveData(pCompound);
+    	this.setCharge(pCompound.getBoolean("isCharge"));
+    	this.setStun(pCompound.getBoolean("isStun"));
+    	this.stunTick = pCompound.getInt("StunTick");
+    	this.chargeTick = pCompound.getInt("ChargeTick");
         if(this.hasCustomName()) 
         {
         	this.bossEvent.setName(this.getDisplayName());
@@ -401,24 +389,24 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     }
     
     @Override
-    public void setCustomName(@Nullable Component p_31476_) 
+    public void setCustomName(@Nullable Component pName) 
     {
-    	super.setCustomName(p_31476_);
+    	super.setCustomName(pName);
     	this.bossEvent.setName(this.getDisplayName());
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayer p_31483_)
+    public void startSeenByPlayer(ServerPlayer pServerPlayer)
     {
-        super.startSeenByPlayer(p_31483_);
-        this.bossEvent.addPlayer(p_31483_);
+        super.startSeenByPlayer(pServerPlayer);
+        this.bossEvent.addPlayer(pServerPlayer);
     }
 
     @Override
-    public void stopSeenByPlayer(ServerPlayer p_31488_)
+    public void stopSeenByPlayer(ServerPlayer pServerPlayer)
     {
-    	super.stopSeenByPlayer(p_31488_);
-    	this.bossEvent.removePlayer(p_31488_);
+    	super.stopSeenByPlayer(pServerPlayer);
+    	this.bossEvent.removePlayer(pServerPlayer);
     }
     
     public void setCharge(boolean value)

@@ -69,8 +69,8 @@ public class ClientEventHandlerForge
 	
     public static final Map<UUID, BTABossBarType> BOSS_BAR_MAP = new HashMap<>();
     public static final Map<UUID, Entity> BOSS_MAP = new HashMap<>();
-    public static final ResourceLocation GHIDRUTH_BOSS_BAR_FRAME_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_frame.png");
-    public static final ResourceLocation GHIDRUTH_BOSS_BAR_BAR_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_bar.png");
+    public static final ResourceLocation GHIDRUTH_BOSS_BAR_FRAME_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_frame.png");
+    public static final ResourceLocation GHIDRUTH_BOSS_BAR_BAR_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_bar.png");
     
     public static final List<ChunkPos> CHUNK_LIST = new ArrayList<>();
 	public static final List<UUID> RENDERER_LIST = new ArrayList<>();
@@ -195,9 +195,9 @@ public class ClientEventHandlerForge
 		    	stack.translate(0, -5.5F, 0);
 		    	stack.mulPose(Axis.XP.rotationDegrees(90.0F));
 		    	Vec3 color = new Vec3(0.0F, 1.0F, 0.4F);
-		    	RenderType renderType1 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/water.png"));
-		    	RenderType renderType2 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics2.png"));
-		    	RenderType renderType3 = RenderType.entityTranslucent(new ResourceLocation(BeyondtheAbyss.MODID, "textures/vfx/caustics.png"));
+		    	RenderType renderType1 = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/vfx/water.png"));
+		    	RenderType renderType2 = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/vfx/caustics2.png"));
+		    	RenderType renderType3 = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/vfx/caustics.png"));
 	            BTAClientUtil.drawTorus(3.5F, 3.5F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType1, time, Vec3.ZERO);
 	            BTAClientUtil.drawTorus(3.505F, 3.505F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType2, time, Vec3.ZERO);
 	            BTAClientUtil.drawTorus(3.51F, 3.51F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType3, time, Vec3.ZERO);
@@ -215,7 +215,7 @@ public class ClientEventHandlerForge
 	    		stack.pushPose();
 	    		Vec3 pos = Vec3.atBottomCenterOf(worldPos);
 		    	stack.translate(pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z);
-	    		BTAClientUtil.drawBox(aabb, stack, bufferSource, Vec3.ZERO, LightTexture.FULL_BRIGHT, 1, BTARenderType.plainFog(new ResourceLocation("textures/block/ice.png")));
+	    		BTAClientUtil.drawBox(aabb, stack, bufferSource, Vec3.ZERO, LightTexture.FULL_BRIGHT, 1, BTARenderType.plainFog(ResourceLocation.parse("textures/block/ice.png")));
 	    		stack.popPose();
 	    	}
     	}

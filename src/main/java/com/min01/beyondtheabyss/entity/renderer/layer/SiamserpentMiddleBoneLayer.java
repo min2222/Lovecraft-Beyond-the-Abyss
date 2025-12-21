@@ -9,8 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SiamserpentMiddleBoneLayer extends GlowingLayer<EntitySiamserpentBone, ModelSiamserpentMiddleBone>
 {
-	public SiamserpentMiddleBoneLayer(RenderLayerParent<EntitySiamserpentBone, ModelSiamserpentMiddleBone> p_117346_, ModelSiamserpentMiddleBone model)
+	public SiamserpentMiddleBoneLayer(RenderLayerParent<EntitySiamserpentBone, ModelSiamserpentMiddleBone> renderer, ModelSiamserpentMiddleBone model)
 	{
-		super(p_117346_, model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/siamserpent_middlebone_layer.png"));
+		super(renderer, model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_middlebone_layer.png"));
 	}
 }

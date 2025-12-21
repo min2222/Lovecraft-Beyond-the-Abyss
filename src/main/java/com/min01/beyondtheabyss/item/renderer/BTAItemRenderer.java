@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 {
-	public static final ResourceLocation SHOTGUN_TEXTURE = new ResourceLocation(BeyondtheAbyss.MODID, "textures/item/tooth_shotgun.png");
+	public static final ResourceLocation SHOTGUN_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/tooth_shotgun.png");
 	public final ModelSkeletalGunblade modelGunblade;
 	public final ModelToothShotgun modelShotgun;
 	public BTAItemRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet) 
@@ -34,55 +34,55 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	}
 	
 	@Override
-	public void renderByItem(ItemStack p_108830_, ItemDisplayContext p_108831_, PoseStack p_108832_, MultiBufferSource p_108833_, int p_108834_, int p_108835_)
+	public void renderByItem(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay)
 	{
- 		if(p_108830_.getItem() instanceof SkeletalGunbladeItem)
+ 		if(pStack.getItem() instanceof SkeletalGunbladeItem)
 		{
- 			if(p_108831_.firstPerson() || p_108831_ == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || p_108831_ == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) 
+ 			if(pDisplayContext.firstPerson() || pDisplayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || pDisplayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) 
  			{
- 				this.modelGunblade.EnergyRay.visible = SkeletalGunbladeItem.isLaserVisible(p_108830_);
+ 				this.modelGunblade.EnergyRay.visible = SkeletalGunbladeItem.isLaserVisible(pStack);
  			}
  			else
  			{
  				this.modelGunblade.EnergyRay.visible = false;
  			}
-	        p_108832_.pushPose();
-	        p_108832_.translate(0.5F, 0.6F, 0.3F);
-	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
-	        p_108832_.translate(0.0F, -1.0F, 0.0F);
-	        ResourceLocation texture = new ResourceLocation(String.format("%s:textures/item/skeletal_gunblade%d.png", BeyondtheAbyss.MODID, SkeletalGunbladeItem.getCharge(p_108830_)));
-	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(texture), false, p_108830_.hasFoil());
-			this.modelGunblade.setupAnim(p_108830_, 0, 0, BTAUtil.getItemTickCount(p_108830_) + BTAClientUtil.MC.getFrameTime(), 0, 0);
-	        this.modelGunblade.renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
-	        p_108832_.popPose();
+	        pPoseStack.pushPose();
+	        pPoseStack.translate(0.5F, 0.6F, 0.3F);
+	        pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+	        pPoseStack.translate(0.0F, -1.0F, 0.0F);
+	        ResourceLocation texture = ResourceLocation.parse(String.format("%s:textures/item/skeletal_gunblade%d.png", BeyondtheAbyss.MODID, SkeletalGunbladeItem.getCharge(pStack)));
+	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(pBuffer, RenderType.entityCutoutNoCull(texture), false, pStack.hasFoil());
+			this.modelGunblade.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+	        this.modelGunblade.renderToBuffer(pPoseStack, consumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+	        pPoseStack.popPose();
 
-	        p_108832_.pushPose();
-	        p_108832_.translate(0.5F, 0.6F, 0.3F);
-	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
-	        p_108832_.translate(0.0F, -1.0F, 0.0F);
-	        ResourceLocation layerTexture = new ResourceLocation(String.format("%s:textures/item/skeletal_gunblade_layer%d.png", BeyondtheAbyss.MODID, SkeletalGunbladeItem.getCharge(p_108830_)));
-	        VertexConsumer eyeConsumer = p_108833_.getBuffer(BTARenderType.eyesFix(layerTexture));
-			this.modelGunblade.setupAnim(p_108830_, 0, 0, BTAUtil.getItemTickCount(p_108830_) + BTAClientUtil.MC.getFrameTime(), 0, 0);
-	        this.modelGunblade.renderToBuffer(p_108832_, eyeConsumer, p_108834_, p_108835_, 0.7F, 0.7F, 0.7F, 1.0F);
-	        p_108832_.popPose();
+	        pPoseStack.pushPose();
+	        pPoseStack.translate(0.5F, 0.6F, 0.3F);
+	        pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+	        pPoseStack.translate(0.0F, -1.0F, 0.0F);
+	        ResourceLocation layerTexture = ResourceLocation.parse(String.format("%s:textures/item/skeletal_gunblade_layer%d.png", BeyondtheAbyss.MODID, SkeletalGunbladeItem.getCharge(pStack)));
+	        VertexConsumer eyeConsumer = pBuffer.getBuffer(BTARenderType.eyesFix(layerTexture));
+			this.modelGunblade.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+	        this.modelGunblade.renderToBuffer(pPoseStack, eyeConsumer, pPackedLight, pPackedOverlay, 0.7F, 0.7F, 0.7F, 1.0F);
+	        pPoseStack.popPose();
 		}
- 		if(p_108830_.getItem() instanceof ToothShotgunItem)
+ 		if(pStack.getItem() instanceof ToothShotgunItem)
 		{
-	        p_108832_.pushPose();
-	        if(p_108831_ == ItemDisplayContext.GUI)
+	        pPoseStack.pushPose();
+	        if(pDisplayContext == ItemDisplayContext.GUI)
 	        {
-		        p_108832_.translate(1.0F, 0.5F, 0.0F);
+		        pPoseStack.translate(1.0F, 0.5F, 0.0F);
 	        }
 	        else
 	        {
-		        p_108832_.translate(0.5F, 1.0F, -0.1F);
+		        pPoseStack.translate(0.5F, 1.0F, -0.1F);
 	        }
-	        p_108832_.scale(-1.0F, -1.0F, 1.0F);
-	        p_108832_.translate(0.0F, -1.0F, 0.0F);
-	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(p_108833_, RenderType.entityCutoutNoCull(SHOTGUN_TEXTURE), false, p_108830_.hasFoil());
-			this.modelShotgun.setupAnim(p_108830_, 0, 0, BTAUtil.getItemTickCount(p_108830_) + BTAClientUtil.MC.getFrameTime(), 0, 0);
-	        this.modelShotgun.renderToBuffer(p_108832_, consumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
-	        p_108832_.popPose();
+	        pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+	        pPoseStack.translate(0.0F, -1.0F, 0.0F);
+	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(pBuffer, RenderType.entityCutoutNoCull(SHOTGUN_TEXTURE), false, pStack.hasFoil());
+			this.modelShotgun.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+	        this.modelShotgun.renderToBuffer(pPoseStack, consumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+	        pPoseStack.popPose();
 		}
 	}
 }

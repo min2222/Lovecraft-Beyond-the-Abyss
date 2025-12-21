@@ -39,6 +39,6 @@ public class StoneSkinLayer<T extends LivingEntity, M extends EntityModel<T>> ex
 		{
 			tickCount = 5;
 		}
-		return new ResourceLocation(String.format("%s:textures/misc/stone_skin%d.png", BeyondtheAbyss.MODID, tickCount));
+		return ResourceLocation.parse(String.format("%s:textures/misc/stone_skin%d.png", BeyondtheAbyss.MODID, tickCount));
 	}
 }

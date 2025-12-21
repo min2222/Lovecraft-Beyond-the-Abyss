@@ -11,6 +11,6 @@ public class GnasherLeaderLayer extends GlowingLayer<EntityGnasher, ModelGnasher
 {
 	public GnasherLeaderLayer(RenderLayerParent<EntityGnasher, ModelGnasherLeader> renderer, ModelGnasherLeader model) 
 	{
-		super(renderer, model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/gnasher_layer_leader.png"));
+		super(renderer, model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/gnasher_layer_leader.png"));
 	}
 }

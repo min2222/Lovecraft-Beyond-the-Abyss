@@ -6,7 +6,6 @@ import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -16,14 +15,15 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntitySpineWormBody extends AbstractSpineWormPart
 {
-	public EntitySpineWormBody(EntityType<? extends Monster> p_21683_, Level p_21684_) 
+	public EntitySpineWormBody(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
+		this.xpReward = this.random.nextInt(15);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes()
+        return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 30.0F)
         		.add(Attributes.FOLLOW_RANGE, 25.0F);
     }

@@ -26,9 +26,9 @@ public class SpineBoneBaseBlock extends Block implements SimpleWaterloggedBlock
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	protected static final VoxelShape X_AABB = Block.box(0.0D, 5.0D, 5.0D, 16.0D, 11.0D, 11.0D);
-	protected static final VoxelShape Y_AABB = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
-	protected static final VoxelShape Z_AABB = Block.box(5.0D, 5.0D, 0.0D, 11.0D, 11.0D, 16.0D);
+	public static final VoxelShape X_AABB = Block.box(0.0D, 5.0D, 5.0D, 16.0D, 11.0D, 11.0D);
+	public static final VoxelShape Y_AABB = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
+	public static final VoxelShape Z_AABB = Block.box(5.0D, 5.0D, 0.0D, 11.0D, 11.0D, 16.0D);
 	
 	public SpineBoneBaseBlock() 
 	{
@@ -37,9 +37,9 @@ public class SpineBoneBaseBlock extends Block implements SimpleWaterloggedBlock
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) 
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) 
 	{
-		switch(p_60555_.getValue(FACING))
+		switch(pState.getValue(FACING))
 		{
 		case DOWN:
 			return Y_AABB;
@@ -59,28 +59,28 @@ public class SpineBoneBaseBlock extends Block implements SimpleWaterloggedBlock
 	}
 	
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext p_49820_) 
+	public BlockState getStateForPlacement(BlockPlaceContext pContext) 
 	{
-    	LevelAccessor level = p_49820_.getLevel();
-    	BlockPos blockPos = p_49820_.getClickedPos();
-		return this.defaultBlockState().setValue(FACING, p_49820_.getClickedFace().getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockPos).getType() == Fluids.WATER));
+    	LevelAccessor level = pContext.getLevel();
+    	BlockPos blockPos = pContext.getClickedPos();
+		return this.defaultBlockState().setValue(FACING, pContext.getClickedFace().getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockPos).getType() == Fluids.WATER));
 	}
 	
 	@Override
-	public boolean isPathfindable(BlockState p_154341_, BlockGetter p_154342_, BlockPos p_154343_, PathComputationType p_154344_) 
+	public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) 
 	{
 		return false;
 	}
 	
     @Override
-    public FluidState getFluidState(BlockState p_152045_)
+    public FluidState getFluidState(BlockState pState)
     {
-    	return p_152045_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    	return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
-    	p_152043_.add(WATERLOGGED, FACING);
+    	pBuilder.add(WATERLOGGED, FACING);
     }
 }

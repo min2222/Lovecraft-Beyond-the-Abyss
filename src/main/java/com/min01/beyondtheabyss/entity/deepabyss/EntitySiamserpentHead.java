@@ -3,6 +3,8 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
@@ -60,7 +62,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public final SmoothAnimationState rayChargeAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState rayStartAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState rayLoopAnimationState = new SmoothAnimationState();
-	public final SmoothAnimationState rayEndAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState blasterShotAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState blasterDisabledAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState slashRightAnimationState = new SmoothAnimationState();
@@ -73,9 +74,9 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	
 	public Vec3 wantedPos = Vec3.ZERO;
 	
-	public EntitySiamserpentHead(EntityType<? extends Monster> p_21683_, Level p_21684_)
+	public EntitySiamserpentHead(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
-		super(p_21683_, p_21684_);
+		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(15);
 		this.noCulling = true;
 	}
@@ -136,7 +137,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			this.rayChargeAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
 			this.rayStartAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.rayLoopAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
-			this.rayEndAnimationState.updateWhen(this.isUsingSkill(4), this.tickCount);
 			this.slashRightAnimationState.updateWhen(this.isUsingSkill(5), this.tickCount);
 			this.slashLeftAnimationState.updateWhen(this.isUsingSkill(9), this.tickCount);
 			this.blasterShotAnimationState.updateWhen(this.isUsingSkill(6), this.tickCount);
@@ -168,8 +168,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			{
 				this.setCanLook(true);
 				this.setCanMove(true);
-				this.setAnimationState(4);
-				this.setAnimationTick(5);
+				this.setAnimationState(0);
+				this.setLastLookPos(Vec3.ZERO);
 			}
 		}
 		else
@@ -205,26 +205,15 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public void moveToTarget() 
 	{
-		if(this.getAnimationState() == 0)
-		{
-			if(this.wantedPos.equals(Vec3.ZERO) || this.wantedPos.subtract(this.position()).length() <= 3.5F || this.tickCount % 60 == 0)
-			{
-				Vec3 pos = BTAUtil.getSpreadPosition(this.getTarget(), 6);
-				if(this.getTarget().position().distanceTo(pos) <= 6.0F && !this.isDormant() && !this.isDisabled())
-				{
-					this.wantedPos = pos;
-					this.getNavigation().moveTo(pos.x, pos.y, pos.z, 1.5F);
-				}
-			}
-		}
+		
 	}
 	
 	@Override
-	public void lookTarget() 
+	public void lookAtTarget() 
 	{
-		if(this.getAnimationState() != 0)
+		if(!this.canSwim())
 		{
-			super.lookTarget();
+			super.lookAtTarget();
 		}
 	}
 	
@@ -270,7 +259,17 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public boolean canSwim()
 	{
-		return super.canSwim() && !this.isDormant() && !this.isDisabled();
+		return this.isHead() && !this.isDormant() && !this.isDisabled() && !this.isUsingSkill();
+	}
+	
+	@Override
+	public float moveSpeed() 
+	{
+		if(this.hasTarget())
+		{
+			return 0.1F;
+		}
+		return super.moveSpeed();
 	}
 	
 	@Override
@@ -315,7 +314,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(DamageSource p_33034_) 
+	protected SoundEvent getHurtSound(DamageSource pDamageSource) 
 	{
 		return BTASounds.SIAMSERPENT_HURT.get();
 	}
@@ -332,7 +331,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		return 1;
 	}
 	
-	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> type, ServerLevelAccessor pServerLevel, MobSpawnType pMobSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
         Structure structure = pServerLevel.registryAccess().registryOrThrow(Registries.STRUCTURE).get(BTAResourceKeys.BTAStructures.GIANT_FOSSIL);
 		ServerLevel level = pServerLevel.getLevel();
@@ -341,30 +340,30 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
     }
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag p_21484_) 
+	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.addAdditionalSaveData(p_21484_);
-		p_21484_.putInt("HeadType", this.getHeadType().ordinal());
-		p_21484_.putBoolean("isDormant", this.isDormant());
-		p_21484_.putBoolean("isDisabled", this.isDisabled());
-		p_21484_.putBoolean("isHead", this.isHead());
-		p_21484_.putInt("TickAfterDormant", this.tickAfterDormant);
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putInt("HeadType", this.getHeadType().ordinal());
+		pCompound.putBoolean("isDormant", this.isDormant());
+		pCompound.putBoolean("isDisabled", this.isDisabled());
+		pCompound.putBoolean("isHead", this.isHead());
+		pCompound.putInt("TickAfterDormant", this.tickAfterDormant);
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag p_21450_) 
+	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
-		super.readAdditionalSaveData(p_21450_);
-		this.setHeadType(HeadType.values()[p_21450_.getInt("HeadType")]);
-		this.setDormant(p_21450_.getBoolean("isDormant"));
-		this.setDisabled(p_21450_.getBoolean("isDisabled"));
-		this.setHead(p_21450_.getBoolean("isHead"));
-		this.tickAfterDormant = p_21450_.getInt("TickAfterDormant");
+		super.readAdditionalSaveData(pCompound);
+		this.setHeadType(HeadType.values()[pCompound.getInt("HeadType")]);
+		this.setDormant(pCompound.getBoolean("isDormant"));
+		this.setDisabled(pCompound.getBoolean("isDisabled"));
+		this.setHead(pCompound.getBoolean("isHead"));
+		this.tickAfterDormant = pCompound.getInt("TickAfterDormant");
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_) 
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) 
 	{
 		List<AbstractSiamserpentPart> list = new ArrayList<>();
 		this.setHead(true);
@@ -441,7 +440,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		}
 		this.setOwner2(list.get(1));
 		last.setOwner2(null);
-		return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 
 	public void setBeamLength(float value)

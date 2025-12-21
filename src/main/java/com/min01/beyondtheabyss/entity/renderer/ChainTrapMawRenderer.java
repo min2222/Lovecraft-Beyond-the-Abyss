@@ -21,46 +21,46 @@ public class ChainTrapMawRenderer extends EntityRenderer<EntityChainTrapMaw>
 {
 	public final ModelChainTrapMaw model;
 	public final ModelChainTrapChain chainModel;
-	public ChainTrapMawRenderer(Context p_174008_) 
+	public ChainTrapMawRenderer(Context pContext) 
 	{
-		super(p_174008_);
-		this.model = new ModelChainTrapMaw(p_174008_.bakeLayer(ModelChainTrapMaw.LAYER_LOCATION));
-		this.chainModel = new ModelChainTrapChain(p_174008_.bakeLayer(ModelChainTrapChain.LAYER_LOCATION));
+		super(pContext);
+		this.model = new ModelChainTrapMaw(pContext.bakeLayer(ModelChainTrapMaw.LAYER_LOCATION));
+		this.chainModel = new ModelChainTrapChain(pContext.bakeLayer(ModelChainTrapChain.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntityChainTrapMaw p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_)
+	public void render(EntityChainTrapMaw pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
 	{
-		if(p_114485_.chain != null)
+		if(pEntity.chain != null)
 		{
-			for(int i = 0; i < p_114485_.chain.getSegments().length; i++)
+			for(int i = 0; i < pEntity.chain.getSegments().length; i++)
 			{
-				ChainSegment segment = p_114485_.chain.getSegments()[i];
-				Vec3 pos = segment.position(p_114487_).subtract(p_114485_.position());
-				Vec2 rot = segment.getRot(p_114487_);
-				p_114488_.pushPose();
-				p_114488_.scale(-1.0F, -1.0F, 1.0F);
-				p_114488_.translate(-pos.x, -pos.y, pos.z);
-				p_114488_.mulPose(Axis.YP.rotationDegrees(rot.y));
-				p_114488_.mulPose(Axis.XP.rotationDegrees(-rot.x - 90.0F));
-				p_114488_.translate(0, -1.5F, 0);
-				if(i == p_114485_.chain.getSegments().length - 1)
+				ChainSegment segment = pEntity.chain.getSegments()[i];
+				Vec3 pos = segment.position(pPartialTick).subtract(pEntity.position());
+				Vec2 rot = segment.getRot(pPartialTick);
+				pPoseStack.pushPose();
+				pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+				pPoseStack.translate(-pos.x, -pos.y, pos.z);
+				pPoseStack.mulPose(Axis.YP.rotationDegrees(rot.y));
+				pPoseStack.mulPose(Axis.XP.rotationDegrees(-rot.x - 90.0F));
+				pPoseStack.translate(0, -1.5F, 0);
+				if(i == pEntity.chain.getSegments().length - 1)
 				{
-					this.model.setupAnim(p_114485_, 0, 0, p_114485_.tickCount + p_114487_, 0, 0);
-					this.model.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_114485_))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+					this.model.setupAnim(pEntity, 0, 0, pEntity.tickCount + pPartialTick, 0, 0);
+					this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 				}
 				else
 				{
-					this.chainModel.renderToBuffer(p_114488_, p_114489_.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/chain_trap_chain.png"))), p_114490_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+					this.chainModel.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/chain_trap_chain.png"))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 				}
-				p_114488_.popPose();
+				pPoseStack.popPose();
 			}
 		}
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityChainTrapMaw p_114482_) 
+	public ResourceLocation getTextureLocation(EntityChainTrapMaw pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/chain_trap_maw.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/chain_trap_maw.png");
 	}
 }

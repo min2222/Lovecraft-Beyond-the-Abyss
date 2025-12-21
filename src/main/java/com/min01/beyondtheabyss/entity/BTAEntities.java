@@ -24,7 +24,6 @@ import com.min01.beyondtheabyss.entity.endlessdesert.EntityDuneDevourerTail;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityObserver;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.entity.projectile.EntityEnergyBall;
-import com.min01.beyondtheabyss.entity.projectile.EntityForneusMagic;
 import com.min01.beyondtheabyss.entity.projectile.EntityMissile;
 import com.min01.beyondtheabyss.entity.projectile.EntityMutavoreCyst;
 import com.min01.beyondtheabyss.entity.projectile.EntityPutridBubble;
@@ -49,7 +48,6 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityFallingStone>> FALLING_STONE = registerEntity("falling_stone", createBuilder(EntityFallingStone::new, MobCategory.MISC).sized(1.0F, 1.0F));
 
 	//projectile
-	public static final RegistryObject<EntityType<EntityForneusMagic>> FORNEUS_MAGIC = registerEntity("forneus_magic", EntityType.Builder.<EntityForneusMagic>of(EntityForneusMagic::new, MobCategory.MISC).sized(0.5F, 0.5F));
 	public static final RegistryObject<EntityType<EntityEnergyBall>> ENERGY_BALL = registerEntity("energy_ball", EntityType.Builder.<EntityEnergyBall>of(EntityEnergyBall::new, MobCategory.MISC).sized(0.375F, 0.375F));
 	public static final RegistryObject<EntityType<EntityPutridBubble>> PUTRID_BUBBLE = registerEntity("putrid_bubble", EntityType.Builder.<EntityPutridBubble>of(EntityPutridBubble::new, MobCategory.MISC).sized(0.75F, 0.75F));
 	public static final RegistryObject<EntityType<EntityToothBullet>> TOOTH_BULLET = registerEntity("tooth_bullet", EntityType.Builder.<EntityToothBullet>of(EntityToothBullet::new, MobCategory.MISC).sized(0.1875F, 0.25F));
@@ -88,6 +86,6 @@ public class BTAEntities
 	
 	public static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(String name, EntityType.Builder<T> builder) 
 	{
-		return ENTITY_TYPES.register(name, () -> builder.build(new ResourceLocation(BeyondtheAbyss.MODID, name).toString()));
+		return ENTITY_TYPES.register(name, () -> builder.build(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, name).toString()));
 	}
 }

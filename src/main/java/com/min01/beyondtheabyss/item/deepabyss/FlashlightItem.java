@@ -30,9 +30,9 @@ public class FlashlightItem extends Item implements IDynamicLightItem
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) 
+	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) 
 	{
-		ItemStack stack = p_41433_.getItemInHand(p_41434_);
+		ItemStack stack = pPlayer.getItemInHand(pUsedHand);
 		boolean isOn = isOn(stack);
 		setOn(stack, !isOn);
 		return InteractionResultHolder.consume(stack);

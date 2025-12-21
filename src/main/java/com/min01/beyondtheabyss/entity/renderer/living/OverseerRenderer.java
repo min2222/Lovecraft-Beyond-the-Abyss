@@ -11,15 +11,15 @@ import net.minecraft.resources.ResourceLocation;
 
 public class OverseerRenderer extends MobRenderer<EntityOverseer, ModelOverseer>
 {
-	public OverseerRenderer(Context p_174304_)
+	public OverseerRenderer(Context pContext)
 	{
-		super(p_174304_, new ModelOverseer(p_174304_.bakeLayer(ModelOverseer.LAYER_LOCATION)), 0.0F);
-		this.addLayer(new GlowingLayer<>(this, this.model, new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/overseer_layer.png")));
+		super(pContext, new ModelOverseer(pContext.bakeLayer(ModelOverseer.LAYER_LOCATION)), 0.0F);
+		this.addLayer(new GlowingLayer<>(this, this.model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/overseer_layer.png")));
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityOverseer p_115812_) 
+	public ResourceLocation getTextureLocation(EntityOverseer pEntity) 
 	{
-		return new ResourceLocation(BeyondtheAbyss.MODID, "textures/entity/overseer.png");
+		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/overseer.png");
 	}
 }

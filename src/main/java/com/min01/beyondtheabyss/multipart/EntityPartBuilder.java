@@ -84,7 +84,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 	        {
 	    		this.hitbox = this.buildHitbox();
 	        }
-    		BTANetwork.sendToServer(new BuildMultipartPacket(this.entity, this.partOffset, this.parts, this.partMap, this.hitbox));
+    		BTANetwork.sendToServer(new BuildMultipartPacket(this.entity.getUUID(), this.partOffset, this.parts, this.partMap, this.hitbox));
 		}
 		else
 		{
@@ -184,7 +184,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
     	        if(last == null || current.changed(last))
     	        {
     	            p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-    	            BTANetwork.sendToServer(new UpdatePartPacket(this.entity, name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
+    	            BTANetwork.sendToServer(new UpdatePartPacket(this.entity.getUUID(), name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
     	            lastStates.put(name, current);
     	        }
     	    }

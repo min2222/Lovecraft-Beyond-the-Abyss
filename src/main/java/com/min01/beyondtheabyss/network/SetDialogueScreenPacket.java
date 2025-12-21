@@ -19,53 +19,48 @@ public class SetDialogueScreenPacket
 	public final int maxIndex;
 	public final UUID entityUUID;
 
-	public SetDialogueScreenPacket(String key, int maxIndex, Entity entity)
+	public SetDialogueScreenPacket(String key, int maxIndex, UUID entityUUID)
 	{
 		this.key = key;
 		this.maxIndex = maxIndex;
-		this.entityUUID = entity.getUUID();
+		this.entityUUID = entityUUID;
 	}
 
-	public SetDialogueScreenPacket(FriendlyByteBuf buf)
+	public static SetDialogueScreenPacket read(FriendlyByteBuf buf)
 	{
-		this.key = buf.readUtf();
-		this.maxIndex = buf.readInt();
-		this.entityUUID = buf.readUUID();
+		return new SetDialogueScreenPacket(buf.readUtf(), buf.readInt(), buf.readUUID());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeUtf(this.key);
 		buf.writeInt(this.maxIndex);
 		buf.writeUUID(this.entityUUID);
 	}
 
-	public static class Handler 
+	public static boolean handle(SetDialogueScreenPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(SetDialogueScreenPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isClient()) 
 			{
-				if(ctx.get().getDirection().getReceptionSide().isClient()) 
-				{
-					openScreen(message);
-				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
-		
-		@OnlyIn(Dist.CLIENT)
-		public static void openScreen(SetDialogueScreenPacket message)
+				openScreen(message);
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public static void openScreen(SetDialogueScreenPacket message)
+	{
+		BTAUtil.getClientLevel(t -> 
 		{
-			BTAUtil.getClientLevel(t -> 
+			Entity entity = BTAUtil.getEntityByUUID(t, message.entityUUID);
+			if(entity != null)
 			{
-				Entity entity = BTAUtil.getEntityByUUID(t, message.entityUUID);
-				if(entity != null)
-				{
-					BTAClientUtil.MC.setScreen(new DialogueScreen(message.key, message.maxIndex, entity));
-				}
-			});
-		}
+				BTAClientUtil.MC.setScreen(new DialogueScreen(message.key, message.maxIndex, entity));
+			}
+		});
 	}
 }

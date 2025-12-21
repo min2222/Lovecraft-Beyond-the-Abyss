@@ -28,15 +28,12 @@ public class UpdateItemAnimationPacket
 		this.animationTick = animationTick;
 	}
 
-	public UpdateItemAnimationPacket(FriendlyByteBuf buf)
+	public static UpdateItemAnimationPacket read(FriendlyByteBuf buf)
 	{
-		this.stack = buf.readItem();
-		this.entityUUID = buf.readUUID();
-		this.animationState = buf.readInt();
-		this.animationTick = buf.readInt();
+		return new UpdateItemAnimationPacket(buf.readItem(), buf.readUUID(), buf.readInt(), buf.readInt());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeItem(this.stack);
 		buf.writeUUID(this.entityUUID);
@@ -44,43 +41,40 @@ public class UpdateItemAnimationPacket
 		buf.writeInt(this.animationTick);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdateItemAnimationPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdateItemAnimationPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isClient())
 			{
-				if(ctx.get().getDirection().getReceptionSide().isClient())
+				BTAUtil.getClientLevel(level -> 
 				{
-					BTAUtil.getClientLevel(level -> 
+					Entity entity = BTAUtil.getEntityByUUID(level, message.entityUUID);
+					if(entity instanceof LivingEntity living) 
 					{
-						Entity entity = BTAUtil.getEntityByUUID(level, message.entityUUID);
-						if(entity instanceof LivingEntity living) 
-						{
-			                ItemStack stackFrom = message.stack;
-			                ItemStack to = null;
-			                if(living.getItemInHand(InteractionHand.MAIN_HAND).is(stackFrom.getItem()))
-			                {
-			                    to = living.getItemInHand(InteractionHand.MAIN_HAND);
-			                }
-			                else if(living.getItemInHand(InteractionHand.OFF_HAND).is(stackFrom.getItem()))
-			                {
-			                    to = living.getItemInHand(InteractionHand.OFF_HAND);
-			                }
-			                if(to != null)
-			                {
-			                	to.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
-			                	{
-			    					t.setAnimationState(message.animationState);
-			    					t.setAnimationTick(message.animationTick);
-			                	});
-			                }
-						}
-					});
-				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+		                ItemStack stackFrom = message.stack;
+		                ItemStack to = null;
+		                if(living.getItemInHand(InteractionHand.MAIN_HAND).is(stackFrom.getItem()))
+		                {
+		                    to = living.getItemInHand(InteractionHand.MAIN_HAND);
+		                }
+		                else if(living.getItemInHand(InteractionHand.OFF_HAND).is(stackFrom.getItem()))
+		                {
+		                    to = living.getItemInHand(InteractionHand.OFF_HAND);
+		                }
+		                if(to != null)
+		                {
+		                	to.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
+		                	{
+		    					t.setAnimationState(message.animationState);
+		    					t.setAnimationTick(message.animationTick);
+		                	});
+		                }
+					}
+				});
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

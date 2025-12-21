@@ -14,9 +14,9 @@ public class AnimatableBlockEntity extends BlockEntity
 	public final AnimationState idleAnimationState = new AnimationState();
 	public int tickCount;
 	
-	public AnimatableBlockEntity(BlockPos p_155229_, BlockState p_155230_) 
+	public AnimatableBlockEntity(BlockPos pPos, BlockState pBlockState) 
 	{
-		super(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), p_155229_, p_155230_);
+		super(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), pPos, pBlockState);
 	}
 	
 	public static void update(Level level, BlockPos pos, BlockState state, AnimatableBlockEntity block)

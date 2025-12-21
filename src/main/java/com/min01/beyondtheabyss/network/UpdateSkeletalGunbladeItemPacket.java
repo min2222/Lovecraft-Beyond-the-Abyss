@@ -24,51 +24,47 @@ public class UpdateSkeletalGunbladeItemPacket
 		this.entityUUID = entityUUID;
 	}
 
-	public UpdateSkeletalGunbladeItemPacket(FriendlyByteBuf buf)
+	public static UpdateSkeletalGunbladeItemPacket read(FriendlyByteBuf buf)
 	{
-		this.stack = buf.readItem();
-		this.entityUUID = buf.readUUID();
+		return new UpdateSkeletalGunbladeItemPacket(buf.readItem(), buf.readUUID());
 	}
 
-	public void encode(FriendlyByteBuf buf)
+	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeItem(this.stack);
 		buf.writeUUID(this.entityUUID);
 	}
 
-	public static class Handler 
+	public static boolean handle(UpdateSkeletalGunbladeItemPacket message, Supplier<NetworkEvent.Context> ctx)
 	{
-		public static boolean onMessage(UpdateSkeletalGunbladeItemPacket message, Supplier<NetworkEvent.Context> ctx)
+		ctx.get().enqueueWork(() ->
 		{
-			ctx.get().enqueueWork(() ->
+			if(ctx.get().getDirection().getReceptionSide().isServer())
 			{
-				if(ctx.get().getDirection().getReceptionSide().isServer())
+				Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
+				if(entity instanceof LivingEntity living) 
 				{
-					Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
-					if(entity instanceof LivingEntity living) 
-					{
-		                ItemStack stackFrom = message.stack;
-		                ItemStack to = null;
-		                if(living.getItemInHand(InteractionHand.MAIN_HAND).is(stackFrom.getItem()))
-		                {
-		                    to = living.getItemInHand(InteractionHand.MAIN_HAND);
-		                }
-		                else if(living.getItemInHand(InteractionHand.OFF_HAND).is(stackFrom.getItem()))
-		                {
-		                    to = living.getItemInHand(InteractionHand.OFF_HAND);
-		                }
-		                if(to != null)
-		                {
-		                	if(to.getItem() instanceof SkeletalGunbladeItem item)
-		                	{
-		                		item.releaseUsingServer(to, living);
-		                	}
-		                }
-					}
+	                ItemStack stackFrom = message.stack;
+	                ItemStack to = null;
+	                if(living.getItemInHand(InteractionHand.MAIN_HAND).is(stackFrom.getItem()))
+	                {
+	                    to = living.getItemInHand(InteractionHand.MAIN_HAND);
+	                }
+	                else if(living.getItemInHand(InteractionHand.OFF_HAND).is(stackFrom.getItem()))
+	                {
+	                    to = living.getItemInHand(InteractionHand.OFF_HAND);
+	                }
+	                if(to != null)
+	                {
+	                	if(to.getItem() instanceof SkeletalGunbladeItem item)
+	                	{
+	                		item.releaseUsingServer(to, living);
+	                	}
+	                }
 				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+			}
+		});
+		ctx.get().setPacketHandled(true);
+		return true;
 	}
 }

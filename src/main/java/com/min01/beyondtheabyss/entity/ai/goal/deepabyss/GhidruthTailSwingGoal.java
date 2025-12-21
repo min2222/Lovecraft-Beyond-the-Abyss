@@ -36,7 +36,7 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 	}
 
 	@Override
-	protected void performSkill() 
+	public void performSkill() 
 	{
 		if(this.mob.posArray[0] != null)
 		{
@@ -45,7 +45,7 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 			{
 				if(this.mob.doHurtTarget(t))
 				{
-					t.addDeltaMovement(BTAUtil.fromToVector(this.mob.position(), t.position(), 4.5F));
+					t.addDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), t.position(), 4.5F));
 				}
 			});
 		}
@@ -59,19 +59,19 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 	}
 
 	@Override
-	protected int getSkillUsingTime()
+	public int getSkillUsingTime()
 	{
 		return 30;
 	}
 	
 	@Override
-	protected int getSkillWarmupTime() 
+	public int getSkillWarmupTime() 
 	{
 		return 18;
 	}
 
 	@Override
-	protected int getSkillUsingInterval() 
+	public int getSkillUsingInterval() 
 	{
 		return 150;
 	}

@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelMysteriousGuy extends HierarchicalModel<EntityMysteriousGuy>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(BeyondtheAbyss.MODID, "mysterious_guy"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "mysterious_guy"), "main");
 	private final ModelPart root;
 	private final ModelPart robe;
 	private final ModelPart head;

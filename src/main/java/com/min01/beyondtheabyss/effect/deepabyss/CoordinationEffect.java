@@ -24,20 +24,19 @@ public class CoordinationEffect extends BasicBTAEffect
 	}
 
 	@Override
-	public void applyEffectTick(LivingEntity p_19467_, int p_19468_)
+	public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier)
 	{
-		List<LivingEntity> list = p_19467_.level.getEntitiesOfClass(LivingEntity.class, p_19467_.getBoundingBox().inflate(p_19468_ * 4));
-		list.removeIf(t -> t == p_19467_ || t.isAlliedTo(p_19467_) || !t.isAlive());
-		this.multiplier = Math.min(list.size(), p_19468_ * 2);
-		if(p_19467_.hasEffect(this))
+		List<LivingEntity> list = pLivingEntity.level.getEntitiesOfClass(LivingEntity.class, pLivingEntity.getBoundingBox().inflate(pAmplifier * 4), t -> t != pLivingEntity && !t.isAlliedTo(pLivingEntity) && t.isAlive());
+		this.multiplier = Math.min(list.size(), pAmplifier * 2);
+		if(pLivingEntity.hasEffect(this))
 		{
-			this.addAttributeModifiers(p_19467_, p_19467_.getAttributes(), p_19468_);
+			this.addAttributeModifiers(pLivingEntity, pLivingEntity.getAttributes(), pAmplifier);
 		}
 	}
 	
 	@Override
-	public double getAttributeModifierValue(int p_19430_, AttributeModifier p_19431_)
+	public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier)
 	{
-		return this.multiplier * (double)(p_19430_ + 1);
+		return this.multiplier * (double)(pAmplifier + 1);
 	}
 }

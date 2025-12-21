@@ -45,14 +45,14 @@ public class MixinEntityRenderDispatcher
     }
     
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;render(Lnet/minecraft/world/entity/Entity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", shift = At.Shift.AFTER), cancellable = true)
-    private <E extends Entity> void renderAfter(E p_114385_, double p_114386_, double p_114387_, double p_114388_, float p_114389_, float p_114390_, PoseStack p_114391_, MultiBufferSource p_114392_, int p_114393_, CallbackInfo ci)
+    private <E extends Entity> void renderAfter(E pEntity, double pX, double pY, double pZ, float pRotationYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci)
     {
-    	if(p_114385_ instanceof LivingEntity living)
+    	if(pEntity instanceof LivingEntity living)
     	{
         	if(living instanceof IMultipart partBuilder)
         	{
         		EntityPartBuilder<?> builder = partBuilder.getPartBuilder();
-        		builder.tick(p_114390_);
+        		builder.tick(pPartialTicks);
         	}
     	}
     }

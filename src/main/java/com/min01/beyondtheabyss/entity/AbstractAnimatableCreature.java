@@ -29,9 +29,9 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
 
 	public Vec3[] posArray;
 	
-	public AbstractAnimatableCreature(EntityType<? extends PathfinderMob> p_33002_, Level p_33003_) 
+	public AbstractAnimatableCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel)
 	{
-		super(p_33002_, p_33003_);
+		super(pEntityType, pLevel);
 		this.noCulling = true;
 	}
 	
@@ -50,21 +50,26 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
 	@Override
 	protected void registerGoals()
 	{
+		this.registerDefaultGoals();
+	}
+	
+	public void registerDefaultGoals()
+	{
 		this.goalSelector.addGoal(1, new FloatGoal(this));
+		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0F)
+		{
+			@Override
+			public boolean canUse()
+			{
+				return super.canUse() && AbstractAnimatableCreature.this.canMoveAround();
+			}
+		});
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this)
 		{
 			@Override
 			public boolean canUse()
 			{
 				return super.canUse() && AbstractAnimatableCreature.this.canLookAround();
-			}
-		});
-		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 0.5F)
-		{
-			@Override
-			public boolean canUse()
-			{
-				return super.canUse() && AbstractAnimatableCreature.this.canRandomStroll();
 			}
 		});
 		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F)
@@ -102,47 +107,73 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
 		
 		if(this.entityData.get(IS_USING_SKILL) && this.getAnimationTick() <= 0)
 		{
+			this.onAnimationEnd(this.getAnimationState());
 			this.setAnimationState(0);
 			this.setUsingSkill(false);
 		}
     }
     
     @Override
-    protected PathNavigation createNavigation(Level p_21480_)
+    protected PathNavigation createNavigation(Level pLevel)
     {
-    	return new BTAGroundPathNavigation(this, p_21480_);
+    	return new BTAGroundPathNavigation(this, pLevel);
     }
-	
-	public boolean canLookAround()
-	{
-		return !this.hasTarget();
-	}
-	
-	public boolean canRandomStroll()
-	{
-		return !this.hasTarget();
-	}
-	
-    @Override
-    public void readAdditionalSaveData(CompoundTag p_21450_) 
+    
+    public void onAnimationEnd(int animationState)
     {
-    	super.readAdditionalSaveData(p_21450_);
-    	this.setUsingSkill(p_21450_.getBoolean("isUsingSkill"));
-    	this.setCanLook(p_21450_.getBoolean("CanLook"));
-    	this.setCanMove(p_21450_.getBoolean("CanMove"));
-    	this.setAnimationTick(p_21450_.getInt("AnimationTick"));
-    	this.setAnimationState(p_21450_.getInt("AnimationState"));
+    	
     }
     
     @Override
-    public void addAdditionalSaveData(CompoundTag p_21484_) 
+	public void moveToTarget()
+	{
+		if(this.canMove())
+		{
+			Vec3 pos = this.getTarget().position();
+			this.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, 1.0F);
+			this.getNavigation().moveTo(this.getTarget(), 1.0F);
+		}
+	}
+	
+	@Override
+	public void lookAtTarget()
+	{
+		if(this.canLook())
+		{
+			this.getLookControl().setLookAt(this.getTarget(), 30.0F, 30.0F);
+		}
+	}
+	
+	public boolean canLookAround()
+	{
+		return this.canLook() && !this.isUsingSkill();
+	}
+	
+	public boolean canMoveAround()
+	{
+		return this.canMove() && !this.isUsingSkill();
+	}
+	
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) 
     {
-    	super.addAdditionalSaveData(p_21484_);
-    	p_21484_.putBoolean("isUsingSkill", this.isUsingSkill());
-    	p_21484_.putBoolean("CanLook", this.canLook());
-    	p_21484_.putBoolean("CanMove", this.canMove());
-    	p_21484_.putInt("AnimationTick", this.getAnimationTick());
-    	p_21484_.putInt("AnimationState", this.getAnimationState());
+    	super.readAdditionalSaveData(pCompound);
+    	this.setUsingSkill(pCompound.getBoolean("isUsingSkill"));
+    	this.setCanLook(pCompound.getBoolean("CanLook"));
+    	this.setCanMove(pCompound.getBoolean("CanMove"));
+    	this.setAnimationTick(pCompound.getInt("AnimationTick"));
+    	this.setAnimationState(pCompound.getInt("AnimationState"));
+    }
+    
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) 
+    {
+    	super.addAdditionalSaveData(pCompound);
+    	pCompound.putBoolean("isUsingSkill", this.isUsingSkill());
+    	pCompound.putBoolean("CanLook", this.canLook());
+    	pCompound.putBoolean("CanMove", this.canMove());
+    	pCompound.putInt("AnimationTick", this.getAnimationTick());
+    	pCompound.putInt("AnimationState", this.getAnimationState());
     }
     
     @Override
@@ -178,6 +209,7 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
     	this.entityData.set(CAN_LOOK, value);
     }
     
+    @Override
     public boolean canLook()
     {
     	return this.entityData.get(CAN_LOOK);

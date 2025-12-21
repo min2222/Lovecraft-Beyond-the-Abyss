@@ -22,7 +22,7 @@ public class BTAResourceKeys
 		
 		private static ResourceKey<Structure> create(String name) 
 		{
-			ResourceKey<Structure> key = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(BeyondtheAbyss.MODID, name));
+			ResourceKey<Structure> key = ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, name));
 			LIST.add(key);
 			return key;
 		}
