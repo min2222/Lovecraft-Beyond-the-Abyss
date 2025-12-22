@@ -128,12 +128,6 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	}
 	
 	@Override
-	public boolean ignoreOperation()
-	{
-		return true;
-	}
-	
-	@Override
 	public boolean removeWhenFarAway(double pDistanceToClosestPlayer)
 	{
 		return false;

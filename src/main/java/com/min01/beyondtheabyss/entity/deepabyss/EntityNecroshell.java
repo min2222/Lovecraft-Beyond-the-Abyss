@@ -27,7 +27,9 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -59,7 +61,7 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
         		.add(Attributes.FOLLOW_RANGE, 10.0F)
         		.add(Attributes.ATTACK_DAMAGE, 4.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 5.0F)
-        		.add(Attributes.ARMOR, 6.0F);
+        		.add(Attributes.ARMOR, 12.0F);
     }
 
 	@Override
@@ -96,6 +98,16 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 			this.intimidateAnimationState.updateWhen(this.hasTarget() && this.getAnimationState() == 0 && !this.isHiding(), this.tickCount);
 			this.hideAnimationState.updateWhen(this.isHiding(), this.tickCount);
 			this.unhideAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
+		}
+
+		Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 3.5F, true);
+		if(player != null && !this.isUsingSkill())
+		{
+	        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, player.position());
+	        if(vec3 != null)
+	        {
+	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.0F);
+	        }
 		}
 	}
 	
@@ -149,7 +161,12 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag)
 	{
-		this.setShellType(this.random.nextInt(0, 2));
+		int type = 0;
+		if(this.random.nextBoolean())
+		{
+			type = 1;
+		}
+		this.setShellType(type);
 		if(pReason == MobSpawnType.NATURAL)
 		{
 			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ()).above();

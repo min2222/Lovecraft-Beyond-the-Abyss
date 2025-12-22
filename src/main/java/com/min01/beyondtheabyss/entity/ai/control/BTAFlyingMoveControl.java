@@ -26,7 +26,7 @@ public class BTAFlyingMoveControl extends MoveControl
 	public void tick() 
 	{
 		IBTAMob mob = (IBTAMob) this.mob;
-		if(this.operation == MoveControl.Operation.MOVE_TO || mob.ignoreOperation())
+		if(this.operation == MoveControl.Operation.MOVE_TO)
 		{
 			Vec3 wantedPos = new Vec3(this.wantedX, this.wantedY, this.wantedZ);
 			if(mob.canMoveAround())

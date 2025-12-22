@@ -29,10 +29,5 @@ public interface IBTAMob
 		return 100;
 	}
 	
-	default boolean ignoreOperation()
-	{
-		return false;
-	}
-	
 	public boolean canMoveAround();
 }

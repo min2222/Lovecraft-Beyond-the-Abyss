@@ -1,7 +1,6 @@
 package com.min01.beyondtheabyss.entity.mirroredcity;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAFlyingMonster;
-import com.min01.beyondtheabyss.entity.ai.control.FlyingBoidMoveControl;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -22,7 +21,6 @@ public class EntityObserver extends AbstractBTAFlyingMonster
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(3);
-		this.moveControl = new FlyingBoidMoveControl(this);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -53,15 +51,9 @@ public class EntityObserver extends AbstractBTAFlyingMonster
 		return true;
 	}
 	
-	@Override
-	public boolean ignoreOperation()
-	{
-		return true;
-	}
-	
 	public static boolean checkObserverSpawnRules(EntityType<? extends AbstractBTAFlyingMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		BlockPos ceilingPos = BTAUtil.getCeilingPos(pServerLevel, pPos.getX(), pPos.getY(), pPos.getZ()).above();
+		BlockPos ceilingPos = BTAUtil.getCeilingPos(pServerLevel, pPos.getX(), pPos.getY(), pPos.getZ());
 		return pServerLevel.getBlockState(ceilingPos).isAir() && pServerLevel.getBlockState(pPos.below()).isAir() && pServerLevel.getBlockState(pPos.above()).isAir() && pPos.getY() <= 10 && pPos.getY() >= -10;
     }
 }

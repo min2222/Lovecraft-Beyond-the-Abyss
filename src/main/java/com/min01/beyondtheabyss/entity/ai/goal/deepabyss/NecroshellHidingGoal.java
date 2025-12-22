@@ -3,6 +3,8 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityNecroshell;
 
+import net.minecraft.world.entity.player.Player;
+
 public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 {
 	private int noTargetTick;
@@ -17,7 +19,6 @@ public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 	{
 		super.start();
 		this.mob.setHiding(true);
-		this.mob.setCanLook(false);
 	}
 	
 	@Override
@@ -34,7 +35,8 @@ public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 	public void tick() 
 	{
 		super.tick();
-		if((this.mob.getTarget() != null && this.mob.getTarget().distanceTo(this.mob) <= 4.5F) || this.mob.getLastHurtByMob() != null)
+		Player player = this.mob.level.getNearestPlayer(this.mob.getX(), this.mob.getY(), this.mob.getZ(), 3.5F, true);
+		if((this.mob.getTarget() != null && this.mob.getTarget().distanceTo(this.mob) <= 4.5F) || this.mob.getLastHurtByMob() != null || player != null)
 		{
 			this.noTargetTick = 0;
 		}
@@ -45,22 +47,15 @@ public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 	{
 		return this.noTargetTick >= 100;
 	}
-
-	@Override
-	public void performSkill() 
-	{
-		
-	}
 	
 	@Override
 	public void stop()
 	{
 		super.stop();
 		this.mob.setHiding(false);
-		this.mob.setCanLook(true);
 		this.mob.setAnimationState(2);
-		this.mob.setUsingSkill(true);
 		this.mob.setAnimationTick(15);
+		this.mob.setUsingSkill(true);
 	}
 
 	@Override
