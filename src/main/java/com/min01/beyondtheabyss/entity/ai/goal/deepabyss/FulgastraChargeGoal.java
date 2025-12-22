@@ -47,7 +47,10 @@ public class FulgastraChargeGoal extends BasicBTASkillGoal<EntitySplittedFulgast
 		super.stop();
 		this.mob.setAnimationState(3);
 		this.mob.setCharged(false);
-		this.mob.kill();
+		if(this.mob.getOwner() == null)
+		{
+			this.mob.kill();
+		}
 	}
 
 	@Override

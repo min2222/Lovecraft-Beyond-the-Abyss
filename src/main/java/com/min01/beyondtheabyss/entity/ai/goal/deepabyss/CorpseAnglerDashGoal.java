@@ -4,7 +4,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.phys.Vec3;
 
 public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
@@ -40,12 +39,6 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	{
 		return this.canContinueToUse;
 	}
-
-	@Override
-	public void performSkill()
-	{
-		
-	}
 	
 	@Override
 	public boolean requiresUpdateEveryTick() 
@@ -73,10 +66,6 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 				{
 					this.canContinueToUse = false;
 				}
-			}
-			else
-			{
-				this.mob.lookAt(Anchor.EYES, this.mob.getTarget().getEyePosition());
 			}
 		}
 	}

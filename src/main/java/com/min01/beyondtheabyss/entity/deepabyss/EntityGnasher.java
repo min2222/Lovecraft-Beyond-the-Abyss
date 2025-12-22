@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ILeader;
+import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
 import com.min01.beyondtheabyss.entity.ai.control.SwimmingBoidMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -135,8 +136,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 					}
 					else
 					{
-						this.getMoveControl().setWantedPosition(leader.getX(), leader.getY(), leader.getZ(), 1.5F);
-						this.getNavigation().moveTo(leader, 1.0F);
+						this.getNavigation().moveTo(leader, 1.5F);
 					}
 				}
 				else
@@ -238,9 +238,19 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 	}
 	
 	@Override
-	public boolean canSwim() 
+	public void moveToTarget() 
 	{
-		return !this.isDisperse();
+		super.moveToTarget();
+		if(this.getMoveControl() instanceof BoidMoveControl control)
+		{
+			control.boid.target = this.getTarget().position();
+		}
+	}
+	
+	@Override
+	public boolean canMoveAround() 
+	{
+		return super.canMoveAround() && !this.isDisperse();
 	}
 	
 	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 

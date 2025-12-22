@@ -9,8 +9,6 @@ import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,7 +16,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 
 public abstract class AbstractOwnableBTAMonster<T extends AbstractBTAMonster> extends AbstractBTAMonster
 {
@@ -32,12 +29,14 @@ public abstract class AbstractOwnableBTAMonster<T extends AbstractBTAMonster> ex
 	@Override
 	protected void defineSynchedData()
 	{
+		super.defineSynchedData();
 		this.entityData.define(OWNER_UUID, Optional.empty());
 	}
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
+		super.addAdditionalSaveData(pCompound);
 		if(this.entityData.get(OWNER_UUID).isPresent())
 		{
 			pCompound.putUUID("Owner", this.entityData.get(OWNER_UUID).get());
@@ -47,6 +46,7 @@ public abstract class AbstractOwnableBTAMonster<T extends AbstractBTAMonster> ex
 	@Override
 	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
+		super.readAdditionalSaveData(pCompound);
 		if(pCompound.hasUUID("Owner")) 
 		{
 			this.entityData.set(OWNER_UUID, Optional.of(pCompound.getUUID("Owner")));
@@ -85,11 +85,5 @@ public abstract class AbstractOwnableBTAMonster<T extends AbstractBTAMonster> ex
 			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(OWNER_UUID).get());
 		}
 		return null;
-	}
-	
-	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket()
-	{
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

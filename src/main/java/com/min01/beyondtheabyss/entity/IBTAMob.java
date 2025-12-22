@@ -1,5 +1,7 @@
 package com.min01.beyondtheabyss.entity;
 
+import net.minecraft.world.phys.Vec3;
+
 public interface IBTAMob
 {
 	default int maxTurnX()
@@ -16,4 +18,21 @@ public interface IBTAMob
 	{
 		return 0.05F;
 	}
+	
+	default Vec3 getMoveRadius()
+	{
+		return new Vec3(80, 10, 80);
+	}
+	
+	default int targetSettingInterval()
+	{
+		return 100;
+	}
+	
+	default boolean ignoreOperation()
+	{
+		return false;
+	}
+	
+	public boolean canMoveAround();
 }

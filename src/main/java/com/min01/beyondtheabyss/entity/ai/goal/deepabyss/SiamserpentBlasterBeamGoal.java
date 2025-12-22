@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.sound.BTASounds;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 {
@@ -35,14 +36,10 @@ public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 	public void stop()
 	{
 		super.stop();
+		this.mob.setLastLookPos(BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 100));
 		this.mob.setAnimationState(3);
 		this.mob.setAnimationTick(40);
-		this.mob.setCanLook(false);
-		this.mob.setCanMove(false);
-		if(this.mob.getTarget() != null)
-		{
-			this.mob.setLastLookPos(this.mob.getTarget().getEyePosition());
-		}
+		this.mob.setUsingSkill(true);
 		//this.mob.playSound(BTASounds.SIAMSERPENT_BEAM_SHOOT.get());
 	}
 

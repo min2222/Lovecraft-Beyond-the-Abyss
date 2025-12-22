@@ -73,12 +73,6 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
 		return 100;
 	}
 	
-	@Override
-	public boolean canSwim() 
-	{
-		return true;
-	}
-	
 	public static boolean checkGloomfishSpawnRules(EntityType<? extends AbstractDeepAbyssCreature> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;

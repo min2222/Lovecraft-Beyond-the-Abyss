@@ -47,11 +47,11 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 		this.goalSelector.addGoal(0, new LookAtTargetGoal<>(this));
         if(this.getBTAMobType().alwaysHostile)
         {
-            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
+            this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
         }
         if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
         {
-            this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
+            this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         }
 	}
 	
@@ -99,20 +99,6 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 		if(this.partBuilder != null)
 		{
 			this.partBuilder.tick(1.0F);
-		}
-	}
-	
-	@Override
-	public void lookAtTarget() 
-	{
-		if(this.getLastLookPos().equals(Vec3.ZERO))
-		{
-			super.lookAtTarget();
-		}
-		else if(this.canMove())
-		{
-			Vec3 pos = this.getLastLookPos();
-			this.getLookControl().setLookAt(pos.x, pos.y, pos.z, 30.0F, 30.0F);
 		}
 	}
 	

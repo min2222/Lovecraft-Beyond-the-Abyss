@@ -10,9 +10,13 @@ import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -31,7 +35,7 @@ public abstract class AbstractBTAFlyingMonster extends AbstractAnimatableFlyingM
 	public AbstractBTAFlyingMonster(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
-		this.lookControl = new BTAFlyingLookControl(this, 10);
+		this.lookControl = new BTAFlyingLookControl(this);
 		this.moveControl = new BTAFlyingMoveControl(this);
 		this.partBuilder = this.createBuilder();
 	}
@@ -51,7 +55,7 @@ public abstract class AbstractBTAFlyingMonster extends AbstractAnimatableFlyingM
 		this.goalSelector.addGoal(0, new LookAtTargetGoal<>(this));
         if(this.getBTAMobType().alwaysHostile)
         {
-            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, false, false)
+            this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false, false)
             {
             	@Override
             	protected AABB getTargetSearchArea(double pTargetDistance) 
@@ -62,7 +66,7 @@ public abstract class AbstractBTAFlyingMonster extends AbstractAnimatableFlyingM
         }
         if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
         {
-            this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
+            this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         }
 	}
 	
@@ -118,17 +122,36 @@ public abstract class AbstractBTAFlyingMonster extends AbstractAnimatableFlyingM
 		}
 	}
 	
+    @Override
+    public void lookAt(EntityAnchorArgument.Anchor pAnchor, Vec3 pTarget) 
+    {
+		Vec3 vec3 = pAnchor.apply(this);
+		double d0 = pTarget.x - vec3.x;
+		double d1 = pTarget.y - vec3.y;
+		double d2 = pTarget.z - vec3.z;
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
+		float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
+		this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.maxTurnX()));
+		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, this.maxTurnY()));
+		this.setYHeadRot(this.getYRot());
+		this.xRotO = this.getXRot();
+		this.yRotO = this.getYRot();
+		this.yHeadRotO = this.yHeadRot;
+		this.yBodyRot = this.yHeadRot;
+		this.yBodyRotO = this.yBodyRot;
+    }
+	
 	@Override
 	public void lookAtTarget() 
 	{
 		if(this.getLastLookPos().equals(Vec3.ZERO))
 		{
-			super.lookAtTarget();
+			this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
 		}
-		else if(this.canMove())
+		else
 		{
-			Vec3 pos = this.getLastLookPos();
-			this.getLookControl().setLookAt(pos.x, pos.y, pos.z, 30.0F, 30.0F);
+			this.lookAt(Anchor.FEET, this.getLastLookPos());
 		}
 	}
 	

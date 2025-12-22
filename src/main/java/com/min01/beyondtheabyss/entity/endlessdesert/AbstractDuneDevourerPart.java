@@ -19,9 +19,6 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 	public AbstractDuneDevourerPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
-		this.noPhysics = true;
-		this.setNoGravity(true);
-		this.setNoAi(!this.isHead());
 	}
 	
 	@Override

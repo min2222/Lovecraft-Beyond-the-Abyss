@@ -104,6 +104,18 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	}
 	
 	@Override
+	public boolean canMove() 
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean canLook()
+	{
+		return false;
+	}
+	
+	@Override
 	public void tick()
 	{
 		super.tick();

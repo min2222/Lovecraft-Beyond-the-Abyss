@@ -128,12 +128,6 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public boolean canSwim() 
-	{
-		return false;
-	}
-	
-	@Override
 	protected PathNavigation createNavigation(Level pLevel) 
 	{
 		return new BTAGroundPathNavigation(this, pLevel);

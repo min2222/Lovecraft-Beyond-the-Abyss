@@ -71,7 +71,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 80.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.65F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.2F)
         		.add(Attributes.FOLLOW_RANGE, 60.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F)
         		.add(Attributes.ATTACK_DAMAGE, 8.0F);
@@ -155,27 +155,27 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		}
 		
 		boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
-		if(this.getAnimationState() == 0 && this.isInWater())
+		if(this.getAnimationState() == 0 && this.isInWater() && !this.hasTarget())
 		{
 			if(this.getBurrowCooldown() <= 0)
 			{
 				if(canBurrow)
 				{
-					if(!this.level.isClientSide && this.getTarget() == null)
-					{
-						this.setAnimationState(3);
-						this.setAnimationTick(40);
-						this.setCanMove(false);
-						this.setCanLook(false);
-					}
+					this.setAnimationState(3);
+					this.setAnimationTick(40);
+					this.setCanMove(false);
+					this.setCanLook(false);
 				}
 				else
 				{
 					BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
 					Vec3 pos = Vec3.atBottomCenterOf(floorPos);
-					if(this.position().distanceTo(pos) <= 8.0F)
+					boolean flag = this.position().distanceTo(pos) <= 8.0F;
+					this.setCanMove(flag);
+					this.setCanLook(flag);
+					if(flag)
 					{
-						this.getMoveControl().setWantedPosition(floorPos.getX(), floorPos.getY(), floorPos.getZ(), 1.0F);
+						this.getNavigation().moveTo(floorPos.getX(), floorPos.getY(), floorPos.getZ(), 1.5F);
 					}
 				}
 			}
@@ -247,12 +247,6 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
             double z = this.getZ() + (this.random.nextDouble() - this.random.nextDouble()) * range + 0.5D;
 			this.level.addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.level.getBlockState(this.blockPosition().below())), x, this.getY(), z, motionX, motionY, motionZ);
 		}
-	}
-	
-	@Override
-	public boolean canSwim() 
-	{
-		return super.canSwim() && this.canMove();
 	}
 	
     @Override

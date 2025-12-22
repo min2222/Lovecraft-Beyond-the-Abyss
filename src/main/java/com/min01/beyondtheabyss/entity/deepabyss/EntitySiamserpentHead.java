@@ -35,7 +35,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -83,7 +82,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes()
+        return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 60.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F)
         		.add(Attributes.FOLLOW_RANGE, 45.0F)
@@ -147,8 +146,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		if(this.getHealth() <= this.getMaxHealth() / 2.0F && !this.isDormant() && this.tickAfterDormant == 0)
 		{
 			this.setDormant(true);
-			this.setCanLook(false);
-			this.setCanMove(false);
 			this.tickAfterDormant = this.tickCount;
 		}
 		
@@ -156,64 +153,60 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		{
 			if(this.tickCount - this.tickAfterDormant == 100)
 			{
-				this.setCanLook(true);
-				this.setCanMove(true);
 				this.setDormant(false);
 			}
 		}
 		
-		if(this.getAnimationTick() <= 0)
+		if(this.getAnimationState() == 3)
 		{
-			if(this.getAnimationState() == 3)
-			{
-				this.setCanLook(true);
-				this.setCanMove(true);
-				this.setAnimationState(0);
-				this.setLastLookPos(Vec3.ZERO);
-			}
-		}
-		else
-		{
-			if(this.getAnimationState() == 3)
-			{
-				List<LivingEntity> arrayList = new ArrayList<>();
-	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.getEyePosition(), 0.0F, -0.05F, -0.25F);
-				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), startPos, 0.0F, 0.0F, 300.0F);
-				HitResult hitResult = this.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-	        	Vec3 hitPos = hitResult.getLocation();
-	            Vec3 targetPos = hitPos.subtract(startPos);
-	            Vec3 normalizedPos = targetPos.normalize();
-	            int dist = (int) Mth.floor(targetPos.length());
-				this.setBeamLength(dist);
-	            for(int i = 1; i < dist; ++i)
-	            {
-	            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
-	            	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != this && !t.isAlliedTo(this));
-	            	if(!arrayList.containsAll(list))
-	            	{
-	            		arrayList.addAll(list);
-	            	}
-	            }
-	            arrayList.forEach(t -> 
-	            {
-	            	t.hurt(this.damageSources().indirectMagic(this, this), 6.0F);
-	            });
-			}
+			List<LivingEntity> arrayList = new ArrayList<>();
+        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.getEyePosition(), 0.0F, -0.05F, -0.25F);
+			Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), startPos, 0.0F, 0.0F, 300.0F);
+			HitResult hitResult = this.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        	Vec3 hitPos = hitResult.getLocation();
+            Vec3 targetPos = hitPos.subtract(startPos);
+            Vec3 normalizedPos = targetPos.normalize();
+            int dist = (int) Mth.floor(targetPos.length());
+			this.setBeamLength(dist);
+            for(int i = 1; i < dist; ++i)
+            {
+            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
+            	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != this && !t.isAlliedTo(this));
+            	if(!arrayList.containsAll(list))
+            	{
+            		arrayList.addAll(list);
+            	}
+            }
+            arrayList.forEach(t -> 
+            {
+            	t.hurt(this.damageSources().indirectMagic(this, this), 6.0F);
+            });
 		}
 	}
 	
 	@Override
 	public void moveToTarget() 
 	{
-		
+		if(this.tickCount % 60 == 0)
+		{
+			Vec3 spreadPos = BTAUtil.getSpreadPosition(this.level, this.getTarget().position(), 15);
+			this.getNavigation().moveTo(spreadPos.x, spreadPos.y, spreadPos.z, 1.0F);
+		}
 	}
 	
 	@Override
-	public void lookAtTarget() 
+	public boolean canLook() 
 	{
-		if(!this.canSwim())
+		return super.canLook() && this.isUsingSkill();
+	}
+	
+	@Override
+	public void onAnimationEnd(int animationState) 
+	{
+		if(animationState == 3)
 		{
-			super.lookAtTarget();
+			this.setAnimationState(0);
+			this.setLastLookPos(Vec3.ZERO);
 		}
 	}
 	
@@ -257,9 +250,9 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	public boolean canSwim()
+	public boolean canMoveAround()
 	{
-		return this.isHead() && !this.isDormant() && !this.isDisabled() && !this.isUsingSkill();
+		return super.canMoveAround() && !this.isDormant() && !this.isDisabled();
 	}
 	
 	@Override

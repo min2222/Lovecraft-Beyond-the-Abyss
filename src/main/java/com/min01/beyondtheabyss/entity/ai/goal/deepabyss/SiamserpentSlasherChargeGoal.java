@@ -34,11 +34,7 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	public void performSkill() 
 	{
 		this.mob.setAnimationState(8);
-		this.mob.setCanLook(false);
-		if(this.mob.getTarget() != null)
-		{
-			this.mob.setLastLookPos(this.mob.getTarget().getEyePosition());
-		}
+		this.mob.setLastLookPos(BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 100));
 	}
 	
 	@Override
@@ -57,11 +53,6 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 			}
 			if(this.mob.getLastLookPos().subtract(this.mob.position()).length() <= 1.5F)
 			{
-				EntitySiamserpentHead head = (EntitySiamserpentHead) this.mob.getHead();
-				head.setCanLook(true);
-				head.setCanMove(true);
-				head.setAnimationState(4);
-				head.setAnimationTick(5);
 				this.mob.setAnimationTick(0);
 			}
 		}
@@ -73,7 +64,6 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 		super.stop();
 		this.mob.setAnimationState(0);
 		this.mob.setLastLookPos(Vec3.ZERO);
-		this.mob.setCanLook(true);
 	}
 
 	@Override

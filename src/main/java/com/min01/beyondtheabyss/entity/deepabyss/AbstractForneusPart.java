@@ -15,9 +15,6 @@ public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<Abst
 	public AbstractForneusPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
-		this.noPhysics = true;
-		this.setNoGravity(true);
-		this.setNoAi(!this.isHead());
 	}
 
 	@Override
@@ -69,12 +66,6 @@ public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<Abst
 	public boolean isWormChain() 
 	{
 		return false;
-	}
-
-	@Override
-	public boolean canSwim()
-	{
-		return this.isHead();
 	}
 	
 	@Override

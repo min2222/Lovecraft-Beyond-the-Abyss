@@ -1,22 +1,22 @@
 package com.min01.beyondtheabyss.entity.ai.control;
 
+import com.min01.beyondtheabyss.entity.IBTAMob;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.LookControl;
 
 public class BTAFlyingLookControl extends LookControl 
 {
-	private final int maxYRotFromCenter;
-	
-	public BTAFlyingLookControl(Mob mob, int maxYRotFromCenter) 
+	public BTAFlyingLookControl(Mob mob) 
 	{
 		super(mob);
-		this.maxYRotFromCenter = maxYRotFromCenter;
 	}
 
 	@Override
 	public void tick() 
 	{
+		IBTAMob mob = (IBTAMob) this.mob;
 		if(this.lookAtCooldown > 0) 
 		{
 			--this.lookAtCooldown;
@@ -38,11 +38,11 @@ public class BTAFlyingLookControl extends LookControl
 			this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, this.mob.yBodyRot, this.yMaxRotSpeed);
 		}
 		float f = Mth.wrapDegrees(this.mob.yHeadRot - this.mob.yBodyRot);
-		if(f < -this.maxYRotFromCenter) 
+		if(f < -mob.maxTurnY()) 
 		{
 			this.mob.yBodyRot -= 4.0F;
 		} 
-		else if(f > this.maxYRotFromCenter)
+		else if(f > mob.maxTurnY())
 		{
 			this.mob.yBodyRot += 4.0F;
 		}

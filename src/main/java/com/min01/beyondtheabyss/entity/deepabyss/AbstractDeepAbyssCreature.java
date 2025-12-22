@@ -3,7 +3,11 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
@@ -37,12 +41,12 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
     protected void registerGoals() 
     {
     	super.registerGoals();
-		this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0F, 50)
+		this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0F, 40)
 		{
 			@Override
 			public boolean canUse() 
 			{
-				return super.canUse() && AbstractDeepAbyssCreature.this.canSwim();
+				return super.canUse() && AbstractDeepAbyssCreature.this.canMoveAround();
 			}
 		});
     }
@@ -50,7 +54,10 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
     @Override
     public void registerDefaultGoals() 
     {
-    	
+    	if(!this.isSwimable())
+    	{
+    		super.registerDefaultGoals();
+    	}
     }
 	
 	@Override
@@ -87,6 +94,32 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
 	protected boolean isAffectedByFluids()
 	{
 		return false;
+	}
+	
+    @Override
+    public void lookAt(EntityAnchorArgument.Anchor pAnchor, Vec3 pTarget) 
+    {
+		Vec3 vec3 = pAnchor.apply(this);
+		double d0 = pTarget.x - vec3.x;
+		double d1 = pTarget.y - vec3.y;
+		double d2 = pTarget.z - vec3.z;
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		float yRot = (float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F;
+		float xRot = (float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI)));
+		this.setXRot(BTAUtil.rotlerp(this.getXRot(), xRot, this.maxTurnX()));
+		this.setYRot(BTAUtil.rotlerp(this.getYRot(), yRot, this.maxTurnY()));
+		this.setYHeadRot(this.getYRot());
+		this.xRotO = this.getXRot();
+		this.yRotO = this.getYRot();
+		this.yHeadRotO = this.yHeadRot;
+		this.yBodyRot = this.yHeadRot;
+		this.yBodyRotO = this.yBodyRot;
+    }
+	
+	@Override
+	public void lookAtTarget() 
+	{
+		this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
 	}
 	
 	public void handleAirSupply(int supply) 
@@ -137,11 +170,6 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
     		super.travel(pTravelVector);
     	}
     }
-	
-	public boolean canSwim()
-	{
-		return this.canMove() && !this.hasTarget();
-	}
 	
 	public boolean canBreathOutsideWater()
 	{

@@ -104,21 +104,9 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	@Override
 	public void moveToTarget()
 	{
-		if(this.canMove())
-		{
-			Vec3 targetPos = this.getTarget().getEyePosition();
-			Vec3 pos = new Vec3(targetPos.x, this.getY(), targetPos.z);
-			this.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, 1.0F);
-		}
-	}
-	
-	@Override
-	public void lookAtTarget() 
-	{
-		if(this.canLook())
-		{
-			this.getLookControl().setLookAt(this.getTarget(), 30.0F, 0.0F);
-		}
+		Vec3 targetPos = this.getTarget().getEyePosition();
+		Vec3 pos = new Vec3(targetPos.x, this.getY(), targetPos.z);
+		this.getNavigation().moveTo(pos.x, pos.y, pos.z, 1.5F);
 	}
 	
 	@Override
@@ -130,11 +118,17 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	@Override
 	public int maxTurnY()
 	{
-		return 4;
+		return 2;
 	}
 	
 	@Override
 	public boolean ignoreExplosion() 
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean ignoreOperation()
 	{
 		return true;
 	}

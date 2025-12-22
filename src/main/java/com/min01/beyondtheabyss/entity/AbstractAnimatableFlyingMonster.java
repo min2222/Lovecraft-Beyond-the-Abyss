@@ -66,7 +66,7 @@ public abstract class AbstractAnimatableFlyingMonster extends AbstractFlyingMons
 
 		if(!this.level.isClientSide)
 		{
-			this.setHasTarget(this.getTarget() != null);
+			this.setHasTarget(this.getTarget() != null && this.getTarget().isAlive());
 		}
 		
 		if(this.getAnimationTick() > 0)
@@ -100,31 +100,23 @@ public abstract class AbstractAnimatableFlyingMonster extends AbstractFlyingMons
     @Override
 	public void moveToTarget()
 	{
-		if(this.canMove())
-		{
-			Vec3 pos = this.getTarget().position();
-			this.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, 1.0F);
-			this.getNavigation().moveTo(this.getTarget(), 1.0F);
-		}
+		this.getNavigation().moveTo(this.getTarget(), 1.0F);
 	}
 	
-    @Override
+	@Override
 	public void lookAtTarget()
 	{
-		if(this.canLook())
-		{
-			this.getLookControl().setLookAt(this.getTarget(), 30.0F, 30.0F);
-		}
+		this.getLookControl().setLookAt(this.getTarget(), 30.0F, 30.0F);
 	}
 	
 	public boolean canLookAround()
 	{
-		return this.canLook() && !this.isUsingSkill();
+		return this.canLook() && !this.isUsingSkill() && !this.hasTarget();
 	}
 	
 	public boolean canMoveAround()
 	{
-		return this.canMove() && !this.isUsingSkill();
+		return this.canMove() && !this.isUsingSkill() && !this.hasTarget();
 	}
 	
     @Override

@@ -42,7 +42,7 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	{
 		if(this.mob.getAnimationTick() <= this.getSkillUsingTime() - 10 && this.mob.getTarget() != null) 
 		{
-			if(this.mob.tickCount % 4 == 0)
+			if(this.mob.tickCount % 4 == 1)
 			{
 				this.mob.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
 				for(int i = 0; i < 5; i++)

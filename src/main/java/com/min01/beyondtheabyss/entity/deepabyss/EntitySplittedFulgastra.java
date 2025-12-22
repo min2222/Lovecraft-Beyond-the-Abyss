@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FulgastraChargeGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -72,9 +71,6 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 	public void tick()
 	{
 		super.tick();
-		this.setCanMove(false);
-		this.setCanLook(false);
-		this.getNavigation().stop();
 		if(this.level.isClientSide)
 		{
 			this.swimAnimationState.updateWhen(true, this.tickCount);
@@ -84,13 +80,14 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 		}
 		if(this.getAnimationState() == 3 && this.getOwner() != null && this.isInWater())
 		{
-			this.setDeltaMovement(BTAUtil.getVelocityTowards(this.position(), this.getOwner().position(), 0.25F));
-			if(this.distanceTo(this.getOwner()) <= 2.0F)
+			EntityFulgastra owner = this.getOwner();
+			this.getNavigation().moveTo(owner, 1.25F);
+			if(this.distanceTo(owner) <= 2.0F)
 			{
+				owner.setAnimationState(2);
+				owner.setAnimationTick(20);
+				owner.heal(this.getHealth());
 				this.discard();
-				this.getOwner().setAnimationState(2);
-				this.getOwner().setAnimationTick(20);
-				this.getOwner().heal(this.getHealth());
 			}
 		}
 		if(this.tickCount == 20)
@@ -109,7 +106,13 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 	}
 	
 	@Override
-	public boolean canSwim() 
+	public boolean canLook()
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean canMove() 
 	{
 		return false;
 	}

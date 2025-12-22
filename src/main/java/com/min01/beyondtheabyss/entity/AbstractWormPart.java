@@ -100,8 +100,32 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		}
 	}
 	
+    @Override
+    public boolean isInvulnerableTo(DamageSource pSource)
+    {
+    	return super.isInvulnerableTo(pSource) || pSource.is(DamageTypes.IN_WALL) || pSource.is(DamageTypeTags.IS_FALL);
+    }
+    
+    @Override
+    public boolean canLook() 
+    {
+    	return super.canLook() && this.isHead();
+    }
+    
+    @Override
+    public boolean canMove() 
+    {
+    	return super.canMove() && this.isHead();
+    }
+	
 	@Override
 	protected void playStepSound(BlockPos pPos, BlockState pState) 
+	{
+		
+	}
+	
+	@Override
+	protected void playSwimSound(float pVolume) 
 	{
 		
 	}
@@ -182,12 +206,6 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
         	return false;
     	}
     	return super.hurt(pSource, pAmount);
-    }
-    
-    @Override
-    public boolean isInvulnerableTo(DamageSource pSource)
-    {
-    	return super.isInvulnerableTo(pSource) || pSource.is(DamageTypes.IN_WALL) || pSource.is(DamageTypeTags.IS_FALL);
     }
     
 	@Override

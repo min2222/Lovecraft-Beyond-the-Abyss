@@ -81,8 +81,6 @@ public class Boid
 		}
 		
 		this.mob.addDeltaMovement(this.velocity.scale(0.05F));
-		Vec3 pos = this.mob.position().add(this.mob.getDeltaMovement());
-		this.mob.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, 1.0F);
 	}
 	
     @SuppressWarnings("unchecked")
@@ -196,6 +194,10 @@ public class Boid
 			if(distance < radius)
 			{
 				out.add(other);
+			}
+			else
+			{
+				continue;
 			}
 		}
 		return out;
