@@ -44,7 +44,6 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState openMouthAnimationState = new SmoothAnimationState();
-	public final SmoothAnimationState closeMouthAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState burrowAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState unburrowAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState ambushAnimationState = new SmoothAnimationState();
@@ -71,7 +70,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 80.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.2F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.45F)
         		.add(Attributes.FOLLOW_RANGE, 60.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F)
         		.add(Attributes.ATTACK_DAMAGE, 8.0F);
@@ -148,13 +147,13 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		{
 			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
 			this.openMouthAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
-			this.closeMouthAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3, this.tickCount);
 			this.unburrowAnimationState.updateWhen(this.getAnimationState() == 4, this.tickCount);
 			this.ambushAnimationState.updateWhen(this.getAnimationState() == 5, this.tickCount);
 		}
 		
 		boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
+		
 		if(this.getAnimationState() == 0 && this.isInWater() && !this.hasTarget())
 		{
 			if(this.getBurrowCooldown() <= 0)
@@ -170,9 +169,9 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 				{
 					BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
 					Vec3 pos = Vec3.atBottomCenterOf(floorPos);
-					boolean flag = this.position().distanceTo(pos) <= 8.0F;
-					this.setCanMove(flag);
-					this.setCanLook(flag);
+					boolean flag = this.position().distanceTo(pos) <= 12.0F;
+					this.setCanMove(!flag);
+					this.setCanLook(!flag);
 					if(flag)
 					{
 						this.getNavigation().moveTo(floorPos.getX(), floorPos.getY(), floorPos.getZ(), 1.5F);
@@ -215,6 +214,23 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 				this.setCanLook(true);
 			}
 		}
+	}
+	
+	@Override
+	public boolean canMove() 
+	{
+		return super.canMove() && !this.isBurrow();
+	}
+	
+	@Override
+	public boolean canLook() 
+	{
+		return super.canLook() && !this.isBurrow();
+	}
+	
+	public boolean isBurrow()
+	{
+		return this.getAnimationState() == 3 || this.getAnimationState() == 4;
 	}
 	
 	public static boolean checkCorpseAnglerSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 

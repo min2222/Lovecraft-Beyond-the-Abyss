@@ -31,19 +31,13 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	@Override
 	public boolean canUse()
 	{
-		return super.canUse() && this.mob.canMove() && this.mob.distanceTo(this.mob.getTarget()) <= 8.0F;
+		return super.canUse() && !this.mob.isBurrow() && this.mob.distanceTo(this.mob.getTarget()) <= 12.0F;
 	}
 	
 	@Override
 	public boolean canContinueToUse()
 	{
 		return this.canContinueToUse;
-	}
-	
-	@Override
-	public boolean requiresUpdateEveryTick() 
-	{
-		return true;
 	}
 	
 	@Override
@@ -56,13 +50,13 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 			{
 				Vec3 lookPos = BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 20);
 				this.mob.setLastLookPos(lookPos);
-				this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), lookPos, 0.5F));
-				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 1.5F))
+				this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), lookPos, 1.5F));
+				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F))
 				{
 					this.canContinueToUse = false;
 					this.mob.doHurtTarget(this.mob.getTarget());
 				}
-				else if(this.mob.distanceTo(this.mob.getTarget()) >= 12.0F)
+				else if(this.mob.distanceTo(this.mob.getTarget()) >= 20.0F)
 				{
 					this.canContinueToUse = false;
 				}
@@ -74,19 +68,18 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	public void stop() 
 	{
 		super.stop();
+		this.mob.setAnimationState(0);
+		this.mob.setAnimationTick(0);
 		this.mob.getNavigation().stop();
 		this.mob.setDeltaMovement(Vec3.ZERO);
-		this.mob.setAnimationState(2);
-		this.mob.setAnimationTick(20);
 		this.mob.setLastLookPos(Vec3.ZERO);
-		this.mob.setUsingSkill(true);
 		this.canContinueToUse = true;
 	}
 
 	@Override
 	public int getSkillUsingTime() 
 	{
-		return 120;
+		return 1000;
 	}
 	
 	@Override

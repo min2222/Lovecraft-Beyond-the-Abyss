@@ -13,6 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 {
+	private int interval;
+	
 	public MutavorePutridBubbleGoal(EntityMutavore mob)
 	{
 		super(mob);
@@ -42,8 +44,9 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	{
 		if(this.mob.getAnimationTick() <= this.getSkillUsingTime() - 10 && this.mob.getTarget() != null) 
 		{
-			if(this.mob.tickCount % 4 == 1)
+			if(this.interval++ == 2)
 			{
+				this.interval = 0;
 				this.mob.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
 				for(int i = 0; i < 5; i++)
 				{
@@ -70,6 +73,7 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	{
 		super.stop();
 		this.mob.setAnimationState(0);
+		this.interval = 0;
 	}
 
 	@Override

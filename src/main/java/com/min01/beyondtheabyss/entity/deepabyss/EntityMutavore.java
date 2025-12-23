@@ -91,8 +91,9 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 150.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.65F)
-        		.add(Attributes.FOLLOW_RANGE, 50.0F)
+        		.add(Attributes.FOLLOW_RANGE, 80.0F)
         		.add(Attributes.ATTACK_DAMAGE, 8.0F)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 4.0F)
         		.add(Attributes.ARMOR, 8.0F);
     }
     
@@ -192,10 +193,10 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 			if(!list.isEmpty())
 			{
 				MutationType type = Util.getRandom(types, this.random);
-				ItemEntity item = list.get(0);
+				ItemEntity item = Util.getRandom(list, this.random);
 				this.playSound(SoundEvents.GENERIC_EAT);
-				item.discard();
 				this.doMutation(type, true);
+				item.discard();
 			}
 		}
 	}
@@ -238,6 +239,18 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
+	public boolean canMove()
+	{
+		return super.canMove() && !this.isConsume();
+	}
+	
+	@Override
+	protected void doPush(Entity pEntity)
+	{
+		
+	}
+	
+	@Override
 	public float moveSpeed()
 	{
 		if(this.isMutated(MutationType.MUTATE_L_ARM) || this.isMutated(MutationType.MUTATE_R_ARM))
@@ -274,7 +287,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	{
 		List<ItemEntity> list = this.level.getEntitiesOfClass(ItemEntity.class, aabb, item -> 
 		{
-			boolean flag = item.getItem().getFoodProperties(this) != null && item.getItem().getFoodProperties(this).isMeat();
+			boolean flag = item.getItem().isEdible() && item.getItem().getFoodProperties(this).isMeat();
 			return item.isInWater() && (item.getItem().is(BTATags.BTAItems.MUTAVORE_CONSUMABLE) || flag);
 		});
     	list.sort(Comparator.comparing(Entity::getUUID));

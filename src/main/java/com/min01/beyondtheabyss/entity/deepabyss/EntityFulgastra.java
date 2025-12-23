@@ -18,10 +18,13 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 
 public class EntityFulgastra extends AbstractDeepAbyssMonster
 {
@@ -79,6 +82,16 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 		{
 			this.splittingAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
 			this.reformingAnimationState.updateWhen(this.getAnimationState() == 2, this.tickCount);
+		}
+		
+		Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 5.0F, true);
+		if(player != null && this.getAnimationState() == 1)
+		{
+	        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, player.position());
+	        if(vec3 != null)
+	        {
+	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.0F);
+	        }
 		}
 	}
 	

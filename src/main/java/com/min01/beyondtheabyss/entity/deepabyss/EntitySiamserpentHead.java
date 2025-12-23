@@ -195,6 +195,12 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	}
 	
 	@Override
+	public boolean canMoveAround()
+	{
+		return false;
+	}
+	
+	@Override
 	public boolean canLook() 
 	{
 		return super.canLook() && this.isUsingSkill();
@@ -247,12 +253,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 				}
 			}
 		}
-	}
-	
-	@Override
-	public boolean canMoveAround()
-	{
-		return super.canMoveAround() && !this.isDormant() && !this.isDisabled();
 	}
 	
 	@Override

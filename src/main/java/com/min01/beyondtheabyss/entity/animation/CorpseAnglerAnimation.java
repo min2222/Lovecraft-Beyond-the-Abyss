@@ -1112,37 +1112,6 @@ public class CorpseAnglerAnimation
 			))
 			.build();
 
-		public static final AnimationDefinition CORPSE_ANGLER_CLOSE_MOUTH = AnimationDefinition.Builder.withLength(1.0833F)
-			.addAnimation("jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
-				new Keyframe(0.0F, KeyframeAnimations.degreeVec(65.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.0417F, KeyframeAnimations.degreeVec(57.08F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.0833F, KeyframeAnimations.degreeVec(51.69F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.125F, KeyframeAnimations.degreeVec(47.28F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.1667F, KeyframeAnimations.degreeVec(43.44F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.2083F, KeyframeAnimations.degreeVec(39.98F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.25F, KeyframeAnimations.degreeVec(36.81F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.2917F, KeyframeAnimations.degreeVec(33.86F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.3333F, KeyframeAnimations.degreeVec(31.09F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.375F, KeyframeAnimations.degreeVec(28.47F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.4167F, KeyframeAnimations.degreeVec(25.99F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.4583F, KeyframeAnimations.degreeVec(23.62F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.5F, KeyframeAnimations.degreeVec(21.35F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.5417F, KeyframeAnimations.degreeVec(19.17F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.5833F, KeyframeAnimations.degreeVec(17.09F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.625F, KeyframeAnimations.degreeVec(15.08F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.6667F, KeyframeAnimations.degreeVec(13.15F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.7083F, KeyframeAnimations.degreeVec(11.29F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.75F, KeyframeAnimations.degreeVec(9.51F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.7917F, KeyframeAnimations.degreeVec(7.8F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.8333F, KeyframeAnimations.degreeVec(6.17F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.875F, KeyframeAnimations.degreeVec(4.62F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.9167F, KeyframeAnimations.degreeVec(3.17F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(0.9583F, KeyframeAnimations.degreeVec(1.84F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.69F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-				new Keyframe(1.0417F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-			))
-			.build();
-
 		public static final AnimationDefinition CORPSE_ANGLER_BURROW = AnimationDefinition.Builder.withLength(2.0833F)
 			.addAnimation("jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 				new Keyframe(0.0F, KeyframeAnimations.degreeVec(12.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),

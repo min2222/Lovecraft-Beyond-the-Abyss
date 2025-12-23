@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore.MutationType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -16,6 +17,7 @@ public class MutavoreConsumingGoal extends Goal
 {
 	private final EntityMutavore mob;
 	private UUID itemUUID;
+	private int interval;
 	
 	public MutavoreConsumingGoal(EntityMutavore mob) 
 	{
@@ -37,13 +39,14 @@ public class MutavoreConsumingGoal extends Goal
 		{
 			return false;
 		}
-		if(this.mob.tickCount % 60 == 1 && this.itemUUID == null)
+		if(++this.interval == 60 && this.itemUUID == null)
 		{
 			List<ItemEntity> list = this.mob.getConsumableItems(this.mob.getBoundingBox().inflate(10.0F));
 			if(!list.isEmpty())
 			{
-				this.itemUUID = list.get(0).getUUID();
+				this.itemUUID = Util.getRandom(list, this.mob.getRandom()).getUUID();
 			}
+			this.interval = 0;
 		}
 		return !this.mob.isUsingSkill() && this.mob.isInWater() && this.itemUUID != null;
 	}
@@ -56,19 +59,13 @@ public class MutavoreConsumingGoal extends Goal
 	}
 	
 	@Override
-	public boolean requiresUpdateEveryTick() 
-	{
-		return true;
-	}
-	
-	@Override
 	public void tick() 
 	{
 		Entity entity = BTAUtil.getEntityByUUID(this.mob.level, this.itemUUID);
 		if(entity != null)
 		{
-			this.mob.getMoveControl().setWantedPosition(entity.getX(), entity.getY(), entity.getZ(), 1.25F);
-			this.mob.getLookControl().setLookAt(entity, 100.0F, 100.0F);
+			this.mob.getNavigation().moveTo(entity, 1.25F);
+			this.mob.getLookControl().setLookAt(entity, 30.0F, 30.0F);
 		}
 	}
 	
@@ -76,6 +73,8 @@ public class MutavoreConsumingGoal extends Goal
 	public void stop() 
 	{
 		this.mob.setConsume(false);
+		this.mob.getNavigation().stop();
 		this.itemUUID = null;
+		this.interval = 0;
 	}
 }

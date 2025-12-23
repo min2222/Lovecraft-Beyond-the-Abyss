@@ -21,6 +21,7 @@ import com.min01.beyondtheabyss.particle.DustCloudParticle;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -212,6 +213,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     			else
     			{
     				Vec3 pos = this.getLastLookPos();
+    				this.lookAt(Anchor.FEET, pos);
     				this.getNavigation().moveTo(pos.x, pos.y, pos.z, 2.5F);
             		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3.5F), t -> t != this && !t.isAlliedTo(this));
             		list.forEach(t ->

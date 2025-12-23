@@ -21,7 +21,7 @@ public class GnasherBiteGoal extends BasicBTASkillGoal<EntityGnasher>
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2);
+		return super.canUse() && BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class GnasherBiteGoal extends BasicBTASkillGoal<EntityGnasher>
 	{
 		if(this.mob.getTarget() != null)
 		{
-			if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2))
+			if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F))
 			{
 				this.mob.doHurtTarget(this.mob.getTarget());
 			}

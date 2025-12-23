@@ -143,7 +143,6 @@ public class ModelCorpseAngler extends HierarchicalModel<EntityCorpseAngler>
 		this.animateWalk(CorpseAnglerAnimation.CORPSE_ANGLER_SWIM, limbSwing, limbSwingAmount, 2.5F, 1.5F);
 		entity.idleAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_IDLE, ageInTicks, limbSwingAmount);
 		entity.openMouthAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_OPEN_MOUTH, ageInTicks);
-		entity.closeMouthAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_CLOSE_MOUTH, ageInTicks);
 		entity.burrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_BURROW, ageInTicks);
 		entity.unburrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_UNBURROW, ageInTicks);
 		entity.ambushAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_AMBUSH, ageInTicks);
