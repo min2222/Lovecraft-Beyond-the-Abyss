@@ -17,7 +17,13 @@
 						}
 					]
 				}
+			],
+			"conditions": [
+				{
+					"condition": "minecraft:killed_by_player"
+				}
 			]
 		}
-	]
+	],
+	"random_sequence": "beyondtheabyss:entities/spine_worm_head"
 }

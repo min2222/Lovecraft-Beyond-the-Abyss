@@ -119,7 +119,7 @@ public abstract class MixinEntity
     {
         Entity entity = Entity.class.cast(this);
         AABB aabb = entity.getBoundingBox();
-        List<OrientedBox> obbList = this.getOBBEntityCollisions(entity.level(), entity, aabb.expandTowards(originalMovement));
+        List<OrientedBox> obbList = this.getOBBEntityCollisions(entity.level, entity, aabb.expandTowards(originalMovement));
         if(obbList.isEmpty())
         {
             return originalMovement;

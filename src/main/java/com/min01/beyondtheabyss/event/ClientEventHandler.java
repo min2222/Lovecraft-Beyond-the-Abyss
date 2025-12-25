@@ -23,11 +23,11 @@ import com.min01.beyondtheabyss.blockentity.renderer.ChainTrapRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
 import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
 import com.min01.beyondtheabyss.entity.model.ModelCorpseAngler;
 import com.min01.beyondtheabyss.entity.model.ModelCystShrapnel;
+import com.min01.beyondtheabyss.entity.model.ModelDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.model.ModelDuneDevourerBody;
 import com.min01.beyondtheabyss.entity.model.ModelDuneDevourerHead;
 import com.min01.beyondtheabyss.entity.model.ModelDuneDevourerTail;
@@ -60,6 +60,7 @@ import com.min01.beyondtheabyss.entity.model.ModelToothBullet;
 import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel;
 import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel2;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
+import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.FallingStoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.MissileRenderer;
@@ -92,7 +93,9 @@ import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SplittedFulgastraRenderer;
 import com.min01.beyondtheabyss.gui.screen.BiocrafterScreen;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.deepabyss.ClamOfGuidanceItem;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
+import com.min01.beyondtheabyss.item.model.ModelClamOfGuidance;
 import com.min01.beyondtheabyss.item.model.ModelFelmetalDiverSet;
 import com.min01.beyondtheabyss.item.model.ModelFlashlight;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
@@ -142,8 +145,7 @@ public class ClientEventHandler
         BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
         ItemProperties.register(BTAItems.CLAM_OF_GUIDANCE.get(), ResourceLocation.parse("open"), (pStack, pLevel, pEntity, pSeed) ->
         {
-        	//TODO;
-        	return 0.0F;
+        	return ClamOfGuidanceItem.isOpen(pStack) ? 1.0F : 0.0F;
         });
         ItemProperties.register(BTAItems.FLASHLIGHT.get(), ResourceLocation.parse("on"), (pStack, pLevel, pEntity, pSeed) ->
         {
@@ -193,10 +195,11 @@ public class ClientEventHandler
     public static void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
     	//misc
-    	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer<EntityBTACameraShake>::new);
+    	event.registerEntityRenderer(BTAEntities.BTA_CAMERA_SHAKE.get(), NoneRenderer::new);
     	event.registerEntityRenderer(BTAEntities.SUBMARINE.get(), SubmarineRenderer::new);
     	event.registerEntityRenderer(BTAEntities.CHAIN_TRAP_MAW.get(), ChainTrapMawRenderer::new);
     	event.registerEntityRenderer(BTAEntities.FALLING_STONE.get(), FallingStoneRenderer::new);
+    	event.registerEntityRenderer(BTAEntities.DEEP_ABYSS_PORTAL.get(), DeepAbyssPortalRenderer::new);
     	
     	//projectile
     	event.registerEntityRenderer(BTAEntities.ENERGY_BALL.get(), EnergyBallRenderer::new);
@@ -264,6 +267,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelToothBulletShrapnel2.LAYER_LOCATION, ModelToothBulletShrapnel2::createBodyLayer);
     	event.registerLayerDefinition(ModelMutavoreCyst.LAYER_LOCATION, ModelMutavoreCyst::createBodyLayer);
     	event.registerLayerDefinition(ModelCystShrapnel.LAYER_LOCATION, ModelCystShrapnel::createBodyLayer);
+    	event.registerLayerDefinition(ModelDeepAbyssPortal.LAYER_LOCATION, ModelDeepAbyssPortal::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
     	event.registerLayerDefinition(ModelObserver.LAYER_LOCATION, ModelObserver::createBodyLayer);
@@ -295,6 +299,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelFlashlight.LAYER_LOCATION, ModelFlashlight::createBodyLayer);
     	event.registerLayerDefinition(ModelSkeletalGunblade.LAYER_LOCATION, ModelSkeletalGunblade::createBodyLayer);
     	event.registerLayerDefinition(ModelToothShotgun.LAYER_LOCATION, ModelToothShotgun::createBodyLayer);
+    	event.registerLayerDefinition(ModelClamOfGuidance.LAYER_LOCATION, ModelClamOfGuidance::createBodyLayer);
     }
     
 	@SuppressWarnings("deprecation")

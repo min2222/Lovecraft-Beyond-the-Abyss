@@ -1,20 +1,26 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": {
-		"layer0": "beyondtheabyss:item/clam_of_guidance_0"
+	"loader": "forge:separate_transforms",
+	"gui_light": "front",
+	"base": {
+		"parent": "beyondtheabyss:item/clam_of_guidance_in_hand"
+	},
+	"perspectives": {
+		"gui": {
+			"parent": "beyondtheabyss:item/clam_of_guidance_inventory"
+		},
+		"ground": {
+			"parent": "beyondtheabyss:item/clam_of_guidance_inventory"
+		},
+		"fixed": {
+			"parent": "beyondtheabyss:item/clam_of_guidance_inventory"
+		}
 	},
 	"overrides": [
 		{
 			"predicate": {
 				"open": 1
 			},
-			"model": "beyondtheabyss:item/clam_of_guidance_1"
-		},
-		{
-			"predicate": {
-				"open": 2
-			},
-			"model": "beyondtheabyss:item/clam_of_guidance_2"
+			"model": "beyondtheabyss:item/clam_of_guidance_opened"
 		}
 	]
 }

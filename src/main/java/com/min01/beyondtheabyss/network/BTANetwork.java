@@ -30,8 +30,6 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, SetDialogueScreenPacket.class, SetDialogueScreenPacket::write, SetDialogueScreenPacket::read, SetDialogueScreenPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateSynchedEntityDataPacket.class, UpdateSynchedEntityDataPacket::write, UpdateSynchedEntityDataPacket::read, UpdateSynchedEntityDataPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationPacket.class, UpdatePlayerAnimationPacket::write, UpdatePlayerAnimationPacket::read, UpdatePlayerAnimationPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateAbyssPortalPosPacket.class, UpdateAbyssPortalPosPacket::write, UpdateAbyssPortalPosPacket::read, UpdateAbyssPortalPosPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateAbyssPortalActivationPacket.class, UpdateAbyssPortalActivationPacket::write, UpdateAbyssPortalActivationPacket::read, UpdateAbyssPortalActivationPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateSkeletalGunbladeItemPacket.class, UpdateSkeletalGunbladeItemPacket::write, UpdateSkeletalGunbladeItemPacket::read, UpdateSkeletalGunbladeItemPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateStoneSkinEffectPacket.class, UpdateStoneSkinEffectPacket::write, UpdateStoneSkinEffectPacket::read, UpdateStoneSkinEffectPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateBossBarPacket.class, UpdateBossBarPacket::write, UpdateBossBarPacket::read, UpdateBossBarPacket::handle);

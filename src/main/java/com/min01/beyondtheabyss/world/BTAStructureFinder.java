@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import com.google.common.base.Stopwatch;
-import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.datafixers.util.Pair;
@@ -32,10 +31,7 @@ public class BTAStructureFinder
 	{
 		register(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL, (k, v, s) ->
 		{
-			BlockPos pos = k.offset(13, 0, 1);
-    		int y = BTAUtil.getSpecificGroundPos(s, pos.getX(), pos.getY() + 50, pos.getZ(), BTABlocks.ORIVINE.get()).getY();
-			v.setStructurePos(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL, new BlockPos(pos.getX(), y + 1, pos.getZ()));
-			v.setPortalActivated(BTAPortalTracker.DEEP_ABYSS_PORTAL, false);
+			v.setStructurePos(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL, BTAUtil.getGroundPos(s, k.getX(), k.getY() + 50, k.getZ()).above(5));
 		});
 		register(BTAResourceKeys.BTAStructures.HUT, (k, v, s) -> 
 		{

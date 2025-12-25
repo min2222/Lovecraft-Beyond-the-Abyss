@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityChainTrapMaw;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityForneusBody;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityForneusHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityForneusTail;
@@ -46,7 +47,8 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = registerEntity("submarine", createBuilder(EntitySubmarine::new, MobCategory.MISC).sized(6.0F, 6.0F));
 	public static final RegistryObject<EntityType<EntityChainTrapMaw>> CHAIN_TRAP_MAW = registerEntity("chain_trap_maw", createBuilder(EntityChainTrapMaw::new, MobCategory.MISC).sized(0.25F, 0.25F));
 	public static final RegistryObject<EntityType<EntityFallingStone>> FALLING_STONE = registerEntity("falling_stone", createBuilder(EntityFallingStone::new, MobCategory.MISC).sized(1.0F, 1.0F));
-
+	public static final RegistryObject<EntityType<EntityDeepAbyssPortal>> DEEP_ABYSS_PORTAL = registerEntity("deep_abyss_portal", createBuilder(EntityDeepAbyssPortal::new, MobCategory.MISC).clientTrackingRange(100).sized(10.9375F, 0.8125F));
+	
 	//projectile
 	public static final RegistryObject<EntityType<EntityEnergyBall>> ENERGY_BALL = registerEntity("energy_ball", EntityType.Builder.<EntityEnergyBall>of(EntityEnergyBall::new, MobCategory.MISC).sized(0.375F, 0.375F));
 	public static final RegistryObject<EntityType<EntityPutridBubble>> PUTRID_BUBBLE = registerEntity("putrid_bubble", EntityType.Builder.<EntityPutridBubble>of(EntityPutridBubble::new, MobCategory.MISC).sized(0.75F, 0.75F));

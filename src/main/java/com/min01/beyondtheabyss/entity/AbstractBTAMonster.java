@@ -51,8 +51,13 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
         }
         if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
         {
-            this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+            this.targetSelector.addGoal(0, this.alertOthers() ? new HurtByTargetGoal(this).setAlertOthers() : new HurtByTargetGoal(this));
         }
+	}
+	
+	public boolean alertOthers()
+	{
+		return false;
 	}
 	
 	@Override

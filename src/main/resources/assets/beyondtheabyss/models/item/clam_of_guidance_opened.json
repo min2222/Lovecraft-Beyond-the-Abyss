@@ -1,0 +1,18 @@
+{
+	"loader": "forge:separate_transforms",
+	"gui_light": "front",
+	"base": {
+		"parent": "beyondtheabyss:item/clam_of_guidance_in_hand"
+	},
+	"perspectives": {
+		"gui": {
+			"parent": "beyondtheabyss:item/clam_of_guidance_opened_inventory"
+		},
+		"ground": {
+			"parent": "beyondtheabyss:item/clam_of_guidance_opened_inventory"
+		},
+		"fixed": {
+			"parent": "beyondtheabyss:item/clam_of_guidance_opened_inventory"
+		}
+	}
+}

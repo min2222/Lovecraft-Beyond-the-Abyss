@@ -310,6 +310,11 @@ public class BTAUtil
         return mutablePos.immutable();
     }
 	
+	public static String getCollidingMultiPart(EntityBounds bounds, Entity entity)
+	{
+    	return bounds.raycast(entity.position(), entity.position().add(entity.getDeltaMovement()));
+	}
+	
 	public static String getMultiPart(EntityBounds bounds, Player player)
 	{
         Vec3 pos = player.getEyePosition(1.0F);
@@ -492,6 +497,17 @@ public class BTAUtil
     {
     	double d0 = owner.distanceToSqr(target.getX(), target.getY(), target.getZ());
     	return d0 <= getMeleeAttackRangeSqr(owner, target, multiplier);
+    }
+    
+	public static BlockPos getSurfacePos(BlockGetter level, double x, double startY, double z)
+    {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startY, z);
+        do
+        {
+        	mutablePos.move(Direction.DOWN);
+        }
+        while(level.getBlockState(mutablePos).isAir() && mutablePos.getY() > level.getMinBuildHeight());
+        return mutablePos.immutable();
     }
 	
 	public static BlockPos getCeilingPos(BlockGetter level, double x, double startY, double z)

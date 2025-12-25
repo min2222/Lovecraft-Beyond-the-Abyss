@@ -1,32 +1,27 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
-import java.util.List;
+import java.util.function.Consumer;
 
-import javax.annotation.Nullable;
-
-import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.misc.BTAResourceKeys.BTAStructures;
-import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.beyondtheabyss.world.BTAPortalTracker;
-import com.min01.beyondtheabyss.world.BTASavedData;
+import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
+import com.min01.beyondtheabyss.item.renderer.BTAItemRenderer;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class ClamOfGuidanceItem extends Item
+public class ClamOfGuidanceItem extends Item implements IAnimatableItem
 {
+	public static final String OPEN = "Open";
+    public static final String CLAM_OPEN = "ClamOpen";
+	
 	public ClamOfGuidanceItem()
 	{
 		super(new Item.Properties().stacksTo(1).rarity(BTAItems.RARITY_DEEP_ABYSS));
@@ -39,31 +34,12 @@ public class ClamOfGuidanceItem extends Item
 	}
 	
 	@Override
-	public InteractionResult useOn(UseOnContext pContext) 
+	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) 
 	{
-		Level level = pContext.getLevel();
-		BlockPos pos = pContext.getClickedPos();
-		Player player = pContext.getPlayer();
-		ItemStack stack = pContext.getItemInHand();
-		BTASavedData data = BTASavedData.get(level);
-		if(data != null)
-		{
-			BlockPos blockPos = data.getStructurePos(BTAStructures.DEEP_ABYSS_PORTAL).offset(0, 0, 7);
-    		int y = BTAUtil.getSpecificGroundPos(level, blockPos.getX(), blockPos.getY() + 100, blockPos.getZ(), BTABlocks.ORIVINE.get()).getY();
-			blockPos = BlockPos.containing(blockPos.getX(), y - 1, blockPos.getZ());
-			if(pos.equals(blockPos) && !data.isPortalActivated(BTAPortalTracker.DEEP_ABYSS_PORTAL))
-			{
-				level.setBlockAndUpdate(pos, BTABlocks.ENERGIZED_ORIVINE.get().defaultBlockState());
-				EntityBTACameraShake.cameraShake(level, Vec3.atBottomCenterOf(blockPos), 100, 0.05F, 10, 40);
-				data.setPortalActivated(BTAPortalTracker.DEEP_ABYSS_PORTAL, true);
-				if(!player.getAbilities().instabuild)
-				{
-					stack.shrink(1);
-				}
-				return InteractionResult.SUCCESS;
-			}
-		}
-		return super.useOn(pContext);
+		ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+		setOpen(stack, !isOpen(stack));
+		pPlayer.getCooldowns().addCooldown(this, 10);
+		return InteractionResultHolder.pass(stack);
 	}
 	
 	@Override
@@ -73,12 +49,27 @@ public class ClamOfGuidanceItem extends Item
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) 
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) 
 	{
-		if(pStack.getTag() != null && pStack.getTag().contains("PortalPos"))
+		consumer.accept(new IClientItemExtensions() 
 		{
-			BlockPos pos = NbtUtils.readBlockPos(pStack.getTag().getCompound("PortalPos"));
-			pTooltipComponents.add(Component.literal(pos.toShortString()).withStyle(ChatFormatting.AQUA));
-		}
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer()
+			{
+				return new BTAItemRenderer(BTAClientUtil.MC.getBlockEntityRenderDispatcher(), BTAClientUtil.MC.getEntityModels());
+			}
+		});
 	}
+	
+    public static boolean isOpen(ItemStack stack)
+    {
+        CompoundTag tag = stack.getTag();
+        return tag != null ? tag.getBoolean(OPEN) : false;
+    }
+
+    public static void setOpen(ItemStack stack, boolean open)
+    {
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putBoolean(OPEN, open);
+    }
 }

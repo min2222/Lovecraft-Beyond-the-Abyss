@@ -292,7 +292,7 @@ public class OrientedBox
 
     public double raycast(Vec3 start, Vec3 end)
     {
-        Matrix3d inverse = getInverse();
+        Matrix3d inverse = this.getInverse();
         Vec3 d = inverse.transform(start.x - this.center.x, start.y - this.center.y, start.z - this.center.z);
         Vec3 e = inverse.transform(end.x - this.center.x, end.y - this.center.y, end.z - this.center.z);
         return raycast0(d, e);

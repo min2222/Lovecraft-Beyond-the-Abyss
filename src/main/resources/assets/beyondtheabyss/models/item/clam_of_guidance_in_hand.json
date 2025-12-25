@@ -1,0 +1,17 @@
+{
+    "parent": "builtin/entity",
+    "gui_light": "front",
+	"textures": {
+		"particle": "beyondtheabyss:item/clam_of_guidance"
+	},
+	"display": {
+		"firstperson_righthand": {
+			"rotation": [0, -15, 0],
+			"translation": [0, 1.0, 0]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -15, 0],
+			"translation": [0, 1.0, 0]
+		}
+	}
+}

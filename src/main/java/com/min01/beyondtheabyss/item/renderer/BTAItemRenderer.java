@@ -1,8 +1,10 @@
 package com.min01.beyondtheabyss.item.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.item.deepabyss.ClamOfGuidanceItem;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
+import com.min01.beyondtheabyss.item.model.ModelClamOfGuidance;
 import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
 import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
 import com.min01.beyondtheabyss.misc.BTARenderType;
@@ -10,13 +12,19 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -24,13 +32,18 @@ import net.minecraft.world.item.ItemStack;
 public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 {
 	public static final ResourceLocation SHOTGUN_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/tooth_shotgun.png");
+	public static final ResourceLocation CLAM_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/clam_of_guidance_in_hand.png");
+	
 	public final ModelSkeletalGunblade modelGunblade;
 	public final ModelToothShotgun modelShotgun;
+	public final ModelClamOfGuidance modelClam;
+	
 	public BTAItemRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet) 
 	{
 		super(dispatcher, modelSet);
 		this.modelGunblade = new ModelSkeletalGunblade(modelSet.bakeLayer(ModelSkeletalGunblade.LAYER_LOCATION));
 		this.modelShotgun = new ModelToothShotgun(modelSet.bakeLayer(ModelToothShotgun.LAYER_LOCATION));
+		this.modelClam = new ModelClamOfGuidance(modelSet.bakeLayer(ModelClamOfGuidance.LAYER_LOCATION));
 	}
 	
 	@Override
@@ -82,6 +95,29 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(pBuffer, RenderType.entityCutoutNoCull(SHOTGUN_TEXTURE), false, pStack.hasFoil());
 			this.modelShotgun.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
 	        this.modelShotgun.renderToBuffer(pPoseStack, consumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+	        pPoseStack.popPose();
+		}
+ 		if(pStack.getItem() instanceof ClamOfGuidanceItem)
+		{
+	        pPoseStack.pushPose();
+	        pPoseStack.translate(0.5F, 0.75F, 0.6F);
+	        pPoseStack.scale(0.5F, 0.5F, 0.5F);
+	        pPoseStack.scale(-1.0F, -1.0F, 1.0F);
+	        pPoseStack.translate(0.0F, -1.0F, 0.0F);
+	        pPoseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(pBuffer, RenderType.entityCutoutNoCull(CLAM_TEXTURE), false, pStack.hasFoil());
+			this.modelClam.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+	        this.modelClam.renderToBuffer(pPoseStack, consumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+	        if(pStack.getOrCreateTag().contains("PortalPos") && ClamOfGuidanceItem.isOpen(pStack))
+	        {
+				BlockPos pos = NbtUtils.readBlockPos(pStack.getTag().getCompound("PortalPos"));
+				Component component = Component.literal(pos.toShortString()).withStyle(ChatFormatting.AQUA);
+				pPoseStack.pushPose();
+				pPoseStack.scale(0.01F, 0.01F, 0.01F);
+				pPoseStack.translate(0.0F, 0.0F, 5.0F);
+				BTAClientUtil.MC.font.drawInBatch(component, -35, 100, 0, false, pPoseStack.last().pose(), pBuffer, Font.DisplayMode.POLYGON_OFFSET, 0, pPackedLight);
+				pPoseStack.popPose();
+	        }
 	        pPoseStack.popPose();
 		}
 	}

@@ -44,7 +44,13 @@
 						}
 					]
 				}
+			],
+			"conditions": [
+				{
+					"condition": "minecraft:killed_by_player"
+				}
 			]
 		}
-	]
+	],
+	"random_sequence": "beyondtheabyss:entities/siamserpent_head"
 }

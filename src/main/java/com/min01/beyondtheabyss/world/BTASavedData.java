@@ -5,10 +5,6 @@ import java.util.Map;
 
 import com.min01.beyondtheabyss.misc.BTABossTracker;
 import com.min01.beyondtheabyss.misc.BTABossTracker.BTABossState;
-import com.min01.beyondtheabyss.misc.BTAResourceKeys;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateAbyssPortalActivationPacket;
-import com.min01.beyondtheabyss.network.UpdateAbyssPortalPosPacket;
 import com.min01.beyondtheabyss.world.BTAPortalTracker.BTAPortal;
 
 import net.minecraft.core.BlockPos;
@@ -71,11 +67,6 @@ public class BTASavedData extends SavedData
 	public void setStructurePos(ResourceKey<Structure> structure, BlockPos pos)
 	{
 		this.structureMap.put(structure, pos);
-		if(structure == BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL)
-		{
-			//TODO temp;
-			BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(pos));
-		}
 		this.setDirty();
 	}
 	
@@ -87,11 +78,6 @@ public class BTASavedData extends SavedData
 	public void setPortalActivated(BTAPortal portal, boolean value)
 	{
 		portal.setActivated(value);
-		if(portal == BTAPortalTracker.DEEP_ABYSS_PORTAL)
-		{
-			//TODO temp;
-			BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(value));
-		}
 		this.setDirty();
 	}
 	

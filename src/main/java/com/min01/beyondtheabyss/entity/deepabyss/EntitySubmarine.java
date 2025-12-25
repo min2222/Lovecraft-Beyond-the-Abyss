@@ -17,11 +17,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,7 +59,7 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	{
 		super(pEntityType, pLevel);
 		this.noCulling = true;
-		this.partBuilder = new EntityPartBuilder<EntitySubmarine>(this);
+		this.partBuilder = new EntityPartBuilder<>(this);
 	}
 	
 	@Override
@@ -219,16 +217,6 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
     public Vec3 getDismountLocationForPassenger(LivingEntity pPassenger) 
     {
     	return new Vec3(this.getX(), this.getBoundingBox().minY + 2.0F, this.getZ());
-    }
-    
-    @Override
-    public boolean hurt(DamageSource pSource, float pAmount)
-    {
-    	if(!pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-    	{
-    		return false;
-    	}
-    	return super.hurt(pSource, pAmount);
     }
 	
 	@Override

@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.deepabyss.ClamOfGuidanceItem;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -25,6 +26,7 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	private final SmoothAnimationState shootAnimationState = new SmoothAnimationState();
 	private final SmoothAnimationState emptyAnimationState = new SmoothAnimationState();
 	private final SmoothAnimationState empty2AnimationState = new SmoothAnimationState();
+	private final SmoothAnimationState clamOpenAnimationState = new SmoothAnimationState();
 	
 	@Override
 	public CompoundTag serializeNBT() 
@@ -76,6 +78,8 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 			this.shootAnimationState.updateWhen(this.getAnimationState() == 3 && stack.is(BTAItems.TOOTH_SHOTGUN.get()), this.tickCount);
 			this.emptyAnimationState.updateWhen(this.getAnimationState() == 4 && stack.is(BTAItems.TOOTH_SHOTGUN.get()), this.tickCount);
 			this.empty2AnimationState.updateWhen(this.getAnimationState() == 5 && stack.is(BTAItems.TOOTH_SHOTGUN.get()), this.tickCount);
+			
+			this.clamOpenAnimationState.updateWhen(ClamOfGuidanceItem.isOpen(stack) && stack.is(BTAItems.CLAM_OF_GUIDANCE.get()), this.tickCount);
 		}
 		else
 		{
@@ -125,6 +129,10 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 		if(name.equals(ToothShotgunItem.EMPTY2))
 		{
 			return this.empty2AnimationState;
+		}
+		if(name.equals(ClamOfGuidanceItem.CLAM_OPEN))
+		{
+			return this.clamOpenAnimationState;
 		}
 		return new SmoothAnimationState();
 	}

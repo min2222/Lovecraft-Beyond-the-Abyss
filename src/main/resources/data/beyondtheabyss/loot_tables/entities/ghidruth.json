@@ -3,7 +3,6 @@
 	"pools": [
 		{
 			"rolls": 1,
-			"bonus_rolls": 0,
 			"entries": [
 				{
 					"type": "minecraft:item",
@@ -18,11 +17,15 @@
 						}
 					]
 				}
+			],
+			"conditions": [
+				{
+					"condition": "minecraft:killed_by_player"
+				}
 			]
 		},
 		{
 			"rolls": 1,
-			"bonus_rolls": 0,
 			"entries": [
 				{
 					"type": "minecraft:item",
@@ -37,7 +40,13 @@
 						"max": 4
 					}
 				}
+			],
+			"conditions": [
+				{
+					"condition": "minecraft:killed_by_player"
+				}
 			]
 		}
-	]
+	],
+	"random_sequence": "beyondtheabyss:entities/ghidruth"
 }

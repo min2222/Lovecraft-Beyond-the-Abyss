@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
-import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
@@ -64,9 +61,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.FORGE)
 public class ClientEventHandlerForge 
 {
-	public static final AtomicReference<BlockPos> ABYSS_PORTAL_POS = new AtomicReference<>();
-	public static final AtomicBoolean ABYSS_PORTAL_ACTIVATED = new AtomicBoolean();
-	
     public static final Map<UUID, BTABossBarType> BOSS_BAR_MAP = new HashMap<>();
     public static final Map<UUID, Entity> BOSS_MAP = new HashMap<>();
     public static final ResourceLocation GHIDRUTH_BOSS_BAR_FRAME_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_frame.png");
@@ -165,8 +159,6 @@ public class ClientEventHandlerForge
         {
         	if(BTAClientUtil.MC.player == null || BTAClientUtil.MC.level == null)
         	{
-        		ABYSS_PORTAL_POS.set(BlockPos.ZERO);
-        		ABYSS_PORTAL_ACTIVATED.set(false);
         		CHUNK_LIST.clear();
         	}
         }
@@ -181,29 +173,6 @@ public class ClientEventHandlerForge
 	    	Vec3 camPos = cam.getPosition();
 	    	PoseStack stack = event.getPoseStack();
 	    	MultiBufferSource bufferSource = BTAClientUtil.MC.renderBuffers().bufferSource();
-	    	float partialTicks = event.getPartialTick();
-    		BlockPos blockPos = ABYSS_PORTAL_POS.get();
-    		int y = BTAUtil.getSpecificGroundPos(BTAClientUtil.MC.level, blockPos.getX(), blockPos.getY() + 100, blockPos.getZ(), BTABlocks.ORIVINE.get()).getY();
-			blockPos = BlockPos.containing(blockPos.getX(), y, blockPos.getZ());
-    		boolean isActivated = ABYSS_PORTAL_ACTIVATED.get();
-	    	if(!blockPos.equals(BlockPos.ZERO) && isActivated)
-	    	{
-	    		Vec3 pos = Vec3.atBottomCenterOf(blockPos);
-	            float time = (BTAClientUtil.MC.level.getGameTime() + partialTicks) / 20.0F;
-		    	stack.pushPose();
-		    	stack.translate(pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z);
-		    	stack.translate(0, -5.5F, 0);
-		    	stack.mulPose(Axis.XP.rotationDegrees(90.0F));
-		    	Vec3 color = new Vec3(0.0F, 1.0F, 0.4F);
-		    	RenderType renderType1 = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/vfx/water.png"));
-		    	RenderType renderType2 = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/vfx/caustics2.png"));
-		    	RenderType renderType3 = RenderType.entityTranslucent(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/vfx/caustics.png"));
-	            BTAClientUtil.drawTorus(3.5F, 3.5F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType1, time, Vec3.ZERO);
-	            BTAClientUtil.drawTorus(3.505F, 3.505F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType2, time, Vec3.ZERO);
-	            BTAClientUtil.drawTorus(3.51F, 3.51F, 0.01F, 24, 24, 0.5F, stack, bufferSource, color, 1, LightTexture.FULL_BRIGHT, renderType3, time, Vec3.ZERO);
-		    	stack.popPose();
-	    	}
-	    	
 	    	for(ChunkPos chunkPos : new ArrayList<>(CHUNK_LIST))
 	    	{
 	    		BlockPos worldPos = chunkPos.getWorldPosition();

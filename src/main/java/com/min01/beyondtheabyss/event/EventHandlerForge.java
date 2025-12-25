@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
@@ -21,16 +20,12 @@ import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTABossTracker;
 import com.min01.beyondtheabyss.misc.BTAChatTracker;
 import com.min01.beyondtheabyss.misc.BTALootTables;
-import com.min01.beyondtheabyss.misc.BTAResourceKeys;
 import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateAbyssPortalActivationPacket;
-import com.min01.beyondtheabyss.network.UpdateAbyssPortalPosPacket;
 import com.min01.beyondtheabyss.network.UpdateStoneSkinEffectPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.beyondtheabyss.world.BTABiomes;
-import com.min01.beyondtheabyss.world.BTAPortalTracker;
 import com.min01.beyondtheabyss.world.BTASavedData;
 import com.min01.beyondtheabyss.world.BTAStructureFinder;
 import com.min01.beyondtheabyss.world.BTAWorlds;
@@ -57,7 +52,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -271,19 +265,12 @@ public class EventHandlerForge
 			{
 				BlockPos blockPos = player.blockPosition();
 				BTAStructureFinder.find(serverLevel, blockPos);
-	    		BTASavedData data = BTASavedData.get(level);
-	    		BlockPos portalPos = data.getStructurePos(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL);
-				if(!portalPos.equals(BlockPos.ZERO))
-				{
-					BTANetwork.sendToAll(new UpdateAbyssPortalActivationPacket(data.isPortalActivated(BTAPortalTracker.DEEP_ABYSS_PORTAL)));
-					BTANetwork.sendToAll(new UpdateAbyssPortalPosPacket(portalPos));
-				}
 			}
 		}
 		//TODO temp fix
-		if(event.getEntity() instanceof FallingBlockEntity fallingBlock)
+		if(entity instanceof FallingBlockEntity fallingBlock)
 		{
-			if(fallingBlock.getBlockState().is(Blocks.SAND) && fallingBlock.level.dimension() == BTAWorlds.ENDLESS_DESERT)
+			if(fallingBlock.getBlockState().is(Blocks.SAND) && level.dimension() == BTAWorlds.ENDLESS_DESERT)
 			{
 				event.setCanceled(true);
 			}
@@ -333,28 +320,6 @@ public class EventHandlerForge
 		{
 			entity.setOnGround(false);
 			entity.resetFallDistance();
-		}
-		BTASavedData data = BTASavedData.get(entity.level);
-		if(data != null)
-		{
-			BlockPos portalPos = data.getStructurePos(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL);
-			if(!portalPos.equals(BlockPos.ZERO) && data.isPortalActivated(BTAPortalTracker.DEEP_ABYSS_PORTAL))
-			{
-	    		int y = BTAUtil.getSpecificGroundPos(entity.level, portalPos.getX(), portalPos.getY() + 100, portalPos.getZ(), BTABlocks.ORIVINE.get()).getY();
-	    		portalPos = BlockPos.containing(portalPos.getX(), y - 13, portalPos.getZ());
-				Vec3 pos = Vec3.atCenterOf(portalPos);
-				AABB aabb1 = new AABB(-2.5F, 0.0F, -0.5F, 2.5F, 13.0F, 0.5F).move(portalPos);
-				AABB aabb2 = new AABB(-6.5F, -2.5F, -0.5F, 6.5F, 2.5F, 0.5F).move(portalPos.above(7));
-				AABB corner1 = new AABB(-1.0F, -1.5F, -0.5F, 1.0F, 1.5F, 0.5F).move(pos.add(3.5F, 11.0F, 0.0F));
-				AABB corner2 = new AABB(-1.0F, -1.5F, -0.5F, 1.0F, 1.5F, 0.5F).move(pos.add(-3.5F, 11.0F, 0.0F));
-				AABB corner3 = new AABB(-1.5F, -1.5F, -0.5F, 1.5F, 1.5F, 0.5F).move(pos.add(3.5F, 3.0F, 0.0F));
-				AABB corner4 = new AABB(-1.5F, -1.5F, -0.5F, 1.5F, 1.5F, 0.5F).move(pos.add(-3.5F, 3.0F, 0.0F));
-				boolean corners = entity.getBoundingBox().intersects(corner1) || entity.getBoundingBox().intersects(corner2) || entity.getBoundingBox().intersects(corner3) || entity.getBoundingBox().intersects(corner4);
-				if(entity.getBoundingBox().intersects(aabb1) || entity.getBoundingBox().intersects(aabb2) || corners)
-				{
-					BTAUtil.teleportEntityToDimension(entity, entity.getServer().getLevel(BTAWorlds.DEEP_ABYSS), BlockPos.containing(0, 100, 0));
-				}
-			}
 		}
 	}
     

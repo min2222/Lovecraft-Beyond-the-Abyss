@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "beyondtheabyss:item/clam_of_guidance_1"
+		"layer0": "beyondtheabyss:item/clam_of_guidance"
 	}
 }
