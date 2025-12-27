@@ -13,9 +13,9 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class DeathValleyToothvinePatchFeature extends Feature<NoneFeatureConfiguration>
+public class ToothvinePatchFeature extends Feature<NoneFeatureConfiguration>
 {
-	public DeathValleyToothvinePatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
+	public ToothvinePatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
 		super(pCodec);
 	}

@@ -9,9 +9,9 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class DeathValleyDeepweedPatchFeature extends Feature<NoneFeatureConfiguration>
+public class DeepweedPatchFeature extends Feature<NoneFeatureConfiguration>
 {
-	public DeathValleyDeepweedPatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
+	public DeepweedPatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
 		super(pCodec);
 	}

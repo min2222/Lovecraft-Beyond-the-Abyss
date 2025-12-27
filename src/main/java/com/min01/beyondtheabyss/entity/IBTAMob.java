@@ -21,12 +21,12 @@ public interface IBTAMob
 	
 	default Vec3 getMoveRadius()
 	{
-		return new Vec3(80, 10, 80);
+		return new Vec3(35, 10, 35);
 	}
 	
 	default int targetSettingInterval()
 	{
-		return 100;
+		return 40;
 	}
 	
 	public boolean canMoveAround();

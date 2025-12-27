@@ -44,7 +44,7 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
     	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SWING, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
     	
-    	if(entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && BTAUtil.getPlayerAnimationState(entity) == 4)
+    	if(entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && (BTAUtil.getPlayerAnimationState(entity) == 3 || BTAUtil.getPlayerAnimationState(entity) == 4))
     	{
     		ModelPart head = PlayerModel.class.cast(this).head;
     		Pair<ModelPart, ModelPart> left = this.modelMap.get("LeftArm");

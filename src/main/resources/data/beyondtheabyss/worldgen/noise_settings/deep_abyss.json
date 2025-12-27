@@ -175,6 +175,25 @@
 						{
 							"type": "minecraft:condition",
 							"if_true": {
+								"type": "minecraft:vertical_gradient",
+								"random_name": "beyondtheabyss:compact_rot_soil",
+								"true_at_and_below": {
+									"above_bottom": 0
+								},
+								"false_at_and_above": {
+									"above_bottom": 160
+								}
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": {
+									"Name": "beyondtheabyss:compact_rot_soil"
+								}
+							}
+						},
+						{
+							"type": "minecraft:condition",
+							"if_true": {
 								"type": "minecraft:y_above",
 								"anchor": {
 									"above_bottom": 110
@@ -188,12 +207,6 @@
 									"Name": "beyondtheabyss:rot_soil"
 								}
 							}
-						},
-						{
-							"type": "minecraft:block",
-							"result_state": {
-								"Name": "beyondtheabyss:compact_rot_soil"
-							}
 						}
 					]
 				}
@@ -201,19 +214,28 @@
 			{
 				"type": "minecraft:condition",
 				"if_true": {
-					"type": "minecraft:vertical_gradient",
-					"random_name": "beyondtheabyss:deep_abyssalith",
-					"true_at_and_below": {
-						"above_bottom": 0
-					},
-					"false_at_and_above": {
-						"above_bottom": 160
-					}
+					"type": "minecraft:biome",
+					"biome_is": [
+						"beyondtheabyss:spire_hollow"
+					]
 				},
 				"then_run": {
-					"type": "minecraft:block",
-					"result_state": {
-						"Name": "beyondtheabyss:deep_abyssalith"
+					"type": "minecraft:condition",
+					"if_true": {
+						"type": "minecraft:vertical_gradient",
+						"random_name": "beyondtheabyss:deep_abyssalith",
+						"true_at_and_below": {
+							"above_bottom": 0
+						},
+						"false_at_and_above": {
+							"above_bottom": 160
+						}
+					},
+					"then_run": {
+						"type": "minecraft:block",
+						"result_state": {
+							"Name": "beyondtheabyss:deep_abyssalith"
+						}
 					}
 				}
 			}

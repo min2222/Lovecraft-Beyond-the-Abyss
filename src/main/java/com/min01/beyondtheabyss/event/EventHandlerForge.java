@@ -43,10 +43,14 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -67,6 +71,7 @@ import net.minecraftforge.event.entity.living.LivingDrownEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -120,6 +125,19 @@ public class EventHandlerForge
 	        e.printStackTrace();
 	    }
 	}
+    
+    @SubscribeEvent
+    public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickBlock event)
+    {
+    	ItemStack stack = event.getItemStack();
+    	Level level = event.getLevel();
+    	BlockPos pos = event.getPos();
+    	BlockState state = level.getBlockState(pos);
+    	if(stack.is(Items.BONE_MEAL) && level.dimension() == BTAWorlds.DEEP_ABYSS && !(state instanceof BonemealableBlock))
+    	{
+        	event.setCanceled(true);
+    	}
+    }
     
     @SubscribeEvent
     public static void onChunkUnLoad(ChunkEvent.Unload event)

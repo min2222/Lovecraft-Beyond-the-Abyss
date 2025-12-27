@@ -31,12 +31,12 @@ public class GlaringBarnacleBlock extends FaceAttachedHorizontalDirectionalBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
-	public static final VoxelShape FLOOR_AABB = Block.box(4.5D, 0.0D, 4.5D, 11.5D, 6.0D, 11.5D);
-	public static final VoxelShape CEILING_AABB = Block.box(4.5D, 10.0D, 4.5D, 11.5D, 16.0D, 11.5D);
-	public static final VoxelShape EAST_AABB = Block.box(0.0D, 4.5D, 4.5D, 6.0D, 11.5D, 11.5D);
-	public static final VoxelShape NORTH_AABB = Block.box(4.5D, 4.5D, 10.0D, 11.5D, 11.5D, 16.0D);
-	public static final VoxelShape SOUTH_AABB = Block.box(4.5D, 4.5D, 0.0D, 11.5D, 11.5D, 6.0D);
-	public static final VoxelShape WEST_AABB = Block.box(10.0D, 4.5D, 4.5D, 16.0D, 11.5D, 11.5D);
+	public static final VoxelShape FLOOR_AABB = Block.box(4.5D, 0.0D, 4.5D, 11.5D, 3.0D, 11.5D);
+	public static final VoxelShape CEILING_AABB = Block.box(4.5D, 10.0D, 4.5D, 11.5D, 13.0D, 11.5D);
+	public static final VoxelShape EAST_AABB = Block.box(0.0D, 4.5D, 4.5D, 3.0D, 11.5D, 11.5D);
+	public static final VoxelShape NORTH_AABB = Block.box(4.5D, 4.5D, 10.0D, 11.5D, 11.5D, 13.0D);
+	public static final VoxelShape SOUTH_AABB = Block.box(4.5D, 4.5D, 0.0D, 11.5D, 11.5D, 3.0D);
+	public static final VoxelShape WEST_AABB = Block.box(10.0D, 4.5D, 4.5D, 13.0D, 11.5D, 11.5D);
 	
 	public GlaringBarnacleBlock(Properties pProperties)
 	{

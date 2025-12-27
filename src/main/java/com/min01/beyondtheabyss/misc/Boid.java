@@ -53,7 +53,7 @@ public class Boid
 			Collection<Obstacle> flockObstacles = new ArrayList<Obstacle>();
 			for(Boid boid : flock)
 			{
-				flockObstacles.add(new Boid.Obstacle(boid.mob.position(), 0.5, 0.05));
+				flockObstacles.add(new Boid.Obstacle(boid.mob.position(), 0.5F, 0.05F));
 			}
 
 			acceleration = acceleration.add(this.awayFrom(obstacles));
@@ -62,12 +62,12 @@ public class Boid
 		
 		if(alignment) 
 		{
-			acceleration = acceleration.add(this.averageVelocity(flock).scale(0.06));
+			acceleration = acceleration.add(this.averageVelocity(flock).scale(0.06F));
 		}
 		
 		if(cohesion) 
 		{
-			acceleration = acceleration.add(this.centerDisplacement(flock).scale(0.006));
+			acceleration = acceleration.add(this.centerDisplacement(flock).scale(0.006F));
 		}
 		
 		this.velocity = this.velocity.add(acceleration);

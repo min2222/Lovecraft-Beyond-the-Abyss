@@ -1,6 +1,6 @@
 {
 	"temperature": 1,
-	"downfall": 0.5,
+	"downfall": 0,
 	"has_precipitation": false,
 	"effects": {
 		"sky_color": 0,
@@ -91,7 +91,8 @@
 			"beyondtheabyss:ghoul_bloom_patch",
 			"beyondtheabyss:deepweed_patch",
 			"beyondtheabyss:spinyweed_patch",
-			"beyondtheabyss:toothvine_patch"
+			"beyondtheabyss:toothvine_patch",
+			"beyondtheabyss:osteo_coral_patch"
 		],
 		[
 		],

@@ -1,20 +1,11 @@
 package com.min01.beyondtheabyss.entity.ai.control;
 
 import com.min01.beyondtheabyss.entity.IBTAMob;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
 public class BTASwimmingMoveControl extends MoveControl 
 {
@@ -29,14 +20,6 @@ public class BTASwimmingMoveControl extends MoveControl
 		IBTAMob mob = (IBTAMob) this.mob;
 		if(this.operation == MoveControl.Operation.MOVE_TO) 
 		{
-			Vec3 wantedPos = new Vec3(this.wantedX, this.wantedY, this.wantedZ);
-			if(mob.canMoveAround())
-			{
-				if(this.mob.tickCount % mob.targetSettingInterval() == 0 || wantedPos.equals(Vec3.ZERO) || wantedPos.subtract(this.mob.position()).length() <= 2.5F)
-				{
-					this.generateNewTarget();
-				}
-			}
 			double d0 = this.wantedX - this.mob.getX();
 			double d1 = this.wantedY - this.mob.getY();
 			double d2 = this.wantedZ - this.mob.getZ();
@@ -81,25 +64,4 @@ public class BTASwimmingMoveControl extends MoveControl
 			this.mob.setZza(0.0F);
 		}
 	}
-	
-    private void generateNewTarget() 
-    {
-        Level world = this.mob.level;
-        Vec3 radius = ((IBTAMob)this.mob).getMoveRadius();
-        for(int i = 0; i < 10; i++)
-        {
-        	Vec3 pos = BTAUtil.getSpreadPosition(this.mob, radius);
-        	HitResult hitResult = world.clip(new ClipContext(this.mob.position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob));
-        	if(hitResult instanceof BlockHitResult blockHit)
-        	{
-                BlockPos targetPos = blockHit.getBlockPos();
-                BlockState blockState = world.getBlockState(targetPos);
-                if(blockState.is(Blocks.WATER))
-                {
-                	this.setWantedPosition(targetPos.getX(), targetPos.getY(), targetPos.getZ(), this.speedModifier);
-                	break;
-                }
-        	}
-        }
-    }
 }

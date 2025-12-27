@@ -25,9 +25,9 @@ public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration>
 	    RandomSource random = level.getRandom();
 	    BlockState state = BTABlocks.ABYSSALITH.get().defaultBlockState();
 
-	    int length = random.nextInt(4, 7);
+	    int length = random.nextInt(6, 9);
 	    int heightStep = 3;
-	    int width = random.nextInt(4, 7);
+	    int width = random.nextInt(6, 9);
 	    int direction = random.nextInt(4);
 
 	    int dx = (direction == 0 || direction == 1) ? 1 : -1;

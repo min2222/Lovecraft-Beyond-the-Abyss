@@ -125,7 +125,7 @@ public class EntityMutavoreCyst extends AbstractOwnableEntity<EntityMutavore>
 	
 	public void explode()
 	{
-		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0F), t -> t != this.getOwner() && !(t instanceof EntityMutavore) && this.getOwner() != null ? !t.isAlliedTo(this.getOwner()) : true);
+		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0F), t ->  !(t instanceof EntityMutavore) && this.getOwner() != null ? !t.isAlliedTo(this.getOwner()) && t != this.getOwner() : true);
 		list.forEach(t ->
 		{
 			t.hurt(this.damageSources().explosion(this, this.getOwner()), 6.0F);

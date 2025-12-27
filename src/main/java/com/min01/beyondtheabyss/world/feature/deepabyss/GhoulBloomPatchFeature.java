@@ -1,17 +1,19 @@
 package com.min01.beyondtheabyss.world.feature.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.block.deepabyss.GhoulBloomBlock;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class DeathValleySpinyweedPatchFeature extends Feature<NoneFeatureConfiguration>
+public class GhoulBloomPatchFeature extends Feature<NoneFeatureConfiguration>
 {
-	public DeathValleySpinyweedPatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
+	public GhoulBloomPatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
 		super(pCodec);
 	}
@@ -21,9 +23,14 @@ public class DeathValleySpinyweedPatchFeature extends Feature<NoneFeatureConfigu
 	{
 		WorldGenLevel level = pContext.level();
 		BlockPos pos = pContext.origin();
+		RandomSource random = pContext.random();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			level.setBlock(pos, BTABlocks.SPINYWEED.get().defaultBlockState(), 2);
+			if(random.nextBoolean())
+			{
+	 			level.setBlock(pos, BTABlocks.GHOUL_BLOOM.get().defaultBlockState().setValue(GhoulBloomBlock.GROWN, true), 2);
+				return true;
+			}
 		}
 		return false;
 	}

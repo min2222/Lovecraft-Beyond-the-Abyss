@@ -18,6 +18,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -68,6 +69,25 @@ public abstract class AbstractBTAFlyingMonster extends AbstractAnimatableFlyingM
         {
             this.targetSelector.addGoal(0, this.alertOthers() ? new HurtByTargetGoal(this).setAlertOthers() : new HurtByTargetGoal(this));
         }
+	}
+	
+	@Override
+	public void registerDefaultGoals()
+	{
+		this.goalSelector.addGoal(0, new WaterAvoidingRandomFlyingGoal(this, 1.0F)
+		{
+			@Override
+			public boolean canUse()
+			{
+				return super.canUse() && AbstractBTAFlyingMonster.this.canMoveAround();
+			}
+			
+			@Override
+			protected Vec3 getPosition() 
+			{
+				return BTAUtil.generateNewTarget(AbstractBTAFlyingMonster.this, t -> t.isAir());
+			}
+		});
 	}
 	
 	public boolean alertOthers()

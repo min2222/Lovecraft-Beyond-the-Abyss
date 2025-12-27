@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
@@ -41,12 +42,18 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
     protected void registerGoals() 
     {
     	super.registerGoals();
-		this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0F, 40)
+		this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0F, this.targetSettingInterval())
 		{
 			@Override
 			public boolean canUse() 
 			{
 				return super.canUse() && AbstractDeepAbyssCreature.this.canMoveAround();
+			}
+			
+			@Override
+			protected Vec3 getPosition() 
+			{
+				return BTAUtil.generateNewTarget(AbstractDeepAbyssCreature.this, t -> t.is(Blocks.WATER));
 			}
 		});
     }

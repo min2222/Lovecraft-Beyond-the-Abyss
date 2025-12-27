@@ -5,10 +5,15 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -49,12 +54,37 @@ public abstract class AbstractAnimatableFlyingMonster extends AbstractFlyingMons
 	
 	public void registerDefaultGoals()
 	{
-		this.goalSelector.addGoal(0, new WaterAvoidingRandomFlyingGoal(this, 1.0F)
+		this.goalSelector.addGoal(0, new FloatGoal(this));
+		this.goalSelector.addGoal(0, new WaterAvoidingRandomStrollGoal(this, 1.0F)
 		{
 			@Override
 			public boolean canUse()
 			{
 				return super.canUse() && AbstractAnimatableFlyingMonster.this.canMoveAround();
+			}
+		});
+		this.goalSelector.addGoal(0, new RandomLookAroundGoal(this)
+		{
+			@Override
+			public boolean canUse()
+			{
+				return super.canUse() && AbstractAnimatableFlyingMonster.this.canLookAround();
+			}
+		});
+		this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F)
+		{
+			@Override
+			public boolean canUse()
+			{
+				return super.canUse() && AbstractAnimatableFlyingMonster.this.canLookAround();
+			}
+		});
+		this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Mob.class, 8.0F)
+		{
+			@Override
+			public boolean canUse()
+			{
+				return super.canUse() && AbstractAnimatableFlyingMonster.this.canLookAround();
 			}
 		});
 	}

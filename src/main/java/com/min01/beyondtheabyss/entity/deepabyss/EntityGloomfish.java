@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -58,6 +59,12 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.PASSIVE;
+	}
+	
+	@Override
+	protected void doPush(Entity pEntity) 
+	{
+		
 	}
 	
 	@Override

@@ -13,9 +13,9 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class DeathValleyBonePatchFeature extends Feature<NoneFeatureConfiguration>
+public class BonePatchFeature extends Feature<NoneFeatureConfiguration>
 {
-	public DeathValleyBonePatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
+	public BonePatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
 		super(pCodec);
 	}

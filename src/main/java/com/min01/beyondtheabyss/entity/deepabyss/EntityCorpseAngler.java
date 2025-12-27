@@ -177,7 +177,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 					this.setCanLook(!flag);
 					if(flag)
 					{
-						this.getNavigation().moveTo(floorPos.getX(), floorPos.getY(), floorPos.getZ(), 1.5F);
+						this.getNavigation().moveTo(floorPos.getX(), floorPos.getY(), floorPos.getZ(), 1.25F);
 					}
 				}
 			}
@@ -185,7 +185,11 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 
 		if(this.getAnimationState() == 3)
 		{
-			this.getNavigation().stop();
+			if(!this.level.isClientSide)
+			{
+				this.getNavigation().stop();
+				this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.0F);
+			}
 			if(this.getAnimationTick() > 0)
 			{
 				this.spawnParticle();

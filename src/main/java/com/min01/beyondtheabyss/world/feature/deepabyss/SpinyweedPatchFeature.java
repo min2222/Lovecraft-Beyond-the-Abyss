@@ -9,9 +9,9 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class DeathValleyOsteoCoralPatchFeature extends Feature<NoneFeatureConfiguration>
+public class SpinyweedPatchFeature extends Feature<NoneFeatureConfiguration>
 {
-	public DeathValleyOsteoCoralPatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
+	public SpinyweedPatchFeature(Codec<NoneFeatureConfiguration> pCodec) 
 	{
 		super(pCodec);
 	}
@@ -23,7 +23,7 @@ public class DeathValleyOsteoCoralPatchFeature extends Feature<NoneFeatureConfig
 		BlockPos pos = pContext.origin();
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
-			level.setBlock(pos, BTABlocks.OSTEO_CORAL.get().defaultBlockState(), 2);
+			level.setBlock(pos, BTABlocks.SPINYWEED.get().defaultBlockState(), 2);
 		}
 		return false;
 	}
