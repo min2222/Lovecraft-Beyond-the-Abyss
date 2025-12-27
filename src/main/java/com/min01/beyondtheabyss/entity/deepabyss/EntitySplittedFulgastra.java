@@ -30,6 +30,7 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 	public EntitySplittedFulgastra(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
+		this.xpReward = this.random.nextInt(2);
 	}
 
 	@Override
@@ -78,9 +79,9 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 			this.shockingAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
 			this.closedAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
 		}
-		if(this.getAnimationState() == 3 && this.getOwner() != null && this.isInWater())
+		EntityFulgastra owner = this.getOwner();
+		if(this.getAnimationState() == 3 && owner != null && this.isInWater())
 		{
-			EntityFulgastra owner = this.getOwner();
 			this.getNavigation().moveTo(owner, 1.25F);
 			if(this.distanceTo(owner) <= 2.0F)
 			{

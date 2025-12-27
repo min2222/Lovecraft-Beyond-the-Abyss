@@ -106,8 +106,8 @@ public class BTABlocks
     
     public static final RegistryObject<Block> CHISELED_BONE_BLOCK = BLOCKS.register("chiseled_bone_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     public static final RegistryObject<Block> CRACKED_BONE_BLOCK = BLOCKS.register("cracked_bone_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
-    public static final RegistryObject<Block> BONE_BRICK_BLOCK = BLOCKS.register("bone_brick_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
-    public static final RegistryObject<Block> BONE_PILLAR_BLOCK = BLOCKS.register("bone_pillar_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));;
+    public static final RegistryObject<Block> BONE_BRICKS = BLOCKS.register("bone_bricks", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
+    public static final RegistryObject<Block> BONE_PILLAR = BLOCKS.register("bone_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));;
     
     public static final RegistryObject<Block> BONE_FENCE = BLOCKS.register("bone_fence", () -> new BoneFenceBlock(BlockBehaviour.Properties.of().strength(2.0F, 3.0F).sound(SoundType.BONE_BLOCK)));
     public static final RegistryObject<Block> BONE_FENCE_GATE = BLOCKS.register("bone_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.of().forceSolidOn().strength(2.0F, 3.0F).sound(SoundType.BONE_BLOCK), WoodType.OAK));

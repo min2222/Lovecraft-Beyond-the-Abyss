@@ -9,7 +9,6 @@ import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
-import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.item.deepabyss.ClamOfGuidanceItem;
 import com.min01.beyondtheabyss.item.deepabyss.FelmetalDivingSetItem;
@@ -17,14 +16,13 @@ import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
+import com.min01.beyondtheabyss.misc.BTAFoods;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -73,7 +71,7 @@ public class BTAItems
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = DEEP_ABYSS_ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> GNASHER_EYE = DEEP_ABYSS_ITEMS.register("gnasher_eye", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GNASHER_TOOTH = DEEP_ABYSS_ITEMS.register("gnasher_tooth", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> GHOUL_BLOOM_SEED_POD = DEEP_ABYSS_ITEMS.register("ghoul_bloom_seed_pod", () -> new ItemNameBlockItem(BTABlocks.GHOUL_BLOOM.get(), new Item.Properties()));
+	public static final RegistryObject<Item> GHOUL_BLOOM_SEED_POD = DEEP_ABYSS_ITEMS.register("ghoul_bloom_seed_pod", () -> new ItemNameBlockItem(BTABlocks.GHOUL_BLOOM.get(), new Item.Properties().food(BTAFoods.GHOUL_BLOOM)));
 	public static final RegistryObject<Item> FIBER = DEEP_ABYSS_ITEMS.register("fiber", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ABERRANT_FLESH = DEEP_ABYSS_ITEMS.register("aberrant_flesh", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CHARGE_CORE = DEEP_ABYSS_ITEMS.register("charge_core", () -> new Item(new Item.Properties()));
@@ -95,10 +93,10 @@ public class BTAItems
 	public static final RegistryObject<Item> FLYING_FISH = DEEP_ABYSS_ITEMS.register("flying_fish", () -> new FlyingFishItem());
 	
 	//foods
-	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(5).saturationMod(0.5F).build(), true));
-	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("cooked_ghidruth_flesh", () -> new GhidruthFleshItem(new FoodProperties.Builder().nutrition(9).saturationMod(1.0F).effect(() -> new MobEffectInstance(BTAEffects.STONE_SKIN.get(), 1200, 0), 1.0F).build(), false));
-	public static final RegistryObject<Item> RAW_GNASHER = DEEP_ABYSS_ITEMS.register("raw_gnasher", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(3).saturationMod(0.2F).build()));
-	public static final RegistryObject<Item> COOKED_GNASHER = DEEP_ABYSS_ITEMS.register("cooked_gnasher", () -> new BasicBTAFoodItem(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build()));
+	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(BTAFoods.RAW_GHIDRUTH_FLESH, true));
+	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("cooked_ghidruth_flesh", () -> new GhidruthFleshItem(BTAFoods.COOKED_GHIDRUTH_FLESH, false));
+	public static final RegistryObject<Item> RAW_GNASHER = DEEP_ABYSS_ITEMS.register("raw_gnasher", () -> new BasicBTAFoodItem(BTAFoods.RAW_GNASHER));
+	public static final RegistryObject<Item> COOKED_GNASHER = DEEP_ABYSS_ITEMS.register("cooked_gnasher", () -> new BasicBTAFoodItem(BTAFoods.COOKED_GNASHER));
 	
 	//blocks
 	public static final RegistryObject<Item> RIFTWELLING_ALTAR = registerCustomRendererBlockItem(DEEP_ABYSS_ITEMS, "riftwelling_altar", () -> BTABlocks.RIFTWELLING_ALTAR.get(), () -> new RiftwellingAltarBlockEntity(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), new Item.Properties().rarity(RARITY_DEEP_ABYSS));
@@ -134,8 +132,8 @@ public class BTAItems
 	public static final RegistryObject<Item> COMPACT_ROT_SOIL = registerBlockItem(DEEP_ABYSS_ITEMS, "compact_rot_soil", () -> BTABlocks.COMPACT_ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHISELED_BONE_BLOCK = registerBlockItem(DEEP_ABYSS_ITEMS, "chiseled_bone_block", () -> BTABlocks.CHISELED_BONE_BLOCK.get(), new Item.Properties());
 	public static final RegistryObject<Item> CRACKED_BONE_BLOCK = registerBlockItem(DEEP_ABYSS_ITEMS, "cracked_bone_block", () -> BTABlocks.CRACKED_BONE_BLOCK.get(), new Item.Properties());
-	public static final RegistryObject<Item> BONE_BRICK_BLOCK = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_brick_block", () -> BTABlocks.BONE_BRICK_BLOCK.get(), new Item.Properties());
-	public static final RegistryObject<Item> BONE_PILLAR_BLOCK = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_pillar_block", () -> BTABlocks.BONE_PILLAR_BLOCK.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_BRICKS = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_bricks", () -> BTABlocks.BONE_BRICKS.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_PILLAR = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_pillar", () -> BTABlocks.BONE_PILLAR.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_FENCE = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_fence", () -> BTABlocks.BONE_FENCE.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_FENCE_GATE = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_fence_gate", () -> BTABlocks.BONE_FENCE_GATE.get(), new Item.Properties());
 	public static final RegistryObject<Item> BONE_SLAB = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_slab", () -> BTABlocks.BONE_SLAB.get(), new Item.Properties());

@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "building",
+	"key": {
+		"#": {
+			"item": "beyondtheabyss:bone_slab"
+		}
+	},
+	"pattern": [
+		"#",
+		"#"
+	],
+	"result": {
+		"item": "beyondtheabyss:chiseled_bone_block"
+	},
+	"show_notification": true
+}

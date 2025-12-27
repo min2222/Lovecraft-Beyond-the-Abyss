@@ -47,6 +47,7 @@ import com.min01.beyondtheabyss.entity.model.ModelMysteriousGuy;
 import com.min01.beyondtheabyss.entity.model.ModelNecroshell;
 import com.min01.beyondtheabyss.entity.model.ModelObserver;
 import com.min01.beyondtheabyss.entity.model.ModelOverseer;
+import com.min01.beyondtheabyss.entity.model.ModelPipe;
 import com.min01.beyondtheabyss.entity.model.ModelPutridBubble;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBlaster;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentBone;
@@ -268,6 +269,7 @@ public class ClientEventHandler
     	event.registerLayerDefinition(ModelMutavoreCyst.LAYER_LOCATION, ModelMutavoreCyst::createBodyLayer);
     	event.registerLayerDefinition(ModelCystShrapnel.LAYER_LOCATION, ModelCystShrapnel::createBodyLayer);
     	event.registerLayerDefinition(ModelDeepAbyssPortal.LAYER_LOCATION, ModelDeepAbyssPortal::createBodyLayer);
+    	event.registerLayerDefinition(ModelPipe.LAYER_LOCATION, ModelPipe::createBodyLayer);
     	
     	event.registerLayerDefinition(ModelOverseer.LAYER_LOCATION, ModelOverseer::createBodyLayer);
     	event.registerLayerDefinition(ModelObserver.LAYER_LOCATION, ModelObserver::createBodyLayer);

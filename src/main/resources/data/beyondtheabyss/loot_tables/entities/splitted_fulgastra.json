@@ -2,21 +2,8 @@
 	"type": "minecraft:entity",
 	"pools": [
 		{
-			"rolls": 2,
+			"rolls": 1,
 			"entries": [
-				{
-					"type": "minecraft:item",
-					"name": "beyondtheabyss:charge_core",
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 0,
-								"max": 1
-							}
-						}
-					]
-				},
 				{
 					"type": "minecraft:item",
 					"name": "beyondtheabyss:splitting_gel",
@@ -25,8 +12,8 @@
 							"function": "minecraft:set_count",
 							"count": {
 								"type": "minecraft:uniform",
-								"min": 2,
-								"max": 6
+								"min": 0,
+								"max": 2
 							}
 						}
 					]
@@ -39,5 +26,5 @@
 			]
 		}
 	],
-	"random_sequence": "beyondtheabyss:entities/fulgastra"
+	"random_sequence": "beyondtheabyss:entities/splitted_fulgastra"
 }

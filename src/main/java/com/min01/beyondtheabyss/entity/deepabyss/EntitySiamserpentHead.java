@@ -83,10 +83,11 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
     public static AttributeSupplier.Builder createAttributes()
     {
         return Monster.createMonsterAttributes()
-    			.add(Attributes.MAX_HEALTH, 60.0F)
+    			.add(Attributes.MAX_HEALTH, 120.0F)
+    			.add(Attributes.ARMOR, 5.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.7F)
         		.add(Attributes.FOLLOW_RANGE, 45.0F)
-        		.add(Attributes.ATTACK_DAMAGE, 6.0F)
+        		.add(Attributes.ATTACK_DAMAGE, 12.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F);
     }
     
@@ -179,7 +180,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
             }
             arrayList.forEach(t -> 
             {
-            	t.hurt(this.damageSources().indirectMagic(this, this), 6.0F);
+            	t.hurt(this.damageSources().indirectMagic(this, this), 12.0F);
             });
 		}
 	}
@@ -197,7 +198,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public boolean canMoveAround()
 	{
-		return false;
+		return !this.hasTarget();
 	}
 	
 	@Override

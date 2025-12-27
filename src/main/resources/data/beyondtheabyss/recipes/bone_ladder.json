@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"#": {
+			"item": "minecraft:bone"
+		}
+	},
+	"pattern": [
+		"# #",
+		"###",
+		"# #"
+	],
+	"result": {
+		"count": 3,
+		"item": "beyondtheabyss:bone_ladder"
+	},
+	"show_notification": true
+}

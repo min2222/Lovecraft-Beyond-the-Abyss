@@ -5,6 +5,7 @@ import com.min01.beyondtheabyss.world.feature.deepabyss.AbyssalithSpikeFeature;
 import com.min01.beyondtheabyss.world.feature.deepabyss.DeathValleyBonePatchFeature;
 import com.min01.beyondtheabyss.world.feature.deepabyss.DeathValleyDeepweedPatchFeature;
 import com.min01.beyondtheabyss.world.feature.deepabyss.DeathValleyGhoulBloomPatchFeature;
+import com.min01.beyondtheabyss.world.feature.deepabyss.DeathValleyOsteoCoralPatchFeature;
 import com.min01.beyondtheabyss.world.feature.deepabyss.DeathValleySpinyweedPatchFeature;
 import com.min01.beyondtheabyss.world.feature.deepabyss.DeathValleyToothvinePatchFeature;
 
@@ -22,6 +23,7 @@ public class BTAFeatures
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> GHOUL_BLOOM_PATCH = FEATURES.register("ghoul_bloom_patch", () -> new DeathValleyGhoulBloomPatchFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> DEEPWEED_PATCH = FEATURES.register("deepweed_patch", () -> new DeathValleyDeepweedPatchFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> SPINYWEED_PATCH = FEATURES.register("spinyweed_patch", () -> new DeathValleySpinyweedPatchFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> OSTEO_CORAL_PATCH = FEATURES.register("osteo_coral_patch", () -> new DeathValleyOsteoCoralPatchFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> TOOTHVINE_PATCH = FEATURES.register("toothvine_patch", () -> new DeathValleyToothvinePatchFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> ABYSSALITH_SPIKE = FEATURES.register("abyssalith_spike", () -> new AbyssalithSpikeFeature(NoneFeatureConfiguration.CODEC));
 }

@@ -61,7 +61,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
     public static AttributeSupplier.Builder createAttributes()
     {
         return Monster.createMonsterAttributes()
-    			.add(Attributes.MAX_HEALTH, 30.0F)
+    			.add(Attributes.MAX_HEALTH, 50.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.0F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F)
     			.add(Attributes.ATTACK_DAMAGE, 1.5F)
@@ -158,22 +158,36 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		{
 			this.chain.setOldPosAndRot();
 			this.chain.tickBobbit();
+			this.chain.getTipSegment().setSpeed(1.5F);
 
 			if(this.canExtend())
 			{
 				if(this.getTarget() != null && !this.getTarget().isPassenger() && !this.isVehicle())
 				{
-					Vec3 pos = this.getTarget().position();
-					if(pos.subtract(this.position()).length() <= 0.5F)
+					if(this.chain.getTarget().equals(Vec3.ZERO))
 					{
-						this.getTarget().startRiding(this);
+						if(this.distanceTo(this.getTarget()) <= 15.0F)
+						{
+							this.chain.setTarget(this.getTarget().position());
+						}
+					}
+					else if(this.chain.getTarget().subtract(this.position()).length() <= 2.5F)
+					{
+						if(this.getTarget().position().subtract(this.position()).length() <= 2.5F)
+						{
+							this.getTarget().startRiding(this);
+							this.setCooldown(100);
+						}
+						else
+						{
+							this.setCooldown(40);
+						}
 						this.chain.setTarget(Vec3.ZERO);
-						this.setCooldown(100);
 					}
-					else
-					{
-						this.chain.setTarget(pos);
-					}
+				}
+				else
+				{
+					this.chain.setTarget(Vec3.ZERO);
 				}
 			}
 			else

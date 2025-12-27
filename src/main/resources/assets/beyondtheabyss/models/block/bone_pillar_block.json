@@ -1,7 +1,0 @@
-{
-	"parent": "minecraft:block/cube_column",
-	"textures": {
-		"end": "beyondtheabyss:block/bone_pillar_block_top",
-		"side": "beyondtheabyss:block/bone_pillar_block_side"
-	}
-}

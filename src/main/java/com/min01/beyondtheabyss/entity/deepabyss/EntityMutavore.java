@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.Comparator;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavoreConsumingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavoreLaunchMineGoal;
@@ -15,15 +14,12 @@ import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -40,7 +36,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityMutavore extends AbstractDeepAbyssMonster
@@ -180,25 +175,6 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     		this.mutate4AnimationState.updateWhen(this.isMutated(MutationType.MUTATE4), this.tickCount);
     		this.mutateHeadAnimationState.updateWhen(this.isMutated(MutationType.MUTATE_HEAD), this.tickCount);
     	}
-
-		List<MutationType> types = Lists.newArrayList(MutationType.values());
-		types.removeIf(t -> this.isMutated(t));
-		
-		if(!this.isUsingSkill() && !types.isEmpty())
-		{
-			float size = 1.25F;
-			Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.position(), 0.0F, 0.5F, 3.0F);
-			AABB aabb = new AABB(-size, -size, -size, size, 2.0F, size).move(lookPos);
-			List<ItemEntity> list = this.getConsumableItems(aabb);
-			if(!list.isEmpty())
-			{
-				MutationType type = Util.getRandom(types, this.random);
-				ItemEntity item = Util.getRandom(list, this.random);
-				this.playSound(SoundEvents.GENERIC_EAT);
-				this.doMutation(type, true);
-				item.discard();
-			}
-		}
 	}
 	
 	@Override

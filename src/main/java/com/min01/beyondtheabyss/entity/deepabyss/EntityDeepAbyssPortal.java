@@ -27,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
 public class EntityDeepAbyssPortal extends Entity implements IMultipart
@@ -82,31 +83,25 @@ public class EntityDeepAbyssPortal extends Entity implements IMultipart
 		
 		if(this.level.isClientSide)
 		{
-			this.openAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
-			this.idleAnimationState.updateWhen(this.getAnimationState() == 2, this.tickCount);
+			this.idleAnimationState.animateWhen(this.getAnimationState() == 1, this.tickCount);
+			this.openAnimationState.animateWhen(this.getAnimationState() == 1, this.tickCount);
 		}
 		
-		if(this.getAnimationTick() > 0)
+		if(this.getAnimationState() == 1)
 		{
-			this.setAnimationTick(this.getAnimationTick() - 1);
-		}
-		else if(this.getAnimationState() == 1)
-		{
-			this.setAnimationState(2);
-		}
-		
-		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F));
-		list.forEach(t -> 
-		{
-			String part = BTAUtil.getCollidingMultiPart(this.getBounds(), t);
-			if(part != null && part.equals("plate"))
+			List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F));
+			list.forEach(t -> 
 			{
-				if(t.distanceToSqr(this) <= 6.0F && t.getServer() != null)
+				String part = BTAUtil.getCollidingMultiPart(this.getBounds(), t);
+				if(part != null && part.equals("plate"))
 				{
-					BTAUtil.teleportEntityToDimension(t, t.getServer().getLevel(BTAWorlds.DEEP_ABYSS), BlockPos.containing(0, 100, 0));
+					if(t.distanceToSqr(this) <= 6.0F && t.getServer() != null)
+					{
+						BTAUtil.teleportEntityToDimension(t, t.getServer().getLevel(BTAWorlds.DEEP_ABYSS), BlockPos.containing(0, 100, 0));
+					}
 				}
-			}
-		});
+			});
+		}
     }
     
     @Override
@@ -134,7 +129,6 @@ public class EntityDeepAbyssPortal extends Entity implements IMultipart
         			stack.shrink(1);
         		}
         		this.setAnimationState(1);
-        		this.setAnimationTick(140);
     		}
     		return InteractionResult.SUCCESS;
     	}
@@ -159,6 +153,53 @@ public class EntityDeepAbyssPortal extends Entity implements IMultipart
 	public Packet<ClientGamePacketListener> getAddEntityPacket() 
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+	
+	public Vec3 getAnchorPos(int index)
+	{
+		BlockPos blockPos = this.blockPosition();
+		int dist = 5;
+		if(index == 0)
+		{
+			blockPos = blockPos.offset(dist, 0, dist);
+		}
+		if(index == 1)
+		{
+			blockPos = blockPos.offset(-dist, 0, dist);
+		}
+		if(index == 2)
+		{
+			blockPos = blockPos.offset(dist, 0, -dist);
+		}
+		if(index == 3)
+		{
+			blockPos = blockPos.offset(-dist, 0, -dist);
+		}
+		return Vec3.atCenterOf(blockPos.above());
+	}
+	
+	public Vec3 getTargetPos(int index)
+	{
+		BlockPos blockPos = this.blockPosition();
+		int dist = 20;
+		if(index == 0)
+		{
+			blockPos = blockPos.offset(dist, 0, dist);
+		}
+		if(index == 1)
+		{
+			blockPos = blockPos.offset(-dist, 0, dist);
+		}
+		if(index == 2)
+		{
+			blockPos = blockPos.offset(dist, 0, -dist);
+		}
+		if(index == 3)
+		{
+			blockPos = blockPos.offset(-dist, 0, -dist);
+		}
+		blockPos = BTAUtil.getGroundPos(this.level, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+		return Vec3.atCenterOf(blockPos.above());
 	}
     
     public void setAnimationTick(int value)

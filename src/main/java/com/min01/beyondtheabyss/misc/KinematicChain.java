@@ -75,11 +75,11 @@ public class KinematicChain
 				ChainSegment next = this.segments[i - 1];
 		        Vec3 toTarget = this.anchorPos.subtract(current.getPos());
 		        double dist = toTarget.length();
-		        double moveDist = Math.min(dist, 0.5F);
+		        double moveDist = Math.min(dist, this.getTipSegment().distance);
 				Vec2 rot = this.lookAt(current.getPos(), next.getPos());
 				if(moveDist > 0.0F)
 				{
-					current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, moveDist));
+					current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, moveDist * this.getTipSegment().distance));
 				}
 				else
 				{
@@ -107,7 +107,7 @@ public class KinematicChain
 	        {
 		        tip.setRot(this.lookAt(tipPos, this.target));
 	        }
-	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist * 0.5F));
+	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist * tip.speed));
 		}
 		
 		for(int i = 1; i < this.segments.length; i++)
@@ -249,6 +249,7 @@ public class KinematicChain
 		protected Vec2 rotation = Vec2.ZERO;
 		protected Vec2 oldRotation = Vec2.ZERO;
 		protected float distance;
+		protected float speed = 1.0F;
 		
 		public ChainSegment(Vec2 initialRot, float distance) 
 		{
@@ -266,6 +267,11 @@ public class KinematicChain
             float xRot = Mth.lerp(partialTick, this.oldRotation.x, this.rotation.x);
             float yRot = Mth.rotLerp(partialTick, this.oldRotation.y, this.rotation.y);
     		return new Vec2(xRot, yRot);
+    	}
+    	
+    	public void setSpeed(float speed)
+    	{
+    		this.speed = speed;
     	}
 		
 		public void setRot(Vec2 rot)

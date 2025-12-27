@@ -1,0 +1,32 @@
+{
+	"type": "minecraft:entity",
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "beyondtheabyss:aberrant_flesh",
+					"conditions": [
+					],
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"type": "minecraft:uniform",
+								"min": 10,
+								"max": 30
+							}
+						}
+					]
+				}
+			],
+			"conditions": [
+				{
+					"condition": "minecraft:killed_by_player"
+				}
+			]
+		}
+	],
+	"random_sequence": "beyondtheabyss:entities/mutavore"
+}

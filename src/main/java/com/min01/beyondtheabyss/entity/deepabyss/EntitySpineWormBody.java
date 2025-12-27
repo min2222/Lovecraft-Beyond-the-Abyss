@@ -24,8 +24,8 @@ public class EntitySpineWormBody extends AbstractSpineWormPart
     public static AttributeSupplier.Builder createAttributes()
     {
         return Monster.createMonsterAttributes()
-    			.add(Attributes.MAX_HEALTH, 30.0F)
-        		.add(Attributes.FOLLOW_RANGE, 25.0F);
+    			.add(Attributes.MAX_HEALTH, 50.0F)
+        		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
 
 	@Override

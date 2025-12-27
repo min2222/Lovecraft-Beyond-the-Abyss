@@ -30,7 +30,8 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
     public static AttributeSupplier.Builder createAttributes()
     {
         return Monster.createMonsterAttributes()
-    			.add(Attributes.MAX_HEALTH, 60.0F)
+    			.add(Attributes.MAX_HEALTH, 120.0F)
+    			.add(Attributes.ARMOR, 5.0F)
         		.add(Attributes.FOLLOW_RANGE, 45.0F);
     }
 	

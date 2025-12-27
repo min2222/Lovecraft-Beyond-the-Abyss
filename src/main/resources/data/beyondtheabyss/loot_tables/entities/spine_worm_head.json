@@ -2,7 +2,7 @@
 	"type": "minecraft:entity",
 	"pools": [
 		{
-			"rolls": 1,
+			"rolls": 3,
 			"entries": [
 				{
 					"type": "minecraft:item",
@@ -11,8 +11,41 @@
 						{
 							"function": "minecraft:set_count",
 							"count": {
+								"type": "minecraft:uniform",
 								"min": 0,
 								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "beyondtheabyss:aberrant_flesh",
+					"conditions": [
+					],
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"type": "minecraft:uniform",
+								"min": 4,
+								"max": 8
+							}
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:bone",
+					"conditions": [
+					],
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"type": "minecraft:uniform",
+								"min": 6,
+								"max": 12
 							}
 						}
 					]

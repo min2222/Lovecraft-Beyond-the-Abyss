@@ -130,16 +130,19 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		this.worm5.setOldPosAndRot();
 		this.worm6.setOldPosAndRot();
 		
-		float speed = 0.35F;
 
-    	WormChain.tick(this.worm, this, 0.0F, speed);
-    	WormChain.tick(this.worm1, this.worm, 0.0F, speed);
-    	WormChain.tick(this.worm2, this.worm1, 0.0F, speed);
-    	WormChain.tick(this.worm3, this.worm2, 0.0F, speed);
-    	
-    	WormChain.tick(this.worm4, this.worm3, 0.0F, speed);
-    	WormChain.tick(this.worm5, this.worm4, 0.0F, speed);
-    	WormChain.tick(this.worm6, this.worm5, 0.0F, speed);
+		if(this.tickCount > 2)
+		{
+			float speed = 0.35F;
+	    	WormChain.tick(this.worm, this, 0.0F, speed);
+	    	WormChain.tick(this.worm1, this.worm, 0.0F, speed);
+	    	WormChain.tick(this.worm2, this.worm1, 0.0F, speed);
+	    	WormChain.tick(this.worm3, this.worm2, 0.0F, speed);
+	    	
+	    	WormChain.tick(this.worm4, this.worm3, 0.0F, speed);
+	    	WormChain.tick(this.worm5, this.worm4, 0.0F, speed);
+	    	WormChain.tick(this.worm6, this.worm5, 0.0F, speed);
+		}
     	
 		DeepAbyssUtil.fishFlopping(this);
 		
@@ -182,13 +185,6 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 
 		if(this.getAnimationState() == 3)
 		{
-			this.worm.setXRot(0.0F);
-			this.worm1.setXRot(0.0F);
-			this.worm2.setXRot(10.0F);
-			this.worm3.setXRot(10.0F);
-			this.worm4.setXRot(10.0F);
-			this.worm5.setXRot(0.0F);
-			this.worm6.setXRot(0.0F);
 			this.getNavigation().stop();
 			if(this.getAnimationTick() > 0)
 			{

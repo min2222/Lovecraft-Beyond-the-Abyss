@@ -14,7 +14,7 @@
 		"beyondtheabyss:fallen_skeleton",
 		"beyondtheabyss:chiseled_bone_block",
 		"beyondtheabyss:cracked_bone_block",
-		"beyondtheabyss:bone_brick_block",
-		"beyondtheabyss:bone_pillar_block"
+		"beyondtheabyss:bone_bricks",
+		"beyondtheabyss:bone_pillar"
 	]
 }

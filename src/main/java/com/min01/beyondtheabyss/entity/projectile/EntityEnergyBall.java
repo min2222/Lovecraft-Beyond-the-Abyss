@@ -45,8 +45,10 @@ public class EntityEnergyBall extends ThrowableProjectile
 		{
 			if(!entity.isAlliedTo(this.getOwner()))
 			{
-				entity.hurt(this.damageSources().indirectMagic(this, this.getOwner()), 6.0F);
-				this.discard();
+				if(entity.hurt(this.damageSources().indirectMagic(this, this.getOwner()), 12.0F))
+				{
+					this.discard();
+				}
 			}
 		}
 	}

@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "building",
+	"key": {
+		"#": {
+			"item": "minecraft:bone_block"
+		}
+	},
+	"pattern": [
+		"#",
+		"#"
+	],
+	"result": {
+		"count": 2,
+		"item": "beyondtheabyss:bone_pillar"
+	},
+	"show_notification": true
+}

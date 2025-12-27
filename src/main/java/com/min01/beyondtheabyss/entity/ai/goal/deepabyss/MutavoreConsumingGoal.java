@@ -1,7 +1,8 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
-import java.util.UUID;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
@@ -9,15 +10,17 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore.MutationType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.Util;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 
 public class MutavoreConsumingGoal extends Goal
 {
 	private final EntityMutavore mob;
-	private UUID itemUUID;
-	private int interval;
+	private Vec3 wantedPos;
+	private ItemEntity item;
 	
 	public MutavoreConsumingGoal(EntityMutavore mob) 
 	{
@@ -28,44 +31,51 @@ public class MutavoreConsumingGoal extends Goal
 	public void start()
 	{
 		this.mob.setConsume(true);
+		this.mob.setTarget(null);
+		this.mob.getNavigation().moveTo(this.wantedPos.x, this.wantedPos.y, this.wantedPos.z, 1.0F);
 	}
 	
 	@Override
 	public boolean canUse()
 	{
-		List<MutationType> types = Lists.newArrayList(MutationType.values());
-		types.removeIf(t -> this.mob.isMutated(t));
-		if(types.isEmpty())
+		if(this.mob.isUsingSkill())
 		{
 			return false;
 		}
-		if(++this.interval == 60 && this.itemUUID == null)
-		{
-			List<ItemEntity> list = this.mob.getConsumableItems(this.mob.getBoundingBox().inflate(10.0F));
-			if(!list.isEmpty())
-			{
-				this.itemUUID = Util.getRandom(list, this.mob.getRandom()).getUUID();
-			}
-			this.interval = 0;
-		}
-		return !this.mob.isUsingSkill() && this.mob.isInWater() && this.itemUUID != null;
+		return this.setWantedPos();
 	}
 	
 	@Override
 	public boolean canContinueToUse() 
 	{
-		Entity entity = BTAUtil.getEntityByUUID(this.mob.level, this.itemUUID);
-		return this.canUse() && entity != null;
+		return this.item != null && this.item.isAlive();
 	}
 	
 	@Override
 	public void tick() 
 	{
-		Entity entity = BTAUtil.getEntityByUUID(this.mob.level, this.itemUUID);
-		if(entity != null)
+		if(this.wantedPos != null && this.item != null && this.item.isAlive())
 		{
-			this.mob.getNavigation().moveTo(entity, 1.25F);
-			this.mob.getLookControl().setLookAt(entity, 30.0F, 30.0F);
+			Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.mob.getXRot(), this.mob.yBodyRot), this.mob.position(), 0, 0.5, 3.0F);
+			if(lookPos.subtract(this.wantedPos).length() <= 2.0F)
+			{
+				List<MutationType> types = Lists.newArrayList(MutationType.values());
+				types.removeIf(t -> this.mob.isMutated(t));
+				
+				if(!types.isEmpty())
+				{
+					MutationType type = Util.getRandom(types, this.mob.getRandom());
+					this.mob.playSound(SoundEvents.GENERIC_EAT);
+					this.mob.doMutation(type, true);
+					this.mob.getNavigation().stop();
+					this.wantedPos = null;
+					this.item.getItem().shrink(1);
+				}
+			}
+			else
+			{
+				this.mob.getNavigation().moveTo(this.wantedPos.x, this.wantedPos.y, this.wantedPos.z, 1.25F);
+			}
 		}
 	}
 	
@@ -74,7 +84,37 @@ public class MutavoreConsumingGoal extends Goal
 	{
 		this.mob.setConsume(false);
 		this.mob.getNavigation().stop();
-		this.itemUUID = null;
-		this.interval = 0;
+		this.mob.setAnimationState(0);
+		this.wantedPos = null;
+		this.item = null;
+	}
+	
+	public boolean setWantedPos() 
+	{
+		this.wantedPos = this.findItem();
+		return this.wantedPos != null;
+	}
+	
+	@Nullable
+	public Vec3 findItem()
+	{
+		List<ItemEntity> list = this.mob.getConsumableItems(this.mob.getBoundingBox().inflate(10.0F));
+		double dist = -1.0D;
+		Vec3 nearest = null;
+		for(ItemEntity item : list)
+		{
+			if(!item.isInWater()) 
+			{
+				continue;
+			}
+			double dist1 = item.distanceToSqr(this.mob);
+			if(dist == -1.0D || dist1 < dist) 
+			{
+				dist = dist1;
+				nearest = item.position();
+				this.item = item;
+			}
+		}
+		return nearest;
 	}
 }

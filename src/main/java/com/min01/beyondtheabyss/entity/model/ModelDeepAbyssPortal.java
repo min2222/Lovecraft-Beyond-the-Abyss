@@ -21,7 +21,7 @@ public class ModelDeepAbyssPortal extends HierarchicalModel<EntityDeepAbyssPorta
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "deep_abyss_portal"), "main");
 	private final ModelPart root;
-
+	
 	public ModelDeepAbyssPortal(ModelPart root)
 	{
 		this.root = root.getChild("root");
@@ -100,8 +100,8 @@ public class ModelDeepAbyssPortal extends HierarchicalModel<EntityDeepAbyssPorta
 	public void setupAnim(EntityDeepAbyssPortal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		entity.idleAnimationState.animate(this, DeepAbyssPortalAnimation.PORTAL_IDLE, ageInTicks);
-		entity.openAnimationState.animate(this, DeepAbyssPortalAnimation.PORTAL_OPEN, ageInTicks);
+		this.animate(entity.idleAnimationState, DeepAbyssPortalAnimation.PORTAL_IDLE, ageInTicks);
+		this.animate(entity.openAnimationState, DeepAbyssPortalAnimation.PORTAL_OPEN, ageInTicks);
 	}
 	
 	@Override
