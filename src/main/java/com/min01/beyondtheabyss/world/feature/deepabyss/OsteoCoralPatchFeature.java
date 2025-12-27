@@ -24,6 +24,7 @@ public class OsteoCoralPatchFeature extends Feature<NoneFeatureConfiguration>
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
 			level.setBlock(pos, BTABlocks.OSTEO_CORAL.get().defaultBlockState(), 2);
+			return true;
 		}
 		return false;
 	}

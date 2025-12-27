@@ -24,6 +24,7 @@ public class SpinyweedPatchFeature extends Feature<NoneFeatureConfiguration>
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
 			level.setBlock(pos, BTABlocks.SPINYWEED.get().defaultBlockState(), 2);
+			return true;
 		}
 		return false;
 	}

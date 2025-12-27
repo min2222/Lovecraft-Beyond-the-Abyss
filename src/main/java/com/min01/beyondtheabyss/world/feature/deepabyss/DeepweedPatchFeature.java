@@ -24,6 +24,7 @@ public class DeepweedPatchFeature extends Feature<NoneFeatureConfiguration>
 		if(level.getBlockState(pos.below()).is(BTABlocks.ROT_SOIL.get()))
 		{
 			level.setBlock(pos, BTABlocks.DEEPWEED.get().defaultBlockState(), 2);
+			return true;
 		}
 		return false;
 	}
