@@ -33,7 +33,7 @@ public class GhidruthBiteGoal extends AbstractGhidruthSkillGoal
 	@Override
 	public void performSkill() 
 	{
-		this.mob.playSound(BTASounds.GHIDRUTH_BITE.get());
+		this.mob.playSound(BTASounds.GHIDRUTH_BITE.get(), 1.5F, 1.0F);
 		if(this.mob.getTarget() != null)
 		{
 			if(this.mob.distanceTo(this.mob.getTarget()) <= 8.0F)

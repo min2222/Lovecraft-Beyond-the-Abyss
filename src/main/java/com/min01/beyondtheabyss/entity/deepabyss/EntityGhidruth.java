@@ -160,7 +160,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
         			{
             			this.setAnimationState(7);
             			this.setAnimationTick(25);
-        				this.playSound(BTASounds.GHIDRUTH_AWAKEN.get());
+        				this.playSound(BTASounds.GHIDRUTH_AWAKEN.get(), 2.0F, 1.0F);
         			}
         		}
         		else if(this.getAnimationState() == 7)
@@ -192,7 +192,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 				this.setLastLookPos(Vec3.ZERO);
 				this.setDeltaMovement(Vec3.ZERO);
 				EntityBTACameraShake.cameraShake(this.level, this.position(), 100.0F, 0.35F, 0, 25);
-				this.playSound(BTASounds.GHIDRUTH_STUN.get());
+				this.playSound(BTASounds.GHIDRUTH_STUN.get(), 2.0F, 1.0F);
 				this.getNavigation().stop();
 				this.chargeTick = 0;
 				this.fallStones();
@@ -345,7 +345,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	@Override
 	protected float getSoundVolume() 
 	{
-		return 0.45F;
+		return 2.0F;
 	}
 	
     @Override

@@ -18,7 +18,7 @@ public class GhidruthChargePrepareGoal extends AbstractGhidruthSkillGoal
 	{
 		super.start();
 		this.mob.setAnimationState(5);
-		this.mob.playSound(BTASounds.GHIDRUTH_EYE_FLASH.get());
+		this.mob.playSound(BTASounds.GHIDRUTH_EYE_FLASH.get(), 2.0F, 1.0F);
 		this.mob.lookAt(Anchor.EYES, this.mob.getTarget().getEyePosition());
 	}
 	
@@ -42,7 +42,7 @@ public class GhidruthChargePrepareGoal extends AbstractGhidruthSkillGoal
 		this.mob.setCharge(true);
 		this.mob.setCanLook(false);
 		this.mob.setCanMove(false);
-		this.mob.playSound(BTASounds.GHIDRUTH_CHARGE_START.get());
+		this.mob.playSound(BTASounds.GHIDRUTH_CHARGE_START.get(), 2.0F, 1.0F);
 	}
 
 	@Override

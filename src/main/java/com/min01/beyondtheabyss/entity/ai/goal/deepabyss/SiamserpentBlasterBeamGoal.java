@@ -29,7 +29,7 @@ public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 	public void performSkill() 
 	{
 		this.mob.setAnimationState(1);
-		this.mob.playSound(BTASounds.SIAMSERPENT_BEAM_CHARGE.get());
+		this.mob.playSound(BTASounds.SIAMSERPENT_BEAM_CHARGE.get(), 1.5F, 1.0F);
 	}
 	
 	@Override

@@ -302,6 +302,12 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	}
 	
 	@Override
+	protected float getSoundVolume() 
+	{
+		return 1.5F;
+	}
+	
+	@Override
 	protected SoundEvent getAmbientSound() 
 	{
 		return BTASounds.SIAMSERPENT_AMBIENT.get();
