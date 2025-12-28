@@ -24,6 +24,7 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 	{
 		super(pEntityType, pLevel);
 		this.partBuilder = this.createBuilder();
+		this.noCulling = this.getBTAMobType() == BTAMobType.BOSS;
 	}
 	
 	@Override

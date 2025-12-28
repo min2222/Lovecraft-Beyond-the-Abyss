@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
-import com.min01.beyondtheabyss.entity.ai.control.SwimmingBoidMoveControl;
+import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -25,14 +25,14 @@ public class EntityGloomfish extends AbstractDeepAbyssCreature
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = 1;
-		this.moveControl = new SwimmingBoidMoveControl(this, false);
+		this.moveControl = new BoidMoveControl(this);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 2.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.7F);
+    			.add(Attributes.MOVEMENT_SPEED, 0.3F);
     }
 
 	@Override

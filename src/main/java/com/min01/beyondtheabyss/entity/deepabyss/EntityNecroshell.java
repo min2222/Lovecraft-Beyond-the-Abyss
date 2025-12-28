@@ -26,6 +26,8 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -56,6 +58,9 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(5);
 		this.setMaxUpStep(1);
+		this.moveControl = new MoveControl(this);
+		this.lookControl = new LookControl(this);
+		this.switchNavigation(false);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -144,7 +149,7 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 		}
 
 		Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 3.5F, true);
-		if(player != null && !this.isUsingSkill())
+		if(player != null && !this.isUsingSkill() && !this.isHiding())
 		{
 	        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, player.position());
 	        if(vec3 != null)
@@ -180,6 +185,18 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	
 	@Override
 	public boolean isSwimable() 
+	{
+		return false;
+	}
+	
+	@Override
+	public float moveSpeed()
+	{
+		return 1.0F;
+	}
+	
+	@Override
+	protected boolean isAffectedByFluids()
 	{
 		return false;
 	}

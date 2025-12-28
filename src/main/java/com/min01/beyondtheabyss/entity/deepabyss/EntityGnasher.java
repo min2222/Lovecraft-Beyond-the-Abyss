@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ILeader;
+import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
 import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
-import com.min01.beyondtheabyss.entity.ai.control.SwimmingBoidMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -50,14 +50,14 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(6);
-		this.moveControl = new SwimmingBoidMoveControl(this, true);
+		this.moveControl = new BoidMoveControl(this, true);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 15.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.8F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.3F)
         		.add(Attributes.ATTACK_DAMAGE, 3.5F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
@@ -119,9 +119,9 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 		if(this.getLeader() != null)
 		{
 			EntityGnasher leader = this.getLeader();
-			if(leader.isDisperse() && !this.isDisperse() && leader.getLastHurtByMob() != null)
+			if(leader.isDisperse() && !this.isDisperse())
 			{
-				this.disperse(leader.getLastHurtByMob().position());
+				this.disperse(leader.position());
 			}
 			
 			if(this.isDisperse() && !this.isLeader())
@@ -182,11 +182,11 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
     {
     	if(isBoid)
     	{
-    		this.moveControl = new SwimmingBoidMoveControl(this, true);
+    		this.moveControl = new BoidMoveControl(this, true);
     	}
     	else
     	{
-    		this.moveControl = this.getSwimmingMoveControl();
+    		this.moveControl = new BTASwimmingMoveControl(this);
     	}
     }
     

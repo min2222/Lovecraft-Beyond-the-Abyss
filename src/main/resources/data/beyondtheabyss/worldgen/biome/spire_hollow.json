@@ -1,6 +1,7 @@
 {
-	"temperature": 1,
-	"downfall": 0.5,
+	"temperature": -1,
+	"downfall": 0,
+	"temperature_modifier": "frozen",
 	"has_precipitation": false,
 	"effects": {
 		"sky_color": 0,

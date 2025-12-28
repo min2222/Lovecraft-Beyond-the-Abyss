@@ -77,7 +77,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 300.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.95F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.6F)
         		.add(Attributes.ATTACK_DAMAGE, 20.0F)
         		.add(Attributes.FOLLOW_RANGE, 100.0F)
         		.add(Attributes.ARMOR, 20.0F)

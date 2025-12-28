@@ -1,9 +1,12 @@
 {
-	"carvers": {
-	},
+	"temperature": 2,
 	"downfall": 0,
+	"has_precipitation": false,
 	"effects": {
+		"sky_color": 15570512,
 		"fog_color": 16632465,
+		"water_color": 4159204,
+		"water_fog_color": 329011,
 		"mood_sound": {
 			"block_search_extent": 8,
 			"offset": 2,
@@ -16,9 +19,6 @@
 			"replace_current_music": false,
 			"sound": "minecraft:music.overworld.desert"
 		},
-		"sky_color": 15570512,
-		"water_color": 4159204,
-		"water_fog_color": 329011,
 		"particle": {
 			"options": {
 				"type": "minecraft:falling_dust",
@@ -28,6 +28,40 @@
 			},
 			"probability": 0.005
 		}
+	},
+	"spawners": {
+		"ambient": [
+		],
+		"axolotls": [
+		],
+		"creature": [
+			{
+				"type": "minecraft:rabbit",
+				"maxCount": 3,
+				"minCount": 2,
+				"weight": 4
+			}
+		],
+		"misc": [
+		],
+		"monster": [
+			{
+				"type": "minecraft:husk",
+				"maxCount": 4,
+				"minCount": 4,
+				"weight": 80
+			}
+		],
+		"underground_water_creature": [
+		],
+		"water_ambient": [
+		],
+		"water_creature": [
+		]
+	},
+	"spawn_costs": {
+	},
+	"carvers": {
 	},
 	"features": [
 		[
@@ -84,39 +118,5 @@
 		[
 			"minecraft:freeze_top_layer"
 		]
-	],
-	"has_precipitation": false,
-	"spawn_costs": {
-	},
-	"spawners": {
-		"ambient": [
-		],
-		"axolotls": [
-		],
-		"creature": [
-			{
-				"type": "minecraft:rabbit",
-				"maxCount": 3,
-				"minCount": 2,
-				"weight": 4
-			}
-		],
-		"misc": [
-		],
-		"monster": [
-			{
-				"type": "minecraft:husk",
-				"maxCount": 4,
-				"minCount": 4,
-				"weight": 80
-			}
-		],
-		"underground_water_creature": [
-		],
-		"water_ambient": [
-		],
-		"water_creature": [
-		]
-	},
-	"temperature": 2
+	]
 }

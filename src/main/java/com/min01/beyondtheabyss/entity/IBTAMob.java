@@ -16,7 +16,7 @@ public interface IBTAMob
 	
 	default float moveSpeed()
 	{
-		return 0.05F;
+		return 0.1F;
 	}
 	
 	default Vec3 getMoveRadius()
@@ -26,7 +26,7 @@ public interface IBTAMob
 	
 	default int targetSettingInterval()
 	{
-		return 40;
+		return 10;
 	}
 	
 	public boolean canMoveAround();

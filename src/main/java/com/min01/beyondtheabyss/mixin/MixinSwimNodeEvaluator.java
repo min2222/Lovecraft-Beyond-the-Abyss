@@ -34,11 +34,11 @@ public abstract class MixinSwimNodeEvaluator extends NodeEvaluator
 	}
 	
 	@Inject(at = @At("TAIL"), method = "getBlockPathType(Lnet/minecraft/world/level/BlockGetter;IIILnet/minecraft/world/entity/Mob;)Lnet/minecraft/world/level/pathfinder/BlockPathTypes;", cancellable = true)
-	private void getBlockPathType(BlockGetter pLevel, int pX, int pY, int pZ, Mob pMob, CallbackInfoReturnable<BlockPathTypes> ci)
+	private void getBlockPathType(BlockGetter pLevel, int pX, int pY, int pZ, Mob pMob, CallbackInfoReturnable<BlockPathTypes> cir)
 	{
 		if(pMob.hasEffect(BTAEffects.AIR_SWIM.get()))
 		{
-			ci.setReturnValue(BlockPathTypes.WATER);
+			cir.setReturnValue(BlockPathTypes.WATER);
 		}
 	}
 }

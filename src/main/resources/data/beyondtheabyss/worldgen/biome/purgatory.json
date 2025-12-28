@@ -1,13 +1,12 @@
 {
-	"carvers": {
-		"air": [
-			"beyondtheabyss:purgatory"
-		]
-	},
+	"temperature": 2,
 	"downfall": 0,
+	"has_precipitation": false,
 	"effects": {
+		"sky_color": 5046272,
 		"fog_color": 9371648,
 		"water_color": 13369344,
+		"water_fog_color": 4587777,
 		"mood_sound": {
 			"block_search_extent": 8,
 			"offset": 2,
@@ -19,9 +18,32 @@
 			"min_delay": 12000,
 			"replace_current_music": false,
 			"sound": "minecraft:music.nether.nether_wastes"
-		},
-		"sky_color": 5046272,
-		"water_fog_color": 4587777
+		}
+	},
+	"spawners": {
+		"ambient": [
+		],
+		"axolotls": [
+		],
+		"creature": [
+		],
+		"misc": [
+		],
+		"monster": [
+		],
+		"underground_water_creature": [
+		],
+		"water_ambient": [
+		],
+		"water_creature": [
+		]
+	},
+	"spawn_costs": {
+	},
+	"carvers": {
+		"air": [
+			"beyondtheabyss:purgatory"
+		]
 	},
 	"features": [
 		[
@@ -47,27 +69,5 @@
 		],
 		[
 		]
-	],
-	"has_precipitation": false,
-	"spawn_costs": {
-	},
-	"spawners": {
-		"ambient": [
-		],
-		"axolotls": [
-		],
-		"creature": [
-		],
-		"misc": [
-		],
-		"monster": [
-		],
-		"underground_water_creature": [
-		],
-		"water_ambient": [
-		],
-		"water_creature": [
-		]
-	},
-	"temperature": 2
+	]
 }

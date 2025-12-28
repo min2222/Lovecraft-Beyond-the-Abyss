@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
-import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -12,8 +11,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -30,12 +27,8 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
 	{
 		super(pEntityType, pLevel);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-		this.noCulling = this.getBTAMobType() == BTAMobType.BOSS;
-		if(this.isSwimable())
-		{
-			this.moveControl = this.getSwimmingMoveControl();
-			this.lookControl = this.getSwimmingLookControl();
-		}
+		this.moveControl = new BTASwimmingMoveControl(this);
+		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 	}
     
     @Override
@@ -97,12 +90,6 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
 		return false;
 	}
 	
-	@Override
-	protected boolean isAffectedByFluids()
-	{
-		return false;
-	}
-	
     @Override
     public void lookAt(EntityAnchorArgument.Anchor pAnchor, Vec3 pTarget) 
     {
@@ -151,16 +138,6 @@ public abstract class AbstractDeepAbyssCreature extends AbstractBTACreature
 	{
 		super.baseTick();
 		this.handleAirSupply(this.getAirSupply());
-	}
-	
-	public LookControl getSwimmingLookControl()
-	{
-		return new SmoothSwimmingLookControl(this, 10);
-	}
-	
-	public MoveControl getSwimmingMoveControl()
-	{
-		return new BTASwimmingMoveControl(this);
 	}
     
     @Override

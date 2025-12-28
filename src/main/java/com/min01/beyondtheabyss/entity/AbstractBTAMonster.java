@@ -30,6 +30,7 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 	{
 		super(pEntityType, pLevel);
 		this.partBuilder = this.createBuilder();
+		this.noCulling = this.getBTAMobType() == BTAMobType.BOSS;
 	}
 	
 	@Override
