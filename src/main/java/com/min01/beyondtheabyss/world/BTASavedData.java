@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.min01.beyondtheabyss.misc.BTABossTracker;
 import com.min01.beyondtheabyss.misc.BTABossTracker.BTABossState;
-import com.min01.beyondtheabyss.world.BTAPortalTracker.BTAPortal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -37,7 +36,6 @@ public class BTASavedData extends SavedData
     {
     	BTASavedData data = new BTASavedData();
     	data.setDragonKilled(nbt.getBoolean("isDragonKilled"));
-    	BTAPortalTracker.load(data, nbt);
     	BTAStructureFinder.load(data, nbt);
     	BTABossTracker.load(data, nbt);
         return data;
@@ -47,7 +45,6 @@ public class BTASavedData extends SavedData
 	public CompoundTag save(CompoundTag nbt)
 	{
 		nbt.putBoolean("isDragonKilled", this.isDragonKilled);
-		BTAPortalTracker.save(nbt);
 		BTAStructureFinder.save(nbt, this.structureMap);
     	BTABossTracker.save(nbt);
 		return nbt;
@@ -73,17 +70,6 @@ public class BTASavedData extends SavedData
 	public BlockPos getStructurePos(ResourceKey<Structure> structure)
 	{
 		return this.structureMap.getOrDefault(structure, BlockPos.ZERO);
-	}
-	
-	public void setPortalActivated(BTAPortal portal, boolean value)
-	{
-		portal.setActivated(value);
-		this.setDirty();
-	}
-	
-	public boolean isPortalActivated(BTAPortal portal)
-	{
-		return portal.isActivated();
 	}
 	
 	public void setBossSpawned(BTABossState state, boolean value)

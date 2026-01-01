@@ -81,6 +81,6 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	@Override
 	public int getSkillUsingInterval() 
 	{
-		return 150;
+		return 50;
 	}
 }

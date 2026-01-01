@@ -64,6 +64,6 @@ public class OverseerMissileGoal extends BasicBTASkillGoal<EntityOverseer>
 	@Override
 	public int getSkillUsingInterval() 
 	{
-		return 60;
+		return 40;
 	}
 }

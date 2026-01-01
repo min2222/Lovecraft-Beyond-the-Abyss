@@ -91,6 +91,6 @@ public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
 	@Override
 	public int getSkillUsingInterval()
 	{
-		return 120;
+		return 40;
 	}
 }

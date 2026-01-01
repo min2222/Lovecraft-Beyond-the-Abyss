@@ -22,7 +22,6 @@ import com.min01.beyondtheabyss.entity.mirroredcity.EntityObserver;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTABossTracker;
-import com.min01.beyondtheabyss.world.BTAPortalTracker;
 import com.min01.beyondtheabyss.world.BTAStructureFinder;
 
 import net.minecraft.world.entity.SpawnPlacements;
@@ -45,7 +44,6 @@ public class EventHandler
 	{
 		BTAEffects.init();
 		BTAStructureFinder.init();
-		BTAPortalTracker.init();
 		BTABossTracker.init();
 	}
 	

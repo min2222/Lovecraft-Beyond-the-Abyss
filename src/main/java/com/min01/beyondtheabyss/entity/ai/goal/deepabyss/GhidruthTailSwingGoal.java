@@ -73,6 +73,6 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 	@Override
 	public int getSkillUsingInterval() 
 	{
-		return 150;
+		return 110;
 	}
 }

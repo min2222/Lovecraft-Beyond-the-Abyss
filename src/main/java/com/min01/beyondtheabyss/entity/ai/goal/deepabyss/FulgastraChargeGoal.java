@@ -68,6 +68,6 @@ public class FulgastraChargeGoal extends BasicBTASkillGoal<EntitySplittedFulgast
 	@Override
 	public int getSkillUsingInterval()
 	{
-		return 100;
+		return 50;
 	}
 }

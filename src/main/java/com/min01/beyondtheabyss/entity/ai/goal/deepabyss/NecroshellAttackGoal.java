@@ -67,6 +67,6 @@ public class NecroshellAttackGoal extends BasicBTASkillGoal<EntityNecroshell>
 	@Override
 	public int getSkillUsingInterval() 
 	{
-		return 40;
+		return 20;
 	}
 }

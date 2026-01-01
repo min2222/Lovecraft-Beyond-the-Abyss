@@ -58,6 +58,6 @@ public class GnasherBiteGoal extends BasicBTASkillGoal<EntityGnasher>
 	@Override
 	public int getSkillUsingInterval() 
 	{
-		return 20;
+		return 10;
 	}
 }

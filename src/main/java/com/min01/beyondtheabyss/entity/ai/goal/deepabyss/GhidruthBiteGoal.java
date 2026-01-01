@@ -65,6 +65,6 @@ public class GhidruthBiteGoal extends AbstractGhidruthSkillGoal
 	@Override
 	public int getSkillUsingInterval() 
 	{
-		return 60;
+		return 35;
 	}
 }
