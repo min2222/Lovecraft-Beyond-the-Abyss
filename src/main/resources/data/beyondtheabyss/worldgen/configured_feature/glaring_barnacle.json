@@ -1,0 +1,17 @@
+{
+	"type": "beyondtheabyss:glaring_barnacle",
+	"config": {
+		"directions": [
+			"south",
+			"north",
+			"east",
+			"west"
+		],
+		"check": {
+			"Name": "beyondtheabyss:abyssalith"
+		},
+		"state": {
+			"Name": "beyondtheabyss:glaring_barnacle"
+		}
+	}
+}

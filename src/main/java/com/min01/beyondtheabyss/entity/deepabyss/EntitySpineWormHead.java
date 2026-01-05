@@ -153,12 +153,12 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 				this.chain.setInitialRot(new Vec2(direction.toYRot(), 0.0F));
 				break;
 			}
+			this.chain.speed = 1.5F;
 		}
 		else
 		{
 			this.chain.setOldPosAndRot();
 			this.chain.tickBobbit();
-			this.chain.getTipSegment().setSpeed(1.5F);
 
 			if(this.canExtend())
 			{

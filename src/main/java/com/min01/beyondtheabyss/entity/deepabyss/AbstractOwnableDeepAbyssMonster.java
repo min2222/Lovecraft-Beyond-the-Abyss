@@ -71,7 +71,7 @@ public abstract class AbstractOwnableDeepAbyssMonster<T extends AbstractDeepAbys
 	{
 		if(this.entityData.get(OWNER_UUID).isPresent()) 
 		{
-			if(this.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+			if(this.getType().is(BTATags.BTAEntity.FORCE_TICKING))
 			{
 				for(Entity entity : BTAUtil.getAllEntities(this.level))
 				{

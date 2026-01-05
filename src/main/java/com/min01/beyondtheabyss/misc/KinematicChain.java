@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.misc;
 
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -11,12 +12,16 @@ import net.minecraft.world.phys.Vec3;
 
 public class KinematicChain 
 {
-	protected Entity entity;
-	protected Vec3 target = Vec3.ZERO;
-	protected Vec3 anchorPos;
-	protected ChainSegment[] segments;
-	protected Vec2 initialRot = Vec2.ZERO;
+	public Entity entity;
+	public Vec3 target = Vec3.ZERO;
+	public Vec3 anchorPos;
+	public ChainSegment[] segments;
+	public Vec2 initialRot = Vec2.ZERO;
 	public boolean rotLerp;
+	public long delta = System.nanoTime();
+	public float speed = 1.0F;
+	public float lerpSpeed = 1.0F;
+	public int maxGroundStep = 1;
 	
 	public KinematicChain(Entity entity, int length) 
 	{
@@ -65,7 +70,7 @@ public class KinematicChain
 	{
 		if(!this.target.equals(Vec3.ZERO))
 		{
-			this.tick();
+			this.tickNormal();
 		}
 		else if(this.anchorPos != null)
 		{
@@ -73,13 +78,14 @@ public class KinematicChain
 			{
 				ChainSegment current = this.segments[i];
 				ChainSegment next = this.segments[i - 1];
+				ChainSegment tip = this.getTipSegment();
 		        Vec3 toTarget = this.anchorPos.subtract(current.getPos());
 		        double dist = toTarget.length();
-		        double moveDist = Math.min(dist, this.getTipSegment().distance);
+		        double moveDist = Math.min(dist, tip.distance);
 				Vec2 rot = this.lookAt(current.getPos(), next.getPos());
-				if(moveDist > 0.0F)
+				if(moveDist > 0.5F)
 				{
-					current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, moveDist * this.getTipSegment().distance));
+					current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, moveDist * this.speed));
 				}
 				else
 				{
@@ -90,8 +96,14 @@ public class KinematicChain
 		}
 	}
 	
-	public void tick() 
+	public void tickNormal() 
 	{
+		long currentTime = System.nanoTime();
+		double deltaTime = (currentTime - this.delta) / 1_000_000_000.0;
+		this.delta = currentTime;
+		deltaTime = Math.min(deltaTime, 0.05);
+    	float t = 1.0F - (float) Math.pow(0.01F, deltaTime * this.lerpSpeed);
+	    
 		if(!this.target.equals(Vec3.ZERO))
 		{
 			ChainSegment tip = this.getTipSegment();
@@ -101,13 +113,13 @@ public class KinematicChain
 	        double moveDist = Math.min(dist, tip.distance);
 	        if(this.rotLerp)
 	        {
-		        tip.setRot(this.lookAt(tipPos, this.target, tip.getOldRot()));
+	            tip.setRot(this.lookAt(tipPos, this.target, tip.getRot(), t));
 	        }
 	        else
 	        {
 		        tip.setRot(this.lookAt(tipPos, this.target));
 	        }
-	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist * tip.speed));
+	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist * this.speed));
 		}
 		
 		for(int i = 1; i < this.segments.length; i++)
@@ -115,7 +127,14 @@ public class KinematicChain
 		    int index = i - 1;
 		    ChainSegment current = this.segments[this.segments.length - i - 1];
 		    ChainSegment next = this.segments[this.segments.length - index - 1];
-		    current.setRot(this.lookAt(current.getPos(), next.getPos()));
+		    if(this.rotLerp)
+		    {
+			    current.setRot(this.lookAt(current.getPos(), next.getPos(), current.getRot(), t));
+		    }
+		    else
+		    {
+			    current.setRot(this.lookAt(current.getPos(), next.getPos()));
+		    }
 		    current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
 		}
 		
@@ -128,9 +147,65 @@ public class KinematicChain
 		{
 			ChainSegment current = this.segments[i];
 			ChainSegment next = this.segments[i + 1];
-			current.setRot(this.lookAt(current.getPos(), next.getPos()));
+			if(this.rotLerp)
+			{
+				current.setRot(this.lookAt(current.getPos(), next.getPos(), current.getRot(), t));
+			}
+			else
+			{
+				current.setRot(this.lookAt(current.getPos(), next.getPos()));
+			}
 			next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, next.distance));
 		}
+	}
+	
+	public void tickLerp() 
+	{
+	    long currentTime = System.nanoTime();
+	    double deltaTime = (currentTime - this.delta) / 1_000_000_000.0;
+	    this.delta = currentTime;
+	    deltaTime = Math.min(deltaTime, 0.05);
+	    float t = 1.0F - (float) Math.pow(0.01F, deltaTime * this.lerpSpeed);
+
+	    if(!this.target.equals(Vec3.ZERO)) 
+	    {
+	    	ChainSegment tip = this.getTipSegment();
+	    	Vec3 tipPos = tip.getPos();
+	    	double x = Mth.lerp(t, tipPos.x, this.target.x);
+	    	double y = Mth.lerp(t, tipPos.y, this.target.y);
+	    	double z = Mth.lerp(t, tipPos.z, this.target.z);
+	    	Vec3 pos = new Vec3(x, y, z);
+	    	tip.setRot(this.lookAt(tipPos, this.target, tip.getRot(), t));
+	        tip.setPos(pos);
+	    }
+
+	    for(int i = this.segments.length - 2; i >= 0; i--)
+	    {
+	        Vec3 toNext = this.segments[i].getPos().subtract(this.segments[i + 1].getPos()).normalize();
+	        Vec3 pos = this.segments[i + 1].getPos().add(toNext.scale(this.segments[i].distance));
+	        BlockPos groundPos = BTAUtil.getGroundPos(this.entity.level, pos.x, this.entity.getY(), pos.z, this.maxGroundStep);
+	        this.segments[i].setPos(new Vec3(pos.x, groundPos.getY() + 1, pos.z));
+	    }
+
+	    if(this.anchorPos != null) 
+	    {
+	        this.segments[0].setPos(this.anchorPos);
+	    }
+
+	    for(int i = 0; i < this.segments.length - 1; i++)
+	    {
+	        Vec3 toNext = this.segments[i + 1].getPos().subtract(this.segments[i].getPos()).normalize();
+	        Vec3 pos = this.segments[i].getPos().add(toNext.scale(this.segments[i + 1].distance));
+	        BlockPos groundPos = BTAUtil.getGroundPos(this.entity.level, pos.x, this.entity.getY(), pos.z, this.maxGroundStep);
+	        this.segments[i + 1].setPos(new Vec3(pos.x, groundPos.getY() + 1, pos.z));
+	    }
+
+	    for(int i = 0; i < this.segments.length - 1; i++) 
+	    {
+	        ChainSegment current = this.segments[i];
+	        ChainSegment next = this.segments[i + 1];
+	        current.setRot(this.lookAt(current.getPos(), next.getPos(), current.getRot(), t));
+	    }
 	}
 	
 	public void addParticle(Vec3 pos, double deltaX, double deltaY, double deltaZ, double speed, int count)
@@ -148,16 +223,12 @@ public class KinematicChain
 		}
 	}
 	
-	public Vec2 lookAt(Vec3 startPos, Vec3 pos, Vec2 currentRot)
+	public Vec2 lookAt(Vec3 startPos, Vec3 pos, Vec2 rot, float t)
 	{
-		Vec3 vec3 = startPos;
-		double d0 = pos.x - vec3.x;
-		double d1 = pos.y - vec3.y;
-		double d2 = pos.z - vec3.z;
-		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		float xRot = Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180.0F / (float)Math.PI))));
-		float yRot = Mth.wrapDegrees((float)(Mth.atan2(d2, d0) * (double)(180.0F / (float)Math.PI)) - 90.0F);
-	    return new Vec2(BTAUtil.rotlerp(currentRot.x, xRot, 15), BTAUtil.rotlerp(currentRot.y, yRot, 10));
+        Vec2 targetRot = this.lookAt(startPos, pos);
+        float xRot = Mth.lerp(t, rot.x, targetRot.x);
+        float yRot = Mth.rotLerp(t, rot.y, targetRot.y);
+        return new Vec2(xRot, yRot);
 	}
 	
 	public Vec2 lookAt(Vec3 startPos, Vec3 pos)
@@ -248,8 +319,7 @@ public class KinematicChain
 		protected Vec3 oldPosition = Vec3.ZERO;
 		protected Vec2 rotation = Vec2.ZERO;
 		protected Vec2 oldRotation = Vec2.ZERO;
-		protected float distance;
-		protected float speed = 1.0F;
+		protected float distance = 1.0F;
 		
 		public ChainSegment(Vec2 initialRot, float distance) 
 		{
@@ -267,11 +337,6 @@ public class KinematicChain
             float xRot = Mth.lerp(partialTick, this.oldRotation.x, this.rotation.x);
             float yRot = Mth.rotLerp(partialTick, this.oldRotation.y, this.rotation.y);
     		return new Vec2(xRot, yRot);
-    	}
-    	
-    	public void setSpeed(float speed)
-    	{
-    		this.speed = speed;
     	}
 		
 		public void setRot(Vec2 rot)

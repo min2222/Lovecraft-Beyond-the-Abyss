@@ -45,6 +45,7 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.GNASHER_EYE.get());
 				output.accept(BTAItems.GNASHER_TOOTH.get());
 				output.accept(BTAItems.GHOUL_BLOOM_SEED_POD.get());
+				output.accept(BTAItems.COOKED_GHOUL_BLOOM_SEED_POD.get());
 				output.accept(BTAItems.FIBER.get());
 				output.accept(BTAItems.ABERRANT_FLESH.get());
 				output.accept(BTAItems.CHARGE_CORE.get());
@@ -56,6 +57,7 @@ public class BTACreativeModeTabs
 				output.accept(BTAItems.SKELETAL_GUNBLADE.get());
 				output.accept(BTAItems.TOOTH_SHOTGUN.get());
 				output.accept(BTAItems.FLASHLIGHT.get());
+				output.accept(BTAItems.SUBMARINE.get());
     			for(RegistryObject<Item> item : BTAItems.DEEP_ABYSS_ITEMS.getEntries())
     			{
     				if(item.get() instanceof ArmorItem)

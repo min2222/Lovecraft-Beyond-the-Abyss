@@ -3,8 +3,20 @@
 	"config": {
 		"feature": {
 			"feature": {
-				"type": "beyondtheabyss:ghoul_bloom_patch",
+				"type": "beyondtheabyss:direction_block",
 				"config": {
+					"directions": [
+						"down"
+					],
+					"check": {
+						"Name": "beyondtheabyss:rot_soil"
+					},
+					"state": {
+						"Name": "beyondtheabyss:ghoul_bloom",
+						"Properties": {
+							"grown": "true"
+						}
+					}
 				}
 			},
 			"placement": [

@@ -90,8 +90,7 @@ public class EntityForneusHead extends AbstractForneusPart
 		else
 		{
 			this.chain.setOldPosAndRot();
-			this.chain.tick();
-			this.chain.rotLerp = true;
+			this.chain.tickNormal();
 			
 			MoveControl moveControl = this.getMoveControl();
 			Vec3 pos = new Vec3(moveControl.getWantedX(), moveControl.getWantedY(), moveControl.getWantedZ());

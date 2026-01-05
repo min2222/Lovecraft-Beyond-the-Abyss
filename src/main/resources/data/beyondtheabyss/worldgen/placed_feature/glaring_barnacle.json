@@ -1,13 +1,9 @@
 {
-	"feature": "beyondtheabyss:abyssalith_spike",
+	"feature": "beyondtheabyss:glaring_barnacle",
 	"placement": [
 		{
-			"type": "minecraft:rarity_filter",
-			"chance": 8
-		},
-		{
 			"type": "minecraft:count",
-			"count": 1
+			"count": 30
 		},
 		{
 			"type": "minecraft:in_square"
@@ -17,7 +13,7 @@
 			"height": {
 				"type": "minecraft:uniform",
 				"max_inclusive": {
-					"absolute": 70
+					"absolute": 100
 				},
 				"min_inclusive": {
 					"absolute": 65

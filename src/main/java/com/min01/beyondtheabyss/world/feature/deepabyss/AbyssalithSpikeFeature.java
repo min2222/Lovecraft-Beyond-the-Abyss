@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.world.feature.deepabyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
@@ -21,13 +22,14 @@ public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration>
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) 
 	{
 	    WorldGenLevel level = context.level();
-	    BlockPos origin = context.origin().below(3);
+	    BlockPos origin = context.origin();
+	    origin = BTAUtil.getGroundPos(level, origin.getX(), origin.getY(), origin.getZ());
 	    RandomSource random = level.getRandom();
 	    BlockState state = BTABlocks.ABYSSALITH.get().defaultBlockState();
 
-	    int length = random.nextInt(6, 9);
+	    int length = random.nextInt(9, 12);
 	    int heightStep = 3;
-	    int width = random.nextInt(6, 9);
+	    int width = random.nextInt(9, 12);
 	    int direction = random.nextInt(4);
 
 	    int dx = (direction == 0 || direction == 1) ? 1 : -1;

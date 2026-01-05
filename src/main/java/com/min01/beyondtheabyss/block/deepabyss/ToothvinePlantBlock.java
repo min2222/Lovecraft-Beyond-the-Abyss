@@ -1,9 +1,13 @@
 package com.min01.beyondtheabyss.block.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.misc.BTADamageSource;
+import com.min01.beyondtheabyss.misc.BTATags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -15,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -38,6 +43,24 @@ public class ToothvinePlantBlock extends KelpPlantBlock
 	public BlockState getStateForPlacement(BlockPlaceContext pContext)
 	{
 		return super.getStateForPlacement(pContext).setValue(VINE_STATE, this.getVineState(pContext.getClickedPos(), pContext.getLevel()));
+	}
+	
+	@Override
+	public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity)
+	{
+		if(pEntity instanceof LivingEntity && !pEntity.getType().is(BTATags.BTAEntity.DEATH_VALLEY_CREATURES)) 
+		{
+			pEntity.makeStuckInBlock(pState, new Vec3((double)0.8F, 0.75D, (double)0.8F));
+			if(!pLevel.isClientSide && (pEntity.xOld != pEntity.getX() || pEntity.zOld != pEntity.getZ())) 
+			{
+				double d0 = Math.abs(pEntity.getX() - pEntity.xOld);
+				double d1 = Math.abs(pEntity.getZ() - pEntity.zOld);
+				if(d0 >= (double)0.003F || d1 >= (double)0.003F)
+				{
+					pEntity.hurt(BTADamageSource.causeToothVineDamage(pLevel.registryAccess()), 1.5F);
+				}
+			}
+		}
 	}
 	
 	public VineState getVineState(BlockPos pos, Level level) 

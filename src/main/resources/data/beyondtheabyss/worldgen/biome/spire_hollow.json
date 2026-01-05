@@ -40,7 +40,9 @@
 	},
 	"features": [
 		[
-			"beyondtheabyss:abyssalith_spike"
+			"beyondtheabyss:abyssalith_spike",
+			"beyondtheabyss:oyster_coral_patch",
+			"beyondtheabyss:glaring_barnacle"
 		],
 		[
 		],

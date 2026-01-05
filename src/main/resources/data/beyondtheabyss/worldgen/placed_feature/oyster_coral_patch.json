@@ -1,13 +1,13 @@
 {
-	"feature": "beyondtheabyss:abyssalith_spike",
+	"feature": "beyondtheabyss:oyster_coral_patch",
 	"placement": [
 		{
 			"type": "minecraft:rarity_filter",
-			"chance": 8
+			"chance": 15
 		},
 		{
 			"type": "minecraft:count",
-			"count": 1
+			"count": 10
 		},
 		{
 			"type": "minecraft:in_square"

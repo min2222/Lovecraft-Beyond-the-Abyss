@@ -18,10 +18,16 @@ public class BTADamageSource
     public static final ResourceKey<DamageType> TOOTH = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "tooth"));
     public static final ResourceKey<DamageType> GOLDEN_TOOTH = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "golden_tooth"));
     public static final ResourceKey<DamageType> SHRAPNEL = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "shrapnel"));
+    public static final ResourceKey<DamageType> TOOTH_VINE = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "tooth_vine"));
     
     public static DamageSource causeGhidruthFleshDamage(RegistryAccess registryAccess)
     {
         return new DamageSource(registryAccess.registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(GHIDRUTH_FLESH), (Entity) null);
+    }
+    
+    public static DamageSource causeToothVineDamage(RegistryAccess registryAccess)
+    {
+        return new DamageSource(registryAccess.registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(TOOTH_VINE), (Entity) null);
     }
     
     public static DamageSource causeElectronicDamage(RegistryAccess registryAccess, Entity entity)

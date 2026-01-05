@@ -9,10 +9,10 @@
 						"down"
 					],
 					"check": {
-						"Name": "beyondtheabyss:rot_soil"
+						"Name": "beyondtheabyss:abyssalith"
 					},
 					"state": {
-						"Name": "beyondtheabyss:spinyweed"
+						"Name": "beyondtheabyss:oyster_coral"
 					}
 				}
 			},

@@ -60,7 +60,7 @@ public class EntityChainTrapMaw extends Entity
 		else
 		{
  			this.chain.setOldPosAndRot();
-			this.chain.tick();
+			this.chain.tickNormal();
 			if(this.getTarget() != null)
 			{
 				Vec3 pos = this.chain.getTipSegment().getPos();

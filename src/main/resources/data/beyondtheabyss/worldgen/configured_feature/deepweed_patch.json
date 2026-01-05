@@ -3,8 +3,17 @@
 	"config": {
 		"feature": {
 			"feature": {
-				"type": "beyondtheabyss:deepweed_patch",
+				"type": "beyondtheabyss:direction_block",
 				"config": {
+					"directions": [
+						"down"
+					],
+					"check": {
+						"Name": "beyondtheabyss:rot_soil"
+					},
+					"state": {
+						"Name": "beyondtheabyss:deepweed"
+					}
 				}
 			},
 			"placement": [

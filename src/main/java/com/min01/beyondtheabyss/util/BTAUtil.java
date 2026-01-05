@@ -326,6 +326,19 @@ public class BTAUtil
 		return Vec3.atCenterOf(blockPos);
 	}
 	
+	public static BlockPos getGroundPos(BlockGetter level, double x, double startY, double z, int maxStep)
+    {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startY, z);
+        int step = 0;
+        do
+        {
+        	mutablePos.move(Direction.DOWN);
+        	step++;
+        }
+        while(step < maxStep && (level.getBlockState(mutablePos).isAir() || !level.getFluidState(mutablePos).isEmpty() || !level.getBlockState(mutablePos).isCollisionShapeFullBlock(level, mutablePos)) && mutablePos.getY() > level.getMinBuildHeight());
+        return mutablePos.immutable();
+    }
+	
 	public static BlockPos getGroundPos(BlockGetter level, double x, double startY, double z)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startY, z);

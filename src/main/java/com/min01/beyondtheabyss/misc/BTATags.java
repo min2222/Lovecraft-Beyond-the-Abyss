@@ -13,11 +13,16 @@ public class BTATags
 {
 	public static class BTAEntity
 	{
-		public static final TagKey<EntityType<?>> ABYSS_CREATURES = create("abyss_creatures");
+		public static final TagKey<EntityType<?>> DEEP_ABYSS_CREATURES = create("deep_abyss_creatures");
+		public static final TagKey<EntityType<?>> DEATH_VALLEY_CREATURES = create("death_valley_creatures");
 		public static final TagKey<EntityType<?>> EVERGREEN_CREATURES = create("evergreen_creatures");
-		public static final TagKey<EntityType<?>> CITY_CREATURES = create("city_creatures");
+		public static final TagKey<EntityType<?>> MIRRORED_CITY_CREATURES = create("mirrored_city_creatures");
+		public static final TagKey<EntityType<?>> MOON_CREATURES = create("moon_creatures");
+		public static final TagKey<EntityType<?>> ENDLESS_DESERT_CREATURES = create("endless_desert_creatures");
+		public static final TagKey<EntityType<?>> PURGATORY_CREATURES = create("purgatory_creatures");
+		public static final TagKey<EntityType<?>> OUTER_SPACE_CREATURES = create("outer_space_creatures");
 		public static final TagKey<EntityType<?>> MINI_BOSSES = create("mini_bosses");
-		public static final TagKey<EntityType<?>> FAR_RANGE_TICKING = create("far_range_ticking");
+		public static final TagKey<EntityType<?>> FORCE_TICKING = create("force_ticking");
 		
 		private static TagKey<EntityType<?>> create(String name) 
 		{

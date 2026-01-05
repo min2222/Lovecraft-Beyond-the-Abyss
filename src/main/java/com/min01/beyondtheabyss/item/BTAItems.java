@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.item.deepabyss.FelmetalDivingSetItem;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
 import com.min01.beyondtheabyss.item.deepabyss.GhidruthFleshItem;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.item.deepabyss.SubmarineItem;
 import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.BTAFoods;
 
@@ -72,6 +73,7 @@ public class BTAItems
 	public static final RegistryObject<Item> GNASHER_EYE = DEEP_ABYSS_ITEMS.register("gnasher_eye", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GNASHER_TOOTH = DEEP_ABYSS_ITEMS.register("gnasher_tooth", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GHOUL_BLOOM_SEED_POD = DEEP_ABYSS_ITEMS.register("ghoul_bloom_seed_pod", () -> new ItemNameBlockItem(BTABlocks.GHOUL_BLOOM.get(), new Item.Properties().food(BTAFoods.GHOUL_BLOOM)));
+	public static final RegistryObject<Item> COOKED_GHOUL_BLOOM_SEED_POD = DEEP_ABYSS_ITEMS.register("cooked_ghoul_bloom_seed_pod", () -> new Item(new Item.Properties().food(BTAFoods.COOKED_GHOUL_BLOOM)));
 	public static final RegistryObject<Item> FIBER = DEEP_ABYSS_ITEMS.register("fiber", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ABERRANT_FLESH = DEEP_ABYSS_ITEMS.register("aberrant_flesh", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CHARGE_CORE = DEEP_ABYSS_ITEMS.register("charge_core", () -> new Item(new Item.Properties()));
@@ -91,6 +93,7 @@ public class BTAItems
 	public static final RegistryObject<Item> CLAM_OF_GUIDANCE = DEEP_ABYSS_ITEMS.register("clam_of_guidance", () -> new ClamOfGuidanceItem());
 	public static final RegistryObject<Item> HEART_OF_FORNEUS = DEEP_ABYSS_ITEMS.register("heart_of_forneus", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> FLYING_FISH = DEEP_ABYSS_ITEMS.register("flying_fish", () -> new FlyingFishItem());
+	public static final RegistryObject<Item> SUBMARINE = DEEP_ABYSS_ITEMS.register("submarine", () -> new SubmarineItem());
 	
 	//foods
 	public static final RegistryObject<Item> RAW_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("raw_ghidruth_flesh", () -> new GhidruthFleshItem(BTAFoods.RAW_GHIDRUTH_FLESH, true));

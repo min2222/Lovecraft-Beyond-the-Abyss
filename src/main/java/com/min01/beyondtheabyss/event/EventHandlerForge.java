@@ -219,7 +219,7 @@ public class EventHandlerForge
     			CHAT_MAP.values().removeIf(t -> t.tickCount > 120);
 				for(Entity entity : BTAUtil.getAllEntities(serverLevel))
 				{
-    				if(!entity.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+    				if(!entity.getType().is(BTATags.BTAEntity.FORCE_TICKING))
     				{
     					continue;
     				}

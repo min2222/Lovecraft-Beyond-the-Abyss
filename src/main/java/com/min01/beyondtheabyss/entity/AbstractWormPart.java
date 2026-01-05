@@ -76,12 +76,12 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 		}
 		else if(!this.isHead() && !this.isUnloaded())
 		{
-			if(!this.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+			if(!this.getType().is(BTATags.BTAEntity.FORCE_TICKING))
 			{
 				this.discard();
 			}
 		}
-		if(this.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+		if(this.getType().is(BTATags.BTAEntity.FORCE_TICKING))
 		{
 			if(!this.level.isClientSide)
 			{
@@ -281,7 +281,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	{
 		if(this.entityData.get(HEAD_UUID).isPresent()) 
 		{
-			if(this.getType().is(BTATags.BTAEntity.FAR_RANGE_TICKING))
+			if(this.getType().is(BTATags.BTAEntity.FORCE_TICKING))
 			{
 				for(Entity entity : BTAUtil.getAllEntities(this.level))
 				{

@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smelting",
+	"ingredient": {
+		"item": "beyondtheabyss:ghoul_bloom_seed_pod"
+	},
+	"result": "beyondtheabyss:cooked_ghoul_bloom_seed_pod",
+	"experience": 0.15,
+	"cookingtime": 60
+}
