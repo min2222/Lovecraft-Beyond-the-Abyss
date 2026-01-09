@@ -125,8 +125,10 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 	                        {
 	                            BlockState state = from.getBlockState(x, y, z);
 	                            boolean isAir = state.isAir();
-	                            if(isAir && newWorldY < 300) 
+	                            if(isAir && newWorldY < 300)
+	                            {
 	                            	continue;
+	                            }
 	                            to.setBlockState(x, newY, z, state, false);
 	                        }
 	                    }
