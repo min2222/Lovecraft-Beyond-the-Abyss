@@ -1,6 +1,8 @@
 package com.min01.beyondtheabyss.blockentity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateAltarItemPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +29,10 @@ public class RiftwellingAltarBlockEntity extends BlockEntity
 	public void setItem(ItemStack stack)
 	{
 		this.item = stack;
+		if(!this.level.isClientSide)
+		{
+			BTANetwork.sendToAll(new UpdateAltarItemPacket(stack, this.worldPosition));
+		}
 	}
 	
 	public ItemStack getItem()
@@ -45,6 +51,6 @@ public class RiftwellingAltarBlockEntity extends BlockEntity
 	public void load(CompoundTag nbt)
 	{
 		super.load(nbt);
-		this.item = ItemStack.of(nbt.getCompound("Item"));
+		this.setItem(ItemStack.of(nbt.getCompound("Item")));
 	}
 }

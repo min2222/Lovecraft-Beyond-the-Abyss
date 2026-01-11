@@ -1,7 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
@@ -55,8 +53,6 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	public final Worm worm4 = new Worm();
 	public final Worm worm5 = new Worm();
 	public final Worm worm6 = new Worm();
-	
-	public static final List<String> LIST = List.of("Up", "Jaw2", "Tails", "TailEdge", "Body2", "Left", "Right");
 	
 	public EntityCorpseAngler(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{
@@ -130,19 +126,15 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		this.worm5.setOldPosAndRot();
 		this.worm6.setOldPosAndRot();
 		
-
-		if(this.tickCount > 2)
-		{
-			float speed = 0.35F;
-	    	WormChain.tick(this.worm, this, 0.0F, speed);
-	    	WormChain.tick(this.worm1, this.worm, 0.0F, speed);
-	    	WormChain.tick(this.worm2, this.worm1, 0.0F, speed);
-	    	WormChain.tick(this.worm3, this.worm2, 0.0F, speed);
-	    	
-	    	WormChain.tick(this.worm4, this.worm3, 0.0F, speed);
-	    	WormChain.tick(this.worm5, this.worm4, 0.0F, speed);
-	    	WormChain.tick(this.worm6, this.worm5, 0.0F, speed);
-		}
+		float speed = 0.35F;
+    	WormChain.tick(this.worm, this, 0.0F, speed);
+    	WormChain.tick(this.worm1, this.worm, 0.0F, speed);
+    	WormChain.tick(this.worm2, this.worm1, 0.0F, speed);
+    	WormChain.tick(this.worm3, this.worm2, 0.0F, speed);
+    	
+    	WormChain.tick(this.worm4, this.worm3, 0.0F, speed);
+    	WormChain.tick(this.worm5, this.worm4, 0.0F, speed);
+    	WormChain.tick(this.worm6, this.worm5, 0.0F, speed);
     	
 		DeepAbyssUtil.fishFlopping(this);
 		
@@ -157,7 +149,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		
 		boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
 		
-		if(this.getAnimationState() == 0 && this.isInWater() && !this.hasTarget())
+		if(this.getAnimationState() == 0 && this.isInWater() && !this.hasTarget() && this.tickCount > 2 && this.level.isLoaded(this.blockPosition()))
 		{
 			if(this.getBurrowCooldown() <= 0)
 			{
@@ -245,7 +237,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		if(pReason == MobSpawnType.NATURAL)
 		{
 			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
-			Vec3 pos = Vec3.atBottomCenterOf(floorPos);
+			Vec3 pos = Vec3.atBottomCenterOf(floorPos.above());
 			this.moveTo(pos);
 		}
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
@@ -293,7 +285,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		if(pSource.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
 		{
 	        String part = BTAUtil.getMultiPart(this.getBounds(), player);
-	        if(part != null && LIST.contains(part))
+	        if(part != null && part.equals("Bait"))
 	        {
 				this.setAnimationState(4);
 				this.setAnimationTick(20);

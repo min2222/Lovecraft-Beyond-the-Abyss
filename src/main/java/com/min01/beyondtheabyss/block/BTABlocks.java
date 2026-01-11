@@ -17,7 +17,6 @@ import com.min01.beyondtheabyss.block.deepabyss.JawBoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.LargeSkullBlock;
 import com.min01.beyondtheabyss.block.deepabyss.NoBonemealSeagrassBlock;
 import com.min01.beyondtheabyss.block.deepabyss.NoDeadCoralPlantBlock;
-import com.min01.beyondtheabyss.block.deepabyss.RafflesiaAnemoneBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RibBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RiftwellingAltarBlock;
 import com.min01.beyondtheabyss.block.deepabyss.RotSoilBlock;
@@ -28,6 +27,7 @@ import com.min01.beyondtheabyss.block.deepabyss.SpineBoneMiddleBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneTipBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvineBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvinePlantBlock;
+import com.min01.beyondtheabyss.block.mirroredcity.RafflesiaAnemoneBlock;
 import com.min01.beyondtheabyss.blockentity.AnimatableBlockEntity;
 import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
@@ -98,12 +98,10 @@ public class BTABlocks
     public static final RegistryObject<Block> TOOTHVINE_PLANT = BLOCKS.register("toothvine_plant", () -> new ToothvinePlantBlock());
     public static final RegistryObject<Block> OYSTER_CORAL = BLOCKS.register("oyster_coral", () -> new NoDeadCoralPlantBlock(BlockBehaviour.Properties.copy(Blocks.BRAIN_CORAL).mapColor(DyeColor.PURPLE)));
     public static final RegistryObject<Block> OSTEO_CORAL = BLOCKS.register("osteo_coral", () -> new NoDeadCoralPlantBlock(BlockBehaviour.Properties.copy(Blocks.BRAIN_CORAL).mapColor(DyeColor.WHITE)));
-    public static final RegistryObject<Block> GUTS_CORAL = BLOCKS.register("guts_coral", () -> new NoDeadCoralPlantBlock(BlockBehaviour.Properties.copy(Blocks.BRAIN_CORAL).mapColor(DyeColor.RED)));
     public static final RegistryObject<Block> SPINYWEED = BLOCKS.register("spinyweed", () -> new NoBonemealSeagrassBlock(BlockBehaviour.Properties.copy(Blocks.SEAGRASS), false));
     public static final RegistryObject<Block> DEEPWEED = BLOCKS.register("deepweed", () -> new NoBonemealSeagrassBlock(BlockBehaviour.Properties.copy(Blocks.SEAGRASS), false));
     public static final RegistryObject<Block> GLARING_BARNACLE = BLOCKS.register("glaring_barnacle", () -> new GlaringBarnacleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.SLIME_BLOCK).noOcclusion().pushReaction(PushReaction.DESTROY)));
-    public static final RegistryObject<Block> RAFFLESIA_ANEMONE = BLOCKS.register("rafflesia_anemone", () -> new RafflesiaAnemoneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.SLIME_BLOCK).noOcclusion().pushReaction(PushReaction.DESTROY)));
-    
+
     public static final RegistryObject<Block> CHISELED_BONE_BLOCK = BLOCKS.register("chiseled_bone_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     public static final RegistryObject<Block> CRACKED_BONE_BLOCK = BLOCKS.register("cracked_bone_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
     public static final RegistryObject<Block> BONE_BRICKS = BLOCKS.register("bone_bricks", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK)));
@@ -126,6 +124,9 @@ public class BTABlocks
     public static final RegistryObject<Block> BONE_LEVER = BLOCKS.register("bone_lever", () -> new BoneLeverBlock(BlockBehaviour.Properties.of().noCollission().strength(0.5F).sound(SoundType.BONE_BLOCK)));
     public static final RegistryObject<Block> CHAIN_TRAP = BLOCKS.register("chain_trap", () -> new ChainTrapBlock());
     public static final RegistryObject<Block> BIOCRAFTER = BLOCKS.register("biocrafter", () -> new BiocrafterBlock());
+
+    public static final RegistryObject<Block> GUTS_CORAL = BLOCKS.register("guts_coral", () -> new NoDeadCoralPlantBlock(BlockBehaviour.Properties.copy(Blocks.BRAIN_CORAL).mapColor(DyeColor.RED)));
+    public static final RegistryObject<Block> RAFFLESIA_ANEMONE = BLOCKS.register("rafflesia_anemone", () -> new RafflesiaAnemoneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.SLIME_BLOCK).noOcclusion().pushReaction(PushReaction.DESTROY)));
     
     public static final RegistryObject<Block> MOONSTONE = BLOCKS.register("moonstone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)));
     

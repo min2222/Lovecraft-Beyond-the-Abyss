@@ -162,18 +162,18 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 
 			if(this.canExtend())
 			{
-				if(this.getTarget() != null && !this.getTarget().isPassenger() && !this.isVehicle())
+				if(this.getTarget() != null)
 				{
 					if(this.chain.getTarget().equals(Vec3.ZERO))
 					{
-						if(this.distanceTo(this.getTarget()) <= 15.0F)
+						if(this.distanceTo(this.getTarget()) <= 15.0F && !this.getTarget().isPassenger() && !this.isVehicle())
 						{
 							this.chain.setTarget(this.getTarget().position());
 						}
 					}
-					else if(this.chain.getTarget().subtract(this.position()).length() <= 2.5F)
+					else if(this.chain.getTarget().distanceTo(this.position()) <= 2.5F)
 					{
-						if(this.getTarget().position().subtract(this.position()).length() <= 2.5F)
+						if(this.getTarget().distanceTo(this) <= 2.5F)
 						{
 							this.getTarget().startRiding(this);
 							this.setCooldown(100);

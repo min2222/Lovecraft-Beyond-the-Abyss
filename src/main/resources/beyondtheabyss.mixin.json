@@ -6,8 +6,7 @@
 	"mixins": [
 		"MixinEntity",
 		"MixinSwimNodeEvaluator",
-		"MixinEnderDragon",
-		"MixinClimberEntity"
+		"MixinEnderDragon"
 	],
 	"client": [
 		"MixinLevelRenderer",

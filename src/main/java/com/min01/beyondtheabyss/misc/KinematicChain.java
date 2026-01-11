@@ -83,7 +83,7 @@ public class KinematicChain
 		        double dist = toTarget.length();
 		        double moveDist = Math.min(dist, tip.distance);
 				Vec2 rot = this.lookAt(current.getPos(), next.getPos());
-				if(moveDist > 0.5F)
+				if(moveDist > 0.1F)
 				{
 					current.setPos(this.getLookPos(rot, current.getPos(), 0.0F, 0.0F, moveDist * this.speed));
 				}

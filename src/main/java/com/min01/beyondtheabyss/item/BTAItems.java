@@ -149,11 +149,12 @@ public class BTAItems
 	public static final RegistryObject<Item> BIOCRAFTER = registerCustomRendererBlockItem(DEEP_ABYSS_ITEMS, "biocrafter", () -> BTABlocks.BIOCRAFTER.get(), () -> new BiocrafterBlockEntity(BlockPos.ZERO, BTABlocks.BIOCRAFTER.get().defaultBlockState()), new Item.Properties());
 	public static final RegistryObject<Item> OYSTER_CORAL = registerBlockItem(DEEP_ABYSS_ITEMS, "oyster_coral", () -> BTABlocks.OYSTER_CORAL.get(), new Item.Properties());
 	public static final RegistryObject<Item> OSTEO_CORAL = registerBlockItem(DEEP_ABYSS_ITEMS, "osteo_coral", () -> BTABlocks.OSTEO_CORAL.get(), new Item.Properties());
-	public static final RegistryObject<Item> GUTS_CORAL = registerBlockItem(DEEP_ABYSS_ITEMS, "guts_coral", () -> BTABlocks.GUTS_CORAL.get(), new Item.Properties());
 	public static final RegistryObject<Item> SPINYWEED = registerBlockItem(DEEP_ABYSS_ITEMS, "spinyweed", () -> BTABlocks.SPINYWEED.get(), new Item.Properties());
 	public static final RegistryObject<Item> DEEPWEED = registerBlockItem(DEEP_ABYSS_ITEMS, "deepweed", () -> BTABlocks.DEEPWEED.get(), new Item.Properties());
 	public static final RegistryObject<Item> GLARING_BARNACLE = registerCustomRendererBlockItem(DEEP_ABYSS_ITEMS, "glaring_barnacle", () -> BTABlocks.GLARING_BARNACLE.get(), () -> new AnimatableBlockEntity(BlockPos.ZERO, BTABlocks.GLARING_BARNACLE.get().defaultBlockState()), new Item.Properties());
-	public static final RegistryObject<Item> RAFFLESIA_ANEMONE = registerBlockItem(DEEP_ABYSS_ITEMS, "rafflesia_anemone", () -> BTABlocks.RAFFLESIA_ANEMONE.get(), new Item.Properties());
+
+	public static final RegistryObject<Item> GUTS_CORAL = registerBlockItem(MIRRORED_CITY_ITEMS, "guts_coral", () -> BTABlocks.GUTS_CORAL.get(), new Item.Properties());
+	public static final RegistryObject<Item> RAFFLESIA_ANEMONE = registerBlockItem(MIRRORED_CITY_ITEMS, "rafflesia_anemone", () -> BTABlocks.RAFFLESIA_ANEMONE.get(), new Item.Properties());
 	
 	public static final RegistryObject<Item> MOONSTONE = registerBlockItem(MOON_ITEMS, "moonstone", () -> BTABlocks.MOONSTONE.get(), new Item.Properties());
 	

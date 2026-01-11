@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.phys.Vec3;
 
 public class ChainTrapRenderer implements BlockEntityRenderer<ChainTrapBlockEntity>
 {
@@ -127,5 +128,17 @@ public class ChainTrapRenderer implements BlockEntityRenderer<ChainTrapBlockEnti
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	public boolean shouldRender(ChainTrapBlockEntity pBlockEntity, Vec3 pCameraPos)
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean shouldRenderOffScreen(ChainTrapBlockEntity pBlockEntity)
+	{
+		return true;
 	}
 }

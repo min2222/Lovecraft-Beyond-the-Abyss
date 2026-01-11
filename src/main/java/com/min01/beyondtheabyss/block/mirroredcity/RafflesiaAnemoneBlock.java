@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.block.deepabyss;
+package com.min01.beyondtheabyss.block.mirroredcity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
