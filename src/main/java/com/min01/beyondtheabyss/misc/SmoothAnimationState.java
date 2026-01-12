@@ -66,7 +66,13 @@ public class SmoothAnimationState extends AnimationState
 	@OnlyIn(Dist.CLIENT)
 	public void animateItem(HierarchicalItemModel model, AnimationDefinition definition, float ageInTicks) 
 	{
-		this.updateTime(ageInTicks, 1.0F);
+		this.animateItem(model, definition, ageInTicks, 1.0F);
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void animateItem(HierarchicalItemModel model, AnimationDefinition definition, float ageInTicks, float speed) 
+	{
+		this.updateTime(ageInTicks, speed);
 		this.ifStarted(t -> 
 		{
 			float totalFactor = this.factor(BTAClientUtil.MC.getFrameTime());

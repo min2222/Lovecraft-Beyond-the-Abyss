@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.item.model;
 import java.util.Optional;
 
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
-import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -41,9 +40,13 @@ public abstract class HierarchicalItemModel extends Model
 		});
 	}
 
-	public void animate(ItemStack stack, String name, AnimationDefinition definition, float ageInTicks)
+	public void animate(ItemStack stack, SmoothAnimationState state, AnimationDefinition definition, float ageInTicks)
 	{
-		SmoothAnimationState state = BTAUtil.getItemAnimationStateByName(stack, name);
-		state.animateItem(this, definition, ageInTicks);
+		state.animateItem(this, definition, ageInTicks, 1.0F);
+	}
+
+	public void animate(ItemStack stack, SmoothAnimationState state, AnimationDefinition definition, float ageInTicks, float speed)
+	{
+		state.animateItem(this, definition, ageInTicks, speed);
 	}
 }

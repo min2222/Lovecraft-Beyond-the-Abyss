@@ -64,7 +64,7 @@ public class BeyondtheAbyss
 		
 		BTANetwork.registerMessages();
 		ctx.registerConfig(Type.COMMON, BTAConfig.CONFIG_SPEC, "beyond-the-abyss.toml");
-		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::attachItemStackCapability);
-		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::attachEntityCapability);
+		MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, BTACapabilities::onAttachItemStackCapabilities);
+		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, BTACapabilities::onAttachEntityCapabilities);
 	}
 }

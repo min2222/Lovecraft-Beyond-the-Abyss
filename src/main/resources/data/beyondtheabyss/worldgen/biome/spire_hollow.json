@@ -31,6 +31,12 @@
 		"water_ambient": [
 		],
 		"water_creature": [
+			{
+				"type": "beyondtheabyss:lithoshrimp",
+				"weight": 80,
+				"minCount": 4,
+				"maxCount": 6
+			}
 		]
 	},
 	"spawn_costs": {

@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.network;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.capabilities.BTACapabilities;
+import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -50,7 +50,7 @@ public class UpdatePlayerAnimationPacket
 					Entity entity = BTAUtil.getEntityByUUID(level, message.uuid);
 					if(entity instanceof Player player)
 					{
-						player.getCapability(BTACapabilities.PLAYER_ANIMATION).ifPresent(t -> 
+						player.getCapability(PlayerAnimationCapabilityImpl.PLAYER_ANIMATION).ifPresent(t -> 
 						{
 							t.setAnimationState(message.animationState);
 							t.setPrevAnimationState(message.prevAimationState);

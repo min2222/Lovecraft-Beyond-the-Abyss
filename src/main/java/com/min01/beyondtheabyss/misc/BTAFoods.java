@@ -14,4 +14,6 @@ public class BTAFoods
 	public static final FoodProperties COOKED_GNASHER = new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build();
 	public static final FoodProperties GHOUL_BLOOM = new FoodProperties.Builder().fast().effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 60, 0), 1.0F).build();
 	public static final FoodProperties COOKED_GHOUL_BLOOM = new FoodProperties.Builder().fast().nutrition(3).saturationMod(0.2F).build();
+	public static final FoodProperties RAW_LITHOSHRIMP = new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).build();
+	public static final FoodProperties COOKED_LITHOSHRIMP = new FoodProperties.Builder().nutrition(3).saturationMod(0.4F).build();
 }

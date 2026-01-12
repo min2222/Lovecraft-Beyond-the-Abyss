@@ -34,13 +34,6 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 {
-    public static final String GUNBLADE_OPEN = "GunbladeOpen";
-    public static final String GUNBLADE_CLOSE = "GunbladeClose";
-    public static final String GUNBLADE_CHARGE = "GunbladeCharge";
-    public static final String GUNBLADE_SHOOT_LIGHT = "GunbladeShootLight";
-    public static final String GUNBLADE_SHOOT = "GunbladeShoot";
-    public static final String GUNBLADE_SWING = "GunbladeSwing";
-    
 	public SkeletalGunbladeItem(Item.Properties properties) 
 	{
 		super(Tiers.DIAMOND, 0, 0.0F, properties);

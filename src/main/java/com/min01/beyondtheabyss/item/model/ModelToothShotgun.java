@@ -1,8 +1,9 @@
 package com.min01.beyondtheabyss.item.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.item.animation.ToothShotgunAnimation;
-import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -67,11 +68,13 @@ public class ModelToothShotgun extends HierarchicalItemModel
 	public void setupAnim(ItemStack stack, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animate(stack, ToothShotgunItem.FREAKY, ToothShotgunAnimation.FREAKY, ageInTicks);
-		this.animate(stack, ToothShotgunItem.RELOAD, ToothShotgunAnimation.RELOAD, ageInTicks / 2.0F);
-		this.animate(stack, ToothShotgunItem.SHOOT, ToothShotgunAnimation.SHOOT, ageInTicks);
-		this.animate(stack, ToothShotgunItem.EMPTY, ToothShotgunAnimation.EMPTY, ageInTicks / 2.0F);
-		this.animate(stack, ToothShotgunItem.EMPTY2, ToothShotgunAnimation.EMPTY2, ageInTicks / 2.0F);
+		ItemAnimationCapabilityImpl cap = BTAUtil.getItemAnimationCapability(stack);
+		
+		this.animate(stack, cap.freakyAnimationState, ToothShotgunAnimation.FREAKY, ageInTicks);
+		this.animate(stack, cap.reloadAnimationState, ToothShotgunAnimation.RELOAD, ageInTicks, 0.5F);
+		this.animate(stack, cap.shootAnimationState, ToothShotgunAnimation.SHOOT, ageInTicks);
+		this.animate(stack, cap.emptyAnimationState, ToothShotgunAnimation.EMPTY, ageInTicks, 0.5F);
+		this.animate(stack, cap.empty2AnimationState, ToothShotgunAnimation.EMPTY2, ageInTicks, 0.5F);
 	}
 	
 	@Override

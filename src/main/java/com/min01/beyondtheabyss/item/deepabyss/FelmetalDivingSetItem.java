@@ -21,7 +21,7 @@ public class FelmetalDivingSetItem extends AbstractDivingSetItem
 {
 	public FelmetalDivingSetItem(ArmorItem.Type type)
 	{
-		super(BTAArmorMaterials.DIVING_SET, type, 1.5F);
+		super(BTAArmorMaterials.FELMETAL_DIVING_SET, type, 1.5F);
 	}
 	
 	@Override

@@ -3,17 +3,21 @@ package com.min01.beyondtheabyss.capabilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePlayerAnimationPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -21,20 +25,33 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.PacketDistributor;
 
 public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 {
+	public static final Capability<IPlayerAnimationCapability> PLAYER_ANIMATION = CapabilityManager.get(new CapabilityToken<>() {});
+	
 	private int animationTick;
 	private int animationState;
 	private int prevAnimationState;
 	
-	private final SmoothAnimationState shotgunFireAnimationState = new SmoothAnimationState(0.999F);
-	private final SmoothAnimationState shotgunHoldAnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState shotgunRunningAnimationState = new SmoothAnimationState(0.999F);
-	private final SmoothAnimationState gunbladeChargeAnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState gunbladeShootAnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState gunbladeSwingAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState shotgunFireAnimationState = new SmoothAnimationState(0.999F);
+	public final SmoothAnimationState shotgunHoldAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState shotgunRunningAnimationState = new SmoothAnimationState(0.999F);
+	public final SmoothAnimationState gunbladeChargeAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState gunbladeShootAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState gunbladeSwingAnimationState = new SmoothAnimationState();
+	
+	private final Entity entity;
+	
+	public PlayerAnimationCapabilityImpl(Entity entity) 
+	{
+		this.entity = entity;
+	}
 	
 	@Override
 	public CompoundTag serializeNBT() 
@@ -49,9 +66,9 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		this.animationTick = nbt.getInt("AnimationTick");
-		this.animationState = nbt.getInt("AnimationState");
-		this.prevAnimationState = nbt.getInt("PrevAnimationState");
+		this.setAnimationTick(nbt.getInt("AnimationTick"));
+		this.setAnimationState(nbt.getInt("AnimationState"));
+		this.setPrevAnimationState(nbt.getInt("PrevAnimationState"));
 	}
 
 	@Override
@@ -131,7 +148,7 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 		}
 		else
 		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new UpdatePlayerAnimationPacket(entity.getUUID(), this.animationState, this.prevAnimationState, this.animationTick));
+			this.sendUpdatePacket();
 		}
 	}
 
@@ -160,36 +177,6 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	}
 	
 	@Override
-	public SmoothAnimationState getAnimationStateByName(String name) 
-	{
-		if(name.equals(ToothShotgunItem.SHOTGUN_FIRE))
-		{
-			return this.shotgunFireAnimationState;
-		}
-		if(name.equals(ToothShotgunItem.SHOTGUN_HOLD))
-		{
-			return this.shotgunHoldAnimationState;
-		}
-		if(name.equals(ToothShotgunItem.SHOTGUN_RUNNING))
-		{
-			return this.shotgunRunningAnimationState;
-		}
-		if(name.equals(SkeletalGunbladeItem.GUNBLADE_CHARGE))
-		{
-			return this.gunbladeChargeAnimationState;
-		}
-		if(name.equals(SkeletalGunbladeItem.GUNBLADE_SHOOT))
-		{
-			return this.gunbladeShootAnimationState;
-		}
-		if(name.equals(SkeletalGunbladeItem.GUNBLADE_SWING))
-		{
-			return this.gunbladeSwingAnimationState;
-		}
-		return new SmoothAnimationState();
-	}
-	
-	@Override
 	public void setAnimationTick(int tick) 
 	{
 		this.animationTick = tick;
@@ -199,5 +186,19 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	public int getAnimationTick() 
 	{
 		return this.animationTick;
+	}
+	
+	private void sendUpdatePacket() 
+	{
+		if(!this.entity.level.isClientSide)
+		{
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdatePlayerAnimationPacket(this.entity.getUUID(), this.animationState, this.prevAnimationState, this.animationTick));
+		}
+	}
+	
+	@Override
+	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) 
+	{
+		return PLAYER_ANIMATION.orEmpty(cap, LazyOptional.of(() -> this));
 	}
 }

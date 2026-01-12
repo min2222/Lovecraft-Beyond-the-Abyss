@@ -20,7 +20,6 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 public class ClamOfGuidanceItem extends Item implements IAnimatableItem
 {
 	public static final String OPEN = "Open";
-    public static final String CLAM_OPEN = "ClamOpen";
 	
 	public ClamOfGuidanceItem()
 	{

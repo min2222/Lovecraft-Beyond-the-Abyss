@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityLithoshrimp;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityNecroshell;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
@@ -65,6 +66,7 @@ public class EventHandler
     	event.put(BTAEntities.FULGASTRA.get(), EntityFulgastra.createAttributes().build());
     	event.put(BTAEntities.SPLITTED_FULGASTRA.get(), EntitySplittedFulgastra.createAttributes().build());
     	event.put(BTAEntities.NECROSHELL.get(), EntityNecroshell.createAttributes().build());
+    	event.put(BTAEntities.LITHOSHRIMP.get(), EntityLithoshrimp.createAttributes().build());
     	event.put(BTAEntities.FORNEUS_HEAD.get(), EntityForneusHead.createAttributes().build());
     	event.put(BTAEntities.FORNEUS_BODY.get(), EntityForneusHead.createAttributes().build());
     	event.put(BTAEntities.FORNEUS_TAIL.get(), EntityForneusHead.createAttributes().build());
@@ -90,6 +92,7 @@ public class EventHandler
      	event.register(BTAEntities.MUTAVORE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityMutavore::checkMutavoreSpawnRules, Operation.AND);
      	event.register(BTAEntities.FULGASTRA.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityFulgastra::checkFulgastraSpawnRules, Operation.AND);
      	event.register(BTAEntities.NECROSHELL.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityNecroshell::checkNecroshellSpawnRules, Operation.AND);
+     	event.register(BTAEntities.LITHOSHRIMP.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityLithoshrimp::checkLithoshrimpSpawnRules, Operation.AND);
      	
      	event.register(BTAEntities.OBSERVER.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityObserver::checkObserverSpawnRules, Operation.AND);
     }

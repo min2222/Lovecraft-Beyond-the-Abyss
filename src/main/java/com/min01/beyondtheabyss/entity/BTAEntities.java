@@ -11,6 +11,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGloomfish;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
+import com.min01.beyondtheabyss.entity.deepabyss.EntityLithoshrimp;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityNecroshell;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
@@ -70,6 +71,7 @@ public class BTAEntities
 	public static final RegistryObject<EntityType<EntityFulgastra>> FULGASTRA = registerEntity("fulgastra", createBuilder(EntityFulgastra::new, MobCategory.WATER_CREATURE).sized(4.875F, 1.5625F));
 	public static final RegistryObject<EntityType<EntitySplittedFulgastra>> SPLITTED_FULGASTRA = registerEntity("splitted_fulgastra", createBuilder(EntitySplittedFulgastra::new, MobCategory.WATER_CREATURE).sized(1.625F, 1.4375F));
 	public static final RegistryObject<EntityType<EntityNecroshell>> NECROSHELL = registerEntity("necroshell", createBuilder(EntityNecroshell::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
+	public static final RegistryObject<EntityType<EntityLithoshrimp>> LITHOSHRIMP = registerEntity("lithoshrimp", createBuilder(EntityLithoshrimp::new, MobCategory.WATER_CREATURE).sized(0.5625F, 0.4375F));
 	public static final RegistryObject<EntityType<EntityForneusHead>> FORNEUS_HEAD = registerEntity("forneus_head", createBuilder(EntityForneusHead::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100));
 	public static final RegistryObject<EntityType<EntityForneusBody>> FORNEUS_BODY = registerEntity("forneus_body", createBuilder(EntityForneusBody::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100));
 	public static final RegistryObject<EntityType<EntityForneusTail>> FORNEUS_TAIL = registerEntity("forneus_tail", createBuilder(EntityForneusTail::new, MobCategory.WATER_CREATURE).sized(4.0F, 4.0F).clientTrackingRange(100));

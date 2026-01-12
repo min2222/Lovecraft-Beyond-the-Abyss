@@ -1,32 +1,47 @@
 package com.min01.beyondtheabyss.capabilities;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.deepabyss.ClamOfGuidanceItem;
-import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateItemAnimationPacket;
 
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.PacketDistributor;
 
 public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 {
+	public static final Capability<IItemAnimationCapability> ITEM_ANIMATION = CapabilityManager.get(new CapabilityToken<>() {});
+	
 	private int animationTick;
 	private int animationState;
 	private int tickCount;
 	
-	private final SmoothAnimationState gunBladeOpenAnimationState = new SmoothAnimationState(0.999F);
-	private final SmoothAnimationState gunBladeCloseAnimationState = new SmoothAnimationState(0.999F);
-	private final SmoothAnimationState freakyAnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState reloadAnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState shootAnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState emptyAnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState empty2AnimationState = new SmoothAnimationState();
-	private final SmoothAnimationState clamOpenAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState gunBladeOpenAnimationState = new SmoothAnimationState(0.999F);
+	public final SmoothAnimationState gunBladeCloseAnimationState = new SmoothAnimationState(0.999F);
+	public final SmoothAnimationState freakyAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState reloadAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState shootAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState emptyAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState empty2AnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState clamOpenAnimationState = new SmoothAnimationState();
+	
+	private final ItemStack stack;
+	
+	public ItemAnimationCapabilityImpl(ItemStack stack) 
+	{
+		this.stack = stack;
+	}
 	
 	@Override
 	public CompoundTag serializeNBT() 
@@ -40,15 +55,14 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		this.animationTick = nbt.getInt("AnimationTick");
-		this.animationState = nbt.getInt("AnimationState");
+		this.setAnimationTick(nbt.getInt("AnimationTick"));
+		this.setAnimationState(nbt.getInt("AnimationState"));
 	}
 	
 	@Override
 	public void tick(Entity player, ItemStack stack) 
 	{
 		this.tickCount++;
-
 		if(this.getAnimationTick() > 0)
 		{
 			this.setAnimationTick(this.getAnimationTick() - 1);
@@ -83,7 +97,7 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 		}
 		else
 		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new UpdateItemAnimationPacket(stack, player.getUUID(), this.animationState, this.animationTick));
+			this.sendUpdatePacket(player);
 		}
 	}
 
@@ -97,44 +111,6 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	public int getAnimationState() 
 	{
 		return this.animationState;
-	}
-	
-	@Override
-	public SmoothAnimationState getAnimationStateByName(String name) 
-	{
-		if(name.equals(SkeletalGunbladeItem.GUNBLADE_OPEN))
-		{
-			return this.gunBladeOpenAnimationState;
-		}
-		if(name.equals(SkeletalGunbladeItem.GUNBLADE_CLOSE))
-		{
-			return this.gunBladeCloseAnimationState;
-		}
-		if(name.equals(ToothShotgunItem.FREAKY))
-		{
-			return this.freakyAnimationState;
-		}
-		if(name.equals(ToothShotgunItem.RELOAD))
-		{
-			return this.reloadAnimationState;
-		}
-		if(name.equals(ToothShotgunItem.SHOOT))
-		{
-			return this.shootAnimationState;
-		}
-		if(name.equals(ToothShotgunItem.EMPTY))
-		{
-			return this.emptyAnimationState;
-		}
-		if(name.equals(ToothShotgunItem.EMPTY2))
-		{
-			return this.empty2AnimationState;
-		}
-		if(name.equals(ClamOfGuidanceItem.CLAM_OPEN))
-		{
-			return this.clamOpenAnimationState;
-		}
-		return new SmoothAnimationState();
 	}
 	
 	@Override
@@ -153,5 +129,19 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	public int getTickCount() 
 	{
 		return this.tickCount;
+	}
+	
+	private void sendUpdatePacket(Entity entity) 
+	{
+		if(!entity.level.isClientSide)
+		{
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new UpdateItemAnimationPacket(this.stack, entity.getUUID(), this.animationState, this.animationTick));
+		}
+	}
+
+	@Override
+	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) 
+	{
+		return ITEM_ANIMATION.orEmpty(cap, LazyOptional.of(() -> this));
 	}
 }

@@ -1,17 +1,16 @@
 package com.min01.beyondtheabyss.capabilities;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 @AutoRegisterCapability
-public interface IItemAnimationCapability extends INBTSerializable<CompoundTag>
+public interface IItemAnimationCapability extends ICapabilitySerializable<CompoundTag>
 {
 	ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "item_animation");
 
@@ -20,8 +19,6 @@ public interface IItemAnimationCapability extends INBTSerializable<CompoundTag>
 	void setAnimationState(int state);
 	
 	int getAnimationState();
-	
-	SmoothAnimationState getAnimationStateByName(String name);
 	
 	void setAnimationTick(int tick);
 	

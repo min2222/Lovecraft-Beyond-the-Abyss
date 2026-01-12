@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.network;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.capabilities.BTACapabilities;
+import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -64,7 +64,7 @@ public class UpdateItemAnimationPacket
 		                }
 		                if(to != null)
 		                {
-		                	to.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
+		                	to.getCapability(ItemAnimationCapabilityImpl.ITEM_ANIMATION).ifPresent(t -> 
 		                	{
 		    					t.setAnimationState(message.animationState);
 		    					t.setAnimationTick(message.animationTick);

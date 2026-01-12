@@ -11,6 +11,9 @@
 		"minecraft:cooked_chicken",
 		"minecraft:rabbit",
 		"minecraft:cooked_rabbit",
-		"minecraft:rotten_flesh"
+		"minecraft:rotten_flesh",
+		"beyondtheabyss:aberrant_flesh",
+		"beyondtheabyss:raw_lithoshrimp",
+		"beyondtheabyss:cooked_lithoshrimp"
 	]
 }

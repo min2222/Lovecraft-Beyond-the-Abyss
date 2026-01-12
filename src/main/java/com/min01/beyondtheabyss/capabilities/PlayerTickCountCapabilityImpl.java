@@ -1,14 +1,31 @@
 package com.min01.beyondtheabyss.capabilities;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.min01.beyondtheabyss.effect.BTAEffects;
 
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class PlayerTickCountCapabilityImpl implements IPlayerTickCountCapability
 {
+	public static final Capability<IPlayerTickCountCapability> PLAYER_TICK_COUNT = CapabilityManager.get(new CapabilityToken<>() {});
+	
 	private int tickCount;
+	
+	private final Entity entity;
+	
+	public PlayerTickCountCapabilityImpl(Entity entity) 
+	{
+		this.entity = entity;
+	}
 	
 	@Override
 	public CompoundTag serializeNBT() 
@@ -21,7 +38,7 @@ public class PlayerTickCountCapabilityImpl implements IPlayerTickCountCapability
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
-		this.tickCount = nbt.getInt("TickCount");
+		this.setTickCount(nbt.getInt("TickCount"));
 	}
 	
 	@Override
@@ -31,21 +48,42 @@ public class PlayerTickCountCapabilityImpl implements IPlayerTickCountCapability
 		{
 			if(player.hasEffect(BTAEffects.STONE_SKIN.get()))
 			{
-				if(this.tickCount < 25)
+				if(this.getTickCount() < 25)
 				{
-					this.tickCount++;
+					this.setTickCount(this.getTickCount() + 1);
 				}
 			}
 			else
 			{
-				this.tickCount = 0;
+				this.setTickCount(0);
 			}
+		}
+	}
+	
+	@Override
+	public void setTickCount(int tickCount)
+	{
+		this.tickCount = tickCount;
+		this.sendUpdatePacket();
+	}
+
+	@Override
+	public int getTickCount() 
+	{
+		return this.tickCount;
+	}
+	
+	private void sendUpdatePacket() 
+	{
+		if(!this.entity.level.isClientSide)
+		{
+			
 		}
 	}
 
 	@Override
-	public int getPlayerTickCount() 
+	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) 
 	{
-		return this.tickCount;
+		return PLAYER_TICK_COUNT.orEmpty(cap, LazyOptional.of(() -> this));
 	}
 }

@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smoking",
+	"ingredient": {
+		"item": "beyondtheabyss:raw_lithoshrimp"
+	},
+	"result": "beyondtheabyss:cooked_lithoshrimp",
+	"experience": 0.15,
+	"cookingtime": 20
+}

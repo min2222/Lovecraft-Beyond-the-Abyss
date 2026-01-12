@@ -11,9 +11,6 @@ import java.util.stream.Collectors;
 import org.joml.Math;
 
 import com.google.common.collect.ImmutableList;
-import com.min01.beyondtheabyss.capabilities.BTACapabilities;
-import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
-import com.min01.beyondtheabyss.capabilities.IPlayerAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.IPlayerTickCountCapability;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
@@ -21,7 +18,6 @@ import com.min01.beyondtheabyss.capabilities.PlayerTickCountCapabilityImpl;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.IBTAMob;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
-import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
@@ -194,6 +190,24 @@ public class BTAUtil
 		}
 	}
 	
+    public static void tickPlayerTickCount(LivingEntity player)
+    {
+		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl(player));
+		cap.tick(player);
+    }
+    
+    public static void setPlayerTickCount(LivingEntity player, int tickCount)
+    {
+		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl(player));
+		cap.setTickCount(tickCount);
+    }
+    
+    public static int getPlayerTickCount(LivingEntity player)
+    {
+		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl(player));
+		return cap.getTickCount();
+    }
+	
     public static void tickItemAnimation(Player player)
     {
 		for(int i = 0; i < player.getInventory().getContainerSize(); i++)
@@ -201,7 +215,7 @@ public class BTAUtil
 			ItemStack stack = player.getInventory().getItem(i);
 			if(stack.getItem() instanceof IAnimatableItem)
 			{
-				stack.getCapability(BTACapabilities.ITEM_ANIMATION).ifPresent(t -> 
+				stack.getCapability(ItemAnimationCapabilityImpl.ITEM_ANIMATION).ifPresent(t -> 
 				{
 					t.tick(player, stack);
 				});
@@ -209,88 +223,66 @@ public class BTAUtil
 		}
     }
     
-    public static void tickPlayerTickCount(LivingEntity player)
+    public static PlayerAnimationCapabilityImpl getPlayerAnimationCapability(Entity player)
     {
-		IPlayerTickCountCapability cap = player.getCapability(BTACapabilities.PLAYER_TICKCOUNT).orElse(new PlayerTickCountCapabilityImpl());
-		cap.tick(player);
-    }
-    
-    public static int getPlayerTickCount(LivingEntity player)
-    {
-		IPlayerTickCountCapability cap = player.getCapability(BTACapabilities.PLAYER_TICKCOUNT).orElse(new PlayerTickCountCapabilityImpl());
-		return cap.getPlayerTickCount();
+    	PlayerAnimationCapabilityImpl cap = (PlayerAnimationCapabilityImpl) player.getCapability(PlayerAnimationCapabilityImpl.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl(player));
+		return cap;
     }
     
     public static void tickPlayerAnimation(LivingEntity player)
     {
-		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-		cap.tick(player);
+    	getPlayerAnimationCapability(player).tick(player);
     }
     
     public static void setPlayerAnimationState(Entity player, int state)
     {
-		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-		cap.setAnimationState(state);
+    	getPlayerAnimationCapability(player).setAnimationState(state);
     }
     
     public static int getPlayerAnimationState(Entity player)
     {
-		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-		return cap.getAnimationState();
-    }
-    
-    public static SmoothAnimationState getPlayerAnimationStateByName(Entity player, String name)
-    {
-		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-		return cap.getAnimationStateByName(name);
+    	return getPlayerAnimationCapability(player).getAnimationState();
     }
     
     public static void setPlayerAnimationTick(Entity player, int tick)
     {
-		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-		cap.setAnimationTick(tick);
+    	getPlayerAnimationCapability(player).setAnimationTick(tick);
     }
     
     public static int getPlayerAnimationTick(Entity player)
     {
-		IPlayerAnimationCapability cap = player.getCapability(BTACapabilities.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
-		return cap.getAnimationTick();
+    	return getPlayerAnimationCapability(player).getAnimationTick();
     }
-	
-    public static int getItemTickCount(ItemStack stack)
+    
+    public static ItemAnimationCapabilityImpl getItemAnimationCapability(ItemStack stack)
     {
-		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-		return cap.getTickCount();
+    	ItemAnimationCapabilityImpl cap = (ItemAnimationCapabilityImpl) stack.getCapability(ItemAnimationCapabilityImpl.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl(stack));
+		return cap;
     }
-	
+    
     public static void setItemAnimationState(ItemStack stack, int state)
     {
-		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-		cap.setAnimationState(state);
+    	getItemAnimationCapability(stack).setAnimationState(state);
     }
     
     public static int getItemAnimationState(ItemStack stack)
     {
-		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-		return cap.getAnimationState();
-    }
-    
-    public static SmoothAnimationState getItemAnimationStateByName(ItemStack stack, String name)
-    {
-		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-		return cap.getAnimationStateByName(name);
+    	return getItemAnimationCapability(stack).getAnimationState();
     }
     
     public static void setItemAnimationTick(ItemStack stack, int tick)
     {
-		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-		cap.setAnimationTick(tick);
+    	getItemAnimationCapability(stack).setAnimationTick(tick);
     }
     
     public static int getItemAnimationTick(ItemStack stack)
     {
-		IItemAnimationCapability cap = stack.getCapability(BTACapabilities.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
-		return cap.getAnimationTick();
+    	return getItemAnimationCapability(stack).getAnimationTick();
+    }
+    
+    public static int getItemTickCount(ItemStack stack)
+    {
+    	return getItemAnimationCapability(stack).getTickCount();
     }
 	
 	public static boolean isCollisionShapeFullBlock(Level level, BlockPos pos)

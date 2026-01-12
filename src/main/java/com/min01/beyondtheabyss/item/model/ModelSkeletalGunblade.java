@@ -1,8 +1,10 @@
 package com.min01.beyondtheabyss.item.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.item.animation.SkeletalGunbladeAnimation;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
+import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -92,8 +94,10 @@ public class ModelSkeletalGunblade extends HierarchicalItemModel
 	public void setupAnim(ItemStack stack, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_OPEN, SkeletalGunbladeAnimation.GUNBLADE_OPEN, ageInTicks);
-		this.animate(stack, SkeletalGunbladeItem.GUNBLADE_CLOSE, SkeletalGunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
+		ItemAnimationCapabilityImpl cap = BTAUtil.getItemAnimationCapability(stack);
+		
+		this.animate(stack, cap.gunBladeOpenAnimationState, SkeletalGunbladeAnimation.GUNBLADE_OPEN, ageInTicks);
+		this.animate(stack, cap.gunBladeCloseAnimationState, SkeletalGunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
 		this.EnergyRay.zScale += SkeletalGunbladeItem.getLaserLength(stack);
 		this.InnerRay.z += 0.5F;
 	}

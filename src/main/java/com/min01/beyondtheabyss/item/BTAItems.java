@@ -62,6 +62,7 @@ public class BTAItems
 	public static final RegistryObject<Item> MUTAVORE_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "mutavore_spawn_egg", () -> BTAEntities.MUTAVORE.get(), 7692894, 4921891);
 	public static final RegistryObject<Item> FULGASTRA_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "fulgastra_spawn_egg", () -> BTAEntities.FULGASTRA.get(), 4596012, 46834);
 	public static final RegistryObject<Item> NECROSHELL_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "necroshell_spawn_egg", () -> BTAEntities.NECROSHELL.get(), 3286815, 8878945);
+	public static final RegistryObject<Item> LITHOSHRIMP_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "lithoshrimp_spawn_egg", () -> BTAEntities.LITHOSHRIMP.get(), 2761774, 6051698);
 	
 	public static final RegistryObject<Item> OVERSEER_SPAWN_EGG = registerSpawnEgg(MIRRORED_CITY_ITEMS, "overseer_spawn_egg", () -> BTAEntities.OVERSEER.get(), 3752532, 7174016);
 	public static final RegistryObject<Item> OBSERVER_SPAWN_EGG = registerSpawnEgg(MIRRORED_CITY_ITEMS, "observer_spawn_egg", () -> BTAEntities.OBSERVER.get(), 3752532, 2699068);
@@ -100,6 +101,8 @@ public class BTAItems
 	public static final RegistryObject<Item> COOKED_GHIDRUTH_FLESH = DEEP_ABYSS_ITEMS.register("cooked_ghidruth_flesh", () -> new GhidruthFleshItem(BTAFoods.COOKED_GHIDRUTH_FLESH, false));
 	public static final RegistryObject<Item> RAW_GNASHER = DEEP_ABYSS_ITEMS.register("raw_gnasher", () -> new BasicBTAFoodItem(BTAFoods.RAW_GNASHER));
 	public static final RegistryObject<Item> COOKED_GNASHER = DEEP_ABYSS_ITEMS.register("cooked_gnasher", () -> new BasicBTAFoodItem(BTAFoods.COOKED_GNASHER));
+	public static final RegistryObject<Item> RAW_LITHOSHRIMP = DEEP_ABYSS_ITEMS.register("raw_lithoshrimp", () -> new BasicBTAFoodItem(BTAFoods.RAW_LITHOSHRIMP));
+	public static final RegistryObject<Item> COOKED_LITHOSHRIMP = DEEP_ABYSS_ITEMS.register("cooked_lithoshrimp", () -> new BasicBTAFoodItem(BTAFoods.COOKED_LITHOSHRIMP));
 	
 	//blocks
 	public static final RegistryObject<Item> RIFTWELLING_ALTAR = registerCustomRendererBlockItem(DEEP_ABYSS_ITEMS, "riftwelling_altar", () -> BTABlocks.RIFTWELLING_ALTAR.get(), () -> new RiftwellingAltarBlockEntity(BlockPos.ZERO, BTABlocks.RIFTWELLING_ALTAR.get().defaultBlockState()), new Item.Properties().rarity(RARITY_DEEP_ABYSS));

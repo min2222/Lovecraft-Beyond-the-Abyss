@@ -12,9 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.animation.PlayerAnimation;
+import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
-import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -39,10 +38,10 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     @Inject(at = @At("TAIL"), method = "setupAnim", cancellable = true)
     private void setupAnimTail(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SWING, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
+    	PlayerAnimationCapabilityImpl cap = BTAUtil.getPlayerAnimationCapability(entity);
+    	this.animate(entity, cap.gunbladeChargeAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
+    	this.animate(entity, cap.gunbladeShootAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
+    	this.animate(entity, cap.gunbladeSwingAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
     	
     	if(entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && (BTAUtil.getPlayerAnimationState(entity) == 3 || BTAUtil.getPlayerAnimationState(entity) == 4))
     	{
@@ -60,13 +59,13 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
     public void setupAnimFirstPerson(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
     {
     	this.setupMap();
-    	this.animate(entity, ToothShotgunItem.SHOTGUN_FIRE, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_FIRE, ageInTicks);
-    	this.animate(entity, ToothShotgunItem.SHOTGUN_HOLD, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD, ageInTicks);
-    	this.animate(entity, ToothShotgunItem.SHOTGUN_RUNNING, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_RUNNING, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_CHARGE, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SHOOT_LIGHT, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_LIGHT, ageInTicks);
-    	this.animate(entity, SkeletalGunbladeItem.GUNBLADE_SWING, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
+    	PlayerAnimationCapabilityImpl cap = BTAUtil.getPlayerAnimationCapability(entity);
+    	this.animate(entity, cap.shotgunFireAnimationState, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_FIRE, ageInTicks);
+    	this.animate(entity, cap.shotgunHoldAnimationState, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD, ageInTicks);
+    	this.animate(entity, cap.shotgunRunningAnimationState, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_RUNNING, ageInTicks);
+    	this.animate(entity, cap.gunbladeChargeAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
+    	this.animate(entity, cap.gunbladeShootAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
+    	this.animate(entity, cap.gunbladeSwingAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
     }
     
 	@Override
@@ -86,9 +85,8 @@ public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPl
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void animate(T entity, String name, AnimationDefinition definition, float ageInTicks)
+	public void animate(T entity, SmoothAnimationState state, AnimationDefinition definition, float ageInTicks)
 	{
-		SmoothAnimationState state = BTAUtil.getPlayerAnimationStateByName(entity, name);
 		state.animatePlayer(PlayerModel.class.cast(this), definition, ageInTicks);
 	}
 	
