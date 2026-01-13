@@ -1,28 +1,23 @@
 {
-    "targets": [
-        "swap",
-        "final"
-    ],
-    "passes": [
-        {
-            "name": "beyondtheabyss:plain_fog",
-            "intarget": "final",
-            "outtarget": "swap",
+	"targets": [
+		"swap"
+	],
+	"passes": [
+		{
+			"name": "beyondtheabyss:plain_fog",
+			"intarget": "minecraft:main",
+			"outtarget": "swap",
 			"auxtargets": [
 				{
 					"name": "DepthSampler",
 					"id": "minecraft:main:depth"
-				},
-				{
-					"name": "SceneSampler",
-					"id": "minecraft:main"
 				}
 			]
-        },
-        {
-            "name": "blit",
-            "intarget": "swap",
-            "outtarget": "final"
-        }
-    ]
+		},
+		{
+			"name": "blit",
+			"intarget": "swap",
+			"outtarget": "minecraft:main"
+		}
+	]
 }

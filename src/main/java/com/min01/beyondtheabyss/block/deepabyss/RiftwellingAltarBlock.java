@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdateAltarItemPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -70,6 +72,11 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 			
 			altar.setItem(stack);
 			
+			if(!world.isClientSide)
+			{
+				BTANetwork.sendToAll(new UpdateAltarItemPacket(stack, pos));
+			}
+			
 			if(!player.getAbilities().instabuild)
 			{
 				toInsert.shrink(1);
@@ -90,6 +97,11 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 			}
 
 			altar.setItem(ItemStack.EMPTY);
+			
+			if(!world.isClientSide)
+			{
+				BTANetwork.sendToAll(new UpdateAltarItemPacket(ItemStack.EMPTY, pos));
+			}
 		}
 		return InteractionResult.SUCCESS;
 	}

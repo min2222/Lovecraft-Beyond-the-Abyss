@@ -14,7 +14,7 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTABossBarType;
-import com.min01.beyondtheabyss.misc.BTARenderType;
+import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -22,7 +22,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
@@ -31,7 +30,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -39,8 +37,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
@@ -48,8 +44,6 @@ import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent.OverlayType;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
@@ -66,7 +60,6 @@ public class ClientEventHandlerForge
     public static final ResourceLocation GHIDRUTH_BOSS_BAR_FRAME_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_frame.png");
     public static final ResourceLocation GHIDRUTH_BOSS_BAR_BAR_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_bar.png");
     
-    public static final List<ChunkPos> CHUNK_LIST = new ArrayList<>();
 	public static final List<UUID> RENDERER_LIST = new ArrayList<>();
 	
 	@SubscribeEvent
@@ -157,37 +150,21 @@ public class ClientEventHandlerForge
     {
         if(event.phase == TickEvent.Phase.START) 
         {
-        	if(BTAClientUtil.MC.player == null || BTAClientUtil.MC.level == null)
+        	if(BTAClientUtil.MC.player != null && BTAClientUtil.MC.level != null)
         	{
-        		CHUNK_LIST.clear();
+            	if(!BTAClientUtil.MC.isPaused())
+            	{
+            		for(BTAWorldShader shader : BTAWorldShader.WORLD_SHADERS)
+            		{
+            			if(!shader.is3DSampler || BTAClientUtil.MC.level.dimension() != shader.world)
+            			{
+            				continue;
+            			}
+            			shader.volumeTextureId = -1;
+            		}
+            	}
         	}
         }
-    }
-    
-    @SubscribeEvent
-    public static void onRenderLevelStage(RenderLevelStageEvent event)
-    {
-    	if(event.getStage() == Stage.AFTER_ENTITIES)
-    	{
-    		Camera cam = event.getCamera();
-	    	Vec3 camPos = cam.getPosition();
-	    	PoseStack stack = event.getPoseStack();
-	    	MultiBufferSource bufferSource = BTAClientUtil.MC.renderBuffers().bufferSource();
-	    	for(ChunkPos chunkPos : new ArrayList<>(CHUNK_LIST))
-	    	{
-	    		BlockPos worldPos = chunkPos.getWorldPosition();
-	    		AABB aabb = new AABB(-8, -64, -8, 8, 256, 8);
-	    		if(!BTAClientUtil.MC.levelRenderer.getFrustum().isVisible(aabb.move(worldPos)))
-	    		{
-	    			continue;
-	    		}
-	    		stack.pushPose();
-	    		Vec3 pos = Vec3.atBottomCenterOf(worldPos);
-		    	stack.translate(pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z);
-	    		BTAClientUtil.drawBox(aabb, stack, bufferSource, Vec3.ZERO, LightTexture.FULL_BRIGHT, 1, BTARenderType.plainFog(ResourceLocation.parse("textures/block/ice.png")));
-	    		stack.popPose();
-	    	}
-    	}
     }
     
 	@SubscribeEvent

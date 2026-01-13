@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
@@ -45,13 +44,11 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
@@ -72,7 +69,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -136,38 +132,6 @@ public class EventHandlerForge
     	if(stack.is(Items.BONE_MEAL) && level.dimension() == BTAWorlds.DEEP_ABYSS && !(state instanceof BonemealableBlock))
     	{
         	event.setCanceled(true);
-    	}
-    }
-    
-    @SubscribeEvent
-    public static void onChunkUnLoad(ChunkEvent.Unload event)
-    {
-    	ChunkAccess chunk = event.getChunk();
-    	Level level = (Level) chunk.getWorldForge();
-    	if(level.isClientSide)
-    	{
-    		if(level.dimension() == BTAWorlds.EVERGREEN)
-    		{
-    			ClientEventHandlerForge.CHUNK_LIST.removeIf(t -> t.equals(chunk.getPos()));
-    		}
-    	}
-    }
-    
-    @SubscribeEvent
-    public static void onChunkLoad(ChunkEvent.Load event)
-    {
-    	ChunkAccess chunk = event.getChunk();
-    	Level level = (Level) chunk.getWorldForge();
-    	if(level.isClientSide)
-    	{
-    		if(level.dimension() == BTAWorlds.EVERGREEN)
-    		{
-    			ChunkPos chunkPos = chunk.getPos();
-    			if(level.getBiome(chunkPos.getWorldPosition()).is(BTABiomes.FOGGY_PLAINS) && BTAConfig.worldShaders.get())
-    			{
-        			ClientEventHandlerForge.CHUNK_LIST.add(chunkPos);
-    			}
-    		}
     	}
     }
     
