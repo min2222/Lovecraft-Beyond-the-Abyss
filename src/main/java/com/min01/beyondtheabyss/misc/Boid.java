@@ -24,6 +24,7 @@ public class Boid
 	
 	public Vec3 velocity = Vec3.ZERO;
     public Vec3 target = Vec3.ZERO;
+    public Vec3 direction = Vec3.ZERO;
 
 	public Boid(Mob mob, boolean isLeader)
 	{
@@ -42,7 +43,7 @@ public class Boid
 		
 		Vec3 acceleration = Vec3.ZERO;
 		
-		if(!this.target.equals(Vec3.ZERO))
+		if(!this.target.equals(Vec3.ZERO) && this.mob.getTarget() == null)
 		{
 			Vec3 toTarget = this.target.subtract(this.mob.position());
 			acceleration = acceleration.add(toTarget.scale(0.05F));
@@ -53,7 +54,7 @@ public class Boid
 			Collection<Obstacle> flockObstacles = new ArrayList<Obstacle>();
 			for(Boid boid : flock)
 			{
-				flockObstacles.add(new Boid.Obstacle(boid.mob.position(), 0.5F, 0.05F));
+				flockObstacles.add(new Boid.Obstacle(boid.mob.position(), 1.5F, 0.1F));
 			}
 
 			acceleration = acceleration.add(this.awayFrom(obstacles));
@@ -80,7 +81,7 @@ public class Boid
 			}
 		}
 		
-		this.mob.addDeltaMovement(this.velocity.scale(0.05F));
+		this.direction = this.velocity.scale(0.05F);
 	}
 	
     @SuppressWarnings("unchecked")
@@ -121,19 +122,30 @@ public class Boid
         if(!this.nearbyMobs.isEmpty())
         {
         	Mob mob = this.nearbyMobs.get(0);
+    		Optional<? extends Mob> optional = this.nearbyMobs.stream().filter(t -> t instanceof ILeader<?> leader && leader.isLeader()).findFirst();
+    		if(optional.isPresent())
+    		{
+    			mob = optional.get();
+    		}
+        	MoveControl moveControl = mob.getMoveControl();
         	if(this.isLeader)
         	{
-        		Optional<? extends Mob> optional = this.nearbyMobs.stream().filter(t -> t instanceof ILeader<?> leader && leader.isLeader()).findFirst();
-        		if(optional.isPresent())
-        		{
-        			mob = optional.get();
-        		}
+            	if(moveControl instanceof BoidMoveControl boidMoveControl && mob.getTarget() == null)
+            	{
+            		Boid boid = boidMoveControl.boid;
+                	if(!boid.direction.equals(Vec3.ZERO))
+                	{
+                    	this.target = boid.direction.add(mob.position());
+                	}
+            	}
         	}
-        	MoveControl moveControl = mob.getMoveControl();
-        	Vec3 wantedPos = new Vec3(moveControl.getWantedX(), moveControl.getWantedY(), moveControl.getWantedZ());
-        	if(!wantedPos.equals(Vec3.ZERO))
+        	else
         	{
-            	this.target = wantedPos;
+            	Vec3 wantedPos = new Vec3(moveControl.getWantedX(), moveControl.getWantedY(), moveControl.getWantedZ());
+            	if(!wantedPos.equals(Vec3.ZERO))
+            	{
+                	this.target = wantedPos;
+            	}
         	}
         }
     }

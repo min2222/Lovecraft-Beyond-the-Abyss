@@ -38,7 +38,7 @@ public class ObserverRenderer extends MobRenderer<EntityObserver, ModelObserver>
         float xRot = Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot());
         float yRot = Mth.rotLerp(pPartialTicks, pEntity.yHeadRotO, pEntity.yHeadRot);
         
-        VertexConsumer consumer = pBuffer.getBuffer(BTARenderType.laser());
+        VertexConsumer consumer = pBuffer.getBuffer(BTARenderType.light());
         
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotationDegrees(-yRot + 180.0F));

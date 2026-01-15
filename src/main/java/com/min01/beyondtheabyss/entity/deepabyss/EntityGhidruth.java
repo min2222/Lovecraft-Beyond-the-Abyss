@@ -12,7 +12,6 @@ import com.min01.beyondtheabyss.entity.EntityFallingStone;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthChargePrepareGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
-import com.min01.beyondtheabyss.misc.BTABossBarType;
 import com.min01.beyondtheabyss.misc.BTABossEvent;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -64,7 +63,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	public int stunTick;
 	public int chargeTick;
 	
-	public final BTABossEvent bossEvent = (BTABossEvent) new BTABossEvent(this.getDisplayName(), BTABossBarType.GHIDRUTH, this).setDarkenScreen(true);
+	public final BTABossEvent bossEvent = (BTABossEvent) new BTABossEvent(this.getDisplayName(), this).setDarkenScreen(true);
 	
 	public EntityGhidruth(EntityType<? extends Monster> pEntityType, Level pLevel) 
 	{

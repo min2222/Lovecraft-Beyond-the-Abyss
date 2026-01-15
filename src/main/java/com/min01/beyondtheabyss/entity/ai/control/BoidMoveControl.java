@@ -36,7 +36,7 @@ public class BoidMoveControl extends MoveControl
 		{
 			this.boid.update(List.of(), true, true, true, 10.0F, 0.3F);
 	        this.stayInWater();
-			Vec3 direction = this.mob.getDeltaMovement();
+			Vec3 direction = this.boid.direction;
 			double d0 = direction.x;
 			double d1 = direction.y;
 			double d2 = direction.z;

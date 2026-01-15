@@ -24,6 +24,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -80,7 +81,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 	protected void registerGoals() 
 	{
 		super.registerGoals();
-		this.goalSelector.addGoal(4, new GnasherBiteGoal(this));
+		this.goalSelector.addGoal(0, new GnasherBiteGoal(this));
 	}
 	
 	@Override
@@ -102,6 +103,15 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 	public boolean alertOthers() 
 	{
 		return true;
+	}
+	
+	@Override
+	protected void doPush(Entity pEntity) 
+	{
+		if(!(pEntity instanceof EntityGnasher))
+		{
+			super.doPush(pEntity);
+		}
 	}
     
     @Override
@@ -128,7 +138,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 			{
 				if(this.canMove() && this.canLook())
 				{
-					if(this.distanceTo(leader) <= 5.0F)
+					if(this.distanceTo(leader) <= 3.0F)
 					{
 						leader.setDisperse(false);
 						this.setDisperse(false);
@@ -136,12 +146,12 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 					}
 					else
 					{
-						this.getNavigation().moveTo(leader, 1.5F);
+						this.getNavigation().moveTo(leader, 1.0F);
 					}
 				}
 				else
 				{
-					if(this.distanceTo(leader) >= 6.0F)
+					if(this.distanceTo(leader) >= 12.0F)
 					{
 						leader.setCanMove(true);
 						leader.setCanLook(true);
@@ -166,6 +176,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
     
     public void disperse(Vec3 pos)
     {
+    	this.getNavigation().stop();
 		this.setDisperse(true);
 		this.setTarget(null);
 		this.setCanMove(false);
@@ -194,6 +205,12 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.HOSTILE;
+	}
+	
+	@Override
+	public float moveSpeed() 
+	{
+		return 0.3F;
 	}
 	
     @Override
@@ -260,9 +277,12 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 	
     public void setLeader(boolean value)
     {
-		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
-		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
-		this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(45);
+    	if(value)
+    	{
+    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30);
+    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
+    		this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(45);
+    	}
     	this.entityData.set(IS_LEADER, value);
     }
 

@@ -1,9 +1,7 @@
 package com.min01.beyondtheabyss.event;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
@@ -13,7 +11,7 @@ import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
-import com.min01.beyondtheabyss.misc.BTABossBarType;
+import com.min01.beyondtheabyss.misc.BTABossBar;
 import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -22,17 +20,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -55,11 +49,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, value = Dist.CLIENT, bus = Bus.FORGE)
 public class ClientEventHandlerForge 
 {
-    public static final Map<UUID, BTABossBarType> BOSS_BAR_MAP = new HashMap<>();
-    public static final Map<UUID, Entity> BOSS_MAP = new HashMap<>();
-    public static final ResourceLocation GHIDRUTH_BOSS_BAR_FRAME_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_frame.png");
-    public static final ResourceLocation GHIDRUTH_BOSS_BAR_BAR_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/gui/ghidruth_bossbar_bar.png");
-    
 	public static final List<UUID> RENDERER_LIST = new ArrayList<>();
 	
 	@SubscribeEvent
@@ -212,28 +201,17 @@ public class ClientEventHandlerForge
 		}
 		stack.popPose();
 	}
-	
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onBossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event)
     {
-        if(BOSS_BAR_MAP.containsKey(event.getBossEvent().getId()))
-        {
-            PoseStack poseStack = event.getGuiGraphics().pose();
-            Component component = event.getBossEvent().getName();
-            int width = BTAClientUtil.MC.getWindow().getGuiScaledWidth();
-            int y = event.getY();
-            int progressScaled = (int)(event.getBossEvent().getProgress() * 127.0F);
-            int componentWidth = BTAClientUtil.MC.font.width(component);
-            int x = width / 2 - componentWidth / 2;
-            event.setCanceled(true);
-            poseStack.pushPose();
-            poseStack.translate(x / 6.45F, y - 30, 0);
-            event.getGuiGraphics().blit(GHIDRUTH_BOSS_BAR_FRAME_TEXTURE, event.getX(), event.getY(), 0, 0, 130, 39, 130, 39);
-            event.getGuiGraphics().blit(GHIDRUTH_BOSS_BAR_BAR_TEXTURE, event.getX(), event.getY(), 0, 0, progressScaled, 39, 130, 39);
-            poseStack.translate(x - 25.0F, y + 45.0F, 0);
-            BTAClientUtil.MC.font.drawInBatch(component.getVisualOrderText(), 0.0F, 0.0F, 16777215, true, poseStack.last().pose(), BTAClientUtil.MC.renderBuffers().bufferSource(), Font.DisplayMode.POLYGON_OFFSET, 0, LightTexture.FULL_BRIGHT);
-            poseStack.popPose();
-            event.setIncrement(event.getIncrement() + 7);
-        }
+        ResourceLocation location = BTABossBar.BOSS_MAP.getOrDefault(event.getBossEvent().getId(), null);
+        if(location == null)
+        	return;
+        BTABossBar bossBar = BTABossBar.BOSS_BAR_MAP.getOrDefault(location, null);
+        if(bossBar == null)
+        	return;
+        event.setCanceled(true);
+        bossBar.draw(event);
     }
 }
