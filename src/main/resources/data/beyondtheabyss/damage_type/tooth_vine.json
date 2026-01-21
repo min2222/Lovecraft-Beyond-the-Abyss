@@ -1,4 +1,5 @@
 {
+	"effects": "thorns",
 	"exhaustion": 0.1,
 	"message_id": "tooth_vine",
 	"scaling": "never"

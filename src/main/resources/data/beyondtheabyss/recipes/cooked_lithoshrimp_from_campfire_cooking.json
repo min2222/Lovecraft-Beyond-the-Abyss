@@ -1,5 +1,6 @@
 {
 	"type": "minecraft:campfire_cooking",
+	"category": "food",
 	"ingredient": {
 		"item": "beyondtheabyss:raw_lithoshrimp"
 	},

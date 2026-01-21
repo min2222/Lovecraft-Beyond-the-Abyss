@@ -10,7 +10,6 @@ uniform vec2 OutSize;
 uniform float iTime;
 
 uniform vec3 VolumeSize;
-uniform vec3 CameraPos;
 
 in vec2 texCoord;
 in vec4 near_4;

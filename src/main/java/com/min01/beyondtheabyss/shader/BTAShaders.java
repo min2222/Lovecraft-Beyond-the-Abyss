@@ -12,11 +12,11 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 public class BTAShaders implements ResourceManagerReloadListener 
 {
-	protected static final List<ExtendedPostChain> SHADERS = new ArrayList<>();
+	public static final List<ExtendedPostChain> SHADERS = new ArrayList<>();
 
-	protected static ExtendedPostChain FOG;
-	protected static ExtendedPostChain PLAIN_FOG;
-	protected static ExtendedPostChain SANDSTORM;
+	public static ExtendedPostChain FOG;
+	public static ExtendedPostChain PLAIN_FOG;
+	public static ExtendedPostChain SANDSTORM;
 
 	@Override
 	public void onResourceManagerReload(ResourceManager manager)

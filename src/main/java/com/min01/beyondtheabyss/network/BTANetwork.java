@@ -33,6 +33,7 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdateSkeletalGunbladeItemPacket.class, UpdateSkeletalGunbladeItemPacket::write, UpdateSkeletalGunbladeItemPacket::read, UpdateSkeletalGunbladeItemPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateStoneSkinEffectPacket.class, UpdateStoneSkinEffectPacket::write, UpdateStoneSkinEffectPacket::read, UpdateStoneSkinEffectPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateBossBarPacket.class, UpdateBossBarPacket::write, UpdateBossBarPacket::read, UpdateBossBarPacket::handle);
+		CHANNEL.registerMessage(ID++, UpdateChunkCachePacket.class, UpdateChunkCachePacket::write, UpdateChunkCachePacket::read, UpdateChunkCachePacket::handle);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 

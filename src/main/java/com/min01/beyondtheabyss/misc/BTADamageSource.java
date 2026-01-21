@@ -22,12 +22,12 @@ public class BTADamageSource
     
     public static DamageSource causeGhidruthFleshDamage(RegistryAccess registryAccess)
     {
-        return new DamageSource(registryAccess.registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(GHIDRUTH_FLESH), (Entity) null);
+        return new DamageSource(registryAccess.registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(GHIDRUTH_FLESH));
     }
     
     public static DamageSource causeToothVineDamage(RegistryAccess registryAccess)
     {
-        return new DamageSource(registryAccess.registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(TOOTH_VINE), (Entity) null);
+        return new DamageSource(registryAccess.registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(TOOTH_VINE));
     }
     
     public static DamageSource causeElectronicDamage(RegistryAccess registryAccess, Entity entity)

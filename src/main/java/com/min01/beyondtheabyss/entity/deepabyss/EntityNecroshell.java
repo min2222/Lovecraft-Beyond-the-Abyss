@@ -5,10 +5,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellAttackGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellHidingGoal;
-import com.min01.beyondtheabyss.entity.ai.navigation.BTAGroundPathNavigation;
+import com.min01.beyondtheabyss.entity.ai.navigation.SemiWaterboundPathNavigation;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -28,13 +27,10 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -154,7 +150,12 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.0F);
 	        }
 		}
-		this.switchNavigation(!this.isInWater());
+	}
+	
+	@Override
+	protected PathNavigation createNavigation(Level pLevel) 
+	{
+		return new SemiWaterboundPathNavigation(this, pLevel);
 	}
 	
 	@Override
@@ -196,22 +197,6 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	{
 		return false;
 	}
-	
-    public void switchNavigation(boolean isLand)
-    {
-    	if(isLand && this.navigation instanceof WaterBoundPathNavigation)
-    	{
-    		this.navigation = new BTAGroundPathNavigation(this, this.level);
-    		this.moveControl = new MoveControl(this);
-    		this.lookControl = new LookControl(this);
-    	}
-    	if(!isLand && this.navigation instanceof BTAGroundPathNavigation)
-    	{
-    		this.navigation = this.createNavigation(this.level);
-    		this.moveControl = new BTASwimmingMoveControl(this);
-    		this.lookControl = new SmoothSwimmingLookControl(this, 10);
-    	}
-    }
 	
 	@Override
 	public boolean canMoveAround() 

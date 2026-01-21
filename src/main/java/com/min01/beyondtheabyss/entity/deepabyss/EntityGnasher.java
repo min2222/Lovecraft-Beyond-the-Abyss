@@ -220,7 +220,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
     	pCompound.putBoolean("isLeader", this.isLeader());
 		if(this.entityData.get(LEADER_UUID).isPresent())
 		{
-			pCompound.putUUID("Leader", this.entityData.get(LEADER_UUID).get());
+			pCompound.putUUID("LeaderUUID", this.entityData.get(LEADER_UUID).get());
 		}
     }
     
@@ -229,9 +229,9 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
     {
     	super.readAdditionalSaveData(pCompound);
 		this.setLeader(pCompound.getBoolean("isLeader"));
-		if(pCompound.hasUUID("Leader")) 
+		if(pCompound.hasUUID("LeaderUUID")) 
 		{
-			this.entityData.set(LEADER_UUID, Optional.of(pCompound.getUUID("Leader")));
+			this.entityData.set(LEADER_UUID, Optional.of(pCompound.getUUID("LeaderUUID")));
 		}
     }
 	

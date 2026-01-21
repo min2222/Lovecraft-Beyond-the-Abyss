@@ -185,6 +185,7 @@
 	"death.attack.golden_tooth": "%1$s was died to a shiny golden tooth shot by %2$s",
 	"death.attack.shrapnel": "%1$s was died after being stabbed by shrapnel of %2$s",
 	"death.attack.tooth_vine": "%1$s was poked to death by a tooth vine",
+	"death.attack.tooth_vine.player": "%1$s was poked to death by a tooth vine whilst trying to escape %2$s",
 	"effect.beyondtheabyss.air_swim": "Air Swim",
 	"effect.beyondtheabyss.air_swim.description": "Allows you to swim through the air.",
 	"effect.beyondtheabyss.disorder": "Disorder",
