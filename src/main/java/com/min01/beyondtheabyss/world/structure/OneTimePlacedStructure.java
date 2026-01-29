@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.world.BTASavedData;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
@@ -46,13 +47,17 @@ public abstract class OneTimePlacedStructure extends Structure
 	public Optional<GenerationStub> findValidGenerationPoint(GenerationContext pContext)
 	{
 		//TODO find a way to get proper level instead of always use overworld;
-		ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
-		if(level != null)
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		if(server != null)
 		{
-			BTASavedData data = BTASavedData.get(level);
-			if(!data.getStructurePos(this.getStructureKey()).equals(BlockPos.ZERO))
+			ServerLevel level = server.getLevel(Level.OVERWORLD);
+			if(level != null)
 			{
-				return Optional.empty();
+				BTASavedData data = BTASavedData.get(level);
+				if(!data.getStructurePos(this.getStructureKey()).equals(BlockPos.ZERO))
+				{
+					return Optional.empty();
+				}
 			}
 		}
 		return super.findValidGenerationPoint(pContext);
