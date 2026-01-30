@@ -69,7 +69,7 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
 	            Vec3 powVec = new Vec3(this.modifyVecAngle(linearVec.x), this.modifyVecAngle(linearVec.y), this.modifyVecAngle(linearVec.z));
 	            Vec3 smoothedVec = remainingDistance < 1.0F ? linearVec : powVec;
 	            Vec3 next = smoothedVec.normalize().scale(remainingDistance).add(currentPos);
-                int light = getLightColor(pEntity, bottom.add(currentPos).add(renderingAt));
+                int light = this.getLightColor(pEntity, bottom.add(currentPos).add(renderingAt));
 	            this.renderPipeSegments(currentPos, next, pPoseStack, pBuffer.getBuffer(renderType), light);
 	            currentPos = next;
 	            segmentCount++;
