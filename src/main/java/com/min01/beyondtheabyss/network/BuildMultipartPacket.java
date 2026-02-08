@@ -58,6 +58,9 @@ public class BuildMultipartPacket
 				if(entity instanceof IMultipart multipart)
 				{
 					EntityPartBuilder<?> partBuilder = multipart.getPartBuilder();
+					partBuilder.partOffset.clear();
+					partBuilder.parts.clear();
+					partBuilder.partMap.clear();
 					partBuilder.partOffset.putAll(message.partOffset);
 					partBuilder.parts.putAll(message.parts);
 					partBuilder.partMap.putAll(message.partMap);

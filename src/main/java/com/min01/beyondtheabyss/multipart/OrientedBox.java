@@ -170,11 +170,29 @@ public class OrientedBox
         return direction == Direction.AxisDirection.NEGATIVE ? box.min(axis) : box.max(axis);
     }
     
+    public static double collide(Direction.Axis pMovementAxis, AABB pCollisionBox, Iterable<OrientedBox> pPossibleHits, double pDesiredOffset)
+    {
+        for(OrientedBox obb : pPossibleHits) 
+        {
+        	if(Math.abs(pDesiredOffset) < 1.0E-7D) 
+        	{
+        		return 0.0D;
+        	}
+        	pDesiredOffset = obb.collide(pMovementAxis, pCollisionBox, pDesiredOffset);
+        }
+        return pDesiredOffset;
+    }
+    
     public double collide(Direction.Axis axis, AABB aabb, double desiredMove) 
     {
         if(Math.abs(desiredMove) < 1.0E-7D) 
         {
             return 0.0D;
+        }
+        
+        if(this.intersects(aabb)) 
+        {
+            return desiredMove;
         }
 
         double sign = Math.signum(desiredMove);
@@ -214,6 +232,81 @@ public class OrientedBox
         }
 
         return low * sign;
+    }
+    
+    public Vec3 getDepenetrationVector(AABB other) {
+        // 1. 일단 겹치는지 확인 (기존 intersects 로직 활용)
+        // 겹치지 않는다면 밀어낼 필요가 없으므로 (0,0,0) 반환
+        if (!this.intersects(other)) {
+            return Vec3.ZERO;
+        }
+
+        // 2. 정점 데이터 준비
+        if (this.vertices == null) this.computeVertices();
+        Vec3[] obbVerts = this.vertices;
+        Vec3[] aabbVerts = getVertices(other);
+
+        double minOverlap = Double.MAX_VALUE; // 가장 작은 겹침 깊이를 저장할 변수
+        Vec3 pushAxis = Vec3.ZERO;            // 밀어낼 방향을 저장할 변수
+
+        // 3. 검사할 축(Axis) 목록 정의
+        // OBB의 3개 축 + AABB의 3개 축 = 총 6개 축 검사
+        // (블로그 설명처럼 정밀한 모서리 충돌까지 하려면 Cross Product 축 9개도 추가해야 하지만, 
+        // 마인크래프트 플레이어 충돌 수준에서는 6개면 충분하고 성능상 이득입니다.)
+        Vec3[] axes = new Vec3[] {
+            this.getBasis()[0], this.getBasis()[1], this.getBasis()[2], // OBB의 x,y,z 축
+            new Vec3(1, 0, 0), new Vec3(0, 1, 0), new Vec3(0, 0, 1)     // AABB의 x,y,z 축
+        };
+
+        for (Vec3 axis : axes) {
+            // 0 벡터 방지
+            if (axis.lengthSqr() < 1.0E-9) continue;
+
+            // --- 블로그의 핵심 로직: 투영(Projection) 후 겹침 길이 계산 ---
+            
+            // OBB 투영
+            double min1 = Double.MAX_VALUE, max1 = -Double.MAX_VALUE;
+            for (Vec3 v : obbVerts) {
+                double proj = v.dot(axis);
+                min1 = Math.min(min1, proj);
+                max1 = Math.max(max1, proj);
+            }
+
+            // AABB 투영
+            double min2 = Double.MAX_VALUE, max2 = -Double.MAX_VALUE;
+            for (Vec3 v : aabbVerts) {
+                double proj = v.dot(axis);
+                min2 = Math.min(min2, proj);
+                max2 = Math.max(max2, proj);
+            }
+
+            // 겹치는 길이(Overlap) 계산
+            // (구간 [min1, max1]과 [min2, max2]의 교집합 길이)
+            double overlap = Math.min(max1, max2) - Math.max(min1, min2);
+
+            // 만약 겹치는 길이가 0보다 작거나 같다면 분리된 상태임 (충돌 아님)
+            if (overlap <= 0) {
+                return Vec3.ZERO; 
+            }
+
+            // 가장 작은 겹침(Minimum Overlap)을 찾음
+            if (overlap < minOverlap) {
+                minOverlap = overlap;
+                pushAxis = axis;
+            }
+        }
+
+        // 4. 방향 보정
+        // 찾은 축(pushAxis)이 플레이어를 OBB '바깥'으로 밀어내는지 확인해야 함.
+        // 플레이어 중심에서 OBB 중심을 뺀 벡터와 내적(dot)하여 방향을 판별
+        Vec3 centerDiff = other.getCenter().subtract(this.center);
+        if (centerDiff.dot(pushAxis) < 0) {
+            pushAxis = pushAxis.scale(-1); // 반대 방향이면 뒤집음
+        }
+
+        // 5. 최종 MTV 반환 (방향 * 깊이)
+        // 1.0001 같은 아주 작은 값을 더해줘서 부동소수점 오차로 다시 겹치는 것을 방지
+        return pushAxis.normalize().scale(minOverlap + 1.0E-4);
     }
     
     public boolean intersects(AABB other)

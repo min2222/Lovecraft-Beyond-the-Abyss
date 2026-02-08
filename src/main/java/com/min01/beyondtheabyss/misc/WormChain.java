@@ -37,28 +37,15 @@ public class WormChain
     
     public static void tick(Worm worm, LivingEntity owner, float distance, float speed)
     {
-        Vec3 direction = owner.getLookAngle().normalize().scale(distance);
-        Vec3 targetPos = Vec3.ZERO.subtract(direction);
-
-        worm.setPos(targetPos);
-
-        float prevYRot = worm.getYRot();
-        float prevXRot = worm.getXRot();
-
-        worm.setYRot(owner.getYRot());
-        worm.setXRot(owner.getXRot());
-
-        float yRotDiff = Mth.wrapDegrees(owner.getYRot() - prevYRot);
-        float xRotDiff = Mth.wrapDegrees(owner.getXRot() - prevXRot);
-
-        worm.setYRot(prevYRot + yRotDiff * speed);
-        worm.setXRot(prevXRot + xRotDiff * speed);
-
-        worm.setYBodyRot(worm.getYRot());
-        worm.setYHeadRot(worm.getYRot());
+    	tick(worm, owner, distance, speed, owner.yBodyRot);
     }
     
-    public static void tick(Worm worm, Worm owner, float distance, float speed)
+    public static void tickHead(Worm worm, LivingEntity owner, float distance, float speed)
+    {
+    	tick(worm, owner, distance, speed, owner.yHeadRot);
+    }
+    
+    public static void tick(Worm worm, LivingEntity owner, float distance, float speed, float ownerRot)
     {
         Vec3 direction = owner.getLookAngle().normalize().scale(distance);
         Vec3 targetPos = owner.position().subtract(direction);
@@ -71,7 +58,40 @@ public class WormChain
         worm.setYRot(owner.getYRot());
         worm.setXRot(owner.getXRot());
 
-        float yRotDiff = Mth.wrapDegrees(owner.getYRot() - prevYRot);
+        float yRotDiff = Mth.wrapDegrees(ownerRot - prevYRot);
+        float xRotDiff = Mth.wrapDegrees(owner.getXRot() - prevXRot);
+
+        worm.setYRot(prevYRot + yRotDiff * speed);
+        worm.setXRot(prevXRot + xRotDiff * speed);
+
+        worm.setYBodyRot(worm.getYRot());
+        worm.setYHeadRot(worm.getYRot());
+    }
+    
+    public static void tick(Worm worm, Worm owner, float distance, float speed)
+    {
+    	tick(worm, owner, distance, speed, owner.yBodyRot);
+    }
+    
+    public static void tickHead(Worm worm, Worm owner, float distance, float speed)
+    {
+    	tick(worm, owner, distance, speed, owner.yHeadRot);
+    }
+    
+    public static void tick(Worm worm, Worm owner, float distance, float speed, float ownerRot)
+    {
+        Vec3 direction = owner.getLookAngle().normalize().scale(distance);
+        Vec3 targetPos = owner.position().subtract(direction);
+
+        worm.setPos(targetPos);
+
+        float prevYRot = worm.getYRot();
+        float prevXRot = worm.getXRot();
+
+        worm.setYRot(owner.getYRot());
+        worm.setXRot(owner.getXRot());
+
+        float yRotDiff = Mth.wrapDegrees(ownerRot - prevYRot);
         float xRotDiff = Mth.wrapDegrees(owner.getXRot() - prevXRot);
 
         worm.setYRot(prevYRot + yRotDiff * speed);

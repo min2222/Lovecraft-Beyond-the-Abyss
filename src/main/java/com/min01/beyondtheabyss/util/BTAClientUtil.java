@@ -6,6 +6,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector4f;
 
 import com.min01.beyondtheabyss.entity.IMultiModel;
+import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -20,13 +21,29 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
 	public static final Matrix4f INVERSE_MAT = new Matrix4f();
+	
+	public static void animateWorm(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		float partialTicks = ageInTicks - entity.tickCount;
+	    float yBodyRot = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
+	    float prevYRot = 0.0F;
+	    for(int i = 0; i < worms.length; i++)
+	    {
+	        Vec2 rot = worms[i].getRot(partialTicks);
+	        float yRot = rot.y - yBodyRot;
+	        animateHead(bones[i], yRot - prevYRot, 0.0F);
+	        prevYRot = yRot;
+	    }
+	}
 	
 	public static void copyRotFrom(ModelPart part, ModelPart from, boolean isLeft)
 	{

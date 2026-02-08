@@ -37,9 +37,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 	public static final String ROOT = "root";
 	public static final float SCALE = 0.0625F;
 	public final T entity;
-	public EntityBounds hitbox = EntityBounds.builder()
-	        .add(ROOT).setBounds(0.0, 0.0, 0.0).build()
-	        .getFactory().create();
+	public EntityBounds hitbox = EntityBounds.builder().add(ROOT).setBounds(0.0, 0.0, 0.0).build().getFactory().create();
 	public final Map<String, Vec3> partOffset = new HashMap<>();
 	public final Map<String, String> parts = new HashMap<>();
 	public final Map<String, Part> partMap = new HashMap<>();

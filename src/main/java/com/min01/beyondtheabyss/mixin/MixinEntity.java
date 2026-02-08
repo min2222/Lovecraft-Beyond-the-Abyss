@@ -127,64 +127,60 @@ public abstract class MixinEntity
         return this.collideWithOrientedBoxes(originalMovement, aabb, obbList);
     }
 
-    private Vec3 collideWithOrientedBoxes(Vec3 movement, AABB entityAABB, List<OrientedBox> obbs)
+    private Vec3 collideWithOrientedBoxes(Vec3 pDeltaMovement, AABB pEntityBB, List<OrientedBox> obbs)
     {
-        if(obbs.isEmpty() || movement.equals(Vec3.ZERO)) 
+        if(obbs.isEmpty()) 
         {
-            return movement;
+            return pDeltaMovement;
         }
 
-        double moveX = movement.x;
-        double moveY = movement.y;
-        double moveZ = movement.z;
-        AABB currentAABB = entityAABB;
-
-        if(moveY != 0.0D) 
+        for(OrientedBox obb : obbs)
         {
-            for(OrientedBox obb : obbs) 
+            Vec3 mtv = obb.getDepenetrationVector(pEntityBB);
+            if(mtv.lengthSqr() > 1.0E-7)
             {
-                moveY = obb.collide(Direction.Axis.Y, currentAABB, moveY);
+            	return mtv;
             }
-            if(Math.abs(moveY) > 1.0E-7D) 
-            {
-                currentAABB = currentAABB.move(0.0D, moveY, 0.0D);
-            }
+        }	
+        
+        double d0 = pDeltaMovement.x;
+        double d1 = pDeltaMovement.y;
+        double d2 = pDeltaMovement.z;
+        
+        if(d1 != 0.0D) 
+        {
+        	d1 = OrientedBox.collide(Direction.Axis.Y, pEntityBB, obbs, d1);
+        	if(d1 != 0.0D) 
+        	{
+        		pEntityBB = pEntityBB.move(0.0D, d1, 0.0D);
+        	}
         }
 
-        boolean checkZFirst = Math.abs(moveX) < Math.abs(moveZ);
-        if(checkZFirst && moveZ != 0.0D) 
+        boolean flag = Math.abs(d0) < Math.abs(d2);
+        if(flag && d2 != 0.0D) 
         {
-            for(OrientedBox obb : obbs)
-            {
-                moveZ = obb.collide(Direction.Axis.Z, currentAABB, moveZ);
-            }
-            if(Math.abs(moveZ) > 1.0E-7D) 
-            {
-                currentAABB = currentAABB.move(0.0D, 0.0D, moveZ);
-            }
+        	d2 = OrientedBox.collide(Direction.Axis.Z, pEntityBB, obbs, d2);
+        	if(d2 != 0.0D)
+        	{
+        		pEntityBB = pEntityBB.move(0.0D, 0.0D, d2);
+        	}
         }
 
-        if(moveX != 0.0D) 
+        if(d0 != 0.0D) 
         {
-            for(OrientedBox obb : obbs)
-            {
-                moveX = obb.collide(Direction.Axis.X, currentAABB, moveX);
-            }
-            if(Math.abs(moveX) > 1.0E-7D) 
-            {
-                currentAABB = currentAABB.move(moveX, 0.0D, 0.0D);
-            }
+        	d0 = OrientedBox.collide(Direction.Axis.X, pEntityBB, obbs, d0);
+        	if(!flag && d0 != 0.0D)
+        	{
+        		pEntityBB = pEntityBB.move(d0, 0.0D, 0.0D);
+        	}
         }
 
-        if(!checkZFirst && moveZ != 0.0D) 
+        if(!flag && d2 != 0.0D) 
         {
-            for(OrientedBox obb : obbs) 
-            {
-                moveZ = obb.collide(Direction.Axis.Z, currentAABB, moveZ);
-            }
+        	d2 = OrientedBox.collide(Direction.Axis.Z, pEntityBB, obbs, d2);
         }
 
-        return new Vec3(moveX, moveY, moveZ);
+        return new Vec3(d0, d1, d2);
     }
     
     private List<OrientedBox> getOBBEntityCollisions(Level level, @Nullable Entity pEntity, AABB pCollisionBox) 
