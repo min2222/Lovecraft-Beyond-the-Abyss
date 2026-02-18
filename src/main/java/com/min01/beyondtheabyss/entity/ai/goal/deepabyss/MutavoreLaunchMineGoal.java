@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore.MutationType;
 import com.min01.beyondtheabyss.entity.projectile.EntityMutavoreCyst;
@@ -12,7 +12,7 @@ import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.Util;
 
-public class MutavoreLaunchMineGoal extends BasicBTASkillGoal<EntityMutavore>
+public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<EntityMutavore>
 {
 	public MutavoreLaunchMineGoal(EntityMutavore mob) 
 	{

@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
@@ -30,7 +29,7 @@ public class EntityForneusHead extends AbstractForneusPart
 	public static final EntityDataAccessor<Vec3> WANTED_POS = SynchedEntityData.defineId(EntityForneusHead.class, BTAEntityDataSerializers.VEC3.get());
 	public KinematicChain chain;
 	
-	public EntityForneusHead(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntityForneusHead(EntityType<? extends AbstractForneusPart> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = 1000 + this.random.nextInt(1000);
@@ -60,7 +59,7 @@ public class EntityForneusHead extends AbstractForneusPart
     }
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+	public EntityPartBuilder<? extends AbstractForneusPart> createBuilder()
 	{
     	EntityPartBuilder<EntityForneusHead> partBuilder = new EntityPartBuilder<EntityForneusHead>(this)
     	{
@@ -149,15 +148,15 @@ public class EntityForneusHead extends AbstractForneusPart
 	}
 	
 	@Override
-	public int maxTurnX() 
+	public float maxSwimTurnX() 
 	{
-		return !this.hasTarget() ? 55 : 75;
+		return !this.isTargetValid() ? 55 : 75;
 	}
 	
 	@Override
-	public int maxTurnY() 
+	public float maxSwimTurnY() 
 	{
-		return !this.hasTarget() ? 3 : 5;
+		return !this.isTargetValid() ? 3 : 5;
 	}
 	
 	public void setWantedPos(Vec3 pos)

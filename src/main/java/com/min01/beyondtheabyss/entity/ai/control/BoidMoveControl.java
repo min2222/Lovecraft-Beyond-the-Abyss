@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.ai.control;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.IBTAMob;
+import com.min01.beyondtheabyss.entity.IAnimatable;
 import com.min01.beyondtheabyss.misc.Boid;
 
 import net.minecraft.core.BlockPos;
@@ -13,16 +13,16 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class BoidMoveControl extends MoveControl
+public class BoidMoveControl<T extends Mob & IAnimatable> extends AnimationMoveControl<T>
 {
 	public final Boid boid;
 	
-	public BoidMoveControl(Mob mob)
+	public BoidMoveControl(T mob)
 	{
 		this(mob, false);
 	}
 	
-	public BoidMoveControl(Mob mob, boolean isLeader) 
+	public BoidMoveControl(T mob, boolean isLeader) 
 	{
 		super(mob);
 		this.boid = new Boid(mob, isLeader);
@@ -31,7 +31,6 @@ public class BoidMoveControl extends MoveControl
 	@Override
 	public void tick() 
 	{
-		IBTAMob mob = (IBTAMob) this.mob;
 		if(this.operation == MoveControl.Operation.MOVE_TO)
 		{
 			this.boid.update(List.of(), true, true, true, 10.0F, 0.3F);
@@ -48,18 +47,18 @@ public class BoidMoveControl extends MoveControl
 			else 
 			{
 				float f = (float) (Mth.atan2(d2, d0) * (double) (180.0F / (float) Math.PI)) - 90.0F;
-				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, mob.maxTurnY()));
+				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, this.mob.maxSwimTurnY()));
 				this.mob.yBodyRot = this.mob.getYRot();
 				this.mob.yHeadRot = this.mob.getYRot();
 				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
 				if(this.mob.isInWater()) 
 				{
-					this.mob.setSpeed(f1 * mob.moveSpeed());
+					this.mob.setSpeed((float) (f1 * this.speedModifier));
 					double d4 = Math.sqrt(d0 * d0 + d2 * d2);
 					if(Math.abs(d1) > (double) 1.0E-5F || Math.abs(d4) > (double) 1.0E-5F) 
 					{
 						float f3 = -((float) (Mth.atan2(d1, d4) * (double) (180.0F / (float) Math.PI)));
-						f3 = Mth.clamp(Mth.wrapDegrees(f3), (float) (-mob.maxTurnX()), (float) mob.maxTurnX());
+						f3 = Mth.clamp(Mth.wrapDegrees(f3), (float) (-this.mob.maxSwimTurnX()), (float) this.mob.maxSwimTurnX());
 						this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f3, 5.0F));
 					}
 					float f6 = Mth.cos(this.mob.getXRot() * ((float) Math.PI / 180.0F));

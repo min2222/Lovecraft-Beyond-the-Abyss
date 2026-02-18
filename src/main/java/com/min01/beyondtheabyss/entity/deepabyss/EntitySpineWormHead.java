@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain;
@@ -50,11 +49,11 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState holdingAnimationState = new SmoothAnimationState();
 	
-	public EntitySpineWormHead(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntitySpineWormHead(EntityType<? extends AbstractSpineWormPart> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
-		this.setCanMove(false);
-		this.setCanLook(false);
+		this.setStopMoveTick(Integer.MAX_VALUE);
+		this.setStopLookTick(Integer.MAX_VALUE);
 		this.xpReward = this.random.nextInt(15);
 	}
 	
@@ -79,7 +78,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
     }
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
+	public EntityPartBuilder<? extends AbstractSpineWormPart> createBuilder() 
 	{
 		EntityPartBuilder<EntitySpineWormHead> partBuilder = new EntityPartBuilder<EntitySpineWormHead>(this);
 		return partBuilder;
@@ -92,7 +91,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 	}
 
 	@Override
-	public boolean isSwimable() 
+	protected boolean isAffectedByFluids()
 	{
 		return false;
 	}
@@ -348,7 +347,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
-	public static boolean checkSpineWormSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkSpineWormSpawnRules(EntityType<? extends AbstractSpineWormPart> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }

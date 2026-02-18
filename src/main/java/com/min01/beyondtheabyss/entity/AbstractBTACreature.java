@@ -9,18 +9,17 @@ import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-public abstract class AbstractBTACreature extends AbstractAnimatableCreature implements IMultipart, IBTAMob
+public abstract class AbstractBTACreature extends AbstractAnimatableCreature implements IMultipart
 {
 	public final EntityPartBuilder<? extends AbstractBTACreature> partBuilder;
 	
-	public AbstractBTACreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel)
+	public AbstractBTACreature(EntityType<? extends AbstractAnimatableCreature> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.partBuilder = this.createBuilder();

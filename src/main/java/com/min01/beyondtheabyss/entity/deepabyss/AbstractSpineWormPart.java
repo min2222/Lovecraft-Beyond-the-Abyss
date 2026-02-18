@@ -2,12 +2,11 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
 public abstract class AbstractSpineWormPart extends AbstractDeepAbyssWormPart<AbstractSpineWormPart>
 {
-	public AbstractSpineWormPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public AbstractSpineWormPart(EntityType<? extends AbstractDeepAbyssWormPart<AbstractSpineWormPart>> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 	}

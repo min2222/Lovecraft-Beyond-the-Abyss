@@ -14,14 +14,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
 public abstract class AbstractOwnableBTAMonster<T extends AbstractBTAMonster> extends AbstractBTAMonster
 {
 	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractOwnableBTAMonster.class, EntityDataSerializers.OPTIONAL_UUID);
 	
-	public AbstractOwnableBTAMonster(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public AbstractOwnableBTAMonster(EntityType<? extends AbstractBTAMonster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 	}

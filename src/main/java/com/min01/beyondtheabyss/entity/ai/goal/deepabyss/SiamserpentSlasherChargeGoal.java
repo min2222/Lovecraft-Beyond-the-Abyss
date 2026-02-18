@@ -18,6 +18,7 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	{
 		super.start();
 		this.mob.setAnimationState(7);
+		this.mob.lookAtTarget();
 		if(this.mob.getHead() != null)
 		{
 			this.mob.getHead().goal = SiamserpentBlasterBeamGoal.class;

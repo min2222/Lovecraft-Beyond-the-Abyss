@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.network;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.min01.beyondtheabyss.entity.IPosArray;
+import com.min01.beyondtheabyss.entity.IAnimatable;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -46,7 +46,7 @@ public class UpdatePosArrayPacket
 				BTAUtil.getClientLevel(t -> 
 				{
 					Entity entity = BTAUtil.getEntityByUUID(t, message.entityUUID);
-					if(entity instanceof IPosArray mob) 
+					if(entity instanceof IAnimatable mob) 
 					{
 						mob.getPosArray()[message.array] = message.pos;
 					}
@@ -55,7 +55,7 @@ public class UpdatePosArrayPacket
 			else
 			{
 				Entity entity = BTAUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
-				if(entity instanceof IPosArray mob) 
+				if(entity instanceof IAnimatable mob) 
 				{
 					mob.getPosArray()[message.array] = message.pos;
 				}

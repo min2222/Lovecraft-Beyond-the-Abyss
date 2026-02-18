@@ -38,7 +38,7 @@ public class MutavoreConsumingGoal extends Goal
 	@Override
 	public boolean canUse()
 	{
-		if(this.mob.isUsingSkill())
+		if(this.mob.isAnimationPlaying())
 		{
 			return false;
 		}

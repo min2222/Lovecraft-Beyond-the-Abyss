@@ -22,7 +22,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
@@ -35,7 +34,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 	public static final EntityDataAccessor<Boolean> UNLOADED = SynchedEntityData.defineId(AbstractWormPart.class, EntityDataSerializers.BOOLEAN);
 	public Worm[] worms;
 	
-	public AbstractWormPart(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public AbstractWormPart(EntityType<? extends AbstractOwnableBTAMonster<T>> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 	}
@@ -178,7 +177,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 						worm.setOldPosAndRot();
 						if(i == 0)
 						{
-							WormChain.tick(worm, this, distance, speed);
+							WormChain.tickNormal(worm, this, distance, speed);
 						}
 						else
 						{

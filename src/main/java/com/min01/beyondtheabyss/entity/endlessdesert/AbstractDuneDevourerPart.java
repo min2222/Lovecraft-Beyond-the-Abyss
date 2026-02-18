@@ -7,7 +7,6 @@ import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -16,7 +15,7 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 {
 	public boolean inWall;
 	
-	public AbstractDuneDevourerPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public AbstractDuneDevourerPart(EntityType<? extends AbstractWormPart<AbstractDuneDevourerPart>> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 	}

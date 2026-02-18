@@ -14,19 +14,18 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractBTAMonster extends AbstractAnimatableMonster implements IMultipart, IBTAMob
+public abstract class AbstractBTAMonster extends AbstractAnimatableMonster implements IMultipart
 {
 	public static final EntityDataAccessor<Vec3> LAST_LOOK_POS = SynchedEntityData.defineId(AbstractBTAMonster.class, BTAEntityDataSerializers.VEC3.get());
 	
 	public final EntityPartBuilder<? extends AbstractBTAMonster> partBuilder;
 	
-	public AbstractBTAMonster(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public AbstractBTAMonster(EntityType<? extends AbstractAnimatableMonster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.partBuilder = this.createBuilder();

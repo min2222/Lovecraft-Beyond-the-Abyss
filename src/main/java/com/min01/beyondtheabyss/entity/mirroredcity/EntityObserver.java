@@ -17,7 +17,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 public class EntityObserver extends AbstractBTAFlyingMonster
 {
-	public EntityObserver(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntityObserver(EntityType<? extends AbstractBTAFlyingMonster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(3);

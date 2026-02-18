@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
 import com.min01.beyondtheabyss.entity.projectile.EntityPutridBubble;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -11,7 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class MutavorePutridBubbleGoal extends BasicBTASkillGoal<EntityMutavore>
+public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<EntityMutavore>
 {
 	private int interval;
 	

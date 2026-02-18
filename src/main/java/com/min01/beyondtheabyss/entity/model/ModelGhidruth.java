@@ -164,12 +164,12 @@ public class ModelGhidruth extends HierarchicalModel<EntityGhidruth>
 		
 		entity.biteRightAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_BITE_RIGHT, ageInTicks);
 		entity.biteLeftAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_BITE_LEFT, ageInTicks);
-		this.animate(entity.tailSwingRightAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);
-		this.animate(entity.tailSwingLeftAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_LEFT, ageInTicks);
 		entity.chargePrepareAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_CHARGE_PREPARE, ageInTicks);
 		entity.stunnedAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUNNED, ageInTicks);
 		entity.stunLoopAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUN_LOOP, ageInTicks);
 		entity.stunEndAnimationState.animate(this, GhidruthAnimation.GHIDRUTH_STUN_END, ageInTicks);
+		this.animate(entity.tailSwingRightAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_RIGHT, ageInTicks);
+		this.animate(entity.tailSwingLeftAnimationState, GhidruthAnimation.GHIDRUTH_TAIL_SWING_LEFT, ageInTicks);
 		
 		this.animateWalk(GhidruthAnimation.GHIDRUTH_SWIM, limbSwing, limbSwingAmount, entity.isCharge() ? 2.5F : 1.0F, 2.5F);
 		

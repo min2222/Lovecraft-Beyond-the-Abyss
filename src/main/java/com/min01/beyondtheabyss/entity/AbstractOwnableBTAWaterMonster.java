@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.entity.deepabyss;
+package com.min01.beyondtheabyss.entity;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -14,14 +14,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractOwnableDeepAbyssMonster<T extends AbstractDeepAbyssMonster> extends AbstractDeepAbyssMonster
+public abstract class AbstractOwnableBTAWaterMonster<T extends AbstractBTAWaterMonster> extends AbstractBTAWaterMonster
 {
-	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractOwnableDeepAbyssMonster.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractOwnableBTAWaterMonster.class, EntityDataSerializers.OPTIONAL_UUID);
 	
-	public AbstractOwnableDeepAbyssMonster(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public AbstractOwnableBTAWaterMonster(EntityType<? extends AbstractBTAWaterMonster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 	}

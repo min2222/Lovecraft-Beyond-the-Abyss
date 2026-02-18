@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.ai.goal.AbstractBTASkillGoal;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +16,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
 public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<AbstractSiamserpentPart>
@@ -26,9 +24,9 @@ public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<
 	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID2 = SynchedEntityData.defineId(AbstractSiamserpentPart.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Optional<UUID>> OWNER_UUID2 = SynchedEntityData.defineId(AbstractSiamserpentPart.class, EntityDataSerializers.OPTIONAL_UUID);
 
-	public Class<? extends AbstractBTASkillGoal<?>> goal;
+	public Class<?> goal;
 	
-	public AbstractSiamserpentPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public AbstractSiamserpentPart(EntityType<? extends AbstractDeepAbyssWormPart<AbstractSiamserpentPart>> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 	}

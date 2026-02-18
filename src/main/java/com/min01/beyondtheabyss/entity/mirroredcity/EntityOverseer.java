@@ -18,11 +18,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityOverseer extends AbstractBTAFlyingMonster
 {
-	private float rollAngle = 0.0F;
-	
 	public final SmoothAnimationState openAnimationState = new SmoothAnimationState();
 	
-	public EntityOverseer(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntityOverseer(EntityType<? extends AbstractBTAFlyingMonster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(30);
@@ -67,26 +65,26 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 		super.tick();
 		if(this.level.isClientSide)
 		{
-			this.openAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+			this.openAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
 		}
-		
-	    Vec3 movement = this.getDeltaMovement();
-	    float speed = (float) movement.length();
-	    if(speed > 0.01F) 
-	    {
-	        float targetRoll = (float) Math.toDegrees(Math.atan2(movement.x, movement.z)) * 0.1F;
-	        this.rollAngle += (targetRoll - this.rollAngle) * 0.025F;
-	    }
-	    else
-	    {
-	        this.rollAngle *= 0.9F;
-	    }
 	    
 	    BlockPos groundPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ()).above();
 	    if(this.onGround() || this.blockPosition().distSqr(groundPos) <= 150.0F)
 	    {
 	    	this.addDeltaMovement(new Vec3(0.0F, 0.005F, 0.0F));
 	    }
+	}
+	
+	@Override
+	public float getTargetRoll(Vec3 movement)
+	{
+		return (float) Math.toDegrees(Math.atan2(movement.x, movement.z)) * 0.1F;
+	}
+	
+	@Override
+	public float getRollAmount()
+	{
+		return 0.025F;
 	}
 	
 	@Override
@@ -110,13 +108,13 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	}
 	
 	@Override
-	public int maxTurnX()
+	public float maxFlyTurnX()
 	{
 		return 0;
 	}
 	
 	@Override
-	public int maxTurnY()
+	public float maxFlyTurnY()
 	{
 		return 2;
 	}
@@ -131,10 +129,5 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	public boolean removeWhenFarAway(double pDistanceToClosestPlayer)
 	{
 		return false;
-	}
-	
-	public float getRollAngle()
-	{
-		return this.rollAngle;
 	}
 }

@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.sound.BTASounds;
@@ -21,7 +20,7 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySiamserpentBone.class, EntityDataSerializers.INT);
 	
-	public EntitySiamserpentBone(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public EntitySiamserpentBone(EntityType<? extends AbstractSiamserpentPart> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(15);
@@ -43,7 +42,7 @@ public class EntitySiamserpentBone extends AbstractSiamserpentPart
 	}
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
+	public EntityPartBuilder<? extends AbstractSiamserpentPart> createBuilder() 
 	{
 		EntityPartBuilder<EntitySiamserpentBone> partBuilder = new EntityPartBuilder<EntitySiamserpentBone>(this);
 		return partBuilder;

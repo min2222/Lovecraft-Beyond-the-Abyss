@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.AbstractBTAWaterMonster;
 import com.min01.beyondtheabyss.entity.ILeader;
-import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
+import com.min01.beyondtheabyss.entity.ai.control.AnimationSwimmingMoveControl;
 import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GnasherBiteGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -39,7 +39,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<EntityGnasher>
+public class EntityGnasher extends AbstractBTAWaterMonster implements ILeader<EntityGnasher>
 {
 	public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_DISPERSE = SynchedEntityData.defineId(EntityGnasher.class, EntityDataSerializers.BOOLEAN);
@@ -47,24 +47,24 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 	
 	public final SmoothAnimationState biteAnimationState = new SmoothAnimationState();
 	
-	public EntityGnasher(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public EntityGnasher(EntityType<? extends AbstractBTAWaterMonster> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(6);
-		this.moveControl = new BoidMoveControl(this, true);
+		this.moveControl = new BoidMoveControl<>(this, true);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 15.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.3F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.2F)
         		.add(Attributes.ATTACK_DAMAGE, 3.5F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
+	public EntityPartBuilder<? extends AbstractBTAWaterMonster> createBuilder() 
 	{
     	EntityPartBuilder<EntityGnasher> partBuilder = new EntityPartBuilder<EntityGnasher>(this)
     	{
@@ -123,7 +123,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
         
         if(this.level.isClientSide)
         {
-        	this.biteAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
+        	this.biteAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
         }
 		
 		if(this.getLeader() != null)
@@ -153,11 +153,11 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 				{
 					if(this.distanceTo(leader) >= 12.0F)
 					{
-						leader.setCanMove(true);
-						leader.setCanLook(true);
+						leader.setStopMoveTick(0);
+						leader.setStopLookTick(0);
 						leader.switchControl(true);
-						this.setCanMove(true);
-						this.setCanLook(true);
+						this.setStopMoveTick(0);
+						this.setStopLookTick(0);
 					}
 				}
 			}
@@ -179,8 +179,8 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
     	this.getNavigation().stop();
 		this.setDisperse(true);
 		this.setTarget(null);
-		this.setCanMove(false);
-		this.setCanLook(false);
+		this.setStopMoveTick(Integer.MAX_VALUE);
+		this.setStopLookTick(Integer.MAX_VALUE);
 		this.switchControl(false);
         Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, pos);
         if(vec3 != null)
@@ -189,15 +189,16 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
         }
     }
     
+    @Override
     public void switchControl(boolean isBoid)
     {
     	if(isBoid)
     	{
-    		this.moveControl = new BoidMoveControl(this, true);
+    		this.moveControl = new BoidMoveControl<>(this, true);
     	}
     	else
     	{
-    		this.moveControl = new BTASwimmingMoveControl(this);
+    		this.moveControl = new AnimationSwimmingMoveControl<>(this);
     	}
     }
     
@@ -205,12 +206,6 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.HOSTILE;
-	}
-	
-	@Override
-	public float moveSpeed() 
-	{
-		return 0.3F;
 	}
 	
     @Override
@@ -270,7 +265,7 @@ public class EntityGnasher extends AbstractDeepAbyssMonster implements ILeader<E
 		return super.canMoveAround() && !this.isDisperse();
 	}
 	
-	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkGnasherSpawnRules(EntityType<? extends AbstractBTAWaterMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }

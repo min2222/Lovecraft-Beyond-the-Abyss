@@ -27,7 +27,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -51,7 +50,7 @@ public class EntityMysteriousGuy extends AbstractBTACreature implements IDialogu
 	
 	public Player player;
 	
-	public EntityMysteriousGuy(EntityType<? extends PathfinderMob> pEntityType, Level pLevel)
+	public EntityMysteriousGuy(EntityType<? extends AbstractAnimatableCreature> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 	}

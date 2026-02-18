@@ -40,6 +40,11 @@ public class WormChain
     	tick(worm, owner, distance, speed, owner.yBodyRot);
     }
     
+    public static void tickNormal(Worm worm, LivingEntity owner, float distance, float speed)
+    {
+    	tick(worm, owner, distance, speed, owner.getYRot());
+    }
+    
     public static void tickHead(Worm worm, LivingEntity owner, float distance, float speed)
     {
     	tick(worm, owner, distance, speed, owner.yHeadRot);
@@ -71,11 +76,6 @@ public class WormChain
     public static void tick(Worm worm, Worm owner, float distance, float speed)
     {
     	tick(worm, owner, distance, speed, owner.yBodyRot);
-    }
-    
-    public static void tickHead(Worm worm, Worm owner, float distance, float speed)
-    {
-    	tick(worm, owner, distance, speed, owner.yHeadRot);
     }
     
     public static void tick(Worm worm, Worm owner, float distance, float speed, float ownerRot)

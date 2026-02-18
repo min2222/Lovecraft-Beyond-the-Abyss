@@ -60,7 +60,7 @@ public class ModelLithoshrimp extends HierarchicalModel<EntityLithoshrimp>
 	public void setupAnim(EntityLithoshrimp entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		entity.idleAnimationState.animate(this, LithoshrimpAnimation.LITHOSHRIMP_IDLE, ageInTicks, limbSwingAmount, 3.5F);
+		entity.idleAnimationState.animateIdle(this, LithoshrimpAnimation.LITHOSHRIMP_IDLE, ageInTicks, limbSwingAmount, 3.5F);
 		this.animateWalk(LithoshrimpAnimation.LITHOSHRIMP_SWIM, limbSwing, limbSwingAmount, 3.5F, 3.5F);
 	}
 	

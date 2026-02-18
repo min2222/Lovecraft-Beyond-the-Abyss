@@ -1,13 +1,13 @@
 package com.min01.beyondtheabyss.entity.ai.goal.mirroredcity;
 
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
 import com.min01.beyondtheabyss.entity.projectile.EntityMissile;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec3;
 
-public class OverseerMissileGoal extends BasicBTASkillGoal<EntityOverseer>
+public class OverseerMissileGoal extends AbstractAnimationGoal<EntityOverseer>
 {
 	public OverseerMissileGoal(EntityOverseer mob) 
 	{

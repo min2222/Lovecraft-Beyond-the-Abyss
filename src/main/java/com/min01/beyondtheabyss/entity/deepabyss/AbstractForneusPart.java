@@ -5,14 +5,13 @@ import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<AbstractForneusPart>
 {
-	public AbstractForneusPart(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public AbstractForneusPart(EntityType<? extends AbstractDeepAbyssWormPart<AbstractForneusPart>> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 	}
@@ -21,12 +20,6 @@ public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<Abst
 	public BTAMobType getBTAMobType() 
 	{
 		return BTAMobType.BOSS;
-	}
-	
-	@Override
-	public float moveSpeed() 
-	{
-		return 0.8F;
 	}
 	
 	@Override

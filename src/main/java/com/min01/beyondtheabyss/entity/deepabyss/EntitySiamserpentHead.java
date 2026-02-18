@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterBeamGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentBlasterShotGoal;
@@ -73,7 +72,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	
 	public Vec3 wantedPos = Vec3.ZERO;
 	
-	public EntitySiamserpentHead(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntitySiamserpentHead(EntityType<? extends AbstractSiamserpentPart> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(15);
@@ -85,7 +84,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 120.0F)
     			.add(Attributes.ARMOR, 5.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.7F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.3F)
         		.add(Attributes.FOLLOW_RANGE, 45.0F)
         		.add(Attributes.ATTACK_DAMAGE, 12.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F);
@@ -103,7 +102,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
     }
     
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+	public EntityPartBuilder<? extends AbstractSiamserpentPart> createBuilder()
 	{
 		EntityPartBuilder<EntitySiamserpentHead> partBuilder = new EntityPartBuilder<EntitySiamserpentHead>(this);
 		return partBuilder;
@@ -134,14 +133,14 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		{
 			this.blasterDisabledAnimationState.updateWhen(this.getHeadType() == HeadType.BLASTER && (this.isDisabled() || this.isDormant()), this.tickCount);
 			this.slasherDisabledAnimationState.updateWhen(this.getHeadType() == HeadType.SLASHER && (this.isDisabled() || this.isDormant()), this.tickCount);
-			this.rayChargeAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
-			this.rayStartAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
-			this.rayLoopAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
-			this.slashRightAnimationState.updateWhen(this.isUsingSkill(5), this.tickCount);
-			this.slashLeftAnimationState.updateWhen(this.isUsingSkill(9), this.tickCount);
-			this.blasterShotAnimationState.updateWhen(this.isUsingSkill(6), this.tickCount);
-			this.slasherChargeStartAnimationState.updateWhen(this.isUsingSkill(7), this.tickCount);
-			this.slasherChargingAnimationState.updateWhen(this.isUsingSkill(8), this.tickCount);
+			this.rayChargeAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
+			this.rayStartAnimationState.updateWhen(this.isAnimationPlaying(2), this.tickCount);
+			this.rayLoopAnimationState.updateWhen(this.isAnimationPlaying(3), this.tickCount);
+			this.slashRightAnimationState.updateWhen(this.isAnimationPlaying(5), this.tickCount);
+			this.slashLeftAnimationState.updateWhen(this.isAnimationPlaying(9), this.tickCount);
+			this.blasterShotAnimationState.updateWhen(this.isAnimationPlaying(6), this.tickCount);
+			this.slasherChargeStartAnimationState.updateWhen(this.isAnimationPlaying(7), this.tickCount);
+			this.slasherChargingAnimationState.updateWhen(this.isAnimationPlaying(8), this.tickCount);
 		}
 		
 		if(this.getHealth() <= this.getMaxHealth() / 2.0F && !this.isDormant() && this.tickAfterDormant == 0)
@@ -198,13 +197,13 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	@Override
 	public boolean canMoveAround()
 	{
-		return !this.hasTarget();
+		return !this.isTargetValid();
 	}
 	
 	@Override
 	public boolean canLook() 
 	{
-		return super.canLook() && this.isUsingSkill();
+		return super.canLook() && this.isAnimationPlaying();
 	}
 	
 	@Override
@@ -241,7 +240,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 					worm.setOldPosAndRot();
 					if(i == 0)
 					{
-						WormChain.tick(worm, this, distance, speed);
+						WormChain.tickNormal(worm, this, distance, speed);
 					}
 					else
 					{
@@ -257,16 +256,6 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	public float moveSpeed() 
-	{
-		if(this.hasTarget())
-		{
-			return 0.1F;
-		}
-		return super.moveSpeed();
-	}
-	
-	@Override
 	public void tickWorms(AbstractSiamserpentPart head)
 	{
 		if(head.worms != null && head.isHead())
@@ -274,18 +263,21 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			Worm worm = head.worms[this.getIndex()];
 			if(worm != null)
 			{
-				Vec3 pos = head.position().add(worm.position());
-				Vec2 rot = worm.getRot(1.0F);
-				this.setPos(pos);
-				this.setXRot(-rot.x);
-				this.setYRot(rot.y + 180.0F);
-				this.setYHeadRot(rot.y + 180.0F);
-				this.setYBodyRot(rot.y + 180.0F);
-				
-				this.xRotO = -rot.x;
-				this.yRotO = rot.y + 180.0F;
-				this.yHeadRotO = rot.y + 180.0F;
-				this.yBodyRotO = rot.y + 180.0F;
+				Vec3 pos = worm.position();
+				if(!pos.equals(Vec3.ZERO))
+				{
+					Vec2 rot = worm.getRot(1.0F);
+					this.setPos(pos);
+					this.setXRot(-rot.x);
+					this.setYRot(rot.y + 180.0F);
+					this.setYHeadRot(rot.y + 180.0F);
+					this.setYBodyRot(rot.y + 180.0F);
+					
+					this.xRotO = -rot.x;
+					this.yRotO = rot.y + 180.0F;
+					this.yHeadRotO = rot.y + 180.0F;
+					this.yBodyRotO = rot.y + 180.0F;
+				}
 			}
 		}
 	}
@@ -331,7 +323,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		return 1;
 	}
 	
-	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkSiamserpentSpawnRules(EntityType<? extends AbstractSiamserpentPart> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
         Structure structure = pServerLevel.registryAccess().registryOrThrow(Registries.STRUCTURE).get(BTAResourceKeys.BTAStructures.GIANT_FOSSIL);
 		ServerLevel level = pServerLevel.getLevel();

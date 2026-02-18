@@ -2,14 +2,14 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySplittedFulgastra;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
 
 import net.minecraft.world.entity.LivingEntity;
 
-public class FulgastraChargeGoal extends BasicBTASkillGoal<EntitySplittedFulgastra>
+public class FulgastraChargeGoal extends AbstractAnimationGoal<EntitySplittedFulgastra>
 {
 	public FulgastraChargeGoal(EntitySplittedFulgastra mob)
 	{

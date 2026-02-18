@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.AbstractOwnableBTAWaterMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FulgastraChargeGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -18,7 +18,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<EntityFulgastra>
+public class EntitySplittedFulgastra extends AbstractOwnableBTAWaterMonster<EntityFulgastra>
 {
 	public static final EntityDataAccessor<Boolean> IS_CHARGED = SynchedEntityData.defineId(EntitySplittedFulgastra.class, EntityDataSerializers.BOOLEAN);
 
@@ -27,14 +27,14 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 	public final SmoothAnimationState shockingAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState closedAnimationState = new SmoothAnimationState();
 	
-	public EntitySplittedFulgastra(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntitySplittedFulgastra(EntityType<? extends AbstractOwnableBTAWaterMonster<EntityFulgastra>> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(2);
 	}
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+	public EntityPartBuilder<? extends AbstractOwnableBTAWaterMonster<EntityFulgastra>> createBuilder()
 	{
     	EntityPartBuilder<EntitySplittedFulgastra> partBuilder = new EntityPartBuilder<EntitySplittedFulgastra>(this);
     	return partBuilder;
@@ -75,9 +75,9 @@ public class EntitySplittedFulgastra extends AbstractOwnableDeepAbyssMonster<Ent
 		if(this.level.isClientSide)
 		{
 			this.swimAnimationState.updateWhen(true, this.tickCount);
-			this.chargingAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
-			this.shockingAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
-			this.closedAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
+			this.chargingAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
+			this.shockingAnimationState.updateWhen(this.isAnimationPlaying(2), this.tickCount);
+			this.closedAnimationState.updateWhen(this.isAnimationPlaying(3), this.tickCount);
 		}
 		EntityFulgastra owner = this.getOwner();
 		if(this.getAnimationState() == 3 && owner != null && this.isInWater())

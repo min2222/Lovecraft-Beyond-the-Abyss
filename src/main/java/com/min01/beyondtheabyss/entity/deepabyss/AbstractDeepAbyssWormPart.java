@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.min01.beyondtheabyss.entity.AbstractOwnableBTAWaterMonster;
 import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
@@ -22,20 +23,19 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormPart<T>> extends AbstractOwnableDeepAbyssMonster<T>
+public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormPart<T>> extends AbstractOwnableBTAWaterMonster<T>
 {
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Boolean> UNLOADED = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.BOOLEAN);
 	public Worm[] worms;
 	
-	public AbstractDeepAbyssWormPart(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public AbstractDeepAbyssWormPart(EntityType<? extends AbstractOwnableBTAWaterMonster<T>> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 	}
@@ -100,6 +100,12 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 		}
 	}
 	
+	@Override
+	protected void handleAirSupply(int pAirSupply) 
+	{
+		
+	}
+	
     @Override
     public boolean isInvulnerableTo(DamageSource pSource)
     {
@@ -137,18 +143,21 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 			Worm worm = head.worms[this.getIndex()];
 			if(worm != null)
 			{
-				Vec3 pos = head.position().add(worm.position());
-				Vec2 rot = worm.getRot(1.0F);
-				this.setPos(pos);
-				this.setXRot(rot.x);
-				this.setYRot(rot.y);
-				this.setYHeadRot(rot.y);
-				this.setYBodyRot(rot.y);
-				
-				this.xRotO = rot.x;
-				this.yRotO = rot.y;
-				this.yHeadRotO = rot.y;
-				this.yBodyRotO = rot.y;
+				Vec3 pos = worm.position();
+				if(!pos.equals(Vec3.ZERO))
+				{
+					Vec2 rot = worm.getRot(1.0F);
+					this.setPos(pos);
+					this.setXRot(rot.x);
+					this.setYRot(rot.y);
+					this.setYHeadRot(rot.y);
+					this.setYBodyRot(rot.y);
+					
+					this.xRotO = rot.x;
+					this.yRotO = rot.y;
+					this.yHeadRotO = rot.y;
+					this.yBodyRotO = rot.y;
+				}
 			}
 		}
 	}
@@ -178,7 +187,7 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 						worm.setOldPosAndRot();
 						if(i == 0)
 						{
-							WormChain.tick(worm, this, distance, speed);
+							WormChain.tickNormal(worm, this, distance, speed);
 						}
 						else
 						{

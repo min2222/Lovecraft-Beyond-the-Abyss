@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTACreature;
+import com.min01.beyondtheabyss.entity.AbstractBTAWaterCreature;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -11,18 +11,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 
-public class EntityLithoshrimp extends AbstractDeepAbyssCreature
+public class EntityLithoshrimp extends AbstractBTAWaterCreature
 {
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	
-	public EntityLithoshrimp(EntityType<? extends PathfinderMob> pEntityType, Level pLevel)
+	public EntityLithoshrimp(EntityType<? extends AbstractBTAWaterCreature> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = 1;
@@ -39,7 +38,7 @@ public class EntityLithoshrimp extends AbstractDeepAbyssCreature
     }
     
 	@Override
-	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
+	public EntityPartBuilder<? extends AbstractBTAWaterCreature> createBuilder()
 	{
     	EntityPartBuilder<EntityLithoshrimp> partBuilder = new EntityPartBuilder<EntityLithoshrimp>(this);
 		return partBuilder;
@@ -74,7 +73,7 @@ public class EntityLithoshrimp extends AbstractDeepAbyssCreature
 		return 100;
 	}
 	
-	public static boolean checkLithoshrimpSpawnRules(EntityType<? extends AbstractDeepAbyssCreature> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkLithoshrimpSpawnRules(EntityType<? extends AbstractBTAWaterCreature> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
     }

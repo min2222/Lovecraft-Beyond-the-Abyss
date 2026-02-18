@@ -4,11 +4,13 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.ai.control.BTASwimmingMoveControl;
+import com.min01.beyondtheabyss.entity.AbstractBTAWaterCreature;
+import com.min01.beyondtheabyss.entity.ai.control.AnimationMoveControl;
+import com.min01.beyondtheabyss.entity.ai.control.AnimationSwimmingMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellAttackGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellHidingGoal;
 import com.min01.beyondtheabyss.entity.ai.navigation.BTAGroundPathNavigation;
+import com.min01.beyondtheabyss.entity.ai.navigation.BreachingWaterBoundPathNavigation;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -29,12 +31,10 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -44,7 +44,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
-public class EntityNecroshell extends AbstractDeepAbyssMonster
+public class EntityNecroshell extends AbstractBTAWaterCreature
 {
 	public static final EntityDataAccessor<Integer> SHELL_TYPE = SynchedEntityData.defineId(EntityNecroshell.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> IS_HIDING = SynchedEntityData.defineId(EntityNecroshell.class, EntityDataSerializers.BOOLEAN);
@@ -55,7 +55,7 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	public final SmoothAnimationState hideAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState unhideAnimationState = new SmoothAnimationState();
 	
-	public EntityNecroshell(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntityNecroshell(EntityType<? extends AbstractBTAWaterCreature> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(5);
@@ -74,7 +74,7 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
     }
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+	public EntityPartBuilder<? extends AbstractBTAWaterCreature> createBuilder()
 	{
 		EntityPartBuilder<EntityNecroshell> partBuilder = new EntityPartBuilder<EntityNecroshell>(this);
 		return partBuilder;
@@ -140,14 +140,14 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 		if(this.level.isClientSide)
 		{
 			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && !this.isHiding(), this.tickCount);
-			this.attackAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
-			this.intimidateAnimationState.updateWhen(this.hasTarget() && this.getAnimationState() == 0 && !this.isHiding(), this.tickCount);
+			this.attackAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
+			this.intimidateAnimationState.updateWhen(this.isTargetValid() && this.getAnimationState() == 0 && !this.isHiding(), this.tickCount);
 			this.hideAnimationState.updateWhen(this.isHiding(), this.tickCount);
-			this.unhideAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
+			this.unhideAnimationState.updateWhen(this.isAnimationPlaying(2), this.tickCount);
 		}
 
 		Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 3.5F, true);
-		if(player != null && !this.isUsingSkill() && !this.isHiding())
+		if(player != null && !this.isAnimationPlaying() && !this.isHiding())
 		{
 	        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, player.position());
 	        if(vec3 != null)
@@ -161,14 +161,14 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
     		if(this.navigation instanceof BTAGroundPathNavigation)
     		{
         		this.navigation = this.createNavigation(this.level);
-        		this.moveControl = new BTASwimmingMoveControl(this);
+        		this.moveControl = new AnimationSwimmingMoveControl<>(this);
         		this.lookControl = new SmoothSwimmingLookControl(this, 10);
     		}
     	}
-    	else if(this.navigation instanceof WaterBoundPathNavigation)
+    	else if(this.navigation instanceof BreachingWaterBoundPathNavigation)
     	{
     		this.navigation = new BTAGroundPathNavigation(this, this.level);
-    		this.moveControl = new MoveControl(this);
+    		this.moveControl = new AnimationMoveControl<>(this);
     		this.lookControl = new LookControl(this);
     	}
 	}
@@ -190,21 +190,9 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public boolean canBreathOutsideWater() 
+	protected void handleAirSupply(int pAirSupply)
 	{
-		return true;
-	}
-	
-	@Override
-	public boolean isSwimable() 
-	{
-		return false;
-	}
-	
-	@Override
-	public float moveSpeed()
-	{
-		return 1.0F;
+		
 	}
 	
 	@Override
@@ -244,7 +232,7 @@ public class EntityNecroshell extends AbstractDeepAbyssMonster
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 	
-	public static boolean checkNecroshellSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkNecroshellSpawnRules(EntityType<? extends AbstractBTAWaterCreature> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }

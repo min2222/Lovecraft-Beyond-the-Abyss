@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.AbstractBTAWaterMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerAmbushGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerDashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
@@ -36,9 +36,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityCorpseAngler extends AbstractDeepAbyssMonster
+public class EntityCorpseAngler extends AbstractBTAWaterMonster
 {
 	public static final EntityDataAccessor<Integer> BURROW_COOLDOWN = SynchedEntityData.defineId(EntityCorpseAngler.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> IS_BURROW = SynchedEntityData.defineId(EntityCorpseAngler.class, EntityDataSerializers.BOOLEAN);
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState openMouthAnimationState = new SmoothAnimationState();
@@ -54,7 +55,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	public final Worm worm5 = new Worm();
 	public final Worm worm6 = new Worm();
 	
-	public EntityCorpseAngler(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public EntityCorpseAngler(EntityType<? extends AbstractBTAWaterMonster> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 		this.posArray = new Vec3[1];
@@ -66,7 +67,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 80.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.45F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.15F)
         		.add(Attributes.FOLLOW_RANGE, 60.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F)
         		.add(Attributes.ATTACK_DAMAGE, 8.0F);
@@ -85,10 +86,11 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
     {
     	super.defineSynchedData();
     	this.entityData.define(BURROW_COOLDOWN, 0);
+    	this.entityData.define(IS_BURROW, false);
     }
     
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+	public EntityPartBuilder<? extends AbstractBTAWaterMonster> createBuilder()
 	{
     	EntityPartBuilder<EntityCorpseAngler> partBuilder = new EntityPartBuilder<EntityCorpseAngler>(this)
     	{
@@ -142,14 +144,14 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		{
 			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
 			this.openMouthAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
-			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3, this.tickCount);
+			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3 || this.entityData.get(IS_BURROW), this.tickCount);
 			this.unburrowAnimationState.updateWhen(this.getAnimationState() == 4, this.tickCount);
 			this.ambushAnimationState.updateWhen(this.getAnimationState() == 5, this.tickCount);
 		}
 		
 		boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
 		
-		if(this.getAnimationState() == 0 && this.isInWater() && !this.hasTarget() && this.tickCount > 2 && this.level.isLoaded(this.blockPosition()))
+		if(!this.isBurrow() && this.isInWater() && !this.isTargetValid() && this.tickCount > 2 && this.level.isLoaded(this.blockPosition()))
 		{
 			if(this.getBurrowCooldown() <= 0)
 			{
@@ -157,16 +159,24 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 				{
 					this.setAnimationState(3);
 					this.setAnimationTick(40);
-					this.setCanMove(false);
-					this.setCanLook(false);
+					this.setStopLookTick(Integer.MAX_VALUE);
+					this.setStopMoveTick(Integer.MAX_VALUE);
 				}
 				else
 				{
 					BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
 					Vec3 pos = Vec3.atBottomCenterOf(floorPos);
 					boolean flag = this.position().distanceTo(pos) <= 12.0F;
-					this.setCanMove(!flag);
-					this.setCanLook(!flag);
+					if(flag)
+					{
+						this.setStopLookTick(Integer.MAX_VALUE);
+						this.setStopMoveTick(Integer.MAX_VALUE);
+					}
+					else
+					{
+						this.setStopLookTick(0);
+						this.setStopMoveTick(0);
+					}
 					if(flag)
 					{
 						this.getNavigation().moveTo(floorPos.getX(), floorPos.getY(), floorPos.getZ(), 1.25F);
@@ -177,34 +187,42 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 
 		if(this.getAnimationState() == 3)
 		{
+			this.spawnParticle();
 			if(!this.level.isClientSide)
 			{
 				this.getNavigation().stop();
 				this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.0F);
 			}
-			if(this.getAnimationTick() > 0)
-			{
-				this.spawnParticle();
-			}
-			else if(!canBurrow)
+		}
+		if(this.getAnimationState() == 4)
+		{
+			this.spawnParticle();
+		}
+	}
+	
+	@Override
+	public void onAnimationEnd(int animationState) 
+	{
+		if(animationState == 3)
+		{
+			boolean canBurrow = BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below()) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(2)) && BTAUtil.isCollisionShapeFullBlock(this.level, this.blockPosition().below(3));
+			if(!canBurrow)
 			{
 				this.setAnimationState(4);
 				this.setAnimationTick(20);
 			}
-		}
-		if(this.getAnimationState() == 4)
-		{
-			if(this.getAnimationTick() > 0)
-			{
-				this.spawnParticle();
-			}
 			else
 			{
-				this.setAnimationState(0);
-				this.setBurrowCooldown(100);
-				this.setCanMove(true);
-				this.setCanLook(true);
+				this.setBurrow(true);
 			}
+		}
+		if(animationState == 4)
+		{
+			this.setBurrow(false);
+			this.setAnimationState(0);
+			this.setBurrowCooldown(100);
+			this.setStopLookTick(0);
+			this.setStopMoveTick(0);
 		}
 	}
 	
@@ -220,12 +238,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 		return super.canLook() && !this.isBurrow();
 	}
 	
-	public boolean isBurrow()
-	{
-		return this.getAnimationState() == 3 || this.getAnimationState() == 4;
-	}
-	
-	public static boolean checkCorpseAnglerSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkCorpseAnglerSpawnRules(EntityType<? extends AbstractBTAWaterMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
@@ -295,7 +308,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	}
     
 	@Override
-	public int maxTurnX() 
+	public float maxSwimTurnX() 
 	{
 		if(this.getAnimationState() == 1)
 		{
@@ -305,7 +318,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public int maxTurnY() 
+	public float maxSwimTurnY() 
 	{
 		return 8;
 	}
@@ -315,6 +328,7 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	{
 		super.addAdditionalSaveData(pCompound);
 		pCompound.putInt("BurrowCooldown", this.getBurrowCooldown());
+		pCompound.putBoolean("isBurrow", this.entityData.get(IS_BURROW));
 	}
 	
 	@Override
@@ -322,6 +336,17 @@ public class EntityCorpseAngler extends AbstractDeepAbyssMonster
 	{
 		super.readAdditionalSaveData(pCompound);
 		this.setBurrowCooldown(pCompound.getInt("BurrowCooldown"));
+		this.setBurrow(pCompound.getBoolean("isBurrow"));
+	}
+	
+	public void setBurrow(boolean value)
+	{
+		this.entityData.set(IS_BURROW, value);
+	}
+	
+	public boolean isBurrow()
+	{
+		return this.getAnimationState() == 3 || this.getAnimationState() == 4 || this.entityData.get(IS_BURROW);
 	}
 	
 	public void setBurrowCooldown(int cooldown)

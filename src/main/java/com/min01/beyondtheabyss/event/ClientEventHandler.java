@@ -140,25 +140,28 @@ public class ClientEventHandler
 {
     @SubscribeEvent
     public static void onFMLClientSetup(FMLClientSetupEvent event)
-    {
-    	MenuScreens.register(BTAMenuTypes.BIOCRATER.get(), BiocrafterScreen::new);
-        BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
-        BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
-        BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);
-        BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
-        BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
-        ItemProperties.register(BTAItems.CLAM_OF_GUIDANCE.get(), ResourceLocation.parse("open"), (pStack, pLevel, pEntity, pSeed) ->
-        {
-        	return ClamOfGuidanceItem.isOpen(pStack) ? 1.0F : 0.0F;
-        });
-        ItemProperties.register(BTAItems.FLASHLIGHT.get(), ResourceLocation.parse("on"), (pStack, pLevel, pEntity, pSeed) ->
-        {
-        	return FlashlightItem.isOn(pStack) ? 1.0F : 0.0F;
-        });
-        BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, () -> BTAShaders.getPlainFog(), BTABiomes.FOGGY_PLAINS, "Fog");
-        //TODO weather system;
-        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, () -> BTAShaders.getFog());
-        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
+	{
+		event.enqueueWork(() ->
+		{
+	    	MenuScreens.register(BTAMenuTypes.BIOCRATER.get(), BiocrafterScreen::new);
+	        BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
+	        BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
+	        BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);
+	        BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
+	        BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
+	        ItemProperties.register(BTAItems.CLAM_OF_GUIDANCE.get(), ResourceLocation.parse("open"), (pStack, pLevel, pEntity, pSeed) ->
+	        {
+	        	return ClamOfGuidanceItem.isOpen(pStack) ? 1.0F : 0.0F;
+	        });
+	        ItemProperties.register(BTAItems.FLASHLIGHT.get(), ResourceLocation.parse("on"), (pStack, pLevel, pEntity, pSeed) ->
+	        {
+	        	return FlashlightItem.isOn(pStack) ? 1.0F : 0.0F;
+	        });
+	        BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, () -> BTAShaders.getPlainFog(), BTABiomes.FOGGY_PLAINS, "Fog");
+	        //TODO weather system;
+	        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, () -> BTAShaders.getFog());
+	        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
+		});
         /*try
         {
         	AESUtil.encryptFiles(".png");

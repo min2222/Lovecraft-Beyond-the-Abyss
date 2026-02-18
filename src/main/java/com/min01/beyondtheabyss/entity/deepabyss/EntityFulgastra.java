@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.AbstractBTAWaterMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FulgastraSplitGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
@@ -19,28 +19,27 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityFulgastra extends AbstractDeepAbyssMonster
+public class EntityFulgastra extends AbstractBTAWaterMonster
 {
 	public static final EntityDataAccessor<Boolean> IS_CHARGED = SynchedEntityData.defineId(EntityFulgastra.class, EntityDataSerializers.BOOLEAN);
 	
 	public final SmoothAnimationState splittingAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState reformingAnimationState = new SmoothAnimationState();
 	
-	public EntityFulgastra(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntityFulgastra(EntityType<? extends AbstractBTAWaterMonster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(10);
 	}
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+	public EntityPartBuilder<? extends AbstractBTAWaterMonster> createBuilder()
 	{
     	EntityPartBuilder<EntityFulgastra> partBuilder = new EntityPartBuilder<EntityFulgastra>(this);
     	return partBuilder;
@@ -50,7 +49,7 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 60.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.45F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.15F)
     			.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
 
@@ -134,7 +133,7 @@ public class EntityFulgastra extends AbstractDeepAbyssMonster
 		this.setCharged(pCompound.getBoolean("isCharged"));
 	}
 	
-	public static boolean checkFulgastraSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkFulgastraSpawnRules(EntityType<? extends AbstractBTAWaterMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }

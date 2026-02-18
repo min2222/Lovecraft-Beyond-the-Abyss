@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 
-public abstract class AbstractSiamserpentSkillGoal extends BasicBTASkillGoal<EntitySiamserpentHead>
+public abstract class AbstractSiamserpentSkillGoal extends AbstractAnimationGoal<EntitySiamserpentHead>
 {
 	public AbstractSiamserpentSkillGoal(EntitySiamserpentHead mob)
 	{

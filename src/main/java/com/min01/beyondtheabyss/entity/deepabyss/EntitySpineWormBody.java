@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -15,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntitySpineWormBody extends AbstractSpineWormPart
 {
-	public EntitySpineWormBody(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public EntitySpineWormBody(EntityType<? extends AbstractSpineWormPart> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(15);
@@ -29,7 +28,7 @@ public class EntitySpineWormBody extends AbstractSpineWormPart
     }
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+	public EntityPartBuilder<? extends AbstractSpineWormPart> createBuilder()
 	{
 		EntityPartBuilder<EntitySpineWormBody> partBuilder = new EntityPartBuilder<EntitySpineWormBody>(this);
 		return partBuilder;
@@ -42,7 +41,7 @@ public class EntitySpineWormBody extends AbstractSpineWormPart
 	}
 	
 	@Override
-	public boolean isSwimable() 
+	protected boolean isAffectedByFluids() 
 	{
 		return false;
 	}

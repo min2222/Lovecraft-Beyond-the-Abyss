@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.Comparator;
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.AbstractBTAWaterMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavoreConsumingGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavoreLaunchMineGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.MutavorePutridBubbleGoal;
@@ -38,7 +38,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityMutavore extends AbstractDeepAbyssMonster
+public class EntityMutavore extends AbstractBTAWaterMonster
 {
 	public static final EntityDataAccessor<CompoundTag> MUTATION = SynchedEntityData.defineId(EntityMutavore.class, EntityDataSerializers.COMPOUND_TAG);
 	public static final EntityDataAccessor<CompoundTag> CYST = SynchedEntityData.defineId(EntityMutavore.class, EntityDataSerializers.COMPOUND_TAG);
@@ -73,7 +73,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	public final SmoothAnimationState mutate4AnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState mutateHeadAnimationState = new SmoothAnimationState();
 	
-	public EntityMutavore(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntityMutavore(EntityType<? extends AbstractBTAWaterMonster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(25);
@@ -85,7 +85,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 150.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.65F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.15F)
         		.add(Attributes.FOLLOW_RANGE, 80.0F)
         		.add(Attributes.ATTACK_DAMAGE, 8.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 4.0F)
@@ -105,7 +105,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     }
 
 	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
+	public EntityPartBuilder<? extends AbstractBTAWaterMonster> createBuilder()
 	{
 		EntityPartBuilder<EntityMutavore> partBuilder = new EntityPartBuilder<EntityMutavore>(this);
 		return partBuilder;
@@ -162,11 +162,11 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
     	if(this.level.isClientSide)
     	{
     		this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
-    		this.bubbleStartAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
-    		this.bubbleStopAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
-    		this.tongueStartAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
-    		this.tongueLoopAnimationState.updateWhen(this.isUsingSkill(4), this.tickCount);
-    		this.tongueStopAnimationState.updateWhen(this.isUsingSkill(5), this.tickCount);
+    		this.bubbleStartAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
+    		this.bubbleStopAnimationState.updateWhen(this.isAnimationPlaying(2), this.tickCount);
+    		this.tongueStartAnimationState.updateWhen(this.isAnimationPlaying(3), this.tickCount);
+    		this.tongueLoopAnimationState.updateWhen(this.isAnimationPlaying(4), this.tickCount);
+    		this.tongueStopAnimationState.updateWhen(this.isAnimationPlaying(5), this.tickCount);
     		this.mutateLArmAnimationState.updateWhen(this.isMutated(MutationType.MUTATE_L_ARM), this.tickCount);
     		this.mutateRArmAnimationState.updateWhen(this.isMutated(MutationType.MUTATE_R_ARM), this.tickCount);
     		this.mutate1AnimationState.updateWhen(this.isMutated(MutationType.MUTATE1), this.tickCount);
@@ -195,17 +195,17 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public int maxTurnX() 
+	public float maxSwimTurnX() 
 	{
 		if(this.isMutated(MutationType.MUTATE_HEAD))
 		{
-			return 75;
+			return 45;
 		}
-		return 50;
+		return 20;
 	}
 	
 	@Override
-	public int maxTurnY() 
+	public float maxSwimTurnY() 
 	{
 		if(this.isMutated(MutationType.MUTATE_HEAD))
 		{
@@ -227,16 +227,6 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 	}
 	
 	@Override
-	public float moveSpeed()
-	{
-		if(this.isMutated(MutationType.MUTATE_L_ARM) || this.isMutated(MutationType.MUTATE_R_ARM))
-		{
-			return 0.085F;
-		}
-		return super.moveSpeed();
-	}
-	
-	@Override
 	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
 		super.addAdditionalSaveData(pCompound);
@@ -254,7 +244,7 @@ public class EntityMutavore extends AbstractDeepAbyssMonster
 		this.setConsume(pCompound.getBoolean("isConsume"));
 	}
 	
-	public static boolean checkMutavoreSpawnRules(EntityType<? extends AbstractDeepAbyssMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public static boolean checkMutavoreSpawnRules(EntityType<? extends AbstractBTAWaterMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }

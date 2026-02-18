@@ -1,11 +1,11 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityNecroshell;
 
 import net.minecraft.world.entity.player.Player;
 
-public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
+public class NecroshellHidingGoal extends AbstractAnimationGoal<EntityNecroshell>
 {
 	private int noTargetTick;
 	
@@ -28,7 +28,7 @@ public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 		{
 			this.noTargetTick++;
 		}
-		return !this.mob.isUsingSkill() && this.noTargetTick >= 100;
+		return !this.mob.isAnimationPlaying() && this.noTargetTick >= 100;
 	}
 	
 	@Override
@@ -55,7 +55,6 @@ public class NecroshellHidingGoal extends BasicBTASkillGoal<EntityNecroshell>
 		this.mob.setHiding(false);
 		this.mob.setAnimationState(2);
 		this.mob.setAnimationTick(15);
-		this.mob.setUsingSkill(true);
 	}
 
 	@Override

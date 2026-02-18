@@ -32,7 +32,7 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 	
 	public KinematicChain chain;
 	
-	public EntityDuneDevourerHead(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public EntityDuneDevourerHead(EntityType<? extends AbstractDuneDevourerPart> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 	}

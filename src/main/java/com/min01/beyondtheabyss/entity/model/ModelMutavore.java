@@ -255,7 +255,7 @@ public class ModelMutavore extends HierarchicalModel<EntityMutavore>
 		this.mine3.visible = entity.hasCyst(2) && (entity.isMutated(MutationType.MUTATE3) || entity.isMutated(MutationType.MUTATE4));
 		this.mine4.visible = entity.hasCyst(3) && entity.isMutated(MutationType.MUTATE4);
 		
-		entity.idleAnimationState.animate(this, MutavoreAnimation.MUTAVORE_IDLE, ageInTicks, limbSwingAmount, 1.5F);
+		entity.idleAnimationState.animateIdle(this, MutavoreAnimation.MUTAVORE_IDLE, ageInTicks, limbSwingAmount, 1.5F);
 		entity.bubbleStartAnimationState.animate(this, MutavoreAnimation.MUTAVORE_BUBBLE_START, ageInTicks);
 		entity.bubbleStopAnimationState.animate(this, MutavoreAnimation.MUTAVORE_BUBBLE_STOP, ageInTicks);
 		entity.tongueStartAnimationState.animate(this, MutavoreAnimation.TongueAnimation.MUTAVORE_TONGUE_START, ageInTicks);

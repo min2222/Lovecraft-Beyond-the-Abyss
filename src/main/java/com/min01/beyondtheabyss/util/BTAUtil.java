@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.joml.Math;
@@ -16,7 +15,6 @@ import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.PlayerTickCountCapabilityImpl;
 import com.min01.beyondtheabyss.effect.BTAEffects;
-import com.min01.beyondtheabyss.entity.IBTAMob;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.world.BTAWorlds;
@@ -32,12 +30,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
@@ -56,8 +52,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.synth.SimplexNoise;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LogicalSidedProvider;
@@ -69,27 +63,6 @@ public class BTAUtil
 {
 	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
-	
-    public static <T extends Mob & IBTAMob> Vec3 generateNewTarget(T mob, Predicate<BlockState> predicate) 
-    {
-        Level world = mob.level;
-        Vec3 radius = mob.getMoveRadius();
-        for(int i = 0; i < 10; i++)
-        {
-        	Vec3 pos = getSpreadPosition(mob, radius);
-        	HitResult hitResult = world.clip(new ClipContext(mob.position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mob));
-        	if(hitResult instanceof BlockHitResult blockHit)
-        	{
-                BlockPos targetPos = blockHit.getBlockPos();
-                BlockState blockState = world.getBlockState(targetPos);
-                if(predicate.test(blockState))
-                {
-                	return blockHit.getLocation();
-                }
-        	}
-        }
-        return null;
-    }
     
 	@SuppressWarnings("unchecked")
 	public static Iterable<Entity> getAllEntities(Level level)

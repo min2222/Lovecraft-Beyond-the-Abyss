@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-public class GnasherBiteGoal extends BasicBTASkillGoal<EntityGnasher>
+public class GnasherBiteGoal extends AbstractAnimationGoal<EntityGnasher>
 {
 	public GnasherBiteGoal(EntityGnasher mob) 
 	{

@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-public class CorpseAnglerAmbushGoal extends BasicBTASkillGoal<EntityCorpseAngler>
+public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<EntityCorpseAngler>
 {
 	public CorpseAnglerAmbushGoal(EntityCorpseAngler mob)
 	{
@@ -21,7 +21,7 @@ public class CorpseAnglerAmbushGoal extends BasicBTASkillGoal<EntityCorpseAngler
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.getAnimationState() == 3 && this.mob.posArray[0] != null && this.mob.getTarget().position().distanceTo(this.mob.posArray[0]) <= 2.5F;
+		return super.canUse() && this.mob.isBurrow() && this.mob.posArray[0] != null && this.mob.getTarget().position().distanceTo(this.mob.posArray[0]) <= 2.5F;
 	}
 
 	@Override
@@ -42,8 +42,8 @@ public class CorpseAnglerAmbushGoal extends BasicBTASkillGoal<EntityCorpseAngler
 		super.stop();
 		this.mob.setAnimationState(0);
 		this.mob.setBurrowCooldown(200);
-		this.mob.setCanMove(true);
-		this.mob.setCanLook(true);
+		this.mob.setStopMoveTick(0);
+		this.mob.setStopLookTick(0);
 	}
 
 	@Override

@@ -1,12 +1,12 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.ai.goal.BasicBTASkillGoal;
+import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec3;
 
-public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
+public class CorpseAnglerDashGoal extends AbstractAnimationGoal<EntityCorpseAngler>
 {
 	public boolean canContinueToUse = true;
 	
@@ -20,6 +20,7 @@ public class CorpseAnglerDashGoal extends BasicBTASkillGoal<EntityCorpseAngler>
 	{
 		super.start();
 		this.mob.setAnimationState(1);
+		this.mob.lookAtTarget();
 	}
 	
 	@Override

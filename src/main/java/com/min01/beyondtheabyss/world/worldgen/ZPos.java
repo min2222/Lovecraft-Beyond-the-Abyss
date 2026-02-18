@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.world.worldgen;
 
 import com.mojang.serialization.MapCodec;
+
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
 

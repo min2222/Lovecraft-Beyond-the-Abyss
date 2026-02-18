@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
+import com.min01.beyondtheabyss.entity.AbstractBTAWaterMonster;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.entity.EntityFallingStone;
@@ -46,7 +46,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
-public class EntityGhidruth extends AbstractDeepAbyssMonster
+public class EntityGhidruth extends AbstractBTAWaterMonster
 {
 	public static final EntityDataAccessor<Boolean> IS_CHARGE = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_STUN = SynchedEntityData.defineId(EntityGhidruth.class, EntityDataSerializers.BOOLEAN);
@@ -65,7 +65,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	
 	public final BTABossEvent bossEvent = (BTABossEvent) new BTABossEvent(this.getDisplayName(), this).setDarkenScreen(true);
 	
-	public EntityGhidruth(EntityType<? extends Monster> pEntityType, Level pLevel) 
+	public EntityGhidruth(EntityType<? extends AbstractBTAWaterMonster> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = 1000 + this.random.nextInt(100);
@@ -76,7 +76,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 300.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.6F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.3F)
         		.add(Attributes.ATTACK_DAMAGE, 20.0F)
         		.add(Attributes.FOLLOW_RANGE, 100.0F)
         		.add(Attributes.ARMOR, 20.0F)
@@ -85,7 +85,7 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     }
 	
     @Override
-    public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
+    public EntityPartBuilder<? extends AbstractBTAWaterMonster> createBuilder() 
     {
     	EntityPartBuilder<EntityGhidruth> partBuilder = new EntityPartBuilder<EntityGhidruth>(this)
     	{
@@ -134,14 +134,14 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     	
     	if(this.level.isClientSide)
     	{
-    		this.biteRightAnimationState.updateWhen(this.isUsingSkill(1), this.tickCount);
-    		this.biteLeftAnimationState.updateWhen(this.isUsingSkill(2), this.tickCount);
-    		this.tailSwingRightAnimationState.updateWhen(this.isUsingSkill(3), this.tickCount);
-    		this.tailSwingLeftAnimationState.updateWhen(this.isUsingSkill(4), this.tickCount);
-    		this.chargePrepareAnimationState.updateWhen(this.isUsingSkill(5), this.tickCount);
-    		this.stunnedAnimationState.updateWhen(this.isUsingSkill(6), this.tickCount);
+    		this.biteRightAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
+    		this.biteLeftAnimationState.updateWhen(this.isAnimationPlaying(2), this.tickCount);
+    		this.tailSwingRightAnimationState.updateWhen(this.isAnimationPlaying(3), this.tickCount);
+    		this.tailSwingLeftAnimationState.updateWhen(this.isAnimationPlaying(4), this.tickCount);
+    		this.chargePrepareAnimationState.updateWhen(this.isAnimationPlaying(5), this.tickCount);
+    		this.stunnedAnimationState.updateWhen(this.isAnimationPlaying(6), this.tickCount);
     		this.stunLoopAnimationState.updateWhen(this.getAnimationState() == 0 && this.isStun(), this.tickCount);
-    		this.stunEndAnimationState.updateWhen(this.isUsingSkill(7), this.tickCount);
+    		this.stunEndAnimationState.updateWhen(this.isAnimationPlaying(7), this.tickCount);
     	}
         
     	if(this.isStun())
@@ -164,8 +164,8 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
         		}
         		else if(this.getAnimationState() == 7)
         		{
-    				this.setCanLook(true);
-    				this.setCanMove(true);
+        			this.setStopLookTick(0);
+        			this.setStopMoveTick(0);
     				this.setStun(false);
     				this.stunTick = 0;
         		}
@@ -183,8 +183,8 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     		if(this.horizontalCollision || this.verticalCollision)
     		{
 				this.setCharge(false);
-				this.setCanLook(false);
-				this.setCanMove(false);
+    			this.setStopLookTick(Integer.MAX_VALUE);
+    			this.setStopMoveTick(Integer.MAX_VALUE);
 				this.setStun(true);
 				this.setAnimationState(6);
 				this.setAnimationTick(35);
@@ -202,8 +202,8 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
     			if(this.position().distanceTo(this.getLastLookPos()) <= 4.0F || this.chargeTick >= 200)
     			{
     				this.setCharge(false);
-    				this.setCanLook(true);
-    				this.setCanMove(true);
+        			this.setStopLookTick(0);
+        			this.setStopMoveTick(0);
     				this.setLastLookPos(Vec3.ZERO);
     				this.setDeltaMovement(Vec3.ZERO);
     				this.getNavigation().stop();
@@ -348,13 +348,13 @@ public class EntityGhidruth extends AbstractDeepAbyssMonster
 	}
 	
     @Override
-    public int maxTurnX() 
+    public float maxSwimTurnX() 
     {
     	return 65;
     }
 
     @Override
-    public int maxTurnY() 
+    public float maxSwimTurnY() 
     {
     	return 8;
     }
