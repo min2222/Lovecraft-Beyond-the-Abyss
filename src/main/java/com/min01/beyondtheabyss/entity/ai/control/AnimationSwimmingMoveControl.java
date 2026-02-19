@@ -17,10 +17,10 @@ public class AnimationSwimmingMoveControl<T extends Mob & IAnimatable> extends S
 	
 	public AnimationSwimmingMoveControl(T pMob)
 	{
-		super(pMob, (int) pMob.maxSwimTurnX(), (int) pMob.maxSwimTurnY(), 0.5F, 0.1F, false);
+		super(pMob, (int) pMob.maxSwimTurnX(), (int) pMob.maxSwimTurnY(), 1.0F, 1.0F, false);
 		this.mob = pMob;
-		this.inWaterSpeedModifier = 0.5F;
-		this.outsideWaterSpeedModifier = 0.1F;
+		this.inWaterSpeedModifier = 1.0F;
+		this.outsideWaterSpeedModifier = 1.0F;
 		this.applyGravity = false;
 	}
 
@@ -48,9 +48,9 @@ public class AnimationSwimmingMoveControl<T extends Mob & IAnimatable> extends S
 				this.mob.yBodyRot = this.mob.getYRot();
 				this.mob.yHeadRot = this.mob.getYRot();
 				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
-				if(this.mob.isInWater()) 
+				if(this.mob.isInWater() || !this.mob.isAffectedByPotions()) 
 				{
-					this.mob.setSpeed(f1 * this.inWaterSpeedModifier);
+					this.mob.setSpeed(f1);
 					double d4 = Math.sqrt(d0 * d0 + d2 * d2);
 					if(Math.abs(d1) > (double) 1.0E-5F || Math.abs(d4) > (double) 1.0E-5F)
 					{
@@ -62,7 +62,7 @@ public class AnimationSwimmingMoveControl<T extends Mob & IAnimatable> extends S
 					float f4 = Mth.sin(this.mob.getXRot() * ((float) Math.PI / 180.0F));
 					this.mob.zza = f6 * f1;
 					this.mob.yya = -f4 * f1;
-				} 
+				}
 				else
 				{
 					float f5 = Math.abs(Mth.wrapDegrees(this.mob.getYRot() - f));

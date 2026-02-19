@@ -5,12 +5,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAWaterCreature;
-import com.min01.beyondtheabyss.entity.ai.control.AnimationMoveControl;
-import com.min01.beyondtheabyss.entity.ai.control.AnimationSwimmingMoveControl;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellAttackGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellHidingGoal;
-import com.min01.beyondtheabyss.entity.ai.navigation.BTAGroundPathNavigation;
-import com.min01.beyondtheabyss.entity.ai.navigation.BreachingWaterBoundPathNavigation;
+import com.min01.beyondtheabyss.entity.ai.navigation.SemiWaterboundPathNavigation;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -25,16 +22,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -42,7 +35,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
 
 public class EntityNecroshell extends AbstractBTAWaterCreature
 {
@@ -99,36 +91,12 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	@Override
 	public void registerDefaultGoals()
 	{
-		this.goalSelector.addGoal(0, new RandomStrollGoal(this, 1.0F)
+		this.goalSelector.addGoal(0, new RandomStrollGoal(this, 1.25F)
 		{
 			@Override
 			public boolean canUse()
 			{
 				return super.canUse() && EntityNecroshell.this.canMoveAround();
-			}
-		});
-		this.goalSelector.addGoal(0, new RandomLookAroundGoal(this)
-		{
-			@Override
-			public boolean canUse()
-			{
-				return super.canUse() && EntityNecroshell.this.canLookAround();
-			}
-		});
-		this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F)
-		{
-			@Override
-			public boolean canUse()
-			{
-				return super.canUse() && EntityNecroshell.this.canLookAround();
-			}
-		});
-		this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Mob.class, 8.0F)
-		{
-			@Override
-			public boolean canUse()
-			{
-				return super.canUse() && EntityNecroshell.this.canLookAround();
 			}
 		});
 	}
@@ -155,22 +123,6 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.0F);
 	        }
 		}
-		
-    	if(this.isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
-    	{
-    		if(this.navigation instanceof BTAGroundPathNavigation)
-    		{
-        		this.navigation = this.createNavigation(this.level);
-        		this.moveControl = new AnimationSwimmingMoveControl<>(this);
-        		this.lookControl = new SmoothSwimmingLookControl(this, 10);
-    		}
-    	}
-    	else if(this.navigation instanceof BreachingWaterBoundPathNavigation)
-    	{
-    		this.navigation = new BTAGroundPathNavigation(this, this.level);
-    		this.moveControl = new AnimationMoveControl<>(this);
-    		this.lookControl = new LookControl(this);
-    	}
 	}
 	
 	@Override
@@ -199,6 +151,12 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	protected boolean isAffectedByFluids()
 	{
 		return false;
+	}
+	
+	@Override
+	protected PathNavigation createNavigation(Level pLevel)
+	{
+		return new SemiWaterboundPathNavigation(this, pLevel);
 	}
 	
 	@Override
