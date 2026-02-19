@@ -48,7 +48,7 @@ public class AnimationSwimmingMoveControl<T extends Mob & IAnimatable> extends S
 				this.mob.yBodyRot = this.mob.getYRot();
 				this.mob.yHeadRot = this.mob.getYRot();
 				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
-				if(this.mob.isInWater() || !this.mob.isAffectedByPotions()) 
+				if(this.mob.isInWater() || this.mob.isSemiWater()) 
 				{
 					this.mob.setSpeed(f1);
 					double d4 = Math.sqrt(d0 * d0 + d2 * d2);

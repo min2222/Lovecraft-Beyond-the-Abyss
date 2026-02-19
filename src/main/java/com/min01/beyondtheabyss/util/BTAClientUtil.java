@@ -31,6 +31,26 @@ public class BTAClientUtil
 	public static final Minecraft MC = Minecraft.getInstance();
 	public static final Matrix4f INVERSE_MAT = new Matrix4f();
 	
+	public static void animateWormHead(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWormHead(entity, false, 0.0F, ageInTicks, worms, bones);
+	}
+	
+	public static void animateWormHeadXRot(LivingEntity entity, float xRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWormHead(entity, true, xRot, ageInTicks, worms, bones);
+	}
+	
+	public static void animateWormHeadXRot(LivingEntity entity, boolean animateXRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWormHead(entity, animateXRot, Mth.lerp(ageInTicks - entity.tickCount, entity.xRotO, entity.getXRot()), ageInTicks, worms, bones);
+	}
+    
+	public static void animateWormHeadXRot(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWormHead(entity, true, Mth.lerp(ageInTicks - entity.tickCount, entity.xRotO, entity.getXRot()), ageInTicks, worms, bones);
+	}
+	
 	public static void animateWorm(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
 	{
 		animateWorm(entity, false, 0.0F, ageInTicks, worms, bones);
@@ -49,6 +69,23 @@ public class BTAClientUtil
 	public static void animateWormXRot(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
 	{
 		animateWorm(entity, true, Mth.lerp(ageInTicks - entity.tickCount, entity.xRotO, entity.getXRot()), ageInTicks, worms, bones);
+	}
+	
+	public static void animateWormHead(LivingEntity entity, boolean animateXRot, float xRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		float partialTicks = ageInTicks - entity.tickCount;
+	    float yBodyRot = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
+	    float prevYRot = 0.0F;
+	    float prevXRot = 0.0F;
+	    for(int i = 0; i < worms.length; i++)
+	    {
+	        Vec2 rot = worms[i].getRot(partialTicks);
+	        float yRot = rot.y - yBodyRot;
+	        float xRot1 = rot.x - xRot;
+	        animateHead(bones[i], -yRot - prevYRot, animateXRot ? -xRot1 - prevXRot : 0.0F);
+	        prevYRot = -yRot;
+	        prevXRot = -xRot1;
+	    }
 	}
     
 	public static void animateWorm(LivingEntity entity, boolean animateXRot, float xRot, float ageInTicks, Worm[] worms, ModelPart[] bones)

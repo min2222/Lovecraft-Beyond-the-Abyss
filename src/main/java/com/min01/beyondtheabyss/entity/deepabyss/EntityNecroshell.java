@@ -154,6 +154,12 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	}
 	
 	@Override
+	public boolean isSemiWater() 
+	{
+		return true;
+	}
+	
+	@Override
 	protected PathNavigation createNavigation(Level pLevel)
 	{
 		return new SemiWaterboundPathNavigation(this, pLevel);
