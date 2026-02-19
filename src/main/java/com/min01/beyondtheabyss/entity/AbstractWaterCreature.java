@@ -130,11 +130,6 @@ public abstract class AbstractWaterCreature extends PathfinderMob
 	{
 		return new BreachingWaterBoundPathNavigation(this, pLevel);
 	}
-
-	public void switchControl(boolean isWater)
-	{
-		
-	}
 	
 	public float getRollAngle(float partialTicks)
 	{

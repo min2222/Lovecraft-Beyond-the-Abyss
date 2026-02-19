@@ -130,11 +130,6 @@ public abstract class AbstractWaterMonster extends Monster
 	{
 		return new BreachingWaterBoundPathNavigation(this, pLevel);
 	}
-
-	public void switchControl(boolean isWater)
-	{
-		
-	}
 	
 	public float getRollAngle(float partialTicks)
 	{
