@@ -189,7 +189,6 @@ public class EntityGnasher extends AbstractBTAWaterMonster implements ILeader<En
         }
     }
     
-    @Override
     public void switchControl(boolean isBoid)
     {
     	if(isBoid)
