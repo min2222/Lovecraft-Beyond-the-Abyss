@@ -22,6 +22,7 @@ public class FulgastraSplitGoal extends AbstractAnimationGoal<EntityFulgastra>
 	{
 		super.start();
 		this.mob.setCharged(true);
+		this.mob.lookAtTarget();
 	}
 	
 	@Override
@@ -33,6 +34,7 @@ public class FulgastraSplitGoal extends AbstractAnimationGoal<EntityFulgastra>
 	@Override
 	public void performSkill() 
 	{
+		this.mob.setSplit(true);
 		int count = this.mob.getRandom().nextInt(8, 10);
 		if(count * 5 >= this.mob.getHealth())
 		{
@@ -56,8 +58,6 @@ public class FulgastraSplitGoal extends AbstractAnimationGoal<EntityFulgastra>
 	public void stop() 
 	{
 		super.stop();
-		this.mob.setAnimationState(1);
-		this.mob.setAnimationTick(25);
 		this.mob.setCharged(false);
 	}
 

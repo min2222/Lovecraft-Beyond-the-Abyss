@@ -17,7 +17,6 @@ public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 	{
 		super.start();
 		this.mob.setAnimationState(2);
-		this.mob.lookAtTarget();
 	}
 	
 	@Override
@@ -30,13 +29,15 @@ public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 	public void performSkill() 
 	{
 		this.mob.setAnimationState(1);
-		this.mob.playSound(BTASounds.SIAMSERPENT_BEAM_CHARGE.get(), 1.5F, 1.0F);
+		this.mob.playSound(BTASounds.SIAMSERPENT_BEAM_CHARGE.get(), 10.0F, 1.0F);
 	}
 	
 	@Override
 	public void stop()
 	{
 		super.stop();
+		this.mob.setStopMoveTick(Integer.MAX_VALUE);
+		this.mob.setStopLookTick(Integer.MAX_VALUE);
 		this.mob.setLastLookPos(BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 100));
 		this.mob.setAnimationState(3);
 		this.mob.setAnimationTick(40);

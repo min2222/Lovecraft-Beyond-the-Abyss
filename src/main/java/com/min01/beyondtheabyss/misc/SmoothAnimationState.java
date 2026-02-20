@@ -7,7 +7,6 @@ import com.min01.beyondtheabyss.block.animation.KeyframeBlockAnimations;
 import com.min01.beyondtheabyss.block.model.HierarchicalBlockModel;
 import com.min01.beyondtheabyss.item.animation.KeyframeItemAnimations;
 import com.min01.beyondtheabyss.item.model.HierarchicalItemModel;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
@@ -72,7 +71,7 @@ public class SmoothAnimationState extends AnimationState
 		this.updateTime(ageInTicks, 1.0F);
 		this.ifStarted(t -> 
 		{
-			float totalFactor = this.factor(BTAClientUtil.MC.getFrameTime());
+			float totalFactor = this.factor(ageInTicks);
 			KeyframePlayerAnimations.animate(model, definition, t.getAccumulatedTime(), 1.0F - totalFactor, ANIMATION_VECTOR_CACHE);
 		});
 	}
@@ -89,7 +88,7 @@ public class SmoothAnimationState extends AnimationState
 		this.updateTime(ageInTicks, speed);
 		this.ifStarted(t -> 
 		{
-			float totalFactor = this.factor(BTAClientUtil.MC.getFrameTime());
+			float totalFactor = this.factor(ageInTicks);
 			KeyframeItemAnimations.animate(model, definition, t.getAccumulatedTime(), 1.0F - totalFactor, ANIMATION_VECTOR_CACHE);
 		});
 	}
@@ -100,7 +99,7 @@ public class SmoothAnimationState extends AnimationState
 		this.updateTime(ageInTicks, 1.0F);
 		this.ifStarted(t -> 
 		{
-			float totalFactor = this.factor(BTAClientUtil.MC.getFrameTime());
+			float totalFactor = this.factor(ageInTicks);
 			KeyframeBlockAnimations.animate(model, definition, t.getAccumulatedTime(), 1.0F - totalFactor, ANIMATION_VECTOR_CACHE);
 		});
 	}

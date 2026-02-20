@@ -164,7 +164,7 @@ public class ClientEventHandler
 		});
         /*try
         {
-        	AESUtil.encryptFiles(".png");
+        	AESUtil.encryptFiles(".ogg");
         }
         catch (Exception e)
         {

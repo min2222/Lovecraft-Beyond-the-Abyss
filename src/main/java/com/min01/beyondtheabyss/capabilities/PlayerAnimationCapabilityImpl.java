@@ -39,9 +39,9 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	private int animationState;
 	private int prevAnimationState;
 	
-	public final SmoothAnimationState shotgunFireAnimationState = new SmoothAnimationState(0.999F);
+	public final SmoothAnimationState shotgunFireAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState shotgunHoldAnimationState = new SmoothAnimationState();
-	public final SmoothAnimationState shotgunRunningAnimationState = new SmoothAnimationState(0.999F);
+	public final SmoothAnimationState shotgunRunningAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState gunbladeChargeAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState gunbladeShootAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState gunbladeSwingAnimationState = new SmoothAnimationState();

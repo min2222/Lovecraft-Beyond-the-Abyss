@@ -53,26 +53,29 @@ public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<
 	public void tick() 
 	{
 		super.tick();
-		boolean flag = this.isHead() ? this.getHealth() <= this.getMaxHealth() / 2.0F : this.getHead() != null && this.getHead().getHealth() <= this.getHead().getMaxHealth() / 2.0F;
-		if(!this.isSwap() && flag)
+		if(this.isAlive())
 		{
-			List<Integer> list = Arrays.asList(12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
-			Collections.reverse(list);
-			Integer index = list.get(this.getIndex());
-			if(!(this instanceof EntitySiamserpentHead))
+			boolean flag = this.isHead() ? this.getHealth() <= this.getMaxHealth() / 2.0F : this.getHead() != null && this.getHead().getHealth() <= this.getHead().getMaxHealth() / 2.0F;
+			if(!this.isSwap() && flag)
 			{
-				this.setIndex(index);
+				List<Integer> list = Arrays.asList(12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+				Collections.reverse(list);
+				Integer index = list.get(this.getIndex());
+				if(!(this instanceof EntitySiamserpentHead))
+				{
+					this.setIndex(index);
+				}
+				else if(this.isHead() && this.getHead() != null)
+				{
+					EntitySiamserpentHead head = (EntitySiamserpentHead) this;
+					EntitySiamserpentHead head2 = (EntitySiamserpentHead) this.getHead();
+					head2.setIndex(0);
+					head.setIndex(12);
+					head2.setHead(true);
+					head.setHead(false);
+				}
+				this.setSwap(true);
 			}
-			else if(this.isHead() && this.getHead() != null)
-			{
-				EntitySiamserpentHead head = (EntitySiamserpentHead) this;
-				EntitySiamserpentHead head2 = (EntitySiamserpentHead) this.getHead();
-				head2.setIndex(0);
-				head.setIndex(12);
-				head2.setHead(true);
-				head.setHead(false);
-			}
-			this.setSwap(true);
 		}
 	}
 	

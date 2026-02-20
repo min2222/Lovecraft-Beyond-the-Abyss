@@ -18,7 +18,6 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	{
 		super.start();
 		this.mob.setAnimationState(7);
-		this.mob.lookAtTarget();
 		if(this.mob.getHead() != null)
 		{
 			this.mob.getHead().goal = SiamserpentBlasterBeamGoal.class;
@@ -34,6 +33,7 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	@Override
 	public void performSkill() 
 	{
+		this.mob.setStopLookTick(Integer.MAX_VALUE);
 		this.mob.setAnimationState(8);
 		this.mob.setLastLookPos(BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 100));
 	}
@@ -44,7 +44,7 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 		super.tick();
 		if(!this.mob.getLastLookPos().equals(Vec3.ZERO))
 		{
-			this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), this.mob.getLastLookPos()));
+			this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), this.mob.getLastLookPos(), 1.5F));
 			if(this.mob.getTarget() != null)
 			{
 				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4))

@@ -27,7 +27,7 @@ public class FulgastraChargeGoal extends AbstractAnimationGoal<EntitySplittedFul
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.getAnimationState() == 0 && (this.mob.distanceTo(this.mob.getTarget()) <= 3.0F || this.mob.getOwner() == null || this.mob.tickCount >= this.mob.level.random.nextInt(200));
+		return super.canUse() && this.mob.getAnimationState() == 0 && (this.mob.distanceTo(this.mob.getTarget()) <= 6.0F || this.mob.getOwner() == null || this.mob.tickCount >= 200);
 	}
 
 	@Override
@@ -46,6 +46,7 @@ public class FulgastraChargeGoal extends AbstractAnimationGoal<EntitySplittedFul
 	{
 		super.stop();
 		this.mob.setAnimationState(3);
+		this.mob.setAnimationTick(Integer.MAX_VALUE);
 		this.mob.setCharged(false);
 		if(this.mob.getOwner() == null)
 		{

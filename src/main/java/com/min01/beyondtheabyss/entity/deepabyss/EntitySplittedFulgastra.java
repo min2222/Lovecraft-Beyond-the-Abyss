@@ -44,7 +44,7 @@ public class EntitySplittedFulgastra extends AbstractOwnableBTAWaterMonster<Enti
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 5.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.65F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.25F)
     			.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
 	
@@ -85,7 +85,8 @@ public class EntitySplittedFulgastra extends AbstractOwnableBTAWaterMonster<Enti
 			this.getNavigation().moveTo(owner, 1.25F);
 			if(this.distanceTo(owner) <= 2.0F)
 			{
-				owner.setAnimationState(2);
+				owner.setSplit(false);
+				owner.setAnimationState(1);
 				owner.setAnimationTick(20);
 				owner.heal(this.getHealth());
 				this.discard();

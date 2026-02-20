@@ -19,6 +19,7 @@ import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -84,7 +85,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 120.0F)
     			.add(Attributes.ARMOR, 5.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.3F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.15F)
         		.add(Attributes.FOLLOW_RANGE, 45.0F)
         		.add(Attributes.ATTACK_DAMAGE, 12.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F);
@@ -157,6 +158,14 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			}
 		}
 		
+		if(this.getTarget() != null)
+		{
+			if(this.getAnimationState() == 7 || this.getAnimationState() == 1)
+			{
+				this.lookAt(Anchor.EYES, this.getTarget().getEyePosition());
+			}
+		}
+		
 		if(this.getAnimationState() == 3)
 		{
 			List<LivingEntity> arrayList = new ArrayList<>();
@@ -167,7 +176,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
             Vec3 targetPos = hitPos.subtract(startPos);
             Vec3 normalizedPos = targetPos.normalize();
             int dist = (int) Mth.floor(targetPos.length());
-			this.setBeamLength(dist);
+            //FIXME temp fix;
+			this.setBeamLength(300.0F);
             for(int i = 1; i < dist; ++i)
             {
             	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
@@ -190,12 +200,18 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		if(this.tickCount % 60 == 0)
 		{
 			Vec3 spreadPos = BTAUtil.getSpreadPosition(this.level, this.getTarget().position(), 15);
-			this.getNavigation().moveTo(spreadPos.x, spreadPos.y, spreadPos.z, 1.0F);
+			this.getNavigation().moveTo(spreadPos.x, spreadPos.y, spreadPos.z, 1.5F);
 		}
 	}
 	
 	@Override
 	public boolean canMoveAround()
+	{
+		return !this.isTargetValid();
+	}
+	
+	@Override
+	public boolean canLookAround() 
 	{
 		return !this.isTargetValid();
 	}
@@ -211,6 +227,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	{
 		if(animationState == 3)
 		{
+			this.setStopMoveTick(0);
+			this.setStopLookTick(0);
 			this.setAnimationState(0);
 			this.setLastLookPos(Vec3.ZERO);
 		}
@@ -240,7 +258,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 					worm.setOldPosAndRot();
 					if(i == 0)
 					{
-						WormChain.tickNormal(worm, this, distance, speed);
+						WormChain.tick(worm, this, distance, speed);
 					}
 					else
 					{

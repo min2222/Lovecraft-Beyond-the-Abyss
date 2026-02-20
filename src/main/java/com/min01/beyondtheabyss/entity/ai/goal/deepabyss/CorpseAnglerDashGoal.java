@@ -20,7 +20,6 @@ public class CorpseAnglerDashGoal extends AbstractAnimationGoal<EntityCorpseAngl
 	{
 		super.start();
 		this.mob.setAnimationState(1);
-		this.mob.lookAtTarget();
 	}
 	
 	@Override
@@ -50,6 +49,7 @@ public class CorpseAnglerDashGoal extends AbstractAnimationGoal<EntityCorpseAngl
 			if(this.mob.getAnimationTick() <= this.getSkillUsingTime() - this.getSkillWarmupTime())
 			{
 				Vec3 lookPos = BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 20);
+				this.mob.setStopLookTick(Integer.MAX_VALUE);
 				this.mob.setLastLookPos(lookPos);
 				this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), lookPos, 1.5F));
 				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F))
@@ -69,6 +69,7 @@ public class CorpseAnglerDashGoal extends AbstractAnimationGoal<EntityCorpseAngl
 	public void stop() 
 	{
 		super.stop();
+		this.mob.setStopLookTick(0);
 		this.mob.setAnimationState(0);
 		this.mob.setAnimationTick(0);
 		this.mob.getNavigation().stop();

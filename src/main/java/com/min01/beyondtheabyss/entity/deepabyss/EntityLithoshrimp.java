@@ -31,7 +31,7 @@ public class EntityLithoshrimp extends AbstractBTAWaterCreature
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 5.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.3F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.15F)
         		.add(Attributes.ARMOR, 1.0F)
         		.add(Attributes.ARMOR_TOUGHNESS, 1.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0F);

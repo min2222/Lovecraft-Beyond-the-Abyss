@@ -47,8 +47,8 @@ public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration>
 		        double step = i * stepSize;
 
 		        int x = origin.getX() + (int)Math.round(dx * step);
-		        int z = origin.getZ() + (int)Math.round(dz * step);
 		        int y = origin.getY() + (int)Math.round(step * heightStep);
+		        int z = origin.getZ() + (int)Math.round(dz * step);
 
 		        double maxWidth = width;
 		        double taperFactor = 0.1;
@@ -66,6 +66,14 @@ public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration>
 		                {
 		                    pos.set(x + xOffset, y, z + zOffset);
 		                    level.setBlock(pos, state, 2);
+		                    for(int i1 = 1; i1 < 5; i1++) 
+		                    {
+		                    	BlockPos blockPos = pos.below(i1);
+			                    if(!level.getBlockState(blockPos).isCollisionShapeFullBlock(level, blockPos))
+			                    {
+				                    level.setBlock(blockPos, state, 2);
+			                    }
+		                    }
 		                }
 		            }
 		        }

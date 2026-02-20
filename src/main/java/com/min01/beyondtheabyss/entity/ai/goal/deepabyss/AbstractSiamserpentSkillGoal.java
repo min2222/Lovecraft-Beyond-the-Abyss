@@ -3,6 +3,8 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 
+import net.minecraft.world.entity.LivingEntity;
+
 public abstract class AbstractSiamserpentSkillGoal extends AbstractAnimationGoal<EntitySiamserpentHead>
 {
 	public AbstractSiamserpentSkillGoal(EntitySiamserpentHead mob)
@@ -13,6 +15,11 @@ public abstract class AbstractSiamserpentSkillGoal extends AbstractAnimationGoal
 	@Override
 	public boolean canUse() 
 	{
+    	LivingEntity target = this.mob.getTarget();
+    	if(target == null || !target.isAlive()) 
+    	{
+    		return false;
+    	}
 		if(!this.mob.isHead() && this.mob.goal == null)
 		{
 			return false;

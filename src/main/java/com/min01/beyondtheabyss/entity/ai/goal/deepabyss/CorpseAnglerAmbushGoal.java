@@ -16,6 +16,7 @@ public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<EntityCorpseAn
 	{
 		super.start();
 		this.mob.setAnimationState(5);
+		this.mob.setBurrow(false);
 	}
 	
 	@Override

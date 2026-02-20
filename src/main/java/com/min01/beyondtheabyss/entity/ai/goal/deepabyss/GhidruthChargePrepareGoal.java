@@ -4,6 +4,8 @@ import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+
 public class GhidruthChargePrepareGoal extends AbstractGhidruthSkillGoal
 {
 	public GhidruthChargePrepareGoal(EntityGhidruth mob) 
@@ -16,8 +18,8 @@ public class GhidruthChargePrepareGoal extends AbstractGhidruthSkillGoal
 	{
 		super.start();
 		this.mob.setAnimationState(5);
-		this.mob.playSound(BTASounds.GHIDRUTH_EYE_FLASH.get(), 2.0F, 1.0F);
-		this.mob.lookAtTarget();
+		this.mob.playSound(BTASounds.GHIDRUTH_EYE_FLASH.get(), 10.0F, 1.0F);
+		this.mob.lookAt(Anchor.FEET, this.mob.getTarget().position());
 	}
 	
 	@Override
@@ -40,7 +42,7 @@ public class GhidruthChargePrepareGoal extends AbstractGhidruthSkillGoal
 		this.mob.setCharge(true);
 		this.mob.setStopMoveTick(Integer.MAX_VALUE);
 		this.mob.setStopLookTick(Integer.MAX_VALUE);
-		this.mob.playSound(BTASounds.GHIDRUTH_CHARGE_START.get(), 2.0F, 1.0F);
+		this.mob.playSound(BTASounds.GHIDRUTH_CHARGE_START.get(), 10.0F, 1.0F);
 	}
 
 	@Override

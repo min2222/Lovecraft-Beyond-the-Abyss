@@ -187,7 +187,7 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 						worm.setOldPosAndRot();
 						if(i == 0)
 						{
-							WormChain.tickNormal(worm, this, distance, speed);
+							WormChain.tick(worm, this, distance, speed);
 						}
 						else
 						{

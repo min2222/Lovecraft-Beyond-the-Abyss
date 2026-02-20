@@ -136,7 +136,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 			Worm worm = head.worms[this.getIndex()];
 			if(worm != null)
 			{
-				Vec3 pos = head.position().add(worm.position());
+				Vec3 pos = head.position();
 				Vec2 rot = worm.getRot(1.0F);
 				this.setPos(pos);
 				this.setXRot(rot.x);
@@ -177,7 +177,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 						worm.setOldPosAndRot();
 						if(i == 0)
 						{
-							WormChain.tickNormal(worm, this, distance, speed);
+							WormChain.tick(worm, this, distance, speed);
 						}
 						else
 						{

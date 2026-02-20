@@ -27,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityFulgastra extends AbstractBTAWaterMonster
 {
+	public static final EntityDataAccessor<Boolean> IS_SPLIT = SynchedEntityData.defineId(EntityFulgastra.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> IS_CHARGED = SynchedEntityData.defineId(EntityFulgastra.class, EntityDataSerializers.BOOLEAN);
 	
 	public final SmoothAnimationState splittingAnimationState = new SmoothAnimationState();
@@ -64,6 +65,7 @@ public class EntityFulgastra extends AbstractBTAWaterMonster
     protected void defineSynchedData()
     {
     	super.defineSynchedData();
+    	this.entityData.define(IS_SPLIT, false);
     	this.entityData.define(IS_CHARGED, false);
     }
 
@@ -79,12 +81,12 @@ public class EntityFulgastra extends AbstractBTAWaterMonster
 		super.tick();
 		if(this.level.isClientSide)
 		{
-			this.splittingAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
-			this.reformingAnimationState.updateWhen(this.getAnimationState() == 2, this.tickCount);
+			this.splittingAnimationState.updateWhen(this.isSplit(), this.tickCount);
+			this.reformingAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
 		}
 		
 		Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 5.0F, true);
-		if(player != null && this.getAnimationState() == 1)
+		if(player != null && this.isSplit())
 		{
 	        Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, player.position());
 	        if(vec3 != null)
@@ -113,7 +115,7 @@ public class EntityFulgastra extends AbstractBTAWaterMonster
 	@Override
 	public void moveToTarget() 
 	{
-		if(this.getAnimationState() != 1)
+		if(!this.isSplit())
 		{
 			super.moveToTarget();
 		}
@@ -123,6 +125,7 @@ public class EntityFulgastra extends AbstractBTAWaterMonster
 	public void addAdditionalSaveData(CompoundTag pCompound) 
 	{
 		super.addAdditionalSaveData(pCompound);
+		pCompound.putBoolean("isSplit", this.isSplit());
 		pCompound.putBoolean("isCharged", this.isCharged());
 	}
 	
@@ -130,6 +133,7 @@ public class EntityFulgastra extends AbstractBTAWaterMonster
 	public void readAdditionalSaveData(CompoundTag pCompound) 
 	{
 		super.readAdditionalSaveData(pCompound);
+		this.setSplit(pCompound.getBoolean("isSplit"));
 		this.setCharged(pCompound.getBoolean("isCharged"));
 	}
 	
@@ -137,6 +141,16 @@ public class EntityFulgastra extends AbstractBTAWaterMonster
     {
 		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
     }
+	
+	public void setSplit(boolean value)
+	{
+		this.entityData.set(IS_SPLIT, value);
+	}
+	
+	public boolean isSplit()
+	{
+		return this.entityData.get(IS_SPLIT);
+	}
 	
 	public void setCharged(boolean value)
 	{

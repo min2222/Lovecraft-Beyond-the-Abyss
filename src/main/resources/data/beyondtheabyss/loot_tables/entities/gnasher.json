@@ -17,11 +17,6 @@
 						}
 					]
 				}
-			],
-			"conditions": [
-				{
-					"condition": "minecraft:killed_by_player"
-				}
 			]
 		},
 		{
@@ -40,11 +35,6 @@
 						}
 					]
 				}
-			],
-			"conditions": [
-				{
-					"condition": "minecraft:killed_by_player"
-				}
 			]
 		},
 		{
@@ -62,11 +52,6 @@
 						"min": 4,
 						"max": 6
 					}
-				}
-			],
-			"conditions": [
-				{
-					"condition": "minecraft:killed_by_player"
 				}
 			]
 		}

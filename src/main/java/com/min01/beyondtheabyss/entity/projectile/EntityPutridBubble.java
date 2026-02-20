@@ -78,21 +78,21 @@ public class EntityPutridBubble extends ThrowableProjectile
 			this.explosionTick++;
 			this.setDeltaMovement(Vec3.ZERO);
 			float tick = this.explosionTick * 0.08F;
+			List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F), t -> 
+			{
+				boolean flag = this.getOwner() != null ? !t.isAlliedTo(this.getOwner()) : true;
+				return !(t instanceof EntityMutavore) && flag;
+			});
+			list.forEach(t -> 
+			{
+				if(t.hurt(BTADamageSource.causePutridDamage(this.level.registryAccess(), this), 1.5F))
+				{
+					t.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0));
+				}
+			});
 			if(1.0F - tick <= 0.0F)
 			{
 				this.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
-				List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F), t -> 
-				{
-					boolean flag = this.getOwner() != null ? !t.isAlliedTo(this.getOwner()) : true;
-					return !(t instanceof EntityMutavore) && flag;
-				});
-				list.forEach(t -> 
-				{
-					if(t.hurt(BTADamageSource.causePutridDamage(this.level.registryAccess(), this), 1.5F))
-					{
-						t.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0));
-					}
-				});
 				this.discard();
 			}
 		}

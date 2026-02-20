@@ -76,7 +76,7 @@ public class EntityGhidruth extends AbstractBTAWaterMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 300.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.3F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.25F)
         		.add(Attributes.ATTACK_DAMAGE, 20.0F)
         		.add(Attributes.FOLLOW_RANGE, 100.0F)
         		.add(Attributes.ARMOR, 20.0F)
@@ -144,39 +144,16 @@ public class EntityGhidruth extends AbstractBTAWaterMonster
     		this.stunEndAnimationState.updateWhen(this.isAnimationPlaying(7), this.tickCount);
     	}
         
-    	if(this.isStun())
+    	if(this.isStun() && this.getAnimationTick() <= 0)
     	{
-    		if(this.getAnimationTick() <= 0)
+    		this.stunTick++;
+    		if(this.getAnimationState() == 0 && this.stunTick >= 150)
     		{
-        		this.stunTick++;
-        		if(this.getAnimationState() == 6)
-        		{
-    				this.setAnimationState(0);
-        		}
-        		else if(this.getAnimationState() == 0)
-        		{
-        			if(this.stunTick >= 150)
-        			{
-            			this.setAnimationState(7);
-            			this.setAnimationTick(25);
-        				this.playSound(BTASounds.GHIDRUTH_AWAKEN.get(), 2.0F, 1.0F);
-        			}
-        		}
-        		else if(this.getAnimationState() == 7)
-        		{
-        			this.setStopLookTick(0);
-        			this.setStopMoveTick(0);
-    				this.setStun(false);
-    				this.stunTick = 0;
-        		}
+    			this.setAnimationState(7);
+    			this.setAnimationTick(25);
+				this.playSound(BTASounds.GHIDRUTH_AWAKEN.get(), 10.0F, 1.0F);
     		}
     	}
-
-		if(this.getTarget() != null && !this.isCharge() && !this.isStun())
-		{
-			this.lookAtTarget();
-			this.moveToTarget();
-		}
     	
     	if(this.isCharge())
     	{
@@ -191,7 +168,7 @@ public class EntityGhidruth extends AbstractBTAWaterMonster
 				this.setLastLookPos(Vec3.ZERO);
 				this.setDeltaMovement(Vec3.ZERO);
 				EntityBTACameraShake.cameraShake(this.level, this.position(), 100.0F, 0.35F, 0, 25);
-				this.playSound(BTASounds.GHIDRUTH_STUN.get(), 2.0F, 1.0F);
+				this.playSound(BTASounds.GHIDRUTH_STUN.get(), 10.0F, 1.0F);
 				this.getNavigation().stop();
 				this.chargeTick = 0;
 				this.fallStones();
@@ -213,7 +190,7 @@ public class EntityGhidruth extends AbstractBTAWaterMonster
     			{
     				Vec3 pos = this.getLastLookPos();
     				this.lookAt(Anchor.FEET, pos);
-    				this.getNavigation().moveTo(pos.x, pos.y, pos.z, 2.5F);
+    				this.getNavigation().moveTo(pos.x, pos.y, pos.z, 1.5F);
             		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3.5F), t -> t != this && !t.isAlliedTo(this));
             		list.forEach(t ->
             		{
@@ -303,9 +280,15 @@ public class EntityGhidruth extends AbstractBTAWaterMonster
     }
     
     @Override
-    public boolean isEffectiveAi()
+    public void onAnimationEnd(int animationState)
     {
-    	return super.isEffectiveAi() && !this.isStun();
+		if(animationState == 7)
+		{
+			this.setStopLookTick(0);
+			this.setStopMoveTick(0);
+			this.setStun(false);
+			this.stunTick = 0;
+		}
     }
 	
 	@Override

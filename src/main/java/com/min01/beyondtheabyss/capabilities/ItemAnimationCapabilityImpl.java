@@ -27,8 +27,8 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	private int animationState;
 	private int tickCount;
 	
-	public final SmoothAnimationState gunBladeOpenAnimationState = new SmoothAnimationState(0.999F);
-	public final SmoothAnimationState gunBladeCloseAnimationState = new SmoothAnimationState(0.999F);
+	public final SmoothAnimationState gunBladeOpenAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState gunBladeCloseAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState freakyAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState reloadAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState shootAnimationState = new SmoothAnimationState();
