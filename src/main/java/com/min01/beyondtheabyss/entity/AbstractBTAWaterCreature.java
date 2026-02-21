@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.multipart.IMultipart;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
@@ -105,6 +106,11 @@ public abstract class AbstractBTAWaterCreature extends AbstractAnimatableWaterCr
 		if(this.partBuilder != null)
 		{
 			this.partBuilder.tick(1.0F);
+		}
+		
+		if(!this.getLastLookPos().equals(Vec3.ZERO))
+		{
+			this.lookAt(Anchor.FEET, this.getLastLookPos());
 		}
 	}
 	

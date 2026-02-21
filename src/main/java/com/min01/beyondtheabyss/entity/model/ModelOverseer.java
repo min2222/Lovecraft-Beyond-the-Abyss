@@ -77,9 +77,9 @@ public class ModelOverseer extends HierarchicalModel<EntityOverseer>
 		ModelPart root = this.root.getChild("overseer");
 		ModelPart head = root.getChild("head");
 		root.zRot += Math.toRadians(entity.getRollAngle(ageInTicks - entity.tickCount));
-		BTAClientUtil.animateHead(root, netHeadYaw, headPitch);
-		BTAClientUtil.animateHead(head.getChild("right_eye"), netHeadYaw, headPitch - (float) Math.toDegrees(root.xRot));
-		BTAClientUtil.animateHead(head.getChild("left_eye"), -netHeadYaw, headPitch - (float) Math.toDegrees(root.xRot));
+		BTAClientUtil.animateHead(root, netHeadYaw, 0.0F);
+		BTAClientUtil.animateHead(head.getChild("right_eye"), netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(head.getChild("left_eye"), -netHeadYaw, headPitch);
 		entity.openAnimationState.animate(this, OverseerAnimation.OVERSEER_OPEN, ageInTicks);
 	}
 
