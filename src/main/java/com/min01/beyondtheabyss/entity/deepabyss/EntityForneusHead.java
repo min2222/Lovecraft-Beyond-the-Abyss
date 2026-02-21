@@ -40,7 +40,7 @@ public class EntityForneusHead extends AbstractForneusPart
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 1000.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.85F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.2F)
         		.add(Attributes.FOLLOW_RANGE, 200.0F)
         		.add(Attributes.ARMOR, 20.0F);
     }
@@ -85,9 +85,6 @@ public class EntityForneusHead extends AbstractForneusPart
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
-			this.chain.lerpSpeed = 0.5F;
-			this.chain.speed = 0.5F;
-			this.chain.rotLerp = true;
 		}
 		else
 		{
