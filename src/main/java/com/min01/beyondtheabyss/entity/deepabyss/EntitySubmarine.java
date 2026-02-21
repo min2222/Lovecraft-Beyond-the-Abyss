@@ -54,6 +54,8 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	private double lerpXRot;
 
 	public final EntityPartBuilder<EntitySubmarine> partBuilder;
+	
+	public final Vec3[] sitPos = new Vec3[5];
     
 	public EntitySubmarine(EntityType<? extends Entity> pEntityType, Level pLevel)
 	{
@@ -148,8 +150,11 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	@Override
 	public void positionRider(Entity entity, MoveFunction fuction) 
 	{
-    	Vec3 pos = BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 1.75F, 2.0F);
-		fuction.accept(entity, pos.x, pos.y, pos.z);
+		if(this.sitPos[0] != null)
+		{
+			Vec3 pos = this.sitPos[0];
+			fuction.accept(entity, pos.x, pos.y, pos.z);
+		}
 	}
 	
 	@Override

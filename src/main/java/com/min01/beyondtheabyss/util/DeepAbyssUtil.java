@@ -13,8 +13,16 @@ public class DeepAbyssUtil
 {
 	public static boolean isInsideSubmarine(Entity entity)
 	{
-		List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox(), t -> t != entity);
-		return !list.isEmpty() && !list.get(0).hatchOpened();
+		List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox().inflate(1.0F), t -> t != entity);
+		for(EntitySubmarine sub : list)
+		{
+			String part = BTAUtil.getIntersectingMultiPart(sub.getBounds(), entity);
+			if(part != null && !sub.hatchOpened())
+			{
+				return part.equals("inner");
+			}
+		}
+		return false;
 	}
 	
 	public static void fishFlopping(LivingEntity entity)

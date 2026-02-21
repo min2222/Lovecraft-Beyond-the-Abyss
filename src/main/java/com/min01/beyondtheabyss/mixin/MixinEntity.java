@@ -98,7 +98,31 @@ public abstract class MixinEntity
     	}
     }
     
-    @Inject(method = "getEyeInFluidType", at = @At("TAIL"), cancellable = true, remap = false)
+    @Inject(method = "getFluidTypeHeight", at = @At("HEAD"), cancellable = true, remap = false)
+    private void getFluidTypeHeight(FluidType type, CallbackInfoReturnable<Double> cir)
+    {
+    	if(Entity.class.cast(this) instanceof LivingEntity living)
+    	{
+    		if(DeepAbyssUtil.isInsideSubmarine(living))
+    		{
+    			cir.setReturnValue(0.0D);
+    		}
+    	}
+    }
+    
+    @Inject(method = "isInFluidType", at = @At("HEAD"), cancellable = true, remap = false)
+    private void isInFluidType(CallbackInfoReturnable<Boolean> cir)
+    {
+    	if(Entity.class.cast(this) instanceof LivingEntity living)
+    	{
+    		if(DeepAbyssUtil.isInsideSubmarine(living))
+    		{
+    			cir.setReturnValue(false);
+    		}
+    	}
+    }
+    
+    @Inject(method = "getEyeInFluidType", at = @At("HEAD"), cancellable = true, remap = false)
     private void getEyeInFluidType(CallbackInfoReturnable<FluidType> cir)
     {
     	if(Entity.class.cast(this) instanceof LivingEntity living)

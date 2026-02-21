@@ -1,10 +1,14 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
+import org.joml.Vector4f;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.IMultiModel;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
 import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
+import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -19,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implements IMultiModel<EntitySubmarine>
 {
@@ -57,6 +62,27 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implement
 		this.model.setupAnim(pEntity, 0, 0, pEntity.tickCount + pPartialTick, yRot + 180.0F, xRot);
 		this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		pPoseStack.popPose();
+		
+        PoseStack stack = new PoseStack();
+        stack.scale(-1.0F, -1.0F, 1.0F);
+        stack.translate(0.0F, -1.5F, 0.0F);
+        
+		this.model.root.translateAndRotate(stack);
+		this.model.submarine.translateAndRotate(stack);
+		this.model.controller.translateAndRotate(stack);
+		stack.translate(0.0F, 0.25F, 0.0F);
+
+		stack.mulPose(Axis.XN.rotationDegrees(180.0F));
+		stack.mulPose(Axis.YN.rotationDegrees(360.0F - Mth.lerp(pPartialTick, pEntity.yRotO, pEntity.getYRot())));
+		stack.mulPose(Axis.XN.rotationDegrees(xRot));
+		
+        Vector4f vector4f = new Vector4f(0.0F, 0.0F, 0.0F, 1.0F);
+        vector4f.mul(stack.last().pose());
+        Vec3 offset = new Vec3(vector4f.x(), vector4f.y(), vector4f.z());
+        stack.popPose();
+		
+		pEntity.sitPos[0] = offset.add(pEntity.position());
+		BTANetwork.sendToServer(new UpdatePosArrayPacket(pEntity.getUUID(), offset.add(pEntity.position()), 0));
 	}
 	
 	public void transform(PoseStack stack)

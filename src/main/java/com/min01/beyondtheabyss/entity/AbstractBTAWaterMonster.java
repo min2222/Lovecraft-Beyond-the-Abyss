@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.LookAtTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.MoveToTargetGoal;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -76,6 +77,12 @@ public abstract class AbstractBTAWaterMonster extends AbstractAnimatableWaterMon
 	public boolean isPreventingPlayerRest(Player pPlayer) 
 	{
 		return this.getBTAMobType().alwaysHostile;
+	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double pDistance)
+	{
+		return super.shouldRenderAtSqrDistance(pDistance) || this.getType().is(BTATags.BTAEntity.FORCE_TICKING);
 	}
 	
 	@Override

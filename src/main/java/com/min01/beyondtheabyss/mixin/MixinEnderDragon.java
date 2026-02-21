@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.event.EventHandlerForge;
 import com.min01.beyondtheabyss.misc.BTAChatTracker;
 
@@ -28,7 +29,7 @@ public class MixinEnderDragon
 	private void sendChat()
 	{
 		EnderDragon dragon = EnderDragon.class.cast(this);
-		if(dragon.getDragonFight() != null && !dragon.getDragonFight().hasPreviouslyKilledDragon())
+		if(dragon.getDragonFight() != null && (!dragon.getDragonFight().hasPreviouslyKilledDragon() || BTAConfig.enableDragonRevive.get()))
 		{
 			EventHandlerForge.CHAT_MAP.put(dragon.level.dimension(), new BTAChatTracker(dragon));
 		}

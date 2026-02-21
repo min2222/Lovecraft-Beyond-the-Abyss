@@ -69,6 +69,8 @@ public class ModelSubmarine extends HierarchicalModel<EntitySubmarine>
 
 		submarine.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 353).addBox(0.0F, -36.5F, -9.0F, 0.0F, 23.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 2.5F, 56.0F, 0.0F, 0.0F, -1.5708F));
 
+		submarine.addOrReplaceChild("inner", CubeListBuilder.create().texOffs(290, 403).addBox(-20.5F, -19.5F, -34.5F, 41.0F, 39.0F, 70.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.5F, -0.5F));
+
 		submarine.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).addBox(-25.5F, -5.0F, -35.0F, 51.0F, 10.0F, 70.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
 		PartDefinition back = submarine.addOrReplaceChild("back", CubeListBuilder.create().texOffs(150, 203).addBox(-20.5F, -21.5F, -9.0F, 41.0F, 43.0F, 18.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 2.5F, 44.0F));
@@ -146,7 +148,7 @@ public class ModelSubmarine extends HierarchicalModel<EntitySubmarine>
 	public void setupAnim(EntitySubmarine entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		BTAClientUtil.animateHead(this.root.getChild("submarine"), netHeadYaw, headPitch);
+		BTAClientUtil.animateHead(this.submarine, netHeadYaw, headPitch);
 		this.animateWalk(SubmarineAnimation.SUBMARINE_TURBINE_SPIN, limbSwing, limbSwingAmount, 2.5F, 2.5F);
 		entity.openHatchAnimationState.animate(this, SubmarineAnimation.SUBMARINE_OPEN_HATCH, ageInTicks);
 		entity.closeHatchAnimationState.animate(this, SubmarineAnimation.SUBMARINE_CLOSE_HATCH, ageInTicks);

@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity;
 import com.min01.beyondtheabyss.entity.ai.goal.LookAtTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.MoveToTargetGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
 import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -57,6 +58,12 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 	public boolean removeWhenFarAway(double pDistanceToClosestPlayer) 
 	{
 		return this.getBTAMobType().removeWhenFarAway;
+	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double pDistance)
+	{
+		return super.shouldRenderAtSqrDistance(pDistance) || this.getType().is(BTATags.BTAEntity.FORCE_TICKING);
 	}
 	
 	@Override

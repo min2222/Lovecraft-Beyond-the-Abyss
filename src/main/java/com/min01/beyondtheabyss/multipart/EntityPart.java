@@ -17,7 +17,7 @@ public final class EntityPart
     private double px, py, pz;
     private QuaternionD rotation;
     private @Nullable EntityPart parent;
-    private boolean collide;
+    public boolean collide;
 
     EntityPart(@Nullable EntityPart parent, AABB box, boolean center, double offX, double offY, double offZ)
     {

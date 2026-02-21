@@ -11,6 +11,7 @@ public class BTAConfig
 
 	public static ForgeConfigSpec.BooleanValue cameraShakes;
 	public static ForgeConfigSpec.BooleanValue worldShaders;
+	public static ForgeConfigSpec.BooleanValue enableDragonRevive;
     
     static 
     {
@@ -24,6 +25,10 @@ public class BTAConfig
     	config.push("Client Settings");
     	cameraShakes = config.comment("disable/enable camera shakes in various place").define("cameraShakes", true);
     	worldShaders = config.comment("disable/enable shader effect in specific dimensions").define("worldShaders", true);
+        config.pop();
+        
+    	config.push("General Settings");
+    	enableDragonRevive = config.comment("display message after kill dragon even if dragon is revived").define("enableDragonRevive", false);
         config.pop();
     }
 }

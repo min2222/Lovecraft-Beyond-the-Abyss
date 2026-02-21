@@ -44,14 +44,34 @@ public class EntityBounds
     }
     
     @Nullable
+    public String intersects(AABB other)
+    {
+        String result = null;
+        for(Map.Entry<String, EntityPart> entry : this.partMap.entrySet())
+        {
+        	EntityPart part = entry.getValue();
+        	if(part.collide)
+        	{
+        		continue;
+        	}
+        	if(part.getBox().intersects(other))
+        	{
+        		return entry.getKey();
+        	}
+        }
+    	return result;
+    }
+    
+    @Nullable
     public String raycast(Vec3 start, Vec3 end)
     {
         double t = 1.00001;
         String result = null;
         for(Map.Entry<String, EntityPart> entry : this.partMap.entrySet())
         {
-            double tmp = entry.getValue().getBox().raycast(start, end);
-            if(tmp != -1 && tmp < t) 
+        	EntityPart part = entry.getValue();
+            double tmp = part.getBox().raycast(start, end);
+            if(tmp != -1 && tmp < t)
             {
                 t = tmp;
                 result = entry.getKey();

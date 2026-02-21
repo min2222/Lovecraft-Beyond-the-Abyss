@@ -4,6 +4,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.entity.IAnimatable;
+import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -50,6 +51,10 @@ public class UpdatePosArrayPacket
 					{
 						mob.getPosArray()[message.array] = message.pos;
 					}
+					else if(entity instanceof EntitySubmarine sub)
+					{
+						sub.sitPos[message.array] = message.pos;
+					}
 				});
 			}
 			else
@@ -58,6 +63,10 @@ public class UpdatePosArrayPacket
 				if(entity instanceof IAnimatable mob) 
 				{
 					mob.getPosArray()[message.array] = message.pos;
+				}
+				else if(entity instanceof EntitySubmarine sub)
+				{
+					sub.sitPos[message.array] = message.pos;
 				}
 			}
 		});

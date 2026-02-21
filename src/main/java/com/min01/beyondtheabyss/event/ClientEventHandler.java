@@ -160,7 +160,7 @@ public class ClientEventHandler
 	        BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, () -> BTAShaders.getPlainFog(), BTABiomes.FOGGY_PLAINS, "Fog");
 	        //TODO weather system;
 	        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, () -> BTAShaders.getFog());
-	        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
+	        //BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
 		});
         /*try
         {

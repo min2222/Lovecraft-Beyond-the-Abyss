@@ -315,6 +315,11 @@ public class BTAUtil
         return mutablePos.immutable();
     }
 	
+	public static String getIntersectingMultiPart(EntityBounds bounds, Entity entity)
+	{
+		return bounds.intersects(entity.getBoundingBox());
+	}
+	
 	public static String getCollidingMultiPart(EntityBounds bounds, Entity entity)
 	{
     	return bounds.raycast(entity.position(), entity.position().add(entity.getDeltaMovement()));

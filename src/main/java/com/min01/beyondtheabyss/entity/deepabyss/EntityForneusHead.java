@@ -85,6 +85,9 @@ public class EntityForneusHead extends AbstractForneusPart
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
+			this.chain.lerpSpeed = 0.5F;
+			this.chain.speed = 0.5F;
+			this.chain.rotLerp = true;
 		}
 		else
 		{
