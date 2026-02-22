@@ -223,7 +223,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	}
 	
 	@Override
-	public void onAnimationEnd(int animationState) 
+	public boolean onAnimationEnd(int animationState) 
 	{
 		if(animationState == 3)
 		{
@@ -232,6 +232,7 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 			this.setAnimationState(0);
 			this.setLastLookPos(Vec3.ZERO);
 		}
+		return super.onAnimationEnd(animationState);
 	}
 	
 	@Override

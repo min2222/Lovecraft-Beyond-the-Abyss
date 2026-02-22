@@ -53,8 +53,8 @@ public class EntityGhidruth extends AbstractBTAWaterMonster
 	
 	public final SmoothAnimationState biteRightAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState biteLeftAnimationState = new SmoothAnimationState();
-	public final SmoothAnimationState tailSwingRightAnimationState = new SmoothAnimationState(0.999F);
-	public final SmoothAnimationState tailSwingLeftAnimationState = new SmoothAnimationState(0.999F);
+	public final SmoothAnimationState tailSwingRightAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState tailSwingLeftAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState chargePrepareAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState stunnedAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState stunLoopAnimationState = new SmoothAnimationState();
@@ -280,7 +280,7 @@ public class EntityGhidruth extends AbstractBTAWaterMonster
     }
     
     @Override
-    public void onAnimationEnd(int animationState)
+    public boolean onAnimationEnd(int animationState)
     {
 		if(animationState == 7)
 		{
@@ -289,6 +289,7 @@ public class EntityGhidruth extends AbstractBTAWaterMonster
 			this.setStun(false);
 			this.stunTick = 0;
 		}
+		return super.onAnimationEnd(animationState);
     }
 	
 	@Override

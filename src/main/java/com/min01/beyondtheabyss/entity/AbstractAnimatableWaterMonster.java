@@ -97,9 +97,11 @@ public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonste
 		
 		if(this.getAnimationState() != 0 && this.getAnimationTick() <= 0)
 		{
-			this.onAnimationEnd(this.getAnimationState());
-			this.setAnimationState(0);
-			this.setAnimationPlaying(false);
+			if(this.onAnimationEnd(this.getAnimationState()))
+			{
+				this.setAnimationState(0);
+				this.setAnimationPlaying(false);
+			}
 		}
     }
     
@@ -109,9 +111,9 @@ public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonste
     	return new AnimationBodyRotationControl<>(this);
     }
     
-    public void onAnimationEnd(int animationState)
+    public boolean onAnimationEnd(int animationState)
     {
-    	
+    	return true;
     }
     
     @Override

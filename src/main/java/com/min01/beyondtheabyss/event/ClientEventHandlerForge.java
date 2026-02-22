@@ -68,7 +68,7 @@ public class ClientEventHandlerForge
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
     {
         Player player = BTAClientUtil.MC.player;
-        float delta = BTAClientUtil.MC.getFrameTime();
+        float delta = BTAClientUtil.MC.getPartialTick();
         float ticksExistedDelta = player.tickCount + delta;
         if(player != null)
         {

@@ -141,6 +141,69 @@ public class KinematicChain
 		}
 	}
 	
+	public void tickLerp() 
+	{
+		long currentTime = System.nanoTime();
+		double deltaTime = (currentTime - this.delta) / 1_000_000_000.0;
+		this.delta = currentTime;
+		deltaTime = Math.min(deltaTime, 0.05);
+    	float t = 1.0F - (float) Math.pow(0.01F, deltaTime * this.lerpSpeed);
+	    
+		if(!this.target.equals(Vec3.ZERO))
+		{
+			ChainSegment tip = this.getTipSegment();
+			Vec3 tipPos = tip.getPos();
+	        Vec3 toTarget = this.target.subtract(tipPos);
+	        double dist = toTarget.length();
+	        double moveDist = Math.min(dist, tip.distance);
+	        if(this.rotLerp)
+	        {
+	            tip.setRot(this.lookAt(tipPos, this.target, tip.getRot(), t));
+	        }
+	        else
+	        {
+		        tip.setRot(this.lookAt(tipPos, this.target));
+	        }
+	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist * this.speed));
+		}
+		
+		for(int i = 1; i < this.segments.length; i++)
+		{
+		    int index = i - 1;
+		    ChainSegment current = this.segments[this.segments.length - i - 1];
+		    ChainSegment next = this.segments[this.segments.length - index - 1];
+	        if(this.rotLerp)
+	        {
+			    current.setRot(this.lookAt(current.getPos(), next.getPos(), current.getRot(), t));
+	        }
+	        else
+	        {
+			    current.setRot(this.lookAt(current.getPos(), next.getPos()));
+	        }
+		    current.setPos(this.getLookPos(current.getRot(), next.getPos(), 0.0F, 0.0F, -current.distance));
+		}
+		
+		if(this.anchorPos != null)
+		{
+			this.segments[0].setPos(this.anchorPos);
+		}
+		
+		for(int i = 0; i < this.segments.length - 1; i++)
+		{
+			ChainSegment current = this.segments[i];
+			ChainSegment next = this.segments[i + 1];
+			if(this.rotLerp)
+			{
+				current.setRot(this.lookAt(current.getPos(), next.getPos(), current.getRot(), t));
+			}
+			else
+			{
+				current.setRot(this.lookAt(current.getPos(), next.getPos()));
+			}
+			next.setPos(this.getLookPos(current.getRot(), current.getPos(), 0.0F, 0.0F, next.distance));
+		}
+	}
+	
 	public void addParticle(Vec3 pos, double deltaX, double deltaY, double deltaZ, double speed, int count)
 	{
 		Level level = this.entity.level;

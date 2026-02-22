@@ -65,7 +65,7 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	        pPoseStack.translate(0.0F, -1.0F, 0.0F);
 	        ResourceLocation texture = ResourceLocation.parse(String.format("%s:textures/item/skeletal_gunblade%d.png", BeyondtheAbyss.MODID, SkeletalGunbladeItem.getCharge(pStack)));
 	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(pBuffer, RenderType.entityCutoutNoCull(texture), false, pStack.hasFoil());
-			this.modelGunblade.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+			this.modelGunblade.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getPartialTick(), 0, 0);
 	        this.modelGunblade.renderToBuffer(pPoseStack, consumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
 	        pPoseStack.popPose();
 
@@ -75,7 +75,7 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	        pPoseStack.translate(0.0F, -1.0F, 0.0F);
 	        ResourceLocation layerTexture = ResourceLocation.parse(String.format("%s:textures/item/skeletal_gunblade_layer%d.png", BeyondtheAbyss.MODID, SkeletalGunbladeItem.getCharge(pStack)));
 	        VertexConsumer eyeConsumer = pBuffer.getBuffer(BTARenderType.eyesFix(layerTexture));
-			this.modelGunblade.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+			this.modelGunblade.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getPartialTick(), 0, 0);
 	        this.modelGunblade.renderToBuffer(pPoseStack, eyeConsumer, pPackedLight, pPackedOverlay, 0.7F, 0.7F, 0.7F, 1.0F);
 	        pPoseStack.popPose();
 		}
@@ -93,7 +93,7 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	        pPoseStack.scale(-1.0F, -1.0F, 1.0F);
 	        pPoseStack.translate(0.0F, -1.0F, 0.0F);
 	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(pBuffer, RenderType.entityCutoutNoCull(SHOTGUN_TEXTURE), false, pStack.hasFoil());
-			this.modelShotgun.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+			this.modelShotgun.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getPartialTick(), 0, 0);
 	        this.modelShotgun.renderToBuffer(pPoseStack, consumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
 	        pPoseStack.popPose();
 		}
@@ -106,7 +106,7 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	        pPoseStack.translate(0.0F, -1.0F, 0.0F);
 	        pPoseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
 	        VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(pBuffer, RenderType.entityCutoutNoCull(CLAM_TEXTURE), false, pStack.hasFoil());
-			this.modelClam.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getFrameTime(), 0, 0);
+			this.modelClam.setupAnim(pStack, 0, 0, BTAUtil.getItemTickCount(pStack) + BTAClientUtil.MC.getPartialTick(), 0, 0);
 	        this.modelClam.renderToBuffer(pPoseStack, consumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
 	        if(pStack.getOrCreateTag().contains("PortalPos") && ClamOfGuidanceItem.isOpen(pStack))
 	        {

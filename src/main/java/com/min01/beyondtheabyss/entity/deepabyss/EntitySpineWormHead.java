@@ -127,6 +127,7 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
 			this.chain.setAnchorPos(Vec3.atBottomCenterOf(this.getAttachedPos()));
+			this.chain.speed = 1.5F;
 			Direction direction = this.getAttachedDirection();
 			switch(direction)
 			{
@@ -152,7 +153,6 @@ public class EntitySpineWormHead extends AbstractSpineWormPart
 				this.chain.setInitialRot(new Vec2(direction.toYRot(), 0.0F));
 				break;
 			}
-			this.chain.speed = 1.5F;
 		}
 		else
 		{

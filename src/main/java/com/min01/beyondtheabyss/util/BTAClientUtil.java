@@ -409,7 +409,7 @@ public class BTAClientUtil
     public static Vec3 getWorldPosition(Entity entity, ModelPart root, Vec3 rotation, String... modelPartName)
     {
         PoseStack poseStack = new PoseStack();
-        float partialTick = MC.getFrameTime();
+        float partialTick = MC.getPartialTick();
         double x = Mth.lerp((double)partialTick, entity.xOld, entity.getX());
         double y = Mth.lerp((double)partialTick, entity.yOld, entity.getY());
         double z = Mth.lerp((double)partialTick, entity.zOld, entity.getZ());

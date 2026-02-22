@@ -201,7 +201,7 @@ public class EntityCorpseAngler extends AbstractBTAWaterMonster
 	}
 	
 	@Override
-	public void onAnimationEnd(int animationState) 
+	public boolean onAnimationEnd(int animationState) 
 	{
 		if(animationState == 3)
 		{
@@ -210,6 +210,7 @@ public class EntityCorpseAngler extends AbstractBTAWaterMonster
 			{
 				this.setAnimationState(4);
 				this.setAnimationTick(20);
+				return false;
 			}
 			else
 			{
@@ -224,6 +225,7 @@ public class EntityCorpseAngler extends AbstractBTAWaterMonster
 			this.setStopLookTick(0);
 			this.setStopMoveTick(0);
 		}
+		return super.onAnimationEnd(animationState);
 	}
 	
 	@Override
