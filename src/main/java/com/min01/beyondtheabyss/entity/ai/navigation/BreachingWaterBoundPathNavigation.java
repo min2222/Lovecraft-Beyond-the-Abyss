@@ -22,10 +22,4 @@ public class BreachingWaterBoundPathNavigation extends WaterBoundPathNavigation
 		this.nodeEvaluator = new SwimNodeEvaluator(this.allowBreaching);
 		return new BTAPathFinder(this.nodeEvaluator, pMaxVisitedNodes);
 	}
-	
-	@Override
-	protected boolean canUpdatePath() 
-	{
-		return this.allowBreaching || this.isInLiquid();
-	}
 }
