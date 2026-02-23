@@ -199,16 +199,16 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 		tag.putBoolean("GunMode", isGunMode);
 	}
 	
-	public static int getLaserLength(ItemStack stack) 
+	public static float getLaserLength(ItemStack stack) 
 	{
 		CompoundTag tag = stack.getTag();
-		return tag != null ? tag.getInt("LaserLength") : 0;
+		return tag != null ? tag.getFloat("LaserLength") : 0.0F;
 	}
 	
-	public static void setLaserLength(ItemStack stack, int length) 
+	public static void setLaserLength(ItemStack stack, float length) 
 	{
 		CompoundTag tag = stack.getOrCreateTag();
-		tag.putInt("LaserLength", length);
+		tag.putFloat("LaserLength", length);
 	}
 	
 	public static boolean isLaserVisible(ItemStack stack) 

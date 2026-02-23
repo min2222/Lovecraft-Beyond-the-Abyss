@@ -12,6 +12,8 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherCharg
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.SiamserpentSlasherSlashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
+import com.min01.beyondtheabyss.misc.Laser;
+import com.min01.beyondtheabyss.misc.Laser.LaserHitResult;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
@@ -29,24 +31,19 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
@@ -70,8 +67,8 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 	public final SmoothAnimationState slasherDisabledAnimationState = new SmoothAnimationState();
 	
 	public int tickAfterDormant;
-	
 	public Vec3 wantedPos = Vec3.ZERO;
+	public final Laser laser = new Laser();
 	
 	public EntitySiamserpentHead(EntityType<? extends AbstractSiamserpentPart> pEntityType, Level pLevel)
 	{
@@ -168,29 +165,14 @@ public class EntitySiamserpentHead extends AbstractSiamserpentPart
 		
 		if(this.getAnimationState() == 3)
 		{
-			List<LivingEntity> arrayList = new ArrayList<>();
         	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.getEyePosition(), 0.0F, -0.05F, -0.25F);
 			Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), startPos, 0.0F, 0.0F, 300.0F);
-			HitResult hitResult = this.level.clip(new ClipContext(startPos, lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-        	Vec3 hitPos = hitResult.getLocation();
-            Vec3 targetPos = hitPos.subtract(startPos);
-            Vec3 normalizedPos = targetPos.normalize();
-            int dist = (int) Mth.floor(targetPos.length());
-            //FIXME temp fix;
-			this.setBeamLength(300.0F);
-            for(int i = 1; i < dist; ++i)
-            {
-            	Vec3 rayPos = startPos.add(normalizedPos.scale(i));
-            	List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(rayPos, rayPos).inflate(0.375F), t -> t != this && !t.isAlliedTo(this));
-            	if(!arrayList.containsAll(list))
-            	{
-            		arrayList.addAll(list);
-            	}
-            }
-            arrayList.forEach(t -> 
+			LaserHitResult laserHit = this.laser.raytrace(this.level, this.position(), startPos, lookPos, 0.375F, this.getYHeadRot(), this.getXRot(), t -> t != this && !t.isAlliedTo(this), this);
+			laserHit.entities.forEach(t -> 
             {
             	t.hurt(this.damageSources().indirectMagic(this, this), 12.0F);
             });
+			this.setBeamLength(this.laser.getLaserLength());
 		}
 	}
 	
