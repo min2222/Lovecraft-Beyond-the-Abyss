@@ -27,13 +27,10 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 	@Inject(at = @At("HEAD"), method = "updateIsUnderwater", cancellable = true)
 	private void updateIsUnderwater(CallbackInfoReturnable<Boolean> cir)
 	{
-		if(BTAUtil.canSwimInAir(LocalPlayer.class.cast(this)))
+		if(BTAUtil.canSwimInAir(LocalPlayer.class.cast(this)) || DeepAbyssUtil.isInsideSubmarine(LocalPlayer.class.cast(this)))
 		{
-			cir.setReturnValue(true);
-		}
-		if(DeepAbyssUtil.isInsideSubmarine(LocalPlayer.class.cast(this)))
-		{
-			cir.setReturnValue(false);
+			cir.cancel();
+			super.updateIsUnderwater();
 		}
 	}
 	

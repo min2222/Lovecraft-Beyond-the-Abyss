@@ -44,7 +44,7 @@ public class Laser
         {
         	this.collidePos = this.endPos;
         }
-        AABB aabb = new AABB(Math.min(pos.x, this.collidePos.x), Math.min(pos.y, this.collidePos.y), Math.min(pos.z, this.collidePos.z), Math.max(pos.x, this.collidePos.x), Math.max(pos.y, this.collidePos.y), Math.max(pos.z, this.collidePos.z));
+        AABB aabb = new AABB(pos, this.collidePos);
         List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, aabb.inflate(1.0F), predicate);
         for(LivingEntity living : entities)
         {
