@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 
 public abstract class AbstractWaterCreature extends PathfinderMob
 {
@@ -105,7 +106,7 @@ public abstract class AbstractWaterCreature extends PathfinderMob
     {
     	if(this.isEffectiveAi() && this.isInWater() && this.isSwim())
     	{
-    		this.moveRelative(this.getSpeed(), pTravelVector);
+    		this.moveRelative((float) (this.getSpeed() * this.getAttributeValue(ForgeMod.SWIM_SPEED.get())), pTravelVector);
     		this.move(MoverType.SELF, this.getDeltaMovement());
     		this.setDeltaMovement(this.getDeltaMovement().scale(0.9F));
     	}

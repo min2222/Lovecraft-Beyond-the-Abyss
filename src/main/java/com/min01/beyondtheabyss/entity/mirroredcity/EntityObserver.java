@@ -27,8 +27,8 @@ public class EntityObserver extends AbstractBTAFlyingMonster
     {
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 5.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.6F)
-    			.add(Attributes.FLYING_SPEED, 0.6F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.1F)
+    			.add(Attributes.FLYING_SPEED, 0.3F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
 

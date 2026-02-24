@@ -32,10 +32,10 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
         return Monster.createMonsterAttributes()
     			.add(Attributes.MAX_HEALTH, 150.0F)
     			.add(Attributes.ARMOR, 10.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.8F)
-    			.add(Attributes.FLYING_SPEED, 0.8F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.2F)
+    			.add(Attributes.FLYING_SPEED, 0.2F)
         		.add(Attributes.ATTACK_DAMAGE, 15.0F)
-        		.add(Attributes.KNOCKBACK_RESISTANCE, 100.0F)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0F)
         		.add(Attributes.FOLLOW_RANGE, 150.0F);
     }
     
@@ -71,7 +71,7 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	    BlockPos groundPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ()).above();
 	    if(this.onGround() || this.blockPosition().distSqr(groundPos) <= 150.0F)
 	    {
-	    	this.addDeltaMovement(new Vec3(0.0F, 0.005F, 0.0F));
+	    	this.addDeltaMovement(new Vec3(0.0F, 0.01F, 0.0F));
 	    }
 	}
 	
@@ -91,12 +91,6 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	public AABB getTargetSearchArea(double radius) 
 	{
 		return this.getBoundingBox().inflate(radius, 100, radius);
-	}
-	
-	@Override
-	public float getRelativeSpeed()
-	{
-		return 0.05F;
 	}
 	
 	@Override

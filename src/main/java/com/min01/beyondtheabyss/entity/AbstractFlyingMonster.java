@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -71,7 +72,8 @@ public abstract class AbstractFlyingMonster extends Monster
 					{
 						f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
 					}
-					this.moveRelative(this.onGround() ? 0.1F * f1 : this.getRelativeSpeed(), pTravelVector);
+					float flySpeed = (float) (this.getAttributes().hasAttribute(Attributes.FLYING_SPEED) ? this.getAttributeValue(Attributes.FLYING_SPEED) : 1.0F);
+					this.moveRelative(this.onGround() ? 0.1F * f1 : this.getSpeed() * flySpeed, pTravelVector);
 					this.move(MoverType.SELF, this.getDeltaMovement());
 					this.setDeltaMovement(this.getDeltaMovement().scale((double) f));
 				}
@@ -155,10 +157,5 @@ public abstract class AbstractFlyingMonster extends Monster
 	public float getRollAmount()
 	{
 		return 0.01F;
-	}
-	
-	public float getRelativeSpeed()
-	{
-		return 0.02F;
 	}
 }
