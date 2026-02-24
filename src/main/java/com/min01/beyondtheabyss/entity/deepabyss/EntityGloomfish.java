@@ -74,6 +74,12 @@ public class EntityGloomfish extends AbstractBTAWaterCreature
 	}
 	
 	@Override
+	public void switchControl(boolean isWater) 
+	{
+		
+	}
+	
+	@Override
 	public int getMaxSpawnClusterSize() 
 	{
 		return 100;

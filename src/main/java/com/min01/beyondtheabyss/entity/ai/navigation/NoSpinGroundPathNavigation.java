@@ -1,26 +1,32 @@
 package com.min01.beyondtheabyss.entity.ai.navigation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.PathNavigationRegion;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 
-public class BTAGroundPathNavigation extends GroundPathNavigation
+public class NoSpinGroundPathNavigation extends GroundPathNavigation
 {
     protected static final float EPSILON = 1.0E-8F;
     
-    public BTAGroundPathNavigation(Mob entity, Level world) 
+    public NoSpinGroundPathNavigation(Mob entity, Level world) 
     {
         super(entity, world);
     }
@@ -30,7 +36,7 @@ public class BTAGroundPathNavigation extends GroundPathNavigation
     {
         this.nodeEvaluator = new WalkNodeEvaluator();
         this.nodeEvaluator.setCanPassDoors(true);
-        return new BTAPathFinder(this.nodeEvaluator, maxVisitedNodes);
+        return new PatchedPathFinder(this.nodeEvaluator, maxVisitedNodes);
     }
 
     @Override
@@ -124,7 +130,6 @@ public class BTAGroundPathNavigation extends GroundPathNavigation
             float dist = dir ? (ldi[i] + 1 - lead) : (lead - ldi[i]);
             tNext[i] = tDelta[i] < Float.POSITIVE_INFINITY ? tDelta[i] * dist : Float.POSITIVE_INFINITY;
         }
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         do 
         {
             // stepForward
@@ -142,9 +147,7 @@ public class BTAGroundPathNavigation extends GroundPathNavigation
             int stepx = step[0];
             int x0 = (axis == 0) ? ldi[0] : tri[0];
             int x1 = ldi[0] + stepx;
-            int stepy = step[1];
             int y0 = (axis == 1) ? ldi[1] : tri[1];
-            int y1 = ldi[1] + stepy;
             int stepz = step[2];
             int z0 = (axis == 2) ? ldi[2] : tri[2];
             int z1 = ldi[2] + stepz;
@@ -152,28 +155,9 @@ public class BTAGroundPathNavigation extends GroundPathNavigation
             {
                 for(int z = z0; z != z1; z += stepz)
                 {
-                    for(int y = y0; y != y1; y += stepy) 
-                    {
-                        BlockState block = this.level.getBlockState(pos.set(x, y, z));
-                        if(!block.isPathfindable(this.level, pos, PathComputationType.LAND))
-                        {
-                        	return false;
-                        }
-                    }
                     BlockPathTypes below = this.nodeEvaluator.getBlockPathType(this.level, x, y0 - 1, z);
                     BlockPathTypes in = this.nodeEvaluator.getBlockPathType(this.level, x, y0, z, this.mob);
                     float priority = this.mob.getPathfindingMalus(in);
-                    if(this.mob.getMobType() != MobType.WATER)
-                    {
-                        if(below == BlockPathTypes.WATER)
-                        {
-                        	return false;
-                        }
-                    }
-                    if(below == BlockPathTypes.OPEN)
-                    {
-                    	return false;
-                    }
                     if(priority < 0.0F || priority >= 8.0F)
                     {
                     	return false;
@@ -210,6 +194,50 @@ public class BTAGroundPathNavigation extends GroundPathNavigation
             case 1: return (float) v.y;
             case 2: return (float) v.z;
             default: return 0.0F;
+        }
+    }
+    
+    public static class PatchedPathFinder extends PathFinder
+    {
+        public PatchedPathFinder(NodeEvaluator processor, int maxVisitedNodes) 
+        {
+            super(processor, maxVisitedNodes);
+        }
+
+        @Nullable
+        @Override
+        public Path findPath(PathNavigationRegion regionIn, Mob mob, Set<BlockPos> targetPositions, float maxRange, int accuracy, float searchDepthMultiplier)
+        {
+            Path path = super.findPath(regionIn, mob, targetPositions, maxRange, accuracy, searchDepthMultiplier);
+            return path == null ? null : new PatchedPath(path);
+        }
+
+        static class PatchedPath extends Path 
+        {
+            public PatchedPath(Path original)
+            {
+                super(copyPathPoints(original), original.getTarget(), original.canReach());
+            }
+
+            @Override
+            public Vec3 getEntityPosAtNode(Entity entity, int index)
+            {
+                Node point = this.getNode(index);
+                double d0 = point.x + Mth.floor(entity.getBbWidth() + 1.0F) * 0.5D;
+                double d1 = point.y;
+                double d2 = point.z + Mth.floor(entity.getBbWidth() + 1.0F) * 0.5D;
+                return new Vec3(d0, d1, d2);
+            }
+
+            private static List<Node> copyPathPoints(Path original)
+            {
+                List<Node> points = new ArrayList<>();
+                for(int i = 0; i < original.getNodeCount(); i++)
+                {
+                    points.add(original.getNode(i));
+                }
+                return points;
+            }
         }
     }
 }

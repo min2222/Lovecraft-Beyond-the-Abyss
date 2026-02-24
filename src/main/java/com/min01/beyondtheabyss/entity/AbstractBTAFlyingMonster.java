@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractBTAFlyingMonster extends AbstractAnimatableFlyingMonster implements IMultipart
@@ -131,6 +132,22 @@ public abstract class AbstractBTAFlyingMonster extends AbstractAnimatableFlyingM
 			this.lookAt(Anchor.FEET, this.getLastLookPos());
 		}
 	}
+	
+    @Override
+    public int getFlyInterval()
+    {
+    	return 20;
+    }
+	
+    @Override
+    public Vec2 getFlyRadius() 
+    {
+    	if(this.getBTAMobType() == BTAMobType.BOSS || this.getType().is(BTATags.BTAEntity.MINI_BOSSES))
+    	{
+    		return new Vec2(40, 30);
+    	}
+    	return new Vec2(20, 10);
+    }
 	
 	public abstract EntityPartBuilder<? extends AbstractBTAFlyingMonster> createBuilder();
 	

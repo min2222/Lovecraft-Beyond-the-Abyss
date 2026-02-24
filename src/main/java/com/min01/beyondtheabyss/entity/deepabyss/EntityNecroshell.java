@@ -51,6 +51,7 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(5);
+		this.setSwim(false);
 		this.setMaxUpStep(1);
 	}
 	
@@ -126,6 +127,12 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	}
 	
 	@Override
+	public boolean isSwim() 
+	{
+		return false;
+	}
+	
+	@Override
 	public List<String> getCollidePart() 
 	{
 		if(this.isSlasherShell())
@@ -145,18 +152,6 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	protected void handleAirSupply(int pAirSupply)
 	{
 		
-	}
-	
-	@Override
-	protected boolean isAffectedByFluids()
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean isSemiWater() 
-	{
-		return true;
 	}
 	
 	@Override

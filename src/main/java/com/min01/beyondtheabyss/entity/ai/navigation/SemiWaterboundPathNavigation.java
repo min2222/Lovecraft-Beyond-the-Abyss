@@ -7,7 +7,7 @@ import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 
-public class SemiWaterboundPathNavigation extends BTAGroundPathNavigation 
+public class SemiWaterboundPathNavigation extends SemiGroundPathNavigation 
 {
     public SemiWaterboundPathNavigation(Mob entity, Level world) 
     {
@@ -17,16 +17,9 @@ public class SemiWaterboundPathNavigation extends BTAGroundPathNavigation
     @Override
     protected PathFinder createPathFinder(int maxVisitedNodes)
     {
-        this.nodeEvaluator = new AmphibiousNodeEvaluator(true);
+        this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
         this.nodeEvaluator.setCanPassDoors(true);
-        this.nodeEvaluator.setCanFloat(true);
-        return new BTAPathFinder(this.nodeEvaluator, maxVisitedNodes);
-    }
-    
-    @Override
-    protected boolean canUpdatePath() 
-    {
-    	return super.canUpdatePath() || this.isInLiquid();
+        return new PathFinder(this.nodeEvaluator, maxVisitedNodes);
     }
 
     @Override
@@ -64,7 +57,7 @@ public class SemiWaterboundPathNavigation extends BTAGroundPathNavigation
     {
     	if(this.isInLiquid())
     	{
-    		return !this.level.getBlockState(pPos).isSolidRender(this.level, pPos);
+    		return !this.level.getBlockState(pPos.below()).isAir();
     	}
     	return super.isStableDestination(pPos);
     }

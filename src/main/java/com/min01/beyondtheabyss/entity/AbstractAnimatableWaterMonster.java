@@ -1,6 +1,7 @@
 package com.min01.beyondtheabyss.entity;
 
 import com.min01.beyondtheabyss.entity.ai.control.AnimationBodyRotationControl;
+import com.min01.beyondtheabyss.entity.ai.control.AnimationMoveControl;
 import com.min01.beyondtheabyss.entity.ai.control.AnimationSwimmingMoveControl;
 
 import net.minecraft.nbt.CompoundTag;
@@ -8,10 +9,15 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonster implements IAnimatable
@@ -29,6 +35,7 @@ public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonste
 	{
 		super(pEntityType, pLevel);
 		this.moveControl = new AnimationSwimmingMoveControl<>(this);
+		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 		this.noCulling = true;
 	}
 	
@@ -52,20 +59,42 @@ public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonste
 	
 	public void registerDefaultGoals()
 	{
-		this.goalSelector.addGoal(0, new WaterAvoidingRandomStrollGoal(this, 1.0F)
+		this.goalSelector.addGoal(0, new RandomStrollGoal(this, 1.0F, this.getMoveInterval())
 		{
 			@Override
 			public boolean canUse()
 			{
-				return super.canUse() && AbstractAnimatableWaterMonster.this.canMoveAround() && !AbstractAnimatableWaterMonster.this.isInWater();
+				if(super.canUse() && AbstractAnimatableWaterMonster.this.canMoveAround())
+				{
+					return !AbstractAnimatableWaterMonster.this.isInWater() || !AbstractAnimatableWaterMonster.this.isSwim();
+				}
+				return false;
+			}
+			
+			@Override
+			protected Vec3 getPosition()
+			{
+				Vec2 radius = AbstractAnimatableWaterMonster.this.getMoveRadius();
+				return DefaultRandomPos.getPos(this.mob, (int) radius.x, (int) radius.y);
 			}
 		});
-		this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0F, 60)
+		this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0F, this.getSwimInterval())
 		{
 			@Override
 			public boolean canUse()
 			{
-				return super.canUse() && AbstractAnimatableWaterMonster.this.canMoveAround();
+				if(super.canUse() && AbstractAnimatableWaterMonster.this.canMoveAround())
+				{
+					return AbstractAnimatableWaterMonster.this.isInWater() && AbstractAnimatableWaterMonster.this.isSwim();
+				}
+				return false;
+			}
+			
+			@Override
+			protected Vec3 getPosition()
+			{
+				Vec2 radius = AbstractAnimatableWaterMonster.this.getSwimRadius();
+				return BehaviorUtils.getRandomSwimmablePos(this.mob, (int) radius.x, (int) radius.y);
 			}
 		});
 	}
@@ -158,6 +187,21 @@ public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonste
     	pCompound.putInt("StopMoveTick", this.getStopMoveTick());
     	pCompound.putInt("AnimationTick", this.getAnimationTick());
     	pCompound.putInt("AnimationState", this.getAnimationState());
+    }
+    
+    @Override
+    public void switchControl(boolean isWater)
+    {
+    	if(!isWater && !(this.moveControl instanceof AnimationMoveControl))
+    	{
+    		this.moveControl = new AnimationMoveControl<>(this);
+    		this.lookControl = new LookControl(this);
+    	}
+    	if(isWater && !(this.moveControl instanceof AnimationSwimmingMoveControl))
+    	{
+    		this.moveControl = new AnimationSwimmingMoveControl<>(this);
+    		this.lookControl = new SmoothSwimmingLookControl(this, 10);
+    	}
     }
     
     @Override

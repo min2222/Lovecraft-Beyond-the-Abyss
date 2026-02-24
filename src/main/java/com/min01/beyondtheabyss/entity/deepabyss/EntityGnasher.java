@@ -32,6 +32,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -142,7 +143,7 @@ public class EntityGnasher extends AbstractBTAWaterMonster implements ILeader<En
 					{
 						leader.setDisperse(false);
 						this.setDisperse(false);
-						this.switchControl(true);
+						this.switchControl(this.isInWater(), true);
 					}
 					else
 					{
@@ -181,23 +182,32 @@ public class EntityGnasher extends AbstractBTAWaterMonster implements ILeader<En
 		this.setTarget(null);
 		this.setStopMoveTick(Integer.MAX_VALUE);
 		this.setStopLookTick(Integer.MAX_VALUE);
-		this.switchControl(false);
+		this.switchControl(this.isInWater(), false);
         Vec3 vec3 = DefaultRandomPos.getPosAway(this, 16, 7, pos);
         if(vec3 != null)
         {
         	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
         }
     }
-    
-    public void switchControl(boolean isBoid)
+
+    @Override
+    public void switchControl(boolean isWater)
     {
-    	if(isBoid)
-    	{
-    		this.moveControl = new BoidMoveControl<>(this, true);
-    	}
-    	else
+    	
+    }
+    
+    public void switchControl(boolean isWater, boolean isBoid)
+    {
+    	if(isWater && !isBoid && !(this.moveControl instanceof AnimationSwimmingMoveControl))
     	{
     		this.moveControl = new AnimationSwimmingMoveControl<>(this);
+    		this.lookControl = new SmoothSwimmingLookControl(this, 10);
+    	}
+    	
+    	if(isBoid && !(this.moveControl instanceof BoidMoveControl))
+    	{
+    		this.moveControl = new BoidMoveControl<>(this, true);
+    		this.lookControl = new SmoothSwimmingLookControl(this, 10);
     	}
     }
     

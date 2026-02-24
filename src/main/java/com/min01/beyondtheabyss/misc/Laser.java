@@ -45,11 +45,10 @@ public class Laser
         	this.collidePos = this.endPos;
         }
         AABB aabb = new AABB(pos, this.collidePos);
-        List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, aabb.inflate(1.0F), predicate);
+        List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, aabb.inflate(radius), predicate);
         for(LivingEntity living : entities)
         {
-            float pad = living.getPickRadius() + 0.5F;
-            AABB aabb2 = living.getBoundingBox().inflate(pad);
+            AABB aabb2 = living.getBoundingBox().inflate(living.getPickRadius() + radius);
             Optional<Vec3> hit = aabb2.clip(from, to);
             if(aabb2.contains(from))
             {

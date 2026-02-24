@@ -80,7 +80,7 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 		else
 		{
 			this.chain.setOldPosAndRot();
-			this.chain.tickLerp();
+			this.chain.tickNormal();
 			
 			if(!this.getWantedPos().equals(Vec3.ZERO))
 			{

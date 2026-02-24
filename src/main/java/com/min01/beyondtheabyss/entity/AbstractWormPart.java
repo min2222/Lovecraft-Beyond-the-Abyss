@@ -102,7 +102,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
     @Override
     public boolean isInvulnerableTo(DamageSource pSource)
     {
-    	return super.isInvulnerableTo(pSource) || pSource.is(DamageTypes.IN_WALL) || pSource.is(DamageTypeTags.IS_FALL);
+    	return super.isInvulnerableTo(pSource) || pSource.is(DamageTypes.IN_WALL) || pSource.is(DamageTypeTags.IS_FALL) || pSource.is(DamageTypes.CACTUS);
     }
     
     @Override

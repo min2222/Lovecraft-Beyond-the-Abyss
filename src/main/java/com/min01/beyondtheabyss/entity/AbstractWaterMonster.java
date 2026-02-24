@@ -1,8 +1,12 @@
 package com.min01.beyondtheabyss.entity;
 
-import com.min01.beyondtheabyss.entity.ai.navigation.BreachingWaterBoundPathNavigation;
+import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinWaterBoundPathNavigation;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -10,26 +14,35 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractWaterMonster extends Monster
 {
+	public static final EntityDataAccessor<Boolean> IS_SWIM = SynchedEntityData.defineId(AbstractWaterMonster.class, EntityDataSerializers.BOOLEAN);
+	
 	public float rollAngleO = 0.0F;
 	public float rollAngle = 0.0F;
 	
 	public AbstractWaterMonster(EntityType<? extends Monster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
-		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+	}
+	
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(IS_SWIM, true);
 	}
 
 	@Override
@@ -54,6 +67,15 @@ public abstract class AbstractWaterMonster extends Monster
 	public int getAmbientSoundInterval() 
 	{
 		return 120;
+	}
+	
+	@Override
+	protected void playStepSound(BlockPos pPos, BlockState pState) 
+	{
+		if(!this.isSwim())
+		{
+			super.playStepSound(pPos, pState);
+		}
 	}
 
 	@Override
@@ -82,7 +104,7 @@ public abstract class AbstractWaterMonster extends Monster
     @Override
     public void travel(Vec3 pTravelVector) 
     {
-    	if(this.isEffectiveAi() && this.isInWater() && this.isAffectedByFluids())
+    	if(this.isEffectiveAi() && this.isInWater() && this.isSwim())
     	{
     		this.moveRelative(this.getSpeed(), pTravelVector);
     		this.move(MoverType.SELF, this.getDeltaMovement());
@@ -98,6 +120,7 @@ public abstract class AbstractWaterMonster extends Monster
 	public void tick() 
 	{
 		super.tick();
+		this.switchControl(this.isSwim());
 	    Vec3 movement = this.getDeltaMovement();
 	    float speed = (float) movement.length();
 	    this.rollAngleO = this.rollAngle;
@@ -110,6 +133,12 @@ public abstract class AbstractWaterMonster extends Monster
 	        this.rollAngle *= 0.9F;
 	    }
 	}
+    
+    @Override
+    protected boolean isAffectedByFluids()
+    {
+    	return this.isSwim();
+    }
 
 	@Override
 	public void baseTick() 
@@ -128,7 +157,26 @@ public abstract class AbstractWaterMonster extends Monster
 	@Override
 	protected PathNavigation createNavigation(Level pLevel) 
 	{
-		return new BreachingWaterBoundPathNavigation(this, pLevel);
+		return new NoSpinWaterBoundPathNavigation(this, pLevel);
+	}
+	
+	@Override
+	public void addAdditionalSaveData(CompoundTag pCompound) 
+	{
+		super.addAdditionalSaveData(pCompound);
+		pCompound.putBoolean("isSwim", this.isSwim());
+	}
+	
+	@Override
+	public void readAdditionalSaveData(CompoundTag pCompound)
+	{
+		super.readAdditionalSaveData(pCompound);
+		this.setSwim(pCompound.getBoolean("isSwim"));
+	}
+	
+	public void switchControl(boolean isWater)
+	{
+		
 	}
 	
 	public float getRollAngle(float partialTicks)
@@ -151,7 +199,17 @@ public abstract class AbstractWaterMonster extends Monster
 		return 0.01F;
 	}
 	
-	public static boolean checkFishSpawnRules(EntityType<? extends Monster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+	public void setSwim(boolean isSwim)
+	{
+		this.entityData.set(IS_SWIM, isSwim);
+	}
+	
+	public boolean isSwim()
+	{
+		return this.entityData.get(IS_SWIM);
+	}
+	
+	public static boolean checkFishSpawnRules(EntityType<? extends PathfinderMob> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		return pServerLevel.getFluidState(pPos.below()).is(FluidTags.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above(2)).is(Blocks.WATER);
     }
