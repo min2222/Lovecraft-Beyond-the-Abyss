@@ -48,6 +48,12 @@ public class NoSpinWaterBoundPathNavigation extends WaterBoundPathNavigation
         }
         this.doStuckDetection(vec3);
     }
+	
+	@Override
+	public void setCanFloat(boolean pCanSwim)
+	{
+		this.nodeEvaluator.setCanFloat(pCanSwim);
+	}
 
     public boolean shouldTargetNextNodeInDirection(Vec3 currentPosition) 
     {
