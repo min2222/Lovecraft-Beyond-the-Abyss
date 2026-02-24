@@ -28,9 +28,9 @@ public class NoSpinFlyingPathNavigation extends FlyingPathNavigation
         this.maxDistanceToWaypoint = this.mob.getBbWidth() * this.distanceModifier;
         Vec3i nodePos = this.path.getNextNodePos();
         double d0 = Math.abs(this.mob.getX() - ((double) nodePos.getX() + 0.5D));
-        double d1 = Math.abs(this.mob.getY() - (double) nodePos.getY());
+        //double d1 = Math.abs(this.mob.getY() - (double) nodePos.getY());
         double d2 = Math.abs(this.mob.getZ() - ((double) nodePos.getZ() + 0.5D));
-        boolean flag = d0 < this.maxDistanceToWaypoint && d2 < this.maxDistanceToWaypoint && d1 <= this.maxDistanceToWaypoint;
+        boolean flag = d0 < this.maxDistanceToWaypoint && d2 < this.maxDistanceToWaypoint;
         if(flag || this.canCutCorner(this.path.getNextNode().type) && this.shouldTargetNextNodeInDirection(vec3))
         {
             this.path.advance();
