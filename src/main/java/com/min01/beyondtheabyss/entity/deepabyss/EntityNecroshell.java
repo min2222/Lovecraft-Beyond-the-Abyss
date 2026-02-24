@@ -125,9 +125,9 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	}
 	
 	@Override
-	public boolean isSwim() 
+	public void switchControl(boolean isWater) 
 	{
-		return false;
+		super.switchControl(this.isInWater());
 	}
 	
 	@Override
