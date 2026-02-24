@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity;
 import com.min01.beyondtheabyss.entity.ai.control.AnimationBodyRotationControl;
 import com.min01.beyondtheabyss.entity.ai.control.AnimationMoveControl;
 import com.min01.beyondtheabyss.entity.ai.control.AnimationSwimmingMoveControl;
+import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinGroundPathNavigation;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -196,11 +197,12 @@ public abstract class AbstractAnimatableWaterCreature extends AbstractWaterCreat
     	{
     		this.moveControl = new AnimationMoveControl<>(this);
     		this.lookControl = new LookControl(this);
+    		this.navigation = new NoSpinGroundPathNavigation(this, this.level);
     	}
     	if(isWater && !(this.moveControl instanceof AnimationSwimmingMoveControl))
     	{
     		this.moveControl = new AnimationSwimmingMoveControl<>(this);
-    		this.lookControl = new SmoothSwimmingLookControl(this, 10);
+    		this.navigation = this.createNavigation(this.level);
     	}
     }
     

@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import com.min01.beyondtheabyss.entity.AbstractBTAWaterCreature;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellAttackGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellHidingGoal;
-import com.min01.beyondtheabyss.entity.ai.navigation.SemiWaterboundPathNavigation;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
@@ -27,7 +26,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -152,12 +150,6 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	protected void handleAirSupply(int pAirSupply)
 	{
 		
-	}
-	
-	@Override
-	protected PathNavigation createNavigation(Level pLevel)
-	{
-		return new SemiWaterboundPathNavigation(this, pLevel);
 	}
 	
 	@Override
