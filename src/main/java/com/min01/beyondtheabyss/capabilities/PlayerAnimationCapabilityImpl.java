@@ -80,7 +80,7 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 			{
 	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(entity.getXRot(), entity.getYHeadRot()), entity.getEyePosition(), 0.0F, -0.25F, 0.5F);
 				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(entity.getXRot(), entity.getYHeadRot()), startPos, 0.0F, 0.0F, 50.0F);
-				LaserHitResult laserHit = this.laser.raytrace(entity.level, entity.position(), startPos, lookPos, 0.375F, entity.getYHeadRot(), entity.getXRot(), t -> t != entity && !t.isAlliedTo(entity), entity);
+				LaserHitResult laserHit = this.laser.raytrace(entity.level, startPos, lookPos, 0.375F, t -> t != entity && !t.isAlliedTo(entity), entity);
 	            if(entity.level.isClientSide)
 	            {
 	                SkeletalGunbladeItem.setLaserLength(stack, this.laser.getLaserLength());
