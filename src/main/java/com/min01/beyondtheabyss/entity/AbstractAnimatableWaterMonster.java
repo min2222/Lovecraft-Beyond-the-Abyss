@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
@@ -60,7 +59,7 @@ public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonste
 	
 	public void registerDefaultGoals()
 	{
-		this.goalSelector.addGoal(0, new RandomStrollGoal(this, 1.0F, this.getMoveInterval())
+		this.goalSelector.addGoal(0, new RandomStrollGoal(this, 1.0F, this.getMoveInterval(), false)
 		{
 			@Override
 			public boolean canUse()
@@ -79,7 +78,7 @@ public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonste
 				return DefaultRandomPos.getPos(this.mob, (int) radius.x, (int) radius.y);
 			}
 		});
-		this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0F, this.getSwimInterval())
+		this.goalSelector.addGoal(0, new RandomStrollGoal(this, 1.0F, this.getSwimInterval(), false)
 		{
 			@Override
 			public boolean canUse()
