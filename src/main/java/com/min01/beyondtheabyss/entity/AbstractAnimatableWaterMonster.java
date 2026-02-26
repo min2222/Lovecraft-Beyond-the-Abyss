@@ -201,6 +201,7 @@ public abstract class AbstractAnimatableWaterMonster extends AbstractWaterMonste
     	if(isWater && !(this.moveControl instanceof AnimationSwimmingMoveControl))
     	{
     		this.moveControl = new AnimationSwimmingMoveControl<>(this);
+    		this.lookControl = new SmoothSwimmingLookControl(this, 10);
     		this.navigation = this.createNavigation(this.level);
     	}
     }
