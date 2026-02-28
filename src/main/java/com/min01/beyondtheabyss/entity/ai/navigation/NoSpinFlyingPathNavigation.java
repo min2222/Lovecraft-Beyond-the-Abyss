@@ -14,11 +14,13 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.PathNavigationRegion;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.FlyNodeEvaluator;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 
@@ -75,7 +77,7 @@ public class NoSpinFlyingPathNavigation extends FlyingPathNavigation
     private boolean isAt(Path path, float threshold) 
     {
         final Vec3 pathPos = path.getNextEntityPos(this.mob);
-        return Mth.abs((float) (this.mob.getX() - pathPos.x)) < threshold && Mth.abs((float) (this.mob.getZ() - pathPos.z)) < 1.0D;
+        return Mth.abs((float) (this.mob.getX() - pathPos.x)) < threshold && Mth.abs((float) (this.mob.getZ() - pathPos.z)) < threshold;
     }
 
     private boolean atElevationChange(Path path) 
@@ -108,10 +110,10 @@ public class NoSpinFlyingPathNavigation extends FlyingPathNavigation
     }
 
     // Based off of https://github.com/andyhall/voxel-aabb-sweep/blob/d3ef85b19c10e4c9d2395c186f9661b052c50dc7/index.js
-    private boolean sweep(Vec3 vec, Vec3 base, Vec3 max)
+    private boolean sweep(Vec3 vec3, Vec3 base, Vec3 max)
     {
         float t = 0.0F;
-        float max_t = (float) vec.length();
+        float max_t = (float) vec3.length();
         if(max_t < EPSILON) 
         {
         	return true;
@@ -125,7 +127,7 @@ public class NoSpinFlyingPathNavigation extends FlyingPathNavigation
         float[] normed = new float[3];
         for(int i = 0; i < 3; i++) 
         {
-            float value = element(vec, i);
+            float value = element(vec3, i);
             boolean dir = value >= 0.0F;
             step[i] = dir ? 1 : -1;
             float lead = element(dir ? max : base, i);
@@ -137,6 +139,7 @@ public class NoSpinFlyingPathNavigation extends FlyingPathNavigation
             float dist = dir ? (ldi[i] + 1 - lead) : (lead - ldi[i]);
             tNext[i] = tDelta[i] < Float.POSITIVE_INFINITY ? tDelta[i] * dist : Float.POSITIVE_INFINITY;
         }
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         do 
         {
             // stepForward
@@ -154,7 +157,9 @@ public class NoSpinFlyingPathNavigation extends FlyingPathNavigation
             int stepx = step[0];
             int x0 = (axis == 0) ? ldi[0] : tri[0];
             int x1 = ldi[0] + stepx;
+            int stepy = step[1];
             int y0 = (axis == 1) ? ldi[1] : tri[1];
+            int y1 = ldi[1] + stepy;
             int stepz = step[2];
             int z0 = (axis == 2) ? ldi[2] : tri[2];
             int z1 = ldi[2] + stepz;
@@ -162,8 +167,21 @@ public class NoSpinFlyingPathNavigation extends FlyingPathNavigation
             {
                 for(int z = z0; z != z1; z += stepz)
                 {
+                    for(int y = y0; y != y1; y += stepy) 
+                    {
+                        BlockState block = this.level.getBlockState(pos.set(x, y, z));
+                        if(!block.isPathfindable(this.level, pos, PathComputationType.AIR))
+                        {
+                        	return false;
+                        }
+                    }
                     BlockPathTypes below = this.nodeEvaluator.getBlockPathType(this.level, x, y0 - 1, z);
                     BlockPathTypes in = this.nodeEvaluator.getBlockPathType(this.level, x, y0, z, this.mob);
+                    float priority = this.mob.getPathfindingMalus(in);
+                    if(priority < 0.0F || priority >= 8.0F)
+                    {
+                    	return false;
+                    }
                     if(!this.mob.getType().fireImmune())
                     {
                         if(in == BlockPathTypes.DAMAGE_FIRE || in == BlockPathTypes.DANGER_FIRE || in == BlockPathTypes.DAMAGE_OTHER || below == BlockPathTypes.LAVA) 
