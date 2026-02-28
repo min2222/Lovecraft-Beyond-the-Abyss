@@ -75,6 +75,6 @@ public class EntityLithoshrimp extends AbstractBTAWaterCreature
 	
 	public static boolean checkLithoshrimpSpawnRules(EntityType<? extends AbstractBTAWaterCreature> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 80;
     }
 }

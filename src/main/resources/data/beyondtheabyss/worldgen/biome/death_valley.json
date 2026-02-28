@@ -81,6 +81,14 @@
 		]
 	},
 	"spawn_costs": {
+		"beyondtheabyss:mutavore": {
+			"energy_budget": 1.0,
+			"charge": 0.2
+		},
+		"beyondtheabyss:fulgastra": {
+			"energy_budget": 1.0,
+			"charge": 0.05
+		},
 		"beyondtheabyss:gloomfish": {
 			"energy_budget": 1.0,
 			"charge": 0.01
