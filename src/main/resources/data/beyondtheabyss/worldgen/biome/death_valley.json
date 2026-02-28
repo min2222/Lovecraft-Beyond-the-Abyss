@@ -81,6 +81,14 @@
 		]
 	},
 	"spawn_costs": {
+		"beyondtheabyss:gloomfish": {
+			"energy_budget": 1.0,
+			"charge": 0.01
+		},
+		"beyondtheabyss:gnasher": {
+			"energy_budget": 1.0,
+			"charge": 0.01
+		}
 	},
 	"carvers": {
 		"air": "beyondtheabyss:death_valley"

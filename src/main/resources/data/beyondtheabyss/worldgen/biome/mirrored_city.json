@@ -26,7 +26,7 @@
 		"monster": [
 			{
 				"type": "beyondtheabyss:observer",
-				"weight": 30,
+				"weight": 60,
 				"minCount": 1,
 				"maxCount": 1
 			}
@@ -39,6 +39,10 @@
 		]
 	},
 	"spawn_costs": {
+		"beyondtheabyss:observer": {
+			"energy_budget": 1.0,
+			"charge": 0.01
+		}
 	},
 	"carvers": {
 	},

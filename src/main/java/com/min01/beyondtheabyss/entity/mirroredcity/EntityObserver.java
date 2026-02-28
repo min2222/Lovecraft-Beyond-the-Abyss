@@ -6,6 +6,7 @@ import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -53,7 +54,15 @@ public class EntityObserver extends AbstractBTAFlyingMonster
 	
 	public static boolean checkObserverSpawnRules(EntityType<? extends AbstractBTAFlyingMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
-		BlockPos ceilingPos = BTAUtil.getCeilingPos(pServerLevel, pPos.getX(), pPos.getY(), pPos.getZ());
+		//FIXME proper spawning;
+		BlockPos ceilingPos = BTAUtil.getCeilingPos(pServerLevel, pPos.getX(), pPos.getY(), pPos.getZ(), 120);
+		for(Direction direction : Direction.values())
+		{
+			if(!pServerLevel.getBlockState(pPos.relative(direction)).isAir())
+			{
+				return false;
+			}
+		}
 		return pServerLevel.getBlockState(ceilingPos).isAir() && pServerLevel.getBlockState(pPos.below()).isAir() && pServerLevel.getBlockState(pPos.above()).isAir() && pPos.getY() <= 10 && pPos.getY() >= -10;
     }
 }

@@ -40,6 +40,10 @@
 		]
 	},
 	"spawn_costs": {
+		"beyondtheabyss:lithoshrimp": {
+			"energy_budget": 1.0,
+			"charge": 0.01
+		}
 	},
 	"carvers": {
 		"air": "beyondtheabyss:spire_hollow"

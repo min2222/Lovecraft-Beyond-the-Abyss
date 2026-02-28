@@ -70,7 +70,7 @@ public class EntityLithoshrimp extends AbstractBTAWaterCreature
 	@Override
 	public int getMaxSpawnClusterSize() 
 	{
-		return 100;
+		return Integer.MAX_VALUE;
 	}
 	
 	public static boolean checkLithoshrimpSpawnRules(EntityType<? extends AbstractBTAWaterCreature> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 

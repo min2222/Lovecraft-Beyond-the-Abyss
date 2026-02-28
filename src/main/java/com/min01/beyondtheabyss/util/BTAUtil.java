@@ -520,6 +520,19 @@ public class BTAUtil
         return mutablePos.immutable();
     }
 	
+	public static BlockPos getCeilingPos(BlockGetter level, double x, double startY, double z, int maxStep)
+    {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startY, z);
+        int i = 0;
+        do
+        {
+        	mutablePos.move(Direction.UP);
+        	i++;
+        }
+        while(i < maxStep && (level.getBlockState(mutablePos).isAir() || !level.getFluidState(mutablePos).isEmpty() || !level.getBlockState(mutablePos).isCollisionShapeFullBlock(level, mutablePos)) && mutablePos.getY() < level.getMaxBuildHeight());
+        return mutablePos.immutable();
+    }
+	
 	public static BlockPos getCeilingPos(BlockGetter level, double x, double startY, double z)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startY, z);
