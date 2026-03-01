@@ -66,7 +66,7 @@ public abstract class AbstractAnimatableWaterCreature extends AbstractWaterCreat
 			{
 				if(super.canUse() && AbstractAnimatableWaterCreature.this.canMoveAround())
 				{
-					return !AbstractAnimatableWaterCreature.this.isInWater() || !AbstractAnimatableWaterCreature.this.isSwim();
+					return !AbstractAnimatableWaterCreature.this.isInWater();
 				}
 				return false;
 			}
@@ -85,7 +85,7 @@ public abstract class AbstractAnimatableWaterCreature extends AbstractWaterCreat
 			{
 				if(super.canUse() && AbstractAnimatableWaterCreature.this.canMoveAround())
 				{
-					return AbstractAnimatableWaterCreature.this.isInWater() && AbstractAnimatableWaterCreature.this.isSwim();
+					return AbstractAnimatableWaterCreature.this.isInWater();
 				}
 				return false;
 			}

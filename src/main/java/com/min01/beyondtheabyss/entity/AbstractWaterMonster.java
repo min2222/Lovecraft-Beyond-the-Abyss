@@ -120,7 +120,6 @@ public abstract class AbstractWaterMonster extends Monster
 	public void tick() 
 	{
 		super.tick();
-		this.switchControl(this.isSwim());
 	    Vec3 movement = this.getDeltaMovement();
 	    float speed = (float) movement.length();
 	    this.rollAngleO = this.rollAngle;

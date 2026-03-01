@@ -112,6 +112,10 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 			this.hideAnimationState.updateWhen(this.isHiding(), this.tickCount);
 			this.unhideAnimationState.updateWhen(this.isAnimationPlaying(2), this.tickCount);
 		}
+		else
+		{
+			this.switchControl(this.isInWater());
+		}
 
 		Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 3.5F, true);
 		if(player != null && !this.isAnimationPlaying() && !this.isHiding())
@@ -122,12 +126,6 @@ public class EntityNecroshell extends AbstractBTAWaterCreature
 	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.0F);
 	        }
 		}
-	}
-	
-	@Override
-	public void switchControl(boolean isWater) 
-	{
-		super.switchControl(this.isInWater());
 	}
 	
 	@Override
