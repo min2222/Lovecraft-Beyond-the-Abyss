@@ -73,14 +73,14 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
-			this.chain.lerpSpeed = 0.5F;
+			this.chain.lerpSpeed = 15.0F;
 			this.chain.speed = 0.5F;
 			this.chain.rotLerp = true;
 		}
 		else
 		{
 			this.chain.setOldPosAndRot();
-			this.chain.tickNormal();
+			this.chain.tick();
 			
 			if(!this.getWantedPos().equals(Vec3.ZERO))
 			{
@@ -94,14 +94,14 @@ public class EntityDuneDevourerHead extends AbstractDuneDevourerPart
 					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
 					Vec3 groundPos = BTAUtil.getGroundPosVec3(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
 					this.setWantedPos(groundPos.add(0, 20, 0));
-					EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.15F, 0, 20);
+					EntityBTACameraShake.cameraShake(this.level, this.position(), 150.0F, 0.25F, 0, 20);
 				}
 				else
 				{
 					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
 					Vec3 groundPos = BTAUtil.getGroundPosVec3(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
 					this.setWantedPos(groundPos.subtract(0, 80, 0));
-					EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.15F, 0, 20);
+					EntityBTACameraShake.cameraShake(this.level, this.position(), 150.0F, 0.25F, 0, 20);
 				}
 			}
 			

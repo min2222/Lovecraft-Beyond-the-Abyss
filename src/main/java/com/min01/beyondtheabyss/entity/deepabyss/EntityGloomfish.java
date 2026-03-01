@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.ForgeMod;
 
 public class EntityGloomfish extends AbstractBTAWaterCreature
 {	
@@ -31,7 +32,8 @@ public class EntityGloomfish extends AbstractBTAWaterCreature
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 2.0F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.2F);
+    			.add(Attributes.MOVEMENT_SPEED, 0.2F)
+    			.add(ForgeMod.SWIM_SPEED.get(), 0.5F);
     }
 
 	@Override
@@ -71,12 +73,6 @@ public class EntityGloomfish extends AbstractBTAWaterCreature
 	{
 		super.tick();
 		DeepAbyssUtil.fishFlopping(this);
-	}
-	
-	@Override
-	public void switchControl(boolean isWater)
-	{
-		
 	}
 	
 	@Override

@@ -3,11 +3,14 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.BTAEntities;
+import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,10 +20,10 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
@@ -85,26 +88,35 @@ public class EntityForneusHead extends AbstractForneusPart
 		if(this.chain == null)
 		{
 			this.chain = new KinematicChain(this, this.getChainLength() + 1, this.getSegmentDistance(0));
+			this.chain.lerpSpeed = 25.0F;
+			this.chain.speed = 0.5F;
+			this.chain.rotLerp = true;
 		}
 		else
 		{
 			this.chain.setOldPosAndRot();
-			this.chain.tickNormal();
-			
-			MoveControl moveControl = this.getMoveControl();
-			Vec3 pos = new Vec3(moveControl.getWantedX(), moveControl.getWantedY(), moveControl.getWantedZ());
-			if(!pos.equals(Vec3.ZERO))
-			{
-				this.setWantedPos(pos);
-			}
+			this.chain.tick();
+
 			if(!this.getWantedPos().equals(Vec3.ZERO))
 			{
-		    	this.chain.setTarget(this.getWantedPos());
+				this.chain.setTarget(this.getWantedPos());
 			}
+			
+			if(this.getWantedPos().equals(Vec3.ZERO) || this.getWantedPos().subtract(this.position()).length() <= this.getSegmentDistance(0) * 2.5F)
+			{
+				Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
+				if(this.level.getBlockState(BlockPos.containing(spreadPos)).is(Blocks.WATER))
+				{
+					this.setWantedPos(spreadPos);
+				}
+				EntityBTACameraShake.cameraShake(this.level, this.position(), 250.0F, 0.35F, 0, 20);
+			}
+			
 			ChainSegment segment = this.chain.getTarget().equals(Vec3.ZERO) ? this.chain.getTipSegment() : this.chain.getLastSegment();
 			this.chain.getLastSegment().setDistance(8.0F);
+			Vec3 pos = segment.getPos();
 			Vec2 rot = segment.getRot();
-			this.setPos(segment.getPos());
+			this.setPos(pos);
 			this.setXRot(rot.x);
 			this.setYRot(rot.y);
 			this.setYBodyRot(rot.y);

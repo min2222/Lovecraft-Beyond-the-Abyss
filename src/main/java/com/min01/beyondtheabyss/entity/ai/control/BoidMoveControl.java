@@ -17,15 +17,10 @@ public class BoidMoveControl<T extends Mob & IAnimatable> extends AnimationMoveC
 {
 	public final Boid boid;
 	
-	public BoidMoveControl(T mob)
-	{
-		this(mob, false);
-	}
-	
-	public BoidMoveControl(T mob, boolean isLeader) 
+	public BoidMoveControl(T mob) 
 	{
 		super(mob);
-		this.boid = new Boid(mob, isLeader);
+		this.boid = new Boid(mob);
 	}
 	
 	@Override

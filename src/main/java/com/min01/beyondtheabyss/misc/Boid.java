@@ -4,32 +4,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import com.min01.beyondtheabyss.entity.ILeader;
 import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.Vec3;
 
 //https://github.com/TheCymaera/minecraft-boids/tree/master
 public class Boid
 {
 	public final Mob mob;
-	public final boolean isLeader;
 	public final List<Boid> boids = new ArrayList<>();
 	public List<? extends Mob> nearbyMobs = new ArrayList<>();
 	
 	public Vec3 velocity = Vec3.ZERO;
-    public Vec3 target = Vec3.ZERO;
+	public Vec3 target = Vec3.ZERO;
     public Vec3 direction = Vec3.ZERO;
 
-	public Boid(Mob mob, boolean isLeader)
+	public Boid(Mob mob)
 	{
 		this.mob = mob;
-		this.isLeader = isLeader;
 		this.velocity = new Vec3(Math.random(), Math.random(), Math.random());
 	}
 
@@ -37,17 +33,9 @@ public class Boid
 	{
 		this.tickNearbyMobs();
 		
-		Collection<Boid> boids = this.boids;
-		
-		Collection<Boid> flock = this.getInRange(boids, this.mob.position(), flockRadius);
+		Collection<Boid> flock = this.getInRange(this.boids, this.mob.position(), flockRadius);
 		
 		Vec3 acceleration = Vec3.ZERO;
-		
-		if(!this.target.equals(Vec3.ZERO) && this.mob.getTarget() == null)
-		{
-			Vec3 toTarget = this.target.subtract(this.mob.position());
-			acceleration = acceleration.add(toTarget.scale(0.05F));
-		}
 
 		if(avoidance)
 		{
@@ -69,6 +57,12 @@ public class Boid
 		if(cohesion) 
 		{
 			acceleration = acceleration.add(this.centerDisplacement(flock).scale(0.006F));
+		}
+		
+		if(!this.target.equals(Vec3.ZERO))
+		{
+			acceleration = acceleration.add(this.target.subtract(this.mob.position()).scale(0.05F));
+			this.target = Vec3.ZERO;
 		}
 		
 		this.velocity = this.velocity.add(acceleration);
@@ -95,6 +89,9 @@ public class Boid
     	
         this.nearbyMobs.removeIf(t -> t.isDeadOrDying());
         
+        List<Mob> leaders = new ArrayList<>();
+        leaders.sort(Comparator.comparing(Entity::getUUID));
+        
         for(Mob mob : this.nearbyMobs)
         {
         	if(mob.getMoveControl() instanceof BoidMoveControl control)
@@ -105,47 +102,19 @@ public class Boid
     	        	this.boids.add(boid);
             	}
         	}
-        	if(this.isLeader)
-        	{
-        		if(!(mob instanceof ILeader<?> leader) || !leader.isLeader())
-        		{
-        			continue;
-        		}
-        		ILeader<Mob> mob1 = (ILeader<Mob>) this.mob;
-        		if(mob1.getLeader() == null && !mob1.isLeader())
-        		{
-            		mob1.setLeader(mob);
-        		}
-        	}
-        }
-        
-        if(!this.nearbyMobs.isEmpty())
-        {
-        	Mob mob = this.nearbyMobs.get(0);
-    		Optional<? extends Mob> optional = this.nearbyMobs.stream().filter(t -> t instanceof ILeader<?> leader && leader.isLeader()).findFirst();
-    		if(optional.isPresent())
+    		if(mob instanceof ILeader leader && leader.isLeader())
     		{
-    			mob = optional.get();
+    			leaders.add(mob);
     		}
-        	MoveControl moveControl = mob.getMoveControl();
-        	if(this.isLeader)
+        }
+        if(!leaders.isEmpty())
+        {
+        	if(this.mob instanceof ILeader leader && leader.getLeader() == null)
         	{
-            	if(moveControl instanceof BoidMoveControl boidMoveControl && mob.getTarget() == null)
-            	{
-            		Boid boid = boidMoveControl.boid;
-                	if(!boid.direction.equals(Vec3.ZERO))
-                	{
-                    	this.target = boid.direction.add(mob.position());
-                	}
-            	}
-        	}
-        	else
-        	{
-            	Vec3 wantedPos = new Vec3(moveControl.getWantedX(), moveControl.getWantedY(), moveControl.getWantedZ());
-            	if(!wantedPos.equals(Vec3.ZERO))
-            	{
-                	this.target = wantedPos;
-            	}
+        		if(!leader.isLeader() || leaders.size() > 1)
+        		{
+    				leader.setLeader(leaders.get(0));
+        		}
         	}
         }
     }

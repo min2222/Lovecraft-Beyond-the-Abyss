@@ -52,7 +52,7 @@ public class EntityGnasher extends AbstractBTAWaterMonster implements ILeader<En
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(6);
-		this.moveControl = new BoidMoveControl<>(this, true);
+		this.moveControl = new BoidMoveControl<>(this);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -189,12 +189,6 @@ public class EntityGnasher extends AbstractBTAWaterMonster implements ILeader<En
         	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
         }
     }
-
-    @Override
-    public void switchControl(boolean isWater)
-    {
-    	
-    }
     
     public void switchControl(boolean isWater, boolean isBoid)
     {
@@ -206,7 +200,7 @@ public class EntityGnasher extends AbstractBTAWaterMonster implements ILeader<En
     	
     	if(isBoid && !(this.moveControl instanceof BoidMoveControl))
     	{
-    		this.moveControl = new BoidMoveControl<>(this, true);
+    		this.moveControl = new BoidMoveControl<>(this);
     		this.lookControl = new SmoothSwimmingLookControl(this, 10);
     	}
     }

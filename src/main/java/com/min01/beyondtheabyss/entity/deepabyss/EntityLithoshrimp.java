@@ -16,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.ForgeMod;
 
 public class EntityLithoshrimp extends AbstractBTAWaterCreature
 {
@@ -32,6 +33,7 @@ public class EntityLithoshrimp extends AbstractBTAWaterCreature
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 5.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.15F)
+    			.add(ForgeMod.SWIM_SPEED.get(), 0.3F)
         		.add(Attributes.ARMOR, 1.0F)
         		.add(Attributes.ARMOR_TOUGHNESS, 1.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0F);
