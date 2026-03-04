@@ -136,7 +136,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 			Worm worm = head.worms[this.getIndex()];
 			if(worm != null)
 			{
-				Vec3 pos = head.position();
+				Vec3 pos = worm.position();
 				Vec2 rot = worm.getRot(1.0F);
 				this.setPos(pos);
 				this.setXRot(rot.x);
@@ -170,7 +170,7 @@ public abstract class AbstractWormPart<T extends AbstractWormPart<T>> extends Ab
 				for(int i = 0; i < this.worms.length; i++)
 				{
 					float speed = this.getChainSpeed();
-					float distance = this.getSegmentDistance(i);
+					float distance = i == 0 ? 0.0F : this.getSegmentDistance(i);
 					Worm worm = this.worms[i];
 					if(worm != null)
 					{
