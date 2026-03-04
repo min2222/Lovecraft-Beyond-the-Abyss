@@ -26,11 +26,11 @@ public class KeyframeItemAnimations
 		{
 			Optional<ModelPart> optional = pModel.getAnyDescendantWithName(entry.getKey());
 			List<AnimationChannel> list = entry.getValue();
-			optional.ifPresent((p_232330_) ->
+			optional.ifPresent(part ->
 			{
-				list.forEach((p_288241_) ->
+				list.forEach(channel ->
 				{
-					Keyframe[] akeyframe = p_288241_.keyframes();
+					Keyframe[] akeyframe = channel.keyframes();
 					int i = Math.max(0, Mth.binarySearch(0, akeyframe.length, (p_232315_) ->
 					{
 						return f <= akeyframe[p_232315_].timestamp();
@@ -49,7 +49,7 @@ public class KeyframeItemAnimations
 						f2 = 0.0F;
 					}
 					keyframe1.interpolation().apply(pAnimationVecCache, f2, akeyframe, i, j, pScale);
-					p_288241_.target().apply(p_232330_, pAnimationVecCache);
+					channel.target().apply(part, pAnimationVecCache);
 				});
 			});
 		}
