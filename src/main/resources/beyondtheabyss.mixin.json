@@ -13,6 +13,8 @@
 		"MixinLocalPlayer",
 		"MixinPlayerModel",
 		"MixinEntityRenderDispatcher",
+		"MixinModelPart",
+		"MixinHierarchicalModel",
 		"MixinResource"
 	],
 	"server": [
