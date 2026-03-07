@@ -159,14 +159,23 @@ public class ClientEventHandlerForge
 	@SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event)
 	{
-		ItemStack stack = event.getItemStack();
 		AbstractClientPlayer player = BTAClientUtil.MC.player;
-		if(stack.getItem() instanceof IAnimatableItem item && item.isFirstPersonAnim(stack, player))
+		ItemStack stack1 = player.getMainHandItem();
+		ItemStack stack2 = player.getOffhandItem();
+		if(stack1.getItem() instanceof IAnimatableItem item && item.isFirstPersonAnim(stack1, player))
 		{
 			PoseStack poseStack = event.getPoseStack();
 			MultiBufferSource bufferSource = event.getMultiBufferSource();
-			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.RIGHT, stack, item, event.getPartialTick());
-			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.LEFT, stack, item, event.getPartialTick());
+			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.RIGHT, stack1, item, event.getPartialTick());
+			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.LEFT, stack1, item, event.getPartialTick());
+			event.setCanceled(true);
+		}
+		else if(stack2.getItem() instanceof IAnimatableItem item && item.isFirstPersonAnim(stack2, player))
+		{
+			PoseStack poseStack = event.getPoseStack();
+			MultiBufferSource bufferSource = event.getMultiBufferSource();
+			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.RIGHT, stack2, item, event.getPartialTick());
+			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.LEFT, stack2, item, event.getPartialTick());
 			event.setCanceled(true);
 		}
 	}

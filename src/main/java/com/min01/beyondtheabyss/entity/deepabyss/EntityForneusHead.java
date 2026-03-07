@@ -109,7 +109,7 @@ public class EntityForneusHead extends AbstractForneusPart
 				{
 					this.setWantedPos(spreadPos);
 				}
-				EntityBTACameraShake.cameraShake(this.level, this.position(), 250.0F, 0.35F, 0, 20);
+				EntityBTACameraShake.cameraShake(this.level, this.position(), 250.0F, 0.15F, 0, 20);
 			}
 			
 			ChainSegment segment = this.chain.getTarget().equals(Vec3.ZERO) ? this.chain.getTipSegment() : this.chain.getLastSegment();
