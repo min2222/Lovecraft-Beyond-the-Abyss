@@ -102,6 +102,13 @@ public class EntityOverseer extends AbstractBTAFlyingMonster
 	}
 	
 	@Override
+	public void setFlying(boolean value) 
+	{
+		super.setFlying(value);
+		this.setNoGravity(value);
+	}
+	
+	@Override
 	public float maxFlyTurnX()
 	{
 		return 0;
