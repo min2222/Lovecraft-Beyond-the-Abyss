@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 import org.joml.Quaternionf;
 
 import com.min01.beyondtheabyss.network.BTANetwork;
+import com.min01.beyondtheabyss.network.BulkUpdatePartPacket;
 import com.min01.beyondtheabyss.network.BuildMultipartPacket;
-import com.min01.beyondtheabyss.network.UpdatePartPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.math.Axis;
 
@@ -44,6 +44,8 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 	private double lastSentX = Double.NaN, lastSentY = Double.NaN, lastSentZ = Double.NaN;
 	private QuaternionD lastSentRotation = null;
 
+	private final Map<String, PartState> lastPartStates = new HashMap<>();
+
 	public EntityPartBuilder(T entity)
 	{
 		this.entity = entity;
@@ -67,7 +69,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 	        
 			this.clientTick(BTAClientUtil.getModelFromEntity(this.entity));
 			this.partTick();
-
+			
 	        if(this.entity.tickCount == 2)
 	        {
 	    		this.hitbox = this.buildHitbox();
@@ -82,7 +84,6 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 		        {
 		        	root.setPivotY(-this.getWaterOffset());
 		        }
-	
 		        boolean posChanged = posX != this.lastSentX || posY != this.lastSentY || posZ != this.lastSentZ;
 		        boolean rotChanged = !rotation.equals(this.lastSentRotation);
 		        if(posChanged || rotChanged || this.entity.tickCount == 2)
@@ -178,7 +179,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
     @OnlyIn(Dist.CLIENT)
 	public void clientTick(HierarchicalModel<T> model)
 	{
-    	Map<String, PartState> lastStates = new HashMap<>();
+    	Map<String, float[]> changedParts = new HashMap<>();
     	ModelPart root = model.root();
     	root.getAllParts().forEach(part -> 
     	{
@@ -193,15 +194,20 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
     	    if(p != null)
     	    {
     	        PartState current = new PartState(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-    	        PartState last = lastStates.get(name);
+    	        PartState last = this.lastPartStates.get(name);
     	        if(last == null || current.changed(last))
     	        {
     	            p.tick(part.x, part.y, part.z, part.xRot, part.yRot, part.zRot);
-    	            BTANetwork.sendToServer(new UpdatePartPacket(this.entity.getUUID(), name, part.x, part.y, part.z, part.xRot, part.yRot, part.zRot));
-    	            lastStates.put(name, current);
+    	            changedParts.put(name, new float[]{part.x, part.y, part.z, part.xRot, part.yRot, part.zRot});
+    	            this.lastPartStates.put(name, current);
     	        }
     	    }
     	});
+
+    	if(!changedParts.isEmpty())
+    	{
+    		BTANetwork.sendToServer(new BulkUpdatePartPacket(this.entity.getUUID(), changedParts));
+    	}
 	}
 
     @OnlyIn(Dist.CLIENT)

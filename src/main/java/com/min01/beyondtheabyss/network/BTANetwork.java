@@ -25,7 +25,7 @@ public class BTANetwork
 		CHANNEL.registerMessage(ID++, UpdateAltarItemPacket.class, UpdateAltarItemPacket::write, UpdateAltarItemPacket::read, UpdateAltarItemPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateVehiclePacket.class, UpdateVehiclePacket::write, UpdateVehiclePacket::read, UpdateVehiclePacket::handle);
 		CHANNEL.registerMessage(ID++, BuildMultipartPacket.class, BuildMultipartPacket::write, BuildMultipartPacket::read, BuildMultipartPacket::handle);
- 		CHANNEL.registerMessage(ID++, UpdatePartPacket.class, UpdatePartPacket::write, UpdatePartPacket::read, UpdatePartPacket::handle);
+ 		CHANNEL.registerMessage(ID++, BulkUpdatePartPacket.class, BulkUpdatePartPacket::write, BulkUpdatePartPacket::read, BulkUpdatePartPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateItemAnimationPacket.class, UpdateItemAnimationPacket::write, UpdateItemAnimationPacket::read, UpdateItemAnimationPacket::handle);
 		CHANNEL.registerMessage(ID++, SetDialogueScreenPacket.class, SetDialogueScreenPacket::write, SetDialogueScreenPacket::read, SetDialogueScreenPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateSynchedEntityDataPacket.class, UpdateSynchedEntityDataPacket::write, UpdateSynchedEntityDataPacket::read, UpdateSynchedEntityDataPacket::handle);
