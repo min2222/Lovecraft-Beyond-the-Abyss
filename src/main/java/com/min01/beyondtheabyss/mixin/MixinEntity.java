@@ -37,7 +37,7 @@ import net.minecraftforge.fluids.FluidType;
 @Mixin(value = Entity.class, priority = -20000)
 public abstract class MixinEntity
 {
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = false)
+    @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci)
     {
     	Entity entity = (Entity)(Object)this;
