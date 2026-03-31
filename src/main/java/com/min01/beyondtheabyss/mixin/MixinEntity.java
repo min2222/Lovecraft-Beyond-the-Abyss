@@ -1,6 +1,5 @@
 package com.min01.beyondtheabyss.mixin;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -38,10 +37,10 @@ import net.minecraftforge.fluids.FluidType;
 @Mixin(value = Entity.class, priority = -20000)
 public abstract class MixinEntity
 {
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = false)
     private void tick(CallbackInfo ci)
     {
-    	Entity entity = Entity.class.cast(this);
+    	Entity entity = (Entity)(Object)this;
 		if(entity instanceof ItemEntity item)
 		{
 			if(item.level.dimension() == BTAWorlds.DEEP_ABYSS)
@@ -61,13 +60,13 @@ public abstract class MixinEntity
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void tickTail(CallbackInfo ci) 
 	{
-		BTAUtil.updateGravity(Entity.class.cast(this));
+		BTAUtil.updateGravity((Entity)(Object)this);
 	}
 	
 	@Inject(method = "checkBelowWorld", at = @At("HEAD"), cancellable = true)
 	private void checkBelowWorld(CallbackInfo ci) 
 	{
-		if(Entity.class.cast(this).level.dimension() == BTAWorlds.OUTER_SPACE)
+		if(((Entity)(Object)this).level.dimension() == BTAWorlds.OUTER_SPACE)
 		{
 			ci.cancel();
 		}
@@ -76,7 +75,7 @@ public abstract class MixinEntity
     @Inject(method = "getBoundingBox", at = @At("RETURN"), cancellable = true)
     private void getBoundingBox(CallbackInfoReturnable<AABB> cir)
     {
-        if(Entity.class.cast(this) instanceof IMultipart multipart)
+        if((Entity)(Object)this instanceof IMultipart multipart)
         {
             cir.setReturnValue(multipart.getCompoundBoundingBox(cir.getReturnValue()));
         }
@@ -85,7 +84,7 @@ public abstract class MixinEntity
     @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)
     private void isInWater(CallbackInfoReturnable<Boolean> cir)
     {
-    	if(Entity.class.cast(this) instanceof LivingEntity living)
+    	if((Entity)(Object)this instanceof LivingEntity living)
     	{
     		if(BTAUtil.canSwimInAir(living))
     		{
@@ -101,7 +100,7 @@ public abstract class MixinEntity
     @Inject(method = "getFluidTypeHeight", at = @At("HEAD"), cancellable = true, remap = false)
     private void getFluidTypeHeight(FluidType type, CallbackInfoReturnable<Double> cir)
     {
-    	if(Entity.class.cast(this) instanceof LivingEntity living)
+    	if((Entity)(Object)this instanceof LivingEntity living)
     	{
     		if(DeepAbyssUtil.isInsideSubmarine(living))
     		{
@@ -113,7 +112,7 @@ public abstract class MixinEntity
     @Inject(method = "isInFluidType", at = @At("HEAD"), cancellable = true, remap = false)
     private void isInFluidType(CallbackInfoReturnable<Boolean> cir)
     {
-    	if(Entity.class.cast(this) instanceof LivingEntity living)
+    	if((Entity)(Object)this instanceof LivingEntity living)
     	{
     		if(DeepAbyssUtil.isInsideSubmarine(living))
     		{
@@ -125,7 +124,7 @@ public abstract class MixinEntity
     @Inject(method = "getEyeInFluidType", at = @At("HEAD"), cancellable = true, remap = false)
     private void getEyeInFluidType(CallbackInfoReturnable<FluidType> cir)
     {
-    	if(Entity.class.cast(this) instanceof LivingEntity living)
+    	if((Entity)(Object)this instanceof LivingEntity living)
     	{
     		if(BTAUtil.canSwimInAir(living))
     		{
@@ -141,8 +140,9 @@ public abstract class MixinEntity
     @ModifyVariable(method = "collide", at = @At("HEAD"), argsOnly = true)
     private Vec3 collide(Vec3 originalMovement) 
     {
-        Entity entity = Entity.class.cast(this);
-        AABB aabb = entity.getBoundingBox();
+        Entity entity = (Entity)(Object)this;
+        float hw = entity.getBbWidth() / 2.0f;
+        AABB aabb = new AABB(entity.getX() - hw, entity.getY(), entity.getZ() - hw, entity.getX() + hw, entity.getY() + entity.getBbHeight(), entity.getZ() + hw);
         List<OrientedBox> obbList = this.getOBBEntityCollisions(entity.level, entity, aabb.expandTowards(originalMovement));
         if(obbList.isEmpty())
         {
@@ -158,15 +158,21 @@ public abstract class MixinEntity
             return pDeltaMovement;
         }
 
+        Vec3 totalMtv = Vec3.ZERO;
         for(OrientedBox obb : obbs)
         {
             Vec3 mtv = obb.getDepenetrationVector(pEntityBB);
             if(mtv.lengthSqr() > 1.0E-7)
             {
-            	return mtv;
+                totalMtv = totalMtv.add(mtv);
             }
-        }	
-        
+        }
+        if(totalMtv.lengthSqr() > 1.0E-7)
+        {
+            pEntityBB = pEntityBB.move(totalMtv);
+            pDeltaMovement = pDeltaMovement.add(totalMtv);
+        }
+
         double d0 = pDeltaMovement.x;
         double d1 = pDeltaMovement.y;
         double d2 = pDeltaMovement.z;
@@ -220,21 +226,19 @@ public abstract class MixinEntity
         	{
         		predicate = predicate.and(t -> !pEntity.isPassengerOfSameVehicle(t));
         	}
-        	List<Entity> list = level.getEntities(pEntity, pCollisionBox.inflate(1.0E-7D), predicate);
+        	List<Entity> list = level.getEntities(pEntity, pCollisionBox, predicate);
         	if(list.isEmpty())
         	{
         		return List.of();
         	}
         	else
         	{
-        		ImmutableList.Builder<OrientedBox> builder = ImmutableList.builderWithExpectedSize(list.size());
+        		ImmutableList.Builder<OrientedBox> builder = ImmutableList.builderWithExpectedSize(list.size() * 8);
         		for(Entity entity : list) 
         		{
         			if(entity.getBoundingBox() instanceof CompoundOrientedBox compoundBox)
         			{
-        				Collection<OrientedBox> boxes = compoundBox.boxes;
-        				boxes.removeIf(t -> !t.collide);
-        				builder.addAll(boxes);
+        				compoundBox.boxes.stream().filter(t -> t.collide).forEach(builder::add);
         			}
         		}
         		return builder.build();

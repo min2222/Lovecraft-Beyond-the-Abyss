@@ -36,9 +36,9 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	public final SmoothAnimationState empty2AnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState clamOpenAnimationState = new SmoothAnimationState();
 	
-	private final ItemStack stack;
+	private ItemStack stack;
 	
-	public ItemAnimationCapabilityImpl(ItemStack stack) 
+	public void setItemStack(ItemStack stack)
 	{
 		this.stack = stack;
 	}
@@ -131,6 +131,7 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 		return this.tickCount;
 	}
 	
+	//TODO
 	private void sendUpdatePacket(Entity entity) 
 	{
 		if(!entity.level.isClientSide)

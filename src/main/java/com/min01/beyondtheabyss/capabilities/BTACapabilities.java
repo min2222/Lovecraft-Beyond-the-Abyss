@@ -14,7 +14,9 @@ public class BTACapabilities
     	ItemStack stack = event.getObject();
     	if(stack.getItem() instanceof IAnimatableItem)
     	{
-    		event.addCapability(ItemAnimationCapabilityImpl.ID, new ItemAnimationCapabilityImpl(stack));
+    		ItemAnimationCapabilityImpl cap = new ItemAnimationCapabilityImpl();
+    		cap.setItemStack(stack);
+    		event.addCapability(ItemAnimationCapabilityImpl.ID, cap);
     	}
 	}
 	
@@ -23,8 +25,12 @@ public class BTACapabilities
     	Entity entity = event.getObject();
 		if(entity instanceof Player player)
 		{
-			event.addCapability(PlayerAnimationCapabilityImpl.ID, new PlayerAnimationCapabilityImpl(player));
-			event.addCapability(PlayerTickCountCapabilityImpl.ID, new PlayerTickCountCapabilityImpl(player));
+			PlayerAnimationCapabilityImpl cap = new PlayerAnimationCapabilityImpl();
+			PlayerTickCountCapabilityImpl cap1 = new PlayerTickCountCapabilityImpl();
+			cap.setEntity(player);
+			cap1.setEntity(player);
+			event.addCapability(PlayerAnimationCapabilityImpl.ID, cap);
+			event.addCapability(PlayerTickCountCapabilityImpl.ID, cap1);
 		}
 	}
 }

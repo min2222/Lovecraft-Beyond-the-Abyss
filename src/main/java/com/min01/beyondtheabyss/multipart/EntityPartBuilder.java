@@ -27,8 +27,6 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -42,6 +40,9 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 	public final Map<String, String> parts = new HashMap<>();
 	public final Map<String, Part> partMap = new HashMap<>();
 	public final Map<ModelPart, String> partNameCache = new HashMap<>();
+
+	private double lastSentX = Double.NaN, lastSentY = Double.NaN, lastSentZ = Double.NaN;
+	private QuaternionD lastSentRotation = null;
 
 	public EntityPartBuilder(T entity)
 	{
@@ -66,23 +67,37 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
 	        
 			this.clientTick(BTAClientUtil.getModelFromEntity(this.entity));
 			this.partTick();
-	        
-			if(this.entity instanceof LivingEntity living)
-			{
-		        QuaternionD rotation = this.defaultEntityRotation(living, partialTick);
-		        root.rotate(rotation);
-			}
-
-	        if(this.isInWater() && !this.entity.isInWater())
-	        {
-	        	root.setPivotY(-this.getWaterOffset());
-	        }
 
 	        if(this.entity.tickCount == 2)
 	        {
 	    		this.hitbox = this.buildHitbox();
 	        }
-    		BTANetwork.sendToServer(new BuildMultipartPacket(this.entity.getUUID(), this.partOffset, this.parts, this.partMap, this.hitbox));
+	        
+			if(this.entity instanceof LivingEntity living)
+			{
+		        QuaternionD rotation = this.defaultEntityRotation(living, partialTick);
+		        root.rotate(rotation);
+	
+		        if(this.isInWater() && !this.entity.isInWater())
+		        {
+		        	root.setPivotY(-this.getWaterOffset());
+		        }
+	
+		        boolean posChanged = posX != this.lastSentX || posY != this.lastSentY || posZ != this.lastSentZ;
+		        boolean rotChanged = !rotation.equals(this.lastSentRotation);
+		        if(posChanged || rotChanged || this.entity.tickCount == 2)
+		        {
+		        	BTANetwork.sendToServer(new BuildMultipartPacket(this.entity.getUUID(), this.partOffset, this.parts, this.partMap, this.hitbox));
+		        	this.lastSentX = posX;
+		        	this.lastSentY = posY;
+		        	this.lastSentZ = posZ;
+		        	this.lastSentRotation = rotation;
+		        }
+			}
+			else
+			{
+	        	BTANetwork.sendToServer(new BuildMultipartPacket(this.entity.getUUID(), this.partOffset, this.parts, this.partMap, this.hitbox));
+			}
 		}
 		else
 		{
@@ -236,7 +251,6 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
     @OnlyIn(Dist.CLIENT)
     public AABB getPartSize(ModelPart part, String name)
     {
-    	VoxelShape shape = Shapes.empty();
         AABB box = null;
         AABB empty = new AABB(Vec3.ZERO, Vec3.ZERO);
         for(ModelPart.Cube cube : part.cubes)
@@ -244,18 +258,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
             Vec3 min = new Vec3(cube.minX, cube.minY, cube.minZ).scale(SCALE * this.getRenderScale());
             Vec3 max = new Vec3(cube.maxX, cube.maxY, cube.maxZ).scale(SCALE * this.getRenderScale());
             AABB cubeBox = new AABB(min, max);
-            if(box == null || shape.isEmpty())
-            {
-                box = cubeBox;
-                shape = Shapes.create(cubeBox);
-            }
-            else
-            {
-            	VoxelShape boxShape = Shapes.create(box);
-            	VoxelShape cubeBoxShape = Shapes.create(cubeBox);
-            	AABB aabb = Shapes.or(boxShape, cubeBoxShape).bounds();
-                box = aabb;
-            }
+            box = (box == null) ? cubeBox : box.minmax(cubeBox);
         }
         
         if(box != null && (box.minX == 0.0 || box.minY == 0.0 || box.minZ == 0.0 || box.maxX == 0.0 || box.maxY == 0.0 || box.maxZ == 0.0))
@@ -275,7 +278,7 @@ public class EntityPartBuilder<T extends Entity & IMultipart>
             return new AABB(-box.getXsize() / 2.0F, -box.getYsize() / 2.0F, -box.getZsize() / 2.0F, box.getXsize() / 2.0F, box.getYsize() / 2.0F, box.getZsize() / 2.0F);
         }
         
-        if(box == null || shape.isEmpty()) 
+        if(box == null) 
         {
             return empty;
         }

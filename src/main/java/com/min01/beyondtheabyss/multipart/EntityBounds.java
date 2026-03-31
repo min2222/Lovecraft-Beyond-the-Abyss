@@ -50,7 +50,7 @@ public class EntityBounds
         for(Map.Entry<String, EntityPart> entry : this.partMap.entrySet())
         {
         	EntityPart part = entry.getValue();
-        	if(part.collide)
+        	if(!part.collide)
         	{
         		continue;
         	}
@@ -88,7 +88,6 @@ public class EntityBounds
             if(value.isChanged())
             {
                 changed = true;
-                value.setChanged(false);
             }
         }
         if(changed)

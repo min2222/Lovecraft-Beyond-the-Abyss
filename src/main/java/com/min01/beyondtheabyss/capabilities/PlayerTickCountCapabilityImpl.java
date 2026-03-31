@@ -19,10 +19,9 @@ public class PlayerTickCountCapabilityImpl implements IPlayerTickCountCapability
 	public static final Capability<IPlayerTickCountCapability> PLAYER_TICK_COUNT = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	private int tickCount;
+	private Entity entity;
 	
-	private final Entity entity;
-	
-	public PlayerTickCountCapabilityImpl(Entity entity) 
+	public void setEntity(Entity entity)
 	{
 		this.entity = entity;
 	}

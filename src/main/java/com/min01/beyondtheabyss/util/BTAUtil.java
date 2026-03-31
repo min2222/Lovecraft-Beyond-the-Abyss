@@ -165,19 +165,19 @@ public class BTAUtil
 	
     public static void tickPlayerTickCount(LivingEntity player)
     {
-		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl(player));
+		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl());
 		cap.tick(player);
     }
     
     public static void setPlayerTickCount(LivingEntity player, int tickCount)
     {
-		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl(player));
+		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl());
 		cap.setTickCount(tickCount);
     }
     
     public static int getPlayerTickCount(LivingEntity player)
     {
-		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl(player));
+		IPlayerTickCountCapability cap = player.getCapability(PlayerTickCountCapabilityImpl.PLAYER_TICK_COUNT).orElse(new PlayerTickCountCapabilityImpl());
 		return cap.getTickCount();
     }
 	
@@ -198,7 +198,7 @@ public class BTAUtil
     
     public static PlayerAnimationCapabilityImpl getPlayerAnimationCapability(Entity player)
     {
-    	PlayerAnimationCapabilityImpl cap = (PlayerAnimationCapabilityImpl) player.getCapability(PlayerAnimationCapabilityImpl.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl(player));
+    	PlayerAnimationCapabilityImpl cap = (PlayerAnimationCapabilityImpl) player.getCapability(PlayerAnimationCapabilityImpl.PLAYER_ANIMATION).orElse(new PlayerAnimationCapabilityImpl());
 		return cap;
     }
     
@@ -229,7 +229,7 @@ public class BTAUtil
     
     public static ItemAnimationCapabilityImpl getItemAnimationCapability(ItemStack stack)
     {
-    	ItemAnimationCapabilityImpl cap = (ItemAnimationCapabilityImpl) stack.getCapability(ItemAnimationCapabilityImpl.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl(stack));
+    	ItemAnimationCapabilityImpl cap = (ItemAnimationCapabilityImpl) stack.getCapability(ItemAnimationCapabilityImpl.ITEM_ANIMATION).orElse(new ItemAnimationCapabilityImpl());
 		return cap;
     }
     

@@ -44,10 +44,10 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	public final SmoothAnimationState gunbladeShootAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState gunbladeSwingAnimationState = new SmoothAnimationState();
 	
-	private final Entity entity;
+	private Entity entity;
 	private final Laser laser = new Laser();
 	
-	public PlayerAnimationCapabilityImpl(Entity entity) 
+	public void setEntity(Entity entity)
 	{
 		this.entity = entity;
 	}
@@ -131,16 +131,13 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 			this.gunbladeShootAnimationState.updateWhen(this.getAnimationState() == 4 && entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()), entity.tickCount);
 			this.gunbladeSwingAnimationState.updateWhen(this.getAnimationState() == 5 && entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()), entity.tickCount);
 		}
-		else
-		{
-			this.sendUpdatePacket();
-		}
 	}
 
 	@Override
 	public void setAnimationState(int state) 
 	{
 		this.animationState = state;
+		this.sendUpdatePacket();
 	}
 
 	@Override
@@ -153,6 +150,7 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	public void setPrevAnimationState(int state) 
 	{
 		this.prevAnimationState = state;
+		this.sendUpdatePacket();
 	}
 
 	@Override
@@ -165,6 +163,7 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	public void setAnimationTick(int tick) 
 	{
 		this.animationTick = tick;
+		this.sendUpdatePacket();
 	}
 	
 	@Override
