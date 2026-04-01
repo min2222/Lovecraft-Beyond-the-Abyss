@@ -14,6 +14,8 @@ public interface IItemAnimationCapability extends ICapabilitySerializable<Compou
 {
 	ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "item_animation");
 
+	void setEntity(Entity entity);
+	
 	void tick(Entity player, ItemStack stack);
 	
 	void setAnimationState(int state);

@@ -44,10 +44,10 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	public final SmoothAnimationState gunbladeShootAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState gunbladeSwingAnimationState = new SmoothAnimationState();
 	
-	private Entity entity;
+	private final Entity entity;
 	private final Laser laser = new Laser();
 	
-	public void setEntity(Entity entity)
+	public PlayerAnimationCapabilityImpl(Entity entity)
 	{
 		this.entity = entity;
 	}
@@ -174,8 +174,6 @@ public class PlayerAnimationCapabilityImpl implements IPlayerAnimationCapability
 	
 	private void sendUpdatePacket() 
 	{
-		if(this.entity == null)
-			return;
 		if(!this.entity.level.isClientSide)
 		{
 			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdatePlayerAnimationPacket(this.entity.getUUID(), this.animationState, this.prevAnimationState, this.animationTick));

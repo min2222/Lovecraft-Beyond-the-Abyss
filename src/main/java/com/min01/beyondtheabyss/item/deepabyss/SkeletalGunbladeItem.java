@@ -50,15 +50,15 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 			{
 				if(isGunMode)
 				{
-					BTAUtil.setItemAnimationState(stack, 2);
-					BTAUtil.setItemAnimationTick(stack, 40);
+					BTAUtil.setItemAnimationState(pPlayer, stack, 2);
+					BTAUtil.setItemAnimationTick(pPlayer, stack, 40);
 					pPlayer.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
 					pPlayer.getCooldowns().addCooldown(stack.getItem(), 20);
 				}
 				else
 				{
-					BTAUtil.setItemAnimationState(stack, 1);
-					BTAUtil.setItemAnimationTick(stack, 40);
+					BTAUtil.setItemAnimationState(pPlayer, stack, 1);
+					BTAUtil.setItemAnimationTick(pPlayer, stack, 40);
 					pPlayer.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
 					pPlayer.getCooldowns().addCooldown(stack.getItem(), 20);
 				}

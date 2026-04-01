@@ -35,12 +35,20 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	public final SmoothAnimationState emptyAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState empty2AnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState clamOpenAnimationState = new SmoothAnimationState();
-	
-	private ItemStack stack;
-	
-	public void setItemStack(ItemStack stack)
+
+	private Entity entity;
+	private final ItemStack stack;
+
+	public ItemAnimationCapabilityImpl(Entity entity, ItemStack stack)
 	{
+		this.entity = entity;
 		this.stack = stack;
+	}
+	
+	@Override
+	public void setEntity(Entity entity)
+	{
+		this.entity = entity;
 	}
 	
 	@Override
@@ -95,16 +103,13 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 			
 			this.clamOpenAnimationState.updateWhen(ClamOfGuidanceItem.isOpen(stack) && stack.is(BTAItems.CLAM_OF_GUIDANCE.get()), this.tickCount);
 		}
-		else
-		{
-			this.sendUpdatePacket(player);
-		}
 	}
 
 	@Override
 	public void setAnimationState(int state) 
 	{
 		this.animationState = state;
+		this.sendUpdatePacket();
 	}
 
 	@Override
@@ -117,6 +122,7 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 	public void setAnimationTick(int tick) 
 	{
 		this.animationTick = tick;
+		this.sendUpdatePacket();
 	}
 	
 	@Override
@@ -131,12 +137,14 @@ public class ItemAnimationCapabilityImpl implements IItemAnimationCapability
 		return this.tickCount;
 	}
 	
-	//TODO
-	private void sendUpdatePacket(Entity entity) 
+	private void sendUpdatePacket() 
 	{
-		if(!entity.level.isClientSide)
+		//TODO temp fix;
+		if(this.entity == null)
+			return;
+		if(!this.entity.level.isClientSide)
 		{
-			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new UpdateItemAnimationPacket(this.stack, entity.getUUID(), this.animationState, this.animationTick));
+			BTANetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), new UpdateItemAnimationPacket(this.stack, this.entity.getUUID(), this.animationState, this.animationTick));
 		}
 	}
 

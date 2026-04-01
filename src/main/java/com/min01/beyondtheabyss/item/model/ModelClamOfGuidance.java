@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.item.model;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.item.animation.ClamOfGuidanceAnimation;
+import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -52,7 +53,7 @@ public class ModelClamOfGuidance extends HierarchicalItemModel
 	public void setupAnim(ItemStack stack, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		ItemAnimationCapabilityImpl cap = BTAUtil.getItemAnimationCapability(stack);
+		ItemAnimationCapabilityImpl cap = BTAUtil.getItemAnimationCapability(BTAClientUtil.MC.player, stack);
 		
 		this.animate(stack, cap.clamOpenAnimationState, ClamOfGuidanceAnimation.CLAM_OPEN, ageInTicks);
 	}
