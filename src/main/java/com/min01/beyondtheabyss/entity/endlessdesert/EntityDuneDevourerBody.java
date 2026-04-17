@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.endlessdesert;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;

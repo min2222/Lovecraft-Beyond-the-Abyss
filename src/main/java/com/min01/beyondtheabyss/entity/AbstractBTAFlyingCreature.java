@@ -5,10 +5,10 @@ import com.min01.beyondtheabyss.entity.ai.goal.MoveToTargetGoal;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.BTATags;
-import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
-import com.min01.beyondtheabyss.multipart.EntityBounds;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.multipart.IMultipart;
+import com.min01.solomonlib.multipart.CompoundOrientedBox;
+import com.min01.solomonlib.multipart.EntityBounds;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
+import com.min01.solomonlib.multipart.IMultipart;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.syncher.EntityDataAccessor;

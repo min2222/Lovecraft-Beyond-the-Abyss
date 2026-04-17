@@ -55,8 +55,7 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 		return CompletableFuture.completedFuture(pChunk);
 	}
 
-	@Override
-	public void buildSurface(WorldGenRegion pLevel, StructureManager pStructureManager, RandomState pRandom, ChunkAccess pChunk) 
+	public void buildSurface1(WorldGenRegion pLevel, StructureManager pStructureManager, RandomState pRandom, ChunkAccess pChunk) 
 	{
 	    int chunkX = pChunk.getPos().x;
 	    int chunkZ = pChunk.getPos().z;

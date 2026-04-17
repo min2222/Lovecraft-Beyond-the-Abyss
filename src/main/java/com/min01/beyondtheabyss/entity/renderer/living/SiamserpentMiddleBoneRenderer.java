@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.entity.renderer.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.IMultiModel;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentBone;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentMiddleBone;
 import com.min01.beyondtheabyss.entity.renderer.layer.SiamserpentMiddleBoneLayer;
+import com.min01.solomonlib.multipart.IMultiModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.model.HierarchicalModel;

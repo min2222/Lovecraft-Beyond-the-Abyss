@@ -5,19 +5,15 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector4f;
 
-import com.min01.beyondtheabyss.entity.IMultiModel;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -388,21 +384,6 @@ public class BTAClientUtil
         vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(maxU, maxV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(0.0F, -1.0F, 0.0F).endVertex();
         vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color((float)rgb.x, (float)rgb.y, (float)rgb.z, alpha).uv(minU, maxV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(0.0F, -1.0F, 0.0F).endVertex();
     }
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T extends Entity> HierarchicalModel<T> getModelFromEntity(T entity)
-	{
-		EntityRenderer renderer = MC.getEntityRenderDispatcher().getRenderer(entity);
-		if(renderer instanceof IMultiModel multiModel)
-		{
-			return multiModel.getModel(entity);
-		}
-		if(renderer instanceof LivingEntityRenderer livingRenderer)
-		{
-			return (HierarchicalModel<T>) livingRenderer.getModel();
-		}
-		return null;
-	}
 	
 	//https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/animate/client/util/ModelPartUtils.java#L57
     

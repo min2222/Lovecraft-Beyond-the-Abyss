@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
-import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
-import com.min01.beyondtheabyss.multipart.EntityBounds;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
+import com.min01.solomonlib.multipart.CompoundOrientedBox;
+import com.min01.solomonlib.multipart.EntityBounds;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
+import com.min01.solomonlib.multipart.IMultipart;
+import com.min01.solomonlib.util.SolomonUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -92,7 +93,7 @@ public class EntityDeepAbyssPortal extends Entity implements IMultipart
 			List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F));
 			list.forEach(t -> 
 			{
-				String part = BTAUtil.getCollidingMultiPart(this.getBounds(), t);
+				String part = SolomonUtil.getCollidingMultiPart(this.getBounds(), t);
 				if(part != null && part.equals("plate"))
 				{
 					if(t.distanceToSqr(this) <= 6.0F && t.getServer() != null)

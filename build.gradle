@@ -175,6 +175,9 @@ dependencies {
 	implementation fg.deobf("com.min01.solomonlib:solomonlib:1.0.0")
     jarJar(group: 'com.min01.solomonlib', name: 'solomonlib', version: '[1.0.0]')
     
+	implementation fg.deobf("com.min01.solomonlib.coremod:solomonlib-core:1.0.0")
+    jarJar(group: 'com.min01.solomonlib.solomonlib.coremod:solomonlib', name: 'solomonlib-core', version: '[1.0.0]')
+    
     runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:5589681")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:4586218")
     runtimeOnly fg.deobf("curse.maven:tslatentitystatus-tes-830420:7126708")

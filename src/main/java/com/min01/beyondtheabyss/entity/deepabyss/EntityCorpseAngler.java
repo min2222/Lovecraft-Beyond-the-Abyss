@@ -9,9 +9,10 @@ import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
+import com.min01.solomonlib.util.SolomonUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -299,7 +300,7 @@ public class EntityCorpseAngler extends AbstractBTAWaterMonster
 	{
 		if(pSource.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
 		{
-	        String part = BTAUtil.getMultiPart(this.getBounds(), player);
+	        String part = SolomonUtil.getMultiPart(this.getBounds(), player);
 	        if(part != null && part.equals("Bait"))
 	        {
 				this.setAnimationState(4);

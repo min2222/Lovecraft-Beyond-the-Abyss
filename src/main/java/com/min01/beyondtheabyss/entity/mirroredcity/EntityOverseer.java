@@ -4,8 +4,8 @@ import com.min01.beyondtheabyss.entity.AbstractBTAFlyingMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.mirroredcity.OverseerMissileGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;

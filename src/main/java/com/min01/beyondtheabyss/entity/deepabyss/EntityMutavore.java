@@ -13,7 +13,7 @@ import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

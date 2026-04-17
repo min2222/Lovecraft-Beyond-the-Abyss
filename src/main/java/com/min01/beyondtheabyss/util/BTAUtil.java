@@ -15,7 +15,6 @@ import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
 import com.min01.beyondtheabyss.capabilities.PlayerTickCountCapabilityImpl;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
-import com.min01.beyondtheabyss.multipart.EntityBounds;
 import com.min01.beyondtheabyss.world.BTAWorlds;
 
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -317,24 +316,6 @@ public class BTAUtil
         while((level.getBlockState(mutablePos).isAir() || !level.getFluidState(mutablePos).isEmpty() || !level.getBlockState(mutablePos).isCollisionShapeFullBlock(level, mutablePos)) && mutablePos.getY() > level.getMinBuildHeight());
         return mutablePos.immutable();
     }
-	
-	public static String getIntersectingMultiPart(EntityBounds bounds, Entity entity)
-	{
-		return bounds.intersects(entity.getBoundingBox());
-	}
-	
-	public static String getCollidingMultiPart(EntityBounds bounds, Entity entity)
-	{
-    	return bounds.raycast(entity.position(), entity.position().add(entity.getDeltaMovement()));
-	}
-	
-	public static String getMultiPart(EntityBounds bounds, Player player)
-	{
-        Vec3 pos = player.getEyePosition(1.0F);
-        Vec3 dir = player.getViewVector(1.0F);
-        double reach = player.getBlockReach();
-    	return bounds.raycast(pos, pos.add(dir.scale(reach)));
-	}
 	
 	public static void getClientLevel(Consumer<Level> consumer)
 	{

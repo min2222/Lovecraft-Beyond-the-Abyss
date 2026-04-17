@@ -4,14 +4,15 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.entity.AbstractOwnableEntity;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
-import com.min01.beyondtheabyss.multipart.CompoundOrientedBox;
-import com.min01.beyondtheabyss.multipart.EntityBounds;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
-import com.min01.beyondtheabyss.multipart.IMultipart;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.solomonlib.misc.IDynamicLightEntity;
+import com.min01.solomonlib.multipart.CompoundOrientedBox;
+import com.min01.solomonlib.multipart.EntityBounds;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
+import com.min01.solomonlib.multipart.IMultipart;
+import com.min01.solomonlib.util.SolomonUtil;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -259,7 +260,7 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) 
 	{
-        String part = BTAUtil.getMultiPart(this.getBounds(), player);
+        String part = SolomonUtil.getMultiPart(this.getBounds(), player);
         if(part != null)
         {
         	if(part.equals("controller") && this.getFirstPassenger() == null)

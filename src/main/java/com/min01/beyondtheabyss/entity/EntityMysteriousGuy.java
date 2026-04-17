@@ -5,11 +5,11 @@ import javax.annotation.Nullable;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
-import com.min01.beyondtheabyss.multipart.EntityPartBuilder;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.SetDialogueScreenPacket;
 import com.min01.beyondtheabyss.network.UpdateSynchedEntityDataPacket;
 import com.min01.beyondtheabyss.world.BTASavedData;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

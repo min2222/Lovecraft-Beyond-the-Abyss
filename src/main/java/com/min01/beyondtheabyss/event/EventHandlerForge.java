@@ -85,7 +85,8 @@ public class EventHandlerForge
 {
 	public static final Map<ResourceKey<Level>, BTAChatTracker> CHAT_MAP = new HashMap<>();
     
-    @SubscribeEvent
+	//TODO mirrored city
+    //@SubscribeEvent
     public static void onServerAboutToStart(ServerAboutToStartEvent event) 
     {
         copyRegionFiles(event.getServer());

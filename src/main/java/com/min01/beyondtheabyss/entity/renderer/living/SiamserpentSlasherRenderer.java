@@ -1,11 +1,11 @@
 package com.min01.beyondtheabyss.entity.renderer.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.IMultiModel;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
 import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
 import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
 import com.min01.beyondtheabyss.entity.renderer.layer.SiamserpentSlasherLayer;
+import com.min01.solomonlib.multipart.IMultiModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.model.HierarchicalModel;
