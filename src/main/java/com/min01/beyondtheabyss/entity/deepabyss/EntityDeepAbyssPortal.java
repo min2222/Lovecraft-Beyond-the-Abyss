@@ -93,7 +93,7 @@ public class EntityDeepAbyssPortal extends Entity implements IMultipart
 			List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F));
 			list.forEach(t -> 
 			{
-				String part = SolomonUtil.getCollidingMultiPart(this.getBounds(), t);
+				String part = SolomonUtil.getCollidingMultiPart(this, t);
 				if(part != null && part.equals("plate"))
 				{
 					if(t.distanceToSqr(this) <= 6.0F && t.getServer() != null)

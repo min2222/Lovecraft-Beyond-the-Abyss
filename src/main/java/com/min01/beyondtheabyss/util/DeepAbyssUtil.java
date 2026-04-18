@@ -17,7 +17,7 @@ public class DeepAbyssUtil
 		List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox().inflate(1.0F), t -> t != entity);
 		for(EntitySubmarine sub : list)
 		{
-			String part = SolomonUtil.getIntersectingMultiPart(sub.getBounds(), entity);
+			String part = SolomonUtil.getIntersectingMultiPart(sub, entity);
 			if(part != null && !sub.hatchOpened())
 			{
 				return part.equals("inner");

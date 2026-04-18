@@ -260,7 +260,7 @@ public class EntitySubmarine extends AbstractOwnableEntity<LivingEntity> impleme
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) 
 	{
-        String part = SolomonUtil.getMultiPart(this.getBounds(), player);
+        String part = SolomonUtil.getMultiPart(this, player);
         if(part != null)
         {
         	if(part.equals("controller") && this.getFirstPassenger() == null)

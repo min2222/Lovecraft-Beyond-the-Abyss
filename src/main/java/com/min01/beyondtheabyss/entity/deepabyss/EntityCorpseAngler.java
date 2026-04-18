@@ -300,7 +300,7 @@ public class EntityCorpseAngler extends AbstractBTAWaterMonster
 	{
 		if(pSource.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
 		{
-	        String part = SolomonUtil.getMultiPart(this.getBounds(), player);
+	        String part = SolomonUtil.getMultiPart(this, player);
 	        if(part != null && part.equals("Bait"))
 	        {
 				this.setAnimationState(4);
