@@ -20,7 +20,7 @@ public class DeepAbyssUtil
 			String part = SolomonUtil.getIntersectingMultiPart(sub, entity);
 			if(part != null && !sub.hatchOpened())
 			{
-				return part.equals("inner");
+				return part.contains("inner") || part.contains("seat") || part.contains("submarine");
 			}
 		}
 		return false;
