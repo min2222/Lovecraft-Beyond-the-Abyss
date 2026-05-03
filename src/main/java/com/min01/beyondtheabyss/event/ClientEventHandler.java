@@ -38,12 +38,12 @@ import com.min01.beyondtheabyss.entity.model.ForneusTailModel;
 import com.min01.beyondtheabyss.entity.model.FulgastraModel;
 import com.min01.beyondtheabyss.entity.model.GhidruthModel;
 import com.min01.beyondtheabyss.entity.model.GloomfishModel;
-import com.min01.beyondtheabyss.entity.model.GnasherModel;
 import com.min01.beyondtheabyss.entity.model.GnasherLeaderModel;
+import com.min01.beyondtheabyss.entity.model.GnasherModel;
 import com.min01.beyondtheabyss.entity.model.LithoshrimpModel;
 import com.min01.beyondtheabyss.entity.model.MissileModel;
-import com.min01.beyondtheabyss.entity.model.MutavoreModel;
 import com.min01.beyondtheabyss.entity.model.MutavoreCystModel;
+import com.min01.beyondtheabyss.entity.model.MutavoreModel;
 import com.min01.beyondtheabyss.entity.model.MysteriousGuyModel;
 import com.min01.beyondtheabyss.entity.model.NecroshellModel;
 import com.min01.beyondtheabyss.entity.model.ObserverModel;
@@ -59,8 +59,8 @@ import com.min01.beyondtheabyss.entity.model.SpineWormHeadModel;
 import com.min01.beyondtheabyss.entity.model.SplittedFulgastraModel;
 import com.min01.beyondtheabyss.entity.model.SubmarineModel;
 import com.min01.beyondtheabyss.entity.model.ToothBulletModel;
-import com.min01.beyondtheabyss.entity.model.ToothBulletShrapnelModel;
 import com.min01.beyondtheabyss.entity.model.ToothBulletShrapnel2Model;
+import com.min01.beyondtheabyss.entity.model.ToothBulletShrapnelModel;
 import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
@@ -160,7 +160,7 @@ public class ClientEventHandler
 	        BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, () -> BTAShaders.getPlainFog(), BTABiomes.FOGGY_PLAINS, "Fog");
 	        //TODO weather system;
 	        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, () -> BTAShaders.getFog());
-	        //BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
+	        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
 		});
         /*try
         {

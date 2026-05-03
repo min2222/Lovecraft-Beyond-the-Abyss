@@ -128,5 +128,191 @@
 			"beyondtheabyss:entity/siamserpent_beam_shoot2",
 			"beyondtheabyss:entity/siamserpent_beam_shoot3"
 		]
+	},
+	"corpse_angler_ambient": {
+		"sounds": [
+			"beyondtheabyss:entity/corpse_angler_ambient_1",
+			"beyondtheabyss:entity/corpse_angler_ambient_2",
+			"beyondtheabyss:entity/corpse_angler_ambient_3",
+			"beyondtheabyss:entity/corpse_angler_ambient_4",
+			"beyondtheabyss:entity/corpse_angler_ambient_5"
+		]
+	},
+	"corpse_angler_death": {
+		"sounds": [
+			"beyondtheabyss:entity/corpse_angler_death"
+		]
+	},
+	"corpse_angler_hurt": {
+		"sounds": [
+			"beyondtheabyss:entity/corpse_angler_hurt_1",
+			"beyondtheabyss:entity/corpse_angler_hurt_2",
+			"beyondtheabyss:entity/corpse_angler_hurt_3"
+		]
+	},
+	"gloomfish_ambient": {
+		"sounds": [
+			"beyondtheabyss:entity/gloomfish_ambient_1",
+			"beyondtheabyss:entity/gloomfish_ambient_2",
+			"beyondtheabyss:entity/gloomfish_ambient_3",
+			"beyondtheabyss:entity/gloomfish_ambient_4"
+		]
+	},
+	"gloomfish_death": {
+		"sounds": [
+			"beyondtheabyss:entity/gloomfish_death"
+		]
+	},
+	"gloomfish_hurt": {
+		"sounds": [
+			"beyondtheabyss:entity/gloomfish_hurt_1",
+			"beyondtheabyss:entity/gloomfish_hurt_2"
+		]
+	},
+	"gnasher_ambient": {
+		"sounds": [
+			"beyondtheabyss:entity/gnasher_ambient_1",
+			"beyondtheabyss:entity/gnasher_ambient_2",
+			"beyondtheabyss:entity/gnasher_ambient_3",
+			"beyondtheabyss:entity/gnasher_ambient_4"
+		]
+	},
+	"gnasher_bite": {
+		"sounds": [
+			"beyondtheabyss:entity/gnasher_bite_1",
+			"beyondtheabyss:entity/gnasher_bite_2"
+		]
+	},
+	"gnasher_death": {
+		"sounds": [
+			"beyondtheabyss:entity/gnasher_death"
+		]
+	},
+	"gnasher_hurt": {
+		"sounds": [
+			"beyondtheabyss:entity/gnasher_hurt_1",
+			"beyondtheabyss:entity/gnasher_hurt_2",
+			"beyondtheabyss:entity/gnasher_hurt_3"
+		]
+	},
+	"mutavore_ambient": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_ambient_1",
+			"beyondtheabyss:entity/mutavore_ambient_2",
+			"beyondtheabyss:entity/mutavore_ambient_3",
+			"beyondtheabyss:entity/mutavore_ambient_4",
+			"beyondtheabyss:entity/mutavore_ambient_5"
+		]
+	},
+	"mutavore_bite_loop": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_bite_loop"
+		]
+	},
+	"mutavore_bubble_spew": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_bubble_spew_1",
+			"beyondtheabyss:entity/mutavore_bubble_spew_2",
+			"beyondtheabyss:entity/mutavore_bubble_spew_3"
+		]
+	},
+	"mutavore_cyst_explode": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_cyst_explode_1",
+			"beyondtheabyss:entity/mutavore_cyst_explode_2",
+			"beyondtheabyss:entity/mutavore_cyst_explode_3",
+			"beyondtheabyss:entity/mutavore_cyst_explode_4"
+		]
+	},
+	"mutavore_cyst_shoot": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_cyst_shoot_1",
+			"beyondtheabyss:entity/mutavore_cyst_shoot_2",
+			"beyondtheabyss:entity/mutavore_cyst_shoot_3"
+		]
+	},
+	"mutavore_death": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_death"
+		]
+	},
+	"mutavore_hurt": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_hurt_1",
+			"beyondtheabyss:entity/mutavore_hurt_2",
+			"beyondtheabyss:entity/mutavore_hurt_3"
+		]
+	},
+	"mutavore_mouth_launch": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_mouth_launch_1",
+			"beyondtheabyss:entity/mutavore_mouth_launch_2",
+			"beyondtheabyss:entity/mutavore_mouth_launch_3"
+		]
+	},
+	"mutavore_mouth_open_bubble": {
+		"sounds": [
+			"beyondtheabyss:entity/mutavore_mouth_open_bubble_1",
+			"beyondtheabyss:entity/mutavore_mouth_open_bubble_2",
+			"beyondtheabyss:entity/mutavore_mouth_open_bubble_3"
+		]
+	},
+	"necroshell_ambient": {
+		"sounds": [
+			"beyondtheabyss:entity/necroshell_ambient_1",
+			"beyondtheabyss:entity/necroshell_ambient_2",
+			"beyondtheabyss:entity/necroshell_ambient_3",
+			"beyondtheabyss:entity/necroshell_ambient_4"
+		]
+	},
+	"necroshell_death": {
+		"sounds": [
+			"beyondtheabyss:entity/necroshell_death"
+		]
+	},
+	"necroshell_hurt": {
+		"sounds": [
+			"beyondtheabyss:entity/necroshell_hurt_1",
+			"beyondtheabyss:entity/necroshell_hurt_2",
+			"beyondtheabyss:entity/necroshell_hurt_3"
+		]
+	},
+	"necroshell_intimidate_claw": {
+		"sounds": [
+			"beyondtheabyss:entity/necroshell_intimidate_claw_1",
+			"beyondtheabyss:entity/necroshell_intimidate_claw_2"
+		]
+	},
+	"necroshell_intimidate_claw_softer": {
+		"sounds": [
+			"beyondtheabyss:entity/necroshell_intimidate_claw_softer_1",
+			"beyondtheabyss:entity/necroshell_intimidate_claw_softer_2"
+		]
+	},
+	"necroshell_intimidate_hiss": {
+		"sounds": [
+			"beyondtheabyss:entity/necroshell_intimidate_hiss"
+		]
+	},
+	"spineworm_ambient": {
+		"sounds": [
+			"beyondtheabyss:entity/spineworm_ambient_1",
+			"beyondtheabyss:entity/spineworm_ambient_2",
+			"beyondtheabyss:entity/spineworm_ambient_3",
+			"beyondtheabyss:entity/spineworm_ambient_4",
+			"beyondtheabyss:entity/spineworm_ambient_5"
+		]
+	},
+	"spineworm_death": {
+		"sounds": [
+			"beyondtheabyss:entity/spineworm_death"
+		]
+	},
+	"spineworm_hurt": {
+		"sounds": [
+			"beyondtheabyss:entity/spineworm_hurt_1",
+			"beyondtheabyss:entity/spineworm_hurt_2",
+			"beyondtheabyss:entity/spineworm_hurt_3"
+		]
 	}
 }

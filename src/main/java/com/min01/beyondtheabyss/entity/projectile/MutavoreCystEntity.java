@@ -6,13 +6,13 @@ import com.min01.beyondtheabyss.entity.AbstractOwnableEntity;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -146,7 +146,7 @@ public class MutavoreCystEntity extends AbstractOwnableEntity<MutavoreEntity>
 			cyst.setYRot(rot.y);
 			this.level.addFreshEntity(cyst);
 		}
-		this.playSound(SoundEvents.GENERIC_EXPLODE);
+		this.playSound(BTASounds.MUTAVORE_CYST_EXPLODE.get(), 10.0F, 1.0F);
 		this.discard();
 	}
 	

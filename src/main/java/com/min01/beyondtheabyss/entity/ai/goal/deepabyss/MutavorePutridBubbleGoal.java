@@ -4,10 +4,10 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity;
 import com.min01.beyondtheabyss.entity.projectile.PutridBubbleEntity;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
@@ -25,6 +25,7 @@ public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<MutavoreEnti
 	{
 		super.start();
 		this.mob.setAnimationState(1);
+		this.mob.playSound(BTASounds.MUTAVORE_MOUTH_OPEN_BUBBLE.get(), 5.0F, 1.0F);
 	}
 	
 	@Override
@@ -47,7 +48,7 @@ public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<MutavoreEnti
 			if(this.interval++ == 2)
 			{
 				this.interval = 0;
-				this.mob.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
+				this.mob.playSound(BTASounds.MUTAVORE_BUBBLE_SPEW.get(), 4.0F, 1.0F);
 				for(int i = 0; i < 5; i++)
 				{
 					PutridBubbleEntity bubble = new PutridBubbleEntity(BTAEntities.PUTRID_BUBBLE.get(), this.mob.level);

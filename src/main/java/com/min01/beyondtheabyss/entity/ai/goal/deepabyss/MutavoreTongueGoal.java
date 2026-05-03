@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec2;
@@ -21,6 +22,7 @@ public class MutavoreTongueGoal extends AbstractAnimationGoal<MutavoreEntity>
 	{
 		super.start();
 		this.mob.setAnimationState(3);
+		this.mob.playSound(BTASounds.MUTAVORE_MOUTH_LAUNCH.get(), 5.0F, 1.0F);
 	}
 	
 	@Override
@@ -55,6 +57,7 @@ public class MutavoreTongueGoal extends AbstractAnimationGoal<MutavoreEntity>
 			this.canContinueToUse = flag && this.mob.getTarget().isAlive();
 			if(this.mob.tickCount % 5 == 1 && flag)
 			{
+				this.mob.playSound(BTASounds.MUTAVORE_BITE_LOOP.get(), 4.0F, 1.0F);
 				this.mob.doHurtTarget(this.mob.getTarget());
 			}
 		}

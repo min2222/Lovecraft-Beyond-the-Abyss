@@ -4,11 +4,14 @@ import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -73,6 +76,24 @@ public class GloomfishEntity extends AbstractBTACreature
 	protected void doPush(Entity pEntity) 
 	{
 		
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return BTASounds.GLOOMFISH_AMBIENT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() 
+	{
+		return BTASounds.GLOOMFISH_DEATH.get();
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource pDamageSource)
+	{
+		return BTASounds.GLOOMFISH_HURT.get();
 	}
 	
 	@Override

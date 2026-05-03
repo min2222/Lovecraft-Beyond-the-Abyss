@@ -10,6 +10,7 @@ import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
@@ -22,6 +23,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -109,6 +111,33 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
     		}
     	};
     	return partBuilder;
+	}
+	
+	@Override
+	public void playAmbientSound() 
+	{
+		if(!this.isBurrow())
+		{
+			super.playAmbientSound();
+		}
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return BTASounds.CORPSE_ANGLER_AMBIENT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() 
+	{
+		return BTASounds.CORPSE_ANGLER_DEATH.get();
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource pDamageSource)
+	{
+		return BTASounds.CORPSE_ANGLER_HURT.get();
 	}
 
 	@Override

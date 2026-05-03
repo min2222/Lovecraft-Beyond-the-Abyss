@@ -8,6 +8,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity.MutationType;
 import com.min01.beyondtheabyss.entity.projectile.MutavoreCystEntity;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.Util;
@@ -45,6 +46,7 @@ public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<MutavoreEntity
 		List<Integer> cysts = Lists.newArrayList(0, 1, 2, 3);
 		cysts.removeIf(t -> !this.mob.hasCyst(t));
 		int type = Util.getRandom(cysts, this.mob.level.random);
+		this.mob.playSound(BTASounds.MUTAVORE_CYST_SHOOT.get(), 10.0F, 1.0F);
 		if(this.mob.posArray[type] != null)
 		{
 			MutavoreCystEntity cyst = new MutavoreCystEntity(BTAEntities.MUTAVORE_CYST.get(), this.mob.level);

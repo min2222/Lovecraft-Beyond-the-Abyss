@@ -10,16 +10,20 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellHidingGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -117,6 +121,15 @@ public class NecroshellEntity extends AbstractBTACreature
 		{
 			this.switchControl(this.isInWater());
 		}
+		
+		if(this.isTargetValid() && this.getAnimationState() == 0 && !this.isHiding())
+		{
+			if(this.tickCount % 30 == 0)
+			{
+				List<SoundEvent> list = List.of(BTASounds.NECROSHELL_INTIMIDATE_CLAW_SOFTER.get(), BTASounds.NECROSHELL_INTIMIDATE_CLAW.get(), BTASounds.NECROSHELL_INTIMIDATE_HISS.get());
+				this.playSound(Util.getRandom(list, this.random), 4.0F, 1.0F);
+			}
+		}
 
 		Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 3.5F, true);
 		if(player != null && !this.isAnimationPlaying() && !this.isHiding())
@@ -149,6 +162,24 @@ public class NecroshellEntity extends AbstractBTACreature
 	public MobClassification getMobClassification() 
 	{
 		return MobClassification.WATER;
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return BTASounds.NECROSHELL_AMBIENT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() 
+	{
+		return BTASounds.NECROSHELL_DEATH.get();
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource pDamageSource)
+	{
+		return BTASounds.NECROSHELL_HURT.get();
 	}
 	
 	@Override

@@ -14,6 +14,7 @@ import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
+import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
@@ -21,8 +22,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -131,6 +134,24 @@ public class MutavoreEntity extends AbstractBTAMonster
 	public MobClassification getMobClassification() 
 	{
 		return MobClassification.WATER;
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return BTASounds.MUTAVORE_AMBIENT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() 
+	{
+		return BTASounds.MUTAVORE_DEATH.get();
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource pDamageSource)
+	{
+		return BTASounds.MUTAVORE_HURT.get();
 	}
 	
 	@Override

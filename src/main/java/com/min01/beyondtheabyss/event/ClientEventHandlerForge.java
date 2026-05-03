@@ -12,7 +12,6 @@ import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTABossBar;
-import com.min01.beyondtheabyss.shader.BTAWorldShader;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -40,7 +39,6 @@ import net.minecraftforge.client.event.RenderBlockScreenEffectEvent.OverlayType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -132,28 +130,6 @@ public class ClientEventHandlerForge
         		event.setCanceled(true);
     		}
     	}
-    }
-    
-    @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) 
-    {
-        if(event.phase == TickEvent.Phase.START) 
-        {
-        	if(BTAClientUtil.MC.player != null && BTAClientUtil.MC.level != null)
-        	{
-            	if(!BTAClientUtil.MC.isPaused())
-            	{
-            		for(BTAWorldShader shader : BTAWorldShader.WORLD_SHADERS)
-            		{
-            			if(!shader.is3DSampler || BTAClientUtil.MC.level.dimension() != shader.world)
-            			{
-            				continue;
-            			}
-            			shader.volumeTextureId = -1;
-            		}
-            	}
-        	}
-        }
     }
     
 	@SubscribeEvent

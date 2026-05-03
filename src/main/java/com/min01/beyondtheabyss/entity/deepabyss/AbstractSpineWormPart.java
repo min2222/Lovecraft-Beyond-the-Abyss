@@ -1,5 +1,9 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
+import com.min01.beyondtheabyss.sound.BTASounds;
+
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -45,5 +49,11 @@ public abstract class AbstractSpineWormPart extends AbstractDeepAbyssWormPart<Ab
 	public boolean skipInvisiblePart() 
 	{
 		return false;
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource pDamageSource)
+	{
+		return BTASounds.SPINEWORM_HURT.get();
 	}
 }
