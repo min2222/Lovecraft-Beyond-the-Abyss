@@ -26,10 +26,17 @@ public class SmoothAnimationState extends AnimationState
 	public float factorOld;
 	public float factor;
 	public final float lerpSpeed;
+	private final boolean snapRotationOnFadeOut;
+
+	public SmoothAnimationState(float lerpSpeed, boolean snapRotationOnFadeOut)
+	{
+		this.lerpSpeed = lerpSpeed;
+		this.snapRotationOnFadeOut = snapRotationOnFadeOut;
+	}
 	
 	public SmoothAnimationState(float lerpSpeed)
 	{
-		this.lerpSpeed = lerpSpeed;
+		this(lerpSpeed, false);
 	}
 	
 	public SmoothAnimationState() 
@@ -136,6 +143,7 @@ public class SmoothAnimationState extends AnimationState
 	public void animate(HierarchicalModel<?> model, AnimationDefinition definition, float ageInTicks, float factor, float speed) 
 	{
 		this.updateTime(ageInTicks, speed);
-		KeyframeAnimations.animate(model, definition, this.getAccumulatedTime(), factor, ANIMATION_VECTOR_CACHE);
+		boolean fadeSnapFullTurnRotationOnly = this.snapRotationOnFadeOut && this.factor < this.factorOld - 1.0e-4F;
+		BTAKeyframeAnimations.animate(model, definition, this.getAccumulatedTime(), factor, factor, fadeSnapFullTurnRotationOnly, ANIMATION_VECTOR_CACHE);
 	}
 }

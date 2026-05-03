@@ -4,15 +4,15 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.deepabyss.AbstractMultiPartSkeletonBlock;
 import com.min01.beyondtheabyss.block.deepabyss.AbstractMultiPartSkeletonBlock.SkeletonPart;
-import com.min01.beyondtheabyss.block.model.ModelBoneLever;
-import com.min01.beyondtheabyss.block.model.ModelBoneLeverOn;
-import com.min01.beyondtheabyss.block.model.ModelBonePiles;
-import com.min01.beyondtheabyss.block.model.ModelBoneTorch;
-import com.min01.beyondtheabyss.block.model.ModelBoneWallTorch;
-import com.min01.beyondtheabyss.block.model.ModelFallenSkeleton;
-import com.min01.beyondtheabyss.block.model.ModelFangSkull;
-import com.min01.beyondtheabyss.block.model.ModelLargeSkull;
-import com.min01.beyondtheabyss.block.model.ModelSittingSkeleton;
+import com.min01.beyondtheabyss.block.model.BoneLeverModel;
+import com.min01.beyondtheabyss.block.model.BoneLeverOnModel;
+import com.min01.beyondtheabyss.block.model.BonePilesModel;
+import com.min01.beyondtheabyss.block.model.BoneTorchModel;
+import com.min01.beyondtheabyss.block.model.BoneWallTorchModel;
+import com.min01.beyondtheabyss.block.model.FallenSkeletonModel;
+import com.min01.beyondtheabyss.block.model.FangSkullModel;
+import com.min01.beyondtheabyss.block.model.LargeSkullModel;
+import com.min01.beyondtheabyss.block.model.SittingSkeletonModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -41,27 +41,27 @@ public class NoRotationLimitRenderer<T extends BlockEntity> implements BlockEnti
     private static final ResourceLocation BONE_TORCH_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/bone_torch.png");
     private static final ResourceLocation BONE_LEVER_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/bone_lever.png");
     
-    private final ModelFangSkull fangSkullModel;
-    private final ModelLargeSkull largeSkullModel;
-    private final ModelBonePiles bonePilesModel;
-    private final ModelSittingSkeleton sittingSkeletonModel;
-    private final ModelFallenSkeleton fallenSkeletonModel;
-    private final ModelBoneTorch boneTorchModel;
-    private final ModelBoneWallTorch boneWallTorchModel;
-    private final ModelBoneLever boneLeverModel;
-    private final ModelBoneLeverOn boneLeverOnModel;
+    private final FangSkullModel fangSkullModel;
+    private final LargeSkullModel largeSkullModel;
+    private final BonePilesModel bonePilesModel;
+    private final SittingSkeletonModel sittingSkeletonModel;
+    private final FallenSkeletonModel fallenSkeletonModel;
+    private final BoneTorchModel boneTorchModel;
+    private final BoneWallTorchModel boneWallTorchModel;
+    private final BoneLeverModel boneLeverModel;
+    private final BoneLeverOnModel boneLeverOnModel;
     
 	public NoRotationLimitRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.fangSkullModel = new ModelFangSkull(pContext.bakeLayer(ModelFangSkull.LAYER_LOCATION));
-		this.largeSkullModel = new ModelLargeSkull(pContext.bakeLayer(ModelLargeSkull.LAYER_LOCATION));
-		this.bonePilesModel = new ModelBonePiles(pContext.bakeLayer(ModelBonePiles.LAYER_LOCATION));
-		this.sittingSkeletonModel = new ModelSittingSkeleton(pContext.bakeLayer(ModelSittingSkeleton.LAYER_LOCATION));
-		this.fallenSkeletonModel = new ModelFallenSkeleton(pContext.bakeLayer(ModelFallenSkeleton.LAYER_LOCATION));
-		this.boneTorchModel = new ModelBoneTorch(pContext.bakeLayer(ModelBoneTorch.LAYER_LOCATION));
-		this.boneWallTorchModel = new ModelBoneWallTorch(pContext.bakeLayer(ModelBoneWallTorch.LAYER_LOCATION));
-		this.boneLeverModel = new ModelBoneLever(pContext.bakeLayer(ModelBoneLever.LAYER_LOCATION));
-		this.boneLeverOnModel = new ModelBoneLeverOn(pContext.bakeLayer(ModelBoneLeverOn.LAYER_LOCATION));
+		this.fangSkullModel = new FangSkullModel(pContext.bakeLayer(FangSkullModel.LAYER_LOCATION));
+		this.largeSkullModel = new LargeSkullModel(pContext.bakeLayer(LargeSkullModel.LAYER_LOCATION));
+		this.bonePilesModel = new BonePilesModel(pContext.bakeLayer(BonePilesModel.LAYER_LOCATION));
+		this.sittingSkeletonModel = new SittingSkeletonModel(pContext.bakeLayer(SittingSkeletonModel.LAYER_LOCATION));
+		this.fallenSkeletonModel = new FallenSkeletonModel(pContext.bakeLayer(FallenSkeletonModel.LAYER_LOCATION));
+		this.boneTorchModel = new BoneTorchModel(pContext.bakeLayer(BoneTorchModel.LAYER_LOCATION));
+		this.boneWallTorchModel = new BoneWallTorchModel(pContext.bakeLayer(BoneWallTorchModel.LAYER_LOCATION));
+		this.boneLeverModel = new BoneLeverModel(pContext.bakeLayer(BoneLeverModel.LAYER_LOCATION));
+		this.boneLeverOnModel = new BoneLeverOnModel(pContext.bakeLayer(BoneLeverOnModel.LAYER_LOCATION));
 	}
 	
 	@Override

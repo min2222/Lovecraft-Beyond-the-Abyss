@@ -1,17 +1,17 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
+import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class MutavoreTongueGoal extends AbstractAnimationGoal<EntityMutavore>
+public class MutavoreTongueGoal extends AbstractAnimationGoal<MutavoreEntity>
 {
 	private boolean canContinueToUse = true;
 	
-	public MutavoreTongueGoal(EntityMutavore mob)
+	public MutavoreTongueGoal(MutavoreEntity mob)
 	{
 		super(mob);
 	}

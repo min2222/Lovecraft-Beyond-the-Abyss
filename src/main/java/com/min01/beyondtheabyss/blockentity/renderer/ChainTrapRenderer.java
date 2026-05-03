@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.blockentity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.deepabyss.ChainTrapBlock;
-import com.min01.beyondtheabyss.block.model.ModelChainTrap;
+import com.min01.beyondtheabyss.block.model.ChainTrapModel;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -26,11 +26,11 @@ public class ChainTrapRenderer implements BlockEntityRenderer<ChainTrapBlockEnti
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/chain_trap_closed.png");
     private static final ResourceLocation TEXTURE_OPENED = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/chain_trap_opened.png");
     
-	private final ModelChainTrap model;
+	private final ChainTrapModel model;
 	
 	public ChainTrapRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.model = new ModelChainTrap(pContext.bakeLayer(ModelChainTrap.LAYER_LOCATION));
+		this.model = new ChainTrapModel(pContext.bakeLayer(ChainTrapModel.LAYER_LOCATION));
 	}
 
 	@Override

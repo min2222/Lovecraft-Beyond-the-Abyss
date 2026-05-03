@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.blockentity.renderer;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.deepabyss.GlaringBarnacleBlock;
-import com.min01.beyondtheabyss.block.model.ModelGlaringBarnacle;
+import com.min01.beyondtheabyss.block.model.GlaringBarnacleModel;
 import com.min01.beyondtheabyss.blockentity.AnimatableBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,11 +21,11 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 
 public class AnimatableBlockRenderer implements BlockEntityRenderer<AnimatableBlockEntity>
 {
-    private final ModelGlaringBarnacle barnacleModel;
+    private final GlaringBarnacleModel barnacleModel;
     
 	public AnimatableBlockRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.barnacleModel = new ModelGlaringBarnacle(pContext.bakeLayer(ModelGlaringBarnacle.LAYER_LOCATION));
+		this.barnacleModel = new GlaringBarnacleModel(pContext.bakeLayer(GlaringBarnacleModel.LAYER_LOCATION));
 	}
 	
 	@Override

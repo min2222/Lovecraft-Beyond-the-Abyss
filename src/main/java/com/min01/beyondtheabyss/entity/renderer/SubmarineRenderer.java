@@ -3,8 +3,8 @@ package com.min01.beyondtheabyss.entity.renderer;
 import org.joml.Vector4f;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
-import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
+import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
+import com.min01.beyondtheabyss.entity.model.SubmarineModel;
 import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
@@ -25,18 +25,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implements IMultiModel<EntitySubmarine>
+public class SubmarineRenderer extends EntityRenderer<SubmarineEntity> implements IMultiModel<SubmarineEntity>
 {
-	public final ModelSubmarine model;
+	public final SubmarineModel model;
 	
 	public SubmarineRenderer(Context pContext)
 	{
 		super(pContext);
-		this.model = new ModelSubmarine(pContext.bakeLayer(ModelSubmarine.LAYER_LOCATION));
+		this.model = new SubmarineModel(pContext.bakeLayer(SubmarineModel.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntitySubmarine pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(SubmarineEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		pPoseStack.pushPose();
 		float yRot = Mth.rotLerp(pPartialTick, pEntity.yRotO, pEntity.getYRot());
@@ -94,13 +94,13 @@ public class SubmarineRenderer extends EntityRenderer<EntitySubmarine> implement
 	}
 	
 	@Override
-	public HierarchicalModel<EntitySubmarine> getModel(EntitySubmarine entity)
+	public HierarchicalModel<SubmarineEntity> getModel(SubmarineEntity entity)
 	{
 		return this.model;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntitySubmarine pEntity) 
+	public ResourceLocation getTextureLocation(SubmarineEntity pEntity) 
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/submarine.png");
 	}

@@ -2,17 +2,17 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySplittedFulgastra;
+import com.min01.beyondtheabyss.entity.deepabyss.FulgastraEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.SplittedFulgastraEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class FulgastraSplitGoal extends AbstractAnimationGoal<EntityFulgastra>
+public class FulgastraSplitGoal extends AbstractAnimationGoal<FulgastraEntity>
 {
-	public FulgastraSplitGoal(EntityFulgastra mob)
+	public FulgastraSplitGoal(FulgastraEntity mob)
 	{
 		super(mob);
 	}
@@ -45,7 +45,7 @@ public class FulgastraSplitGoal extends AbstractAnimationGoal<EntityFulgastra>
 			Vec2 rotation = new Vec2(this.mob.getXRot(), this.mob.getYHeadRot());
 			Vec3 lookPos = BTAUtil.getLookPos(rotation, this.mob.getEyePosition(), 0, 0, 2.0F);
 			Vec3 endPos = BTAUtil.getLookPos(rotation, this.mob.getEyePosition(), this.mob.getRandom().nextGaussian() * 0.5F, this.mob.getRandom().nextGaussian() * 0.5F, 4.0F);
-			EntitySplittedFulgastra splitted = new EntitySplittedFulgastra(BTAEntities.SPLITTED_FULGASTRA.get(), this.mob.level);
+			SplittedFulgastraEntity splitted = new SplittedFulgastraEntity(BTAEntities.SPLITTED_FULGASTRA.get(), this.mob.level);
 			splitted.setOwner(this.mob);
 			splitted.setPos(lookPos);
 			splitted.setDeltaMovement(BTAUtil.getVelocityTowards(splitted.position(), endPos, 1.5F));

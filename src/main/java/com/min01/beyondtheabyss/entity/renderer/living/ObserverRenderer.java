@@ -3,8 +3,8 @@ package com.min01.beyondtheabyss.entity.renderer.living;
 import org.joml.Matrix4f;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.mirroredcity.EntityObserver;
-import com.min01.beyondtheabyss.entity.model.ModelObserver;
+import com.min01.beyondtheabyss.entity.mirroredcity.ObserverEntity;
+import com.min01.beyondtheabyss.entity.model.ObserverModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,18 +17,18 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ObserverRenderer extends MobRenderer<EntityObserver, ModelObserver>
+public class ObserverRenderer extends MobRenderer<ObserverEntity, ObserverModel>
 {
 	private static final float HALF_SQRT_3 = (float)(Math.sqrt(3.0D) / 2.0D);
 	   
 	public ObserverRenderer(Context pContext) 
 	{
-		super(pContext, new ModelObserver(pContext.bakeLayer(ModelObserver.LAYER_LOCATION)), 0.0F);
+		super(pContext, new ObserverModel(pContext.bakeLayer(ObserverModel.LAYER_LOCATION)), 0.0F);
 		this.addLayer(new GlowingLayer<>(this, this.model, ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/observer_layer.png")));
 	}
 	
 	@Override
-	public void render(EntityObserver pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
+	public void render(ObserverEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
 	{
 		super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
 
@@ -62,7 +62,7 @@ public class ObserverRenderer extends MobRenderer<EntityObserver, ModelObserver>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityObserver pEntity) 
+	public ResourceLocation getTextureLocation(ObserverEntity pEntity) 
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/observer.png");
 	}

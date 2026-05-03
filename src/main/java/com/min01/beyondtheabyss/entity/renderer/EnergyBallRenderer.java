@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.model.ModelEnergyBall;
-import com.min01.beyondtheabyss.entity.projectile.EntityEnergyBall;
+import com.min01.beyondtheabyss.entity.model.EnergyBallModel;
+import com.min01.beyondtheabyss.entity.projectile.EnergyBallEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -15,17 +15,17 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class EnergyBallRenderer extends EntityRenderer<EntityEnergyBall>
+public class EnergyBallRenderer extends EntityRenderer<EnergyBallEntity>
 {
-	public final ModelEnergyBall model;
+	public final EnergyBallModel model;
 	public EnergyBallRenderer(Context pContext) 
 	{
 		super(pContext);
-		this.model = new ModelEnergyBall(pContext.bakeLayer(ModelEnergyBall.LAYER_LOCATION));
+		this.model = new EnergyBallModel(pContext.bakeLayer(EnergyBallModel.LAYER_LOCATION));
 	}
 
 	@Override
-	public void render(EntityEnergyBall pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(EnergyBallEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		pPoseStack.pushPose();
 		pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(pPartialTick, pEntity.yRotO, pEntity.getYRot())));
@@ -37,7 +37,7 @@ public class EnergyBallRenderer extends EntityRenderer<EntityEnergyBall>
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityEnergyBall pEntity)
+	public ResourceLocation getTextureLocation(EnergyBallEntity pEntity)
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/energy_ball.png");
 	}

@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.model.ModelPutridBubble;
-import com.min01.beyondtheabyss.entity.projectile.EntityPutridBubble;
+import com.min01.beyondtheabyss.entity.model.PutridBubbleModel;
+import com.min01.beyondtheabyss.entity.projectile.PutridBubbleEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,17 +12,17 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class PutridBubbleRenderer extends EntityRenderer<EntityPutridBubble>
+public class PutridBubbleRenderer extends EntityRenderer<PutridBubbleEntity>
 {
-	public final ModelPutridBubble model;
+	public final PutridBubbleModel model;
 	public PutridBubbleRenderer(Context pContext) 
 	{
 		super(pContext);
-		this.model = new ModelPutridBubble(pContext.bakeLayer(ModelPutridBubble.LAYER_LOCATION));
+		this.model = new PutridBubbleModel(pContext.bakeLayer(PutridBubbleModel.LAYER_LOCATION));
 	}
 
 	@Override
-	public void render(EntityPutridBubble pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(PutridBubbleEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		float tick = pEntity.explosionTick * 0.08F;
 		pPoseStack.pushPose();
@@ -34,7 +34,7 @@ public class PutridBubbleRenderer extends EntityRenderer<EntityPutridBubble>
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityPutridBubble pEntity)
+	public ResourceLocation getTextureLocation(PutridBubbleEntity pEntity)
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/putrid_bubble.png");
 	}

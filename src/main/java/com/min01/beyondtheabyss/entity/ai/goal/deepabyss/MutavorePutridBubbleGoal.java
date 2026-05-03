@@ -2,8 +2,8 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
-import com.min01.beyondtheabyss.entity.projectile.EntityPutridBubble;
+import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity;
+import com.min01.beyondtheabyss.entity.projectile.PutridBubbleEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -11,11 +11,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<EntityMutavore>
+public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<MutavoreEntity>
 {
 	private int interval;
 	
-	public MutavorePutridBubbleGoal(EntityMutavore mob)
+	public MutavorePutridBubbleGoal(MutavoreEntity mob)
 	{
 		super(mob);
 	}
@@ -50,7 +50,7 @@ public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<EntityMutavo
 				this.mob.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
 				for(int i = 0; i < 5; i++)
 				{
-					EntityPutridBubble bubble = new EntityPutridBubble(BTAEntities.PUTRID_BUBBLE.get(), this.mob.level);
+					PutridBubbleEntity bubble = new PutridBubbleEntity(BTAEntities.PUTRID_BUBBLE.get(), this.mob.level);
 					bubble.setOwner(this.mob);
 					Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.mob.getXRot(), this.mob.getYHeadRot()), this.mob.position(), 0, 1.0F, 3.5F);
 					bubble.setPos(lookPos.add(this.mob.level.random.nextFloat() * 0.1F, this.mob.level.random.nextFloat() * 0.1F, this.mob.level.random.nextFloat() * 0.1F));

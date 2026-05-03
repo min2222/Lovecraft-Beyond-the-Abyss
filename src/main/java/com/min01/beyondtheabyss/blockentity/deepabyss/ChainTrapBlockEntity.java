@@ -5,7 +5,7 @@ import java.util.List;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.deepabyss.ChainTrapBlock;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityChainTrapMaw;
+import com.min01.beyondtheabyss.entity.deepabyss.ChainTrapMawEntity;
 import com.min01.beyondtheabyss.misc.BTATags;
 
 import net.minecraft.core.BlockPos;
@@ -58,7 +58,7 @@ public class ChainTrapBlockEntity extends BlockEntity
 			
 			if(nearest != null)
 			{
-				EntityChainTrapMaw maw = new EntityChainTrapMaw(BTAEntities.CHAIN_TRAP_MAW.get(), level);
+				ChainTrapMawEntity maw = new ChainTrapMawEntity(BTAEntities.CHAIN_TRAP_MAW.get(), level);
 				maw.setPos(vec3);
 				maw.setTarget(nearest);
 				maw.setChainLength(Math.max((int) Math.floor(vec3.distanceTo(nearest.getEyePosition())), 5));

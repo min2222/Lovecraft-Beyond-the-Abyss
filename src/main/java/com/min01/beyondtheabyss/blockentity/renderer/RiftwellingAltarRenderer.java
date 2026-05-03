@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.blockentity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.block.model.ModelRiftwellingAltar;
+import com.min01.beyondtheabyss.block.model.RiftwellingAltarModel;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,11 +23,11 @@ public class RiftwellingAltarRenderer implements BlockEntityRenderer<Riftwelling
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar.png");
     private static final ResourceLocation LAYER_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/riftwelling_altar_layer.png");
     
-	private final ModelRiftwellingAltar model;
+	private final RiftwellingAltarModel model;
 	
 	public RiftwellingAltarRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.model = new ModelRiftwellingAltar(pContext.bakeLayer(ModelRiftwellingAltar.LAYER_LOCATION));
+		this.model = new RiftwellingAltarModel(pContext.bakeLayer(RiftwellingAltarModel.LAYER_LOCATION));
 	}
 
 	@Override

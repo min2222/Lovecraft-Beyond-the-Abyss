@@ -61,14 +61,14 @@ public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<
 				List<Integer> list = Arrays.asList(12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 				Collections.reverse(list);
 				Integer index = list.get(this.getIndex());
-				if(!(this instanceof EntitySiamserpentHead))
+				if(!(this instanceof SiamserpentHeadEntity))
 				{
 					this.setIndex(index);
 				}
 				else if(this.isHead() && this.getHead() != null)
 				{
-					EntitySiamserpentHead head = (EntitySiamserpentHead) this;
-					EntitySiamserpentHead head2 = (EntitySiamserpentHead) this.getHead();
+					SiamserpentHeadEntity head = (SiamserpentHeadEntity) this;
+					SiamserpentHeadEntity head2 = (SiamserpentHeadEntity) this.getHead();
 					head2.setIndex(0);
 					head.setIndex(12);
 					head2.setHead(true);

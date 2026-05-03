@@ -1,11 +1,11 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.deepabyss.GhidruthEntity;
 import com.min01.beyondtheabyss.sound.BTASounds;
 
 public class GhidruthBiteGoal extends AbstractGhidruthSkillGoal
 {
-	public GhidruthBiteGoal(EntityGhidruth mob) 
+	public GhidruthBiteGoal(GhidruthEntity mob) 
 	{
 		super(mob);
 	}

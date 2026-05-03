@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.util;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
 import com.min01.solomonlib.util.SolomonUtil;
 
 import net.minecraft.sounds.SoundEvent;
@@ -14,8 +14,8 @@ public class DeepAbyssUtil
 {
 	public static boolean isInsideSubmarine(Entity entity)
 	{
-		List<EntitySubmarine> list = entity.level.getEntitiesOfClass(EntitySubmarine.class, entity.getBoundingBox().inflate(1.0F), t -> t != entity);
-		for(EntitySubmarine sub : list)
+		List<SubmarineEntity> list = entity.level.getEntitiesOfClass(SubmarineEntity.class, entity.getBoundingBox().inflate(1.0F), t -> t != entity);
+		for(SubmarineEntity sub : list)
 		{
 			String part = SolomonUtil.getIntersectingMultiPart(sub, entity);
 			if(part != null && !sub.hatchOpened())

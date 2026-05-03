@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import java.util.List;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
+import com.min01.beyondtheabyss.entity.deepabyss.GhidruthEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.entity.EntitySelector;
@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 {
-	public GhidruthTailSwingGoal(EntityGhidruth mob) 
+	public GhidruthTailSwingGoal(GhidruthEntity mob) 
 	{
 		super(mob);
 	}

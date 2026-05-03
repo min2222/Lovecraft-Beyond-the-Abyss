@@ -1,22 +1,22 @@
 package com.min01.beyondtheabyss.entity.renderer.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityNecroshell;
-import com.min01.beyondtheabyss.entity.model.ModelNecroshell;
+import com.min01.beyondtheabyss.entity.deepabyss.NecroshellEntity;
+import com.min01.beyondtheabyss.entity.model.NecroshellModel;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class NecroshellRenderer extends MobRenderer<EntityNecroshell, ModelNecroshell>
+public class NecroshellRenderer extends MobRenderer<NecroshellEntity, NecroshellModel>
 {
 	public NecroshellRenderer(Context pContext) 
 	{
-		super(pContext, new ModelNecroshell(pContext.bakeLayer(ModelNecroshell.LAYER_LOCATION)), 0.5F);
+		super(pContext, new NecroshellModel(pContext.bakeLayer(NecroshellModel.LAYER_LOCATION)), 0.5F);
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityNecroshell pEntity) 
+	public ResourceLocation getTextureLocation(NecroshellEntity pEntity) 
 	{
 		if(pEntity.isSlasherShell())
 		{

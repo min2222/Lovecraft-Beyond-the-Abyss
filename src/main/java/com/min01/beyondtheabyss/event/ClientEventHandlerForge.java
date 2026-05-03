@@ -7,8 +7,8 @@ import java.util.UUID;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
 import com.min01.beyondtheabyss.config.BTAConfig;
-import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.BTACameraShakeEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTABossBar;
@@ -75,7 +75,7 @@ public class ClientEventHandlerForge
         	if(BTAConfig.cameraShakes.get())
         	{
                 float shakeAmplitude = 0.0F;
-                for(EntityBTACameraShake cameraShake : player.level.getEntitiesOfClass(EntityBTACameraShake.class, player.getBoundingBox().inflate(100.0F))) 
+                for(BTACameraShakeEntity cameraShake : player.level.getEntitiesOfClass(BTACameraShakeEntity.class, player.getBoundingBox().inflate(100.0F))) 
                 {
                     if(cameraShake.distanceTo(player) < cameraShake.getRadius())
                     {
@@ -91,7 +91,7 @@ public class ClientEventHandlerForge
                 event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
         	}
         	
-            if(player.getVehicle() instanceof EntitySubmarine && event.getCamera().isDetached())
+            if(player.getVehicle() instanceof SubmarineEntity && event.getCamera().isDetached())
             {
         		event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
             }

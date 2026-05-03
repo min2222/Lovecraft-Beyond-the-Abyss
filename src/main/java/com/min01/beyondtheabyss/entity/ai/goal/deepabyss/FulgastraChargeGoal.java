@@ -3,15 +3,15 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 import java.util.List;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityFulgastra;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySplittedFulgastra;
+import com.min01.beyondtheabyss.entity.deepabyss.FulgastraEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.SplittedFulgastraEntity;
 import com.min01.beyondtheabyss.misc.BTADamageSource;
 
 import net.minecraft.world.entity.LivingEntity;
 
-public class FulgastraChargeGoal extends AbstractAnimationGoal<EntitySplittedFulgastra>
+public class FulgastraChargeGoal extends AbstractAnimationGoal<SplittedFulgastraEntity>
 {
-	public FulgastraChargeGoal(EntitySplittedFulgastra mob)
+	public FulgastraChargeGoal(SplittedFulgastraEntity mob)
 	{
 		super(mob);
 	}
@@ -34,7 +34,7 @@ public class FulgastraChargeGoal extends AbstractAnimationGoal<EntitySplittedFul
 	public void performSkill() 
 	{
 		this.mob.setAnimationState(2);
-		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(5), t -> t != this.mob && !t.isAlliedTo(this.mob) && !(t instanceof EntitySplittedFulgastra) && !(t instanceof EntityFulgastra));
+		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(5), t -> t != this.mob && !t.isAlliedTo(this.mob) && !(t instanceof SplittedFulgastraEntity) && !(t instanceof FulgastraEntity));
 		list.forEach(t ->
 		{
 			t.hurt(BTADamageSource.causeElectronicDamage(this.mob.level.registryAccess(), this.mob), 5.0F);

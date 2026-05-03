@@ -1,12 +1,12 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
+import com.min01.beyondtheabyss.entity.deepabyss.CorpseAnglerEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<EntityCorpseAngler>
+public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<CorpseAnglerEntity>
 {
-	public CorpseAnglerAmbushGoal(EntityCorpseAngler mob)
+	public CorpseAnglerAmbushGoal(CorpseAnglerEntity mob)
 	{
 		super(mob);
 	}

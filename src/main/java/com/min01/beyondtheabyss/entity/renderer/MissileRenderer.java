@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.model.ModelMissile;
-import com.min01.beyondtheabyss.entity.projectile.EntityMissile;
+import com.min01.beyondtheabyss.entity.model.MissileModel;
+import com.min01.beyondtheabyss.entity.projectile.MissileEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -14,18 +14,18 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class MissileRenderer extends EntityRenderer<EntityMissile>
+public class MissileRenderer extends EntityRenderer<MissileEntity>
 {
-	public final ModelMissile model;
+	public final MissileModel model;
 	
 	public MissileRenderer(Context pContext) 
 	{
 		super(pContext);
-		this.model = new ModelMissile(pContext.bakeLayer(ModelMissile.LAYER_LOCATION));
+		this.model = new MissileModel(pContext.bakeLayer(MissileModel.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntityMissile pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(MissileEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		pPoseStack.pushPose();
 		pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(pPartialTick, pEntity.yRotO, pEntity.getYRot()) + 180.0F));
@@ -37,7 +37,7 @@ public class MissileRenderer extends EntityRenderer<EntityMissile>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityMissile pEntity)
+	public ResourceLocation getTextureLocation(MissileEntity pEntity)
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/missile.png");
 	}

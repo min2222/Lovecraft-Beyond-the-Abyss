@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.model.ModelCystShrapnel;
-import com.min01.beyondtheabyss.entity.model.ModelMutavoreCyst;
-import com.min01.beyondtheabyss.entity.projectile.EntityMutavoreCyst;
+import com.min01.beyondtheabyss.entity.model.CystShrapnelModel;
+import com.min01.beyondtheabyss.entity.model.MutavoreCystModel;
+import com.min01.beyondtheabyss.entity.projectile.MutavoreCystEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -15,20 +15,20 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class MutavoreCystRenderer extends EntityRenderer<EntityMutavoreCyst>
+public class MutavoreCystRenderer extends EntityRenderer<MutavoreCystEntity>
 {
-	public final ModelMutavoreCyst model;
-	public final ModelCystShrapnel shrapnelModel;
+	public final MutavoreCystModel model;
+	public final CystShrapnelModel shrapnelModel;
 	
 	public MutavoreCystRenderer(Context pContext) 
 	{
 		super(pContext);
-		this.model = new ModelMutavoreCyst(pContext.bakeLayer(ModelMutavoreCyst.LAYER_LOCATION));
-		this.shrapnelModel = new ModelCystShrapnel(pContext.bakeLayer(ModelCystShrapnel.LAYER_LOCATION));
+		this.model = new MutavoreCystModel(pContext.bakeLayer(MutavoreCystModel.LAYER_LOCATION));
+		this.shrapnelModel = new CystShrapnelModel(pContext.bakeLayer(CystShrapnelModel.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntityMutavoreCyst pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(MutavoreCystEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		if(pEntity.isShrapnel())
 		{
@@ -53,7 +53,7 @@ public class MutavoreCystRenderer extends EntityRenderer<EntityMutavoreCyst>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityMutavoreCyst pEntity)
+	public ResourceLocation getTextureLocation(MutavoreCystEntity pEntity)
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/mutavore.png");
 	}

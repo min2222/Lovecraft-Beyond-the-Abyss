@@ -1,10 +1,10 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.model.ModelToothBullet;
-import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel;
-import com.min01.beyondtheabyss.entity.model.ModelToothBulletShrapnel2;
-import com.min01.beyondtheabyss.entity.projectile.EntityToothBullet;
+import com.min01.beyondtheabyss.entity.model.ToothBulletModel;
+import com.min01.beyondtheabyss.entity.model.ToothBulletShrapnelModel;
+import com.min01.beyondtheabyss.entity.model.ToothBulletShrapnel2Model;
+import com.min01.beyondtheabyss.entity.projectile.ToothBulletEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -16,21 +16,21 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ToothBulletRenderer extends EntityRenderer<EntityToothBullet>
+public class ToothBulletRenderer extends EntityRenderer<ToothBulletEntity>
 {
-	public final ModelToothBullet model;
-	public final ModelToothBulletShrapnel shrapnelModel;
-	public final ModelToothBulletShrapnel2 shrapnelModel2;
+	public final ToothBulletModel model;
+	public final ToothBulletShrapnelModel shrapnelModel;
+	public final ToothBulletShrapnel2Model shrapnelModel2;
 	public ToothBulletRenderer(Context pContext) 
 	{
 		super(pContext);
-		this.model = new ModelToothBullet(pContext.bakeLayer(ModelToothBullet.LAYER_LOCATION));
-		this.shrapnelModel = new ModelToothBulletShrapnel(pContext.bakeLayer(ModelToothBulletShrapnel.LAYER_LOCATION));
-		this.shrapnelModel2 = new ModelToothBulletShrapnel2(pContext.bakeLayer(ModelToothBulletShrapnel2.LAYER_LOCATION));
+		this.model = new ToothBulletModel(pContext.bakeLayer(ToothBulletModel.LAYER_LOCATION));
+		this.shrapnelModel = new ToothBulletShrapnelModel(pContext.bakeLayer(ToothBulletShrapnelModel.LAYER_LOCATION));
+		this.shrapnelModel2 = new ToothBulletShrapnel2Model(pContext.bakeLayer(ToothBulletShrapnel2Model.LAYER_LOCATION));
 	}
 
 	@Override
-	public void render(EntityToothBullet pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(ToothBulletEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		if(pEntity.isShrapnel()) 
 		{
@@ -62,7 +62,7 @@ public class ToothBulletRenderer extends EntityRenderer<EntityToothBullet>
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityToothBullet pEntity)
+	public ResourceLocation getTextureLocation(ToothBulletEntity pEntity)
 	{
 		if(pEntity.isShrapnel())
 		{

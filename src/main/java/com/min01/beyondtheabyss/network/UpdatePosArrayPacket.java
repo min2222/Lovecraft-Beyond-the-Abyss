@@ -4,7 +4,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.min01.beyondtheabyss.entity.IAnimatable;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
@@ -51,7 +51,7 @@ public class UpdatePosArrayPacket
 					{
 						mob.getPosArray()[message.array] = message.pos;
 					}
-					else if(entity instanceof EntitySubmarine sub)
+					else if(entity instanceof SubmarineEntity sub)
 					{
 						sub.sitPos[message.array] = message.pos;
 					}
@@ -64,7 +64,7 @@ public class UpdatePosArrayPacket
 				{
 					mob.getPosArray()[message.array] = message.pos;
 				}
-				else if(entity instanceof EntitySubmarine sub)
+				else if(entity instanceof SubmarineEntity sub)
 				{
 					sub.sitPos[message.array] = message.pos;
 				}

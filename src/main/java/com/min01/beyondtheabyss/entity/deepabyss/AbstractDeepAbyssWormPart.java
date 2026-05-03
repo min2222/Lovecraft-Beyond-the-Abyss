@@ -5,8 +5,9 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractOwnableBTAWaterMonster;
+import com.min01.beyondtheabyss.entity.AbstractOwnableBTAMonster;
 import com.min01.beyondtheabyss.misc.BTATags;
+import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -28,14 +29,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormPart<T>> extends AbstractOwnableBTAWaterMonster<T>
+public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormPart<T>> extends AbstractOwnableBTAMonster<T>
 {
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.OPTIONAL_UUID);
 	public static final EntityDataAccessor<Boolean> UNLOADED = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.BOOLEAN);
 	public Worm[] worms;
 	
-	public AbstractDeepAbyssWormPart(EntityType<? extends AbstractOwnableBTAWaterMonster<T>> pEntityType, Level pLevel)
+	public AbstractDeepAbyssWormPart(EntityType<? extends AbstractOwnableBTAMonster<T>> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 	}
@@ -98,6 +99,12 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 				}
 			}
 		}
+	}
+	
+	@Override
+	public MobClassification getMobClassification() 
+	{
+		return MobClassification.WATER;
 	}
 	
 	@Override

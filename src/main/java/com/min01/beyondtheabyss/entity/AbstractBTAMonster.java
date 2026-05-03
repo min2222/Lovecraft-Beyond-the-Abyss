@@ -49,12 +49,24 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 		this.goalSelector.addGoal(0, new LookAtTargetGoal<>(this));
         if(this.getBTAMobType().alwaysHostile)
         {
-            this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
+            this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false, false)
+            {
+            	@Override
+            	protected AABB getTargetSearchArea(double pTargetDistance) 
+            	{
+            		return AbstractBTAMonster.this.getTargetSearchArea(pTargetDistance);
+            	}
+            });
         }
         if(this.getBTAMobType() == BTAMobType.NETURAL || this.getBTAMobType().alwaysHostile)
         {
             this.targetSelector.addGoal(0, this.alertOthers() ? new HurtByTargetGoal(this).setAlertOthers() : new HurtByTargetGoal(this));
         }
+	}
+	
+	public AABB getTargetSearchArea(double pTargetDistance)
+	{
+		return this.getBoundingBox().inflate(pTargetDistance, 4.0D, pTargetDistance);
 	}
 	
 	public boolean alertOthers()

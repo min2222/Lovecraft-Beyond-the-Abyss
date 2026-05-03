@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.entity.renderer.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
-import com.min01.beyondtheabyss.entity.model.ModelGnasher;
+import com.min01.beyondtheabyss.entity.deepabyss.GnasherEntity;
+import com.min01.beyondtheabyss.entity.model.GnasherModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.GnasherLayer;
 import com.min01.solomonlib.multipart.IMultiModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,19 +14,19 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher> implements IMultiModel<EntityGnasher>
+public class GnasherRenderer extends MobRenderer<GnasherEntity, GnasherModel> implements IMultiModel<GnasherEntity>
 {
 	private final GnasherLeaderRenderer leaderRenderer;
 	
 	public GnasherRenderer(Context pContext)
 	{
-		super(pContext, new ModelGnasher(pContext.bakeLayer(ModelGnasher.LAYER_LOCATION)), 0.5F);
+		super(pContext, new GnasherModel(pContext.bakeLayer(GnasherModel.LAYER_LOCATION)), 0.5F);
 		this.addLayer(new GnasherLayer(this, this.model));
 		this.leaderRenderer = new GnasherLeaderRenderer(pContext);
 	}
 	
 	@Override
-	public void render(EntityGnasher pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(GnasherEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		if(pEntity.isLeader())
 		{
@@ -39,7 +39,7 @@ public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher> im
 	}
 	
 	@Override
-	public HierarchicalModel<EntityGnasher> getModel(EntityGnasher entity) 
+	public HierarchicalModel<GnasherEntity> getModel(GnasherEntity entity) 
 	{
 		if(entity.isLeader())
 		{
@@ -49,7 +49,7 @@ public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher> im
 	}
 	
 	@Override
-	protected void setupRotations(EntityGnasher pEntityLiving, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) 
+	protected void setupRotations(GnasherEntity pEntityLiving, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) 
 	{
 		super.setupRotations(pEntityLiving, pPoseStack, pAgeInTicks, pRotationYaw, pPartialTicks);
 		if(!pEntityLiving.isInWater()) 
@@ -60,7 +60,7 @@ public class GnasherRenderer extends MobRenderer<EntityGnasher, ModelGnasher> im
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityGnasher pEntity) 
+	public ResourceLocation getTextureLocation(GnasherEntity pEntity) 
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/gnasher.png");
 	}

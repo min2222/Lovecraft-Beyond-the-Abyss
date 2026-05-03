@@ -1,0 +1,95 @@
+package com.min01.beyondtheabyss.entity.deepabyss;
+
+import com.min01.beyondtheabyss.entity.AbstractBTACreature;
+import com.min01.beyondtheabyss.entity.ai.control.BoidMoveControl;
+import com.min01.beyondtheabyss.misc.BTAMobType;
+import com.min01.beyondtheabyss.misc.MobClassification;
+import com.min01.beyondtheabyss.util.DeepAbyssUtil;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.ForgeMod;
+
+public class GloomfishEntity extends AbstractBTACreature
+{	
+	public GloomfishEntity(EntityType<? extends AbstractBTACreature> pEntityType, Level pLevel)
+	{
+		super(pEntityType, pLevel);
+		this.xpReward = 1;
+		this.moveControl = new BoidMoveControl<>(this);
+	}
+	
+    public static AttributeSupplier.Builder createAttributes()
+    {
+        return Mob.createMobAttributes()
+    			.add(Attributes.MAX_HEALTH, 2.0F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.2F)
+    			.add(ForgeMod.SWIM_SPEED.get(), 0.5F);
+    }
+
+	@Override
+	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
+	{
+    	EntityPartBuilder<GloomfishEntity> partBuilder = new EntityPartBuilder<GloomfishEntity>(this)
+    	{
+    		@Override
+    		public boolean isInWater() 
+    		{
+    			return true;
+    		}
+    		
+    		@Override
+    		public float getWaterOffset() 
+    		{
+    			return 0.25F;
+    		}
+    	};
+    	return partBuilder;
+	}
+
+	@Override
+	public BTAMobType getBTAMobType() 
+	{
+		return BTAMobType.PASSIVE;
+	}
+	
+	@Override
+	public MobClassification getMobClassification() 
+	{
+		return MobClassification.WATER;
+	}
+	
+	@Override
+	protected void doPush(Entity pEntity) 
+	{
+		
+	}
+	
+	@Override
+	public void tick() 
+	{
+		super.tick();
+		DeepAbyssUtil.fishFlopping(this);
+	}
+	
+	@Override
+	public int getMaxSpawnClusterSize() 
+	{
+		return Integer.MAX_VALUE;
+	}
+	
+	public static boolean checkGloomfishSpawnRules(EntityType<? extends AbstractBTACreature> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER) && pPos.getY() <= 40;
+    }
+}

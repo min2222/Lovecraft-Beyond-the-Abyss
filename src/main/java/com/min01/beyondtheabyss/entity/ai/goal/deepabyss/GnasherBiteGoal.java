@@ -1,12 +1,12 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGnasher;
+import com.min01.beyondtheabyss.entity.deepabyss.GnasherEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-public class GnasherBiteGoal extends AbstractAnimationGoal<EntityGnasher>
+public class GnasherBiteGoal extends AbstractAnimationGoal<GnasherEntity>
 {
-	public GnasherBiteGoal(EntityGnasher mob) 
+	public GnasherBiteGoal(GnasherEntity mob) 
 	{
 		super(mob);
 	}

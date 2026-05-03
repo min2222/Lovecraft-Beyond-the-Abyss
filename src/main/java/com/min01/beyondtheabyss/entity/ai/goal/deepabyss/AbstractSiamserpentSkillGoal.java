@@ -1,13 +1,13 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
+import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity;
 
 import net.minecraft.world.entity.LivingEntity;
 
-public abstract class AbstractSiamserpentSkillGoal extends AbstractAnimationGoal<EntitySiamserpentHead>
+public abstract class AbstractSiamserpentSkillGoal extends AbstractAnimationGoal<SiamserpentHeadEntity>
 {
-	public AbstractSiamserpentSkillGoal(EntitySiamserpentHead mob)
+	public AbstractSiamserpentSkillGoal(SiamserpentHeadEntity mob)
 	{
 		super(mob);
 	}
@@ -33,7 +33,7 @@ public abstract class AbstractSiamserpentSkillGoal extends AbstractAnimationGoal
 	
 	public boolean isOtherHeadDormant()
 	{
-		return this.mob.getHead() instanceof EntitySiamserpentHead head && head.isDormant();
+		return this.mob.getHead() instanceof SiamserpentHeadEntity head && head.isDormant();
 	}
 	
 	@Override

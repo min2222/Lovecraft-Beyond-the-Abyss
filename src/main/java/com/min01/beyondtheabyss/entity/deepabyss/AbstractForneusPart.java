@@ -67,7 +67,7 @@ public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<Abst
 		super.tick();
 		if(this.getHead() != null)
 		{
-			EntityForneusHead head = (EntityForneusHead) this.getHead();
+			ForneusHeadEntity head = (ForneusHeadEntity) this.getHead();
 			if(head.chain != null)
 			{
 				ChainSegment segment = head.chain.getSegments()[Math.max(head.chain.getSegments().length - (this.getIndex() + 2), 0)];

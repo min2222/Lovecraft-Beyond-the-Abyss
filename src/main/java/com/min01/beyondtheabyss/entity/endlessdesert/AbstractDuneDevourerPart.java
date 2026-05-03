@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.entity.endlessdesert;
 
 import com.min01.beyondtheabyss.entity.AbstractWormPart;
-import com.min01.beyondtheabyss.entity.EntityBTACameraShake;
+import com.min01.beyondtheabyss.entity.BTACameraShakeEntity;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 
@@ -83,17 +83,17 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 		super.tick();
 		if(!this.getBlockStateOn().isAir() && !this.inWall)
 		{
-			EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.05F, 0, 5);
+			BTACameraShakeEntity.cameraShake(this.level, this.position(), 50.0F, 0.05F, 0, 5);
 			this.inWall = true;
 		}
 		if(this.getBlockStateOn().isAir() && this.inWall)
 		{
-			EntityBTACameraShake.cameraShake(this.level, this.position(), 50.0F, 0.05F, 0, 5);
+			BTACameraShakeEntity.cameraShake(this.level, this.position(), 50.0F, 0.05F, 0, 5);
 			this.inWall = false;
 		}
 		if(this.getHead() != null)
 		{
-			EntityDuneDevourerHead head = (EntityDuneDevourerHead) this.getHead();
+			DuneDevourerHeadEntity head = (DuneDevourerHeadEntity) this.getHead();
 			if(head.chain != null)
 			{
 				ChainSegment segment = head.chain.getSegments()[Math.max(head.chain.getSegments().length - (this.getIndex() + 2), 0)];

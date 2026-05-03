@@ -1,13 +1,13 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
+import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity.HeadType;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 public class SiamserpentBlasterBeamGoal extends AbstractSiamserpentSkillGoal
 {
-	public SiamserpentBlasterBeamGoal(EntitySiamserpentHead mob) 
+	public SiamserpentBlasterBeamGoal(SiamserpentHeadEntity mob) 
 	{
 		super(mob);
 	}

@@ -3,7 +3,7 @@ package com.min01.beyondtheabyss.blockentity.renderer;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.deepabyss.BiocrafterBlock;
 import com.min01.beyondtheabyss.block.deepabyss.BiocrafterBlock.BiocrafterPart;
-import com.min01.beyondtheabyss.block.model.ModelBiocrafter;
+import com.min01.beyondtheabyss.block.model.BiocrafterModel;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -20,11 +20,11 @@ public class BiocrafterRenderer implements BlockEntityRenderer<BiocrafterBlockEn
 {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/block/biocrafter.png");
     
-	private final ModelBiocrafter model;
+	private final BiocrafterModel model;
 	
 	public BiocrafterRenderer(BlockEntityRendererProvider.Context pContext)
 	{
-		this.model = new ModelBiocrafter(pContext.bakeLayer(ModelBiocrafter.LAYER_LOCATION));
+		this.model = new BiocrafterModel(pContext.bakeLayer(BiocrafterModel.LAYER_LOCATION));
 	}
 
 	@Override

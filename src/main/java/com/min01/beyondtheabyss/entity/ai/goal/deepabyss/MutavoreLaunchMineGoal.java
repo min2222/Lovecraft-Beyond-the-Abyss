@@ -5,16 +5,16 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore.MutationType;
-import com.min01.beyondtheabyss.entity.projectile.EntityMutavoreCyst;
+import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity.MutationType;
+import com.min01.beyondtheabyss.entity.projectile.MutavoreCystEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.Util;
 
-public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<EntityMutavore>
+public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<MutavoreEntity>
 {
-	public MutavoreLaunchMineGoal(EntityMutavore mob) 
+	public MutavoreLaunchMineGoal(MutavoreEntity mob) 
 	{
 		super(mob);
 	}
@@ -47,7 +47,7 @@ public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<EntityMutavore
 		int type = Util.getRandom(cysts, this.mob.level.random);
 		if(this.mob.posArray[type] != null)
 		{
-			EntityMutavoreCyst cyst = new EntityMutavoreCyst(BTAEntities.MUTAVORE_CYST.get(), this.mob.level);
+			MutavoreCystEntity cyst = new MutavoreCystEntity(BTAEntities.MUTAVORE_CYST.get(), this.mob.level);
 			cyst.setOwner(this.mob);
 			cyst.setCystType(type);
 			cyst.setPos(this.mob.posArray[type]);

@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.entity.renderer.living;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
-import com.min01.beyondtheabyss.entity.model.ModelSiamserpentSlasher;
+import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity.HeadType;
+import com.min01.beyondtheabyss.entity.model.SiamserpentSlasherModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.SiamserpentSlasherLayer;
 import com.min01.solomonlib.multipart.IMultiModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class SiamserpentSlasherRenderer extends MobRenderer<EntitySiamserpentHead, ModelSiamserpentSlasher> implements IMultiModel<EntitySiamserpentHead>
+public class SiamserpentSlasherRenderer extends MobRenderer<SiamserpentHeadEntity, SiamserpentSlasherModel> implements IMultiModel<SiamserpentHeadEntity>
 {
 	private static final ResourceLocation TEXTURE_SLASHER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher.png");
 	private static final ResourceLocation DISABLED_SLASHER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_disabled.png");
@@ -24,13 +24,13 @@ public class SiamserpentSlasherRenderer extends MobRenderer<EntitySiamserpentHea
 	
 	public SiamserpentSlasherRenderer(Context pContext)
 	{
-		super(pContext, new ModelSiamserpentSlasher(pContext.bakeLayer(ModelSiamserpentSlasher.LAYER_LOCATION)), 0.0F);
+		super(pContext, new SiamserpentSlasherModel(pContext.bakeLayer(SiamserpentSlasherModel.LAYER_LOCATION)), 0.0F);
 		this.addLayer(new SiamserpentSlasherLayer(this, this.model));
 		this.blasterRenderer = new SiamserpentBlasterRenderer(pContext);
 	}
 	
 	@Override
-	public void render(EntitySiamserpentHead pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(SiamserpentHeadEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		if(pEntity.getHeadType() == HeadType.BLASTER)
 		{
@@ -43,7 +43,7 @@ public class SiamserpentSlasherRenderer extends MobRenderer<EntitySiamserpentHea
 	}
 	
 	@Override
-	public HierarchicalModel<EntitySiamserpentHead> getModel(EntitySiamserpentHead entity) 
+	public HierarchicalModel<SiamserpentHeadEntity> getModel(SiamserpentHeadEntity entity) 
 	{
 		if(entity.getHeadType() == HeadType.BLASTER)
 		{
@@ -53,7 +53,7 @@ public class SiamserpentSlasherRenderer extends MobRenderer<EntitySiamserpentHea
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntitySiamserpentHead pEntity) 
+	public ResourceLocation getTextureLocation(SiamserpentHeadEntity pEntity) 
 	{
 		return pEntity.isDisabled() ? DISABLED_SLASHER : pEntity.isDormant() ? DORMANT_SLASHER : TEXTURE_SLASHER;
 	}

@@ -1,8 +1,8 @@
 package com.min01.beyondtheabyss.entity.renderer.layer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
-import com.min01.beyondtheabyss.entity.model.ModelSubmarine;
+import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
+import com.min01.beyondtheabyss.entity.model.SubmarineModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -10,15 +10,15 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class SubmarineLayer extends GlowingLayer<EntitySubmarine, ModelSubmarine>
+public class SubmarineLayer extends GlowingLayer<SubmarineEntity, SubmarineModel>
 {
-	public SubmarineLayer(RenderLayerParent<EntitySubmarine, ModelSubmarine> renderer, ModelSubmarine model) 
+	public SubmarineLayer(RenderLayerParent<SubmarineEntity, SubmarineModel> renderer, SubmarineModel model) 
 	{
 		super(renderer, model, null);
 	}
 	
 	@Override
-	public void render(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, EntitySubmarine entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
+	public void render(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, SubmarineEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		if(entity.getFirstPassenger() != null)
 		{

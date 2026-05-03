@@ -5,8 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityMutavore.MutationType;
+import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.MutavoreEntity.MutationType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.Util;
@@ -18,11 +18,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class MutavoreConsumingGoal extends Goal
 {
-	private final EntityMutavore mob;
+	private final MutavoreEntity mob;
 	private Vec3 wantedPos;
 	private ItemEntity item;
 	
-	public MutavoreConsumingGoal(EntityMutavore mob) 
+	public MutavoreConsumingGoal(MutavoreEntity mob) 
 	{
 		this.mob = mob;
 	}

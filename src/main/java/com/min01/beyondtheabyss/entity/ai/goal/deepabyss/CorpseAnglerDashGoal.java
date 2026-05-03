@@ -1,16 +1,16 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityCorpseAngler;
+import com.min01.beyondtheabyss.entity.deepabyss.CorpseAnglerEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec3;
 
-public class CorpseAnglerDashGoal extends AbstractAnimationGoal<EntityCorpseAngler>
+public class CorpseAnglerDashGoal extends AbstractAnimationGoal<CorpseAnglerEntity>
 {
 	public boolean canContinueToUse = true;
 	
-	public CorpseAnglerDashGoal(EntityCorpseAngler mob) 
+	public CorpseAnglerDashGoal(CorpseAnglerEntity mob) 
 	{
 		super(mob);
 	}

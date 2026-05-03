@@ -1,7 +1,7 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySubmarine;
+import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
 import com.min01.beyondtheabyss.item.BTAItems;
 
 import net.minecraft.world.InteractionResult;
@@ -26,7 +26,7 @@ public class SubmarineItem extends Item
         ItemStack stack = pContext.getItemInHand();
         Player player = pContext.getPlayer();
 		Vec3 pos = pContext.getClickLocation();
-        EntitySubmarine submarine = new EntitySubmarine(BTAEntities.SUBMARINE.get(), level);
+        SubmarineEntity submarine = new SubmarineEntity(BTAEntities.SUBMARINE.get(), level);
         if(!player.getAbilities().instabuild)
         {
         	stack.shrink(1);

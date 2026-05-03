@@ -1,14 +1,14 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityNecroshell;
+import com.min01.beyondtheabyss.entity.deepabyss.NecroshellEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
-public class NecroshellAttackGoal extends AbstractAnimationGoal<EntityNecroshell>
+public class NecroshellAttackGoal extends AbstractAnimationGoal<NecroshellEntity>
 {
 	public boolean isSecond;
 	
-	public NecroshellAttackGoal(EntityNecroshell mob)
+	public NecroshellAttackGoal(NecroshellEntity mob)
 	{
 		super(mob);
 	}

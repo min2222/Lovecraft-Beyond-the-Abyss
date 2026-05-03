@@ -13,8 +13,8 @@ import java.util.Map.Entry;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityGhidruth;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySpineWormHead;
+import com.min01.beyondtheabyss.entity.deepabyss.GhidruthEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.SpineWormHeadEntity;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTABossTracker;
 import com.min01.beyondtheabyss.misc.BTAChatTracker;
@@ -230,7 +230,7 @@ public class EventHandlerForge
     {
     	if(event.isDismounting())
     	{
-    		if(event.getEntityBeingMounted() instanceof EntitySpineWormHead)
+    		if(event.getEntityBeingMounted() instanceof SpineWormHeadEntity)
     		{
     			boolean flag = event.getEntityMounting() instanceof Player player ? !player.getAbilities().instabuild : true;
     			if(event.getEntityMounting().isShiftKeyDown() && flag)
@@ -297,7 +297,7 @@ public class EventHandlerForge
 				{
 					float yRot = player.level.random.nextFloat() * 360.0F;
 					Vec3 lookPos = BTAUtil.getLookPos(new Vec2(0.0F, player.getYHeadRot() + yRot), player.position(), 0, 0, player.level.random.nextInt(25, 30));
-					EntityGhidruth ghidruth = new EntityGhidruth(BTAEntities.GHIDRUTH.get(), player.level);
+					GhidruthEntity ghidruth = new GhidruthEntity(BTAEntities.GHIDRUTH.get(), player.level);
 					HitResult result = player.level.clip(new ClipContext(player.position(), lookPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
 					ghidruth.setPos(result.getLocation());
 					player.level.addFreshEntity(ghidruth);

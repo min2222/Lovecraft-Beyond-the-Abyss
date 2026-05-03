@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.min01.beyondtheabyss.item.model.ModelFelmetalDiverSet;
+import com.min01.beyondtheabyss.item.model.FelmetalDiverSetModel;
 import com.min01.beyondtheabyss.misc.BTAArmorMaterials;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
@@ -32,7 +32,7 @@ public class FelmetalDivingSetItem extends AbstractDivingSetItem
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) 
 			{
-				ModelFelmetalDiverSet<?> diverModel = new ModelFelmetalDiverSet<>(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelFelmetalDiverSet.LAYER_LOCATION));
+				FelmetalDiverSetModel<?> diverModel = new FelmetalDiverSetModel<>(BTAClientUtil.MC.getEntityModels().bakeLayer(FelmetalDiverSetModel.LAYER_LOCATION));
 				diverModel.Head.visible = equipmentSlot == EquipmentSlot.HEAD;
 				diverModel.Body.visible = equipmentSlot == EquipmentSlot.CHEST;
 				diverModel.LeftArm.visible = equipmentSlot == EquipmentSlot.CHEST;

@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityDeepAbyssPortal;
-import com.min01.beyondtheabyss.entity.model.ModelDeepAbyssPortal;
-import com.min01.beyondtheabyss.entity.model.ModelPipe;
+import com.min01.beyondtheabyss.entity.deepabyss.DeepAbyssPortalEntity;
+import com.min01.beyondtheabyss.entity.model.DeepAbyssPortalModel;
+import com.min01.beyondtheabyss.entity.model.PipeModel;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.solomonlib.multipart.IMultiModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,20 +22,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPortal> implements IMultiModel<EntityDeepAbyssPortal>
+public class DeepAbyssPortalRenderer extends EntityRenderer<DeepAbyssPortalEntity> implements IMultiModel<DeepAbyssPortalEntity>
 {
-	private final ModelDeepAbyssPortal model;
-	private final ModelPipe modelPipe;
+	private final DeepAbyssPortalModel model;
+	private final PipeModel modelPipe;
 	
 	public DeepAbyssPortalRenderer(Context pContext)
 	{
 		super(pContext);
-		this.model = new ModelDeepAbyssPortal(pContext.bakeLayer(ModelDeepAbyssPortal.LAYER_LOCATION));
-		this.modelPipe = new ModelPipe(pContext.bakeLayer(ModelPipe.LAYER_LOCATION));
+		this.model = new DeepAbyssPortalModel(pContext.bakeLayer(DeepAbyssPortalModel.LAYER_LOCATION));
+		this.modelPipe = new PipeModel(pContext.bakeLayer(PipeModel.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntityDeepAbyssPortal pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	public void render(DeepAbyssPortalEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		pPoseStack.pushPose();
 		pPoseStack.scale(-1.0F, -1.0F, 1.0F);
@@ -97,7 +97,7 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
     }
     
     @SuppressWarnings("deprecation")
-	private int getLightColor(EntityDeepAbyssPortal portal, Vec3 vec3)
+	private int getLightColor(DeepAbyssPortalEntity portal, Vec3 vec3)
     {
         BlockPos blockPos = BlockPos.containing(vec3);
         if(portal.level.hasChunkAt(blockPos))
@@ -117,13 +117,13 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<EntityDeepAbyssPorta
     }
 	
 	@Override
-	public HierarchicalModel<EntityDeepAbyssPortal> getModel(EntityDeepAbyssPortal entity)
+	public HierarchicalModel<DeepAbyssPortalEntity> getModel(DeepAbyssPortalEntity entity)
 	{
 		return this.model;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityDeepAbyssPortal pEntity)
+	public ResourceLocation getTextureLocation(DeepAbyssPortalEntity pEntity)
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/deep_abyss_portal.png");
 	}

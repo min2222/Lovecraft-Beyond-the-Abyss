@@ -1,15 +1,15 @@
 package com.min01.beyondtheabyss.entity.ai.goal.mirroredcity;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.mirroredcity.EntityOverseer;
-import com.min01.beyondtheabyss.entity.projectile.EntityMissile;
+import com.min01.beyondtheabyss.entity.mirroredcity.OverseerEntity;
+import com.min01.beyondtheabyss.entity.projectile.MissileEntity;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec3;
 
-public class OverseerMissileGoal extends AbstractAnimationGoal<EntityOverseer>
+public class OverseerMissileGoal extends AbstractAnimationGoal<OverseerEntity>
 {
-	public OverseerMissileGoal(EntityOverseer mob) 
+	public OverseerMissileGoal(OverseerEntity mob) 
 	{
 		super(mob);
 	}
@@ -36,7 +36,7 @@ public class OverseerMissileGoal extends AbstractAnimationGoal<EntityOverseer>
 	@Override
 	public void performSkill()
 	{
-		EntityMissile missile = new EntityMissile(this.mob.level, this.mob);
+		MissileEntity missile = new MissileEntity(this.mob.level, this.mob);
 		Vec3 lookPos = BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, -2.5F);
 		missile.setPos(lookPos);
 		this.mob.level.addFreshEntity(missile);

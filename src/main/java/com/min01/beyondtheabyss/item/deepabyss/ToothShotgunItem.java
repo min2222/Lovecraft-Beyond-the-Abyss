@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 
 import com.min01.beyondtheabyss.enchantment.BTAEnchantments;
-import com.min01.beyondtheabyss.entity.projectile.EntityToothBullet;
+import com.min01.beyondtheabyss.entity.projectile.ToothBulletEntity;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.item.renderer.BTAItemRenderer;
 import com.min01.beyondtheabyss.misc.BTATags;
@@ -54,7 +54,7 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 			{
 	        	for(int i = 0; i < 4; i++)
 	        	{
-	        		EntityToothBullet bullet = new EntityToothBullet(pLevel, pPlayer);
+	        		ToothBulletEntity bullet = new ToothBulletEntity(pLevel, pPlayer);
 	        		bullet.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.yHeadRot, 0.0F, 2.0F, 4.0F);
 	        		if(goldenChance > 0)
 	        		{

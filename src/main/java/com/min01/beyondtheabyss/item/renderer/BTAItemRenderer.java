@@ -4,9 +4,9 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.item.deepabyss.ClamOfGuidanceItem;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.deepabyss.ToothShotgunItem;
-import com.min01.beyondtheabyss.item.model.ModelClamOfGuidance;
-import com.min01.beyondtheabyss.item.model.ModelSkeletalGunblade;
-import com.min01.beyondtheabyss.item.model.ModelToothShotgun;
+import com.min01.beyondtheabyss.item.model.ClamOfGuidanceModel;
+import com.min01.beyondtheabyss.item.model.SkeletalGunbladeModel;
+import com.min01.beyondtheabyss.item.model.ToothShotgunModel;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -34,16 +34,16 @@ public class BTAItemRenderer extends BlockEntityWithoutLevelRenderer
 	public static final ResourceLocation SHOTGUN_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/tooth_shotgun.png");
 	public static final ResourceLocation CLAM_TEXTURE = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/clam_of_guidance_in_hand.png");
 	
-	public final ModelSkeletalGunblade modelGunblade;
-	public final ModelToothShotgun modelShotgun;
-	public final ModelClamOfGuidance modelClam;
+	public final SkeletalGunbladeModel modelGunblade;
+	public final ToothShotgunModel modelShotgun;
+	public final ClamOfGuidanceModel modelClam;
 	
 	public BTAItemRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet) 
 	{
 		super(dispatcher, modelSet);
-		this.modelGunblade = new ModelSkeletalGunblade(modelSet.bakeLayer(ModelSkeletalGunblade.LAYER_LOCATION));
-		this.modelShotgun = new ModelToothShotgun(modelSet.bakeLayer(ModelToothShotgun.LAYER_LOCATION));
-		this.modelClam = new ModelClamOfGuidance(modelSet.bakeLayer(ModelClamOfGuidance.LAYER_LOCATION));
+		this.modelGunblade = new SkeletalGunbladeModel(modelSet.bakeLayer(SkeletalGunbladeModel.LAYER_LOCATION));
+		this.modelShotgun = new ToothShotgunModel(modelSet.bakeLayer(ToothShotgunModel.LAYER_LOCATION));
+		this.modelClam = new ClamOfGuidanceModel(modelSet.bakeLayer(ClamOfGuidanceModel.LAYER_LOCATION));
 	}
 	
 	@Override

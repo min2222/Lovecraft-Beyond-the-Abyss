@@ -1,14 +1,14 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead;
-import com.min01.beyondtheabyss.entity.deepabyss.EntitySiamserpentHead.HeadType;
+import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity;
+import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity.HeadType;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.phys.Vec3;
 
 public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 {
-	public SiamserpentSlasherChargeGoal(EntitySiamserpentHead mob) 
+	public SiamserpentSlasherChargeGoal(SiamserpentHeadEntity mob) 
 	{
 		super(mob);
 	}

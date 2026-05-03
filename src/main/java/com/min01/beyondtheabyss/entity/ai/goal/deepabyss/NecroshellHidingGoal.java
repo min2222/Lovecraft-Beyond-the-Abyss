@@ -1,15 +1,15 @@
 package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityNecroshell;
+import com.min01.beyondtheabyss.entity.deepabyss.NecroshellEntity;
 
 import net.minecraft.world.entity.player.Player;
 
-public class NecroshellHidingGoal extends AbstractAnimationGoal<EntityNecroshell>
+public class NecroshellHidingGoal extends AbstractAnimationGoal<NecroshellEntity>
 {
 	private int noTargetTick;
 	
-	public NecroshellHidingGoal(EntityNecroshell mob) 
+	public NecroshellHidingGoal(NecroshellEntity mob) 
 	{
 		super(mob);
 	}

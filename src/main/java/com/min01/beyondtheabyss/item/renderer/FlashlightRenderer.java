@@ -2,7 +2,7 @@ package com.min01.beyondtheabyss.item.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
-import com.min01.beyondtheabyss.item.model.ModelFlashlight;
+import com.min01.beyondtheabyss.item.model.FlashlightModel;
 import com.min01.beyondtheabyss.misc.BTARenderType;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class FlashlightRenderer extends BlockEntityWithoutLevelRenderer
 {
-	private final ModelFlashlight model;
+	private final FlashlightModel model;
 	private static final ResourceLocation TEXTURE_OFF = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/flashlight_off_in_hand.png");
 	private static final ResourceLocation TEXTURE_ON = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/flashlight_on_in_hand.png");
 	private static final ResourceLocation TEXTURE_LAYER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/item/flashlight_layer.png");
@@ -26,7 +26,7 @@ public class FlashlightRenderer extends BlockEntityWithoutLevelRenderer
 	public FlashlightRenderer() 
 	{
 		super(BTAClientUtil.MC.getBlockEntityRenderDispatcher(), BTAClientUtil.MC.getEntityModels());
-		this.model = new ModelFlashlight(BTAClientUtil.MC.getEntityModels().bakeLayer(ModelFlashlight.LAYER_LOCATION));
+		this.model = new FlashlightModel(BTAClientUtil.MC.getEntityModels().bakeLayer(FlashlightModel.LAYER_LOCATION));
 	}
 	
 	@Override

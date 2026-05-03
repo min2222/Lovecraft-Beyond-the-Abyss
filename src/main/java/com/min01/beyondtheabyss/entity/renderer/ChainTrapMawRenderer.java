@@ -1,9 +1,9 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.entity.deepabyss.EntityChainTrapMaw;
-import com.min01.beyondtheabyss.entity.model.ModelChainTrapChain;
-import com.min01.beyondtheabyss.entity.model.ModelChainTrapMaw;
+import com.min01.beyondtheabyss.entity.deepabyss.ChainTrapMawEntity;
+import com.min01.beyondtheabyss.entity.model.ChainTrapChainModel;
+import com.min01.beyondtheabyss.entity.model.ChainTrapMawModel;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -17,19 +17,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class ChainTrapMawRenderer extends EntityRenderer<EntityChainTrapMaw>
+public class ChainTrapMawRenderer extends EntityRenderer<ChainTrapMawEntity>
 {
-	public final ModelChainTrapMaw model;
-	public final ModelChainTrapChain chainModel;
+	public final ChainTrapMawModel model;
+	public final ChainTrapChainModel chainModel;
 	public ChainTrapMawRenderer(Context pContext) 
 	{
 		super(pContext);
-		this.model = new ModelChainTrapMaw(pContext.bakeLayer(ModelChainTrapMaw.LAYER_LOCATION));
-		this.chainModel = new ModelChainTrapChain(pContext.bakeLayer(ModelChainTrapChain.LAYER_LOCATION));
+		this.model = new ChainTrapMawModel(pContext.bakeLayer(ChainTrapMawModel.LAYER_LOCATION));
+		this.chainModel = new ChainTrapChainModel(pContext.bakeLayer(ChainTrapChainModel.LAYER_LOCATION));
 	}
 	
 	@Override
-	public void render(EntityChainTrapMaw pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
+	public void render(ChainTrapMawEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
 	{
 		if(pEntity.chain != null)
 		{
@@ -59,7 +59,7 @@ public class ChainTrapMawRenderer extends EntityRenderer<EntityChainTrapMaw>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityChainTrapMaw pEntity) 
+	public ResourceLocation getTextureLocation(ChainTrapMawEntity pEntity) 
 	{
 		return ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/chain_trap_maw.png");
 	}

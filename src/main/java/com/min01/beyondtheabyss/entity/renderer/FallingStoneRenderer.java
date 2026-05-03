@@ -1,6 +1,6 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
-import com.min01.beyondtheabyss.entity.EntityFallingStone;
+import com.min01.beyondtheabyss.entity.FallingStoneEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.RenderTypeHelper;
 import net.minecraftforge.client.model.data.ModelData;
 
-public class FallingStoneRenderer extends EntityRenderer<EntityFallingStone>
+public class FallingStoneRenderer extends EntityRenderer<FallingStoneEntity>
 {
 	private final BlockRenderDispatcher dispatcher;
 	
@@ -31,7 +31,7 @@ public class FallingStoneRenderer extends EntityRenderer<EntityFallingStone>
 	}
 	
 	@Override
-	public void render(EntityFallingStone pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
+	public void render(FallingStoneEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
 	{
 		BlockState state = pEntity.getBlockState();
 		if(state.getRenderShape() == RenderShape.MODEL) 
@@ -57,7 +57,7 @@ public class FallingStoneRenderer extends EntityRenderer<EntityFallingStone>
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(EntityFallingStone pEntity)
+	public ResourceLocation getTextureLocation(FallingStoneEntity pEntity)
 	{
 		return null;
 	}
