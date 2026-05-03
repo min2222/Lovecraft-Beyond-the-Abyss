@@ -23,8 +23,6 @@ import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import it.unimi.dsi.fastutil.longs.Long2BooleanMap;
-import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -41,7 +39,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class BTAWorldShader
 {
-	public final Long2BooleanMap chunkCache = new Long2BooleanOpenHashMap();
 	public final Matrix4f inverseMat = new Matrix4f();
 	public final ExecutorService maskExecutor = Executors.newSingleThreadExecutor();
 

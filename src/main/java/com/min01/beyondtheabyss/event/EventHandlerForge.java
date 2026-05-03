@@ -21,7 +21,6 @@ import com.min01.beyondtheabyss.misc.BTAChatTracker;
 import com.min01.beyondtheabyss.misc.BTALootTables;
 import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateChunkCachePacket;
 import com.min01.beyondtheabyss.network.UpdateStoneSkinEffectPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
@@ -45,14 +44,11 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
@@ -73,7 +69,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -127,22 +122,6 @@ public class EventHandlerForge
 	        e.printStackTrace();
 	    }
 	}
-	
-    @SubscribeEvent
-    public static void onChunkLoad(ChunkEvent.Load event) 
-    {
-    	LevelAccessor levelAccessor = event.getLevel();
-    	ChunkAccess chunkAccess = event.getChunk();
-		ChunkPos chunkPos = chunkAccess.getPos();
-		BlockPos worldPos = chunkPos.getWorldPosition();
-    	if(levelAccessor instanceof Level level)
-    	{
-    		if(level.dimension() == BTAWorlds.EVERGREEN && level.getBiome(worldPos).is(BTABiomes.FOGGY_PLAINS))
-    		{
-    			BTANetwork.sendToAll(new UpdateChunkCachePacket(chunkPos.toLong()));
-    		}
-    	}
-    }
     
     @SubscribeEvent
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickBlock event)
