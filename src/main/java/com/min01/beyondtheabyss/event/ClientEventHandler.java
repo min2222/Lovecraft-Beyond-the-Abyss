@@ -162,14 +162,6 @@ public class ClientEventHandler
 	        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, () -> BTAShaders.getFog());
 	        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
 		});
-        /*try
-        {
-        	AESUtil.encryptFiles(".ogg");
-        }
-        catch (Exception e)
-        {
-        	
-        }*/
     }
     
     @SubscribeEvent

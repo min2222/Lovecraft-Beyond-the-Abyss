@@ -96,7 +96,7 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
 				if(t.getServer() != null)
 				{
 					String part = SolomonUtil.getCollidingMultiPart(this, t);
-					if(part != null && part.equals("plate"))
+					if(part != null && part.contains("inner_portal"))
 					{
 						if(t.distanceToSqr(this) <= 6.0F)
 						{
@@ -111,7 +111,7 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
     @Override
     public List<String> getCollidePart() 
     {
-    	return List.of("door1", "door2", "door3", "plate", "gem", "pipe1", "pipe2", "pipe3", "pipe4", "edge");
+    	return List.of("door1", "door2", "door3", "plate_cube", "inner_portal", "gem", "pipe1", "pipe2", "pipe3", "pipe4", "edge");
     }
     
     @Override
