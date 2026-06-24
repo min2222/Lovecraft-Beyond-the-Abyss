@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class OverseerEntity extends AbstractBTAMonster
@@ -34,7 +35,7 @@ public class OverseerEntity extends AbstractBTAMonster
     			.add(Attributes.MAX_HEALTH, 150.0F)
     			.add(Attributes.ARMOR, 10.0F)
     			.add(Attributes.MOVEMENT_SPEED, 0.2F)
-    			.add(Attributes.FLYING_SPEED, 0.2F)
+    			.add(Attributes.FLYING_SPEED, 0.4F)
         		.add(Attributes.ATTACK_DAMAGE, 15.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0F)
         		.add(Attributes.FOLLOW_RANGE, 150.0F);
@@ -80,6 +81,7 @@ public class OverseerEntity extends AbstractBTAMonster
 	    {
 	    	this.addDeltaMovement(new Vec3(0.0F, 0.01F, 0.0F));
 	    }
+	    BTAUtil.forceTick(this);
 	}
 	
 	@Override
@@ -105,7 +107,7 @@ public class OverseerEntity extends AbstractBTAMonster
 	{
 		Vec3 targetPos = this.getTarget().getEyePosition();
 		Vec3 pos = new Vec3(targetPos.x, this.getY(), targetPos.z);
-		this.getNavigation().moveTo(pos.x, pos.y, pos.z, 1.5F);
+		this.getNavigation().moveTo(pos.x, pos.y, pos.z, 1.0F);
 	}
 	
 	@Override
@@ -124,7 +126,13 @@ public class OverseerEntity extends AbstractBTAMonster
 	@Override
 	public float maxFlyTurnY()
 	{
-		return 4;
+		return 2;
+	}
+	
+	@Override
+	public Vec2 getFlyRadius()
+	{
+		return new Vec2(300, 0);
 	}
 	
 	@Override

@@ -22,7 +22,6 @@ public class BTATags
 		public static final TagKey<EntityType<?>> PURGATORY_CREATURES = create("purgatory_creatures");
 		public static final TagKey<EntityType<?>> OUTER_SPACE_CREATURES = create("outer_space_creatures");
 		public static final TagKey<EntityType<?>> MINI_BOSSES = create("mini_bosses");
-		public static final TagKey<EntityType<?>> FORCE_TICKING = create("force_ticking");
 		
 		private static TagKey<EntityType<?>> create(String name) 
 		{

@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.entity.AbstractWormPart;
 import com.min01.beyondtheabyss.entity.BTACameraShakeEntity;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +19,7 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 	public AbstractDuneDevourerPart(EntityType<? extends AbstractWormPart<AbstractDuneDevourerPart>> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
+		this.noCulling = true;
 	}
 	
 	@Override
@@ -111,5 +113,6 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 				this.yBodyRotO = rot.y;
 			}
 		}
+		BTAUtil.forceTick(this);
 	}
 }

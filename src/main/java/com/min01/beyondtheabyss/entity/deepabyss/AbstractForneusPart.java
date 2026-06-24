@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
+import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -85,5 +86,6 @@ public abstract class AbstractForneusPart extends AbstractDeepAbyssWormPart<Abst
 				this.yBodyRotO = rot.y;
 			}
 		}
+		BTAUtil.forceTick(this);
 	}
 }

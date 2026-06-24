@@ -61,6 +61,14 @@ public class BTAUtil
 {
 	public static final Method GET_ENTITY = ObfuscationReflectionHelper.findMethod(Level.class, "m_142646_");
 	public static final SimplexNoise SIMPLEX_NOISE = new SimplexNoise(RandomSource.create());
+	
+	public static void forceTick(Entity entity)
+	{
+		if(entity.level instanceof ServerLevel serverLevel)
+		{
+			serverLevel.getChunkSource().updateChunkForced(entity.chunkPosition(), true);
+		}
+	}
     
 	@SuppressWarnings("unchecked")
 	public static Iterable<Entity> getAllEntities(Level level)

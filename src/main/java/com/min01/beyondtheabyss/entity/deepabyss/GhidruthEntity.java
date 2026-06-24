@@ -229,6 +229,7 @@ public class GhidruthEntity extends AbstractBTAMonster
     			}
     		}
     	}
+	    BTAUtil.forceTick(this);
     }
     
     public void fallStones()

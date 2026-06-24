@@ -1,14 +1,7 @@
 package com.min01.beyondtheabyss.event;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.effect.BTAEffects;
@@ -18,8 +11,6 @@ import com.min01.beyondtheabyss.entity.deepabyss.SpineWormHeadEntity;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTABossTracker;
 import com.min01.beyondtheabyss.misc.BTAChatTracker;
-import com.min01.beyondtheabyss.misc.BTALootTables;
-import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateStoneSkinEffectPacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -31,11 +22,7 @@ import com.min01.beyondtheabyss.world.BTAWorlds;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -50,14 +37,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
@@ -69,59 +52,14 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 @Mod.EventBusSubscriber(modid = BeyondtheAbyss.MODID, bus = Bus.FORGE)
 public class EventHandlerForge 
 {
 	public static final Map<ResourceKey<Level>, BTAChatTracker> CHAT_MAP = new HashMap<>();
-    
-	//TODO mirrored city
-    //@SubscribeEvent
-    public static void onServerAboutToStart(ServerAboutToStartEvent event) 
-    {
-        copyRegionFiles(event.getServer());
-    }
-	
-    public static void copyRegionFiles(MinecraftServer server)
-    {
-        if(server == null) 
-        	return;
-	    Path baseDir = FMLPaths.CONFIGDIR.get().resolve("beyondtheabyss");
-	    File baseDirFile = baseDir.toFile();
-	    if(baseDirFile.exists())
-	    {
-	        System.out.println("Config folder 'beyondtheabyss' already exists. Skipping region file copy.");
-	        return;
-	    }
-	    Path outputDir = baseDir.resolve("region");
-	    outputDir.toFile().mkdirs();
-	    ResourceManager resourceManager = server.getResourceManager();
-	    try
-	    {
-	        Map<ResourceLocation, Resource> resources = resourceManager.listResources("region", path -> path.getPath().endsWith(".mca"));
-	        for(Entry<ResourceLocation, Resource> entry : resources.entrySet())
-	        {
-	        	ResourceLocation location = entry.getKey();
-	        	Resource resource = entry.getValue();
-                try(InputStream in = resource.open()) 
-                {
-                    String fileName = Path.of(location.getPath()).getFileName().toString();
-                    Path outputFile = outputDir.resolve(fileName);
-                    Files.copy(in, outputFile, StandardCopyOption.REPLACE_EXISTING);
-                    System.out.println("Copied region file: " + fileName);
-                }
-	        }
-	    } 
-	    catch(IOException e)
-	    {
-	        e.printStackTrace();
-	    }
-	}
     
     @SubscribeEvent
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickBlock event)
@@ -182,14 +120,6 @@ public class EventHandlerForge
     				ticker.tick();
     			}
     			CHAT_MAP.values().removeIf(t -> t.tickCount > 120);
-				for(Entity entity : BTAUtil.getAllEntities(serverLevel))
-				{
-    				if(!entity.getType().is(BTATags.BTAEntity.FORCE_TICKING))
-    				{
-    					continue;
-    				}
-					serverLevel.getChunkSource().updateChunkForced(entity.chunkPosition(), true);
-    			}
     		}
     	}
     }
@@ -285,15 +215,6 @@ public class EventHandlerForge
 			}
 		}
 	}
-	
-    @SubscribeEvent
-    public static void onLootTableLoad(LootTableLoadEvent event)
-    {
-        if(event.getName().toString().matches("minecraft:chests/buried_treasure")) 
-        {
-        	event.getTable().addPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootTableReference.lootTableReference(BTALootTables.CLAM_OF_GUIDANCE)).build());
-        }
-    }
 
 	@SubscribeEvent
 	public static void onLivingTick(LivingTickEvent event)

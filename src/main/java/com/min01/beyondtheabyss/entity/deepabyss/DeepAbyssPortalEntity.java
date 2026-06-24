@@ -96,7 +96,6 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
 				if(t.getServer() != null)
 				{
 					String part = SolomonUtil.getCollidingMultiPart(this, t);
-					System.out.println(part);
 					if(part != null && part.contains("plate"))
 					{
 						if(t.distanceToSqr(this) <= 6.0F)

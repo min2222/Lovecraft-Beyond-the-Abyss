@@ -1,7 +1,5 @@
 package com.min01.beyondtheabyss.mixin;
 
-import java.util.ArrayList;
-
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +22,7 @@ public abstract class MixinLevelRenderer
 	private void renderLevelTail(PoseStack mtx, float frameTime, long nanoTime, boolean renderOutline, Camera camera, GameRenderer gameRenderer, LightTexture light, Matrix4f projMat, CallbackInfo ci)
 	{
 		RenderSystem.depthMask(false);
-		new ArrayList<>(BTAWorldShader.WORLD_SHADERS).forEach(t -> 
+		BTAWorldShader.WORLD_SHADERS.forEach(t -> 
 		{
 			t.render(mtx, frameTime, camera);
 		});

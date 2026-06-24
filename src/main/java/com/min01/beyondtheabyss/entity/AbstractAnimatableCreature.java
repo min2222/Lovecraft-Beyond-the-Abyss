@@ -485,8 +485,14 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
     	this.setStopMoveTick(pCompound.getInt("StopMoveTick"));
     	this.setAnimationTick(pCompound.getInt("AnimationTick"));
     	this.setAnimationState(pCompound.getInt("AnimationState"));
-		this.setSwim(pCompound.getBoolean("isSwim"));
-		this.setFlying(pCompound.getBoolean("isFlying"));
+		if(pCompound.contains("isSwim"))
+		{
+			this.setSwim(pCompound.getBoolean("isSwim"));
+		}
+		if(pCompound.contains("isFlying"))
+		{
+			this.setFlying(pCompound.getBoolean("isFlying"));
+		}
     }
     
     @Override

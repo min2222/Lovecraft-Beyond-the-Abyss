@@ -40,7 +40,7 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
     		return t.biomeSource;
     	}), NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(t -> 
     	{
-    		return t.settings;
+    		return t.generatorSettings();
     	})).apply(builder, builder.stable(MirroredCityChunkGenerator::new));
     });
 	
@@ -55,7 +55,8 @@ public class MirroredCityChunkGenerator extends NoiseBasedChunkGenerator
 		return CompletableFuture.completedFuture(pChunk);
 	}
 
-	public void buildSurface1(WorldGenRegion pLevel, StructureManager pStructureManager, RandomState pRandom, ChunkAccess pChunk) 
+	@Override
+	public void buildSurface(WorldGenRegion pLevel, StructureManager pStructureManager, RandomState pRandom, ChunkAccess pChunk)
 	{
 	    int chunkX = pChunk.getPos().x;
 	    int chunkZ = pChunk.getPos().z;

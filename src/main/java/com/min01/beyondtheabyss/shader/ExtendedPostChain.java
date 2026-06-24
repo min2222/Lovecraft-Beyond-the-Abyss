@@ -7,6 +7,7 @@ import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -40,5 +41,21 @@ public class ExtendedPostChain extends PostChain
 			this.resize(window.getWidth(), window.getHeight());
 		}
 		super.process(frameTime);
+	}
+	
+	@Override
+	public void resize(int width, int height)
+	{
+	    super.resize(width, height);
+	    RenderTarget fogHalf = this.getTempTarget("fog_half");
+	    if(fogHalf != null)
+	    {
+	        fogHalf.resize(Math.max(1, width / 2), Math.max(1, height / 2), Minecraft.ON_OSX);
+	    }
+	    RenderTarget fogFull = this.getTempTarget("fog_full");
+	    if(fogFull != null) 
+	    {
+	        fogFull.resize(width, height, Minecraft.ON_OSX);
+	    }
 	}
 }

@@ -1,12 +1,13 @@
 {
 	"targets": [
-		"swap"
+		"fog_full",
+		"fog_half"
 	],
 	"passes": [
 		{
 			"name": "beyondtheabyss:plain_fog",
 			"intarget": "minecraft:main",
-			"outtarget": "swap",
+			"outtarget": "fog_half",
 			"auxtargets": [
 				{
 					"name": "DepthSampler",
@@ -15,8 +16,19 @@
 			]
 		},
 		{
+			"name": "beyondtheabyss:fog_composite",
+			"intarget": "minecraft:main",
+			"outtarget": "fog_full",
+			"auxtargets": [
+				{
+					"name": "FogSampler",
+					"id": "fog_half"
+				}
+			]
+		},
+		{
 			"name": "blit",
-			"intarget": "swap",
+			"intarget": "fog_full",
 			"outtarget": "minecraft:main"
 		}
 	]

@@ -18,6 +18,7 @@ import org.lwjgl.system.MemoryUtil;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -236,7 +237,18 @@ public class BTAWorldShader
 
 		if(shader != null)
 		{
-			shader.safeGetUniform("iResolution").set(minecraft.getWindow().getWidth(), minecraft.getWindow().getHeight());
+			if(this.samplerName.equals("Fog"))
+			{
+				RenderTarget fogHalf = shaderChain.getTempTarget("fog_half");
+				if(fogHalf != null)
+				{
+					shader.safeGetUniform("iResolution").set(fogHalf.width, fogHalf.height);
+				}
+			}
+			else
+			{
+				shader.safeGetUniform("iResolution").set(minecraft.getWindow().getWidth(), minecraft.getWindow().getHeight());
+			}
 			shader.setSampler("ImageSampler", () -> minecraft.getTextureManager().getTexture(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/misc/rgba_noise_medium.png")).getId());
 			if(this.usesBiomeMask)
 			{

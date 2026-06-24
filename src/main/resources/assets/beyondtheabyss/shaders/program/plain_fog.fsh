@@ -1,6 +1,5 @@
 #version 330
 
-uniform sampler2D DiffuseSampler;
 uniform sampler2D DepthSampler;
 uniform sampler2D ImageSampler;
 uniform sampler2D FogMaskSampler;
@@ -30,6 +29,22 @@ float linearizeDepth(float depth) {
 
 float noise(vec2 coord) {
     return fract(sin(dot(coord, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+bool intersectMaskXZ(vec3 ro, vec3 rd, float maxT, out float tEnter, out float tExit) {
+    vec2 boxMin = MaskOriginXZ;
+    vec2 boxMax = MaskOriginXZ + MaskExtentXZ;
+    vec2 invRd = vec2(
+        abs(rd.x) > 1e-6 ? 1.0 / rd.x : 1e30,
+        abs(rd.z) > 1e-6 ? 1.0 / rd.z : 1e30
+    );
+    vec2 t0 = (boxMin - ro.xz) * invRd;
+    vec2 t1 = (boxMax - ro.xz) * invRd;
+    vec2 tNear = min(t0, t1);
+    vec2 tFar  = max(t0, t1);
+    tEnter = max(max(tNear.x, tNear.y), 0.0);
+    tExit  = min(min(tFar.x, tFar.y), maxT);
+    return tEnter <= tExit;
 }
 
 float getDensity(vec3 worldPos) {
@@ -62,30 +77,31 @@ void main() {
     vec3 ro = near_4.xyz / near_4.w;
     vec3 rd = normalize(far_4.xyz / far_4.w - ro);
     
-	vec3 fogColor = vec3(0.7, 0.75, 0.8);
 	float fogDensity = 0.05;
-    
-    vec3 col = texture(DiffuseSampler, texCoord).xyz;
 
 	float depth = texture(DepthSampler, texCoord).r;
     float linearDepth = linearizeDepth(depth);
     float rayLen = min(linearDepth, 520.0);
 
     float accumulatedDensity = 0.0;
-    const int STEP_COUNT = 160;
-    float dt = rayLen / float(STEP_COUNT);
-
-    for (int i = 0; i < STEP_COUNT; i++) {
-    	float t = (float(i) + 0.5) * dt;
-    	vec3 p = ro + rd * t;
-    	accumulatedDensity += getDensity(p) * fogDensity * dt;
-    }
+    const int STEP_COUNT = 48;
+    
+    float tEnter, tExit;
+	if (!intersectMaskXZ(ro, rd, rayLen, tEnter, tExit)) {
+	    fragColor = vec4(0.0);
+	    return;
+	}
+	
+    float segLen = tExit - tEnter;
+	float dt = segLen / float(STEP_COUNT);
+	
+	for (int i = 0; i < STEP_COUNT; i++) {
+	    float t = tEnter + (float(i) + 0.5) * dt;
+	    vec3 p = ro + rd * t;
+	    accumulatedDensity += getDensity(p) * fogDensity * dt;
+	}
     
     float noiseValue = noise((texCoord * iResolution + iTime * 0.05) * 0.1);
     float fogFactor = 1.0 - exp(-accumulatedDensity * (1.0 + noiseValue * 0.1));
-    
-    // Mix the original color with the fog color
-    col = mix(col, fogColor, fogFactor);
-
-    fragColor = vec4(col, 1.0);
+	fragColor = vec4(fogFactor);
 }

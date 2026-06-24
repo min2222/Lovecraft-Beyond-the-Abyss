@@ -3,8 +3,8 @@ package com.min01.beyondtheabyss.entity.endlessdesert;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.BTACameraShakeEntity;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
@@ -120,6 +120,7 @@ public class DuneDevourerHeadEntity extends AbstractDuneDevourerPart
 			this.yHeadRotO = rot.y;
 			this.yBodyRotO = rot.y;
 		}
+		BTAUtil.forceTick(this);
 	}
 	
 	@SuppressWarnings("deprecation")

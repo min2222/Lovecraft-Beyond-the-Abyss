@@ -4,7 +4,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.LookAtTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.MoveToTargetGoal;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.solomonlib.multipart.CompoundOrientedBox;
 import com.min01.solomonlib.multipart.EntityBounds;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
@@ -95,7 +94,7 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 	@Override
 	public boolean shouldRenderAtSqrDistance(double pDistance)
 	{
-		return super.shouldRenderAtSqrDistance(pDistance) || this.getType().is(BTATags.BTAEntity.FORCE_TICKING);
+		return super.shouldRenderAtSqrDistance(pDistance) || this.noCulling;
 	}
 	
 	@Override

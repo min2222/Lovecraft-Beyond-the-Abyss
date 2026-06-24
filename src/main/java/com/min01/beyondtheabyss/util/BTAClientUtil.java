@@ -25,7 +25,6 @@ import net.minecraft.world.phys.Vec3;
 public class BTAClientUtil
 {
 	public static final Minecraft MC = Minecraft.getInstance();
-	public static final Matrix4f INVERSE_MAT = new Matrix4f();
 	
 	public static void animateWormHead(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
 	{

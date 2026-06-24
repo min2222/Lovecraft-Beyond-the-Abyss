@@ -127,6 +127,7 @@ public class ForneusHeadEntity extends AbstractForneusPart
 			this.yHeadRotO = rot.y;
 			this.yBodyRotO = rot.y;
 		}
+		BTAUtil.forceTick(this);
 	}
 	
 	@SuppressWarnings("deprecation")

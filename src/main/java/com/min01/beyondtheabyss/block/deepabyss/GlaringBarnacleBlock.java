@@ -115,7 +115,11 @@ public class GlaringBarnacleBlock extends FaceAttachedHorizontalDirectionalBlock
     @Nullable
     protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level pLevel, BlockEntityType<T> pServerType, BlockEntityType<AnimatableBlockEntity> pClientType)
     {
-        return createTickerHelper(pServerType, pClientType, AnimatableBlockEntity::update);
+    	if(pLevel.isClientSide)
+    	{
+            return createTickerHelper(pServerType, pClientType, AnimatableBlockEntity::update);
+    	}
+    	return null;
     }
     
     @SuppressWarnings("unchecked")

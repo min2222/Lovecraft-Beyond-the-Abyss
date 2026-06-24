@@ -2,11 +2,13 @@
 	"required": true,
 	"minVersion": "0.8",
 	"package": "com.min01.beyondtheabyss.mixin",
+	"plugin": "com.min01.beyondtheabyss.misc.BTAMixinPlugin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"MixinEntity",
 		"MixinSwimNodeEvaluator",
-		"MixinEnderDragon"
+		"MixinEnderDragon",
+		"MixinChunkGenerator"
 	],
 	"client": [
 		"MixinLevelRenderer",

@@ -83,7 +83,7 @@ public class MissileEntity extends ThrowableProjectile
 		else if(this.getOwner() != null)
 		{
 			Mob mob = (Mob) this.getOwner();
-			if(mob.getTarget() != null)
+			if(mob.getTarget() != null && this.tickCount <= 100)
 			{
 				this.addDeltaMovement(BTAUtil.getVelocityTowards(this.position(), mob.getTarget().getEyePosition(), 0.15F));
 			}

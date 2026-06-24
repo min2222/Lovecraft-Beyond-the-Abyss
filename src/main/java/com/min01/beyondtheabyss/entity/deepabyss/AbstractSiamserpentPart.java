@@ -77,6 +77,7 @@ public abstract class AbstractSiamserpentPart extends AbstractDeepAbyssWormPart<
 				this.setSwap(true);
 			}
 		}
+	    BTAUtil.forceTick(this);
 	}
 	
 	@Override

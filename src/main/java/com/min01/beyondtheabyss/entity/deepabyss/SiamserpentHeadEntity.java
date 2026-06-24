@@ -174,6 +174,7 @@ public class SiamserpentHeadEntity extends AbstractSiamserpentPart
             });
 			this.setBeamLength(this.laser.getLaserLength());
 		}
+	    BTAUtil.forceTick(this);
 	}
 	
 	@Override

@@ -6,7 +6,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.entity.AbstractOwnableBTAMonster;
-import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
@@ -18,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -33,7 +33,6 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 {
 	public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.OPTIONAL_UUID);
-	public static final EntityDataAccessor<Boolean> UNLOADED = SynchedEntityData.defineId(AbstractDeepAbyssWormPart.class, EntityDataSerializers.BOOLEAN);
 	public Worm[] worms;
 	
 	public AbstractDeepAbyssWormPart(EntityType<? extends AbstractOwnableBTAMonster<T>> pEntityType, Level pLevel)
@@ -47,7 +46,6 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 		super.defineSynchedData();
 		this.entityData.define(INDEX, 0);
 		this.entityData.define(HEAD_UUID, Optional.empty());
-		this.entityData.define(UNLOADED, false);
 	}
 	
 	@Override
@@ -60,7 +58,6 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 		if(this.getHead() != null)
 		{
 			T head = this.getHead();
-			this.setUnloaded(head.touchingUnloadedChunk());
 			if(!this.isHead())
 			{
 	    		this.hurtTime = head.hurtTime;
@@ -75,27 +72,17 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
     			this.die(head.getLastDamageSource());
     		}
 		}
-		else if(!this.isHead() && !this.isUnloaded())
+		if(this.level instanceof ServerLevel serverLevel)
 		{
-			if(!this.getType().is(BTATags.BTAEntity.FORCE_TICKING))
+			if(this.entityData.get(HEAD_UUID).isPresent())
 			{
-				this.discard();
-			}
-		}
-		if(this.getType().is(BTATags.BTAEntity.FORCE_TICKING))
-		{
-			if(!this.level.isClientSide)
-			{
-				if(this.getHead() == null)
+				if(!serverLevel.entityManager.isLoaded(this.entityData.get(HEAD_UUID).get()))
 				{
-					if(!this.isHead() && !this.isUnloaded())
-					{
-				    	for(ServerPlayer player : this.getServer().getPlayerList().getPlayers()) 
-				    	{
-				    		player.connection.send(new ClientboundRemoveEntitiesPacket(this.getId()));
-				    	}
-						this.discard();
-					}
+			    	for(ServerPlayer player : serverLevel.players()) 
+			    	{
+			    		player.connection.send(new ClientboundRemoveEntitiesPacket(this.getId()));
+			    	}
+					this.discard();
 				}
 			}
 		}
@@ -229,7 +216,6 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 	{
 		super.addAdditionalSaveData(pCompound);
 		pCompound.putInt("Index", this.getIndex());
-		pCompound.putBoolean("Unloaded", this.isUnloaded());
 		if(this.entityData.get(HEAD_UUID).isPresent())
 		{
 			pCompound.putUUID("Head", this.entityData.get(HEAD_UUID).get());
@@ -247,10 +233,6 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 		if(pCompound.hasUUID("Head")) 
 		{
 			this.entityData.set(HEAD_UUID, Optional.of(pCompound.getUUID("Head")));
-		}
-		if(pCompound.contains("Unloaded"))
-		{
-			this.setUnloaded(pCompound.getBoolean("Unloaded"));
 		}
 	}
 	
@@ -276,38 +258,16 @@ public abstract class AbstractDeepAbyssWormPart<T extends AbstractDeepAbyssWormP
 		return super.isAlliedTo(pEntity) || pEntity == this.getHead() || (pEntity instanceof AbstractDeepAbyssWormPart<?> worm && worm.getHead() == this.getHead());
 	}
 	
-	public void setUnloaded(boolean value)
-	{
-		this.entityData.set(UNLOADED, value);
-	}
-	
-	public boolean isUnloaded()
-	{
-		return this.entityData.get(UNLOADED);
-	}
-	
 	public void setHead(T head)
 	{
 		this.entityData.set(HEAD_UUID, Optional.of(head.getUUID()));
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Nullable
 	public T getHead() 
 	{
 		if(this.entityData.get(HEAD_UUID).isPresent()) 
 		{
-			if(this.getType().is(BTATags.BTAEntity.FORCE_TICKING))
-			{
-				for(Entity entity : BTAUtil.getAllEntities(this.level))
-				{
-					if(!entity.getUUID().equals(this.entityData.get(HEAD_UUID).get()))
-					{
-						continue;
-					}
-					return (T) entity;
-				}
-			}
 			return BTAUtil.getEntityByUUID(this.level, this.entityData.get(HEAD_UUID).get());
 		}
 		return null;

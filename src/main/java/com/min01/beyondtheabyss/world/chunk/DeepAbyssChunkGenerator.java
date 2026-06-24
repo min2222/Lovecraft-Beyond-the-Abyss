@@ -19,7 +19,7 @@ public class DeepAbyssChunkGenerator extends NoiseBasedChunkGenerator
     		return t.biomeSource;
     	}), NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(t -> 
     	{
-    		return t.settings;
+    		return t.generatorSettings();
     	})).apply(builder, builder.stable(DeepAbyssChunkGenerator::new));
     });
 
