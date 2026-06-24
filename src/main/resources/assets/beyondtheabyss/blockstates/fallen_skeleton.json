@@ -1,19 +1,31 @@
 {
 	"variants": {
-		"facing=east": {
+		"facing=east,skeleton_part=lower": {
 			"model": "beyondtheabyss:block/fallen_skeleton",
 			"y": 90
 		},
-		"facing=north": {
+		"facing=east,skeleton_part=upper": {
+			"model": "minecraft:block/air"
+		},
+		"facing=north,skeleton_part=lower": {
 			"model": "beyondtheabyss:block/fallen_skeleton"
 		},
-		"facing=south": {
+		"facing=north,skeleton_part=upper": {
+			"model": "minecraft:block/air"
+		},
+		"facing=south,skeleton_part=lower": {
 			"model": "beyondtheabyss:block/fallen_skeleton",
 			"y": 180
 		},
-		"facing=west": {
+		"facing=south,skeleton_part=upper": {
+			"model": "minecraft:block/air"
+		},
+		"facing=west,skeleton_part=lower": {
 			"model": "beyondtheabyss:block/fallen_skeleton",
 			"y": 270
+		},
+		"facing=west,skeleton_part=upper": {
+			"model": "minecraft:block/air"
 		}
 	}
 }

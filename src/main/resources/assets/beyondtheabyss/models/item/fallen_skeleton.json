@@ -1,6 +1,5 @@
 {
-    "parent": "builtin/entity",
-    "gui_light": "side",
+	"parent": "beyondtheabyss:block/fallen_skeleton",
     "display": {
         "gui": {
             "rotation": [ 30, 225, 0 ],

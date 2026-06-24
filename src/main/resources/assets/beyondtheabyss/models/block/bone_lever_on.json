@@ -1,9 +1,9 @@
 {
 	"loader": "beyondtheabyss:model_part",
-	"model": "bone_piles",
+	"model": "bone_lever_on",
 	"textures": {
 		"particle": "beyondtheabyss:block/small_bone",
-		"texture": "beyondtheabyss:block/bone_piles"
+		"texture": "beyondtheabyss:block/bone_lever"
 	},
 	"render_type": "cutout"
 }

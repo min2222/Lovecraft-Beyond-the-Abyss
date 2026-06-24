@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluids;
 
-public abstract class AbstractMultiPartSkeletonBlock extends AbstractNoRotationLimitBoneBlock
+public abstract class AbstractMultiPartSkeletonBlock extends AbstractRotatedBoneBlock
 {
 	public static final EnumProperty<SkeletonPart> SKELETON_PART = EnumProperty.create("skeleton_part", SkeletonPart.class);
 	

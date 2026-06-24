@@ -1,7 +1,19 @@
 {
 	"variants": {
-		"": {
+		"facing=east": {
+			"model": "beyondtheabyss:block/bone_wall_torch",
+			"y": 90
+		},
+		"facing=north": {
 			"model": "beyondtheabyss:block/bone_wall_torch"
+		},
+		"facing=south": {
+			"model": "beyondtheabyss:block/bone_wall_torch",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "beyondtheabyss:block/bone_wall_torch",
+			"y": 270
 		}
 	}
 }

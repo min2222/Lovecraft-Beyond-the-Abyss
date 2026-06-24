@@ -10,7 +10,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class FangSkullBlock extends AbstractNoRotationLimitBoneBlock
+public class FangSkullBlock extends AbstractRotatedBoneBlock
 {
 	public static final VoxelShape X_AXIS_AABB = Block.box(2.0D, 0.0D, 4.0D, 15.0D, 9.0D, 12.0D);
 	public static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 0.0D, 2.0D, 12.0D, 9.0D, 15.0D);

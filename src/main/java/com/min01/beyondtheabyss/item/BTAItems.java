@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.AnimatableBlockEntity;
-import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
@@ -112,14 +111,14 @@ public class BTAItems
 	public static final RegistryObject<Item> JAW_BONE = registerBlockItem(DEEP_ABYSS_ITEMS, "jaw_bone", () -> BTABlocks.JAW_BONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> RIB = registerBlockItem(DEEP_ABYSS_ITEMS, "rib", () -> BTABlocks.RIB.get(), new Item.Properties());
 	public static final RegistryObject<Item> FISH_BONE = registerBlockItem(DEEP_ABYSS_ITEMS, "fish_bone", () -> BTABlocks.FISH_BONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> FANG_SKULL = registerNoRotationLimitBlockItem(DEEP_ABYSS_ITEMS, "fang_skull", () -> BTABlocks.FANG_SKULL.get(), new Item.Properties());
-	public static final RegistryObject<Item> LARGE_SKULL = registerNoRotationLimitBlockItem(DEEP_ABYSS_ITEMS, "large_skull", () -> BTABlocks.LARGE_SKULL.get(), new Item.Properties());
+	public static final RegistryObject<Item> FANG_SKULL = registerBlockItem(DEEP_ABYSS_ITEMS, "fang_skull", () -> BTABlocks.FANG_SKULL.get(), new Item.Properties());
+	public static final RegistryObject<Item> LARGE_SKULL = registerBlockItem(DEEP_ABYSS_ITEMS, "large_skull", () -> BTABlocks.LARGE_SKULL.get(), new Item.Properties());
 	public static final RegistryObject<Item> SPINE_BONE_TIP = registerBlockItem(DEEP_ABYSS_ITEMS, "spine_bone_tip", () -> BTABlocks.SPINE_BONE_TIP.get(), new Item.Properties());
 	public static final RegistryObject<Item> SPINE_BONE_MIDDLE = registerBlockItem(DEEP_ABYSS_ITEMS, "spine_bone_middle", () -> BTABlocks.SPINE_BONE_MIDDLE.get(), new Item.Properties());
 	public static final RegistryObject<Item> SPINE_BONE_BASE = registerBlockItem(DEEP_ABYSS_ITEMS, "spine_bone_base", () -> BTABlocks.SPINE_BONE_BASE.get(), new Item.Properties());
-	public static final RegistryObject<Item> BONE_PILES = registerNoRotationLimitBlockItem(DEEP_ABYSS_ITEMS, "bone_piles", () -> BTABlocks.BONE_PILES.get(), new Item.Properties());
-	public static final RegistryObject<Item> SITTING_SKELETON = registerNoRotationLimitBlockItem(DEEP_ABYSS_ITEMS, "sitting_skeleton", () -> BTABlocks.SITTING_SKELETON.get(), new Item.Properties());
-	public static final RegistryObject<Item> FALLEN_SKELETON = registerNoRotationLimitBlockItem(DEEP_ABYSS_ITEMS, "fallen_skeleton", () -> BTABlocks.FALLEN_SKELETON.get(), new Item.Properties());
+	public static final RegistryObject<Item> BONE_PILES = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_piles", () -> BTABlocks.BONE_PILES.get(), new Item.Properties());
+	public static final RegistryObject<Item> SITTING_SKELETON = registerBlockItem(DEEP_ABYSS_ITEMS, "sitting_skeleton", () -> BTABlocks.SITTING_SKELETON.get(), new Item.Properties());
+	public static final RegistryObject<Item> FALLEN_SKELETON = registerBlockItem(DEEP_ABYSS_ITEMS, "fallen_skeleton", () -> BTABlocks.FALLEN_SKELETON.get(), new Item.Properties());
 	public static final RegistryObject<Item> BLANK_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "blank_rune_stone", () -> BTABlocks.BLANK_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> SOUL_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "soul_rune_stone", () -> BTABlocks.SOUL_RUNE_STONE.get(), new Item.Properties());
 	public static final RegistryObject<Item> WATER_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "water_rune_stone", () -> BTABlocks.WATER_RUNE_STONE.get(), new Item.Properties());
@@ -173,11 +172,6 @@ public class BTAItems
 	public static RegistryObject<Item> registerSpawnEgg(DeferredRegister<Item> registry, String name, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2)
 	{
 		return registry.register(name, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties()));
-	}
-	
-	public static RegistryObject<Item> registerNoRotationLimitBlockItem(DeferredRegister<Item> registry, String name, Supplier<Block> block, Item.Properties properties)
-	{
-		return registry.register(name, () -> new CustomRendererBlockItem(block.get(), properties, () -> new NoRotationLimitBlockEntity(BlockPos.ZERO, block.get().defaultBlockState())));
 	}
 	
 	public static RegistryObject<Item> registerCustomRendererBlockItem(DeferredRegister<Item> registry, String name, Supplier<Block> block, Supplier<BlockEntity> blockEntity, Item.Properties properties)

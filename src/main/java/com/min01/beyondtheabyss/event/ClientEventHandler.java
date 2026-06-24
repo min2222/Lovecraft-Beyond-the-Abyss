@@ -20,7 +20,7 @@ import com.min01.beyondtheabyss.block.model.SittingSkeletonModel;
 import com.min01.beyondtheabyss.blockentity.renderer.AnimatableBlockRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.BiocrafterRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.ChainTrapRenderer;
-import com.min01.beyondtheabyss.blockentity.renderer.NoRotationLimitRenderer;
+import com.min01.beyondtheabyss.block.model.geometry.ModelPartUnbakedGeometry;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.model.ChainTrapChainModel;
@@ -126,6 +126,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -145,7 +146,6 @@ public class ClientEventHandler
 		{
 	    	MenuScreens.register(BTAMenuTypes.BIOCRATER.get(), BiocrafterScreen::new);
 	        BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
-	        BlockEntityRenderers.register(BTABlocks.NO_ROTATION_LIMIT_BLOCK_ENTITY.get(), NoRotationLimitRenderer::new);
 	        BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);
 	        BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
 	        BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
@@ -186,6 +186,12 @@ public class ClientEventHandler
 		event.registerSpriteSet(BTAParticles.DUST_CLOUD.get(), DustCloudParticle.Provider::new);
 	}
     
+	@SubscribeEvent
+	public static void onRegisterGeometryLoaders(ModelEvent.RegisterGeometryLoaders event)
+	{
+		event.register("model_part", ModelPartUnbakedGeometry.Loader.INSTANCE);
+	}
+	
 	@SubscribeEvent
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event)
 	{

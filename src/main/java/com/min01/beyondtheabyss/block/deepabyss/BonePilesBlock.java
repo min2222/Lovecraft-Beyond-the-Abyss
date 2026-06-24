@@ -9,7 +9,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BonePilesBlock extends AbstractNoRotationLimitBoneBlock
+public class BonePilesBlock extends AbstractRotatedBoneBlock
 {
 	public static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 11.0D, 16.0D);
 	

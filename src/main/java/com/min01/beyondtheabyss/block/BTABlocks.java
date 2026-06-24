@@ -29,7 +29,6 @@ import com.min01.beyondtheabyss.block.deepabyss.ToothvineBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvinePlantBlock;
 import com.min01.beyondtheabyss.block.mirroredcity.RafflesiaAnemoneBlock;
 import com.min01.beyondtheabyss.blockentity.AnimatableBlockEntity;
-import com.min01.beyondtheabyss.blockentity.NoRotationLimitBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
@@ -133,16 +132,6 @@ public class BTABlocks
     public static final RegistryObject<Block> MOLTEN_STONE = BLOCKS.register("molten_stone", () -> new MagmaBlock(BlockBehaviour.Properties.copy(Blocks.MAGMA_BLOCK)));
     
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, RIFTWELLING_ALTAR.get()).build(null));
-    public static final RegistryObject<BlockEntityType<NoRotationLimitBlockEntity>> NO_ROTATION_LIMIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("no_rotation_limit", () -> BlockEntityType.Builder.of(NoRotationLimitBlockEntity::new, 
-    		FANG_SKULL.get(),
-    		LARGE_SKULL.get(),
-    		BONE_PILES.get(),
-    		SITTING_SKELETON.get(),
-       		FALLEN_SKELETON.get(),
-    		BONE_TORCH.get(),
-    		BONE_WALL_TORCH.get(),
-    		BONE_WALL_TORCH.get(),
-    		BONE_LEVER.get()).build(null));
     public static final RegistryObject<BlockEntityType<AnimatableBlockEntity>> ANIMATABLE_BLOCK_ENTITY = BLOCK_ENTITIES.register("animatable", () -> BlockEntityType.Builder.of(AnimatableBlockEntity::new, 
     		GLARING_BARNACLE.get()).build(null));
     public static final RegistryObject<BlockEntityType<ChainTrapBlockEntity>> CHAIN_TRAP_BLOCK_ENTITY = BLOCK_ENTITIES.register("chain_trap", () -> BlockEntityType.Builder.of(ChainTrapBlockEntity::new, CHAIN_TRAP.get()).build(null));
