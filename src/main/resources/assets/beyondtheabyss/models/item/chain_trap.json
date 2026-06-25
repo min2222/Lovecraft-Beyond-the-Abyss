@@ -1,6 +1,5 @@
 {
-    "parent": "builtin/entity",
-    "gui_light": "side",
+	"parent": "beyondtheabyss:block/chain_trap_closed",
     "display": {
         "gui": {
             "rotation": [ 30, 225, 0 ],

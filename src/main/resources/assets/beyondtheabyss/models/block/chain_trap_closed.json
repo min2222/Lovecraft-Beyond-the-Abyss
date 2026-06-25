@@ -1,0 +1,9 @@
+{
+	"loader": "beyondtheabyss:model_part",
+	"model": "chain_trap",
+	"textures": {
+		"particle": "beyondtheabyss:block/chain_trap_particle",
+		"texture": "beyondtheabyss:block/chain_trap_closed"
+	},
+	"render_type": "cutout"
+}

@@ -17,10 +17,9 @@ import com.min01.beyondtheabyss.block.model.GlaringBarnacleModel;
 import com.min01.beyondtheabyss.block.model.LargeSkullModel;
 import com.min01.beyondtheabyss.block.model.RiftwellingAltarModel;
 import com.min01.beyondtheabyss.block.model.SittingSkeletonModel;
+import com.min01.beyondtheabyss.block.model.geometry.ModelPartUnbakedGeometry;
 import com.min01.beyondtheabyss.blockentity.renderer.AnimatableBlockRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.BiocrafterRenderer;
-import com.min01.beyondtheabyss.blockentity.renderer.ChainTrapRenderer;
-import com.min01.beyondtheabyss.block.model.geometry.ModelPartUnbakedGeometry;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.model.ChainTrapChainModel;
@@ -147,7 +146,6 @@ public class ClientEventHandler
 	    	MenuScreens.register(BTAMenuTypes.BIOCRATER.get(), BiocrafterScreen::new);
 	        BlockEntityRenderers.register(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarRenderer::new);
 	        BlockEntityRenderers.register(BTABlocks.ANIMATABLE_BLOCK_ENTITY.get(), AnimatableBlockRenderer::new);
-	        BlockEntityRenderers.register(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), ChainTrapRenderer::new);
 	        BlockEntityRenderers.register(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterRenderer::new);
 	        ItemProperties.register(BTAItems.CLAM_OF_GUIDANCE.get(), ResourceLocation.parse("open"), (pStack, pLevel, pEntity, pSeed) ->
 	        {

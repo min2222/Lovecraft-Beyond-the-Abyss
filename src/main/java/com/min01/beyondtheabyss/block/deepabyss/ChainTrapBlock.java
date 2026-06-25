@@ -78,7 +78,7 @@ public class ChainTrapBlock extends FaceAttachedHorizontalDirectionalBlock imple
 	@Override
 	public RenderShape getRenderShape(BlockState pState)
 	{
-		return RenderShape.ENTITYBLOCK_ANIMATED;
+		return RenderShape.MODEL;
 	}
 	
 	@Override

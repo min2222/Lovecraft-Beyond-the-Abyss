@@ -179,7 +179,7 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
     	
     	if(straight >= 1.0F)
     	{
-    		this.lockBaitChainStraight();
+    		this.lockChain();
     	}
     	
 		DeepAbyssUtil.fishFlopping(this);
@@ -302,7 +302,7 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 		return 0.0F;
 	}
 	
-	private void lockBaitChainStraight()
+	public void lockChain()
 	{
 		float yRot = this.getYRot();
 		float xRot = this.getXRot();

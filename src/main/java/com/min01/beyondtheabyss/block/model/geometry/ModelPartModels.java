@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.block.model.BoneLeverOnModel;
 import com.min01.beyondtheabyss.block.model.BonePilesModel;
 import com.min01.beyondtheabyss.block.model.BoneTorchModel;
 import com.min01.beyondtheabyss.block.model.BoneWallTorchModel;
+import com.min01.beyondtheabyss.block.model.ChainTrapModel;
 import com.min01.beyondtheabyss.block.model.FallenSkeletonModel;
 import com.min01.beyondtheabyss.block.model.FangSkullModel;
 import com.min01.beyondtheabyss.block.model.LargeSkullModel;
@@ -31,6 +32,7 @@ public final class ModelPartModels
 		register("bone_wall_torch", BoneWallTorchModel::createBodyLayer);
 		register("bone_lever", BoneLeverModel::createBodyLayer);
 		register("bone_lever_on", BoneLeverOnModel::createBodyLayer);
+		register("chain_trap", ChainTrapModel::createBodyLayer);
 	}
 	
 	private static void register(String name, Supplier<LayerDefinition> layer)
