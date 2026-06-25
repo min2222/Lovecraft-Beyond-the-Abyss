@@ -200,6 +200,7 @@
 	"enchantment.beyondtheabyss.brittle.desc": "弾丸が割れる時に飛び散る破片の量が増加する",
 	"enchantment.beyondtheabyss.fracture": "骨折",
 	"enchantment.beyondtheabyss.fracture.desc": "破片の耐久性が上がり、別の敵に命中するとさらに小さな破片になり、その度にダメージが減少する。",
+	"gui.beyondtheabyss.dialogue.next": "次へ",
 	"message.beyondtheabyss.mysterious_guy": "???",
 	"message.beyondtheabyss.chat0": "ついに到着したんだな。来ると思っていたよ。",
 	"message.beyondtheabyss.chat1": "あのドラゴンを倒す力...それを目の当たりにすると、尚更驚嘆する。君が成し遂げたのは、単なる一匹の獣を倒しただけではない。",

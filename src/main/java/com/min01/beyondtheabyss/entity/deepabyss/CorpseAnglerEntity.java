@@ -24,6 +24,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -165,7 +166,8 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 		this.worm5.setOldPosAndRot();
 		this.worm6.setOldPosAndRot();
 		
-		float speed = 0.35F;
+		float straight = this.getChainStraightFactor();
+		float speed = 0.35F * (1.0F - straight);
     	WormChain.tick(this.worm, this, 0.0F, speed);
     	WormChain.tick(this.worm1, this.worm, 0.0F, speed);
     	WormChain.tick(this.worm2, this.worm1, 0.0F, speed);
@@ -175,11 +177,16 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
     	WormChain.tick(this.worm5, this.worm4, 0.0F, speed);
     	WormChain.tick(this.worm6, this.worm5, 0.0F, speed);
     	
+    	if(straight >= 1.0F)
+    	{
+    		this.lockBaitChainStraight();
+    	}
+    	
 		DeepAbyssUtil.fishFlopping(this);
 		
 		if(this.level.isClientSide)
 		{
-			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
+			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater() && !this.isBurrow(), this.tickCount);
 			this.openMouthAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
 			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3 || this.entityData.get(IS_BURROW), this.tickCount);
 			this.unburrowAnimationState.updateWhen(this.getAnimationState() == 4, this.tickCount);
@@ -275,6 +282,40 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 	public boolean canLook() 
 	{
 		return super.canLook() && !this.isBurrow();
+	}
+	
+	public float getChainStraightFactor()
+	{
+		int state = this.getAnimationState();
+		if(state == 3)
+		{
+			return Mth.clamp((40 - this.getAnimationTick()) / 40.0F, 0.0F, 1.0F);
+		}
+		if(state == 4)
+		{
+			return Mth.clamp(this.getAnimationTick() / 20.0F, 0.0F, 1.0F);
+		}
+		if(this.entityData.get(IS_BURROW))
+		{
+			return 1.0F;
+		}
+		return 0.0F;
+	}
+	
+	private void lockBaitChainStraight()
+	{
+		float yRot = this.getYRot();
+		float xRot = this.getXRot();
+		Worm[] worms = { this.worm, this.worm1, this.worm2, this.worm3, this.worm4, this.worm5, this.worm6 };
+		for(Worm worm : worms)
+		{
+			worm.setYRot(yRot);
+			worm.setXRot(xRot);
+			worm.setYBodyRot(yRot);
+			worm.yRotO = yRot;
+			worm.xRotO = xRot;
+			worm.yBodyRotO = yRot;
+		}
 	}
 	
 	public static boolean checkCorpseAnglerSpawnRules(EntityType<? extends AbstractBTAMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 

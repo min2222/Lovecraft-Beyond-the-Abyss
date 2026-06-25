@@ -297,21 +297,22 @@ public class MutavoreEntity extends AbstractBTAMonster
 	{
 		if(this.hasCyst(type))
 		{
-			this.getCyst().putBoolean("Cyst" + type, true);
+	        CompoundTag tag = this.getCyst().copy();
+	        tag.putBoolean("Cyst" + type, true);
+	        this.setCyst(tag);
 		}
 	}
 	
 	public boolean isMutated(MutationType type)
 	{
-		return this.getMutation().contains(type.name);
+	    return this.getMutation().getBoolean(type.name);
 	}
 	
 	public void doMutation(MutationType type, boolean mutate)
 	{
-		if(!this.isMutated(type))
-		{
-			this.getMutation().putBoolean(type.name, mutate);
-		}
+	    CompoundTag tag = this.getMutation().copy();
+	    tag.putBoolean(type.name, mutate);
+	    this.setMutation(tag);
 	}
 	
 	public void setConsume(boolean value)
@@ -326,7 +327,7 @@ public class MutavoreEntity extends AbstractBTAMonster
 	
 	public void setCyst(CompoundTag tag)
 	{
-		this.entityData.set(CYST, tag);
+		this.entityData.set(CYST, tag.copy());
 	}
 	
 	public CompoundTag getCyst()
@@ -336,7 +337,7 @@ public class MutavoreEntity extends AbstractBTAMonster
 	
 	public void setMutation(CompoundTag tag)
 	{
-		this.entityData.set(MUTATION, tag);
+		this.entityData.set(MUTATION, tag.copy());
 	}
 	
 	public CompoundTag getMutation()

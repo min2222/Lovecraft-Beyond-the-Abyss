@@ -200,6 +200,7 @@
 	"enchantment.beyondtheabyss.brittle.desc": "The amount of shrapnel when the bullet break will be increased.",
 	"enchantment.beyondtheabyss.fracture": "Fracture",
 	"enchantment.beyondtheabyss.fracture.desc": "Shrapnel is more durable can break again after hitting another mob into smaller shrapnel, each time decreasing the damage.",
+	"gui.beyondtheabyss.dialogue.next": "Next",
 	"message.beyondtheabyss.mysterious_guy": "???",
 	"message.beyondtheabyss.chat0": "So, you have arrived. I knew you would come.",
 	"message.beyondtheabyss.chat1": "The strength to fell that great dragon... To witness it firsthand is more astonishing still. What you have accomplished was not the mere slaying of a single beast.",

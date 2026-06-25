@@ -112,8 +112,7 @@ public class CorpseAnglerModel extends HierarchicalModel<CorpseAnglerEntity>
 		float partialTicks = ageInTicks - entity.tickCount;
         float yBodyRot = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
 		boolean isBurrow = entity.isBurrow();
-		int tick = 40 - entity.getAnimationTick();
-		float yRot = entity.isBurrow() ? Mth.lerp(tick / 40.0F, 0.0F, 42.5F) : 0.0F;
+		float straight = entity.getChainStraightFactor();
         ModelPart root = this.root.getChild("corpse_angler");
 		ModelPart angler = root.getChild("angler");
         ModelPart part1 = angler.getChild("1");
@@ -123,6 +122,18 @@ public class CorpseAnglerModel extends HierarchicalModel<CorpseAnglerEntity>
         ModelPart part5 = part4.getChild("5");
         ModelPart part6 = part5.getChild("6");
         ModelPart bait = part6.getChild("Bait").getChild("Gnasher");
+		BTAClientUtil.animateHead(root, netHeadYaw, headPitch);
+		bait.visible = isBurrow;
+		float swimAmount = isBurrow ? 0.0F : limbSwingAmount;
+		float swimSwing = isBurrow ? 0.0F : limbSwing;
+		
+		entity.idleAnimationState.animateIdle(this, CorpseAnglerAnimation.CORPSE_ANGLER_IDLE, ageInTicks, swimAmount, 1.5F);
+		entity.openMouthAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_OPEN_MOUTH, ageInTicks);
+		entity.burrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_BURROW, ageInTicks);
+		entity.unburrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_UNBURROW, ageInTicks);
+		entity.ambushAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_AMBUSH, ageInTicks);
+		this.animateWalk(CorpseAnglerAnimation.CORPSE_ANGLER_SWIM, swimSwing, swimAmount, 2.5F, 1.5F);
+		
 		Vec2 rot = entity.worm.getRot(partialTicks);
 		Vec2 rot1 = entity.worm1.getRot(partialTicks);
 		Vec2 rot2 = entity.worm2.getRot(partialTicks);
@@ -130,22 +141,23 @@ public class CorpseAnglerModel extends HierarchicalModel<CorpseAnglerEntity>
 		Vec2 rot4 = entity.worm4.getRot(partialTicks);
 		Vec2 rot5 = entity.worm5.getRot(partialTicks);
 		Vec2 rot6 = entity.worm6.getRot(partialTicks);
-		BTAClientUtil.animateHead(root, netHeadYaw, headPitch);
-		BTAClientUtil.animateHead(angler, rot.y - netHeadYaw - yBodyRot, rot.x - headPitch + yRot);
-		BTAClientUtil.animateHead(part1, rot1.y - netHeadYaw - yBodyRot, rot1.x - headPitch);
-		BTAClientUtil.animateHead(part2, rot2.y - netHeadYaw - yBodyRot, rot2.x - headPitch);
-		BTAClientUtil.animateHead(part3, rot3.y - netHeadYaw - yBodyRot, rot3.x - headPitch);
-		BTAClientUtil.animateHead(part4, rot4.y - netHeadYaw - yBodyRot, rot4.x - headPitch);
-		BTAClientUtil.animateHead(part5, rot5.y - netHeadYaw - yBodyRot, rot5.x - headPitch);
-		BTAClientUtil.animateHead(part6, rot6.y - netHeadYaw - yBodyRot, rot6.x - headPitch);
-		bait.visible = isBurrow;
-		
-		entity.idleAnimationState.animateIdle(this, CorpseAnglerAnimation.CORPSE_ANGLER_IDLE, ageInTicks, limbSwingAmount, 1.5F);
-		entity.openMouthAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_OPEN_MOUTH, ageInTicks);
-		entity.burrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_BURROW, ageInTicks);
-		entity.unburrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_UNBURROW, ageInTicks);
-		entity.ambushAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_AMBUSH, ageInTicks);
-		this.animateWalk(CorpseAnglerAnimation.CORPSE_ANGLER_SWIM, limbSwing, limbSwingAmount, 2.5F, 1.5F);
+		float bodyYaw = -netHeadYaw - yBodyRot;
+		float bodyPitch = -headPitch;
+		float parentCompensatePitch = (float)Math.toDegrees(-root.xRot);
+		float anglerSwimYaw = rot.y + bodyYaw;
+		float anglerSwimPitch = rot.x + bodyPitch;
+		BTAClientUtil.animateHead(angler, Mth.lerp(straight, anglerSwimYaw, 0.0F), Mth.lerp(straight, anglerSwimPitch, parentCompensatePitch));
+		this.animateChainPart(part1, straight, rot1.y + bodyYaw, rot1.x + bodyPitch);
+		this.animateChainPart(part2, straight, rot2.y + bodyYaw, rot2.x + bodyPitch);
+		this.animateChainPart(part3, straight, rot3.y + bodyYaw, rot3.x + bodyPitch);
+		this.animateChainPart(part4, straight, rot4.y + bodyYaw, rot4.x + bodyPitch);
+		this.animateChainPart(part5, straight, rot5.y + bodyYaw, rot5.x + bodyPitch);
+		this.animateChainPart(part6, straight, rot6.y + bodyYaw, rot6.x + bodyPitch);
+	}
+	
+	private void animateChainPart(ModelPart part, float straight, float swimYaw, float swimPitch)
+	{
+		BTAClientUtil.animateHead(part, Mth.lerp(straight, swimYaw, 0.0F), Mth.lerp(straight, swimPitch, 0.0F));
 	}
 	
 	@Override
