@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity.HeadType;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 public class SiamserpentSlasherSlashGoal extends AbstractSiamserpentSkillGoal
 {
@@ -28,7 +27,7 @@ public class SiamserpentSlasherSlashGoal extends AbstractSiamserpentSkillGoal
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4) && this.mob.getHeadType() == HeadType.SLASHER && this.isOtherHeadDormant();
+		return super.canUse() && this.mob.isWithinMeleeAttackRange(this.mob.getTarget()) && this.mob.getHeadType() == HeadType.SLASHER && this.isOtherHeadDormant();
 	}
 
 	@Override
@@ -36,7 +35,7 @@ public class SiamserpentSlasherSlashGoal extends AbstractSiamserpentSkillGoal
 	{
 		if(this.mob.getTarget() != null)
 		{
-			if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4))
+			if(this.mob.isWithinMeleeAttackRange(this.mob.getTarget()))
 			{
 				this.mob.doHurtTarget(this.mob.getTarget());
 			}

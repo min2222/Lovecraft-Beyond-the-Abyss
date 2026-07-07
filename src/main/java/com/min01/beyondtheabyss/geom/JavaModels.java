@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.block.model.geometry;
+package com.min01.beyondtheabyss.geom;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ import com.min01.beyondtheabyss.block.model.SittingSkeletonModel;
 
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
-public final class ModelPartModels
+public final class JavaModels
 {
 	private static final Map<String, Supplier<LayerDefinition>> LAYERS = new HashMap<>();
 
@@ -35,7 +35,7 @@ public final class ModelPartModels
 		register("chain_trap", ChainTrapModel::createBodyLayer);
 	}
 	
-	private static void register(String name, Supplier<LayerDefinition> layer)
+	public static void register(String name, Supplier<LayerDefinition> layer)
 	{
 		LAYERS.put(name, layer);
 	}

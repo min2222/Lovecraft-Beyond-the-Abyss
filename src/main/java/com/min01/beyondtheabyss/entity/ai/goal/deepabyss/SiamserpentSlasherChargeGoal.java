@@ -47,7 +47,7 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 			this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), this.mob.getLastLookPos(), 1.5F));
 			if(this.mob.getTarget() != null)
 			{
-				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 4))
+				if(this.mob.isWithinMeleeAttackRange(this.mob.getTarget()))
 				{
 					this.mob.doHurtTarget(this.mob.getTarget());
 				}

@@ -35,6 +35,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -178,11 +179,17 @@ public class SiamserpentHeadEntity extends AbstractSiamserpentPart
 	}
 	
 	@Override
+	public double getMeleeAttackRangeSqr(LivingEntity pEntity)
+	{
+		return (double)(this.getBbWidth() * 4.0F * this.getBbWidth() * 4.0F + pEntity.getBbWidth());
+	}
+	
+	@Override
 	public void moveToTarget() 
 	{
 		if(this.tickCount % 60 == 0)
 		{
-			Vec3 spreadPos = BTAUtil.getSpreadPosition(this.level, this.getTarget().position(), 15);
+			Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.getTarget().position(), new Vec3(15, 15, 15));
 			this.getNavigation().moveTo(spreadPos.x, spreadPos.y, spreadPos.z, 1.5F);
 		}
 	}

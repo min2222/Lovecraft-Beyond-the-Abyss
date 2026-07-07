@@ -119,13 +119,13 @@ public class NecroshellModel extends HierarchicalModel<NecroshellEntity>
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.BlasterSkull.visible = entity.isBlasterShell();
 		this.SlasherSkull.visible = entity.isSlasherShell();
-		entity.idleAnimationState.animateIdle(this, NecroshellAnimation.NECROSHELL_IDLE, ageInTicks, limbSwingAmount, 2.5F);
+		entity.idleAnimationState.animateIdle(this, NecroshellAnimation.NECROSHELL_IDLE, ageInTicks, limbSwingAmount, entity.animationEntries.walkEntries);
 		entity.attackAnimationState.animate(this, NecroshellAnimation.NECROSHELL_ATTACK, ageInTicks);
 		entity.intimidateAnimationState.animate(this, NecroshellAnimation.NECROSHELL_INTIMIDATE, ageInTicks);
 		entity.hideAnimationState.animate(this, NecroshellAnimation.NECROSHELL_HIDE, ageInTicks);
 		entity.unhideAnimationState.animate(this, NecroshellAnimation.NECROSHELL_UNHIDE, ageInTicks);
 		
-		this.animateWalk(NecroshellAnimation.NECROSHELL_WALK, limbSwing, limbSwingAmount, 2.5F, 2.5F);
+		entity.walkAnimationState.animateWalk(this, NecroshellAnimation.NECROSHELL_WALK, limbSwing, limbSwingAmount, 2.5F, 2.5F);
 	}
 	
 	@Override

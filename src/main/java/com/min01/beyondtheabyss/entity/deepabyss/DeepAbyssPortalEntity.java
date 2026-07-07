@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 import java.util.List;
 
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
@@ -202,7 +203,7 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
 		{
 			blockPos = blockPos.offset(-dist, 0, -dist);
 		}
-		blockPos = BTAUtil.getGroundPos(this.level, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+		blockPos = BTAUtil.getPosition(this.level, Vec3.atBottomCenterOf(blockPos), PositionTypes.GROUND);
 		return Vec3.atCenterOf(blockPos.above());
 	}
     

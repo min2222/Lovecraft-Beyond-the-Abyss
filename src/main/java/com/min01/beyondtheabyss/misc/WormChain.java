@@ -1,9 +1,14 @@
 package com.min01.beyondtheabyss.misc;
 
+import com.min01.beyondtheabyss.util.BTAClientUtil;
+
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class WormChain 
 {
@@ -210,4 +215,88 @@ public class WormChain
     		this.yBodyRot = yBodyRot;
     	}
     }
+    
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWormHead(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWormHead(entity, false, 0.0F, ageInTicks, worms, bones);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWormHeadXRot(LivingEntity entity, float xRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWormHead(entity, true, xRot, ageInTicks, worms, bones);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWormHeadXRot(LivingEntity entity, boolean animateXRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWormHead(entity, animateXRot, Mth.lerp(ageInTicks - entity.tickCount, entity.xRotO, entity.getXRot()), ageInTicks, worms, bones);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWormHeadXRot(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWormHead(entity, true, Mth.lerp(ageInTicks - entity.tickCount, entity.xRotO, entity.getXRot()), ageInTicks, worms, bones);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWorm(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWorm(entity, false, 0.0F, ageInTicks, worms, bones);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWormXRot(LivingEntity entity, float xRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWorm(entity, true, xRot, ageInTicks, worms, bones);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWormXRot(LivingEntity entity, boolean animateXRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWorm(entity, animateXRot, Mth.lerp(ageInTicks - entity.tickCount, entity.xRotO, entity.getXRot()), ageInTicks, worms, bones);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWormXRot(LivingEntity entity, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		animateWorm(entity, true, Mth.lerp(ageInTicks - entity.tickCount, entity.xRotO, entity.getXRot()), ageInTicks, worms, bones);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWormHead(LivingEntity entity, boolean animateXRot, float xRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		float partialTicks = ageInTicks - entity.tickCount;
+	    float yBodyRot = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
+	    float prevYRot = 0.0F;
+	    float prevXRot = 0.0F;
+	    for(int i = 0; i < worms.length; i++)
+	    {
+	        Vec2 rot = worms[i].getRot(partialTicks);
+	        float yRot = rot.y - yBodyRot;
+	        float xRot1 = rot.x - xRot;
+	        BTAClientUtil.animateHead(bones[i], -yRot - prevYRot, animateXRot ? -xRot1 - prevXRot : 0.0F);
+	        prevYRot = -yRot;
+	        prevXRot = -xRot1;
+	    }
+	}
+    
+	@OnlyIn(Dist.CLIENT)
+	public static void animateWorm(LivingEntity entity, boolean animateXRot, float xRot, float ageInTicks, Worm[] worms, ModelPart[] bones)
+	{
+		float partialTicks = ageInTicks - entity.tickCount;
+	    float yBodyRot = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
+	    float prevYRot = 0.0F;
+	    float prevXRot = 0.0F;
+	    for(int i = 0; i < worms.length; i++)
+	    {
+	        Vec2 rot = worms[i].getRot(partialTicks);
+	        float yRot = rot.y - yBodyRot;
+	        float xRot1 = rot.x - xRot;
+	        BTAClientUtil.animateHead(bones[i], yRot - prevYRot, animateXRot ? xRot1 - prevXRot : 0.0F);
+	        prevYRot = yRot;
+	        prevXRot = xRot1;
+	    }
+	}
 }

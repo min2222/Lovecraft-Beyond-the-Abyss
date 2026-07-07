@@ -1,111 +1,33 @@
 package com.min01.beyondtheabyss.mixin;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
-import com.min01.beyondtheabyss.animation.PlayerAnimation;
-import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
-import com.min01.beyondtheabyss.item.BTAItems;
-import com.min01.beyondtheabyss.misc.SmoothAnimationState;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.util.BTAUtil;
+import com.min01.beyondtheabyss.animation.PlayerAnimations;
 
-import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
-@Mixin(value = PlayerModel.class, priority = -10000)
-public class MixinPlayerModel<T extends LivingEntity> implements IHierarchicalPlayerModel<T>
+@Mixin(PlayerModel.class)
+public class MixinPlayerModel<T extends LivingEntity>
 {
-	private Map<String, Pair<ModelPart, ModelPart>> modelMap = new HashMap<>();
-	
     @Inject(at = @At("HEAD"), method = "setupAnim", cancellable = true)
     private void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {	
-    	this.setupMap();
+    	PlayerModel<?> model = ((PlayerModel<?>) (Object) this);
+    	PlayerAnimations.setupMap(model);
     }
     
     @Inject(at = @At("TAIL"), method = "setupAnim", cancellable = true)
     private void setupAnimTail(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci)
     {
-    	PlayerAnimationCapabilityImpl cap = BTAUtil.getPlayerAnimationCapability(entity);
-    	this.animate(entity, cap.gunbladeChargeAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
-    	this.animate(entity, cap.gunbladeShootAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
-    	this.animate(entity, cap.gunbladeSwingAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
-    	
-    	if(entity.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && (BTAUtil.getPlayerAnimationState(entity) == 3 || BTAUtil.getPlayerAnimationState(entity) == 4))
+    	PlayerModel<?> model = ((PlayerModel<?>) (Object) this);
+    	if(entity instanceof Player player)
     	{
-    		ModelPart head = PlayerModel.class.cast(this).head;
-    		Pair<ModelPart, ModelPart> left = this.modelMap.get("LeftArm");
-    		Pair<ModelPart, ModelPart> right = this.modelMap.get("RightArm");
-    		BTAClientUtil.copyRotFrom(left.getLeft(), head, true);
-    		BTAClientUtil.copyRotFrom(left.getRight(), head, true);
-    		BTAClientUtil.copyRotFrom(right.getLeft(), head, false);
-    		BTAClientUtil.copyRotFrom(right.getRight(), head, false);
+        	PlayerAnimations.animatePlayer(model, player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     	}
     }
-    
-    @Override
-    public void setupAnimFirstPerson(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) 
-    {
-    	this.setupMap();
-    	PlayerAnimationCapabilityImpl cap = BTAUtil.getPlayerAnimationCapability(entity);
-    	this.animate(entity, cap.shotgunFireAnimationState, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_FIRE, ageInTicks);
-    	this.animate(entity, cap.shotgunHoldAnimationState, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD, ageInTicks);
-    	this.animate(entity, cap.shotgunRunningAnimationState, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_RUNNING, ageInTicks);
-    	this.animate(entity, cap.gunbladeChargeAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, ageInTicks);
-    	this.animate(entity, cap.gunbladeShootAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, ageInTicks);
-    	this.animate(entity, cap.gunbladeSwingAnimationState, PlayerAnimation.SkeletalGunbladeAnimation.SWING, ageInTicks);
-    }
-    
-	@Override
-	public ModelPart root() 
-	{
-		return BTAClientUtil.MC.getEntityModels().bakeLayer(ModelLayers.PLAYER);
-	}
-
-	@Override
-	public Optional<Pair<ModelPart, ModelPart>> getAnyDescendantWithName(String name) 
-	{
-		return this.root().getAllParts().findFirst().map(t ->
-		{
-			return this.modelMap.get(name);
-		});
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void animate(T entity, SmoothAnimationState state, AnimationDefinition definition, float ageInTicks)
-	{
-		state.animatePlayer(PlayerModel.class.cast(this), definition, ageInTicks);
-	}
-	
-	public void setupMap()
-	{
-    	if(this.modelMap.isEmpty())
-    	{
-    		this.modelMap.put("Head", Pair.of(PlayerModel.class.cast(this).head, PlayerModel.class.cast(this).hat));
-    		this.modelMap.put("Body", Pair.of(PlayerModel.class.cast(this).body, PlayerModel.class.cast(this).jacket));
-    		this.modelMap.put("LeftArm", Pair.of(PlayerModel.class.cast(this).leftArm, PlayerModel.class.cast(this).leftSleeve));
-    		this.modelMap.put("RightArm", Pair.of(PlayerModel.class.cast(this).rightArm, PlayerModel.class.cast(this).rightSleeve));
-    		this.modelMap.put("LeftLeg", Pair.of(PlayerModel.class.cast(this).leftLeg, PlayerModel.class.cast(this).leftPants));
-    		this.modelMap.put("RightLeg", Pair.of(PlayerModel.class.cast(this).rightLeg, PlayerModel.class.cast(this).rightPants));
-    	}
-    	
-    	this.modelMap.values().forEach(t ->
-    	{
-    		t.getLeft().resetPose();
-    		t.getRight().resetPose();
-    	});
-	}
 }

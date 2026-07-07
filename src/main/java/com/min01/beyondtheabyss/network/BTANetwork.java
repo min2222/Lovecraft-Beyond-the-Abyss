@@ -21,7 +21,7 @@ public class BTANetwork
 	public static int ID = 0;
 	public static void registerMessages()
 	{
-		CHANNEL.registerMessage(ID++, UpdatePosArrayPacket.class, UpdatePosArrayPacket::write, UpdatePosArrayPacket::read, UpdatePosArrayPacket::handle);
+		CHANNEL.registerMessage(ID++, UpdateModelPositionPacket.class, UpdateModelPositionPacket::write, UpdateModelPositionPacket::read, UpdateModelPositionPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateAltarItemPacket.class, UpdateAltarItemPacket::write, UpdateAltarItemPacket::read, UpdateAltarItemPacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateVehiclePacket.class, UpdateVehiclePacket::write, UpdateVehiclePacket::read, UpdateVehiclePacket::handle);
 		CHANNEL.registerMessage(ID++, UpdateItemAnimationPacket.class, UpdateItemAnimationPacket::write, UpdateItemAnimationPacket::read, UpdateItemAnimationPacket::handle);

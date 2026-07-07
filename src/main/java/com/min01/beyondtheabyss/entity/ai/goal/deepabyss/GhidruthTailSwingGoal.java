@@ -38,17 +38,14 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 	@Override
 	public void performSkill() 
 	{
-		if(this.mob.posArray[0] != null)
+		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(8.0F), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(t -> t != this.mob && !t.isAlliedTo(this.mob)));
+		list.forEach(t -> 
 		{
-			List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(8.0F), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(t -> t != this.mob && !t.isAlliedTo(this.mob)));
-			list.forEach(t -> 
+			if(this.mob.doHurtTarget(t))
 			{
-				if(this.mob.doHurtTarget(t))
-				{
-					t.addDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), t.position(), 4.5F));
-				}
-			});
-		}
+				t.addDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), t.position(), 4.5F));
+			}
+		});
 	}
 	
 	@Override

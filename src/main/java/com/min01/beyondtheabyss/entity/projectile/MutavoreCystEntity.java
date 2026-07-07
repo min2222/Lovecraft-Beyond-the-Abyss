@@ -132,7 +132,7 @@ public class MutavoreCystEntity extends AbstractOwnableEntity<MutavoreEntity>
 		});
 		for(int i = 0; i < 20; i++)
 		{
-			Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 2);
+			Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.position(), new Vec3(2, 2, 2));
 			MutavoreCystEntity cyst = new MutavoreCystEntity(BTAEntities.MUTAVORE_CYST.get(), this.level);
 			if(this.getOwner() != null)
 			{

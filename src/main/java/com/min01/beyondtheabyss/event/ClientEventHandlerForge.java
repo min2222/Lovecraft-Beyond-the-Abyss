@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.animation.IHierarchicalPlayerModel;
+import com.min01.beyondtheabyss.animation.PlayerAnimations;
 import com.min01.beyondtheabyss.config.BTAConfig;
 import com.min01.beyondtheabyss.entity.BTACameraShakeEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
+import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
+import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer.SubmarineTransform;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.misc.BTABossBar;
@@ -23,9 +25,11 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -89,9 +93,25 @@ public class ClientEventHandlerForge
                 event.setRoll((float)(event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0F) * 25.0));
         	}
         	
-            if(player.getVehicle() instanceof SubmarineEntity && event.getCamera().isDetached())
+            if(player.getVehicle() instanceof SubmarineEntity submarine)
             {
-        		event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
+            	if(event.getCamera().isDetached())
+            	{
+            		event.getCamera().move(-event.getCamera().getMaxZoom(15.0F), event.getCamera().getMaxZoom(2.0F), 0);
+            	}
+            	else
+            	{
+            	    EntityRenderer<?> renderer = BTAClientUtil.MC.getEntityRenderDispatcher().getRenderer(submarine);
+            	    if(renderer instanceof SubmarineRenderer submarineRenderer) 
+            	    {
+            			float yRot = Mth.rotLerp(delta, submarine.yRotO, submarine.getYRot());
+            			float xRot = Mth.lerp(delta, submarine.xRotO, submarine.getXRot());
+            			SubmarineTransform transform = submarineRenderer.buildTransform(submarine, yRot, xRot);
+            			
+            	        event.setYaw(event.getYaw() + transform.yaw());
+            	        event.setPitch(event.getPitch() + transform.pitch());
+            	    }
+            	}
             }
         }
     }
@@ -105,12 +125,12 @@ public class ClientEventHandlerForge
     	{
     		if(player.isHolding(BTAItems.SKELETAL_GUNBLADE.get()))
     		{
-    			if(BTAUtil.getPlayerAnimationState(player) == 4)
+    			if(PlayerAnimations.getPlayerAnimationState(player) == 4)
     			{
             		input.leftImpulse *= 0.2F;
             		input.forwardImpulse *= 0.2F;
     			}
-    			if(BTAUtil.getPlayerAnimationState(player) == 5)
+    			if(PlayerAnimations.getPlayerAnimationState(player) == 5)
     			{
             		input.leftImpulse *= 0.0F;
             		input.forwardImpulse *= 0.0F;
@@ -131,8 +151,8 @@ public class ClientEventHandlerForge
     		}
     	}
     }
-    
-	@SubscribeEvent
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onRenderHand(RenderHandEvent event)
 	{
 		AbstractClientPlayer player = BTAClientUtil.MC.player;
@@ -156,7 +176,6 @@ public class ClientEventHandlerForge
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void renderPlayerArm(AbstractClientPlayer player, PoseStack stack, MultiBufferSource bufferSource, int packedLight, HumanoidArm arm, ItemStack itemStack, IAnimatableItem item, float partialTicks)
 	{
 		stack.pushPose();
@@ -166,7 +185,7 @@ public class ClientEventHandlerForge
 		PlayerRenderer renderer = (PlayerRenderer) BTAClientUtil.MC.getEntityRenderDispatcher().<AbstractClientPlayer>getRenderer(player);
 		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 		stack.translate(offset.x / 16.0F, offset.y / 16.0F, offset.z / 16.0F);
-		((IHierarchicalPlayerModel<Player>) renderer.getModel()).setupAnimFirstPerson(player, 0, 0, player.tickCount + partialTicks, 0, 0);
+		PlayerAnimations.animatePlayerFirstPerson(renderer.getModel(), player, 0, 0, player.tickCount + partialTicks, 0, 0);
 		if(flag)
 		{
 			stack.pushPose();

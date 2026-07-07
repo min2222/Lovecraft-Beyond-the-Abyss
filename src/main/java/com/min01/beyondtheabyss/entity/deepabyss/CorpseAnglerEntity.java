@@ -7,6 +7,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerAmbushGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.CorpseAnglerDashGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
@@ -30,6 +31,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -47,6 +49,7 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 	public static final EntityDataAccessor<Boolean> IS_BURROW = SynchedEntityData.defineId(CorpseAnglerEntity.class, EntityDataSerializers.BOOLEAN);
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState swimAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState openMouthAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState burrowAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState unburrowAnimationState = new SmoothAnimationState();
@@ -63,7 +66,9 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 	public CorpseAnglerEntity(EntityType<? extends AbstractBTAMonster> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
-		this.posArray = new Vec3[1];
+		this.animationEntries.addWalkEntry(this.swimAnimationState, 1.5F);
+		this.animationEntries.addExtraEntry(this.burrowAnimationState);
+		this.modelPositions.addModelPos("Gnasher", Vec3.ZERO);
 		this.xpReward = this.random.nextInt(20);
 		this.noCulling = true;
 	}
@@ -187,6 +192,7 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 		if(this.level.isClientSide)
 		{
 			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater() && !this.isBurrow(), this.tickCount);
+    		this.swimAnimationState.updateWhen(this.isInWater() && !this.isBurrow(), this.tickCount);
 			this.openMouthAnimationState.updateWhen(this.getAnimationState() == 1, this.tickCount);
 			this.burrowAnimationState.updateWhen(this.getAnimationState() == 3 || this.entityData.get(IS_BURROW), this.tickCount);
 			this.unburrowAnimationState.updateWhen(this.getAnimationState() == 4, this.tickCount);
@@ -208,7 +214,7 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 				}
 				else
 				{
-					BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
+					BlockPos floorPos = BTAUtil.getPosition(this.level, this.position(), PositionTypes.GROUND);
 					Vec3 pos = Vec3.atBottomCenterOf(floorPos);
 					boolean flag = this.position().distanceTo(pos) <= 12.0F;
 					if(flag)
@@ -242,6 +248,21 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 		{
 			this.spawnParticle();
 		}
+	}
+	
+	@Override
+	public double getMeleeAttackRangeSqr(LivingEntity pEntity)
+	{
+		float scale = 2.0F;
+		if(this.getAnimationState() == 1)
+		{
+			scale = 2.5F;
+		}
+		if(this.getAnimationState() == 5)
+		{
+			scale = 3.5F;
+		}
+		return (double)(this.getBbWidth() * scale * this.getBbWidth() * scale + pEntity.getBbWidth());
 	}
 	
 	@Override
@@ -329,7 +350,7 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 	{
 		if(pReason == MobSpawnType.NATURAL)
 		{
-			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
+			BlockPos floorPos = BTAUtil.getPosition(this.level, this.position(), PositionTypes.GROUND);
 			Vec3 pos = Vec3.atBottomCenterOf(floorPos.above());
 			this.moveTo(pos);
 		}

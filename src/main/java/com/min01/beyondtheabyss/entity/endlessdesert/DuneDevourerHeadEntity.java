@@ -8,9 +8,11 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -91,16 +93,16 @@ public class DuneDevourerHeadEntity extends AbstractDuneDevourerPart
 			{
 				if(!this.getBlockStateOn().isAir())
 				{
-					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
-					Vec3 groundPos = BTAUtil.getGroundPosVec3(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
-					this.setWantedPos(groundPos.add(0, 20, 0));
+					Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.position(), new Vec3(250, 250, 250));
+					BlockPos groundPos = BTAUtil.getPosition(this.level, new Vec3(spreadPos.x, this.getY() + 100, spreadPos.z), PositionTypes.GROUND);
+					this.setWantedPos(Vec3.atCenterOf(groundPos).add(0, 20, 0));
 					BTACameraShakeEntity.cameraShake(this.level, this.position(), 150.0F, 0.15F, 0, 20);
 				}
 				else
 				{
-					Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
-					Vec3 groundPos = BTAUtil.getGroundPosVec3(this.level, spreadPos.x, this.getY() + 100, spreadPos.z);
-					this.setWantedPos(groundPos.subtract(0, 80, 0));
+					Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.position(), new Vec3(250, 250, 250));
+					BlockPos groundPos = BTAUtil.getPosition(this.level, new Vec3(spreadPos.x, this.getY() + 100, spreadPos.z), PositionTypes.GROUND);
+					this.setWantedPos(Vec3.atCenterOf(groundPos).subtract(0, 80, 0));
 					BTACameraShakeEntity.cameraShake(this.level, this.position(), 150.0F, 0.15F, 0, 20);
 				}
 			}

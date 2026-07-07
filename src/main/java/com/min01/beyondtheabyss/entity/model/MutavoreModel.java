@@ -255,7 +255,7 @@ public class MutavoreModel extends HierarchicalModel<MutavoreEntity>
 		this.mine3.visible = entity.hasCyst(2) && (entity.isMutated(MutationType.MUTATE3) || entity.isMutated(MutationType.MUTATE4));
 		this.mine4.visible = entity.hasCyst(3) && entity.isMutated(MutationType.MUTATE4);
 		
-		entity.idleAnimationState.animateIdle(this, MutavoreAnimation.MUTAVORE_IDLE, ageInTicks, limbSwingAmount, 1.5F);
+		entity.idleAnimationState.animateIdle(this, MutavoreAnimation.MUTAVORE_IDLE, ageInTicks, limbSwingAmount, entity.animationEntries.walkEntries);
 		entity.bubbleStartAnimationState.animate(this, MutavoreAnimation.MUTAVORE_BUBBLE_START, ageInTicks);
 		entity.bubbleStopAnimationState.animate(this, MutavoreAnimation.MUTAVORE_BUBBLE_STOP, ageInTicks);
 		entity.tongueStartAnimationState.animate(this, MutavoreAnimation.TongueAnimation.MUTAVORE_TONGUE_START, ageInTicks);
@@ -268,7 +268,7 @@ public class MutavoreModel extends HierarchicalModel<MutavoreEntity>
 		entity.mutate3AnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE3, ageInTicks);
 		entity.mutate4AnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE4, ageInTicks);
 		entity.mutateHeadAnimationState.animate(this, MutavoreAnimation.MutationAnimation.MUTATE_HEAD, ageInTicks);
-		this.animateWalk(MutavoreAnimation.MUTAVORE_SWIM, limbSwing, limbSwingAmount, 2.5F, 1.5F);
+		entity.swimAnimationState.animateWalk(this, MutavoreAnimation.MUTAVORE_SWIM, limbSwing, limbSwingAmount, 2.5F, 1.5F);
 	}
 	
 	@Override

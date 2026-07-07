@@ -3,7 +3,6 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.GnasherEntity;
 import com.min01.beyondtheabyss.sound.BTASounds;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 public class GnasherBiteGoal extends AbstractAnimationGoal<GnasherEntity>
 {
@@ -22,7 +21,7 @@ public class GnasherBiteGoal extends AbstractAnimationGoal<GnasherEntity>
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F);
+		return super.canUse() && this.mob.isWithinMeleeAttackRange(this.mob.getTarget());
 	}
 
 	@Override
@@ -30,7 +29,7 @@ public class GnasherBiteGoal extends AbstractAnimationGoal<GnasherEntity>
 	{
 		if(this.mob.getTarget() != null)
 		{
-			if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F))
+			if(this.mob.isWithinMeleeAttackRange(this.mob.getTarget()))
 			{
 				this.mob.playSound(BTASounds.GNASHER_BITE.get(), 4.0F, 1.0F);
 				this.mob.doHurtTarget(this.mob.getTarget());

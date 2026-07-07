@@ -22,13 +22,13 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BTAEffects
 {
-	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, BeyondtheAbyss.MODID);
+	public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, BeyondtheAbyss.MODID);
 	public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, BeyondtheAbyss.MODID);
 	
-	public static final RegistryObject<MobEffect> AIR_SWIM = EFFECTS.register("air_swim", () -> new BasicBTAEffect(MobEffectCategory.BENEFICIAL, 3407871));
-	public static final RegistryObject<MobEffect> DISORDER = EFFECTS.register("disorder", () -> new DisorderEffect());
-	public static final RegistryObject<MobEffect> COORDINATION = EFFECTS.register("coordination", () -> new CoordinationEffect());
-	public static final RegistryObject<MobEffect> STONE_SKIN = EFFECTS.register("stone_skin", () -> new StoneSkinEffect());
+	public static final RegistryObject<MobEffect> AIR_SWIM = MOB_EFFECTS.register("air_swim", () -> new BasicBTAEffect(MobEffectCategory.BENEFICIAL, 3407871));
+	public static final RegistryObject<MobEffect> DISORDER = MOB_EFFECTS.register("disorder", () -> new DisorderEffect());
+	public static final RegistryObject<MobEffect> COORDINATION = MOB_EFFECTS.register("coordination", () -> new CoordinationEffect());
+	public static final RegistryObject<MobEffect> STONE_SKIN = MOB_EFFECTS.register("stone_skin", () -> new StoneSkinEffect());
 	
 	public static final RegistryObject<Potion> DISORDER_POTION = POTIONS.register("disorder", () -> new Potion(new MobEffectInstance(DISORDER.get(), 1)));
 	public static final RegistryObject<Potion> STRONG_DISORDER_POTION = POTIONS.register("strong_disorder", () -> new Potion(new MobEffectInstance(DISORDER.get(), 1, 1)));

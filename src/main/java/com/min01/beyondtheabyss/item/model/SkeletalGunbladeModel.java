@@ -1,11 +1,9 @@
 package com.min01.beyondtheabyss.item.model;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
-import com.min01.beyondtheabyss.capabilities.ItemAnimationCapabilityImpl;
-import com.min01.beyondtheabyss.item.animation.SkeletalGunbladeAnimation;
+import com.min01.beyondtheabyss.item.animation.ItemAnimations;
 import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -95,10 +93,7 @@ public class SkeletalGunbladeModel extends HierarchicalItemModel
 	public void setupAnim(ItemStack stack, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		ItemAnimationCapabilityImpl cap = BTAUtil.getItemAnimationCapability(BTAClientUtil.MC.player, stack);
-		
-		this.animate(stack, cap.gunBladeOpenAnimationState, SkeletalGunbladeAnimation.GUNBLADE_OPEN, ageInTicks);
-		this.animate(stack, cap.gunBladeCloseAnimationState, SkeletalGunbladeAnimation.GUNBLADE_CLOSE, ageInTicks);
+		ItemAnimations.animate(stack, this, BTAClientUtil.MC.getPartialTick());
 		this.EnergyRay.zScale += SkeletalGunbladeItem.getLaserLength(stack);
 		this.InnerRay.z += 0.5F;
 	}

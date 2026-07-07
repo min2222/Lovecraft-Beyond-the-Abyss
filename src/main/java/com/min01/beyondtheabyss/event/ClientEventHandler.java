@@ -3,6 +3,8 @@ package com.min01.beyondtheabyss.event;
 import java.util.Objects;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.animation.PlayerAnimation;
+import com.min01.beyondtheabyss.animation.PlayerAnimations;
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.block.model.BiocrafterModel;
 import com.min01.beyondtheabyss.block.model.BoneLeverModel;
@@ -17,7 +19,6 @@ import com.min01.beyondtheabyss.block.model.GlaringBarnacleModel;
 import com.min01.beyondtheabyss.block.model.LargeSkullModel;
 import com.min01.beyondtheabyss.block.model.RiftwellingAltarModel;
 import com.min01.beyondtheabyss.block.model.SittingSkeletonModel;
-import com.min01.beyondtheabyss.block.model.geometry.ModelPartUnbakedGeometry;
 import com.min01.beyondtheabyss.blockentity.renderer.AnimatableBlockRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.BiocrafterRenderer;
 import com.min01.beyondtheabyss.blockentity.renderer.RiftwellingAltarRenderer;
@@ -93,10 +94,16 @@ import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentSlasherRendere
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormHeadRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SplittedFulgastraRenderer;
+import com.min01.beyondtheabyss.geom.JavaModelUnbakedGeometry;
 import com.min01.beyondtheabyss.gui.screen.BiocrafterScreen;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.animation.ClamOfGuidanceAnimation;
+import com.min01.beyondtheabyss.item.animation.ItemAnimations;
+import com.min01.beyondtheabyss.item.animation.SkeletalGunbladeAnimation;
+import com.min01.beyondtheabyss.item.animation.ToothShotgunAnimation;
 import com.min01.beyondtheabyss.item.deepabyss.ClamOfGuidanceItem;
 import com.min01.beyondtheabyss.item.deepabyss.FlashlightItem;
+import com.min01.beyondtheabyss.item.deepabyss.SkeletalGunbladeItem;
 import com.min01.beyondtheabyss.item.model.ClamOfGuidanceModel;
 import com.min01.beyondtheabyss.item.model.FelmetalDiverSetModel;
 import com.min01.beyondtheabyss.item.model.FlashlightModel;
@@ -159,6 +166,20 @@ public class ClientEventHandler
 	        //TODO weather system;
 	        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, () -> BTAShaders.getFog());
 	        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
+	        ItemAnimations.register(BTAItems.CLAM_OF_GUIDANCE.get(), ClamOfGuidanceAnimation.CLAM_OPEN, (t, u) -> ClamOfGuidanceItem.isOpen(u));
+	        ItemAnimations.register(BTAItems.SKELETAL_GUNBLADE.get(), SkeletalGunbladeAnimation.GUNBLADE_OPEN, (t, u) -> SkeletalGunbladeItem.isGunMode(u));
+	        ItemAnimations.register(BTAItems.SKELETAL_GUNBLADE.get(), SkeletalGunbladeAnimation.GUNBLADE_CLOSE, (t, u) -> !SkeletalGunbladeItem.isGunMode(u));
+	        ItemAnimations.register(BTAItems.TOOTH_SHOTGUN.get(), ToothShotgunAnimation.FREAKY, (t, u) -> t == 1);
+	        ItemAnimations.register(BTAItems.TOOTH_SHOTGUN.get(), ToothShotgunAnimation.RELOAD, (t, u) -> t == 2);
+	        ItemAnimations.register(BTAItems.TOOTH_SHOTGUN.get(), ToothShotgunAnimation.SHOOT, (t, u) -> t == 3);
+	        ItemAnimations.register(BTAItems.TOOTH_SHOTGUN.get(), ToothShotgunAnimation.EMPTY, (t, u) -> t == 4);
+	        ItemAnimations.register(BTAItems.TOOTH_SHOTGUN.get(), ToothShotgunAnimation.EMPTY2, (t, u) -> t == 5);
+	        PlayerAnimations.register(true, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_FIRE, (t, u) -> t == 1 && u.isHolding(BTAItems.TOOTH_SHOTGUN.get()));
+	        PlayerAnimations.register(true, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_HOLD, (t, u) -> t == 0 && u.isHolding(BTAItems.TOOTH_SHOTGUN.get()) && !u.isSprinting());
+	        PlayerAnimations.register(true, PlayerAnimation.ToothShotgunAnimation.SHOTGUN_RUNNING, (t, u) -> t == 0 && u.isHolding(BTAItems.TOOTH_SHOTGUN.get()) && u.isSprinting());
+	        PlayerAnimations.register(false, PlayerAnimation.SkeletalGunbladeAnimation.CHARGE, (t, u) -> t == 3 && u.isHolding(BTAItems.SKELETAL_GUNBLADE.get()));
+	        PlayerAnimations.register(false, PlayerAnimation.SkeletalGunbladeAnimation.SHOOT_BEAM, (t, u) -> t == 4 && u.isHolding(BTAItems.SKELETAL_GUNBLADE.get()));
+	        PlayerAnimations.register(false, PlayerAnimation.SkeletalGunbladeAnimation.SWING, (t, u) -> t == 5 && u.isHolding(BTAItems.SKELETAL_GUNBLADE.get()));
 		});
     }
     
@@ -187,7 +208,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void onRegisterGeometryLoaders(ModelEvent.RegisterGeometryLoaders event)
 	{
-		event.register("model_part", ModelPartUnbakedGeometry.Loader.INSTANCE);
+		event.register("java_model", JavaModelUnbakedGeometry.Loader.INSTANCE);
 	}
 	
 	@SubscribeEvent

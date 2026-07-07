@@ -4,9 +4,6 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.CorpseAnglerEntity;
 import com.min01.beyondtheabyss.entity.model.CorpseAnglerModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -14,7 +11,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
 
 public class CorpseAnglerRenderer extends MobRenderer<CorpseAnglerEntity, CorpseAnglerModel>
 {
@@ -28,9 +24,7 @@ public class CorpseAnglerRenderer extends MobRenderer<CorpseAnglerEntity, Corpse
 	public void render(CorpseAnglerEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
 	{
 		super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
-		Vec3 pos = BTAClientUtil.getWorldPosition(pEntity, this.model.root(), new Vec3(0, pEntity.yBodyRot, 0), "corpse_angler", "angler", "1", "2", "3", "4", "5", "6", "Bait", "Gnasher");
-		pEntity.posArray[0] = pos;
-		BTANetwork.sendToServer(new UpdatePosArrayPacket(pEntity.getUUID(), pos, 0));
+		pEntity.modelPositions.setModelPos(pEntity, this.model.root());
 	}
 	
 	@Override

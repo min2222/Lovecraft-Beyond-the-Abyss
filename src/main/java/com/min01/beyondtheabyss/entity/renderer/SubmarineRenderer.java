@@ -1,13 +1,12 @@
 package com.min01.beyondtheabyss.entity.renderer;
 
-import org.joml.Vector4f;
+import org.joml.Matrix3f;
+import org.joml.Vector3f;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
 import com.min01.beyondtheabyss.entity.model.SubmarineModel;
 import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdatePosArrayPacket;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.solomonlib.multipart.IMultiModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,7 +22,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 
 public class SubmarineRenderer extends EntityRenderer<SubmarineEntity> implements IMultiModel<SubmarineEntity>
 {
@@ -62,15 +60,13 @@ public class SubmarineRenderer extends EntityRenderer<SubmarineEntity> implement
 		this.model.setupAnim(pEntity, 0, 0, pEntity.tickCount + pPartialTick, yRot + 180.0F, xRot);
 		this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		pPoseStack.popPose();
-		
-        PoseStack stack = new PoseStack();
+
+        //TODO
+        /*PoseStack stack = new PoseStack();
         stack.scale(-1.0F, -1.0F, 1.0F);
         stack.translate(0.0F, -1.5F, 0.0F);
-        
-		this.model.root.translateAndRotate(stack);
-		this.model.submarine.translateAndRotate(stack);
-		this.model.controller.translateAndRotate(stack);
-		stack.translate(0.0F, 0.25F, 0.0F);
+
+		this.transform(stack);
 
 		stack.mulPose(Axis.XN.rotationDegrees(180.0F));
 		stack.mulPose(Axis.YN.rotationDegrees(360.0F - Mth.lerp(pPartialTick, pEntity.yRotO, pEntity.getYRot())));
@@ -82,7 +78,7 @@ public class SubmarineRenderer extends EntityRenderer<SubmarineEntity> implement
         stack.popPose();
 		
 		pEntity.sitPos[0] = offset.add(pEntity.position());
-		BTANetwork.sendToServer(new UpdatePosArrayPacket(pEntity.getUUID(), offset.add(pEntity.position()), 0));
+		BTANetwork.sendToServer(new UpdatePosArrayPacket(pEntity.getUUID(), offset.add(pEntity.position()), 0));*/
 	}
 	
 	public void transform(PoseStack stack)
@@ -91,6 +87,34 @@ public class SubmarineRenderer extends EntityRenderer<SubmarineEntity> implement
 		this.model.submarine.translateAndRotate(stack);
 		this.model.controller.translateAndRotate(stack);
 		stack.translate(0.0F, 0.25F, 0.0F);
+	}
+	
+	public SubmarineTransform buildTransform(SubmarineEntity entity, float yRot, float xRot) 
+	{
+		PoseStack stack = new PoseStack();
+		stack.scale(-1.0F, -1.0F, 1.0F);
+		stack.translate(0.0F, -1.5F, 0.0F);
+		this.transform(stack);
+		stack.mulPose(Axis.XN.rotationDegrees(180.0F));
+		stack.mulPose(Axis.YN.rotationDegrees(360.0F - yRot));
+		stack.mulPose(Axis.XN.rotationDegrees(xRot));
+		
+		Matrix3f normal = new Matrix3f(stack.last().normal());
+		Vector3f forward = normal.transform(new Vector3f(0.0F, 0.0F, 1.0F));
+		forward.normalize();
+		Vector3f up = normal.transform(new Vector3f(0.0F, 1.0F, 0.0F));
+		up.normalize();
+		
+		float pitch = (float) Math.toDegrees(Math.asin(Mth.clamp(-forward.y(), -1.0, 1.0)));
+		float yaw = (float) Math.toDegrees(-Math.atan2(forward.x(), forward.z()));
+		pitch = Mth.wrapDegrees(pitch);
+		yaw = Mth.wrapDegrees(yaw);
+		return new SubmarineTransform(pitch, yaw);
+	}
+	
+	public static record SubmarineTransform(float pitch, float yaw)
+	{
+		
 	}
 	
 	@Override

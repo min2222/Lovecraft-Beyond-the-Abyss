@@ -1,15 +1,17 @@
 package com.min01.beyondtheabyss.item.deepabyss;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.min01.beyondtheabyss.animation.PlayerAnimations;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
 import com.min01.beyondtheabyss.item.renderer.BTAItemRenderer;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateSkeletalGunbladeItemPacket;
+import com.min01.beyondtheabyss.misc.Laser;
+import com.min01.beyondtheabyss.misc.Laser.LaserHitResult;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -30,6 +32,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
@@ -44,21 +49,17 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	{
 		ItemStack stack = pPlayer.getItemInHand(pUsedHand);
 		boolean isGunMode = isGunMode(stack);
-		if(BTAUtil.getPlayerAnimationState(pPlayer) == 0)
+		if(PlayerAnimations.getPlayerAnimationState(pPlayer) == 0)
 		{
 			if(pPlayer.isShiftKeyDown())
 			{
 				if(isGunMode)
 				{
-					BTAUtil.setItemAnimationState(pPlayer, stack, 2);
-					BTAUtil.setItemAnimationTick(pPlayer, stack, 40);
 					pPlayer.playSound(BTASounds.GUNBLADE_GUN_TO_BLADE.get());
 					pPlayer.getCooldowns().addCooldown(stack.getItem(), 20);
 				}
 				else
 				{
-					BTAUtil.setItemAnimationState(pPlayer, stack, 1);
-					BTAUtil.setItemAnimationTick(pPlayer, stack, 40);
 					pPlayer.playSound(BTASounds.GUNBLADE_BLADE_TO_GUN.get());
 					pPlayer.getCooldowns().addCooldown(stack.getItem(), 20);
 				}
@@ -70,8 +71,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 				{
 					pPlayer.playSound(BTASounds.GUNBLADE_CHARGE.get());
 					pPlayer.startUsingItem(pUsedHand);
-					BTAUtil.setPlayerAnimationState(pPlayer, 3);
-					BTAUtil.setPlayerAnimationTick(pPlayer, 72000);
+					PlayerAnimations.play(pPlayer, 3, this.getUseDuration(stack));
 				}
 			}
 			return InteractionResultHolder.consume(stack);
@@ -82,7 +82,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	@Override
 	public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) 
 	{
-		if(getCharge(pStack) < 3 && pRemainingUseDuration % 25 == 0 && pLevel.isClientSide)
+		if(getCharge(pStack) < 3 && pRemainingUseDuration % 25 == 0)
 		{
 			setCharge(pStack, getCharge(pStack) + 1);
 		}
@@ -98,13 +98,10 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) 
 	{
 		boolean isGunMode = isGunMode(stack);
-		int tick = BTAUtil.getPlayerAnimationTick(entity);
-		int state = BTAUtil.getPlayerAnimationState(entity);
-		if(!isGunMode && tick <= 0 && state == 0)
+		if(!isGunMode && !PlayerAnimations.isAnimationPlaying(entity))
 		{
 			entity.playSound(BTASounds.GUNBLADE_SWING.get());
-			BTAUtil.setPlayerAnimationState(entity, 5);
-			BTAUtil.setPlayerAnimationTick(entity, 40);
+			PlayerAnimations.play(entity, 5, 20);
 		}
 		return true;
 	}
@@ -112,13 +109,44 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	@Override
 	public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected)
 	{
-		if(!pIsSelected && getCharge(pStack) > 0)
+		if((!pIsSelected || !PlayerAnimations.isAnimationPlaying(pEntity)) && getCharge(pStack) > 0)
 		{
-			stop(pStack, pEntity);
+			this.stop(pStack, pEntity);
+		}
+		else if(pEntity instanceof Player player)
+		{
+			int state = PlayerAnimations.getPlayerAnimationState(player);
+			int tick = PlayerAnimations.getPlayerAnimationTick(player);
+			if(state == 4)
+			{
+				Laser laser = new Laser();
+	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(player.getXRot(), player.getYHeadRot()), player.getEyePosition(), 0.0F, -0.25F, 0.5F);
+				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(player.getXRot(), player.getYHeadRot()), startPos, 0.0F, 0.0F, 50.0F);
+				LaserHitResult laserHit = laser.raytrace(player.level, startPos, lookPos, 0.375F, t -> t != player && !t.isAlliedTo(player), player);
+	            if(player.level.isClientSide)
+	            {
+	                setLaserLength(pStack, laser.getLaserLength());
+	            }
+	            laserHit.entities.forEach(t -> 
+	            {
+	            	t.hurt(player.damageSources().indirectMagic(player, player), 6.0F);
+	            });
+			}
+			if(state == 5 && tick == 10)
+			{
+				float size = 1.5F;
+				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(player.getXRot(), player.getYHeadRot()), player.getEyePosition(), 0, 0, 1.5F);
+				AABB aabb = new AABB(-size, -size, -size, size, size, size).move(lookPos);
+				List<LivingEntity> list = player.level.getEntitiesOfClass(LivingEntity.class, aabb, t -> t != player && !t.isAlliedTo(player));
+				list.forEach(t -> 
+				{
+					t.hurt(player.damageSources().mobAttack(player), 8.0F);
+				});
+			}
 		}
 	}
 	
-	public static void stop(ItemStack stack, Entity entity)
+	public void stop(ItemStack stack, Entity entity)
 	{
 		setLaserVisible(stack, false);
 		setLaserLength(stack, 0);
@@ -132,19 +160,18 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int pTimeCharged)
 	{
-		if(getCharge(stack) > 0 && level.isClientSide)
+		if(getCharge(stack) > 0)
 		{
-			BTAUtil.setPlayerAnimationState(entity, 4);
-			BTAUtil.setPlayerAnimationTick(entity, 95);
+			PlayerAnimations.play(entity, 4, 46);
 			setLaserVisible(stack, true);
-			BTANetwork.sendToServer(new UpdateSkeletalGunbladeItemPacket(stack, entity.getUUID()));
+			//FIXME ahhhh
+			//BTANetwork.sendToServer(new UpdateSkeletalGunbladeItemPacket(stack, entity.getUUID()));
 		}
 	}
 	
 	public void releaseUsingServer(ItemStack stack, LivingEntity entity)
 	{
-		BTAUtil.setPlayerAnimationState(entity, 4);
-		BTAUtil.setPlayerAnimationTick(entity, 95);
+		PlayerAnimations.play(entity, 4, 46);
 	}
 
     @Override
@@ -156,7 +183,7 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	@Override
 	public boolean isFirstPersonAnim(ItemStack stack, Entity entity)
 	{
-		return BTAUtil.getPlayerAnimationState(entity) != 0;
+		return PlayerAnimations.getPlayerAnimationState(entity) != 0;
 	}
 	
 	@Override

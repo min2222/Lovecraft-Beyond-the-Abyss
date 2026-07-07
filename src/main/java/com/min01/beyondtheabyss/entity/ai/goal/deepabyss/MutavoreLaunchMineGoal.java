@@ -12,6 +12,7 @@ import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.Util;
+import net.minecraft.world.phys.Vec3;
 
 public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<MutavoreEntity>
 {
@@ -46,17 +47,30 @@ public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<MutavoreEntity
 		List<Integer> cysts = Lists.newArrayList(0, 1, 2, 3);
 		cysts.removeIf(t -> !this.mob.hasCyst(t));
 		int type = Util.getRandom(cysts, this.mob.level.random);
-		this.mob.playSound(BTASounds.MUTAVORE_CYST_SHOOT.get(), 10.0F, 1.0F);
-		if(this.mob.posArray[type] != null)
+		Vec3 pos = this.mob.modelPositions.getModelPos("mine");
+		switch(type)
 		{
-			MutavoreCystEntity cyst = new MutavoreCystEntity(BTAEntities.MUTAVORE_CYST.get(), this.mob.level);
-			cyst.setOwner(this.mob);
-			cyst.setCystType(type);
-			cyst.setPos(this.mob.posArray[type]);
-			cyst.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), cyst.position(), 0.15F));
-			this.mob.level.addFreshEntity(cyst);
-			this.mob.removeCyst(type);
+			case 0:
+				pos = this.mob.modelPositions.getModelPos("mine");
+				break;
+			case 1:
+				pos = this.mob.modelPositions.getModelPos("mine2");
+				break;
+			case 2:
+				pos = this.mob.modelPositions.getModelPos("mine3");
+				break;
+			case 3:
+				pos = this.mob.modelPositions.getModelPos("mine4");
+				break;
 		}
+		this.mob.playSound(BTASounds.MUTAVORE_CYST_SHOOT.get(), 10.0F, 1.0F);
+		MutavoreCystEntity cyst = new MutavoreCystEntity(BTAEntities.MUTAVORE_CYST.get(), this.mob.level);
+		cyst.setOwner(this.mob);
+		cyst.setCystType(type);
+		cyst.setPos(pos);
+		cyst.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), cyst.position(), 0.15F));
+		this.mob.level.addFreshEntity(cyst);
+		this.mob.removeCyst(type);
 	}
 
 	@Override

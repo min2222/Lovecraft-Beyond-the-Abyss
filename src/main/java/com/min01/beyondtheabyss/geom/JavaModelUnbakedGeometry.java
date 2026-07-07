@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.block.model.geometry;
+package com.min01.beyondtheabyss.geom;
 
 import java.util.function.Function;
 
@@ -21,11 +21,11 @@ import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 
-public class ModelPartUnbakedGeometry implements IUnbakedGeometry<ModelPartUnbakedGeometry>
+public class JavaModelUnbakedGeometry implements IUnbakedGeometry<JavaModelUnbakedGeometry>
 {
 	private final String modelName;
 
-	public ModelPartUnbakedGeometry(String modelName)
+	public JavaModelUnbakedGeometry(String modelName)
 	{
 		this.modelName = modelName;
 	}
@@ -45,31 +45,30 @@ public class ModelPartUnbakedGeometry implements IUnbakedGeometry<ModelPartUnbak
 
 	private void addQuads(IGeometryBakingContext context, IModelBuilder<?> modelBuilder, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation)
 	{
-		if(!ModelPartModels.hasLayer(this.modelName))
+		if(!JavaModels.hasLayer(this.modelName))
 		{
 			return;
 		}
 
 		TextureAtlasSprite sprite = spriteGetter.apply(context.getMaterial("texture"));
-		for(BakedQuad quad : ModelPartBaker.bake(ModelPartModels.getLayer(this.modelName).get(), sprite, modelState))
+		for(BakedQuad quad : JavaModelBaker.bake(JavaModels.getLayer(this.modelName).get(), sprite, modelState))
 		{
 			modelBuilder.addUnculledFace(quad);
 		}
 	}
 
-	public static final class Loader implements IGeometryLoader<ModelPartUnbakedGeometry>
+	public static final class Loader implements IGeometryLoader<JavaModelUnbakedGeometry>
 	{
 		public static final Loader INSTANCE = new Loader();
 
 		@Override
-		public ModelPartUnbakedGeometry read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException
+		public JavaModelUnbakedGeometry read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException
 		{
 			if(!jsonObject.has("model"))
 			{
 				throw new JsonParseException("A model_part model must have a \"model\" member.");
 			}
-
-			return new ModelPartUnbakedGeometry(GsonHelper.getAsString(jsonObject, "model"));
+			return new JavaModelUnbakedGeometry(GsonHelper.getAsString(jsonObject, "model"));
 		}
 	}
 }

@@ -30,6 +30,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -167,6 +168,12 @@ public class GnasherEntity extends AbstractBTAMonster implements ILeader<Gnasher
 			}
 		}
     }
+    
+	@Override
+	public double getMeleeAttackRangeSqr(LivingEntity pEntity)
+	{
+		return (double)(this.getBbWidth() * 2.5F * this.getBbWidth() * 2.5F + pEntity.getBbWidth());
+	}
     
 	@Override
 	protected SoundEvent getAmbientSound()

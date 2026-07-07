@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
-import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.BTACameraShakeEntity;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.FallingStoneEntity;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthBiteGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthChargePrepareGoal;
@@ -15,6 +15,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.GhidruthTailSwingGoal;
 import com.min01.beyondtheabyss.misc.BTABossEvent;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.particle.DustCloudParticle;
 import com.min01.beyondtheabyss.sound.BTASounds;
@@ -70,7 +71,7 @@ public class GhidruthEntity extends AbstractBTAMonster
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = 1000 + this.random.nextInt(100);
-		this.posArray = new Vec3[1];
+		this.modelPositions.addModelPos("RearBody", Vec3.ZERO);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -237,10 +238,10 @@ public class GhidruthEntity extends AbstractBTAMonster
     	this.level.broadcastEntityEvent(this, (byte) 99);
     	for(int i = 0; i < this.random.nextInt(20, 35); i++)
     	{
-    		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 2, 15));
+    		Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.position(), new Vec3(15, 2, 15));
     		HitResult result = this.level.clip(new ClipContext(this.position(), spreadPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
     		Vec3 pos = result.getLocation();
-    		BlockPos ceilingPos = BTAUtil.getCeilingPos(this.level, pos.x, this.getY(), pos.z);
+    		BlockPos ceilingPos = BTAUtil.getPosition(this.level, new Vec3(pos.x, this.getY(), pos.z), PositionTypes.CEILING);
     		FallingStoneEntity stone = new FallingStoneEntity(BTAEntities.FALLING_STONE.get(), this.level);
     		stone.setOwner(this);
     		stone.setPos(Vec3.atCenterOf(ceilingPos.below()));
@@ -259,10 +260,10 @@ public class GhidruthEntity extends AbstractBTAMonster
     	{
         	for(int i = 0; i < this.random.nextInt(20, 35); i++)
         	{
-        		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 2, 15));
+        		Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.position(), new Vec3(15, 2, 15));
         		HitResult result = this.level.clip(new ClipContext(this.position(), spreadPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         		Vec3 pos = result.getLocation();
-        		BlockPos ceilingPos = BTAUtil.getCeilingPos(this.level, pos.x, this.getY(), pos.z);
+        		BlockPos ceilingPos = BTAUtil.getPosition(this.level, new Vec3(pos.x, this.getY(), pos.z), PositionTypes.CEILING);
         		BlockPos below = ceilingPos.below(2);
         		for(int j = 0; j < 150; j++)
         		{
@@ -272,7 +273,7 @@ public class GhidruthEntity extends AbstractBTAMonster
         	
         	for(int i = 0; i < this.random.nextInt(10, 20); i++)
         	{
-        		Vec3 spreadPos = BTAUtil.getSpreadPosition(this, new Vec3(15, 4, 15));
+        		Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.position(), new Vec3(15, 4, 15));
         		for(int j = 0; j < 30; j++)
         		{
         			this.level.addParticle(new DustCloudParticle.DustCloudParticleOption(BTABlocks.ABYSSALITH.get().defaultBlockState(), 1.5F), spreadPos.x, spreadPos.y, spreadPos.z, this.random.nextGaussian() * 0.5F, this.random.nextGaussian() * 0.5F, this.random.nextGaussian() * 0.5F);

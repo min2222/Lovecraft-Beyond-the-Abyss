@@ -55,7 +55,7 @@ public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<MutavoreEnti
 					bubble.setOwner(this.mob);
 					Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.mob.getXRot(), this.mob.getYHeadRot()), this.mob.position(), 0, 1.0F, 3.5F);
 					bubble.setPos(lookPos.add(this.mob.level.random.nextFloat() * 0.1F, this.mob.level.random.nextFloat() * 0.1F, this.mob.level.random.nextFloat() * 0.1F));
-					bubble.setDeltaMovement(BTAUtil.getVelocityTowards(bubble.position(), BTAUtil.getSpreadPosition(this.mob.getTarget(), 2.5F), 0.65F));
+					bubble.setDeltaMovement(BTAUtil.getVelocityTowards(bubble.position(), BTAUtil.getSpreadPosition(this.mob.getRandom(), this.mob.getTarget().position(), new Vec3(2.5F, 2.5F, 2.5F)), 0.65F));
 					bubble.lookAt(Anchor.EYES, this.mob.getTarget().getEyePosition());
 					this.mob.level.addFreshEntity(bubble);
 				}

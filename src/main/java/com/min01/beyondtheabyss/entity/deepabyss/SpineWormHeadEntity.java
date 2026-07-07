@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -286,7 +287,7 @@ public class SpineWormHeadEntity extends AbstractSpineWormPart
 		
 		if(pReason == MobSpawnType.NATURAL)
 		{
-			BlockPos blockPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ());
+			BlockPos blockPos = BTAUtil.getPosition(this.level, this.position(), PositionTypes.GROUND);
 			if(!pLevel.getBlockState(blockPos).is(Blocks.WATER))
 			{
 				blockPos = blockPos.above();

@@ -1,5 +1,8 @@
 package com.min01.beyondtheabyss.entity.renderer.living;
 
+import org.joml.Vector2f;
+import org.joml.Vector4f;
+
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.MysteriousGuyEntity;
 import com.min01.beyondtheabyss.entity.model.MysteriousGuyModel;
@@ -30,7 +33,7 @@ public class MysteriousGuyRenderer extends MobRenderer<MysteriousGuyEntity, Myst
 			pPoseStack.pushPose();
 			pPoseStack.translate(0, 2.5F, 0);
 			pPoseStack.mulPose(BTAClientUtil.MC.gameRenderer.getMainCamera().rotation());
-			BTAClientUtil.drawQuad(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(MARK_TEXTURE)), 0.5F, LightTexture.FULL_BRIGHT);
+			BTAClientUtil.drawQuad(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(MARK_TEXTURE)), new Vector2f(0.5F, 0.5F), new Vector4f(1.0F, 1.0F, 1.0F, 1.0F), LightTexture.FULL_BRIGHT);
 			pPoseStack.popPose();
 		}
 	}

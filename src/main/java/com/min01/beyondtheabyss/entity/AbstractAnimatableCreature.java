@@ -8,7 +8,9 @@ import com.min01.beyondtheabyss.entity.ai.control.FlyingLookControl;
 import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinFlyingPathNavigation;
 import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinGroundPathNavigation;
 import com.min01.beyondtheabyss.entity.ai.navigation.NoSpinWaterBoundPathNavigation;
+import com.min01.beyondtheabyss.misc.AnimationEntries;
 import com.min01.beyondtheabyss.misc.MobClassification;
+import com.min01.beyondtheabyss.misc.ModelPartPositions;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -61,8 +63,9 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
 	
 	public float rollAngleO = 0.0F;
 	public float rollAngle = 0.0F;
-	
-	public Vec3[] posArray;
+
+	public final AnimationEntries animationEntries = new AnimationEntries();
+	public final ModelPartPositions modelPositions;
 	
 	public AbstractAnimatableCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel)
 	{
@@ -83,6 +86,7 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
 			this.moveControl = new AnimationMoveControl<>(this);
 		}
 		this.noCulling = true;
+		this.modelPositions = new ModelPartPositions(this);
 	}
 	
 	@Override
@@ -564,9 +568,9 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
 	}
     
     @Override
-    public Vec3[] getPosArray()
+    public ModelPartPositions getModelPositions()
     {
-    	return this.posArray;
+    	return this.modelPositions;
     }
 	
 	public void setTargetValid(boolean value)
@@ -694,13 +698,13 @@ public abstract class AbstractAnimatableCreature extends PathfinderMob implement
 		return this.entityData.get(IS_FLYING);
 	}
 	
-	public static boolean checkWaterSpawnRules(EntityType<? extends PathfinderMob> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
-    {
-		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
-    }
-	
 	public MobClassification getMobClassification()
 	{
 		return MobClassification.LAND;
 	}
+	
+	public static boolean checkWaterSpawnRules(EntityType<? extends PathfinderMob> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
+    {
+		return pServerLevel.getBlockState(pPos.below()).is(Blocks.WATER) && pServerLevel.getBlockState(pPos.above()).is(Blocks.WATER);
+    }
 }

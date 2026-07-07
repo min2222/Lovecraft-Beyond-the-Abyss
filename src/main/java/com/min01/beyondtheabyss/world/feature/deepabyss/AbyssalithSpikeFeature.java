@@ -1,5 +1,6 @@
 package com.min01.beyondtheabyss.world.feature.deepabyss;
 import com.min01.beyondtheabyss.block.BTABlocks;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.serialization.Codec;
 
@@ -10,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.phys.Vec3;
 
 public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration> 
 {
@@ -23,7 +25,7 @@ public class AbyssalithSpikeFeature extends Feature<NoneFeatureConfiguration>
 	{
 	    WorldGenLevel level = context.level();
 	    BlockPos origin = context.origin();
-	    origin = BTAUtil.getGroundPos(level, origin.getX(), origin.getY(), origin.getZ());
+	    origin = BTAUtil.getPosition(level, Vec3.atCenterOf(origin), PositionTypes.GROUND);
 	    RandomSource random = level.getRandom();
 	    BlockState state = BTABlocks.ABYSSALITH.get().defaultBlockState();
 

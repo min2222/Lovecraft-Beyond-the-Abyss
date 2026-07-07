@@ -127,7 +127,7 @@ public class ToothBulletEntity extends ThrowableProjectile
 			int count = this.random.nextInt(this.getMaxShrapnelCount() - 1, this.getMaxShrapnelCount() + 1);
 			for(int i = 0; i < count; i++)
 			{
-				Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 2);
+				Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.position(), new Vec3(2, 2, 2));
 				ToothBulletEntity bullet = new ToothBulletEntity(BTAEntities.TOOTH_BULLET.get(), this.level);
 				if(this.getOwner() != null)
 				{
@@ -140,7 +140,7 @@ public class ToothBulletEntity extends ThrowableProjectile
 				bullet.setShrapnel(true);
 				bullet.setShrapnelType(this.random.nextInt(1, 3));
 				bullet.setPos(this.position());
-				bullet.setDeltaMovement(BTAUtil.getVelocityTowards(bullet.position(), spreadPos));
+				bullet.setDeltaMovement(BTAUtil.getVelocityTowards(bullet.position(), spreadPos, 1.0F));
 				this.level.addFreshEntity(bullet);
 			}
 		}

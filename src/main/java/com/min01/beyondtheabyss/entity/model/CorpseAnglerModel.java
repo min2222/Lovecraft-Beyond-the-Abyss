@@ -124,15 +124,13 @@ public class CorpseAnglerModel extends HierarchicalModel<CorpseAnglerEntity>
         ModelPart bait = part6.getChild("Bait").getChild("Gnasher");
 		BTAClientUtil.animateHead(root, netHeadYaw, headPitch);
 		bait.visible = isBurrow;
-		float swimAmount = isBurrow ? 0.0F : limbSwingAmount;
-		float swimSwing = isBurrow ? 0.0F : limbSwing;
 		
-		entity.idleAnimationState.animateIdle(this, CorpseAnglerAnimation.CORPSE_ANGLER_IDLE, ageInTicks, swimAmount, 1.5F);
+		entity.idleAnimationState.animateIdle(this, CorpseAnglerAnimation.CORPSE_ANGLER_IDLE, ageInTicks, limbSwingAmount, entity.animationEntries.walkEntries);
 		entity.openMouthAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_OPEN_MOUTH, ageInTicks);
 		entity.burrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_BURROW, ageInTicks);
 		entity.unburrowAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_UNBURROW, ageInTicks);
 		entity.ambushAnimationState.animate(this, CorpseAnglerAnimation.CORPSE_ANGLER_AMBUSH, ageInTicks);
-		this.animateWalk(CorpseAnglerAnimation.CORPSE_ANGLER_SWIM, swimSwing, swimAmount, 2.5F, 1.5F);
+		entity.swimAnimationState.animateWalk(this, CorpseAnglerAnimation.CORPSE_ANGLER_SWIM, limbSwing, limbSwingAmount, 2.5F, 1.5F, entity.animationEntries.extraEntries);
 		
 		Vec2 rot = entity.worm.getRot(partialTicks);
 		Vec2 rot1 = entity.worm1.getRot(partialTicks);

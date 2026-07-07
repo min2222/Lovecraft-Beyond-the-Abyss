@@ -24,16 +24,16 @@ public class KeyframePlayerAnimations
 		float f = getElapsedSeconds(pAnimationDefinition, pAccumulatedTime);
 		for(Map.Entry<String, List<AnimationChannel>> entry : pAnimationDefinition.boneAnimations().entrySet())
 		{
-			Optional<Pair<ModelPart, ModelPart>> optional = ((IHierarchicalPlayerModel<?>) pModel).getAnyDescendantWithName(entry.getKey());
+			Optional<Pair<ModelPart, ModelPart>> optional = PlayerAnimations.getAnyDescendantWithName(entry.getKey());
 			List<AnimationChannel> list = entry.getValue();
-			optional.ifPresent((p_232330_) ->
+			optional.ifPresent(pair ->
 			{
-				list.forEach((p_288241_) ->
+				list.forEach(channel ->
 				{
-					Keyframe[] akeyframe = p_288241_.keyframes();
-					int i = Math.max(0, Mth.binarySearch(0, akeyframe.length, (p_232315_) ->
+					Keyframe[] akeyframe = channel.keyframes();
+					int i = Math.max(0, Mth.binarySearch(0, akeyframe.length, (index) ->
 					{
-						return f <= akeyframe[p_232315_].timestamp();
+						return f <= akeyframe[index].timestamp();
 					}) - 1);
 					int j = Math.min(akeyframe.length - 1, i + 1);
 					Keyframe keyframe = akeyframe[i];
@@ -49,8 +49,8 @@ public class KeyframePlayerAnimations
 						f2 = 0.0F;
 					}
 					keyframe1.interpolation().apply(pAnimationVecCache, f2, akeyframe, i, j, pScale);
-					p_288241_.target().apply(p_232330_.getLeft(), pAnimationVecCache);
-					p_288241_.target().apply(p_232330_.getRight(), pAnimationVecCache);
+					channel.target().apply(pair.getLeft(), pAnimationVecCache);
+					channel.target().apply(pair.getRight(), pAnimationVecCache);
 				});
 			});
 		}
@@ -60,20 +60,5 @@ public class KeyframePlayerAnimations
 	{
 		float f = (float) pAccumulatedTime / 1000.0F;
 		return pAnimationDefinition.looping() ? f % pAnimationDefinition.lengthInSeconds() : f;
-	}
-
-	public static Vector3f posVec(float pX, float pY, float pZ)
-	{
-		return new Vector3f(pX, -pY, pZ);
-	}
-
-	public static Vector3f degreeVec(float pXDegrees, float pYDegrees, float pZDegrees)
-	{
-		return new Vector3f(pXDegrees * ((float) Math.PI / 180.0F), pYDegrees * ((float) Math.PI / 180.0F), pZDegrees * ((float) Math.PI / 180.0F));
-	}
-
-	public static Vector3f scaleVec(double pXScale, double pYScale, double pZScale)
-	{
-		return new Vector3f((float) (pXScale - 1.0D), (float) (pYScale - 1.0D), (float) (pZScale - 1.0D));
 	}
 }

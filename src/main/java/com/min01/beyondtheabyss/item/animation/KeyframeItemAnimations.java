@@ -31,9 +31,9 @@ public class KeyframeItemAnimations
 				list.forEach(channel ->
 				{
 					Keyframe[] akeyframe = channel.keyframes();
-					int i = Math.max(0, Mth.binarySearch(0, akeyframe.length, (p_232315_) ->
+					int i = Math.max(0, Mth.binarySearch(0, akeyframe.length, (index) ->
 					{
-						return f <= akeyframe[p_232315_].timestamp();
+						return f <= akeyframe[index].timestamp();
 					}) - 1);
 					int j = Math.min(akeyframe.length - 1, i + 1);
 					Keyframe keyframe = akeyframe[i];
@@ -59,20 +59,5 @@ public class KeyframeItemAnimations
 	{
 		float f = (float) pAccumulatedTime / 1000.0F;
 		return pAnimationDefinition.looping() ? f % pAnimationDefinition.lengthInSeconds() : f;
-	}
-
-	public static Vector3f posVec(float pX, float pY, float pZ)
-	{
-		return new Vector3f(pX, -pY, pZ);
-	}
-
-	public static Vector3f degreeVec(float pXDegrees, float pYDegrees, float pZDegrees)
-	{
-		return new Vector3f(pXDegrees * ((float) Math.PI / 180.0F), pYDegrees * ((float) Math.PI / 180.0F), pZDegrees * ((float) Math.PI / 180.0F));
-	}
-
-	public static Vector3f scaleVec(double pXScale, double pYScale, double pZScale)
-	{
-		return new Vector3f((float) (pXScale - 1.0D), (float) (pYScale - 1.0D), (float) (pZScale - 1.0D));
 	}
 }

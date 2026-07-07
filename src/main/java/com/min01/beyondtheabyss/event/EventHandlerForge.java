@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
+import com.min01.beyondtheabyss.animation.PlayerAnimations;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.deepabyss.GhidruthEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.SpineWormHeadEntity;
 import com.min01.beyondtheabyss.item.BTAItems;
+import com.min01.beyondtheabyss.item.animation.ItemAnimations;
 import com.min01.beyondtheabyss.misc.BTABossTracker;
 import com.min01.beyondtheabyss.misc.BTAChatTracker;
 import com.min01.beyondtheabyss.network.BTANetwork;
@@ -27,13 +29,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
@@ -180,23 +180,14 @@ public class EventHandlerForge
 				BTAStructureFinder.find(serverLevel, blockPos);
 			}
 		}
-		//TODO temp fix
-		if(entity instanceof FallingBlockEntity fallingBlock)
-		{
-			if(fallingBlock.getBlockState().is(Blocks.SAND) && level.dimension() == BTAWorlds.ENDLESS_DESERT)
-			{
-				event.setCanceled(true);
-			}
-		}
     }
     
 	@SubscribeEvent
 	public static void onPlayerTick(PlayerTickEvent event)
 	{
 		Player player = event.player;
-		BTAUtil.tickItemAnimation(player);
-		BTAUtil.tickPlayerAnimation(player);
 		BTAUtil.tickPlayerTickCount(player);
+		PlayerAnimations.tickPlayerAnimation(event);
 		if(!player.level.isClientSide && player.level.getBiome(player.blockPosition()).is(BTABiomes.SPIRE_HOLLOW) && player.getY() <= -30 && player.level.dimension() == BTAWorlds.DEEP_ABYSS && !player.isSpectator() && !player.getAbilities().instabuild)
 		{
 			BTASavedData data = BTASavedData.get(player.level);
@@ -225,6 +216,7 @@ public class EventHandlerForge
 			entity.setOnGround(false);
 			entity.resetFallDistance();
 		}
+		ItemAnimations.tickItemAnimations(event);
 	}
     
     @SubscribeEvent

@@ -52,7 +52,7 @@ public class CorpseAnglerDashGoal extends AbstractAnimationGoal<CorpseAnglerEnti
 				this.mob.setStopLookTick(Integer.MAX_VALUE);
 				this.mob.setLastLookPos(lookPos);
 				this.mob.setDeltaMovement(BTAUtil.getVelocityTowards(this.mob.position(), lookPos, 1.5F));
-				if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F))
+				if(this.mob.isWithinMeleeAttackRange(this.mob.getTarget()))
 				{
 					this.canContinueToUse = false;
 					this.mob.doHurtTarget(this.mob.getTarget());

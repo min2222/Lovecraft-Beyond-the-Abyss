@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.NecroshellEntity;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 public class NecroshellAttackGoal extends AbstractAnimationGoal<NecroshellEntity>
 {
@@ -23,7 +22,7 @@ public class NecroshellAttackGoal extends AbstractAnimationGoal<NecroshellEntity
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F) && !this.mob.isHiding();
+		return super.canUse() && this.mob.isWithinMeleeAttackRange(this.mob.getTarget()) && !this.mob.isHiding();
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class NecroshellAttackGoal extends AbstractAnimationGoal<NecroshellEntity
 	{
 		if(this.mob.getTarget() != null)
 		{
-			if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 2.5F))
+			if(this.mob.isWithinMeleeAttackRange(this.mob.getTarget()))
 			{
 				this.mob.doHurtTarget(this.mob.getTarget());
 				if(!this.isSecond)

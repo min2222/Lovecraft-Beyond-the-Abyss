@@ -2,8 +2,8 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.BTACameraShakeEntity;
+import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
@@ -36,7 +36,6 @@ public class ForneusHeadEntity extends AbstractForneusPart
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = 1000 + this.random.nextInt(1000);
-		this.posArray = new Vec3[1];
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -104,7 +103,7 @@ public class ForneusHeadEntity extends AbstractForneusPart
 			
 			if(this.getWantedPos().equals(Vec3.ZERO) || this.getWantedPos().subtract(this.position()).length() <= this.getSegmentDistance(0) * 2.5F)
 			{
-				Vec3 spreadPos = BTAUtil.getSpreadPosition(this, 250);
+				Vec3 spreadPos = BTAUtil.getSpreadPosition(this.random, this.position(), new Vec3(250, 250, 250));
 				if(this.level.getBlockState(BlockPos.containing(spreadPos)).is(Blocks.WATER))
 				{
 					this.setWantedPos(spreadPos);

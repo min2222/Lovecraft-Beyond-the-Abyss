@@ -22,11 +22,13 @@ import net.minecraftforge.common.ForgeMod;
 public class LithoshrimpEntity extends AbstractBTACreature
 {
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState swimAnimationState = new SmoothAnimationState();
 	
 	public LithoshrimpEntity(EntityType<? extends AbstractBTACreature> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = 1;
+		this.animationEntries.addWalkEntry(this.swimAnimationState, 3.5F);
 	}
 
     public static AttributeSupplier.Builder createAttributes()
@@ -67,6 +69,7 @@ public class LithoshrimpEntity extends AbstractBTACreature
 		if(this.level.isClientSide)
 		{
 			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
+			this.swimAnimationState.updateWhen(this.isInWater(), this.tickCount);
 		}
 	}
 	

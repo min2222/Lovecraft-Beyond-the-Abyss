@@ -1,4 +1,4 @@
-package com.min01.beyondtheabyss.block.model.geometry;
+package com.min01.beyondtheabyss.geom;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +22,7 @@ import net.minecraftforge.client.model.QuadTransformers;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public final class ModelPartBaker
+public final class JavaModelBaker
 {
 	public static List<BakedQuad> bake(LayerDefinition layer, TextureAtlasSprite sprite)
 	{

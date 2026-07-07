@@ -9,6 +9,7 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellAttackGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.NecroshellHidingGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
@@ -26,6 +27,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -45,6 +47,7 @@ public class NecroshellEntity extends AbstractBTACreature
 	public static final EntityDataAccessor<Boolean> IS_HIDING = SynchedEntityData.defineId(NecroshellEntity.class, EntityDataSerializers.BOOLEAN);
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState walkAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState attackAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState intimidateAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState hideAnimationState = new SmoothAnimationState();
@@ -56,6 +59,7 @@ public class NecroshellEntity extends AbstractBTACreature
 		this.xpReward = this.random.nextInt(5);
 		this.setSwim(false);
 		this.setMaxUpStep(1);
+		this.animationEntries.addWalkEntry(this.walkAnimationState, 2.5F);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -112,6 +116,7 @@ public class NecroshellEntity extends AbstractBTACreature
 		if(this.level.isClientSide)
 		{
 			this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && !this.isHiding(), this.tickCount);
+			this.walkAnimationState.updateWhen(!this.isHiding(), this.tickCount);
 			this.attackAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
 			this.intimidateAnimationState.updateWhen(this.isTargetValid() && this.getAnimationState() == 0 && !this.isHiding(), this.tickCount);
 			this.hideAnimationState.updateWhen(this.isHiding(), this.tickCount);
@@ -140,6 +145,12 @@ public class NecroshellEntity extends AbstractBTACreature
 	        	this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 2.0F);
 	        }
 		}
+	}
+	
+	@Override
+	public double getMeleeAttackRangeSqr(LivingEntity pEntity)
+	{
+		return (double)(this.getBbWidth() * 2.5F * this.getBbWidth() * 2.5F + pEntity.getBbWidth());
 	}
 	
 	@Override
@@ -212,7 +223,7 @@ public class NecroshellEntity extends AbstractBTACreature
 		this.setShellType(type);
 		if(pReason == MobSpawnType.NATURAL)
 		{
-			BlockPos floorPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ()).above();
+			BlockPos floorPos = BTAUtil.getPosition(this.level, this.position(), PositionTypes.GROUND).above();
 			Vec3 pos = Vec3.atBottomCenterOf(floorPos);
 			this.moveTo(pos);
 		}

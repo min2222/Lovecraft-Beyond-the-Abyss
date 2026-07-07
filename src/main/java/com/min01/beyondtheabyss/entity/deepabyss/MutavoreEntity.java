@@ -64,6 +64,7 @@ public class MutavoreEntity extends AbstractBTAMonster
 	public final Worm worm10 = new Worm();
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
+	public final SmoothAnimationState swimAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState bubbleStartAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState bubbleStopAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState tongueStartAnimationState = new SmoothAnimationState();
@@ -81,7 +82,11 @@ public class MutavoreEntity extends AbstractBTAMonster
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(25);
-		this.posArray = new Vec3[4];
+		this.modelPositions.addModelPos("mine", Vec3.ZERO);
+		this.modelPositions.addModelPos("mine2", Vec3.ZERO);
+		this.modelPositions.addModelPos("mine3", Vec3.ZERO);
+		this.modelPositions.addModelPos("mine4", Vec3.ZERO);
+		this.animationEntries.addWalkEntry(this.swimAnimationState, 1.5F);
 		this.noCulling = true;
 	}
 	
@@ -190,6 +195,7 @@ public class MutavoreEntity extends AbstractBTAMonster
     	if(this.level.isClientSide)
     	{
     		this.idleAnimationState.updateWhen(this.getAnimationState() == 0 && this.isInWater(), this.tickCount);
+    		this.swimAnimationState.updateWhen(this.isInWater(), this.tickCount);
     		this.bubbleStartAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
     		this.bubbleStopAnimationState.updateWhen(this.isAnimationPlaying(2), this.tickCount);
     		this.tongueStartAnimationState.updateWhen(this.isAnimationPlaying(3), this.tickCount);

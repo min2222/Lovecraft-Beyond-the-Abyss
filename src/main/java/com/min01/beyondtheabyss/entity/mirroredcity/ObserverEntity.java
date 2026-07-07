@@ -3,6 +3,7 @@ package com.min01.beyondtheabyss.entity.mirroredcity;
 import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 
 public class ObserverEntity extends AbstractBTAMonster
 {
@@ -62,7 +64,7 @@ public class ObserverEntity extends AbstractBTAMonster
 	public static boolean checkObserverSpawnRules(EntityType<? extends AbstractBTAMonster> pType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) 
     {
 		//FIXME proper spawning;
-		BlockPos ceilingPos = BTAUtil.getCeilingPos(pServerLevel, pPos.getX(), pPos.getY(), pPos.getZ(), 120);
+		BlockPos ceilingPos = BTAUtil.getPosition(pServerLevel, Vec3.atCenterOf(pPos), PositionTypes.CEILING, 120);
 		for(Direction direction : Direction.values())
 		{
 			if(!pServerLevel.getBlockState(pPos.relative(direction)).isAir())

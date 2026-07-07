@@ -1,5 +1,5 @@
 {
-	"loader": "beyondtheabyss:model_part",
+	"loader": "beyondtheabyss:java_model",
 	"model": "chain_trap",
 	"textures": {
 		"particle": "beyondtheabyss:block/chain_trap_particle",

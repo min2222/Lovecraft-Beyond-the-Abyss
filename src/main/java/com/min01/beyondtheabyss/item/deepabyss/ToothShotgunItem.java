@@ -5,13 +5,14 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.min01.beyondtheabyss.animation.PlayerAnimations;
 import com.min01.beyondtheabyss.enchantment.BTAEnchantments;
 import com.min01.beyondtheabyss.entity.projectile.ToothBulletEntity;
 import com.min01.beyondtheabyss.item.animation.IAnimatableItem;
+import com.min01.beyondtheabyss.item.animation.ItemAnimations;
 import com.min01.beyondtheabyss.item.renderer.BTAItemRenderer;
 import com.min01.beyondtheabyss.misc.BTATags;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -44,7 +45,7 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
 	{
 		ItemStack stack = pPlayer.getItemInHand(pUsedHand);
-		if(BTAUtil.getPlayerAnimationState(pPlayer) == 0)
+		if(PlayerAnimations.getPlayerAnimationState(pPlayer) == 0)
 		{
 	        ItemStack ammo = this.findAmmo(pPlayer);
 			int goldenChance = stack.getEnchantmentLevel(BTAEnchantments.GOLDEN_TOOTH.get()) * 2;
@@ -64,10 +65,8 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	        		bullet.setFracture(fracture > 0);
 	        		pLevel.addFreshEntity(bullet);
 	        	}
-				BTAUtil.setItemAnimationState(pPlayer, stack, 3);
-				BTAUtil.setItemAnimationTick(pPlayer, stack, 30);
-				BTAUtil.setPlayerAnimationState(pPlayer, 1);
-				BTAUtil.setPlayerAnimationTick(pPlayer, 20);
+				ItemAnimations.play(pPlayer, stack, 3, 15);
+				PlayerAnimations.play(pPlayer, 1, 10);
 		    	pPlayer.getCooldowns().addCooldown(stack.getItem(), 15);
 		    	if(!pPlayer.getAbilities().instabuild)
 		    	{
@@ -76,8 +75,7 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 			}
 			else if(!ammo.isEmpty())
 			{
-				BTAUtil.setItemAnimationState(pPlayer, stack, 2);
-				BTAUtil.setItemAnimationTick(pPlayer, stack, 40);
+				ItemAnimations.play(pPlayer, stack, 2, 20);
 		    	pPlayer.getCooldowns().addCooldown(stack.getItem(), 20);
 	        	if(!pPlayer.getAbilities().instabuild)
 	        	{
@@ -85,18 +83,16 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	        	}
 	        	setAmmo(stack, getAmmo(stack) + 2);
 			}
-			else if(pLevel.isClientSide)
+			else
 			{
 				if(pLevel.random.nextBoolean())
 				{
-					BTAUtil.setItemAnimationState(pPlayer, stack, 5);
-					BTAUtil.setItemAnimationTick(pPlayer, stack, 10);
+					ItemAnimations.play(pPlayer, stack, 5, 5);
 			    	pPlayer.getCooldowns().addCooldown(stack.getItem(), 5);
 				}
 				else
 				{
-					BTAUtil.setItemAnimationState(pPlayer, stack, 4);
-					BTAUtil.setItemAnimationTick(pPlayer, stack, 16);
+					ItemAnimations.play(pPlayer, stack, 4, 8);
 			    	pPlayer.getCooldowns().addCooldown(stack.getItem(), 8);
 				}
 			}

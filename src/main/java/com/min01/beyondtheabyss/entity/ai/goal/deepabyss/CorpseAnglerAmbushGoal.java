@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.ai.goal.deepabyss;
 
 import com.min01.beyondtheabyss.entity.ai.goal.AbstractAnimationGoal;
 import com.min01.beyondtheabyss.entity.deepabyss.CorpseAnglerEntity;
-import com.min01.beyondtheabyss.util.BTAUtil;
 
 public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<CorpseAnglerEntity>
 {
@@ -22,7 +21,7 @@ public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<CorpseAnglerEn
 	@Override
 	public boolean canUse() 
 	{
-		return super.canUse() && this.mob.isBurrow() && this.mob.posArray[0] != null && this.mob.getTarget().position().distanceTo(this.mob.posArray[0]) <= 2.5F;
+		return super.canUse() && this.mob.isBurrow() && this.mob.getTarget().position().distanceTo(this.mob.modelPositions.getModelPos("Gnasher")) <= 2.5F;
 	}
 
 	@Override
@@ -30,7 +29,7 @@ public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<CorpseAnglerEn
 	{
 		if(this.mob.getTarget() != null)
 		{
-			if(BTAUtil.isWithinMeleeAttackRange(this.mob, this.mob.getTarget(), 3.5F))
+			if(this.mob.isWithinMeleeAttackRange(this.mob.getTarget()))
 			{
 				this.mob.doHurtTarget(this.mob.getTarget());
 			}

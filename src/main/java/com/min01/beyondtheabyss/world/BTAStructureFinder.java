@@ -7,6 +7,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 
 import com.google.common.base.Stopwatch;
 import com.min01.beyondtheabyss.misc.BTAResourceKeys;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.mojang.datafixers.util.Pair;
 
@@ -22,6 +23,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.phys.Vec3;
 
 public class BTAStructureFinder
 {
@@ -31,11 +33,11 @@ public class BTAStructureFinder
 	{
 		register(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL, (k, v, s) ->
 		{
-			v.setStructurePos(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL, BTAUtil.getGroundPos(s, k.getX(), k.getY() + 50, k.getZ()).above(5));
+			v.setStructurePos(BTAResourceKeys.BTAStructures.DEEP_ABYSS_PORTAL, BTAUtil.getPosition(s, new Vec3(k.getX(), k.getY() + 50, k.getZ()), PositionTypes.GROUND).above(5));
 		});
 		register(BTAResourceKeys.BTAStructures.HUT, (k, v, s) -> 
 		{
-			v.setStructurePos(BTAResourceKeys.BTAStructures.HUT, BTAUtil.getGroundPos(s, k.getX(), k.getY() + 50, k.getZ()));
+			v.setStructurePos(BTAResourceKeys.BTAStructures.HUT, BTAUtil.getPosition(s, new Vec3(k.getX(), k.getY() + 50, k.getZ()), PositionTypes.GROUND));
 		});
 	}
 	

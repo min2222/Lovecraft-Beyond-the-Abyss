@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.ai.goal.mirroredcity.OverseerMissileGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
+import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
@@ -76,7 +77,7 @@ public class OverseerEntity extends AbstractBTAMonster
 			this.openAnimationState.updateWhen(this.isAnimationPlaying(1), this.tickCount);
 		}
 	    
-	    BlockPos groundPos = BTAUtil.getGroundPos(this.level, this.getX(), this.getY(), this.getZ()).above();
+	    BlockPos groundPos = BTAUtil.getPosition(this.level, this.position(), PositionTypes.GROUND).above();
 	    if(this.onGround() || this.blockPosition().distSqr(groundPos) <= 150.0F)
 	    {
 	    	this.addDeltaMovement(new Vec3(0.0F, 0.01F, 0.0F));
