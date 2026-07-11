@@ -5,16 +5,15 @@ import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity.HeadType;
 import com.min01.beyondtheabyss.entity.model.SiamserpentSlasherModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.SiamserpentSlasherLayer;
-import com.min01.solomonlib.multipart.IMultiModel;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class SiamserpentSlasherRenderer extends MobRenderer<SiamserpentHeadEntity, SiamserpentSlasherModel> implements IMultiModel<SiamserpentHeadEntity>
+public class SiamserpentSlasherRenderer extends MobRenderer<SiamserpentHeadEntity, SiamserpentSlasherModel>
 {
 	private static final ResourceLocation TEXTURE_SLASHER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher.png");
 	private static final ResourceLocation DISABLED_SLASHER = ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "textures/entity/siamserpent_slasher_disabled.png");
@@ -39,17 +38,9 @@ public class SiamserpentSlasherRenderer extends MobRenderer<SiamserpentHeadEntit
 		else
 		{
 			super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+			EntityPartBuilder builder = pEntity.partBuilder;
+			builder.send(this.model, pEntity, pPartialTicks, stack -> this.setupRotations(pEntity, stack, this.getBob(pEntity, pPartialTicks), builder.defaultBodyRotation(pEntity, pPartialTicks), pPartialTicks), stack -> this.scale(pEntity, stack, pPartialTicks));
 		}
-	}
-	
-	@Override
-	public HierarchicalModel<SiamserpentHeadEntity> getModel(SiamserpentHeadEntity entity) 
-	{
-		if(entity.getHeadType() == HeadType.BLASTER)
-		{
-			return this.blasterRenderer.getModel();
-		}
-		return this.getModel();
 	}
 	
 	@Override

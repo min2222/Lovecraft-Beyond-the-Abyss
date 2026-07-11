@@ -160,17 +160,26 @@ public class ClientEventHandlerForge
 		ItemStack stack2 = player.getOffhandItem();
 		if(stack1.getItem() instanceof IAnimatableItem item && item.isFirstPersonAnim(stack1, player))
 		{
+			if(item.isTwoHanded())
+			{
+				stack2 = ItemStack.EMPTY;
+			}
 			PoseStack poseStack = event.getPoseStack();
 			MultiBufferSource bufferSource = event.getMultiBufferSource();
 			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.RIGHT, stack1, item, event.getPartialTick());
-			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.LEFT, stack1, item, event.getPartialTick());
+			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.LEFT, stack2, item, event.getPartialTick());
 			event.setCanceled(true);
 		}
 		else if(stack2.getItem() instanceof IAnimatableItem item && item.isFirstPersonAnim(stack2, player))
 		{
+			if(item.isTwoHanded())
+			{
+				stack1 = stack2;
+				stack2 = ItemStack.EMPTY;
+			}
 			PoseStack poseStack = event.getPoseStack();
 			MultiBufferSource bufferSource = event.getMultiBufferSource();
-			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.RIGHT, stack2, item, event.getPartialTick());
+			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.RIGHT, stack1, item, event.getPartialTick());
 			renderPlayerArm(player, poseStack, bufferSource, event.getPackedLight(), HumanoidArm.LEFT, stack2, item, event.getPartialTick());
 			event.setCanceled(true);
 		}
@@ -193,13 +202,20 @@ public class ClientEventHandlerForge
 			stack.mulPose(Axis.XP.rotationDegrees(-90.0F));
 			stack.mulPose(Axis.YP.rotationDegrees(180.0F));
 			stack.translate((float)(flag ? 1 : -1) / 16.0F, 0.125F, -0.625F);
-	        BTAClientUtil.MC.getEntityRenderDispatcher().getItemInHandRenderer().renderItem(player, itemStack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, flag, stack, bufferSource, packedLight);
+			BTAClientUtil.MC.getEntityRenderDispatcher().getItemInHandRenderer().renderItem(player, itemStack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, flag, stack, bufferSource, packedLight);
 			stack.popPose();
 			renderer.getModel().rightArm.render(stack, bufferSource.getBuffer(RenderType.entitySolid(player.getSkinTextureLocation())), packedLight, OverlayTexture.NO_OVERLAY);
 			renderer.getModel().rightSleeve.render(stack, bufferSource.getBuffer(RenderType.entityTranslucent(player.getSkinTextureLocation())), packedLight, OverlayTexture.NO_OVERLAY);
 		}
 		else
 		{
+			stack.pushPose();
+			renderer.getModel().translateToHand(arm, stack);
+			stack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+			stack.mulPose(Axis.YP.rotationDegrees(180.0F));
+			stack.translate((float)(flag ? 1 : -1) / 16.0F, 0.125F, -0.625F);
+			BTAClientUtil.MC.getEntityRenderDispatcher().getItemInHandRenderer().renderItem(player, itemStack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, flag, stack, bufferSource, packedLight);
+			stack.popPose();
 			renderer.getModel().leftArm.render(stack, bufferSource.getBuffer(RenderType.entitySolid(player.getSkinTextureLocation())), packedLight, OverlayTexture.NO_OVERLAY);
 			renderer.getModel().leftSleeve.render(stack, bufferSource.getBuffer(RenderType.entityTranslucent(player.getSkinTextureLocation())), packedLight, OverlayTexture.NO_OVERLAY);
 		}

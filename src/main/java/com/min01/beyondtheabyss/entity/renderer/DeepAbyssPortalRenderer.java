@@ -5,12 +5,11 @@ import com.min01.beyondtheabyss.entity.deepabyss.DeepAbyssPortalEntity;
 import com.min01.beyondtheabyss.entity.model.DeepAbyssPortalModel;
 import com.min01.beyondtheabyss.entity.model.PipeModel;
 import com.min01.beyondtheabyss.misc.BTARenderType;
-import com.min01.solomonlib.multipart.IMultiModel;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -22,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public class DeepAbyssPortalRenderer extends EntityRenderer<DeepAbyssPortalEntity> implements IMultiModel<DeepAbyssPortalEntity>
+public class DeepAbyssPortalRenderer extends EntityRenderer<DeepAbyssPortalEntity>
 {
 	private final DeepAbyssPortalModel model;
 	private final PipeModel modelPipe;
@@ -75,8 +74,11 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<DeepAbyssPortalEntit
 	            segmentCount++;
 	        }
 		}
+		EntityPartBuilder builder = pEntity.partBuilder;
+		builder.send(this.model, pEntity, pPartialTick, stack -> {}, stack -> {});
 	}
 	
+	//TODO pipe hitbox
     public void renderPipeSegments(Vec3 from, Vec3 to, PoseStack poseStack, VertexConsumer buffer, int packedLightIn) 
     {
         Vec3 sub = from.subtract(to);
@@ -115,12 +117,6 @@ public class DeepAbyssPortalRenderer extends EntityRenderer<DeepAbyssPortalEntit
             return 0;
         }
     }
-	
-	@Override
-	public HierarchicalModel<DeepAbyssPortalEntity> getModel(DeepAbyssPortalEntity entity)
-	{
-		return this.model;
-	}
 
 	@Override
 	public ResourceLocation getTextureLocation(DeepAbyssPortalEntity pEntity)

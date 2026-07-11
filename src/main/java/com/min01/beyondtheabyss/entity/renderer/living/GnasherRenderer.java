@@ -4,17 +4,16 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.GnasherEntity;
 import com.min01.beyondtheabyss.entity.model.GnasherModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.GnasherLayer;
-import com.min01.solomonlib.multipart.IMultiModel;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class GnasherRenderer extends MobRenderer<GnasherEntity, GnasherModel> implements IMultiModel<GnasherEntity>
+public class GnasherRenderer extends MobRenderer<GnasherEntity, GnasherModel>
 {
 	private final GnasherLeaderRenderer leaderRenderer;
 	
@@ -35,17 +34,9 @@ public class GnasherRenderer extends MobRenderer<GnasherEntity, GnasherModel> im
 		else
 		{
 			super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+			EntityPartBuilder builder = pEntity.partBuilder;
+			builder.send(this.model, pEntity, pPartialTicks, stack -> this.setupRotations(pEntity, stack, this.getBob(pEntity, pPartialTicks), builder.defaultBodyRotation(pEntity, pPartialTicks), pPartialTicks), stack -> this.scale(pEntity, stack, pPartialTicks));
 		}
-	}
-	
-	@Override
-	public HierarchicalModel<GnasherEntity> getModel(GnasherEntity entity) 
-	{
-		if(entity.isLeader())
-		{
-			return this.leaderRenderer.getModel();
-		}
-		return this.getModel();
 	}
 	
 	@Override

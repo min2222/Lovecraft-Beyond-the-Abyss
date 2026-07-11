@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiConsumer;
-import java.util.function.BiPredicate;
 
 import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.capabilities.IItemAnimationCapability;
@@ -32,6 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -102,7 +102,18 @@ public class ItemAnimations
         stack.getCapability(ItemAnimationCapabilityImpl.ITEM_ANIMATION).ifPresent(cap -> cap.setInstanceId(UNASSIGNED));
     }
     
-    public static void play(LivingEntity entity, ItemStack stack, int state, int tick)
+    public static void stop(Entity entity, ItemStack stack)
+    {
+        long id = getOrAssignId(stack);
+        stack.getCapability(ItemAnimationCapabilityImpl.ITEM_ANIMATION).ifPresent(cap ->
+        {
+            cap.setAnimationState(0);
+            cap.setAnimationTick(0);
+            send(id, entity, stack, cap);
+        });
+    }
+    
+    public static void play(Entity entity, ItemStack stack, int state, int tick)
     {
         long id = getOrAssignId(stack);
         stack.getCapability(ItemAnimationCapabilityImpl.ITEM_ANIMATION).ifPresent(cap ->
@@ -113,7 +124,7 @@ public class ItemAnimations
         });
     }
     
-    public static void send(long id, LivingEntity entity, ItemStack stack, IItemAnimationCapability cap)
+    public static void send(long id, Entity entity, ItemStack stack, IItemAnimationCapability cap)
     {
         if(entity.level.isClientSide())
         	return;
@@ -138,14 +149,14 @@ public class ItemAnimations
 	            {
 	        		long id = getOrAssignId(stack);
 	        		ItemAnimationState itemState = getItemState(stack, id);
-	        		itemState.accept(stack, (t, u) -> u.updateWhen(t.predicate.test(cap.getAnimationState(), stack), entity.tickCount));
+	        		itemState.accept(stack, (t, u) -> u.updateWhen(t.predicate.test(cap.getAnimationState(), stack, entity), entity.tickCount));
 	            }
 	        });
 	    }
     }
     
 	@OnlyIn(Dist.CLIENT)
-    public static void register(Item item, AnimationDefinition definition, BiPredicate<Integer, ItemStack> predicate)
+    public static void register(Item item, AnimationDefinition definition, TriPredicate<Integer, ItemStack, LivingEntity> predicate)
     {
     	AnimationHolder holder = new AnimationHolder(item, definition, predicate);
         HOLDERS.add(holder);
@@ -197,7 +208,7 @@ public class ItemAnimations
     }
     
 	@OnlyIn(Dist.CLIENT)
-	public static record AnimationHolder(Item item, AnimationDefinition definition, BiPredicate<Integer, ItemStack> predicate)
+	public static record AnimationHolder(Item item, AnimationDefinition definition, TriPredicate<Integer, ItemStack, LivingEntity> predicate)
 	{
 		
 	}

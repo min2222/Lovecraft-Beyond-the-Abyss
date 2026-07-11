@@ -7,11 +7,8 @@ import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
-import com.min01.solomonlib.multipart.CompoundOrientedBox;
-import com.min01.solomonlib.multipart.EntityBounds;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.min01.solomonlib.multipart.IMultipart;
-import com.min01.solomonlib.util.SolomonUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +25,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -37,7 +33,7 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(DeepAbyssPortalEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(DeepAbyssPortalEntity.class, EntityDataSerializers.INT);
 	
-	public final EntityPartBuilder<DeepAbyssPortalEntity> partBuilder;
+	public final EntityPartBuilder partBuilder = new EntityPartBuilder();
 	
 	public final SmoothAnimationState idleAnimationState = new SmoothAnimationState();
 	public final SmoothAnimationState openAnimationState = new SmoothAnimationState();
@@ -46,7 +42,7 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
 	{
 		super(pEntityType, pLevel);
 		this.noCulling = true;
-		this.partBuilder = new EntityPartBuilder<>(this);
+		this.partBuilder.setCollisionPredicate(t -> true);
 	}
 
 	@Override
@@ -57,19 +53,7 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
 	}
 
 	@Override
-	public EntityBounds getBounds()
-	{
-		return this.partBuilder.hitbox;
-	}
-
-	@Override
-	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
-	{
-		return this.partBuilder.hitbox.getBox(bounds);
-	}
-
-	@Override
-	public EntityPartBuilder<?> getPartBuilder()
+	public EntityPartBuilder getPartBuilder()
 	{
 		return this.partBuilder;
 	}
@@ -78,10 +62,6 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
     public void tick() 
     {
 		super.tick();
-		if(this.partBuilder != null)
-		{
-			this.partBuilder.tick(1.0F);
-		}
 		
 		if(this.level.isClientSide)
 		{
@@ -96,23 +76,13 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
 			{
 				if(t.getServer() != null)
 				{
-					String part = SolomonUtil.getCollidingMultiPart(this, t);
-					if(part != null && part.contains("plate"))
+					if(this.partBuilder.isIntersecting(t.getBoundingBox(), "plate") && t.distanceToSqr(this) <= 6.0F)
 					{
-						if(t.distanceToSqr(this) <= 6.0F)
-						{
-							BTAUtil.teleportEntityToDimension(t, t.getServer().getLevel(BTAWorlds.DEEP_ABYSS), BlockPos.containing(0, 100, 0));
-						}
+						BTAUtil.teleportEntityToDimension(t, t.getServer().getLevel(BTAWorlds.DEEP_ABYSS), BlockPos.containing(0, 100, 0));
 					}
 				}
 			});
 		}
-    }
-    
-    @Override
-    public List<String> getCollidePart() 
-    {
-    	return List.of("door1", "door2", "door3", "plate", "gem", "pipe1", "pipe2", "pipe3", "pipe4", "edge");
     }
     
     @Override

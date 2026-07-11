@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.deepabyss;
 
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,13 +25,6 @@ public class SpineWormBodyEntity extends AbstractSpineWormPart
     			.add(Attributes.MAX_HEALTH, 50.0F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractSpineWormPart> createBuilder()
-	{
-		EntityPartBuilder<SpineWormBodyEntity> partBuilder = new EntityPartBuilder<SpineWormBodyEntity>(this);
-		return partBuilder;
-	}
 
 	@Override
 	public BTAMobType getBTAMobType() 

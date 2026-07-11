@@ -15,4 +15,9 @@ public interface IAnimatableItem
 	{
 		return Vec3.ZERO;
 	}
+	
+	default boolean isTwoHanded()
+	{
+		return false;
+	}
 }

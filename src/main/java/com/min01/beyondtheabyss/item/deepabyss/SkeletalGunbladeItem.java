@@ -109,7 +109,11 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 	@Override
 	public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected)
 	{
-		if((!pIsSelected || !PlayerAnimations.isAnimationPlaying(pEntity)) && getCharge(pStack) > 0)
+		if(!pIsSelected && PlayerAnimations.isAnimationPlaying(pEntity))
+		{
+			PlayerAnimations.stop(pEntity);
+		}
+		if(getCharge(pStack) > 0 && (!pIsSelected || !PlayerAnimations.isAnimationPlaying(pEntity)))
 		{
 			this.stop(pStack, pEntity);
 		}
@@ -179,6 +183,12 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
     {
     	return ImmutableMultimap.of();
     }
+    
+	@Override
+	public boolean isTwoHanded() 
+	{
+		return true;
+	}
 	
 	@Override
 	public boolean isFirstPersonAnim(ItemStack stack, Entity entity)

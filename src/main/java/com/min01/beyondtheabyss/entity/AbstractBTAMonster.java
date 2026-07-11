@@ -4,8 +4,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.LookAtTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.MoveToTargetGoal;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.solomonlib.multipart.CompoundOrientedBox;
-import com.min01.solomonlib.multipart.EntityBounds;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.min01.solomonlib.multipart.IMultipart;
 
@@ -23,13 +21,12 @@ import net.minecraft.world.phys.Vec3;
 public abstract class AbstractBTAMonster extends AbstractAnimatableMonster implements IMultipart
 {
 	public static final EntityDataAccessor<Vec3> LAST_LOOK_POS = SynchedEntityData.defineId(AbstractBTAMonster.class, BTAEntityDataSerializers.VEC3.get());
-	
-	public final EntityPartBuilder<? extends AbstractBTAMonster> partBuilder;
+
+	public final EntityPartBuilder partBuilder = new EntityPartBuilder();
 	
 	public AbstractBTAMonster(EntityType<? extends AbstractAnimatableMonster> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
-		this.partBuilder = this.createBuilder();
 		this.noCulling = this.getBTAMobType() == BTAMobType.BOSS;
 	}
 	
@@ -98,19 +95,7 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 	}
 	
 	@Override
-	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
-	{
-		return this.partBuilder.hitbox.getBox(bounds);
-	}
-
-	@Override
-	public EntityBounds getBounds() 
-	{
-		return this.partBuilder.hitbox;
-	}
-	
-	@Override
-	public EntityPartBuilder<?> getPartBuilder() 
+	public EntityPartBuilder getPartBuilder() 
 	{
 		return this.partBuilder;
 	}
@@ -120,18 +105,11 @@ public abstract class AbstractBTAMonster extends AbstractAnimatableMonster imple
 	{
 		super.tick();
 		
-		if(this.partBuilder != null)
-		{
-			this.partBuilder.tick(1.0F);
-		}
-		
 		if(!this.getLastLookPos().equals(Vec3.ZERO))
 		{
 			this.lookAt(Anchor.FEET, this.getLastLookPos());
 		}
 	}
-	
-	public abstract EntityPartBuilder<? extends AbstractBTAMonster> createBuilder();
 	
 	public abstract BTAMobType getBTAMobType();
 	

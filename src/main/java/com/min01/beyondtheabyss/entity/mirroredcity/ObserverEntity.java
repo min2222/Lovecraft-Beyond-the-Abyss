@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,13 +34,6 @@ public class ObserverEntity extends AbstractBTAMonster
     			.add(Attributes.FLYING_SPEED, 0.3F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
-	{
-    	EntityPartBuilder<ObserverEntity> partBuilder = new EntityPartBuilder<ObserverEntity>(this);
-    	return partBuilder;
-	}
 
 	@Override
 	public BTAMobType getBTAMobType() 

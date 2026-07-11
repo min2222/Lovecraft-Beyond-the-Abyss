@@ -6,7 +6,6 @@ import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -39,26 +38,6 @@ public class GloomfishEntity extends AbstractBTACreature
     			.add(Attributes.MOVEMENT_SPEED, 0.2F)
     			.add(ForgeMod.SWIM_SPEED.get(), 0.5F);
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
-	{
-    	EntityPartBuilder<GloomfishEntity> partBuilder = new EntityPartBuilder<GloomfishEntity>(this)
-    	{
-    		@Override
-    		public boolean isInWater() 
-    		{
-    			return true;
-    		}
-    		
-    		@Override
-    		public float getWaterOffset() 
-    		{
-    			return 0.25F;
-    		}
-    	};
-    	return partBuilder;
-	}
 
 	@Override
 	public BTAMobType getBTAMobType() 

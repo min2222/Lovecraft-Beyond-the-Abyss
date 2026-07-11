@@ -19,7 +19,6 @@ import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
@@ -99,13 +98,6 @@ public class SiamserpentHeadEntity extends AbstractSiamserpentPart
     	this.entityData.define(IS_HEAD, false);
     	this.entityData.define(BEAM_LENGTH, 0.0F);
     }
-    
-	@Override
-	public EntityPartBuilder<? extends AbstractSiamserpentPart> createBuilder()
-	{
-		EntityPartBuilder<SiamserpentHeadEntity> partBuilder = new EntityPartBuilder<SiamserpentHeadEntity>(this);
-		return partBuilder;
-	}
 
 	@Override
 	public BTAMobType getBTAMobType() 

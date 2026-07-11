@@ -4,10 +4,12 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.GloomfishEntity;
 import com.min01.beyondtheabyss.entity.model.GloomfishModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
@@ -28,6 +30,14 @@ public class GloomfishRenderer extends MobRenderer<GloomfishEntity, GloomfishMod
 			pPoseStack.translate(0.25F, 0.0F, 0.0F);
  			pPoseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
 		}
+	}
+	
+	@Override
+	public void render(GloomfishEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
+	{
+		super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+		EntityPartBuilder builder = pEntity.partBuilder;
+		builder.send(this.model, pEntity, pPartialTicks, stack -> this.setupRotations(pEntity, stack, this.getBob(pEntity, pPartialTicks), builder.defaultBodyRotation(pEntity, pPartialTicks), pPartialTicks), stack -> this.scale(pEntity, stack, pPartialTicks));
 	}
 	
 	@Override

@@ -1,18 +1,13 @@
 package com.min01.beyondtheabyss.entity.deepabyss;
 
-import java.util.List;
-
 import com.min01.beyondtheabyss.entity.AbstractOwnableEntity;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.solomonlib.misc.IDynamicLightEntity;
-import com.min01.solomonlib.multipart.CompoundOrientedBox;
-import com.min01.solomonlib.multipart.EntityBounds;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.min01.solomonlib.multipart.IMultipart;
-import com.min01.solomonlib.util.SolomonUtil;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,7 +23,6 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
@@ -54,7 +48,7 @@ public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> impleme
 	private double lerpYRot;
 	private double lerpXRot;
 
-	public final EntityPartBuilder<SubmarineEntity> partBuilder;
+	public final EntityPartBuilder partBuilder = new EntityPartBuilder();
 	
 	public final Vec3[] sitPos = new Vec3[5];
     
@@ -62,7 +56,9 @@ public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> impleme
 	{
 		super(pEntityType, pLevel);
 		this.noCulling = true;
-		this.partBuilder = new EntityPartBuilder<>(this);
+		//TODO exclude ladder & extra cube below hatch
+		this.partBuilder.setCollisionPredicate(t -> !t.contains("inner"));
+		this.partBuilder.setIgnorePredicate(t -> t.contains("top_part0"));
 	}
 	
 	@Override
@@ -75,19 +71,7 @@ public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> impleme
 	}
 	
 	@Override
-	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
-	{
-		return this.partBuilder.hitbox.getBox(bounds);
-	}
-
-	@Override
-	public EntityBounds getBounds() 
-	{
-		return this.partBuilder.hitbox;
-	}
-	
-	@Override
-	public EntityPartBuilder<?> getPartBuilder() 
+	public EntityPartBuilder getPartBuilder() 
 	{
 		return this.partBuilder;
 	}
@@ -97,10 +81,6 @@ public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> impleme
     {
 		super.tick();
 		this.tickLerp();
-		if(this.partBuilder != null)
-		{
-			this.partBuilder.tick(1.0F);
-		}
 		
         if(this.level.isClientSide) 
         {
@@ -226,18 +206,6 @@ public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> impleme
     }
 	
 	@Override
-	public List<String> getCollidePart()
-	{
-		return List.of("bottom", "r_wall", "l_wall", "back", "hatch", "top_part1", "top_part2", "top_part3", "top_part4", "front");
-	}
-	
-	@Override
-	public List<String> getIgnorePart() 
-	{
-		return List.of("top_part0");
-	}
-	
-	@Override
 	public Vec3 getDynamicLightPos()
 	{
     	Vec3 lightPos = BTAUtil.getLookPos(this.getRotationVector(), this.position(), 0.0F, 2.0F, 8.0F);
@@ -260,30 +228,26 @@ public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> impleme
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) 
 	{
-        String part = SolomonUtil.getMultiPart(this, player);
-        if(part != null)
-        {
-        	if(part.equals("controller") && this.getFirstPassenger() == null)
-        	{
-    			if(this.level.isClientSide)
-    			{
-        			player.startRiding(this);
-    				BTANetwork.sendToServer(new UpdateVehiclePacket(player.getId(), this.getId()));
-    			}
-				return InteractionResult.SUCCESS;
-        	}
-        	if(part.equals("hatch") || part.equals("valve") || part.equals("submarine_cube_18"))
-        	{
-    			if(this.getAnimationTick() <= 0)
-    			{
-    				int state = this.getAnimationState() == 1 ? 2 : 1;
-    				this.setAnimationState(state);
-        			this.setHatchOpened(!this.hatchOpened());
-        			this.setAnimationTick(30);
-        			return InteractionResult.SUCCESS;
-    			}
-        	}
-        }
+    	if(this.partBuilder.clip(player, player.getEntityReach(), "controller") && this.getFirstPassenger() == null)
+    	{
+			if(this.level.isClientSide)
+			{
+    			player.startRiding(this);
+				BTANetwork.sendToServer(new UpdateVehiclePacket(player.getId(), this.getId()));
+			}
+			return InteractionResult.SUCCESS;
+    	}
+    	if(this.partBuilder.clip(player, player.getEntityReach(), "hatch"))
+    	{
+			if(this.getAnimationTick() <= 0)
+			{
+				int state = this.getAnimationState() == 1 ? 2 : 1;
+				this.setAnimationState(state);
+    			this.setHatchOpened(!this.hatchOpened());
+    			this.setAnimationTick(30);
+    			return InteractionResult.SUCCESS;
+			}
+    	}
 		return InteractionResult.FAIL;
 	}
 	

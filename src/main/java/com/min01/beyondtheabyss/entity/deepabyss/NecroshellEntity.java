@@ -13,7 +13,6 @@ import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -56,10 +55,11 @@ public class NecroshellEntity extends AbstractBTACreature
 	public NecroshellEntity(EntityType<? extends AbstractBTACreature> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
-		this.xpReward = this.random.nextInt(5);
 		this.setSwim(false);
 		this.setMaxUpStep(1);
+		this.xpReward = this.random.nextInt(5);
 		this.animationEntries.addWalkEntry(this.walkAnimationState, 2.5F);
+		this.partBuilder.setCollisionPredicate(t -> t.contains("SlasherSkull") || t.contains("BlasterSkull"));
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -72,13 +72,6 @@ public class NecroshellEntity extends AbstractBTACreature
         		.add(Attributes.KNOCKBACK_RESISTANCE, 5.0F)
         		.add(Attributes.ARMOR, 12.0F);
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
-	{
-		EntityPartBuilder<NecroshellEntity> partBuilder = new EntityPartBuilder<NecroshellEntity>(this);
-		return partBuilder;
-	}
 	
 	@Override
 	protected void defineSynchedData() 
@@ -151,16 +144,6 @@ public class NecroshellEntity extends AbstractBTACreature
 	public double getMeleeAttackRangeSqr(LivingEntity pEntity)
 	{
 		return (double)(this.getBbWidth() * 2.5F * this.getBbWidth() * 2.5F + pEntity.getBbWidth());
-	}
-	
-	@Override
-	public List<String> getCollidePart() 
-	{
-		if(this.isSlasherShell())
-		{
-			return List.of("SlasherSkull");
-		}
-		return List.of("BlasterSkull");
 	}
 
 	@Override

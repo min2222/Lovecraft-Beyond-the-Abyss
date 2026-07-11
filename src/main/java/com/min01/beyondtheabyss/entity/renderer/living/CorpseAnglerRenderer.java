@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.CorpseAnglerEntity;
 import com.min01.beyondtheabyss.entity.model.CorpseAnglerModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -21,13 +22,6 @@ public class CorpseAnglerRenderer extends MobRenderer<CorpseAnglerEntity, Corpse
 	}
 	
 	@Override
-	public void render(CorpseAnglerEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
-	{
-		super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
-		pEntity.modelPositions.setModelPos(pEntity, this.model.root());
-	}
-	
-	@Override
 	protected void setupRotations(CorpseAnglerEntity pEntityLiving, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) 
 	{
 		super.setupRotations(pEntityLiving, pPoseStack, pAgeInTicks, pRotationYaw, pPartialTicks);
@@ -36,6 +30,15 @@ public class CorpseAnglerRenderer extends MobRenderer<CorpseAnglerEntity, Corpse
 			pPoseStack.translate(1.5F, 0.0F, 0.0F);
 			pPoseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
 		}
+	}
+	
+	@Override
+	public void render(CorpseAnglerEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight)
+	{
+		super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+		EntityPartBuilder builder = pEntity.partBuilder;
+		pEntity.modelPositions.setModelPos(pEntity, this.model.root());
+		builder.send(this.model, pEntity, pPartialTicks, stack -> this.setupRotations(pEntity, stack, this.getBob(pEntity, pPartialTicks), builder.defaultBodyRotation(pEntity, pPartialTicks), pPartialTicks), stack -> this.scale(pEntity, stack, pPartialTicks));
 	}
 
 	@Override

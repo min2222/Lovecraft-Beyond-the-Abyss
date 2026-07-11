@@ -9,7 +9,6 @@ import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.SetDialogueScreenPacket;
 import com.min01.beyondtheabyss.network.UpdateSynchedEntityDataPacket;
 import com.min01.beyondtheabyss.world.BTASavedData;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -72,13 +71,6 @@ public class MysteriousGuyEntity extends AbstractBTACreature implements IDialogu
     	this.entityData.define(PREV_CHAT_INDEX, 0);
     	this.entityData.define(KEY_ITEM, ItemStack.EMPTY);
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
-	{
-    	EntityPartBuilder<MysteriousGuyEntity> partBuilder = new EntityPartBuilder<MysteriousGuyEntity>(this);
-    	return partBuilder;
-	}
 
 	@Override
 	public BTAMobType getBTAMobType()

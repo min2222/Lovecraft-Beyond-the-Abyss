@@ -7,6 +7,7 @@ import com.min01.beyondtheabyss.entity.mirroredcity.ObserverEntity;
 import com.min01.beyondtheabyss.entity.model.ObserverModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
 import com.min01.beyondtheabyss.misc.BTARenderType;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -59,6 +60,9 @@ public class ObserverRenderer extends MobRenderer<ObserverEntity, ObserverModel>
         vertex4(consumer, matrix4f, f3, f4);
         vertex2(consumer, matrix4f, f3, f4);
         pPoseStack.popPose();
+        
+		EntityPartBuilder builder = pEntity.partBuilder;
+		builder.send(this.model, pEntity, pPartialTicks, stack -> this.setupRotations(pEntity, stack, this.getBob(pEntity, pPartialTicks), builder.defaultBodyRotation(pEntity, pPartialTicks), pPartialTicks), stack -> this.scale(pEntity, stack, pPartialTicks));
 	}
 
 	@Override

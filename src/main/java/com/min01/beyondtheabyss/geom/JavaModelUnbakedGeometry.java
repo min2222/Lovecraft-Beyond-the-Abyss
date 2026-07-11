@@ -38,7 +38,7 @@ public class JavaModelUnbakedGeometry implements IUnbakedGeometry<JavaModelUnbak
 		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
 		ResourceLocation renderTypeFastHint = context.getRenderTypeFastHint();
 		RenderTypeGroup renderTypesFast = renderTypeFastHint != null ? context.getRenderType(renderTypeFastHint) : RenderTypeGroup.EMPTY;
-		IModelBuilder<?> builder = IModelBuilder.of(true, true, context.isGui3d(), context.getTransforms(), overrides, particle, renderTypes, renderTypesFast);
+		IModelBuilder<?> builder = IModelBuilder.of(context.useAmbientOcclusion(), context.useBlockLight(), context.isGui3d(), context.getTransforms(), overrides, particle, renderTypes, renderTypesFast);
 		this.addQuads(context, builder, baker, spriteGetter, modelState, modelLocation);
 		return builder.build();
 	}

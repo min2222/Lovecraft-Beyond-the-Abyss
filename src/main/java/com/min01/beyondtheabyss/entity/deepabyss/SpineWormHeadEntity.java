@@ -13,7 +13,6 @@ import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -79,13 +78,6 @@ public class SpineWormHeadEntity extends AbstractSpineWormPart
     	this.entityData.define(COOLDOWN, 100);
     	this.entityData.define(TARGET_UUID, Optional.empty());
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractSpineWormPart> createBuilder() 
-	{
-		EntityPartBuilder<SpineWormHeadEntity> partBuilder = new EntityPartBuilder<SpineWormHeadEntity>(this);
-		return partBuilder;
-	}
 
 	@Override
 	public BTAMobType getBTAMobType() 

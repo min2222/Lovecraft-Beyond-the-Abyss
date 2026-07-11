@@ -16,7 +16,6 @@ import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -67,20 +66,6 @@ public class GnasherEntity extends AbstractBTAMonster implements ILeader<Gnasher
         		.add(Attributes.ATTACK_DAMAGE, 3.5F)
         		.add(Attributes.FOLLOW_RANGE, 30.0F);
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
-	{
-    	EntityPartBuilder<GnasherEntity> partBuilder = new EntityPartBuilder<GnasherEntity>(this)
-    	{
-    		@Override
-    		public boolean isInWater() 
-    		{
-    			return true;
-    		}
-    	};
-    	return partBuilder;
-	}
 	
 	@Override
 	protected void registerGoals() 

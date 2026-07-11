@@ -14,8 +14,6 @@ import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
-import com.min01.solomonlib.util.SolomonUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -98,26 +96,6 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
     	this.entityData.define(BURROW_COOLDOWN, 0);
     	this.entityData.define(IS_BURROW, false);
     }
-    
-	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
-	{
-    	EntityPartBuilder<CorpseAnglerEntity> partBuilder = new EntityPartBuilder<CorpseAnglerEntity>(this)
-    	{
-    		@Override
-    		public boolean isInWater() 
-    		{
-    			return true;
-    		}
-
-    		@Override
-    		public float getWaterOffset() 
-    		{
-    			return 1.5F;
-    		}
-    	};
-    	return partBuilder;
-	}
 	
 	@Override
 	public void playAmbientSound() 
@@ -398,8 +376,7 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 	{
 		if(pSource.getDirectEntity() instanceof Player player && this.getAnimationState() == 3)
 		{
-	        String part = SolomonUtil.getMultiPart(this, player);
-	        if(part != null && part.equals("Bait"))
+	        if(this.partBuilder.clip(player, player.getEntityReach(), "Bait"))
 	        {
 				this.setAnimationState(4);
 				this.setAnimationTick(20);

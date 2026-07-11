@@ -2,7 +2,6 @@ package com.min01.beyondtheabyss.entity.endlessdesert;
 
 import javax.annotation.Nullable;
 
-import com.min01.beyondtheabyss.entity.AbstractBTAMonster;
 import com.min01.beyondtheabyss.entity.BTACameraShakeEntity;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
@@ -10,7 +9,6 @@ import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -60,13 +58,6 @@ public class DuneDevourerHeadEntity extends AbstractDuneDevourerPart
     	super.defineSynchedData();
     	this.entityData.define(WANTED_POS, Vec3.ZERO);
     }
-    
-	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
-	{
-    	EntityPartBuilder<DuneDevourerHeadEntity> partBuilder = new EntityPartBuilder<DuneDevourerHeadEntity>(this);
-		return partBuilder;
-	}
 	
 	@Override
 	public void tick()

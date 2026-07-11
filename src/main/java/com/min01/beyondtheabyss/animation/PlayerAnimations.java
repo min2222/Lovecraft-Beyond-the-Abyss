@@ -56,6 +56,16 @@ public class PlayerAnimations
     	return getPlayerAnimationState(player) != 0 && getPlayerAnimationTick(player) > 0;
     }
     
+    public static void stop(Entity player)
+    {
+    	player.getCapability(PlayerAnimationCapabilityImpl.PLAYER_ANIMATION).ifPresent(cap ->
+        {
+            cap.setAnimationState(0);
+            cap.setAnimationTick(0);
+            send(player, cap);
+        });
+    }
+    
     public static void play(Entity player, int state, int tick)
     {
     	player.getCapability(PlayerAnimationCapabilityImpl.PLAYER_ANIMATION).ifPresent(cap ->
@@ -143,8 +153,6 @@ public class PlayerAnimations
 	@OnlyIn(Dist.CLIENT)
 	public static void animate(PlayerModel<?> model, SmoothAnimationState state, AnimationDefinition definition, float ageInTicks)
 	{
-		if(definition == null)
-			return;
 		state.animatePlayer(model, definition, ageInTicks);
 	}
     

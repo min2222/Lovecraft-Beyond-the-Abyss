@@ -8,7 +8,6 @@ import com.min01.beyondtheabyss.misc.BTAEntityDataSerializers;
 import com.min01.beyondtheabyss.misc.KinematicChain;
 import com.min01.beyondtheabyss.misc.KinematicChain.ChainSegment;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -59,26 +58,6 @@ public class ForneusHeadEntity extends AbstractForneusPart
     	super.defineSynchedData();
     	this.entityData.define(WANTED_POS, Vec3.ZERO);
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractForneusPart> createBuilder()
-	{
-    	EntityPartBuilder<ForneusHeadEntity> partBuilder = new EntityPartBuilder<ForneusHeadEntity>(this)
-    	{
-    		@Override
-    		public Vec3 getOffset()
-    		{
-    			return new Vec3(0.0F, 2.25F, 0.0F);
-    		}
-    		
-    		@Override
-    		public float getRenderScale() 
-    		{
-    			return 1.5F;
-    		}
-    	};
-		return partBuilder;
-	}
 	
 	@Override
 	public void tick()

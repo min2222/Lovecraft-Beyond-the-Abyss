@@ -7,6 +7,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.MysteriousGuyEntity;
 import com.min01.beyondtheabyss.entity.model.MysteriousGuyModel;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.LightTexture;
@@ -36,6 +37,9 @@ public class MysteriousGuyRenderer extends MobRenderer<MysteriousGuyEntity, Myst
 			BTAClientUtil.drawQuad(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(MARK_TEXTURE)), new Vector2f(0.5F, 0.5F), new Vector4f(1.0F, 1.0F, 1.0F, 1.0F), LightTexture.FULL_BRIGHT);
 			pPoseStack.popPose();
 		}
+		
+		EntityPartBuilder builder = pEntity.partBuilder;
+		builder.send(this.model, pEntity, pPartialTicks, stack -> this.setupRotations(pEntity, stack, this.getBob(pEntity, pPartialTicks), builder.defaultBodyRotation(pEntity, pPartialTicks), pPartialTicks), stack -> this.scale(pEntity, stack, pPartialTicks));
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.GhidruthEntity;
 import com.min01.beyondtheabyss.entity.model.GhidruthModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.GlowingLayer;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,7 +31,9 @@ public class GhidruthRenderer extends MobRenderer<GhidruthEntity, GhidruthModel>
 	public void render(GhidruthEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) 
 	{
 		super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+		EntityPartBuilder builder = pEntity.partBuilder;
 		pEntity.modelPositions.setModelPos(pEntity, this.model.root());
+		builder.send(this.model, pEntity, pPartialTicks, stack -> this.setupRotations(pEntity, stack, this.getBob(pEntity, pPartialTicks), builder.defaultBodyRotation(pEntity, pPartialTicks), pPartialTicks), stack -> this.scale(pEntity, stack, pPartialTicks));
 	}
 
 	@Override

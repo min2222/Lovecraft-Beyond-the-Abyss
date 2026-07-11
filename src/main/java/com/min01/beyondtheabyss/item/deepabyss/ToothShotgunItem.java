@@ -181,6 +181,12 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 	}
 	
 	@Override
+	public boolean isTwoHanded() 
+	{
+		return true;
+	}
+	
+	@Override
 	public boolean isFirstPersonAnim(ItemStack stack, Entity entity) 
 	{
 		return true;

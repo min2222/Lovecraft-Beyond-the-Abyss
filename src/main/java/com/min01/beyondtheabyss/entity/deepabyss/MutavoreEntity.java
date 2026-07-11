@@ -15,7 +15,6 @@ import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.misc.WormChain;
 import com.min01.beyondtheabyss.misc.WormChain.Worm;
 import com.min01.beyondtheabyss.sound.BTASounds;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -112,13 +111,6 @@ public class MutavoreEntity extends AbstractBTAMonster
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, GnasherEntity.class, false, false));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, GloomfishEntity.class, false, false));
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
-	{
-		EntityPartBuilder<MutavoreEntity> partBuilder = new EntityPartBuilder<MutavoreEntity>(this);
-		return partBuilder;
-	}
 	
 	@Override
 	protected void defineSynchedData()

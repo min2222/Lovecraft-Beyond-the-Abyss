@@ -20,7 +20,6 @@ import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.particle.DustCloudParticle;
 import com.min01.beyondtheabyss.sound.BTASounds;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
@@ -84,26 +83,6 @@ public class GhidruthEntity extends AbstractBTAMonster
         		.add(Attributes.ARMOR, 20.0F)
         		.add(Attributes.ARMOR_TOUGHNESS, 20.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 10.0F);
-    }
-	
-    @Override
-    public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder() 
-    {
-    	EntityPartBuilder<GhidruthEntity> partBuilder = new EntityPartBuilder<GhidruthEntity>(this)
-    	{
-    		@Override
-    		public Vec3 getOffset()
-    		{
-    			return new Vec3(0.0F, 2.25F, 0.0F);
-    		}
-    		
-    		@Override
-    		public float getRenderScale() 
-    		{
-    			return 1.5F;
-    		}
-    	};
-    	return partBuilder;
     }
     
     @Override

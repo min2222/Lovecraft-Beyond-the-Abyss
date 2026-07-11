@@ -4,16 +4,15 @@ import com.min01.beyondtheabyss.BeyondtheAbyss;
 import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentBoneEntity;
 import com.min01.beyondtheabyss.entity.model.SiamserpentMiddleBoneModel;
 import com.min01.beyondtheabyss.entity.renderer.layer.SiamserpentMiddleBoneLayer;
-import com.min01.solomonlib.multipart.IMultiModel;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class SiamserpentMiddleBoneRenderer extends MobRenderer<SiamserpentBoneEntity, SiamserpentMiddleBoneModel> implements IMultiModel<SiamserpentBoneEntity>
+public class SiamserpentMiddleBoneRenderer extends MobRenderer<SiamserpentBoneEntity, SiamserpentMiddleBoneModel>
 {
 	private final SiamserpentBoneRenderer boneRenderer;
 	
@@ -34,17 +33,9 @@ public class SiamserpentMiddleBoneRenderer extends MobRenderer<SiamserpentBoneEn
 		else
 		{
 			super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+			EntityPartBuilder builder = pEntity.partBuilder;
+			builder.send(this.model, pEntity, pPartialTicks, stack -> this.setupRotations(pEntity, stack, this.getBob(pEntity, pPartialTicks), builder.defaultBodyRotation(pEntity, pPartialTicks), pPartialTicks), stack -> this.scale(pEntity, stack, pPartialTicks));
 		}
-	}
-	
-	@Override
-	public HierarchicalModel<SiamserpentBoneEntity> getModel(SiamserpentBoneEntity entity) 
-	{
-		if(entity.getVariant() == 0 || entity.getVariant() == 1)
-		{
-			return this.boneRenderer.getModel();
-		}
-		return this.getModel();
 	}
 	
 	@Override

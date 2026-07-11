@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.entity.ai.goal.deepabyss.FulgastraSplitGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -38,13 +37,6 @@ public class FulgastraEntity extends AbstractBTAMonster
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(10);
-	}
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
-	{
-    	EntityPartBuilder<FulgastraEntity> partBuilder = new EntityPartBuilder<FulgastraEntity>(this);
-    	return partBuilder;
 	}
 	
     public static AttributeSupplier.Builder createAttributes()

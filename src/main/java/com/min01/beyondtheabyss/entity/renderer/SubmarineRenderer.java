@@ -8,11 +8,10 @@ import com.min01.beyondtheabyss.entity.deepabyss.SubmarineEntity;
 import com.min01.beyondtheabyss.entity.model.SubmarineModel;
 import com.min01.beyondtheabyss.event.ClientEventHandlerForge;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
-import com.min01.solomonlib.multipart.IMultiModel;
+import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -23,7 +22,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
-public class SubmarineRenderer extends EntityRenderer<SubmarineEntity> implements IMultiModel<SubmarineEntity>
+public class SubmarineRenderer extends EntityRenderer<SubmarineEntity>
 {
 	public final SubmarineModel model;
 	
@@ -79,6 +78,9 @@ public class SubmarineRenderer extends EntityRenderer<SubmarineEntity> implement
 		
 		pEntity.sitPos[0] = offset.add(pEntity.position());
 		BTANetwork.sendToServer(new UpdatePosArrayPacket(pEntity.getUUID(), offset.add(pEntity.position()), 0));*/
+		
+		EntityPartBuilder builder = pEntity.partBuilder;
+		builder.send(this.model, pEntity, pPartialTick, stack -> {}, stack -> {});
 	}
 	
 	public void transform(PoseStack stack)
@@ -115,12 +117,6 @@ public class SubmarineRenderer extends EntityRenderer<SubmarineEntity> implement
 	public static record SubmarineTransform(float pitch, float yaw)
 	{
 		
-	}
-	
-	@Override
-	public HierarchicalModel<SubmarineEntity> getModel(SubmarineEntity entity)
-	{
-		return this.model;
 	}
 
 	@Override

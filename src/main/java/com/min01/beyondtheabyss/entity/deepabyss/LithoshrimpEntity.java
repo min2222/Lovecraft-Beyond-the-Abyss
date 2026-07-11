@@ -4,7 +4,6 @@ import com.min01.beyondtheabyss.entity.AbstractBTACreature;
 import com.min01.beyondtheabyss.misc.BTAMobType;
 import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -41,13 +40,6 @@ public class LithoshrimpEntity extends AbstractBTACreature
         		.add(Attributes.ARMOR_TOUGHNESS, 1.0F)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0F);
     }
-    
-	@Override
-	public EntityPartBuilder<? extends AbstractBTACreature> createBuilder()
-	{
-    	EntityPartBuilder<LithoshrimpEntity> partBuilder = new EntityPartBuilder<LithoshrimpEntity>(this);
-		return partBuilder;
-	}
 
 	@Override
 	public BTAMobType getBTAMobType()

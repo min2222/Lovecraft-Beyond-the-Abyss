@@ -7,7 +7,6 @@ import com.min01.beyondtheabyss.misc.MobClassification;
 import com.min01.beyondtheabyss.misc.PositionTypes;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.multipart.EntityPartBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
@@ -48,13 +47,6 @@ public class OverseerEntity extends AbstractBTAMonster
     	super.registerGoals();
     	this.goalSelector.addGoal(0, new OverseerMissileGoal(this));
     }
-
-	@Override
-	public EntityPartBuilder<? extends AbstractBTAMonster> createBuilder()
-	{
-    	EntityPartBuilder<OverseerEntity> partBuilder = new EntityPartBuilder<OverseerEntity>(this);
-    	return partBuilder;
-	}
 
 	@Override
 	public BTAMobType getBTAMobType() 

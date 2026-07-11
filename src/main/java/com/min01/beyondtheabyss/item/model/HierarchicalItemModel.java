@@ -42,8 +42,6 @@ public abstract class HierarchicalItemModel extends Model
 
 	public void animate(ItemStack stack, SmoothAnimationState state, AnimationDefinition definition, float ageInTicks)
 	{
-		if(definition == null)
-			return;
 		state.animateItem(this, definition, ageInTicks);
 	}
 }

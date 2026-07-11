@@ -46,12 +46,6 @@ public abstract class AbstractSpineWormPart extends AbstractDeepAbyssWormPart<Ab
 	}
 	
 	@Override
-	public boolean skipInvisiblePart() 
-	{
-		return false;
-	}
-	
-	@Override
 	protected SoundEvent getHurtSound(DamageSource pDamageSource)
 	{
 		return BTASounds.SPINEWORM_HURT.get();

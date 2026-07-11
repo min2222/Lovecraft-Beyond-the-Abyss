@@ -3,8 +3,6 @@ package com.min01.beyondtheabyss.entity;
 import com.min01.beyondtheabyss.entity.ai.goal.LookAtTargetGoal;
 import com.min01.beyondtheabyss.entity.ai.goal.MoveToTargetGoal;
 import com.min01.beyondtheabyss.misc.BTAMobType;
-import com.min01.solomonlib.multipart.CompoundOrientedBox;
-import com.min01.solomonlib.multipart.EntityBounds;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.min01.solomonlib.multipart.IMultipart;
 
@@ -17,12 +15,11 @@ import net.minecraft.world.phys.AABB;
 
 public abstract class AbstractBTACreature extends AbstractAnimatableCreature implements IMultipart
 {
-	public final EntityPartBuilder<? extends AbstractBTACreature> partBuilder;
+	public final EntityPartBuilder partBuilder = new EntityPartBuilder();
 	
 	public AbstractBTACreature(EntityType<? extends AbstractAnimatableCreature> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
-		this.partBuilder = this.createBuilder();
 		this.noCulling = this.getBTAMobType() == BTAMobType.BOSS;
 	}
 	
@@ -78,35 +75,10 @@ public abstract class AbstractBTACreature extends AbstractAnimatableCreature imp
 	}
 	
 	@Override
-	public CompoundOrientedBox getCompoundBoundingBox(AABB bounds) 
-	{
-		return this.partBuilder.hitbox.getBox(bounds);
-	}
-
-	@Override
-	public EntityBounds getBounds() 
-	{
-		return this.partBuilder.hitbox;
-	}
-	
-	@Override
-	public EntityPartBuilder<?> getPartBuilder() 
+	public EntityPartBuilder getPartBuilder() 
 	{
 		return this.partBuilder;
 	}
-	
-	@Override
-	public void tick() 
-	{
-		super.tick();
-		
-		if(this.partBuilder != null)
-		{
-			this.partBuilder.tick(1.0F);
-		}
-	}
-	
-	public abstract EntityPartBuilder<? extends AbstractBTACreature> createBuilder();
 	
 	public abstract BTAMobType getBTAMobType();
 }
