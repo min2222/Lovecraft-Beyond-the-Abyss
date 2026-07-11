@@ -68,18 +68,14 @@ public class DeepAbyssPortalEntity extends Entity implements IMultipart
 			this.idleAnimationState.animateWhen(this.getAnimationState() == 1, this.tickCount);
 			this.openAnimationState.animateWhen(this.getAnimationState() == 1, this.tickCount);
 		}
-		
-		if(this.getAnimationState() == 1)
+		else if(this.getAnimationState() == 1)
 		{
 			List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5F));
 			list.forEach(t -> 
 			{
-				if(t.getServer() != null)
+				if(this.partBuilder.isIntersecting(t.getBoundingBox().inflate(0.1), "plate") && t.distanceToSqr(this) <= 6.0F)
 				{
-					if(this.partBuilder.isIntersecting(t.getBoundingBox(), "plate") && t.distanceToSqr(this) <= 6.0F)
-					{
-						BTAUtil.teleportEntityToDimension(t, t.getServer().getLevel(BTAWorlds.DEEP_ABYSS), BlockPos.containing(0, 100, 0));
-					}
+					BTAUtil.teleportEntityToDimension(t, this.getServer().getLevel(BTAWorlds.DEEP_ABYSS), BlockPos.containing(0, 100, 0));
 				}
 			});
 		}

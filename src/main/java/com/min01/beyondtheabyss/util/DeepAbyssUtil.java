@@ -16,7 +16,7 @@ public class DeepAbyssUtil
 		List<SubmarineEntity> list = entity.level.getEntitiesOfClass(SubmarineEntity.class, entity.getBoundingBox().inflate(1.0F), t -> t != entity);
 		for(SubmarineEntity submarine : list)
 		{
-			if(submarine.partBuilder.isIntersecting(entity.getBoundingBox(), "inner"))
+			if(submarine.partBuilder.isIntersecting(entity.getBoundingBox().inflate(0.1), "inner"))
 			{
 				return true;
 			}
