@@ -14,11 +14,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.min01.beyondtheabyss.capabilities.IPlayerAnimationCapability;
 import com.min01.beyondtheabyss.capabilities.PlayerAnimationCapabilityImpl;
-import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdatePlayerAnimationPacket;
-import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -137,23 +135,13 @@ public class PlayerAnimations
     			}
     		});
     	});
-
-    	if(player.isHolding(BTAItems.SKELETAL_GUNBLADE.get()) && (getPlayerAnimationState(player) == 3 || getPlayerAnimationState(player) == 4))
-    	{
-    		ModelPart head = model.head;
-    		Pair<ModelPart, ModelPart> left = MODEL_MAP.get("LeftArm");
-    		Pair<ModelPart, ModelPart> right = MODEL_MAP.get("RightArm");
-    		BTAClientUtil.copyRotFrom(left.getLeft(), head, true);
-    		BTAClientUtil.copyRotFrom(left.getRight(), head, true);
-    		BTAClientUtil.copyRotFrom(right.getLeft(), head, false);
-    		BTAClientUtil.copyRotFrom(right.getRight(), head, false);
-    	}
     }
 
 	@OnlyIn(Dist.CLIENT)
 	public static void animate(PlayerModel<?> model, SmoothAnimationState state, AnimationDefinition definition, float ageInTicks)
 	{
-		state.animatePlayer(model, definition, ageInTicks);
+		state.updateTime(ageInTicks, 1.0F);
+		KeyframePlayerAnimations.animate(model, definition, state.getAccumulatedTime(), state.factor(), SmoothAnimationState.ANIMATION_VECTOR_CACHE);
 	}
     
 	@OnlyIn(Dist.CLIENT)

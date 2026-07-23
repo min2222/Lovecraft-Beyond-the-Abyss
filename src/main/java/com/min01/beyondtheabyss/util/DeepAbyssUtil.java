@@ -8,15 +8,17 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 
 public class DeepAbyssUtil 
 {
 	public static boolean isInsideSubmarine(Entity entity)
 	{
-		List<SubmarineEntity> list = entity.level.getEntitiesOfClass(SubmarineEntity.class, entity.getBoundingBox().inflate(1.0F), t -> t != entity);
+		AABB aabb = entity.getBoundingBox();
+		List<SubmarineEntity> list = entity.level.getEntitiesOfClass(SubmarineEntity.class, aabb.inflate(1.0F), t -> t != entity);
 		for(SubmarineEntity submarine : list)
 		{
-			if(submarine.partBuilder.isIntersecting(entity.getBoundingBox().inflate(0.1), "inner"))
+			if(submarine.partBuilder.clip(entity.position(), entity.position().subtract(0, aabb.getSize() + 1.0, 0), t -> t.contains("bottom")).isPresent())
 			{
 				return true;
 			}

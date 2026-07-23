@@ -26,7 +26,7 @@ public class MixinEntity
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci)
     {
-    	Entity entity = (Entity)(Object)this;
+    	Entity entity = (Entity) (Object) this;
 		if(entity instanceof ItemEntity item)
 		{
 			if(item.level.dimension() == BTAWorlds.DEEP_ABYSS)
@@ -52,7 +52,8 @@ public class MixinEntity
 	@Inject(method = "checkBelowWorld", at = @At("HEAD"), cancellable = true)
 	private void checkBelowWorld(CallbackInfo ci) 
 	{
-		if(((Entity)(Object)this).level.dimension() == BTAWorlds.OUTER_SPACE)
+    	Entity entity = (Entity) (Object) this;
+		if(entity.level.dimension() == BTAWorlds.OUTER_SPACE)
 		{
 			ci.cancel();
 		}
@@ -61,7 +62,8 @@ public class MixinEntity
     @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)
     private void isInWater(CallbackInfoReturnable<Boolean> cir)
     {
-    	if((Entity)(Object)this instanceof LivingEntity living)
+    	Entity entity = (Entity) (Object) this;
+    	if(entity instanceof LivingEntity living)
     	{
     		if(BTAUtil.canSwimInAir(living))
     		{
@@ -77,7 +79,8 @@ public class MixinEntity
     @Inject(method = "getFluidTypeHeight", at = @At("HEAD"), cancellable = true, remap = false)
     private void getFluidTypeHeight(FluidType type, CallbackInfoReturnable<Double> cir)
     {
-    	if((Entity)(Object)this instanceof LivingEntity living)
+    	Entity entity = (Entity) (Object) this;
+    	if(entity instanceof LivingEntity living)
     	{
     		if(DeepAbyssUtil.isInsideSubmarine(living))
     		{
@@ -89,7 +92,8 @@ public class MixinEntity
     @Inject(method = "isInFluidType", at = @At("HEAD"), cancellable = true, remap = false)
     private void isInFluidType(CallbackInfoReturnable<Boolean> cir)
     {
-    	if((Entity)(Object)this instanceof LivingEntity living)
+    	Entity entity = (Entity) (Object) this;
+    	if(entity instanceof LivingEntity living)
     	{
     		if(DeepAbyssUtil.isInsideSubmarine(living))
     		{
@@ -101,7 +105,8 @@ public class MixinEntity
     @Inject(method = "getEyeInFluidType", at = @At("HEAD"), cancellable = true, remap = false)
     private void getEyeInFluidType(CallbackInfoReturnable<FluidType> cir)
     {
-    	if((Entity)(Object)this instanceof LivingEntity living)
+    	Entity entity = (Entity) (Object) this;
+    	if(entity instanceof LivingEntity living)
     	{
     		if(BTAUtil.canSwimInAir(living))
     		{

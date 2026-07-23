@@ -31,7 +31,7 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	public void performSkill() 
+	public void run() 
 	{
 		this.mob.setStopLookTick(Integer.MAX_VALUE);
 		this.mob.setAnimationState(8);
@@ -68,19 +68,19 @@ public class SiamserpentSlasherChargeGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	public int getSkillUsingTime() 
+	public int getDuration() 
 	{
 		return 100;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 45;
 	}
 
 	@Override
-	public int getSkillUsingInterval() 
+	public int getInterval() 
 	{
 		return 50;
 	}

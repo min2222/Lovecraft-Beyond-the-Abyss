@@ -10,7 +10,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class BTAEntityDataSerializers 
+public class BTAEntityDataSerializers
 {
 	public static final DeferredRegister<EntityDataSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, BeyondtheAbyss.MODID);
 	
@@ -24,7 +24,7 @@ public class BTAEntityDataSerializers
 		return buf;
 	}
 	
-	public static Vec3 readVec3(ByteBuf buf)
+	public static Vec3 readVec3(FriendlyByteBuf buf)
 	{
 		return new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}

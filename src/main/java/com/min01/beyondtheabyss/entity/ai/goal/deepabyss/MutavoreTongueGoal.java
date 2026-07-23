@@ -26,7 +26,7 @@ public class MutavoreTongueGoal extends AbstractAnimationGoal<MutavoreEntity>
 	}
 	
 	@Override
-	public boolean stopMovingWhenStart()
+	public boolean stopOnStart()
 	{
 		return false;
 	}
@@ -46,7 +46,7 @@ public class MutavoreTongueGoal extends AbstractAnimationGoal<MutavoreEntity>
 	@Override
 	public void tick() 
 	{
-		if(this.mob.getAnimationTick() <= this.getSkillUsingTime() - 10 && this.mob.getTarget() != null) 
+		if(this.mob.getAnimationTick() <= this.getDuration() - 10 && this.mob.getTarget() != null) 
 		{
 			if(this.mob.getAnimationState() == 3)
 			{
@@ -64,7 +64,7 @@ public class MutavoreTongueGoal extends AbstractAnimationGoal<MutavoreEntity>
 	}
 
 	@Override
-	public void performSkill()
+	public void run()
 	{
 		this.mob.setAnimationState(5);
 	}
@@ -78,19 +78,19 @@ public class MutavoreTongueGoal extends AbstractAnimationGoal<MutavoreEntity>
 	}
 
 	@Override
-	public int getSkillUsingTime() 
+	public int getDuration() 
 	{
 		return 80;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 70;
 	}
 
 	@Override
-	public int getSkillUsingInterval()
+	public int getInterval()
 	{
 		return 40;
 	}

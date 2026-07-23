@@ -33,9 +33,9 @@ public class ChainTrapMawRenderer extends EntityRenderer<ChainTrapMawEntity>
 	{
 		if(pEntity.chain != null)
 		{
-			for(int i = 0; i < pEntity.chain.getSegments().length; i++)
+			for(int i = 0; i < pEntity.chain.getSegments().size(); i++)
 			{
-				ChainSegment segment = pEntity.chain.getSegments()[i];
+				ChainSegment segment = pEntity.chain.getSegments().get(i);
 				Vec3 pos = segment.position(pPartialTick).subtract(pEntity.position());
 				Vec2 rot = segment.getRot(pPartialTick);
 				pPoseStack.pushPose();
@@ -44,7 +44,7 @@ public class ChainTrapMawRenderer extends EntityRenderer<ChainTrapMawEntity>
 				pPoseStack.mulPose(Axis.YP.rotationDegrees(rot.y));
 				pPoseStack.mulPose(Axis.XP.rotationDegrees(-rot.x - 90.0F));
 				pPoseStack.translate(0, -1.5F, 0);
-				if(i == pEntity.chain.getSegments().length - 1)
+				if(i == pEntity.chain.getSegments().size() - 1)
 				{
 					this.model.setupAnim(pEntity, 0, 0, pEntity.tickCount + pPartialTick, 0, 0);
 					this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

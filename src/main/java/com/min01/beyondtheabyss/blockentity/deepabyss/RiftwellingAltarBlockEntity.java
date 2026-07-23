@@ -1,8 +1,6 @@
 package com.min01.beyondtheabyss.blockentity.deepabyss;
 
 import com.min01.beyondtheabyss.block.BTABlocks;
-import com.min01.beyondtheabyss.network.BTANetwork;
-import com.min01.beyondtheabyss.network.UpdateAltarItemPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -13,44 +11,39 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class RiftwellingAltarBlockEntity extends BlockEntity
 {
-	private ItemStack item;
+	private ItemStack stack = ItemStack.EMPTY;
 	
 	public RiftwellingAltarBlockEntity(BlockPos pPos, BlockState pBlockState)
 	{
 		super(BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), pPos, pBlockState);
-		this.item = ItemStack.EMPTY;
 	}
 	
-	public static void update(Level level, BlockPos pos, BlockState state, RiftwellingAltarBlockEntity altar)
+	public static void tick(Level level, BlockPos pos, BlockState state, RiftwellingAltarBlockEntity altar)
 	{
 		
 	}
 	
 	public void setItem(ItemStack stack)
 	{
-		this.item = stack;
-		if(!this.level.isClientSide)
-		{
-			BTANetwork.sendToAll(new UpdateAltarItemPacket(stack, this.worldPosition));
-		}
+		this.stack = stack;
 	}
 	
 	public ItemStack getItem()
 	{
-		return this.item;
+		return this.stack;
 	}
 	
 	@Override
 	protected void saveAdditional(CompoundTag nbt)
 	{
 		super.saveAdditional(nbt);
-		nbt.put("Item", this.item.save(new CompoundTag()));
+		nbt.put("ItemStack", this.stack.save(new CompoundTag()));
 	}
 	
 	@Override
 	public void load(CompoundTag nbt)
 	{
 		super.load(nbt);
-		this.setItem(ItemStack.of(nbt.getCompound("Item")));
+		this.stack = ItemStack.of(nbt.getCompound("ItemStack"));
 	}
 }

@@ -71,6 +71,8 @@ public class GhidruthEntity extends AbstractBTAMonster
 		super(pEntityType, pLevel);
 		this.xpReward = 1000 + this.random.nextInt(100);
 		this.modelPositions.addModelPos("RearBody", Vec3.ZERO);
+		
+		this.movementData.swim.turn.set(65, 8);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -313,18 +315,6 @@ public class GhidruthEntity extends AbstractBTAMonster
 		return 2.0F;
 	}
 	
-    @Override
-    public float maxSwimTurnX() 
-    {
-    	return 65;
-    }
-
-    @Override
-    public float maxSwimTurnY() 
-    {
-    	return 8;
-    }
-    
     @Override
     public BTAMobType getBTAMobType()
     {

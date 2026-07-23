@@ -58,13 +58,13 @@ public class NecroshellHidingGoal extends AbstractAnimationGoal<NecroshellEntity
 	}
 
 	@Override
-	public int getSkillUsingTime() 
+	public int getDuration() 
 	{
 		return 15;
 	}
 
 	@Override
-	public int getSkillUsingInterval() 
+	public int getInterval() 
 	{
 		return 100;
 	}

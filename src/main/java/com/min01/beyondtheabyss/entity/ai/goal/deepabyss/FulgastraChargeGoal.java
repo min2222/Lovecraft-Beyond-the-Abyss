@@ -31,7 +31,7 @@ public class FulgastraChargeGoal extends AbstractAnimationGoal<SplittedFulgastra
 	}
 
 	@Override
-	public void performSkill() 
+	public void run() 
 	{
 		this.mob.setAnimationState(2);
 		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(5), t -> t != this.mob && !t.isAlliedTo(this.mob) && !(t instanceof SplittedFulgastraEntity) && !(t instanceof FulgastraEntity));
@@ -55,19 +55,19 @@ public class FulgastraChargeGoal extends AbstractAnimationGoal<SplittedFulgastra
 	}
 
 	@Override
-	public int getSkillUsingTime()
+	public int getDuration()
 	{
 		return 50;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 20;
 	}
 
 	@Override
-	public int getSkillUsingInterval()
+	public int getInterval()
 	{
 		return 50;
 	}

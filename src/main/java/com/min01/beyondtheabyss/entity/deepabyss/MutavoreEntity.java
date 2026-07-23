@@ -201,6 +201,15 @@ public class MutavoreEntity extends AbstractBTAMonster
     		this.mutate4AnimationState.updateWhen(this.isMutated(MutationType.MUTATE4), this.tickCount);
     		this.mutateHeadAnimationState.updateWhen(this.isMutated(MutationType.MUTATE_HEAD), this.tickCount);
     	}
+
+    	float turnX = 20;
+    	float turnY = 8;
+		if(this.isMutated(MutationType.MUTATE_HEAD))
+		{
+			turnX = 45;
+			turnY = 13;
+		}
+		this.movementData.swim.turn.set(turnX, turnY);
 	}
 	
 	@Override
@@ -218,26 +227,6 @@ public class MutavoreEntity extends AbstractBTAMonster
 			return false;
 		}
 		return super.canBeAffected(pEffectInstance);
-	}
-	
-	@Override
-	public float maxSwimTurnX() 
-	{
-		if(this.isMutated(MutationType.MUTATE_HEAD))
-		{
-			return 45;
-		}
-		return 20;
-	}
-	
-	@Override
-	public float maxSwimTurnY() 
-	{
-		if(this.isMutated(MutationType.MUTATE_HEAD))
-		{
-			return 13;
-		}
-		return 8;
 	}
 	
 	@Override
@@ -280,7 +269,7 @@ public class MutavoreEntity extends AbstractBTAMonster
 		List<ItemEntity> list = this.level.getEntitiesOfClass(ItemEntity.class, aabb, item -> 
 		{
 			boolean flag = item.getItem().isEdible() && item.getItem().getFoodProperties(this).isMeat();
-			return item.isInWater() && (item.getItem().is(BTATags.BTAItems.MUTAVORE_CONSUMABLE) || flag);
+			return item.isInWater() && (item.getItem().is(BTATags.MUTAVORE_CONSUMABLE) || flag);
 		});
     	list.sort(Comparator.comparing(Entity::getUUID));
 		return list;

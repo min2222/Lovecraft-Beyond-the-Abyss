@@ -20,7 +20,7 @@ public class BiocrafterBlockEntity extends BlockEntity
 		super(BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), pPos, pBlockState);
 	}
 	
-	public static void update(Level level, BlockPos pos, BlockState state, BiocrafterBlockEntity crafter)
+	public static void tick(Level level, BlockPos pos, BlockState state, BiocrafterBlockEntity crafter)
 	{
 		++crafter.tickCount;
 		crafter.processingAnimationState.updateWhen(state.getValue(BiocrafterBlock.PROCESSING), crafter.tickCount);

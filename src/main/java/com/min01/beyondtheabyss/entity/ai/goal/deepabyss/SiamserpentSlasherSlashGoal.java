@@ -31,7 +31,7 @@ public class SiamserpentSlasherSlashGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	public void performSkill() 
+	public void run() 
 	{
 		if(this.mob.getTarget() != null)
 		{
@@ -50,19 +50,19 @@ public class SiamserpentSlasherSlashGoal extends AbstractSiamserpentSkillGoal
 	}
 
 	@Override
-	public int getSkillUsingTime() 
+	public int getDuration() 
 	{
 		return 20;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 8;
 	}
 
 	@Override
-	public int getSkillUsingInterval() 
+	public int getInterval() 
 	{
 		return 10;
 	}

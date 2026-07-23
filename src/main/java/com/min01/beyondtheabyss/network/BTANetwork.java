@@ -11,26 +11,22 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class BTANetwork 
 {
-	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, BeyondtheAbyss.MODID),
-			() -> PROTOCOL_VERSION,
-			PROTOCOL_VERSION::equals,
-			PROTOCOL_VERSION::equals
-	);
+	public static final String PROTOCOL_VERSION = "1";
+	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, BeyondtheAbyss.MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 	
-	public static int ID = 0;
 	public static void registerMessages()
 	{
-		CHANNEL.registerMessage(ID++, UpdateModelPositionPacket.class, UpdateModelPositionPacket::write, UpdateModelPositionPacket::read, UpdateModelPositionPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateAltarItemPacket.class, UpdateAltarItemPacket::write, UpdateAltarItemPacket::read, UpdateAltarItemPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateVehiclePacket.class, UpdateVehiclePacket::write, UpdateVehiclePacket::read, UpdateVehiclePacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateItemAnimationPacket.class, UpdateItemAnimationPacket::write, UpdateItemAnimationPacket::read, UpdateItemAnimationPacket::handle);
-		CHANNEL.registerMessage(ID++, SetDialogueScreenPacket.class, SetDialogueScreenPacket::write, SetDialogueScreenPacket::read, SetDialogueScreenPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateSynchedEntityDataPacket.class, UpdateSynchedEntityDataPacket::write, UpdateSynchedEntityDataPacket::read, UpdateSynchedEntityDataPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdatePlayerAnimationPacket.class, UpdatePlayerAnimationPacket::write, UpdatePlayerAnimationPacket::read, UpdatePlayerAnimationPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateSkeletalGunbladeItemPacket.class, UpdateSkeletalGunbladeItemPacket::write, UpdateSkeletalGunbladeItemPacket::read, UpdateSkeletalGunbladeItemPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateStoneSkinEffectPacket.class, UpdateStoneSkinEffectPacket::write, UpdateStoneSkinEffectPacket::read, UpdateStoneSkinEffectPacket::handle);
-		CHANNEL.registerMessage(ID++, UpdateBossBarPacket.class, UpdateBossBarPacket::write, UpdateBossBarPacket::read, UpdateBossBarPacket::handle);
+		int id = 0;
+		CHANNEL.registerMessage(id++, UpdateModelPositionPacket.class, UpdateModelPositionPacket::write, UpdateModelPositionPacket::read, UpdateModelPositionPacket::handle);
+		CHANNEL.registerMessage(id++, UpdateAltarItemPacket.class, UpdateAltarItemPacket::write, UpdateAltarItemPacket::read, UpdateAltarItemPacket::handle);
+		CHANNEL.registerMessage(id++, UpdateVehiclePacket.class, UpdateVehiclePacket::write, UpdateVehiclePacket::read, UpdateVehiclePacket::handle);
+		CHANNEL.registerMessage(id++, UpdateItemAnimationPacket.class, UpdateItemAnimationPacket::write, UpdateItemAnimationPacket::read, UpdateItemAnimationPacket::handle);
+		CHANNEL.registerMessage(id++, SetDialogueScreenPacket.class, SetDialogueScreenPacket::write, SetDialogueScreenPacket::read, SetDialogueScreenPacket::handle);
+		CHANNEL.registerMessage(id++, UpdateSynchedEntityDataPacket.class, UpdateSynchedEntityDataPacket::write, UpdateSynchedEntityDataPacket::read, UpdateSynchedEntityDataPacket::handle);
+		CHANNEL.registerMessage(id++, UpdatePlayerAnimationPacket.class, UpdatePlayerAnimationPacket::write, UpdatePlayerAnimationPacket::read, UpdatePlayerAnimationPacket::handle);
+		CHANNEL.registerMessage(id++, UpdateSkeletalGunbladeItemPacket.class, UpdateSkeletalGunbladeItemPacket::write, UpdateSkeletalGunbladeItemPacket::read, UpdateSkeletalGunbladeItemPacket::handle);
+		CHANNEL.registerMessage(id++, UpdateStoneSkinEffectPacket.class, UpdateStoneSkinEffectPacket::write, UpdateStoneSkinEffectPacket::read, UpdateStoneSkinEffectPacket::handle);
+		CHANNEL.registerMessage(id++, UpdateBossBarPacket.class, UpdateBossBarPacket::write, UpdateBossBarPacket::read, UpdateBossBarPacket::handle);
 	}
 	
     public static <MSG> void sendToServer(MSG message) 

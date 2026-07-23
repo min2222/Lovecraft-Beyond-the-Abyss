@@ -47,7 +47,7 @@ public class SpineWormBodyEntity extends AbstractSpineWormPart
 			SpineWormHeadEntity head = (SpineWormHeadEntity) this.getHead();
 			if(head.chain != null)
 			{
-				ChainSegment segment = head.chain.getSegments()[this.getIndex()];
+				ChainSegment segment = head.chain.getSegments().get(this.getIndex());
 				Vec3 pos = segment.getPos();
 				Vec2 rot = segment.getRot();
 				this.setPos(pos);

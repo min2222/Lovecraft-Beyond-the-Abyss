@@ -33,7 +33,7 @@ public class ToothShotgunItem extends Item implements IAnimatableItem
 {
     public static final Predicate<ItemStack> AMMO = (stack) ->
     {
-        return stack.is(BTATags.BTAItems.TEETH);
+        return stack.is(BTATags.TEETH);
     };
     
 	public ToothShotgunItem(Properties pProperties)

@@ -22,7 +22,7 @@ public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<MutavoreEntity
 	}
 	
 	@Override
-	public boolean stopMovingWhenStart()
+	public boolean stopOnStart()
 	{
 		return false;
 	}
@@ -42,7 +42,7 @@ public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<MutavoreEntity
 	}
 
 	@Override
-	public void performSkill()
+	public void run()
 	{
 		List<Integer> cysts = Lists.newArrayList(0, 1, 2, 3);
 		cysts.removeIf(t -> !this.mob.hasCyst(t));
@@ -74,19 +74,19 @@ public class MutavoreLaunchMineGoal extends AbstractAnimationGoal<MutavoreEntity
 	}
 
 	@Override
-	public int getSkillUsingTime() 
+	public int getDuration() 
 	{
 		return 1;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 1;
 	}
 
 	@Override
-	public int getSkillUsingInterval()
+	public int getInterval()
 	{
 		return 80;
 	}

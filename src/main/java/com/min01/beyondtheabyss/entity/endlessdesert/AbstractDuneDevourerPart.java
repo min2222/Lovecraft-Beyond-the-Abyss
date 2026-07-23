@@ -98,7 +98,7 @@ public abstract class AbstractDuneDevourerPart extends AbstractWormPart<Abstract
 			DuneDevourerHeadEntity head = (DuneDevourerHeadEntity) this.getHead();
 			if(head.chain != null)
 			{
-				ChainSegment segment = head.chain.getSegments()[Math.max(head.chain.getSegments().length - (this.getIndex() + 2), 0)];
+				ChainSegment segment = head.chain.getSegments().get(Math.max(head.chain.getSegments().size() - (this.getIndex() + 2), 0));
 				Vec3 pos = segment.getPos();
 				Vec2 rot = segment.getRot();
 				this.setPos(pos);

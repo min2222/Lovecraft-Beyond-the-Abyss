@@ -56,9 +56,8 @@ public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> impleme
 	{
 		super(pEntityType, pLevel);
 		this.noCulling = true;
-		//TODO exclude ladder & extra cube below hatch
-		this.partBuilder.setCollisionPredicate(t -> !t.contains("inner"));
-		this.partBuilder.setIgnorePredicate(t -> t.contains("top_part0"));
+		this.partBuilder.setCollisionPredicate(t -> true);
+		this.partBuilder.setIgnorePredicate(t -> t.contains("top_part0") || t.contains("ladder") || t.contains("seat"));
 	}
 	
 	@Override

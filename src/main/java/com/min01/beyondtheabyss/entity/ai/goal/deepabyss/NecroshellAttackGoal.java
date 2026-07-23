@@ -26,7 +26,7 @@ public class NecroshellAttackGoal extends AbstractAnimationGoal<NecroshellEntity
 	}
 
 	@Override
-	public void performSkill()
+	public void run()
 	{
 		if(this.mob.getTarget() != null)
 		{
@@ -35,8 +35,8 @@ public class NecroshellAttackGoal extends AbstractAnimationGoal<NecroshellEntity
 				this.mob.doHurtTarget(this.mob.getTarget());
 				if(!this.isSecond)
 				{
-					this.skillWarmupDelay = this.adjustedTickDelay(10);
-					this.mob.setAnimationTick(this.getSkillUsingTime() - this.getSkillWarmupTime());
+					this.delay = this.adjustedTickDelay(10);
+					this.mob.setAnimationTick(this.getDuration() - this.getDelay());
 					this.isSecond = true;
 				}
 			}
@@ -52,19 +52,19 @@ public class NecroshellAttackGoal extends AbstractAnimationGoal<NecroshellEntity
 	}
 
 	@Override
-	public int getSkillUsingTime()
+	public int getDuration()
 	{
 		return 30;
 	}
 	
 	@Override
-	public int getSkillWarmupTime()
+	public int getDelay()
 	{
 		return 16;
 	}
 
 	@Override
-	public int getSkillUsingInterval() 
+	public int getInterval() 
 	{
 		return 20;
 	}

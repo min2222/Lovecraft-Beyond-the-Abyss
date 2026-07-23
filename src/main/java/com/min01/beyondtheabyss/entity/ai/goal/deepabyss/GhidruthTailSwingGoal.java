@@ -36,7 +36,7 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 	}
 
 	@Override
-	public void performSkill() 
+	public void run() 
 	{
 		List<LivingEntity> list = this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(8.0F), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(t -> t != this.mob && !t.isAlliedTo(this.mob)));
 		list.forEach(t -> 
@@ -56,19 +56,19 @@ public class GhidruthTailSwingGoal extends AbstractGhidruthSkillGoal
 	}
 
 	@Override
-	public int getSkillUsingTime()
+	public int getDuration()
 	{
 		return 30;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 18;
 	}
 
 	@Override
-	public int getSkillUsingInterval() 
+	public int getInterval() 
 	{
 		return 110;
 	}

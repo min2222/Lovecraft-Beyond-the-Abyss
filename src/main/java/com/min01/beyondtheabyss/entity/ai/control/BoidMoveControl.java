@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.min01.beyondtheabyss.entity.IAnimatable;
 import com.min01.beyondtheabyss.misc.Boid;
+import com.min01.beyondtheabyss.misc.MovementData;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -16,11 +17,13 @@ import net.minecraft.world.phys.Vec3;
 public class BoidMoveControl<T extends Mob & IAnimatable> extends AnimationMoveControl<T>
 {
 	public final Boid boid;
+	public final MovementData movementData;
 	
-	public BoidMoveControl(T mob) 
+	public BoidMoveControl(T pMob) 
 	{
-		super(mob);
-		this.boid = new Boid(mob);
+		super(pMob);
+		this.boid = new Boid(pMob);
+		this.movementData = pMob.getMovementData();
 	}
 	
 	@Override
@@ -42,7 +45,7 @@ public class BoidMoveControl<T extends Mob & IAnimatable> extends AnimationMoveC
 			else 
 			{
 				float f = (float) (Mth.atan2(d2, d0) * (double) (180.0F / (float) Math.PI)) - 90.0F;
-				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, this.mob.maxSwimTurnY()));
+				this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, this.movementData.swim.turn.y));
 				this.mob.yBodyRot = this.mob.getYRot();
 				this.mob.yHeadRot = this.mob.getYRot();
 				float f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
@@ -53,7 +56,7 @@ public class BoidMoveControl<T extends Mob & IAnimatable> extends AnimationMoveC
 					if(Math.abs(d1) > (double) 1.0E-5F || Math.abs(d4) > (double) 1.0E-5F) 
 					{
 						float f3 = -((float) (Mth.atan2(d1, d4) * (double) (180.0F / (float) Math.PI)));
-						f3 = Mth.clamp(Mth.wrapDegrees(f3), (float) (-this.mob.maxSwimTurnX()), (float) this.mob.maxSwimTurnX());
+						f3 = Mth.clamp(Mth.wrapDegrees(f3), (float) (-this.movementData.swim.turn.x), (float) this.movementData.swim.turn.x);
 						this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f3, 5.0F));
 					}
 					float f6 = Mth.cos(this.mob.getXRot() * ((float) Math.PI / 180.0F));

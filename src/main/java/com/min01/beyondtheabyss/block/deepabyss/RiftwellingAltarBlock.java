@@ -1,7 +1,5 @@
 package com.min01.beyondtheabyss.block.deepabyss;
 
-import javax.annotation.Nullable;
-
 import com.min01.beyondtheabyss.block.BTABlocks;
 import com.min01.beyondtheabyss.blockentity.deepabyss.RiftwellingAltarBlockEntity;
 import com.min01.beyondtheabyss.network.BTANetwork;
@@ -52,75 +50,60 @@ public class RiftwellingAltarBlock extends BaseEntityBlock implements SimpleWate
 		return new RiftwellingAltarBlockEntity(pPos, pState);
 	}
 	
-	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) 
-	{
-		BlockEntity blockEntity = world.getBlockEntity(pos);
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit)
+    {
+		BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
 
-		if(!(blockEntity instanceof RiftwellingAltarBlockEntity altar) || player.isShiftKeyDown())
+		if(!(blockEntity instanceof RiftwellingAltarBlockEntity altar) || pPlayer.isShiftKeyDown())
 		{
 			return InteractionResult.FAIL;
 		}
 
-		ItemStack currentStack = altar.getItem();
-		ItemStack toInsert = player.getItemInHand(hand);
+		ItemStack current = altar.getItem();
+		ItemStack stack = pPlayer.getItemInHand(pHand);
 
-		if(currentStack.isEmpty())
+		if(current.isEmpty())
 		{
-			ItemStack stack = toInsert.copy();
-			stack.setCount(1);
-			
-			altar.setItem(stack);
-			
-			if(!world.isClientSide)
+			altar.setItem(stack.copyWithCount(1));
+			if(!pLevel.isClientSide)
 			{
-				BTANetwork.sendToAll(new UpdateAltarItemPacket(stack, pos));
+				BTANetwork.sendToAll(new UpdateAltarItemPacket(stack.copyWithCount(1), pPos));
 			}
-			
-			if(!player.getAbilities().instabuild)
+			if(!pPlayer.getAbilities().instabuild)
 			{
-				toInsert.shrink(1);
+				stack.shrink(1);
 			}
 		}
 		else
 		{
-			if(!player.getAbilities().instabuild)
+			if(!pPlayer.getAbilities().instabuild)
 			{
-				if(toInsert.isEmpty())
+				if(stack.isEmpty())
 				{
-					player.setItemInHand(hand, currentStack);
+					pPlayer.setItemInHand(pHand, current);
 				}
-				else if(!player.addItem(currentStack))
+				else if(!pPlayer.addItem(current))
 				{
-					player.drop(currentStack, false);
+					pPlayer.drop(current, false);
 				}
 			}
-
 			altar.setItem(ItemStack.EMPTY);
-			
-			if(!world.isClientSide)
+			if(!pLevel.isClientSide)
 			{
-				BTANetwork.sendToAll(new UpdateAltarItemPacket(ItemStack.EMPTY, pos));
+				BTANetwork.sendToAll(new UpdateAltarItemPacket(ItemStack.EMPTY, pPos));
 			}
 		}
-		return InteractionResult.SUCCESS;
-	}
+		return InteractionResult.PASS;
+    }
 	
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType)
     {
-        return createTicker(pLevel, pBlockEntityType, BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get());
-    }
-
-    @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level pLevel, BlockEntityType<T> pServerType, BlockEntityType<RiftwellingAltarBlockEntity> pClientType)
-    {
-        return createTickerHelper(pServerType, pClientType, RiftwellingAltarBlockEntity::update);
+        return createTickerHelper(pBlockEntityType, BTABlocks.RIFTWELLING_ALTAR_BLOCK_ENTITY.get(), RiftwellingAltarBlockEntity::tick);
     }
     
     @Override
-    @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext pContext)
     {
     	LevelAccessor level = pContext.getLevel();

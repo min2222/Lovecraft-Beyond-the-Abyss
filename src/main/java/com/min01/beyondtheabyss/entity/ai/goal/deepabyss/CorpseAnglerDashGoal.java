@@ -23,7 +23,7 @@ public class CorpseAnglerDashGoal extends AbstractAnimationGoal<CorpseAnglerEnti
 	}
 	
 	@Override
-	public boolean stopMovingWhenStart() 
+	public boolean stopOnStart() 
 	{
 		return false;
 	}
@@ -46,7 +46,7 @@ public class CorpseAnglerDashGoal extends AbstractAnimationGoal<CorpseAnglerEnti
 		super.tick();
 		if(this.mob.getTarget() != null)
 		{
-			if(this.mob.getAnimationTick() <= this.getSkillUsingTime() - this.getSkillWarmupTime())
+			if(this.mob.getAnimationTick() <= this.getDuration() - this.getDelay())
 			{
 				Vec3 lookPos = BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, 20);
 				this.mob.setStopLookTick(Integer.MAX_VALUE);
@@ -79,19 +79,19 @@ public class CorpseAnglerDashGoal extends AbstractAnimationGoal<CorpseAnglerEnti
 	}
 
 	@Override
-	public int getSkillUsingTime() 
+	public int getDuration() 
 	{
 		return 1000;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 60;
 	}
 
 	@Override
-	public int getSkillUsingInterval()
+	public int getInterval()
 	{
 		return 110;
 	}

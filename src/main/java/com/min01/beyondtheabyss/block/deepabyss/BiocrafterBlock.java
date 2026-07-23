@@ -112,17 +112,11 @@ public class BiocrafterBlock extends BaseEntityBlock implements SimpleWaterlogge
     {
 		if(pState.getValue(BIOCRAFTER_PART) == BiocrafterPart.LOWER)
 		{
-	        return createTicker(pLevel, pBlockEntityType, BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get());
+	        return createTickerHelper(pBlockEntityType, BTABlocks.BIOCRAFTER_BLOCK_ENTITY.get(), BiocrafterBlockEntity::tick);
 		}
 		return null;
     }
-
-    @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level pLevel, BlockEntityType<T> pServerType, BlockEntityType<BiocrafterBlockEntity> pClientType)
-    {
-        return createTickerHelper(pServerType, pClientType, BiocrafterBlockEntity::update);
-    }
-	
+    
 	@Override
 	public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) 
 	{

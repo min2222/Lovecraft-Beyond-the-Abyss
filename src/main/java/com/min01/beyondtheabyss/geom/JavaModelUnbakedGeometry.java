@@ -66,7 +66,7 @@ public class JavaModelUnbakedGeometry implements IUnbakedGeometry<JavaModelUnbak
 		{
 			if(!jsonObject.has("model"))
 			{
-				throw new JsonParseException("A model_part model must have a \"model\" member.");
+				throw new JsonParseException("A java_model model must have a \"model\" member.");
 			}
 			return new JavaModelUnbakedGeometry(GsonHelper.getAsString(jsonObject, "model"));
 		}

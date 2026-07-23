@@ -31,7 +31,7 @@ public class GhidruthBiteGoal extends AbstractGhidruthSkillGoal
 	}
 
 	@Override
-	public void performSkill() 
+	public void run() 
 	{
 		this.mob.playSound(BTASounds.GHIDRUTH_BITE.get(), 1.5F, 1.0F);
 		if(this.mob.getTarget() != null)
@@ -51,19 +51,19 @@ public class GhidruthBiteGoal extends AbstractGhidruthSkillGoal
 	}
 
 	@Override
-	public int getSkillUsingTime()
+	public int getDuration()
 	{
 		return 25;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 13;
 	}
 
 	@Override
-	public int getSkillUsingInterval() 
+	public int getInterval() 
 	{
 		return 35;
 	}

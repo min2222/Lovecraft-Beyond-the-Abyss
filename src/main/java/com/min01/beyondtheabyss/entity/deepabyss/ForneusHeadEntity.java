@@ -105,6 +105,16 @@ public class ForneusHeadEntity extends AbstractForneusPart
 			this.yHeadRotO = rot.y;
 			this.yBodyRotO = rot.y;
 		}
+		
+    	float turnX = 75;
+    	float turnY = 5;
+		if(!this.isTargetValid())
+		{
+			turnX = 55;
+			turnY = 3;
+		}
+		this.movementData.swim.turn.set(turnX, turnY);
+		
 		BTAUtil.forceTick(this);
 	}
 	
@@ -136,18 +146,6 @@ public class ForneusHeadEntity extends AbstractForneusPart
 			}
 		}
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-	}
-	
-	@Override
-	public float maxSwimTurnX() 
-	{
-		return !this.isTargetValid() ? 55 : 75;
-	}
-	
-	@Override
-	public float maxSwimTurnY() 
-	{
-		return !this.isTargetValid() ? 3 : 5;
 	}
 	
 	public void setWantedPos(Vec3 pos)

@@ -68,12 +68,12 @@ public class SiamserpentHeadEntity extends AbstractSiamserpentPart
 	
 	public int tickAfterDormant;
 	public Vec3 wantedPos = Vec3.ZERO;
-	public final Laser laser = new Laser();
 	
 	public SiamserpentHeadEntity(EntityType<? extends AbstractSiamserpentPart> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(15);
+		this.partBuilder.setIgnorePredicate(t -> t.contains("Ray"));
 		this.noCulling = true;
 	}
 	
@@ -160,12 +160,12 @@ public class SiamserpentHeadEntity extends AbstractSiamserpentPart
 		{
         	Vec3 startPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), this.getEyePosition(), 0.0F, -0.05F, -0.25F);
 			Vec3 lookPos = BTAUtil.getLookPos(new Vec2(this.getXRot(), this.getYHeadRot()), startPos, 0.0F, 0.0F, 300.0F);
-			LaserHitResult laserHit = this.laser.raytrace(this.level, startPos, lookPos, 0.375F, t -> t != this && !t.isAlliedTo(this), this);
+			LaserHitResult laserHit = Laser.raytrace(this.level, startPos, lookPos, 0.375F, t -> t != this && !t.isAlliedTo(this), this);
 			laserHit.entities.forEach(t -> 
             {
             	t.hurt(this.damageSources().indirectMagic(this, this), 12.0F);
             });
-			this.setBeamLength(this.laser.getLaserLength());
+			this.setBeamLength(laserHit.getLaserLength());
 		}
 	    BTAUtil.forceTick(this);
 	}

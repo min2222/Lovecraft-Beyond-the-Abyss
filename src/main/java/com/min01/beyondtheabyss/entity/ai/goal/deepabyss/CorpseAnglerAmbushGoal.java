@@ -25,7 +25,7 @@ public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<CorpseAnglerEn
 	}
 
 	@Override
-	public void performSkill()
+	public void run()
 	{
 		if(this.mob.getTarget() != null)
 		{
@@ -47,19 +47,19 @@ public class CorpseAnglerAmbushGoal extends AbstractAnimationGoal<CorpseAnglerEn
 	}
 
 	@Override
-	public int getSkillUsingTime()
+	public int getDuration()
 	{
 		return 30;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 15;
 	}
 
 	@Override
-	public int getSkillUsingInterval()
+	public int getInterval()
 	{
 		return 100;
 	}

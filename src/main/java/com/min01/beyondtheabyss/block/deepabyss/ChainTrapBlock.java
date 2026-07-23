@@ -112,7 +112,7 @@ public class ChainTrapBlock extends FaceAttachedHorizontalDirectionalBlock imple
     @Nullable
     protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level pLevel, BlockEntityType<T> pServerType, BlockEntityType<ChainTrapBlockEntity> pClientType)
     {
-        return createTickerHelper(pServerType, pClientType, ChainTrapBlockEntity::update);
+        return createTickerHelper(pServerType, pClientType, ChainTrapBlockEntity::tick);
     }
     
     @SuppressWarnings("unchecked")

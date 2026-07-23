@@ -9,17 +9,20 @@ import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class OverseerEntity extends AbstractBTAMonster
 {
+	public float rollAngleO = 0.0F;
+	public float rollAngle = 0.0F;
+	
 	public final SmoothAnimationState openAnimationState = new SmoothAnimationState();
 	
 	public OverseerEntity(EntityType<? extends AbstractBTAMonster> pEntityType, Level pLevel)
@@ -27,6 +30,9 @@ public class OverseerEntity extends AbstractBTAMonster
 		super(pEntityType, pLevel);
 		this.xpReward = this.random.nextInt(30);
 		this.noCulling = true;
+		
+		this.movementData.fly.turn.set(0, 2);
+		this.movementData.fly.radius.set(300, 0);
 	}
 	
     public static AttributeSupplier.Builder createAttributes()
@@ -74,19 +80,22 @@ public class OverseerEntity extends AbstractBTAMonster
 	    {
 	    	this.addDeltaMovement(new Vec3(0.0F, 0.01F, 0.0F));
 	    }
+	    
+	    this.rollAngleO = this.rollAngle;
+
+	    Vec3 movement = this.getDeltaMovement();
+	    float speed = (float) movement.length();
+	    
+	    if(speed > 0.05F && this.isFlying()) 
+	    {
+	        this.rollAngle += (Math.toDegrees(Math.atan2(movement.x, movement.z)) * 0.1F - this.rollAngle) * 0.025F;
+	    }
+	    else
+	    {
+	        this.rollAngle *= 0.9F;
+	    }
+	    
 	    BTAUtil.forceTick(this);
-	}
-	
-	@Override
-	public float getTargetRoll(Vec3 movement)
-	{
-		return (float) Math.toDegrees(Math.atan2(movement.x, movement.z)) * 0.1F;
-	}
-	
-	@Override
-	public float getRollAmount()
-	{
-		return 0.025F;
 	}
 	
 	@Override
@@ -111,24 +120,6 @@ public class OverseerEntity extends AbstractBTAMonster
 	}
 	
 	@Override
-	public float maxFlyTurnX()
-	{
-		return 0;
-	}
-	
-	@Override
-	public float maxFlyTurnY()
-	{
-		return 2;
-	}
-	
-	@Override
-	public Vec2 getFlyRadius()
-	{
-		return new Vec2(300, 0);
-	}
-	
-	@Override
 	public boolean ignoreExplosion() 
 	{
 		return true;
@@ -138,5 +129,10 @@ public class OverseerEntity extends AbstractBTAMonster
 	public boolean removeWhenFarAway(double pDistanceToClosestPlayer)
 	{
 		return false;
+	}
+	
+	public float getRollAngle(float partialTicks)
+	{
+		return Mth.lerp(partialTicks, this.rollAngleO, this.rollAngle);
 	}
 }

@@ -123,13 +123,12 @@ public class SkeletalGunbladeItem extends SwordItem implements IAnimatableItem
 			int tick = PlayerAnimations.getPlayerAnimationTick(player);
 			if(state == 4)
 			{
-				Laser laser = new Laser();
 	        	Vec3 startPos = BTAUtil.getLookPos(new Vec2(player.getXRot(), player.getYHeadRot()), player.getEyePosition(), 0.0F, -0.25F, 0.5F);
 				Vec3 lookPos = BTAUtil.getLookPos(new Vec2(player.getXRot(), player.getYHeadRot()), startPos, 0.0F, 0.0F, 50.0F);
-				LaserHitResult laserHit = laser.raytrace(player.level, startPos, lookPos, 0.375F, t -> t != player && !t.isAlliedTo(player), player);
+				LaserHitResult laserHit = Laser.raytrace(player.level, startPos, lookPos, 0.375F, t -> t != player && !t.isAlliedTo(player), player);
 	            if(player.level.isClientSide)
 	            {
-	                setLaserLength(pStack, laser.getLaserLength());
+	                setLaserLength(pStack, laserHit.getLaserLength());
 	            }
 	            laserHit.entities.forEach(t -> 
 	            {

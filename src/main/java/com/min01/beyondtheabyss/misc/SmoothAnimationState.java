@@ -4,18 +4,12 @@ import java.util.List;
 
 import org.joml.Vector3f;
 
-import com.min01.beyondtheabyss.animation.KeyframePlayerAnimations;
-import com.min01.beyondtheabyss.block.animation.KeyframeBlockAnimations;
-import com.min01.beyondtheabyss.block.model.HierarchicalBlockModel;
-import com.min01.beyondtheabyss.item.animation.KeyframeItemAnimations;
-import com.min01.beyondtheabyss.item.model.HierarchicalItemModel;
 import com.min01.beyondtheabyss.misc.AnimationEntries.WalkAnimationEntry;
 import com.min01.beyondtheabyss.util.BTAClientUtil;
 
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraftforge.api.distmarker.Dist;
@@ -65,27 +59,6 @@ public class SmoothAnimationState extends AnimationState
 	public float factor()
 	{
 		return Mth.lerp(BTAClientUtil.MC.getPartialTick(), this.factorOld, this.factor);
-	}
-	
-	@OnlyIn(Dist.CLIENT)
-	public void animatePlayer(PlayerModel<?> model, AnimationDefinition definition, float ageInTicks) 
-	{
-		this.updateTime(ageInTicks, 1.0F);
-		KeyframePlayerAnimations.animate(model, definition, this.getAccumulatedTime(), this.factor(), ANIMATION_VECTOR_CACHE);
-	}
-	
-	@OnlyIn(Dist.CLIENT)
-	public void animateBlock(HierarchicalBlockModel<?> model, AnimationDefinition definition, float ageInTicks) 
-	{
-		this.updateTime(ageInTicks, 1.0F);
-		KeyframeBlockAnimations.animate(model, definition, this.getAccumulatedTime(), this.factor(), ANIMATION_VECTOR_CACHE);
-	}
-	
-	@OnlyIn(Dist.CLIENT)
-	public void animateItem(HierarchicalItemModel model, AnimationDefinition definition, float ageInTicks) 
-	{
-		this.updateTime(ageInTicks, 1.0F);
-		KeyframeItemAnimations.animate(model, definition, this.getAccumulatedTime(), this.factor(), ANIMATION_VECTOR_CACHE);
 	}
 	
 	@OnlyIn(Dist.CLIENT)

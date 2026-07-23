@@ -1,5 +1,9 @@
 package com.min01.beyondtheabyss.misc;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.min01.beyondtheabyss.util.BTAUtil;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -11,10 +15,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class KinematicChain 
 {
-	public Entity entity;
+	public final Entity entity;
+	public final List<ChainSegment> segments;
 	public Vec3 target = Vec3.ZERO;
 	public Vec3 anchorPos;
-	public ChainSegment[] segments;
 	public Vec2 initialRot = Vec2.ZERO;
 	public boolean rotLerp;
 	public float speed = 1.0F;
@@ -28,7 +32,7 @@ public class KinematicChain
 	public KinematicChain(Entity entity, int length, float distance) 
 	{
 		this.entity = entity;
-		this.segments = new ChainSegment[length];
+		this.segments = new ArrayList<>(length);
 		this.createSegments(distance);
 	}
 	
@@ -40,10 +44,7 @@ public class KinematicChain
 	
 	public void setupSegments(float distance)
 	{
-		for(int i = 0; i < this.segments.length; i++)
-		{
-			this.segments[i] = new ChainSegment(this.initialRot, distance);
-		}
+		Collections.fill(this.segments, new ChainSegment(this.initialRot, distance));
 	}
 	
 	public void setupPos()
@@ -71,10 +72,10 @@ public class KinematicChain
 		}
 		else if(this.anchorPos != null)
 		{
-			for(int i = 1; i < this.segments.length; i++)
+			for(int i = 1; i < this.segments.size(); i++)
 			{
-				ChainSegment current = this.segments[i];
-				ChainSegment next = this.segments[i - 1];
+				ChainSegment current = this.segments.get(i);
+				ChainSegment next = this.segments.get(i - 1);
 				ChainSegment tip = this.getTipSegment();
 		        Vec3 toTarget = this.anchorPos.subtract(current.getPos());
 		        double dist = toTarget.length();
@@ -113,11 +114,11 @@ public class KinematicChain
 	        tip.setPos(this.getLookPos(tip.getRot(), tipPos, 0.0F, 0.0F, moveDist * this.speed));
 		}
 		
-		for(int i = 1; i < this.segments.length; i++)
+		for(int i = 1; i < this.segments.size(); i++)
 		{
 		    int index = i - 1;
-		    ChainSegment current = this.segments[this.segments.length - i - 1];
-		    ChainSegment next = this.segments[this.segments.length - index - 1];
+		    ChainSegment current = this.segments.get(this.segments.size() - i - 1);
+		    ChainSegment next = this.segments.get(this.segments.size() - index - 1);
 	        if(this.rotLerp)
 	        {
 			    current.setRot(this.lookAt(current.getPos(), next.getPos(), current.getRot()));
@@ -131,13 +132,13 @@ public class KinematicChain
 		
 		if(this.anchorPos != null)
 		{
-			this.segments[0].setPos(this.anchorPos);
+			this.segments.get(0).setPos(this.anchorPos);
 		}
 		
-		for(int i = 0; i < this.segments.length - 1; i++)
+		for(int i = 0; i < this.segments.size() - 1; i++)
 		{
-			ChainSegment current = this.segments[i];
-			ChainSegment next = this.segments[i + 1];
+			ChainSegment current = this.segments.get(i);
+			ChainSegment next = this.segments.get(i + 1);
 			if(this.rotLerp)
 			{
 				current.setRot(this.lookAt(current.getPos(), next.getPos(), current.getRot()));
@@ -215,7 +216,7 @@ public class KinematicChain
 		return this.initialRot;
 	}
 	
-	public ChainSegment[] getSegments()
+	public List<ChainSegment> getSegments()
 	{
 		return this.segments;
 	}
@@ -247,12 +248,12 @@ public class KinematicChain
 	
 	public ChainSegment getTipSegment()
 	{
-		return this.segments[this.segments.length - 1];
+		return this.segments.get(this.segments.size() - 1);
 	}
 	
 	public ChainSegment getLastSegment()
 	{
-		return this.segments[this.segments.length - 2];
+		return this.segments.get(this.segments.size() - 2);
 	}
 	
 	public static class ChainSegment

@@ -73,7 +73,7 @@ public class BiocrafterModel extends HierarchicalBlockModel<BiocrafterBlockEntit
 	public void setupAnim(BiocrafterBlockEntity blockEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		blockEntity.processingAnimationState.animateBlock(this, BiocrafterAnimation.BIOCRAFTER_PROCESSING, ageInTicks);
+		this.animate(blockEntity.processingAnimationState, BiocrafterAnimation.BIOCRAFTER_PROCESSING, ageInTicks);
 	}
 	
 	@Override

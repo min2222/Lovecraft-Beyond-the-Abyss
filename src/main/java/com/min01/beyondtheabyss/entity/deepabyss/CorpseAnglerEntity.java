@@ -226,6 +226,13 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 		{
 			this.spawnParticle();
 		}
+		
+    	float turnX = 55;
+		if(this.getAnimationState() == 1)
+		{
+			turnX = 75;
+		}
+		this.movementData.swim.turn.set(turnX, 8);
 	}
 	
 	@Override
@@ -383,22 +390,6 @@ public class CorpseAnglerEntity extends AbstractBTAMonster
 	        }
 		}
 		return super.hurt(pSource, pAmount);
-	}
-    
-	@Override
-	public float maxSwimTurnX() 
-	{
-		if(this.getAnimationState() == 1)
-		{
-			return 75;
-		}
-		return 55;
-	}
-	
-	@Override
-	public float maxSwimTurnY() 
-	{
-		return 8;
 	}
 	
 	@Override

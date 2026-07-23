@@ -152,7 +152,7 @@ public class ClientEventHandlerForge
     	}
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent
 	public static void onRenderHand(RenderHandEvent event)
 	{
 		AbstractClientPlayer player = BTAClientUtil.MC.player;
@@ -191,7 +191,7 @@ public class ClientEventHandlerForge
 		Vec3 offset = item.getOffset();
 		boolean flag = arm != HumanoidArm.LEFT;
 		RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
-		PlayerRenderer renderer = (PlayerRenderer) BTAClientUtil.MC.getEntityRenderDispatcher().<AbstractClientPlayer>getRenderer(player);
+		PlayerRenderer renderer = (PlayerRenderer) BTAClientUtil.MC.getEntityRenderDispatcher().getRenderer(player);
 		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 		stack.translate(offset.x / 16.0F, offset.y / 16.0F, offset.z / 16.0F);
 		PlayerAnimations.animatePlayerFirstPerson(renderer.getModel(), player, 0, 0, player.tickCount + partialTicks, 0, 0);

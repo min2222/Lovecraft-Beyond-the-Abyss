@@ -22,7 +22,7 @@ public class OverseerMissileGoal extends AbstractAnimationGoal<OverseerEntity>
 	}
 	
 	@Override
-	public boolean stopMovingWhenStart()
+	public boolean stopOnStart()
 	{
 		return false;
 	}
@@ -34,7 +34,7 @@ public class OverseerMissileGoal extends AbstractAnimationGoal<OverseerEntity>
 	}
 
 	@Override
-	public void performSkill()
+	public void run()
 	{
 		MissileEntity missile = new MissileEntity(this.mob.level, this.mob);
 		Vec3 lookPos = BTAUtil.getLookPos(this.mob.getRotationVector(), this.mob.position(), 0, 0, -2.5F);
@@ -50,19 +50,19 @@ public class OverseerMissileGoal extends AbstractAnimationGoal<OverseerEntity>
 	}
 
 	@Override
-	public int getSkillUsingTime()
+	public int getDuration()
 	{
 		return 20;
 	}
 	
 	@Override
-	public int getSkillWarmupTime()
+	public int getDelay()
 	{
 		return 1;
 	}
 
 	@Override
-	public int getSkillUsingInterval() 
+	public int getInterval() 
 	{
 		return 40;
 	}

@@ -29,7 +29,7 @@ public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<MutavoreEnti
 	}
 	
 	@Override
-	public boolean stopMovingWhenStart()
+	public boolean stopOnStart()
 	{
 		return false;
 	}
@@ -43,7 +43,7 @@ public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<MutavoreEnti
 	@Override
 	public void tick() 
 	{
-		if(this.mob.getAnimationTick() <= this.getSkillUsingTime() - 10 && this.mob.getTarget() != null) 
+		if(this.mob.getAnimationTick() <= this.getDuration() - 10 && this.mob.getTarget() != null) 
 		{
 			if(this.interval++ == 2)
 			{
@@ -64,7 +64,7 @@ public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<MutavoreEnti
 	}
 
 	@Override
-	public void performSkill()
+	public void run()
 	{
 		this.mob.setAnimationState(2);
 	}
@@ -78,19 +78,19 @@ public class MutavorePutridBubbleGoal extends AbstractAnimationGoal<MutavoreEnti
 	}
 
 	@Override
-	public int getSkillUsingTime() 
+	public int getDuration() 
 	{
 		return 80;
 	}
 	
 	@Override
-	public int getSkillWarmupTime() 
+	public int getDelay() 
 	{
 		return 70;
 	}
 
 	@Override
-	public int getSkillUsingInterval()
+	public int getInterval()
 	{
 		return 40;
 	}

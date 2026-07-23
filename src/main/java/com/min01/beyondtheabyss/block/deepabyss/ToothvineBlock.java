@@ -42,7 +42,7 @@ public class ToothvineBlock extends KelpBlock
 	@Override
 	public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity)
 	{
-		if(pEntity instanceof LivingEntity && !pEntity.getType().is(BTATags.BTAEntity.DEATH_VALLEY_CREATURES)) 
+		if(pEntity instanceof LivingEntity && !pEntity.getType().is(BTATags.DEATH_VALLEY_CREATURES)) 
 		{
 			pEntity.makeStuckInBlock(pState, new Vec3((double)0.8F, 0.75D, (double)0.8F));
 			if(!pLevel.isClientSide && (pEntity.xOld != pEntity.getX() || pEntity.zOld != pEntity.getZ())) 

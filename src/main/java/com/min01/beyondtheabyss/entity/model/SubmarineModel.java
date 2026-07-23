@@ -23,13 +23,15 @@ public class SubmarineModel extends HierarchicalModel<SubmarineEntity>
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "submarine"), "main");
 	public final ModelPart root;
 	public final ModelPart submarine;
+	public final ModelPart seat;
 	public final ModelPart controller;
 
 	public SubmarineModel(ModelPart root) 
 	{
 		this.root = root.getChild("root");
 		this.submarine = this.root.getChild("submarine");
-		this.controller = this.submarine.getChild("controller");
+		this.seat = this.submarine.getChild("seat");
+		this.controller = this.seat.getChild("controller");
 	}
 
 	public static LayerDefinition createBodyLayer()
@@ -57,8 +59,6 @@ public class SubmarineModel extends HierarchicalModel<SubmarineEntity>
 		.texOffs(0, 273).addBox(12.5F, 9.0F, -53.0F, 9.0F, 9.0F, 18.0F, new CubeDeformation(0.0F))
 		.texOffs(0, 273).mirror().addBox(-21.5F, 9.0F, -53.0F, 9.0F, 9.0F, 18.0F, new CubeDeformation(0.0F)).mirror(false)
 		.texOffs(0, 300).addBox(-12.5F, 9.0F, -53.0F, 25.0F, 9.0F, 9.0F, new CubeDeformation(0.0F))
-		.texOffs(129, 264).addBox(-10.5F, -26.0F, -7.0F, 21.0F, 7.0F, 21.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 184).addBox(-8.5F, -26.0F, -7.0F, 17.0F, 41.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(48, 209).addBox(19.5F, -14.0F, 21.0F, 1.0F, 8.0F, 10.0F, new CubeDeformation(0.0F))
 		.texOffs(232, 93).addBox(-20.5F, -1.0F, -25.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(232, 88).addBox(-18.5F, -4.5F, -29.0F, 0.0F, 9.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -47.0F, -1.0F));
@@ -69,8 +69,6 @@ public class SubmarineModel extends HierarchicalModel<SubmarineEntity>
 
 		submarine.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 353).addBox(0.0F, -36.5F, -9.0F, 0.0F, 23.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 2.5F, 56.0F, 0.0F, 0.0F, -1.5708F));
 
-		submarine.addOrReplaceChild("inner", CubeListBuilder.create().texOffs(290, 403).addBox(-20.5F, -19.5F, -34.5F, 41.0F, 39.0F, 70.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.5F, -0.5F));
-
 		submarine.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).addBox(-25.5F, -5.0F, -35.0F, 51.0F, 10.0F, 70.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
 		PartDefinition back = submarine.addOrReplaceChild("back", CubeListBuilder.create().texOffs(150, 203).addBox(-20.5F, -21.5F, -9.0F, 41.0F, 43.0F, 18.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 2.5F, 44.0F));
@@ -79,15 +77,17 @@ public class SubmarineModel extends HierarchicalModel<SubmarineEntity>
 		.texOffs(232, 136).addBox(-10.5F, -10.5F, 0.5F, 21.0F, 21.0F, 0.0F, new CubeDeformation(0.0F))
 		.texOffs(250, 211).addBox(-3.5F, -3.5F, -5.0F, 7.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 12.0F));
 
-		submarine.addOrReplaceChild("controller", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(-0.5F, 17.5F, -35.0F));
+		PartDefinition seat = submarine.addOrReplaceChild("seat", CubeListBuilder.create(), PartPose.offset(-13.5F, 17.5F, 10.0F));
 
-		submarine.addOrReplaceChild("seat1", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(13.5F, 17.5F, -18.0F));
+		seat.addOrReplaceChild("seat4", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		submarine.addOrReplaceChild("seat2", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(-13.5F, 17.5F, -18.0F));
+		seat.addOrReplaceChild("seat3", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(27.0F, 0.0F, 0.0F));
 
-		submarine.addOrReplaceChild("seat3", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(13.5F, 17.5F, 10.0F));
+		seat.addOrReplaceChild("seat2", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -28.0F));
 
-		submarine.addOrReplaceChild("seat4", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(-13.5F, 17.5F, 10.0F));
+		seat.addOrReplaceChild("seat1", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(27.0F, 0.0F, -28.0F));
+
+		seat.addOrReplaceChild("controller", CubeListBuilder.create().texOffs(302, 45).addBox(-6.0F, -2.5F, -5.0F, 12.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(13.0F, 0.0F, -45.0F));
 
 		submarine.addOrReplaceChild("right_handle", CubeListBuilder.create().texOffs(6, 276).addBox(-1.5F, -4.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
 		.texOffs(10, 282).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 7.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(7.5F, 6.0257F, -47.6084F, -0.1309F, 0.0F, 0.0F));
@@ -140,6 +140,9 @@ public class SubmarineModel extends HierarchicalModel<SubmarineEntity>
 		top.addOrReplaceChild("top_part3", CubeListBuilder.create().texOffs(381, 484).addBox(-20.5F, -26.0F, -7.0F, 10.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 22.5F, 0.0F));
 
 		top.addOrReplaceChild("top_part4", CubeListBuilder.create().texOffs(412, 484).addBox(10.5F, -26.0F, -7.0F, 10.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 22.5F, 0.0F));
+
+		submarine.addOrReplaceChild("ladder", CubeListBuilder.create().texOffs(0, 184).addBox(-9.3F, -74.0F, -8.0F, 17.0F, 41.0F, 2.0F, new CubeDeformation(0.0F))
+		.texOffs(129, 264).addBox(-11.3F, -74.0F, -8.0F, 21.0F, 7.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offset(0.8F, 48.0F, 1.0F));
 
 		return LayerDefinition.create(meshdefinition, 512, 512);
 	}

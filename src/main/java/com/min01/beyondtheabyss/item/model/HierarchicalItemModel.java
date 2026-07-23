@@ -2,6 +2,7 @@ package com.min01.beyondtheabyss.item.model;
 
 import java.util.Optional;
 
+import com.min01.beyondtheabyss.item.animation.KeyframeItemAnimations;
 import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -42,6 +43,7 @@ public abstract class HierarchicalItemModel extends Model
 
 	public void animate(ItemStack stack, SmoothAnimationState state, AnimationDefinition definition, float ageInTicks)
 	{
-		state.animateItem(this, definition, ageInTicks);
+		state.updateTime(ageInTicks, 1.0F);
+		KeyframeItemAnimations.animate(this, definition, state.getAccumulatedTime(), state.factor(), SmoothAnimationState.ANIMATION_VECTOR_CACHE);
 	}
 }

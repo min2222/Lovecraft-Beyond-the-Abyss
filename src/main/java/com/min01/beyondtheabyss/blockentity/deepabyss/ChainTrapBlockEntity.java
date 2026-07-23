@@ -31,7 +31,7 @@ public class ChainTrapBlockEntity extends BlockEntity
 		super(BTABlocks.CHAIN_TRAP_BLOCK_ENTITY.get(), pPos, pBlockState);
 	}
 	
-	public static void update(Level level, BlockPos pos, BlockState state, ChainTrapBlockEntity trap)
+	public static void tick(Level level, BlockPos pos, BlockState state, ChainTrapBlockEntity trap)
 	{
 		boolean isOpened = state.getValue(ChainTrapBlock.OPENED);
 		trap.delay--;
@@ -41,7 +41,7 @@ public class ChainTrapBlockEntity extends BlockEntity
 		}
 		if(isOpened && trap.delay <= 0 && !trap.trapped)
 		{
-			List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, trap.getAABB(1.5F, state).move(trap.worldPosition), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(t -> !t.getType().is(Tags.EntityTypes.BOSSES) && !t.getType().is(BTATags.BTAEntity.MINI_BOSSES)));
+			List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, trap.getAABB(1.5F, state).move(trap.worldPosition), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(t -> !t.getType().is(Tags.EntityTypes.BOSSES) && !t.getType().is(BTATags.MINI_BOSSES)));
 			
 			Vec3 vec3 = Vec3.atCenterOf(pos);
 			double dist = -1.0D;

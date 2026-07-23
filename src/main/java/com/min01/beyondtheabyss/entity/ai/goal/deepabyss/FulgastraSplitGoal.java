@@ -32,7 +32,7 @@ public class FulgastraSplitGoal extends AbstractAnimationGoal<FulgastraEntity>
 	}
 
 	@Override
-	public void performSkill() 
+	public void run() 
 	{
 		this.mob.setSplit(true);
 		int count = this.mob.getRandom().nextInt(8, 10);
@@ -62,13 +62,13 @@ public class FulgastraSplitGoal extends AbstractAnimationGoal<FulgastraEntity>
 	}
 
 	@Override
-	public int getSkillUsingTime()
+	public int getDuration()
 	{
 		return 20;
 	}
 
 	@Override
-	public int getSkillUsingInterval()
+	public int getInterval()
 	{
 		return 100;
 	}

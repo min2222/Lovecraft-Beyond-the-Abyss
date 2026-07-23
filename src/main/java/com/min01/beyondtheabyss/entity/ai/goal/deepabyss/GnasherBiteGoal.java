@@ -25,7 +25,7 @@ public class GnasherBiteGoal extends AbstractAnimationGoal<GnasherEntity>
 	}
 
 	@Override
-	public void performSkill()
+	public void run()
 	{
 		if(this.mob.getTarget() != null)
 		{
@@ -45,19 +45,19 @@ public class GnasherBiteGoal extends AbstractAnimationGoal<GnasherEntity>
 	}
 
 	@Override
-	public int getSkillUsingTime()
+	public int getDuration()
 	{
 		return 16;
 	}
 	
 	@Override
-	public int getSkillWarmupTime()
+	public int getDelay()
 	{
 		return 8;
 	}
 
 	@Override
-	public int getSkillUsingInterval() 
+	public int getInterval() 
 	{
 		return 10;
 	}
