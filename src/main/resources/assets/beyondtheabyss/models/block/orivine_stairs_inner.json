@@ -1,8 +1,0 @@
-{
-	"parent": "minecraft:block/inner_stairs",
-	"textures": {
-		"bottom": "beyondtheabyss:block/orivine",
-		"side": "beyondtheabyss:block/orivine",
-		"top": "beyondtheabyss:block/orivine"
-	}
-}

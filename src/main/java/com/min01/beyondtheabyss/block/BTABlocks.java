@@ -27,7 +27,6 @@ import com.min01.beyondtheabyss.block.deepabyss.SpineBoneMiddleBlock;
 import com.min01.beyondtheabyss.block.deepabyss.SpineBoneTipBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvineBlock;
 import com.min01.beyondtheabyss.block.deepabyss.ToothvinePlantBlock;
-import com.min01.beyondtheabyss.block.mirroredcity.RafflesiaAnemoneBlock;
 import com.min01.beyondtheabyss.blockentity.AnimatableBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.BiocrafterBlockEntity;
 import com.min01.beyondtheabyss.blockentity.deepabyss.ChainTrapBlockEntity;
@@ -38,7 +37,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.MagmaBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -73,23 +71,7 @@ public class BTABlocks
     public static final RegistryObject<Block> BONE_PILES = BLOCKS.register("bone_piles", () -> new BonePilesBlock());
     public static final RegistryObject<Block> SITTING_SKELETON = BLOCKS.register("sitting_skeleton", () -> new SittingSkeletonBlock());
     public static final RegistryObject<Block> FALLEN_SKELETON = BLOCKS.register("fallen_skeleton", () -> new FallenSkeletonBlock());
-    
-    public static final RegistryObject<Block> BLANK_RUNE_STONE = BLOCKS.register("blank_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> SOUL_RUNE_STONE = BLOCKS.register("soul_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> WATER_RUNE_STONE = BLOCKS.register("water_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> WAVE_RUNE_STONE = BLOCKS.register("wave_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> CONDUIT_RUNE_STONE = BLOCKS.register("conduit_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> GUARDIAN_RUNE_STONE = BLOCKS.register("guardian_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> PEACE_RUNE_STONE = BLOCKS.register("peace_rune_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    
-    public static final RegistryObject<Block> ORIVINE = BLOCKS.register("orivine", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> ORIVINE_SLAB = BLOCKS.register("orivine_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> ORIVINE_STAIRS = BLOCKS.register("orivine_stairs", () -> new StairBlock(() -> ORIVINE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> ENERGIZED_ORIVINE = BLOCKS.register("energized_orivine", () -> new Block(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> ENERGIZED_ORIVINE_SLAB = BLOCKS.register("energized_orivine_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> ENERGIZED_ORIVINE_STAIRS = BLOCKS.register("energized_orivine_stairs", () -> new StairBlock(() -> ORIVINE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    public static final RegistryObject<Block> ORIVINE_PILLAR = BLOCKS.register("orivine_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE)));
-    		
+
     public static final RegistryObject<Block> ROT_SOIL = BLOCKS.register("rot_soil", () -> new RotSoilBlock());
     public static final RegistryObject<Block> COMPACT_ROT_SOIL = BLOCKS.register("compact_rot_soil", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
     public static final RegistryObject<Block> GHOUL_BLOOM = BLOCKS.register("ghoul_bloom", () -> new GhoulBloomBlock());
@@ -124,13 +106,6 @@ public class BTABlocks
     public static final RegistryObject<Block> CHAIN_TRAP = BLOCKS.register("chain_trap", () -> new ChainTrapBlock());
     public static final RegistryObject<Block> BIOCRAFTER = BLOCKS.register("biocrafter", () -> new BiocrafterBlock());
 
-    public static final RegistryObject<Block> GUTS_CORAL = BLOCKS.register("guts_coral", () -> new NoDeadCoralPlantBlock(BlockBehaviour.Properties.copy(Blocks.BRAIN_CORAL).mapColor(DyeColor.RED)));
-    public static final RegistryObject<Block> RAFFLESIA_ANEMONE = BLOCKS.register("rafflesia_anemone", () -> new RafflesiaAnemoneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.SLIME_BLOCK).noOcclusion().pushReaction(PushReaction.DESTROY)));
-    
-    public static final RegistryObject<Block> MOONSTONE = BLOCKS.register("moonstone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)));
-    
-    public static final RegistryObject<Block> MOLTEN_STONE = BLOCKS.register("molten_stone", () -> new MagmaBlock(BlockBehaviour.Properties.copy(Blocks.MAGMA_BLOCK)));
-    
     public static final RegistryObject<BlockEntityType<RiftwellingAltarBlockEntity>> RIFTWELLING_ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("riftwelling_altar", () -> BlockEntityType.Builder.of(RiftwellingAltarBlockEntity::new, RIFTWELLING_ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<AnimatableBlockEntity>> ANIMATABLE_BLOCK_ENTITY = BLOCK_ENTITIES.register("animatable", () -> BlockEntityType.Builder.of(AnimatableBlockEntity::new, 
     		GLARING_BARNACLE.get()).build(null));

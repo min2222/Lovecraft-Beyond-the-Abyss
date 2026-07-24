@@ -13,7 +13,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -70,49 +69,5 @@ public class BTACreativeModeTabs
     				}
     			}
     			BTAEnchantments.addAllEnchantsToCreativeTab(output, BTAEnchantments.TOOTH_SHOTGUN);
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> MIRRORED_CITY = CREATIVE_MODE_TAB.register("mirrored_city", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.mirrored_city"))
-    		.icon(() -> new ItemStack(Items.REDSTONE_LAMP))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-    			for(RegistryObject<Item> item : BTAItems.MIRRORED_CITY_ITEMS.getEntries())
-    			{
-					output.accept(item.get());
-    			}
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> MOON = CREATIVE_MODE_TAB.register("moon", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.moon"))
-    		.icon(() -> new ItemStack(BTAItems.MOONSTONE.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-    			for(RegistryObject<Item> item : BTAItems.MOON_ITEMS.getEntries())
-    			{
-					output.accept(item.get());
-    			}
-    		}).build());
-  
-    public static final RegistryObject<CreativeModeTab> ENDLESS_DESERT = CREATIVE_MODE_TAB.register("endless_desert", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.endless_desert"))
-    		.icon(() -> new ItemStack(Items.SAND))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-    			for(RegistryObject<Item> item : BTAItems.ENDLESS_DESERT_ITEMS.getEntries())
-    			{
-					output.accept(item.get());
-    			}
-    		}).build());
-    
-    public static final RegistryObject<CreativeModeTab> PURGATORY = CREATIVE_MODE_TAB.register("purgatory", () -> CreativeModeTab.builder()
-    		.title(Component.translatable("itemGroup.purgatory"))
-    		.icon(() -> new ItemStack(BTAItems.MOLTEN_STONE.get()))
-    		.displayItems((enabledFeatures, output) -> 
-    		{
-    			for(RegistryObject<Item> item : BTAItems.PURGATORY_ITEMS.getEntries())
-    			{
-					output.accept(item.get());
-    			}
     		}).build());
 }

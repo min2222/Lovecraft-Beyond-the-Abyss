@@ -40,13 +40,11 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
-import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.living.LivingDrownEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -125,16 +123,6 @@ public class EventHandlerForge
     }
     
     @SubscribeEvent
-    public static void onLivingBreath(LivingBreatheEvent event)
-    {
-    	LivingEntity entity = event.getEntity();
-    	if(entity.level.dimension() == BTAWorlds.MOON || entity.level.dimension() == BTAWorlds.OUTER_SPACE)
-    	{
-    		event.setCanBreathe(false);
-    	}
-    }
-    
-    @SubscribeEvent
     public static void onEntityMount(EntityMountEvent event)
     {
     	if(event.isDismounting())
@@ -154,13 +142,6 @@ public class EventHandlerForge
     public static void onLivingDrown(LivingDrownEvent event)
     {
     	LivingEntity entity = event.getEntity();
-    	if(entity.level.dimension() == BTAWorlds.MOON || entity.level.dimension() == BTAWorlds.OUTER_SPACE)
-    	{
-    		if(!entity.isEyeInFluidType(ForgeMod.WATER_TYPE.get()) && event.isDrowning())
-    		{
-    			event.setBubbleCount(0);
-    		}
-    	}
     	if(BTAUtil.canSwimInAir(entity) || DeepAbyssUtil.isInsideSubmarine(entity))
     	{
 			event.setBubbleCount(0);

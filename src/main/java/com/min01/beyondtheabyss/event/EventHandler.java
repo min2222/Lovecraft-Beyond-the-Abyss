@@ -5,7 +5,6 @@ import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.entity.BTAEntities;
 import com.min01.beyondtheabyss.entity.MysteriousGuyEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.CorpseAnglerEntity;
-import com.min01.beyondtheabyss.entity.deepabyss.ForneusHeadEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.FulgastraEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.GhidruthEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.GloomfishEntity;
@@ -18,9 +17,6 @@ import com.min01.beyondtheabyss.entity.deepabyss.SiamserpentHeadEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.SpineWormBodyEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.SpineWormHeadEntity;
 import com.min01.beyondtheabyss.entity.deepabyss.SplittedFulgastraEntity;
-import com.min01.beyondtheabyss.entity.endlessdesert.DuneDevourerHeadEntity;
-import com.min01.beyondtheabyss.entity.mirroredcity.ObserverEntity;
-import com.min01.beyondtheabyss.entity.mirroredcity.OverseerEntity;
 import com.min01.beyondtheabyss.item.BTAItems;
 import com.min01.beyondtheabyss.misc.BTABossTracker;
 import com.min01.beyondtheabyss.world.BTAStructureFinder;
@@ -67,18 +63,6 @@ public class EventHandler
     	event.put(BTAEntities.SPLITTED_FULGASTRA.get(), SplittedFulgastraEntity.createAttributes().build());
     	event.put(BTAEntities.NECROSHELL.get(), NecroshellEntity.createAttributes().build());
     	event.put(BTAEntities.LITHOSHRIMP.get(), LithoshrimpEntity.createAttributes().build());
-    	event.put(BTAEntities.FORNEUS_HEAD.get(), ForneusHeadEntity.createAttributes().build());
-    	event.put(BTAEntities.FORNEUS_BODY.get(), ForneusHeadEntity.createAttributes().build());
-    	event.put(BTAEntities.FORNEUS_TAIL.get(), ForneusHeadEntity.createAttributes().build());
-    	
-    	//mirrored city
-    	event.put(BTAEntities.OVERSEER.get(), OverseerEntity.createAttributes().build());
-    	event.put(BTAEntities.OBSERVER.get(), ObserverEntity.createAttributes().build());
-    	
-    	//endless desert
-    	event.put(BTAEntities.DUNE_DEVOURER_HEAD.get(), DuneDevourerHeadEntity.createAttributes().build());
-    	event.put(BTAEntities.DUNE_DEVOURER_BODY.get(), DuneDevourerHeadEntity.createAttributes().build());
-    	event.put(BTAEntities.DUNE_DEVOURER_TAIL.get(), DuneDevourerHeadEntity.createAttributes().build());
     }
     
     @SubscribeEvent
@@ -93,8 +77,6 @@ public class EventHandler
      	event.register(BTAEntities.FULGASTRA.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FulgastraEntity::checkFulgastraSpawnRules, Operation.AND);
      	event.register(BTAEntities.NECROSHELL.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NecroshellEntity::checkNecroshellSpawnRules, Operation.AND);
      	event.register(BTAEntities.LITHOSHRIMP.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LithoshrimpEntity::checkLithoshrimpSpawnRules, Operation.AND);
-     	
-     	event.register(BTAEntities.OBSERVER.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ObserverEntity::checkObserverSpawnRules, Operation.AND);
     }
     
     @SubscribeEvent

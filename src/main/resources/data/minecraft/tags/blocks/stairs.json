@@ -1,8 +1,6 @@
 {
 	"replace": false,
 	"values": [
-		"beyondtheabyss:orivine_stairs",
-		"beyondtheabyss:energized_orivine_stairs",
 		"beyondtheabyss:bone_stairs"
 	]
 }

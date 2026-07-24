@@ -5,7 +5,7 @@ import com.min01.beyondtheabyss.misc.SmoothAnimationState;
 import com.min01.beyondtheabyss.network.BTANetwork;
 import com.min01.beyondtheabyss.network.UpdateVehiclePacket;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.misc.IDynamicLightEntity;
+import com.min01.solomonlib.light.IDynamicLight;
 import com.min01.solomonlib.multipart.EntityPartBuilder;
 import com.min01.solomonlib.multipart.IMultipart;
 
@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
-public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> implements IMultipart, IDynamicLightEntity
+public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> implements IMultipart, IDynamicLight
 {
 	public static final EntityDataAccessor<Boolean> HATCH_OPENED = SynchedEntityData.defineId(SubmarineEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(SubmarineEntity.class, EntityDataSerializers.INT);
@@ -213,7 +213,7 @@ public class SubmarineEntity extends AbstractOwnableEntity<LivingEntity> impleme
 	}
 	
 	@Override
-	public boolean shouldUpdateDynamicLight()
+	public boolean shouldUpdate()
 	{
 		return this.getFirstPassenger() != null;
 	}

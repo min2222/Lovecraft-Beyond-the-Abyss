@@ -15,20 +15,6 @@
 		"beyondtheabyss:bone_piles",
 		"beyondtheabyss:sitting_skeleton",
 		"beyondtheabyss:fallen_skeleton",
-		"beyondtheabyss:blank_rune_stone",
-		"beyondtheabyss:soul_rune_stone",
-		"beyondtheabyss:water_rune_stone",
-		"beyondtheabyss:wave_rune_stone",
-		"beyondtheabyss:conduit_rune_stone",
-		"beyondtheabyss:guardian_rune_stone",
-		"beyondtheabyss:peace_rune_stone",
-		"beyondtheabyss:orivine",
-		"beyondtheabyss:orivine_slab",
-		"beyondtheabyss:orivine_stairs",
-		"beyondtheabyss:energized_orivine",
-		"beyondtheabyss:energized_orivine_slab",
-		"beyondtheabyss:energized_orivine_stairs",
-		"beyondtheabyss:orivine_pillar",
 		"beyondtheabyss:compact_rot_soil",
 		"beyondtheabyss:chiseled_bone_block",
 		"beyondtheabyss:cracked_bone_block",
@@ -39,8 +25,6 @@
 		"beyondtheabyss:bone_stairs",
 		"beyondtheabyss:bone_slab",
 		"beyondtheabyss:chain_trap",
-		"beyondtheabyss:biocrafter",
-		"beyondtheabyss:moonstone",
-		"beyondtheabyss:molten_stone"
+		"beyondtheabyss:biocrafter"
 	]
 }

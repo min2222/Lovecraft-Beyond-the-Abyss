@@ -23,12 +23,6 @@ public class BTATags
 	
 	public static final TagKey<EntityType<?>> DEEP_ABYSS_CREATURES = createEntityType("deep_abyss_creatures");
 	public static final TagKey<EntityType<?>> DEATH_VALLEY_CREATURES = createEntityType("death_valley_creatures");
-	public static final TagKey<EntityType<?>> EVERGREEN_CREATURES = createEntityType("evergreen_creatures");
-	public static final TagKey<EntityType<?>> MIRRORED_CITY_CREATURES = createEntityType("mirrored_city_creatures");
-	public static final TagKey<EntityType<?>> MOON_CREATURES = createEntityType("moon_creatures");
-	public static final TagKey<EntityType<?>> ENDLESS_DESERT_CREATURES = createEntityType("endless_desert_creatures");
-	public static final TagKey<EntityType<?>> PURGATORY_CREATURES = createEntityType("purgatory_creatures");
-	public static final TagKey<EntityType<?>> OUTER_SPACE_CREATURES = createEntityType("outer_space_creatures");
 	public static final TagKey<EntityType<?>> MINI_BOSSES = createEntityType("mini_bosses");
 	
 	public static TagKey<Item> createItem(String name) 

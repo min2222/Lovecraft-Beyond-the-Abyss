@@ -41,12 +41,6 @@ public class BTAItems
     public static final Rarity RARITY_DEEP_ABYSS = Rarity.create("beyondtheabyss:deep_abyss", ChatFormatting.DARK_AQUA);
     
 	public static final DeferredRegister<Item> DEEP_ABYSS_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
-	public static final DeferredRegister<Item> EVERGREEN_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
-	public static final DeferredRegister<Item> MIRRORED_CITY_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
-	public static final DeferredRegister<Item> MOON_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
-	public static final DeferredRegister<Item> ENDLESS_DESERT_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
-	public static final DeferredRegister<Item> PURGATORY_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
-	public static final DeferredRegister<Item> OUTER_SPACE_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BeyondtheAbyss.MODID);
 	
 	//spawn eggs
 	public static final RegistryObject<Item> MYSTERIOUS_GUY_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "myterious_guy_spawn_egg", () -> BTAEntities.MYSTERIOUS_GUY.get(), 5588543, 4339505);
@@ -62,11 +56,6 @@ public class BTAItems
 	public static final RegistryObject<Item> FULGASTRA_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "fulgastra_spawn_egg", () -> BTAEntities.FULGASTRA.get(), 4596012, 46834);
 	public static final RegistryObject<Item> NECROSHELL_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "necroshell_spawn_egg", () -> BTAEntities.NECROSHELL.get(), 3286815, 8878945);
 	public static final RegistryObject<Item> LITHOSHRIMP_SPAWN_EGG = registerSpawnEgg(DEEP_ABYSS_ITEMS, "lithoshrimp_spawn_egg", () -> BTAEntities.LITHOSHRIMP.get(), 2761774, 6051698);
-	
-	public static final RegistryObject<Item> OVERSEER_SPAWN_EGG = registerSpawnEgg(MIRRORED_CITY_ITEMS, "overseer_spawn_egg", () -> BTAEntities.OVERSEER.get(), 3752532, 7174016);
-	public static final RegistryObject<Item> OBSERVER_SPAWN_EGG = registerSpawnEgg(MIRRORED_CITY_ITEMS, "observer_spawn_egg", () -> BTAEntities.OBSERVER.get(), 3752532, 2699068);
-
-	public static final RegistryObject<Item> DUNE_DEVOURER_SPAWN_EGG = registerSpawnEgg(ENDLESS_DESERT_ITEMS, "dune_devourer_spawn_egg", () -> BTAEntities.DUNE_DEVOURER_HEAD.get(), 9595205, 5058351);
 	
 	//materials
 	public static final RegistryObject<Item> GHIDRUTH_SCALE = DEEP_ABYSS_ITEMS.register("ghidruth_scale", () -> new Item(new Item.Properties().rarity(RARITY_DEEP_ABYSS)));
@@ -119,20 +108,6 @@ public class BTAItems
 	public static final RegistryObject<Item> BONE_PILES = registerBlockItem(DEEP_ABYSS_ITEMS, "bone_piles", () -> BTABlocks.BONE_PILES.get(), new Item.Properties());
 	public static final RegistryObject<Item> SITTING_SKELETON = registerBlockItem(DEEP_ABYSS_ITEMS, "sitting_skeleton", () -> BTABlocks.SITTING_SKELETON.get(), new Item.Properties());
 	public static final RegistryObject<Item> FALLEN_SKELETON = registerBlockItem(DEEP_ABYSS_ITEMS, "fallen_skeleton", () -> BTABlocks.FALLEN_SKELETON.get(), new Item.Properties());
-	public static final RegistryObject<Item> BLANK_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "blank_rune_stone", () -> BTABlocks.BLANK_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> SOUL_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "soul_rune_stone", () -> BTABlocks.SOUL_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> WATER_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "water_rune_stone", () -> BTABlocks.WATER_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> WAVE_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "wave_rune_stone", () -> BTABlocks.WAVE_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> CONDUIT_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "conduit_rune_stone", () -> BTABlocks.CONDUIT_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> GUARDIAN_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "guardian_rune_stone", () -> BTABlocks.GUARDIAN_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> PEACE_RUNE_STONE = registerBlockItem(DEEP_ABYSS_ITEMS, "peace_rune_stone", () -> BTABlocks.PEACE_RUNE_STONE.get(), new Item.Properties());
-	public static final RegistryObject<Item> ORIVINE = registerBlockItem(DEEP_ABYSS_ITEMS, "orivine", () -> BTABlocks.ORIVINE.get(), new Item.Properties());
-	public static final RegistryObject<Item> ORIVINE_SLAB = registerBlockItem(DEEP_ABYSS_ITEMS, "orivine_slab", () -> BTABlocks.ORIVINE_SLAB.get(), new Item.Properties());
-	public static final RegistryObject<Item> ORIVINE_STAIRS = registerBlockItem(DEEP_ABYSS_ITEMS, "orivine_stairs", () -> BTABlocks.ORIVINE_STAIRS.get(), new Item.Properties());
-	public static final RegistryObject<Item> ENERGIZED_ORIVINE = registerBlockItem(DEEP_ABYSS_ITEMS, "energized_orivine", () -> BTABlocks.ENERGIZED_ORIVINE.get(), new Item.Properties());
-	public static final RegistryObject<Item> ENERGIZED_ORIVINE_SLAB = registerBlockItem(DEEP_ABYSS_ITEMS, "energized_orivine_slab", () -> BTABlocks.ENERGIZED_ORIVINE_SLAB.get(), new Item.Properties());
-	public static final RegistryObject<Item> ENERGIZED_ORIVINE_STAIRS = registerBlockItem(DEEP_ABYSS_ITEMS, "energized_orivine_stairs", () -> BTABlocks.ENERGIZED_ORIVINE_STAIRS.get(), new Item.Properties());
-	public static final RegistryObject<Item> ORIVINE_PILLAR = registerBlockItem(DEEP_ABYSS_ITEMS, "orivine_pillar", () -> BTABlocks.ORIVINE_PILLAR.get(), new Item.Properties());
 	public static final RegistryObject<Item> ROT_SOIL = registerBlockItem(DEEP_ABYSS_ITEMS, "rot_soil", () -> BTABlocks.ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> COMPACT_ROT_SOIL = registerBlockItem(DEEP_ABYSS_ITEMS, "compact_rot_soil", () -> BTABlocks.COMPACT_ROT_SOIL.get(), new Item.Properties());
 	public static final RegistryObject<Item> CHISELED_BONE_BLOCK = registerBlockItem(DEEP_ABYSS_ITEMS, "chiseled_bone_block", () -> BTABlocks.CHISELED_BONE_BLOCK.get(), new Item.Properties());
@@ -155,13 +130,6 @@ public class BTAItems
 	public static final RegistryObject<Item> DEEPWEED = registerBlockItem(DEEP_ABYSS_ITEMS, "deepweed", () -> BTABlocks.DEEPWEED.get(), new Item.Properties());
 	public static final RegistryObject<Item> GLARING_BARNACLE = registerCustomRendererBlockItem(DEEP_ABYSS_ITEMS, "glaring_barnacle", () -> BTABlocks.GLARING_BARNACLE.get(), () -> new AnimatableBlockEntity(BlockPos.ZERO, BTABlocks.GLARING_BARNACLE.get().defaultBlockState()), new Item.Properties());
 
-	public static final RegistryObject<Item> GUTS_CORAL = registerBlockItem(MIRRORED_CITY_ITEMS, "guts_coral", () -> BTABlocks.GUTS_CORAL.get(), new Item.Properties());
-	public static final RegistryObject<Item> RAFFLESIA_ANEMONE = registerBlockItem(MIRRORED_CITY_ITEMS, "rafflesia_anemone", () -> BTABlocks.RAFFLESIA_ANEMONE.get(), new Item.Properties());
-	
-	public static final RegistryObject<Item> MOONSTONE = registerBlockItem(MOON_ITEMS, "moonstone", () -> BTABlocks.MOONSTONE.get(), new Item.Properties());
-	
-	public static final RegistryObject<Item> MOLTEN_STONE = registerBlockItem(PURGATORY_ITEMS, "molten_stone", () -> BTABlocks.MOLTEN_STONE.get(), new Item.Properties());
-	
 	//weapons
 	public static final RegistryObject<Item> SKELETAL_GUNBLADE = DEEP_ABYSS_ITEMS.register("skeletal_gunblade", () -> new SkeletalGunbladeItem(new Item.Properties().durability(1500).rarity(RARITY_DEEP_ABYSS)));
 	public static final RegistryObject<Item> TOOTH_SHOTGUN = DEEP_ABYSS_ITEMS.register("tooth_shotgun", () -> new ToothShotgunItem(new Item.Properties().durability(1100).rarity(RARITY_DEEP_ABYSS)));

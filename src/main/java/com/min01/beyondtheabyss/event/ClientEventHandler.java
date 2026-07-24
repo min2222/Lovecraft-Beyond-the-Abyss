@@ -28,26 +28,17 @@ import com.min01.beyondtheabyss.entity.model.ChainTrapMawModel;
 import com.min01.beyondtheabyss.entity.model.CorpseAnglerModel;
 import com.min01.beyondtheabyss.entity.model.CystShrapnelModel;
 import com.min01.beyondtheabyss.entity.model.DeepAbyssPortalModel;
-import com.min01.beyondtheabyss.entity.model.DuneDevourerBodyModel;
-import com.min01.beyondtheabyss.entity.model.DuneDevourerHeadModel;
-import com.min01.beyondtheabyss.entity.model.DuneDevourerTailModel;
 import com.min01.beyondtheabyss.entity.model.EnergyBallModel;
-import com.min01.beyondtheabyss.entity.model.ForneusBodyModel;
-import com.min01.beyondtheabyss.entity.model.ForneusHeadModel;
-import com.min01.beyondtheabyss.entity.model.ForneusTailModel;
 import com.min01.beyondtheabyss.entity.model.FulgastraModel;
 import com.min01.beyondtheabyss.entity.model.GhidruthModel;
 import com.min01.beyondtheabyss.entity.model.GloomfishModel;
 import com.min01.beyondtheabyss.entity.model.GnasherLeaderModel;
 import com.min01.beyondtheabyss.entity.model.GnasherModel;
 import com.min01.beyondtheabyss.entity.model.LithoshrimpModel;
-import com.min01.beyondtheabyss.entity.model.MissileModel;
 import com.min01.beyondtheabyss.entity.model.MutavoreCystModel;
 import com.min01.beyondtheabyss.entity.model.MutavoreModel;
 import com.min01.beyondtheabyss.entity.model.MysteriousGuyModel;
 import com.min01.beyondtheabyss.entity.model.NecroshellModel;
-import com.min01.beyondtheabyss.entity.model.ObserverModel;
-import com.min01.beyondtheabyss.entity.model.OverseerModel;
 import com.min01.beyondtheabyss.entity.model.PipeModel;
 import com.min01.beyondtheabyss.entity.model.PutridBubbleModel;
 import com.min01.beyondtheabyss.entity.model.SiamserpentBlasterModel;
@@ -65,7 +56,6 @@ import com.min01.beyondtheabyss.entity.renderer.ChainTrapMawRenderer;
 import com.min01.beyondtheabyss.entity.renderer.DeepAbyssPortalRenderer;
 import com.min01.beyondtheabyss.entity.renderer.EnergyBallRenderer;
 import com.min01.beyondtheabyss.entity.renderer.FallingStoneRenderer;
-import com.min01.beyondtheabyss.entity.renderer.MissileRenderer;
 import com.min01.beyondtheabyss.entity.renderer.MutavoreCystRenderer;
 import com.min01.beyondtheabyss.entity.renderer.NoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.PutridBubbleRenderer;
@@ -73,12 +63,6 @@ import com.min01.beyondtheabyss.entity.renderer.SubmarineRenderer;
 import com.min01.beyondtheabyss.entity.renderer.ToothBulletRenderer;
 import com.min01.beyondtheabyss.entity.renderer.layer.StoneSkinLayer;
 import com.min01.beyondtheabyss.entity.renderer.living.CorpseAnglerRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.DuneDevourerBodyRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.DuneDevourerHeadRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.DuneDevourerTailRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.ForneusBodyRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.ForneusHeadRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.ForneusTailRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.FulgastraRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GhidruthRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.GloomfishRenderer;
@@ -87,8 +71,6 @@ import com.min01.beyondtheabyss.entity.renderer.living.LithoshrimpRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.MutavoreRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.MysteriousGuyRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.NecroshellRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.ObserverRenderer;
-import com.min01.beyondtheabyss.entity.renderer.living.OverseerRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentMiddleBoneRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SiamserpentSlasherRenderer;
 import com.min01.beyondtheabyss.entity.renderer.living.SpineWormBodyRenderer;
@@ -112,15 +94,8 @@ import com.min01.beyondtheabyss.item.model.ToothShotgunModel;
 import com.min01.beyondtheabyss.particle.BTAParticles;
 import com.min01.beyondtheabyss.particle.DustCloudParticle;
 import com.min01.beyondtheabyss.shader.BTAShaders;
-import com.min01.beyondtheabyss.shader.BTAWorldShader;
-import com.min01.beyondtheabyss.world.BTABiomes;
 import com.min01.beyondtheabyss.world.BTAMenuTypes;
-import com.min01.beyondtheabyss.world.BTAWorlds;
 import com.min01.beyondtheabyss.world.effects.DeepAbyssDimensionSpecialEffects;
-import com.min01.beyondtheabyss.world.effects.MirroredCityDimensionSpecialEffects;
-import com.min01.beyondtheabyss.world.effects.MoonDimensionSpecialEffects;
-import com.min01.beyondtheabyss.world.effects.OuterSpaceDimensionSpecialEffects;
-import com.min01.beyondtheabyss.world.effects.PurgatoryDimensionSpecialEffects;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.EntityModel;
@@ -162,10 +137,6 @@ public class ClientEventHandler
 	        {
 	        	return FlashlightItem.isOn(pStack) ? 1.0F : 0.0F;
 	        });
-	        BTAWorldShader.registerWorldShader(BTAWorlds.EVERGREEN, () -> BTAShaders.getPlainFog(), BTABiomes.FOGGY_PLAINS, "Fog");
-	        //TODO weather system;
-	        BTAWorldShader.registerWorldShader(BTAWorlds.MIRRORED_CITY, () -> BTAShaders.getFog());
-	        BTAWorldShader.registerWorldShader(BTAWorlds.ENDLESS_DESERT, () -> BTAShaders.getSandstorm(), BTABiomes.ENDLESS_DESERT, "Sand");
 	        ItemAnimations.register(BTAItems.CLAM_OF_GUIDANCE.get(), ClamOfGuidanceAnimation.CLAM_OPEN, (t, u, v) -> ClamOfGuidanceItem.isOpen(u));
 	        ItemAnimations.register(BTAItems.SKELETAL_GUNBLADE.get(), SkeletalGunbladeAnimation.GUNBLADE_OPEN, (t, u, v) -> SkeletalGunbladeItem.isGunMode(u));
 	        ItemAnimations.register(BTAItems.SKELETAL_GUNBLADE.get(), SkeletalGunbladeAnimation.GUNBLADE_CLOSE, (t, u, v) -> !SkeletalGunbladeItem.isGunMode(u));
@@ -187,10 +158,6 @@ public class ClientEventHandler
     public static void onRegisterDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event)
     {
     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "deep_abyss"), new DeepAbyssDimensionSpecialEffects());
-     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "mirrored_city"), new MirroredCityDimensionSpecialEffects());
-     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "moon"), new MoonDimensionSpecialEffects());
-     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "purgatory"), new PurgatoryDimensionSpecialEffects());
-     	event.register(ResourceLocation.fromNamespaceAndPath(BeyondtheAbyss.MODID, "outer_space"), new OuterSpaceDimensionSpecialEffects());
     }
     
     @SubscribeEvent
@@ -248,17 +215,6 @@ public class ClientEventHandler
     	event.registerEntityRenderer(BTAEntities.SPLITTED_FULGASTRA.get(), SplittedFulgastraRenderer::new);
     	event.registerEntityRenderer(BTAEntities.NECROSHELL.get(), NecroshellRenderer::new);
     	event.registerEntityRenderer(BTAEntities.LITHOSHRIMP.get(), LithoshrimpRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.FORNEUS_HEAD.get(), ForneusHeadRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.FORNEUS_BODY.get(), ForneusBodyRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.FORNEUS_TAIL.get(), ForneusTailRenderer::new);
-
-    	event.registerEntityRenderer(BTAEntities.OVERSEER.get(), OverseerRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.OBSERVER.get(), ObserverRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.MISSILE.get(), MissileRenderer::new);
-    	
-    	event.registerEntityRenderer(BTAEntities.DUNE_DEVOURER_HEAD.get(), DuneDevourerHeadRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.DUNE_DEVOURER_BODY.get(), DuneDevourerBodyRenderer::new);
-    	event.registerEntityRenderer(BTAEntities.DUNE_DEVOURER_TAIL.get(), DuneDevourerTailRenderer::new);
     }
     
     @SubscribeEvent
@@ -285,9 +241,6 @@ public class ClientEventHandler
     	event.registerLayerDefinition(SplittedFulgastraModel.LAYER_LOCATION, SplittedFulgastraModel::createBodyLayer);
     	event.registerLayerDefinition(NecroshellModel.LAYER_LOCATION, NecroshellModel::createBodyLayer);
     	event.registerLayerDefinition(LithoshrimpModel.LAYER_LOCATION, LithoshrimpModel::createBodyLayer);
-    	event.registerLayerDefinition(ForneusHeadModel.LAYER_LOCATION, ForneusHeadModel::createBodyLayer);
-    	event.registerLayerDefinition(ForneusBodyModel.LAYER_LOCATION, ForneusBodyModel::createBodyLayer);
-    	event.registerLayerDefinition(ForneusTailModel.LAYER_LOCATION, ForneusTailModel::createBodyLayer);
     	event.registerLayerDefinition(EnergyBallModel.LAYER_LOCATION, EnergyBallModel::createBodyLayer);
     	event.registerLayerDefinition(PutridBubbleModel.LAYER_LOCATION, PutridBubbleModel::createBodyLayer);
     	event.registerLayerDefinition(ToothBulletModel.LAYER_LOCATION, ToothBulletModel::createBodyLayer);
@@ -297,14 +250,6 @@ public class ClientEventHandler
     	event.registerLayerDefinition(CystShrapnelModel.LAYER_LOCATION, CystShrapnelModel::createBodyLayer);
     	event.registerLayerDefinition(DeepAbyssPortalModel.LAYER_LOCATION, DeepAbyssPortalModel::createBodyLayer);
     	event.registerLayerDefinition(PipeModel.LAYER_LOCATION, PipeModel::createBodyLayer);
-    	
-    	event.registerLayerDefinition(OverseerModel.LAYER_LOCATION, OverseerModel::createBodyLayer);
-    	event.registerLayerDefinition(ObserverModel.LAYER_LOCATION, ObserverModel::createBodyLayer);
-    	event.registerLayerDefinition(MissileModel.LAYER_LOCATION, MissileModel::createBodyLayer);
-    	
-    	event.registerLayerDefinition(DuneDevourerHeadModel.LAYER_LOCATION, DuneDevourerHeadModel::createBodyLayer);
-    	event.registerLayerDefinition(DuneDevourerBodyModel.LAYER_LOCATION, DuneDevourerBodyModel::createBodyLayer);
-    	event.registerLayerDefinition(DuneDevourerTailModel.LAYER_LOCATION, DuneDevourerTailModel::createBodyLayer);
 
     	//armors
     	event.registerLayerDefinition(FelmetalDiverSetModel.LAYER_LOCATION, FelmetalDiverSetModel::createBodyLayer);

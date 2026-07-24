@@ -8,12 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.min01.beyondtheabyss.util.BTAUtil;
 import com.min01.beyondtheabyss.util.DeepAbyssUtil;
-import com.min01.beyondtheabyss.util.MirroredCityUtil;
 import com.min01.beyondtheabyss.world.BTAWorlds;
-import com.min01.solomonlib.gravity.GravityAPI;
-import com.min01.solomonlib.gravity.GravityCapabilityImpl;
 
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -34,30 +30,7 @@ public class MixinEntity
 				item.setDeltaMovement(item.getDeltaMovement().subtract(0, 0.01F, 0));
 			}
 		}
-		if(MirroredCityUtil.isUpsideDown(entity))
-		{
-			GravityCapabilityImpl cap = GravityAPI.getGravityCapability(entity);
-			cap.noAnimation = entity.tickCount <= 2;
-			cap.noPositionAdjust = entity.tickCount <= 2;
-			cap.applyGravityDirectionEffect(Direction.UP, null, Double.MAX_VALUE);
-		}
     }
-
-	@Inject(method = "tick", at = @At("TAIL"))
-	private void tickTail(CallbackInfo ci) 
-	{
-		BTAUtil.updateGravity((Entity)(Object)this);
-	}
-	
-	@Inject(method = "checkBelowWorld", at = @At("HEAD"), cancellable = true)
-	private void checkBelowWorld(CallbackInfo ci) 
-	{
-    	Entity entity = (Entity) (Object) this;
-		if(entity.level.dimension() == BTAWorlds.OUTER_SPACE)
-		{
-			ci.cancel();
-		}
-	}
 
     @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)
     private void isInWater(CallbackInfoReturnable<Boolean> cir)

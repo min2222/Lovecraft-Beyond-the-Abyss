@@ -13,7 +13,6 @@ import com.google.common.collect.ImmutableList;
 import com.min01.beyondtheabyss.capabilities.PlayerTickCountCapabilityImpl;
 import com.min01.beyondtheabyss.effect.BTAEffects;
 import com.min01.beyondtheabyss.misc.PositionTypes;
-import com.min01.beyondtheabyss.world.BTAWorlds;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
@@ -344,27 +343,7 @@ public class BTAUtil
 	
 	public static boolean canSwimInAir(LivingEntity living)
 	{
-		return living.hasEffect(BTAEffects.AIR_SWIM.get()) || living.level.dimension() == BTAWorlds.OUTER_SPACE;
-	}
-	
-	public static void updateGravity(Entity entity)
-	{
-		if(entity.level.dimension() == BTAWorlds.MOON)
-		{
-			entity.resetFallDistance();
-			if(entity.getDeltaMovement().y <= 0.0D)
-			{
-				entity.setDeltaMovement(entity.getDeltaMovement().x, entity.getDeltaMovement().y * 0.7, entity.getDeltaMovement().z);
-			}
-		}
-		if(entity.level.dimension() == BTAWorlds.OUTER_SPACE)
-		{
-			entity.resetFallDistance();
-			if(entity.getDeltaMovement().y <= 0.0D)
-			{
-				entity.setDeltaMovement(entity.getDeltaMovement().x, 0.0, entity.getDeltaMovement().z);
-			}
-		}
+		return living.hasEffect(BTAEffects.AIR_SWIM.get());
 	}
 	
     public static PlayerTickCountCapabilityImpl getPlayerTickCountCapability(LivingEntity player)

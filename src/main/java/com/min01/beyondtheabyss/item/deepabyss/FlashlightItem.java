@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import com.min01.beyondtheabyss.item.renderer.FlashlightRenderer;
 import com.min01.beyondtheabyss.util.BTAUtil;
-import com.min01.solomonlib.misc.IDynamicLightItem;
+import com.min01.solomonlib.light.IDynamicLight;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class FlashlightItem extends Item implements IDynamicLightItem
+public class FlashlightItem extends Item implements IDynamicLight
 {
 	public static final String ON = "On";
 	
@@ -78,7 +78,7 @@ public class FlashlightItem extends Item implements IDynamicLightItem
 	}
 
 	@Override
-	public boolean shouldUpdateDynamicLight(Entity player, ItemStack stack)
+	public boolean shouldUpdate(Entity player, ItemStack stack)
 	{
 		return isOn(stack);
 	}
